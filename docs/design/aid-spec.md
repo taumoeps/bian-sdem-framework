@@ -117,6 +117,10 @@ The accuracy reached is **reported, not assumed**: each run states its precision
 | AID-W07 | Activity → operation by verb and noun (rule S06) keeps a match only if the activity covers at least half of the domain's asset type, and only the best-covered domains (DA2-04): with the full BIAN layer, *Initiate payment order* and *Execute payment* name Payment Order Initiation and Payment Rail — not the six domains that merely share *order* or *payment*. | tests |
 | AID-W08 | AID infers only from records a person wrote or confirmed — never from its own unconfirmed inferred records — so running it again cannot build guesses on guesses. | tests |
 | AID-W09 | One list to approve from: `sdem link --workspace DIR --out DIR/links` proposes every connection, and says how many of AID's proposals (`DIR/aid/*-proposals.json`) it reproduces and which it does not; `sdem aid` points the person to it. *(Owner's decision, 2026-11-06.)* | tests |
+| AID-Z01 | **Zone placements, proposed.** For each A4 shape in no zone, `sdem aid` proposes its level-0 zone — on premises or cloud — from the hosting signals (`metamodel/hosting-signals.json`, HS-01…HS-09, and the organisation's own) or, with none, the organisation's default (HS-10). Signals at medium or above pointing both ways: **unresolved**, both cited, never guessed. The proposal is a placement link (RA4-38) marked `inferred` — the signals and values read, reasoning, confidence (H5) — and the zones it needs are created, marked inferred, where the workspace has none (the owner's decisions H1–H8, 2026-11-14). | `test_aid_proposes_a_zone_from_the_evidence` |
+| AID-Z02 | Level 1: a shape with `internet_facing: true` is proposed in the DMZ; any other in the internal zone. | `test_aid_proposes_a_zone_from_the_evidence` |
+| AID-Z03 | A private (level-2) zone is never proposed — it is a design decision. | same |
+| AID-Z04 | Only what is not hosted is proposed: a deployment, an artifact or software on a node is in its host's zone (RA4-38). `sdem aid confirm|reject <shape>` decides a placement; a rejected one is not proposed again. | `test_a_person_decides_each_placement` |
 
 ## 10. Commands
 

@@ -40,7 +40,8 @@ class PlacementTests(unittest.TestCase):   # LC-16
         self.assertEqual(shapes['DEP-PAYHUB-PROD'], ['NET-PAY-PRIVATE'])   # through the cluster it runs on
         self.assertEqual(shapes['TS-MQ'], ['ZONE-PAY-INTERNAL'])
         self.assertNotIn('ENV-PAY-PROD', shapes)                            # environments are not placed (Z2)
-        self.assertEqual(parent, {'ZONE-PAY-INTERNAL': 'ZONE-PAY-CLOUD', 'ZONE-PAY-DMZ': 'ZONE-PAY-CLOUD', 'NET-PAY-PRIVATE': 'ZONE-PAY-INTERNAL'})
+        self.assertEqual(parent, {'ZONE-PAY-INTERNAL': 'ZONE-PAY-CLOUD', 'ZONE-PAY-DMZ': 'ZONE-PAY-CLOUD', 'NET-PAY-PRIVATE': 'ZONE-PAY-INTERNAL',
+                                  'ZONE-PAY-ONPREM-INTERNAL': 'ZONE-PAY-ONPREM'})   # hybrid since 0.11.0
         self.assertEqual(found(a4(), 15, 16, 17, 18), [])
 
     def test_a_shape_in_no_zone_is_named(self):

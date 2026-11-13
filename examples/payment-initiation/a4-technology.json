@@ -2,7 +2,7 @@
   "level": "A4",
   "model_id": "synthetic-bank-payments-a4",
   "model_version": "2026.10",
-  "metamodel_version": "0.10.0",
+  "metamodel_version": "0.11.0",
   "source_system": "SYNTHETIC-CMDB",
   "instances": [
     {
@@ -19,7 +19,8 @@
         ],
         "product_version": "1.30",
         "license": "Apache-2.0",
-        "end_of_support": "2027-06-30"
+        "end_of_support": "2027-06-30",
+        "region": "region-a"
       }
     },
     {
@@ -32,7 +33,8 @@
       "attributes": {
         "hosts": [
           "APP-PAY-HUB"
-        ]
+        ],
+        "region": "region-a"
       }
     },
     {
@@ -44,7 +46,8 @@
       "description": "Production relational store for the hub.",
       "attributes": {
         "product_version": "16.4",
-        "license": "PostgreSQL"
+        "license": "PostgreSQL",
+        "region": "region-a"
       }
     },
     {
@@ -186,6 +189,30 @@
       }
     },
     {
+      "id": "ZONE-PAY-ONPREM",
+      "type": "A4.NetworkZone",
+      "version": "1.0",
+      "name": "On premises — core banking",
+      "lifecycle_status": "active",
+      "description": "The bank's own data centre (made up), where the core banking ledger runs.",
+      "attributes": {
+        "zone_level": 0,
+        "zone_kind": "on_premises"
+      }
+    },
+    {
+      "id": "ZONE-PAY-ONPREM-INTERNAL",
+      "type": "A4.NetworkZone",
+      "version": "1.0",
+      "name": "Internal network — on premises (core banking)",
+      "lifecycle_status": "active",
+      "description": "The internal network of the on-premises data centre.",
+      "attributes": {
+        "zone_level": 1,
+        "zone_kind": "internal"
+      }
+    },
+    {
       "id": "ART-PAYHUB-IMG",
       "type": "A4.Artifact",
       "version": "7.1",
@@ -206,7 +233,19 @@
       "lifecycle_status": "active",
       "description": "The payments API's entry point from the internet (made up).",
       "attributes": {
-        "internet_facing": true
+        "internet_facing": true,
+        "region": "region-a"
+      }
+    },
+    {
+      "id": "INF-CORE-LEDGER-HOST",
+      "type": "A4.Node",
+      "version": "1.0",
+      "name": "Core banking ledger host",
+      "lifecycle_status": "active",
+      "description": "The on-premises host of the core banking ledger the Execution Gateway posts payments to (made up).",
+      "attributes": {
+        "site": "DC-1 (made up)"
       }
     }
   ],
@@ -315,6 +354,21 @@
       "source": "ZONE-PAY-DMZ",
       "kind": "aggregation",
       "target": "INF-APIGW-PAY"
+    },
+    {
+      "source": "ZONE-PAY-ONPREM",
+      "kind": "composition",
+      "target": "ZONE-PAY-ONPREM-INTERNAL"
+    },
+    {
+      "source": "ZONE-PAY-ONPREM-INTERNAL",
+      "kind": "aggregation",
+      "target": "INF-CORE-LEDGER-HOST"
+    },
+    {
+      "source": "DEP-PAYEXEC-PROD",
+      "kind": "association",
+      "target": "INF-CORE-LEDGER-HOST"
     }
   ]
 }

@@ -264,6 +264,7 @@ In an architecture dataset's `relationships` list (`schema/level-model.schema.js
 | `target` | yes | id of the target instance in the same architecture dataset |
 | `name` | no | optional label |
 | `source_id` | no |  |
+| `inferred` | no |  |
 
 Checked by `sdem check`: both ends in the architecture dataset (LC-03), kind allowed for the types (LC-03), cardinality (LC-10, LC-10m).
 
@@ -447,13 +448,13 @@ Every field of a plan row in `metamodel/relationship-rules.json`.
 
 **Gap G-12** (addition; decided 2026-10-25 (owner): recorded in the detail spec; the high-level spec is not changed).
 
-9 core fields, 13 common attributes, 138 entity-specific attributes, 3 derived attributes (`metamodel/entity-attributes.json`); 14 logical rules enforced by `sdem check`; one JSON Schema per instance type (`schema/entities/`). Documents: [`architecture-attribute-design.md`](../reference/architecture-attribute-design.md), [`logical-data-model.md`](../reference/logical-data-model.md), [`physical-data-model.md`](../reference/physical-data-model.md).
+9 core fields, 13 common attributes, 141 entity-specific attributes, 3 derived attributes (`metamodel/entity-attributes.json`); 14 logical rules enforced by `sdem check`; one JSON Schema per instance type (`schema/entities/`). Documents: [`architecture-attribute-design.md`](../reference/architecture-attribute-design.md), [`logical-data-model.md`](../reference/logical-data-model.md), [`physical-data-model.md`](../reference/physical-data-model.md).
 
 ## 17. Provenance and confidence
 
 **Gap G-13** (addition; decided 2026-10-25 (owner): recorded in the detail spec; the high-level spec is not changed).
 
-Every entity, within-level row, relationship type and attribute names its source and carries reasoning and a confidence from one rule (`sdem/confidence.py`; CI fails on disagreement). Across these records: 242 high, 79 medium, 29 low.
+Every entity, within-level row, relationship type and attribute names its source and carries reasoning and a confidence from one rule (`sdem/confidence.py`; CI fails on disagreement). Across these records: 242 high, 79 medium, 32 low.
 
 ## 18. Inference engine
 

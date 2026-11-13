@@ -1216,6 +1216,9 @@ erDiagram
     A4_InfrastructureComponent {
         string id PK
         boolean internet_facing
+        string site
+        string cloud_provider
+        string region
     }
     A4_Deployment {
         string id PK
@@ -1336,6 +1339,9 @@ Abstract supertype of every Technology Architecture entity; retained for compati
 | Field | Type | Required | Meaning | Refers to |
 |---|---|---|---|---|
 | `internet_facing` | boolean | no | whether it is reached from the internet (a web server, an API gateway) — it belongs in a DMZ (LC-18) | — |
+| `site` | text | no | the data centre or site the organisation runs it in — it is on premises (HS-01) | — |
+| `cloud_provider` | text | no | the cloud provider it runs on, by name — it is in the cloud (HS-06) | — |
+| `region` | text | no | the cloud region it runs in (e.g. region-a) — it is in the cloud (HS-06) | — |
 
 **Links**
 
@@ -1685,21 +1691,23 @@ The rules the data must satisfy, and which the checker enforces today.
 | LC-16 | Every shape in a zone | every A4 shape — not networks, zones, paths or environments — is in exactly one network zone of level 1 or 2 (RA4-38), directly or through what hosts it; a workspace with no zones is told to record them (the owner's decision, 2026-11-14; metamodel 0.10.0) | **enforced** |
 | LC-17 | Zone structure | a level-0 zone is on premises or cloud and inside no other; a level-1 zone is internal or DMZ and part of a level 0; a level-2 zone is private and part of a level 1; each level 0 has one internal zone (none yet is a warning) and at most one DMZ; at most one on-premises and one cloud level 0 (metamodel 0.10.0) | **enforced** |
 | LC-18 | Internet-facing shapes in a DMZ | a shape with `internet_facing: true` is in a DMZ (or a zone inside one), and a DMZ holds only internet-facing shapes (metamodel 0.10.0) | **enforced** |
+| LC-19 | Inferred zone placements decided | a zone placement sdem aid proposed (a link marked inferred, AID-Z01) is confirmed or rejected by a person (the owner's decisions H2, H5, 2026-11-14; metamodel 0.11.0) | **enforced** |
+| LC-20 | Placement agrees with the evidence | a shape is not in a zone that a high-confidence hosting signal contradicts (a mainframe in a cloud zone — metamodel/hosting-signals.json; metamodel 0.11.0) | **enforced** |
 
 ## Appendix B. How the example data measures up
 
-The 8 example workspaces (832 instances) (the generated reference-structure workspace excluded) checked by `sdem check` against the enforced rules. No errors; 36 completeness warning(s), where an example architecture datasets part of BIAN's structure (a business domain without its area, a business object without attribute instances, a stub Service Domain without its groups or control record); 2 instance(s) still use a deprecated field.
+The 8 example workspaces (835 instances) (the generated reference-structure workspace excluded) checked by `sdem check` against the enforced rules. No errors; 36 completeness warning(s), where an example architecture datasets part of BIAN's structure (a business domain without its area, a business object without attribute instances, a stub Service Domain without its groups or control record); 2 instance(s) still use a deprecated field.
 
 | Rule | Values checked | Failures |
 |---|---|---|
-| LC-04 | 1180 | 0 |
-| LC-05 | 2703 | 0 |
-| LC-06 | 1452 | 0 |
+| LC-04 | 1184 | 0 |
+| LC-05 | 2713 | 0 |
+| LC-06 | 1457 | 0 |
 | LC-07 | 169 | 0 |
 | LC-08 (warning) | 184 | 0 |
-| LC-09 | 776 | 0 |
-| LC-10 | 2318 | 0 |
-| LC-10m (warning) | 2318 | 36 |
+| LC-09 | 779 | 0 |
+| LC-10 | 2325 | 0 |
+| LC-10m (warning) | 2325 | 36 |
 | LC-13 deprecated field in use | — | 2 |
 | fields not in the model | — | 0 |
 
@@ -1722,6 +1730,6 @@ Each entity's, field's and link's source, reasoning and confidence are in [`arch
 | Layer | Content | Status |
 |---|---|---|
 | Conceptual | which entities exist and which links are allowed | complete |
-| **Logical (this document)** | identifiers, typed fields, allowed values, references, link counts, rules | designed; 19 of 19 rules enforced |
+| **Logical (this document)** | identifiers, typed fields, allowed values, references, link counts, rules | designed; 21 of 21 rules enforced |
 | Physical | one architecture dataset JSON Schema per entity type ([physical-data-model.md](physical-data-model.md)); a graph store schema | entity schemas generated (`sdem model regenerate (physical)`); graph store schema not designed yet |
 

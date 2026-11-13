@@ -749,6 +749,90 @@
           "edges": 7
         }
       ]
+    },
+    {
+      "build": 10,
+      "at": "2026-11-13T15:42:12+00:00",
+      "inputs": [
+        {
+          "path": "examples/card-fraud-alerts//a1-business.json",
+          "kind": "export",
+          "level": "A1",
+          "model_id": "synthetic-bank-a1",
+          "model_version": "2026.10",
+          "sha256": "6e0e9ff8d79b5682b5c7522120215d104b00360687496cd82024f74c3bc95180"
+        },
+        {
+          "path": "examples/card-fraud-alerts//a2-service-domain.json",
+          "kind": "export",
+          "level": "A2",
+          "model_id": "synthetic-bank-a2",
+          "model_version": "2026.10",
+          "sha256": "627da8c7abaa891dda6bc0dbbe9c7ce295f4976fc7a5d860ecb56b0806a213ea"
+        },
+        {
+          "path": "examples/card-fraud-alerts//a3-application.json",
+          "kind": "export",
+          "level": "A3",
+          "model_id": "synthetic-bank-a3",
+          "model_version": "2026.10",
+          "sha256": "b494c68c93588bcbee2bfe22e6294d875bafe97ce249e28191fcdfc2ad6c00f7"
+        },
+        {
+          "path": "examples/card-fraud-alerts//a4-technology.json",
+          "kind": "export",
+          "level": "A4",
+          "model_id": "synthetic-bank-a4",
+          "model_version": "2026.10",
+          "sha256": "cd7474c532edc5a62098e240d9687a78ed51b7ef425724ddf98169d976ed83d1"
+        },
+        {
+          "path": "examples/card-fraud-alerts//mappings.json",
+          "kind": "registry",
+          "registry_version": "0.4.0",
+          "sha256": "8fe545274ac68c8be2dfeb1ba413fbda1cc6af6425d7fd6e08856db96a806192"
+        }
+      ],
+      "metamodel_version": "0.11.0",
+      "errors": [],
+      "warnings": [
+        "level A2 (synthetic-bank-a2): instance BD-FRAUD: 0 composition links with A2.BusinessArea, RA2-01 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-bank-a2): instance SO-044-07: 0 access links with A2.ControlRecord, RA2-13 expects at least 1 (LC-10m)",
+        "level A4 (synthetic-bank-a4): no network zones recorded — place each of the 3 shape(s) in a zone: on premises or cloud, internal or DMZ (RA4-38, LC-16)"
+      ],
+      "result": "accepted",
+      "outputs": [
+        {
+          "file": "a1-business.graph.json",
+          "sha256": "1d73f5731e2841f5cdd867b7bc9853541fd34b21be9b6f25efd9d6781aef3399",
+          "nodes": 9,
+          "edges": 7
+        },
+        {
+          "file": "a2-service-domain.graph.json",
+          "sha256": "e0480dcdfb7259071c20ff3c2f78e7f8c095a0593145521f6305a64a8a52dd75",
+          "nodes": 8,
+          "edges": 7
+        },
+        {
+          "file": "a3-application.graph.json",
+          "sha256": "480a5acee8f9d179c686a3444ce1bbb1d0aadd5c633e6ddc8c327e9d256f9417",
+          "nodes": 4,
+          "edges": 3
+        },
+        {
+          "file": "a4-technology.graph.json",
+          "sha256": "668ff39034f5057f9356e8d4907e22e63cbca455f28f76b4e17db628affbe37d",
+          "nodes": 5,
+          "edges": 3
+        },
+        {
+          "file": "federated.graph.json",
+          "sha256": "07e864caad15f0ab4a76b2d2d170e5097e8427149175db55b25c98e7e2035996",
+          "nodes": 10,
+          "edges": 7
+        }
+      ]
     }
   ]
 }

@@ -6,11 +6,11 @@
     "directed": true,
     "metadata": {
       "sdem_store_version": "1.0",
-      "export_sha256": "e6c49bc60f1c2829e09644e3bf1330e7e439c2dec87248fe9dbfe70422f045c4",
+      "export_sha256": "4a5192d6383abd097516048ad34a0b3c0f4ecde44d399aa6bd95e5e989327619",
       "level": "A4",
       "model_id": "synthetic-bank-ledger-a4",
       "model_version": "2026.10",
-      "metamodel_version": "0.10.0",
+      "metamodel_version": "0.11.0",
       "source_system": "SYNTHETIC-CMDB"
     },
     "nodes": {
@@ -26,7 +26,8 @@
           "attributes": {
             "hosts": [
               "APP-LEDGER"
-            ]
+            ],
+            "site": "DC-1 core banking data centre (made up)"
           }
         }
       },

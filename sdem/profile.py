@@ -141,6 +141,7 @@ def resolve(path, _seen=()):
         merged['structures'] = [dict(x) for x in base['structures']]
         merged['diagram_map'] = {k: list(v) for k, v in base['diagram_map'].items()}
         if base.get('requires_sdem'): merged['requires_sdem'] = base['requires_sdem']
+        if base.get('hosting'): merged['hosting'] = json.loads(json.dumps(base['hosting']))
     for inc in doc.get('includes', []):   # PR-13, PR-17: standards and patterns, after the base and before the profile's own additions
         include(merged, (path.parent / inc).resolve())
     _add(merged, doc, path.name)
@@ -149,6 +150,11 @@ def resolve(path, _seen=()):
     for k in LISTS:
         if k not in ('attributes', 'rules'): merged[k] += list(doc.get(k, []))
     for k in ('layers', 'types'): merged['names'][k].update((doc.get('names') or {}).get(k, {}))
+    if doc.get('hosting'):   # PR-32: the organisation's hosting policy — a team profile may set its own default and add templates and signals
+        h = merged.setdefault('hosting', {}); own = doc['hosting']
+        if 'default' in own: h['default'] = own['default']
+        h['templates'] = {**(h.get('templates') or {}), **(own.get('templates') or {})}
+        h['signals'] = list(h.get('signals') or []) + list(own.get('signals') or [])
     merged['chain'].append({'file': path.as_posix(), 'name': doc.get('name', path.stem), 'version': doc.get('version', 1)})
     reqs = [r for r in (merged.get('requires_sdem'), doc.get('requires_sdem')) if r]   # UF-04: every profile in the chain must accept this SDEM
     if reqs: merged['requires_sdem'] = ','.join(reqs)
@@ -275,6 +281,7 @@ def check(merged, base_mm):
     for st in merged.get('structures', []):   # PR-21, PR-22
         issues += structure_issues(st, all_types, base_mm, merged, known_attr_of)
     issues += map_issues(merged.get('diagram_map') or {}, all_types, base_mm, merged, known_attr_of)   # PR-28
+    issues += hosting_issues(merged)   # PR-32
     return issues
 
 
@@ -364,6 +371,23 @@ def profile_attributes():
 
 def rules():
     return (ACTIVE or {}).get('rules', [])
+
+
+def hosting():
+    """The active profile's hosting policy (PR-32): default (cloud | on_premises), zone templates, extra hosting signals — or None."""
+    return (ACTIVE or {}).get('hosting')
+
+
+def hosting_issues(merged):
+    """PR-32: what is wrong with a profile's hosting policy."""
+    h = merged.get('hosting') or {}; out = []
+    if h.get('default') not in (None, 'cloud', 'on_premises'): out.append(f"hosting.default is {h['default']!r} — cloud or on_premises")
+    for t, v in (h.get('templates') or {}).items():
+        if not (isinstance(v, list) and v and v[0] in ('cloud', 'on_premises')): out.append(f"hosting.templates.{t}: starts with cloud or on_premises (its level-0 zone)")
+    for sg in h.get('signals') or []:
+        if not (isinstance(sg, dict) and sg.get('id') and sg.get('points_to') in ('cloud', 'on_premises') and sg.get('confidence') in ('low', 'medium', 'high') and sg.get('read')):
+            out.append(f"hosting.signals: {sg.get('id') if isinstance(sg, dict) else sg!r} needs id, points_to (cloud | on_premises), confidence (low | medium | high) and read")
+    return out
 
 
 def structures():

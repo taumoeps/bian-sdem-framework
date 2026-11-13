@@ -231,12 +231,12 @@
       "version": "0.18.0",
       "date": "2026-11-10",
       "kind": "minor",
-      "metamodel": "0.10.0",
+      "metamodel": "0.11.0",
       "migration": {
         "from": "0.8.0",
-        "to": "0.10.0",
+        "to": "0.11.0",
         "automatic": true,
-        "note": "0.8.0 → 0.8.1, additive: attribute sources (CA-13) and link citations; a placeholder in a required attribute now fails sdem check (LC-04). 0.8.1 → 0.9.0: a platform's network is a link (RA4-37) — a network's `connects` list becomes those links; a hosting platform on no network is a warning (LC-15); trace and impact follow networks (KG-Q-08). 0.9.0 → 0.10.0: network zones — level 0 on premises or cloud, level 1 internal or DMZ, level 2 private — hold the shapes deployed in them (RA4-38); every shape in a zone (LC-16), the structure checked (LC-17), internet-facing shapes in a DMZ (LC-18); additive"
+        "note": "0.8.0 → 0.8.1, additive: attribute sources (CA-13) and link citations; a placeholder in a required attribute now fails sdem check (LC-04). 0.8.1 → 0.9.0: a platform's network is a link (RA4-37) — a network's `connects` list becomes those links; a hosting platform on no network is a warning (LC-15); trace and impact follow networks (KG-Q-08). 0.9.0 → 0.10.0: network zones — level 0 on premises or cloud, level 1 internal or DMZ, level 2 private — hold the shapes deployed in them (RA4-38); every shape in a zone (LC-16), the structure checked (LC-17), internet-facing shapes in a DMZ (LC-18); additive. 0.10.0 → 0.11.0: hosting — cloud first by default, on premises by evidence (metamodel/hosting-signals.json); sdem aid proposes each shape's zone, marked inferred, for a person to confirm; zone connections ZC-01…ZC-04; additive"
       },
       "breaking": [
         "sdem check reads TBD, unknown, /TBD or an empty string in a required attribute as missing: an error on an active record — leave the value out and mark the record planned (LC-04)",
@@ -271,9 +271,13 @@
         {
           "when": "your workspace has A4 shapes",
           "do": "record its network zones — on premises or cloud, internal and any DMZ, private networks inside internal — and place each shape (sdem check names every shape in no zone, LC-16)"
+        },
+        {
+          "when": "you start a workspace",
+          "do": "choose its zones with sdem new --hosting cloud | on_premises | hybrid — or let sdem aid propose them from your organisation's default (profile hosting.default, PR-32)"
         }
       ],
-      "summary": "Architect experience: Home, dashboard and graph linked; graph status shown; architect tasks; sdem new --explore; the README and the Payments walkthrough rewritten. Then the improvement roadmap (metamodel 0.8.1): placeholders are missing values, natural keys for operations, attribute and link sources, evidence classes, sdem change diff, sdem handback. A platform's network is a link, and a network change reaches what runs on it (metamodel 0.9.0); network zones say where every technology shape is deployed (metamodel 0.10.0)."
+      "summary": "Architect experience: Home, dashboard and graph linked; graph status shown; architect tasks; sdem new --explore; the README and the Payments walkthrough rewritten. Then the improvement roadmap (metamodel 0.8.1): placeholders are missing values, natural keys for operations, attribute and link sources, evidence classes, sdem change diff, sdem handback. A platform's network is a link, and a network change reaches what runs on it (metamodel 0.9.0); network zones say where every technology shape is deployed (metamodel 0.10.0); hosting is proposed from evidence and the organisation's default, and the zones' connections are SDEM's rules (metamodel 0.11.0)."
     }
   ]
 }

@@ -130,7 +130,7 @@ def org_profile(org, ws):
             'description': f"The {Path(ws).name} workspace's additions to {rec['name']}'s base profile — add its own types, attributes and rules here"}
 
 
-def plan(workspace, person, bian_file=None, today=None, no_bian=False, from_dir=None, label=None, profile_file=None, profile_doc=None, org=None):
+def plan(workspace, person, bian_file=None, today=None, no_bian=False, from_dir=None, label=None, profile_file=None, profile_doc=None, org=None, hosting=None):
     """The files of a new workspace and its record — nothing written here (WS-01, WS-02)."""
     from .connect import estate_errors
     from .load import EMPTY_REGISTRY
@@ -159,6 +159,11 @@ def plan(workspace, person, bian_file=None, today=None, no_bian=False, from_dir=
                  'instances': [], 'relationships': []} if lvl != 'A2' else a2) for lvl, f in DATASETS.items() if lvl != 'A2' or a2}
     registry = {**EMPTY_REGISTRY, 'metamodel_version': mm.version}
     extra = {}
+    if hosting:   # WS-12: the template's network zones, the person's choice (PR-32) — without it, sdem aid proposes zones from the default
+        from .hosting import template_zones
+        try: zrecs, zlinks = template_zones(hosting, stem)
+        except ValueError as e: raise NewError(f'--hosting: {e}')
+        a4 = docs['a4-technology.json']; a4['instances'] += zrecs; a4['relationships'] += zlinks
     if from_dir:   # GV-05: the workspace's first content — a baseline, checked like any other, and recorded as one
         src = Path(from_dir)
         if not src.is_dir(): raise NewError(f'--from {from_dir}: no such folder')
@@ -177,6 +182,7 @@ def plan(workspace, person, bian_file=None, today=None, no_bian=False, from_dir=
     record = {'format': FORMAT, 'name': ws.name, 'created': today, 'created_by': person.strip(),
               'bian': {'catalogue': catalogue, 'source': source, 'selection': 'none' if no_bian else 'given' if bian_file else 'relevant',
                        'service_domains': sds}}
+    if hosting: record['hosting'] = {'template': hosting, 'zones': [z['id'] for z in docs['a4-technology.json']['instances'] if z['type'] == 'A4.NetworkZone']}
     if from_dir: record['baseline'] = {'from': label or Path(from_dir).as_posix(), 'files': sorted(list(docs) + ['mappings.json'] + list(extra))}
     if profile_file:   # PR-07, LR-03: the baseline's profile, or the one given with --profile; its layers' files are among docs
         from . import profile as _p
@@ -216,6 +222,8 @@ def main(argv=None):
                     'recorded in the ledger and as a decision; only when the workspace is created (a baseline is never re-taken)')
     ap.add_argument('--profile', metavar='FILE', help="start with this organisation profile (kept as sdem-profile.json; its base is still found): its types, rules and names apply, "
                     'and the layers it adds above A1 or below A4 start empty beside the core four')
+    ap.add_argument('--hosting', metavar='TEMPLATE', help='start with the network zones of a hosting template — cloud, on_premises or hybrid, or one the organisation '
+                    'profile adds (WS-12, PR-32); without it, sdem aid proposes zones from the organisation\'s default (cloud first)')
     ap.add_argument('--explore', action='store_true', help='also build the knowledge graph and write the pages to explore it — the graph page, the workspace dashboard '
                     'and SDEM Home (work/sdem/index.html) — in one step; derived outputs only, the workspace is not changed (EX-01)')
     ap.add_argument('--dry-run', action='store_true'); ap.add_argument('--json', action='store_true')
@@ -229,6 +237,7 @@ def main(argv=None):
         if org is not None and a.organisation: a.estate = str(org_workspace(org, a.estate))
         if a.no_bian and a.bian: raise NewError('give --bian or --no-bian, not both')
         if a.example and a.source: raise NewError('give --example or --from, not both')
+        if a.hosting and a.source: raise NewError('give --hosting or a baseline (--example, --from), not both — a baseline brings its own zones')
         if a.example: a.source = str(example_dir(a.example))
         pf = a.profile or (str(Path(a.source) / 'sdem-profile.json') if a.source and (Path(a.source) / 'sdem-profile.json').exists() else None)
         pdoc = org_profile(org, a.estate) if org is not None and not pf else None
@@ -241,7 +250,7 @@ def main(argv=None):
                 _p.activate_file(tf)
         else: _p.deactivate()
         docs, registry, record, extra = plan(a.estate, a.person, a.bian, no_bian=a.no_bian, from_dir=a.source, label=f'the synthetic example {a.example}' if a.example else None,
-                                             profile_file=pf, profile_doc=pdoc, org=org)
+                                             profile_file=pf, profile_doc=pdoc, org=org, hosting=a.hosting)
     except _p.ProfileError as e:
         print(f'ERROR: {e}', file=sys.stderr); return 2
     except NewError as e:
@@ -263,6 +272,7 @@ def main(argv=None):
             print(f"{'would start' if a.dry_run else 'started'} {a.estate}: "
                   + (f"A1, A3, A4 empty; A2 {b_['service_domains']} service domains from {b_['source']}" if a.bian else f"all {len(docs)} layers empty; BIAN: {b_['source']}")
                   + (f"; profile {record['profile']['name']} ({', '.join(d['level'] for d in docs.values() if d['level'] not in ('A1', 'A2', 'A3', 'A4')) or 'no extra layers'})" if record.get('profile') else '')
+                  + (f"; network zones from the {a.hosting} template: {', '.join(record['hosting']['zones'])}" if a.hosting else '')
                   + '; no connections yet — checked')
     if a.dry_run: return 0
     from .files import Batch

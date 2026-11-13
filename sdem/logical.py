@@ -38,6 +38,8 @@ CONSTRAINTS = [
  ('LC-16', 'Every shape in a zone', 'every A4 shape — not networks, zones, paths or environments — is in exactly one network zone of level 1 or 2 (RA4-38), directly or through what hosts it; a workspace with no zones is told to record them (the owner\'s decision, 2026-11-14; metamodel 0.10.0)', 'enforced', '`sdem check` (warning)'),
  ('LC-17', 'Zone structure', 'a level-0 zone is on premises or cloud and inside no other; a level-1 zone is internal or DMZ and part of a level 0; a level-2 zone is private and part of a level 1; each level 0 has one internal zone (none yet is a warning) and at most one DMZ; at most one on-premises and one cloud level 0 (metamodel 0.10.0)', 'enforced', '`sdem check` (error; a missing internal zone a warning)'),
  ('LC-18', 'Internet-facing shapes in a DMZ', 'a shape with `internet_facing: true` is in a DMZ (or a zone inside one), and a DMZ holds only internet-facing shapes (metamodel 0.10.0)', 'enforced', '`sdem check` (warning)'),
+ ('LC-19', 'Inferred zone placements decided', 'a zone placement sdem aid proposed (a link marked inferred, AID-Z01) is confirmed or rejected by a person (the owner\'s decisions H2, H5, 2026-11-14; metamodel 0.11.0)', 'enforced', '`sdem check` (warning)'),
+ ('LC-20', 'Placement agrees with the evidence', 'a shape is not in a zone that a high-confidence hosting signal contradicts (a mainframe in a cloud zone — metamodel/hosting-signals.json; metamodel 0.11.0)', 'enforced', '`sdem check` (warning)'),
 ]
 
 

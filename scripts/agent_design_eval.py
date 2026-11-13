@@ -78,7 +78,8 @@ customer's payment instruction, checking it, executing it and telling the custom
 - Traffic stays on the **Payments private network**. The hub ships as the container image **payments-hub:7.1**.
 - Network zones: everything runs in **Cloud — payments**. Inside it, the **Internal network — payments** holds the messaging and
   secrets services and the Payments private network (both clusters and PostgreSQL); the **Security zone (DMZ) — payments** holds
-  the internet-facing **Managed API gateway — payments**.
+  the internet-facing **Managed API gateway — payments**. The Execution Gateway posts payments to the **Core banking ledger host**,
+  in **On premises — core banking**, inside its **Internal network — on premises (core banking)**.
 """
 
 TASK = """# Task — model this design in SDEM
@@ -124,6 +125,8 @@ REFERENCE = [
     ('A4', 'A4.NetworkZone', 'Payments private network', []), ('A4', 'A4.Artifact', 'payments-hub:7.1', []),
     ('A4', 'A4.NetworkZone', 'Cloud — payments', ['cloud']), ('A4', 'A4.NetworkZone', 'Internal network — payments', ['internal network']),
     ('A4', 'A4.NetworkZone', 'Security zone (DMZ) — payments', ['dmz', 'security zone']), ('A4', 'A4.SystemSoftware', 'Managed API gateway — payments', ['api gateway']),
+    ('A4', 'A4.NetworkZone', 'On premises — core banking', ['on premises']), ('A4', 'A4.NetworkZone', 'Internal network — on premises (core banking)', ['on premises internal network']),
+    ('A4', 'A4.Node', 'Core banking ledger host', ['core banking ledger']),
 ]
 # BIAN 14 service domains an architect would choose for this design (catalogue ids)
 REQUIRED_DOMAINS = {'SD-PAYMENT-ORDER-INITIATION': {'SD-PAYMENT-ORDER-INITIATION'}, 'SD-PARTY-AUTHENTICATION': {'SD-PARTY-AUTHENTICATION'}}   # group → any of

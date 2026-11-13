@@ -94,6 +94,7 @@ One edge per relationship in the architecture dataset, from `relationship`:
 | `target` | string | yes |
 | `name` | string | no |
 | `source_id` | string | no |
+| `inferred` | object | no |
 
 ### 2.3 Node and edge types per level
 

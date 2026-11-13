@@ -342,6 +342,48 @@
           "x-sdem-reasoning": "Answers: Which shapes are reached from the internet, and are they all in a DMZ?",
           "x-sdem-confidence": "low"
         },
+        "site": {
+          "type": "string",
+          "description": "the data centre or site the organisation runs it in — it is on premises (HS-01)",
+          "x-sdem-id": "AT-A4-37",
+          "x-sdem-group": "inherited",
+          "x-sdem-kind": "value",
+          "x-sdem-source": {
+            "standard": "SDEM-defined (no open standard)",
+            "locator": "docs/design/sdem-hosting-inference-design.md (§3, H6)",
+            "uri": "https://github.com/taumoeps/bian-sdem-framework"
+          },
+          "x-sdem-reasoning": "Answers: Where is it physically? Explicit evidence that a shape is on premises; beats name matching.",
+          "x-sdem-confidence": "low"
+        },
+        "cloud_provider": {
+          "type": "string",
+          "description": "the cloud provider it runs on, by name — it is in the cloud (HS-06)",
+          "x-sdem-id": "AT-A4-38",
+          "x-sdem-group": "inherited",
+          "x-sdem-kind": "value",
+          "x-sdem-source": {
+            "standard": "SDEM-defined (no open standard)",
+            "locator": "docs/design/sdem-hosting-inference-design.md (§3, H6)",
+            "uri": "https://github.com/taumoeps/bian-sdem-framework"
+          },
+          "x-sdem-reasoning": "Answers: Which provider is it on? Explicit evidence that a shape is in the cloud.",
+          "x-sdem-confidence": "low"
+        },
+        "region": {
+          "type": "string",
+          "description": "the cloud region it runs in (e.g. region-a) — it is in the cloud (HS-06)",
+          "x-sdem-id": "AT-A4-39",
+          "x-sdem-group": "inherited",
+          "x-sdem-kind": "value",
+          "x-sdem-source": {
+            "standard": "SDEM-defined (no open standard)",
+            "locator": "docs/design/sdem-hosting-inference-design.md (§3, H6)",
+            "uri": "https://github.com/taumoeps/bian-sdem-framework"
+          },
+          "x-sdem-reasoning": "Answers: Which region is it in? Explicit evidence that a shape is in the cloud.",
+          "x-sdem-confidence": "low"
+        },
         "of_service": {
           "type": "string",
           "description": "id of its technology service",

@@ -125,6 +125,10 @@
           "type": "string",
           "minLength": 1,
           "description": "Where this link came from, as `kind:ref` — the same convention as a record's `source_id` (e.g. `document:DESIGN.md#4.2`, `confluence:12345`); several comma-separated. Optional (owner's decision D4, 2026-11-09)."
+        },
+        "inferred": {
+          "type": "object",
+          "description": "The link was inferred, not written by a person — by whom, from which evidence, how sure, and whether a person has confirmed it (status: proposed or confirmed). sdem aid proposes zone placements this way (AID-Z01; H5, the owner's decision, 2026-11-14); a person confirms or rejects each with sdem aid confirm|reject."
         }
       }
     }

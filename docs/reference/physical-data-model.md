@@ -66,19 +66,19 @@ Artefact types (BOM model, wireframe, Semantic API) and abstract types are not a
 | `A3.DataEntity` | [`A3/DataEntity.schema.json`](../../schema/entities/A3/DataEntity.schema.json) | 8 | 13 | 0 | 7 | 1 | 11 / 5 / 4 |
 | `A3.Event` | [`A3/Event.schema.json`](../../schema/entities/A3/Event.schema.json) | 8 | 13 | 0 | 4 | 0 | 12 / 3 / 2 |
 | `A3.SolutionBuildingBlock` | [`A3/SolutionBuildingBlock.schema.json`](../../schema/entities/A3/SolutionBuildingBlock.schema.json) | 8 | 13 | 0 | 1 | 0 | 9 / 3 / 2 |
-| `A4.Deployment` | [`A4/Deployment.schema.json`](../../schema/entities/A4/Deployment.schema.json) | 8 | 13 | 1 | 3 | 3 | 9 / 5 / 3 |
-| `A4.DeploymentEnvironment` | [`A4/DeploymentEnvironment.schema.json`](../../schema/entities/A4/DeploymentEnvironment.schema.json) | 8 | 13 | 1 | 3 | 0 | 10 / 3 / 4 |
-| `A4.Node` | [`A4/Node.schema.json`](../../schema/entities/A4/Node.schema.json) | 8 | 13 | 1 | 2 | 0 | 9 / 4 / 3 |
-| `A4.Device` | [`A4/Device.schema.json`](../../schema/entities/A4/Device.schema.json) | 8 | 13 | 1 | 3 | 0 | 10 / 3 / 4 |
-| `A4.SystemSoftware` | [`A4/SystemSoftware.schema.json`](../../schema/entities/A4/SystemSoftware.schema.json) | 8 | 13 | 1 | 5 | 0 | 12 / 3 / 4 |
-| `A4.TechnologyService` | [`A4/TechnologyService.schema.json`](../../schema/entities/A4/TechnologyService.schema.json) | 8 | 13 | 1 | 1 | 0 | 10 / 2 / 3 |
-| `A4.TechnologyInterface` | [`A4/TechnologyInterface.schema.json`](../../schema/entities/A4/TechnologyInterface.schema.json) | 8 | 13 | 1 | 4 | 0 | 11 / 4 / 3 |
-| `A4.CommunicationNetwork` | [`A4/CommunicationNetwork.schema.json`](../../schema/entities/A4/CommunicationNetwork.schema.json) | 8 | 13 | 1 | 2 | 0 | 10 / 2 / 4 |
-| `A4.NetworkZone` | [`A4/NetworkZone.schema.json`](../../schema/entities/A4/NetworkZone.schema.json) | 8 | 13 | 3 | 2 | 2 | 10 / 2 / 6 |
-| `A4.Path` | [`A4/Path.schema.json`](../../schema/entities/A4/Path.schema.json) | 8 | 13 | 1 | 6 | 0 | 10 / 6 / 4 |
-| `A4.Artifact` | [`A4/Artifact.schema.json`](../../schema/entities/A4/Artifact.schema.json) | 8 | 13 | 1 | 4 | 0 | 11 / 4 / 3 |
+| `A4.Deployment` | [`A4/Deployment.schema.json`](../../schema/entities/A4/Deployment.schema.json) | 8 | 13 | 4 | 3 | 3 | 9 / 5 / 6 |
+| `A4.DeploymentEnvironment` | [`A4/DeploymentEnvironment.schema.json`](../../schema/entities/A4/DeploymentEnvironment.schema.json) | 8 | 13 | 4 | 3 | 0 | 10 / 3 / 7 |
+| `A4.Node` | [`A4/Node.schema.json`](../../schema/entities/A4/Node.schema.json) | 8 | 13 | 4 | 2 | 0 | 9 / 4 / 6 |
+| `A4.Device` | [`A4/Device.schema.json`](../../schema/entities/A4/Device.schema.json) | 8 | 13 | 4 | 3 | 0 | 10 / 3 / 7 |
+| `A4.SystemSoftware` | [`A4/SystemSoftware.schema.json`](../../schema/entities/A4/SystemSoftware.schema.json) | 8 | 13 | 4 | 5 | 0 | 12 / 3 / 7 |
+| `A4.TechnologyService` | [`A4/TechnologyService.schema.json`](../../schema/entities/A4/TechnologyService.schema.json) | 8 | 13 | 4 | 1 | 0 | 10 / 2 / 6 |
+| `A4.TechnologyInterface` | [`A4/TechnologyInterface.schema.json`](../../schema/entities/A4/TechnologyInterface.schema.json) | 8 | 13 | 4 | 4 | 0 | 11 / 4 / 6 |
+| `A4.CommunicationNetwork` | [`A4/CommunicationNetwork.schema.json`](../../schema/entities/A4/CommunicationNetwork.schema.json) | 8 | 13 | 4 | 2 | 0 | 10 / 2 / 7 |
+| `A4.NetworkZone` | [`A4/NetworkZone.schema.json`](../../schema/entities/A4/NetworkZone.schema.json) | 8 | 13 | 6 | 2 | 2 | 10 / 2 / 9 |
+| `A4.Path` | [`A4/Path.schema.json`](../../schema/entities/A4/Path.schema.json) | 8 | 13 | 4 | 6 | 0 | 10 / 6 / 7 |
+| `A4.Artifact` | [`A4/Artifact.schema.json`](../../schema/entities/A4/Artifact.schema.json) | 8 | 13 | 4 | 4 | 0 | 11 / 4 / 6 |
 
-Attribute definitions across all schemas: **425 high, 144 medium, 125 low** (the 11 common attributes are counted in every schema).
+Attribute definitions across all schemas: **425 high, 144 medium, 158 low** (the 11 common attributes are counted in every schema).
 
 ## Using a schema
 

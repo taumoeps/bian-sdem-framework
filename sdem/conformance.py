@@ -10,6 +10,7 @@ Warnings (the architecture dataset is usable but incomplete or dated):
   only in case, spacing or punctuation (a possible duplicate) · LC-14 an attribute source that names no attribute of the record, or is not kind:ref
   · LC-15 a platform that hosts something is on no communication network (RA4-37) · LC-16 a shape in no network zone, or in more than one
   · LC-18 an internet-facing shape outside a DMZ, or a DMZ shape that is not internet facing · LC-17 a level-0 zone with no internal zone yet.
+  · LC-19 an inferred zone placement not yet confirmed or rejected · LC-20 a shape placed against strong hosting evidence.
   Error: LC-17 the zone structure contradicts itself (a kind wrong for its level, a zone in the wrong parent, two internal zones, two cloud zones).
 LC-01…LC-03 and LC-11 are checked by the graph loader and the registry validator; LC-12 by sdem-diff.
 """
@@ -310,6 +311,24 @@ def zone_checks(doc, mm, local, byid, errors, warnings, n):
             if zones[z].get('zone_kind') == 'dmz': return True
             z = parent.get(z)
         return False
+    waiting = [r for r in doc.get('relationships', []) if isinstance(r.get('inferred'), dict) and r['inferred'].get('status') != 'confirmed']   # LC-19
+    if waiting:
+        n['LC-19 checked'] += 1; n['LC-19 failed'] += len(waiting)
+        warnings.append(f"{len(waiting)} inferred zone placement(s) to decide — {', '.join(r['target'] + ' in ' + r['source'] for r in waiting[:4])}{' …' if len(waiting) > 4 else ''}: "
+                        f"sdem aid confirm|reject <shape> (LC-19)")
+    from .hosting import evidence, policy   # LC-20: a shape placed against strong evidence
+    sig = policy()['signals']; kind_of = {}
+    for z in zones:
+        t = z
+        while t in zones and zones[t].get('zone_level') != 0: t = parent.get(t)
+        kind_of[z] = zones.get(t, {}).get('zone_kind') if t else None
+    for x, zs in sorted(shapes.items()):
+        if x not in direct or not zs: continue
+        placed = kind_of.get(zs[0])
+        against = [e for e in evidence(byid[x], doc, mm, sig) if e['confidence'] == 'high' and e['points_to'] in ('cloud', 'on_premises') and e['points_to'] != placed]
+        n['LC-20 checked'] += 1
+        if placed and against:
+            n['LC-20 failed'] += 1; warnings.append(f"instance {x}: is in a {placed} zone, but {against[0]['id']} ({against[0]['read']}) says {against[0]['points_to']} (LC-20)")
     for x, zs in sorted(shapes.items()):   # LC-18
         facing = ((byid.get(x) or {}).get('attributes') or {}).get('internet_facing') is True
         if not zs: continue

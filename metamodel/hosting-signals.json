@@ -1,0 +1,24 @@
+{
+  "metamodel_version": "0.11.0",
+  "note": "Evidence for where an A4 shape is hosted (docs/design/sdem-hosting-inference-design.md §3; the owner's decision H4, 2026-11-14). Read by sdem aid to PROPOSE a shape's zone (AID-Z01) — a person confirms or rejects every proposal (CTL-16, CTL-21) — and by sdem check for a shape placed against strong evidence (LC-20). An organisation's profile adds its own signals (PR-32). Product and provider names are read only to recognise what a record names; SDEM claims no affiliation with them.",
+  "signals": [
+    {"id": "HS-01", "points_to": "on_premises", "confidence": "high", "read": {"attribute": ["site"]},
+     "description": "a site (a data centre the organisation runs) is recorded on the shape (AT-A4-37)"},
+    {"id": "HS-02", "points_to": "on_premises", "confidence": "high", "read": {"name_words": ["mainframe", "LPAR", "z/OS", "AS/400", "IBM i", "iSeries"]},
+     "description": "the name or description names a mainframe or midrange platform"},
+    {"id": "HS-03", "points_to": "on_premises", "confidence": "medium", "read": {"type": "A4.Device"},
+     "description": "the shape is physical computing hardware (A4.Device)"},
+    {"id": "HS-04", "points_to": "on_premises", "confidence": "medium", "read": {"name_words": ["vSphere", "ESXi", "bare metal"]},
+     "description": "the name or description names an on-premises virtualisation platform or bare metal"},
+    {"id": "HS-05", "points_to": "cloud", "confidence": "high", "read": {"environment_attribute_in": {"cloud_deployment_model": ["public"]}},
+     "description": "its deployment environment's cloud deployment model is public (AT-A4-17, NIST SP 800-145)"},
+    {"id": "HS-06", "points_to": "cloud", "confidence": "high", "read": {"attribute": ["cloud_provider", "region"]},
+     "description": "a cloud provider or region is recorded on the shape (AT-A4-38, AT-A4-39)"},
+    {"id": "HS-07", "points_to": "cloud", "confidence": "high", "read": {"name_words": ["EKS", "AKS", "GKE", "RDS", "Aurora", "Cloud SQL", "Lambda", "Fargate"]},
+     "description": "the name or description names a cloud provider's managed service"},
+    {"id": "HS-08", "points_to": "cloud", "confidence": "medium", "read": {"attribute_in": {"cloud_service_model": ["IaaS", "PaaS", "SaaS"]}, "for_types": ["A4.TechnologyService"]},
+     "description": "a technology service delivered as IaaS, PaaS or SaaS (AT-A4-19, NIST SP 800-145)"},
+    {"id": "HS-09", "points_to": "cloud", "confidence": "low", "read": {"name_words": ["managed"]},
+     "description": "the name or description says managed"}
+  ]
+}

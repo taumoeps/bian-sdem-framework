@@ -2,7 +2,7 @@
 
 > **Generated** from the code by `sdem model regenerate` (`sdem/clidoc.py`), from the same catalogue as `sdem commands --json`; `sdem model check` fails in CI when it is stale — **do not edit by hand**. Each command's `--help` has the same options and a worked example. For *when* to use which command, in order, see the [scenarios](../sdem-scenarios.md); for what each does to your data, the [user guide](../sdem-workbench-user-guide.md#7-command-reference).
 
-119 commands and subcommands.
+120 commands and subcommands.
 
 ## Every command takes
 
@@ -142,6 +142,7 @@
 | [`sdem requirements show`](#cmd-requirements-show) | one requirement: condition, evidence, history and its measurements |
 | [`sdem requirements trace`](#cmd-requirements-trace) | a requirement through the layers: its subject and allocations, what they depend on and serve, and the requirements it derives from |
 | [`sdem trace`](#cmd-trace) | trace what a record depends on (down) or what depends on it (up) |
+| [`sdem zones`](#cmd-zones) | a workspace's network zones: each zone and what it holds, how the zones connect (ZC-01…ZC-03 … |
 
 ### J6 · Infer with AID
 
@@ -1801,7 +1802,7 @@ sdem model usage
 start a workspace: the four layers (A2 your BIAN layer) and an empty registry of connections — checked, recorded
 
 ```
-sdem new [--workspace WORKSPACE] [--organisation ORGANISATION] --person PERSON [--bian BIAN] [--no-bian] [--example {payment-initiation}] [--from FROM] [--profile PROFILE] [--explore] [--dry-run]
+sdem new [--workspace WORKSPACE] [--organisation ORGANISATION] --person PERSON [--bian BIAN] [--no-bian] [--example {payment-initiation}] [--from FROM] [--profile PROFILE] [--hosting HOSTING] [--explore] [--dry-run]
 ```
 
 *JSON: native · dry run: native · 👤 a person's own name*
@@ -1816,6 +1817,7 @@ sdem new [--workspace WORKSPACE] [--organisation ORGANISATION] --person PERSON [
 | `--example` {payment-initiation} |  | start with a synthetic example that ships with SDEM as the baseline (made-up data, for learning) — the same as --from its folder |
 | `--from` |  | start with this content as the baseline: the four layers, mappings.json and requirements.json found in DIR — checked first, recorded in the ledger and as a decision; only when the workspace is created (a baseline is never re-taken) |
 | `--profile` |  | start with this organisation profile (kept as sdem-profile.json; its base is still found): its types, rules and names apply, and the layers it adds above A1 or below A4 start empty beside the core four |
+| `--hosting` |  | start with the network zones of a hosting template — cloud, on_premises or hybrid, or one the organisation profile adds (WS-12, PR-32); without it, sdem aid proposes zones from the organisation's default (cloud first) |
 | `--explore` |  | also build the knowledge graph and write the pages to explore it — the graph page, the workspace dashboard and SDEM Home (work/sdem/index.html) — in one step; derived outputs only, the workspace is not changed (EX-01) |
 | `--dry-run` |  | nothing written; what would be written is listed under "would_write" |
 | `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
@@ -2614,4 +2616,27 @@ Example:
 
 ```bash
 sdem workbench --workspace examples/payment-initiation -o work/workbench.html
+```
+
+### sdem zones
+
+<a id="cmd-zones"></a>
+
+a workspace's network zones: each zone and what it holds, how the zones connect (ZC-01…ZC-03, worked out from the zone structure) and how one shape reaches another through them (ZC-04) — read-only
+
+```
+sdem zones --workspace WORKSPACE
+```
+
+*JSON: native · dry run: sandbox*
+
+| Argument | Required | What it is |
+|---|---|---|
+| `--workspace` | yes | the workspace folder — found from the current folder when you are inside one (WS-11) |
+| `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
+
+Example:
+
+```bash
+sdem zones --workspace examples/payment-initiation
 ```

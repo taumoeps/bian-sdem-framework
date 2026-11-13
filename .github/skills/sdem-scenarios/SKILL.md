@@ -40,7 +40,7 @@ sdem new --organisation bank-xyz --person your.name                             
 cd bank-xyz
 sdem profile check --file profiles/bank-xyz-base.json                                # after the owner adds types, attributes, rules
 sdem new --workspace workspaces/ledger --organisation bank-xyz --person your.name --dry-run
-sdem new --workspace workspaces/ledger --organisation bank-xyz --person your.name    # each workspace
+sdem new --workspace workspaces/ledger --organisation bank-xyz --person your.name    # each workspace (add --hosting cloud | on_premises | hybrid for its network zones)
 sdem profile show --workspace workspaces/ledger                                      # base → workspace: what applies
 sdem types A3 --workspace workspaces/ledger                                          # what you may write, the profile's fields included
 ```
@@ -72,6 +72,9 @@ sdem aid --workspace workspaces/ledger --person your.name --dry-run
 sdem aid --workspace workspaces/ledger --person your.name       # infers the BIAN domains, applications, deployments — marked
 sdem aid confirm SD-FINANCIAL-ACCOUNTING --workspace workspaces/ledger --person your.name
 sdem aid reject APP-LEDGER-X --workspace workspaces/ledger --person your.name --reason "not in scope"
+sdem aid confirm INF-K8S-LEDGER --workspace workspaces/ledger --person your.name     # a shape's proposed network zone (cloud first; on premises by evidence)
+sdem zones --workspace workspaces/ledger                       # the network zones, what each holds, how they connect
+sdem zones path INF-APIGW-LEDGER INF-DB-LEDGER --workspace workspaces/ledger   # how one shape reaches another through the zones
 sdem check --workspace workspaces/ledger
 sdem status --workspace workspaces/ledger                       # what blocks it, what waits on a person, what next
 ```
@@ -84,7 +87,7 @@ sdem aid check workspaces/ledger/plans/ledger-v2
 sdem aid gaps workspaces/ledger/plans/ledger-v2 --workspace workspaces/ledger
 ```
 
-Then link and approve (scenario 6). A change set put in by mistake is undone with `sdem change revert <id> --workspace workspaces/ledger --agent architect --person your.name --reason "…"` (`sdem change show <id>` first). The format of `ledger-a1.json`: `sdem types change-set`. **A person decides:** every record AID inferred (confirm or reject), and every link.
+Then link and approve (scenario 6). A change set put in by mistake is undone with `sdem change revert <id> --workspace workspaces/ledger --agent architect --person your.name --reason "…"` (`sdem change show <id>` first). The format of `ledger-a1.json`: `sdem types change-set`. **A person decides:** every record AID inferred (confirm or reject), every zone placement it proposed, and every link.
 
 ## 4. Onboard existing designs — Confluence, a folder, Word or Excel
 

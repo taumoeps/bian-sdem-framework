@@ -6,11 +6,11 @@
     "directed": true,
     "metadata": {
       "sdem_store_version": "1.0",
-      "export_sha256": "9ed5685b206de6bf68e774dd6c846b18478ba422823605737eb8b2ec78be4f19",
+      "export_sha256": "072a3896daf327b3cd4a9b1aa6feb9b8a3cde9b289a2057722ac0c1f8f8cbe4f",
       "level": "A4",
       "model_id": "synthetic-bank-payments-a4",
       "model_version": "2026.10",
-      "metamodel_version": "0.10.0",
+      "metamodel_version": "0.11.0",
       "source_system": "SYNTHETIC-CMDB"
     },
     "nodes": {
@@ -30,7 +30,8 @@
             ],
             "product_version": "1.30",
             "license": "Apache-2.0",
-            "end_of_support": "2027-06-30"
+            "end_of_support": "2027-06-30",
+            "region": "region-a"
           }
         }
       },
@@ -46,7 +47,8 @@
           "attributes": {
             "hosts": [
               "APP-PAY-HUB"
-            ]
+            ],
+            "region": "region-a"
           }
         }
       },
@@ -61,7 +63,8 @@
           "description": "Production relational store for the hub.",
           "attributes": {
             "product_version": "16.4",
-            "license": "PostgreSQL"
+            "license": "PostgreSQL",
+            "region": "region-a"
           }
         }
       },
@@ -236,6 +239,36 @@
           }
         }
       },
+      "A4:ZONE-PAY-ONPREM@1.0": {
+        "label": "On premises — core banking",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.NetworkZone",
+          "id": "ZONE-PAY-ONPREM",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "The bank's own data centre (made up), where the core banking ledger runs.",
+          "attributes": {
+            "zone_level": 0,
+            "zone_kind": "on_premises"
+          }
+        }
+      },
+      "A4:ZONE-PAY-ONPREM-INTERNAL@1.0": {
+        "label": "Internal network — on premises (core banking)",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.NetworkZone",
+          "id": "ZONE-PAY-ONPREM-INTERNAL",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "The internal network of the on-premises data centre.",
+          "attributes": {
+            "zone_level": 1,
+            "zone_kind": "internal"
+          }
+        }
+      },
       "A4:ART-PAYHUB-IMG@7.1": {
         "label": "payments-hub:7.1",
         "metadata": {
@@ -262,7 +295,22 @@
           "lifecycle_status": "active",
           "description": "The payments API's entry point from the internet (made up).",
           "attributes": {
-            "internet_facing": true
+            "internet_facing": true,
+            "region": "region-a"
+          }
+        }
+      },
+      "A4:INF-CORE-LEDGER-HOST@1.0": {
+        "label": "Core banking ledger host",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.Node",
+          "id": "INF-CORE-LEDGER-HOST",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "The on-premises host of the core banking ledger the Execution Gateway posts payments to (made up).",
+          "attributes": {
+            "site": "DC-1 (made up)"
           }
         }
       }
@@ -476,6 +524,36 @@
         "metadata": {
           "scope": "within-level",
           "row": "RA4-38"
+        }
+      },
+      {
+        "id": "A4:ZONE-PAY-ONPREM-composition-ZONE-PAY-ONPREM-INTERNAL",
+        "source": "A4:ZONE-PAY-ONPREM@1.0",
+        "target": "A4:ZONE-PAY-ONPREM-INTERNAL@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-27"
+        }
+      },
+      {
+        "id": "A4:ZONE-PAY-ONPREM-INTERNAL-aggregation-INF-CORE-LEDGER-HOST",
+        "source": "A4:ZONE-PAY-ONPREM-INTERNAL@1.0",
+        "target": "A4:INF-CORE-LEDGER-HOST@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-38"
+        }
+      },
+      {
+        "id": "A4:DEP-PAYEXEC-PROD-association-INF-CORE-LEDGER-HOST",
+        "source": "A4:DEP-PAYEXEC-PROD@1.0",
+        "target": "A4:INF-CORE-LEDGER-HOST@1.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "association"
         }
       }
     ]

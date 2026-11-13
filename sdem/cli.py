@@ -57,6 +57,8 @@ JOURNEYS = {
                  'sdem workbench --workspace examples/payment-initiation -o work/workbench.html'),
     'status':   ('J3', "where a design is and what to do next: what blocks it, what waits on a value or a person's decision, what is worth a look — with the next commands and who runs each (ST-01)", 'sdem.status', [],
                  'sdem status --workspace examples/payment-initiation'),
+    'zones':    ('J5', "a workspace's network zones: each zone and what it holds, how the zones connect (ZC-01…ZC-03, worked out from the zone structure) and how one shape reaches another through them (ZC-04) — read-only", 'sdem.zones', [],
+                 'sdem zones --workspace examples/payment-initiation'),
     'handback': ('J3', 'what a workspace leaves open for a person — values nobody knows, unconfirmed inferences and the strength of their evidence, links to review, possible duplicates, unsourced records — with the commands the person runs (AG-H01)', 'sdem.handback', [],
                  'sdem handback --workspace examples/payment-initiation'),
     'comply':   ('J1', "the organisation's standards and reference-architecture patterns over a workspace: per rule and record compliant, non-compliant, unresolved or under an exception — separate from sdem check (PR-19)", 'sdem.comply', [],

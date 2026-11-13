@@ -8,6 +8,10 @@ Nothing a person wrote is changed; a rejected record is never added again.
   sdem aid --workspace workspaces/payments --person jane.architect
   sdem aid confirm AID-APP-SD-PAYMENT-RAIL --workspace workspaces/payments --person jane.architect
   sdem aid reject AID-DEP-SD-PAYMENT-RAIL --workspace workspaces/payments --person jane.architect --reason "runs on the shared platform"
+
+Zone placements (metamodel 0.11.0; AID-Z01…Z04): each A4 shape in no zone is placed in a proposed zone — on premises or cloud from the hosting
+signals (metamodel/hosting-signals.json) or the organisation's default, the DMZ when internet facing — as a link marked inferred. Confirm or
+reject it by the shape's id: `sdem aid confirm INF-K8S-PROD --workspace … --person …`.
 """
 import argparse, copy, datetime, json, re, sys
 from pathlib import Path
@@ -100,6 +104,20 @@ def fill(workspace, person, dry_run=False, now=None):
             r = _ids(dict(r)); key = (r['source'], r['kind'], r['target'])
             if key not in have_rels and r['source'] in present and r['target'] in present:
                 doc.setdefault('relationships', []).append(r); have_rels.add(key)
+    zone_unresolved, placements = [], 0
+    if after.get('A4', {}).get('instances'):   # AID-Z01…Z04: each A4 shape in no zone gets a proposed zone, marked inferred, for a person to decide (H2, H5)
+        from .hosting import propose
+        from .metamodel import Metamodel
+        zrej = {r['id'] for r in _rejected(ws)['rejected'] if '@' in r['id']}
+        new_zones, links, zone_unresolved = propose(after['A4'], Metamodel.load(), run, person.strip(), now, zrej, stem)
+        for z in new_zones:
+            if z['id'] not in present and z['id'] not in rejected:
+                after['A4']['instances'].append(z); present.add(z['id']); added.setdefault('A4', []).append(z['id'])
+        have = {(r['source'], r['kind'], r['target']) for r in after['A4'].get('relationships', [])}
+        for r in links:
+            if (r['source'], r['kind'], r['target']) not in have and r['source'] in present:
+                after['A4'].setdefault('relationships', []).append(r); placements += 1 if r.get('inferred') else 0
+        if placements and 'A4' not in added: added['A4'] = []
     approved = {(m['source']['id'], m['relationship'], m['target']['id']) for m in registry.get('mappings', []) if m.get('status') == 'approved'}
     for f in (runs.glob('AID-*-proposals.json') if runs.exists() else []):   # already proposed by an earlier run, still to review: not again
         approved |= {(m['source']['id'], m['relationship'], m['target']['id']) for m in _j(f).get('mappings', [])}
@@ -120,10 +138,11 @@ def fill(workspace, person, dry_run=False, now=None):
     if errors: raise AidError('the workspace would not pass its checks with the inferred records — nothing written:\n  ' + '\n  '.join(errors[:10]))
     record = {'id': run, 'at': now, 'requested_by': person.strip(), 'added': added, 'proposals': f'{FOLDER}/{run}-proposals.json',
               'proposed_connections': len(proposals), 'projection_ends': pkg['projection'].get('projection_ends', []),
+              'zone_placements': placements, 'zones_unresolved': zone_unresolved,
               'skipped_rejected': sorted(rejected & {_rid(i['id']) for l in pkg['layers'].values() for i in l['instances']})}
     if dry_run:   # AF: a dry run says what it would write (AGENTS.md) — nothing is written
         record['would_write'] = sorted([(ws / DATASETS[lvl]).as_posix() for lvl in added] + ([(runs / f'{run}-proposals.json').as_posix(), (runs / f'{run}.json').as_posix()] if (added or proposals) else []))
-    if not dry_run and (added or proposals):
+    if not dry_run and (added or proposals or placements):
         from .files import Batch
         b = Batch()
         for lvl in added: b.json(ws / DATASETS[lvl], after[lvl])
@@ -138,21 +157,32 @@ def decide(workspace, ids, person, action, reason='', all_=False, now=None):
     ws, docs, _ = _workspace(workspace)
     now = now or datetime.datetime.now(datetime.timezone.utc).replace(microsecond=0).isoformat()   # UTC with its offset, like change sets
     inferred = {i['id']: (lvl, i) for lvl, d in docs.items() for i in d['instances'] if is_inferred(i, confirmed=False if all_ else None)}
-    chosen = sorted(inferred) if all_ else list(ids)
+    marked = lambda r: isinstance(r.get('inferred'), dict) and (not all_ or r['inferred'].get('status') != 'confirmed')
+    placed = {r['target']: r for r in (docs.get('A4') or {}).get('relationships', []) if marked(r)}   # AID-Z01: a shape's inferred zone placement (H5)
+    chosen = sorted(set(inferred) | set(placed)) if all_ else list(ids)
     if not chosen: raise AidError('nothing to do — give the ids (see `sdem check` or the dashboard), or --all')
-    missing = [i for i in chosen if i not in inferred]
-    if missing: raise AidError(f"not inferred records in {ws}: {', '.join(missing)} — `sdem aid confirm|reject` acts only on records SDEM inferred")
+    missing = [i for i in chosen if i not in inferred and i not in placed]
+    if missing: raise AidError(f"not inferred records or placements in {ws}: {', '.join(missing)} — `sdem aid confirm|reject` acts only on what SDEM inferred")
     changed = set()
+    plc = [i for i in chosen if i in placed and i not in inferred]; chosen = [i for i in chosen if i not in plc]
+    rej = _rejected(ws)
+    for i in plc:   # a zone placement: confirmed with the person's name, or removed and remembered so it is not proposed again
+        r = placed[i]
+        if action == 'confirm':
+            if r['inferred'].get('status') != 'confirmed': r['inferred'].update(status='confirmed', confirmed_by=person.strip(), confirmed_at=now); changed.add('A4')
+        else:
+            docs['A4']['relationships'] = [x for x in docs['A4']['relationships'] if x is not r]; changed.add('A4')
+            rej['rejected'].append({'id': f"{i}@{r['source']}", 'by': person.strip(), 'at': now, 'reason': reason.strip()})
     every = {i['id']: (lvl, i) for lvl, d in docs.items() for i in d['instances'] if is_inferred(i)}
     def froms(rec): return {x.strip() for x in str(rec['attributes']['inferred'].get('from', '')).split(',') if x.strip()}
-    if action == 'confirm':
+    if action == 'confirm' and chosen:
         chosen = list(chosen) + [i for i, (lvl, r) in every.items()   # a BIAN service domain is confirmed with its parts (operations, control record …)
                                  if lvl == 'A2' and i not in chosen and froms(r) and froms(r) <= {c for c in chosen if every.get(c, ('', {}))[0] == 'A2'}]
         for i in chosen:
             lvl, rec = every[i]
             if is_inferred(rec, confirmed=True): continue
             rec['attributes']['inferred'].update(status='confirmed', confirmed_by=person.strip(), confirmed_at=now); changed.add(lvl)
-    else:
+    elif chosen:
         gone = set(chosen)
         while True:   # what SDEM inferred only from rejected records goes too: a domain's parts, the application built on it, its APIs and deployment
             more = {i for i, (lvl, r) in every.items() if i not in gone and is_inferred(r, confirmed=False) and froms(r) and froms(r) <= gone}
@@ -164,7 +194,7 @@ def decide(workspace, ids, person, action, reason='', all_=False, now=None):
             return {x} if isinstance(x, str) else set()
         while True:    # a record another kept record still uses stays (e.g. a functional pattern two domains share)
             used = set().union(*([refs(i.get('attributes', {})) for d in docs.values() for i in d['instances'] if i['id'] not in gone] or [set()]))
-            used |= {r['target'] for d in docs.values() for r in d.get('relationships', []) if r['source'] not in gone}
+            used |= {r['target'] for d in docs.values() for r in d.get('relationships', []) if r['source'] not in gone and not isinstance(r.get('inferred'), dict)}   # an inferred zone placement keeps nothing
             keep = (gone & used) - set(chosen)
             if not keep: break
             gone -= keep
@@ -174,7 +204,7 @@ def decide(workspace, ids, person, action, reason='', all_=False, now=None):
             d['instances'] = [x for x in d['instances'] if x['id'] not in gone]
             d['relationships'] = [r for r in d.get('relationships', []) if r['source'] not in gone and r['target'] not in gone]
             if len(d['instances']) != before: changed.add(lvl)
-        rej = _rejected(ws); rej['rejected'] += [{'id': i, 'by': person.strip(), 'at': now, 'reason': reason.strip()} for i in chosen]
+        rej['rejected'] += [{'id': i, 'by': person.strip(), 'at': now, 'reason': reason.strip()} for i in chosen]
     from .connect import estate_errors
     errors = estate_errors({DATASETS[l]: d for l, d in docs.items()}, _j(ws / 'mappings.json'))
     if errors: raise AidError(f'the workspace would not pass its checks after this {action} — nothing written:\n  ' + '\n  '.join(errors[:8])
@@ -184,7 +214,7 @@ def decide(workspace, ids, person, action, reason='', all_=False, now=None):
     for lvl in changed: b.json(ws / DATASETS[lvl], docs[lvl])
     if action == 'reject': b.json(ws / FOLDER / 'rejected.json', rej)
     b.commit()
-    return chosen
+    return chosen + plc
 
 
 def main(argv):
@@ -227,6 +257,11 @@ def main(argv):
         print(f"{'would add' if a.dry_run else 'added (' + rec['id'] + ')'} to {a.estate}: {what}; "
               + f"{rec['proposed_connections']} connection(s) proposed in {a.estate}/{rec['proposals']} — checked")
     for e in rec['projection_ends']: print(f'NOTE: {e}')
+    if rec.get('zone_placements'):
+        print(f"zones: {rec['zone_placements']} shape(s) {'would be placed' if a.dry_run else 'placed'} in a proposed zone (AID-Z01) — from the hosting signals and the organisation's default; "
+              f"decide each: sdem aid confirm|reject <shape> --workspace {a.estate} --person <you>")
+    for u in rec.get('zones_unresolved', []):
+        print(f"zones: {u['id']} not placed — its evidence points both ways ({'; '.join(e['id'] + ' ' + e['read'] for e in u['signals'])}): a person places it (AID-Z01)")
     if total and not a.dry_run:
         print(f'Next: review the inferred records in the layer files (marked "inferred", with source, reasoning and confidence), then '
               f'sdem aid confirm|reject <ids> --workspace {a.estate} --person <you>; then propose every connection in one list to review and approve from '
