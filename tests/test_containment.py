@@ -61,7 +61,7 @@ class A2LandscapeTests(unittest.TestCase):
         self.assertEqual((strip['label'], strip['not_in_a_zone']), ('Not in the service landscape', ['SO-LOOSE']))
 
     def test_a_layer_not_built_yet_says_so(self):
-        with self.assertRaises(ContainmentError): layout({'instances': [], 'relationships': []}, 'A1')
+        with self.assertRaises(ContainmentError): layout({'instances': [], 'relationships': []}, 'A3')
 
     def test_cli_and_view(self):
         env = {**os.environ, 'PYTHONPATH': str(ROOT) + os.pathsep + os.environ.get('PYTHONPATH', '')}
@@ -73,6 +73,30 @@ class A2LandscapeTests(unittest.TestCase):
         page = render(EX / 'payment-initiation' / 'graph', now='2026-11-15 00:00:00')
         self.assertIn('A2 Service Domain (BIAN) — by what owns what', page); self.assertIn('Service group · Instruction', page)
 
+
+
+class A1CapabilityMapTests(unittest.TestCase):   # C3, C4: capability → sub-capability → realising process → activity
+    def test_payment_is_drawn_as_a_capability_map(self):
+        lay = load(EX / 'payment-initiation', 'A1')
+        z = {x['id']: x for x in lay['zones']}
+        self.assertEqual(z['R:CAP-PAY-010']['part_of'], 'R:CAP-PAY-000')                 # sub-capability (RA1-01)
+        self.assertEqual(z['R:PRC-PAY-01']['part_of'], 'R:CAP-PAY-010')                  # the process sits in the capability it realises (RA1-08)
+        at = {s['id']: s['zone'] for s in lay['shapes']}
+        self.assertEqual(at['ACT-PAY-01a'], 'R:PRC-PAY-01')                              # an activity in its process (RA1-24)
+        self.assertNotIn('R:ACT-PAY-01a', z)                                              # an activity is a region only if it has parts
+        self.assertEqual(at['VSS-P1'], 'R:VS-MAKE-PAYMENT'); self.assertEqual(z['R:VS-MAKE-PAYMENT']['part_of'], 'G:Value streams')   # C4: beside the map
+        self.assertEqual(at['ROLE-PAY-OFFICER'], 'G:Actors and roles')
+        realise = [l for l in lay['links'] if l['source'] == 'PRC-PAY-01' and l['target'] == 'CAP-PAY-010']
+        self.assertEqual([l['shown_by'] for l in realise], ['position'])                  # nesting stands for the realisation
+        self.assertIsNone(lay['strip'])
+
+    def test_a_process_realising_two_capabilities_sits_in_the_most_specific(self):   # C3
+        d = json.loads((EX / 'payment-initiation' / 'a1-business.json').read_text(encoding='utf-8'))
+        d['relationships'].append({'source': 'PRC-PAY-01', 'kind': 'realization', 'target': 'CAP-PAY-000'})
+        lay = layout(d, 'A1'); z = {x['id']: x for x in lay['zones']}
+        self.assertEqual(z['R:PRC-PAY-01']['part_of'], 'R:CAP-PAY-010')
+        other = [l for l in lay['links'] if l['source'] == 'PRC-PAY-01' and l['target'] == 'CAP-PAY-000']
+        self.assertEqual([l['shown_by'] for l in other], ['line'])                        # its other capability: a line
 
 if __name__ == '__main__':
     unittest.main()

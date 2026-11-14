@@ -34,6 +34,25 @@ HIERARCHY = {
                    ('Semantic APIs', ['A2.SemanticAPI'])],
         'not_in': 'Not in the service landscape',
     },
+    'A1': {   # the capability map (ArchiMate Capability Map viewpoint; TOGAF, BIZBOK)
+        'nest': [('A1.BusinessCapability', 'composition', 'A1.BusinessCapability'), ('A1.BusinessCapability', 'aggregation', 'A1.BusinessCapability'),
+                 ('A1.BusinessProcess', 'composition', 'A1.BusinessProcess'), ('A1.BusinessProcess', 'composition', 'A1.BusinessActivity'),
+                 ('A1.BusinessActivity', 'composition', 'A1.BusinessActivity'),
+                 ('A1.BusinessCapability', 'realization', 'A1.BusinessProcess', 'up'), ('A1.BusinessCapability', 'realization', 'A1.BusinessActivity', 'up'),
+                 ('A1.ValueStream', 'composition', 'A1.ValueStreamStage'),
+                 ('A1.BusinessActor', 'composition', 'A1.BusinessActor'), ('A1.BusinessActor', 'aggregation', 'A1.BusinessActor'),
+                 ('A1.BusinessRole', 'composition', 'A1.BusinessRole'), ('A1.BusinessRole', 'aggregation', 'A1.BusinessRole'),
+                 ('A1.BusinessObject', 'composition', 'A1.BusinessObject'), ('A1.BusinessObject', 'aggregation', 'A1.BusinessObject'),
+                 ('A1.BusinessService', 'composition', 'A1.BusinessService'), ('A1.BusinessRequirement', 'composition', 'A1.BusinessRequirement')],
+        'containers': ['A1.BusinessCapability', 'A1.BusinessProcess', 'A1.ValueStream'],
+        'kinds': {'A1.BusinessCapability': 'Capability', 'A1.BusinessProcess': 'Process', 'A1.BusinessActivity': 'Activity', 'A1.ValueStream': 'Value stream'},
+        'groups': [('Value streams', ['A1.ValueStream', 'A1.ValueStreamStage']),
+                   ('Actors and roles', ['A1.BusinessActor', 'A1.BusinessRole']),
+                   ('Business objects', ['A1.BusinessObject']),
+                   ('Business services', ['A1.BusinessService']),
+                   ('Requirements', ['A1.BusinessRequirement'])],
+        'not_in': 'Not in the capability map',
+    },
 }
 
 
@@ -49,18 +68,27 @@ def layout(doc, layer, mm=None):
         from .zone_layout import layout as zl
         return zl(doc, mm)
     H = HIERARCHY.get(layer)
-    if not H: raise ContainmentError(f'layer {layer}: no containment hierarchy yet — A2 is built (A1 and A3 follow, C6)')
+    if not H: raise ContainmentError(f'layer {layer}: no containment hierarchy yet — A1 and A2 are built (A3 follows, C6)')
     recs = {i['id']: i for i in doc.get('instances', [])}
     typ = {x: r['type'] for x, r in recs.items()}
     is_ = lambda x, t: x in typ and mm.is_a(typ[x], t)
     # the primary parent of each record: the first nesting row (in order) that links a parent to it (C3)
     parent, used = {}, set()
-    for pt, kind, ct in H['nest']:
+    # a row (parent type, kind, child type[, 'up']): 'up' when the child is the link's SOURCE — a process realises the capability it sits in
+    for row in H['nest']:
+        pt, kind, ct = row[:3]; up = len(row) > 3 and row[3] == 'up'
+        cands = {}
         for r in doc.get('relationships', []):
-            a, b = r['source'], r['target']
+            a, b = (r['target'], r['source']) if up else (r['source'], r['target'])   # a: the parent, b: the child
             if r['kind'] == kind and is_(a, pt) and is_(b, ct) and b not in parent and a != b:
-                parent[b] = a; used.add((a, b))
-    containers = {x for x in recs if any(is_(x, t) for t in H['containers'])}
+                cands.setdefault(b, []).append((a, (r['source'], r['target'])))
+        for b, opts in cands.items():   # two owners by the same row: the most specific one (the deepest in its own hierarchy)
+            def depth(x, seen=()):
+                return 0 if x not in parent or x in seen else 1 + depth(parent[x], seen + (x,))
+            a, link = max(opts, key=lambda o: (depth(o[0]), o[0]))
+            parent[b] = a; used.add(link)
+    owners = set(parent.values())   # a region: a record of a listed container type itself, or a record that does hold others (an activity is a kind of process, but a region only if it has parts)
+    containers = {x for x in recs if typ[x] in H['containers'] or (x in owners and any(is_(x, t) for t in H['containers']))}
     group_of = {}
     for label, types in H['groups']:
         for x in recs:
@@ -139,7 +167,7 @@ def layout(doc, layer, mm=None):
         while x and not is_(x, 'A2.ServiceDomain'): x = parent.get(x)
         return x
     conns, seen = [], set()
-    for sc in [x for x in recs if is_(x, 'A2.BusinessScenario')]:
+    for sc in [x for x in recs if layer == 'A2' and is_(x, 'A2.BusinessScenario')]:
         sds = sorted({domain(r['target']) for r in doc.get('relationships', []) if r['source'] == sc and r['kind'] == 'aggregation'} - {None})
         for i, a in enumerate(sds):
             for b in sds[i + 1:]:

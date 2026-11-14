@@ -32,7 +32,7 @@ def layout(reader, pkg=None):
     """Deterministic positions: per band, records grouped by entity type in catalogue order, wrapped PER_ROW to a row."""
     order = {t: n for n, t in enumerate(reader.mm.entities)}
     nodes, bands, y = [], [], 30; extra = _projected(pkg, reader); zones, width = [], PAD_X + PER_ROW * STEP_X
-    lays = {l: x for l, x in (('A2', _containment(reader, 'A2')), ('A4', _zone_layout(reader))) if x}   # A2 by what owns what, A4 by zone
+    lays = {l: x for l, x in (('A1', _containment(reader, 'A1')), ('A2', _containment(reader, 'A2')), ('A4', _zone_layout(reader))) if x}   # A1, A2 by what owns what; A4 by zone
     for zl in lays.values():   # the band's width must hold the busiest region's shapes side by side
         gaps = [abs(a['at'][0] - b['at'][0]) for a in zl['shapes'] for b in zl['shapes'] if a is not b and abs(a['at'][1] - b['at'][1]) < 0.03 and a['at'][0] != b['at'][0]]
         if gaps: width = max(width, min(6000, int((BOX_W + 16) / min(gaps)) + 40))   # the closest pair on one row stays a box apart

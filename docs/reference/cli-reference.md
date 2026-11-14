@@ -1550,7 +1550,7 @@ sdem impact INF-CLOUD-K8S-PROD --change rehost --graph examples/card-fraud-alert
 
 <a id="cmd-layout"></a>
 
-a layer drawn by what owns what — A2 as BIAN's service landscape (business area → business domain → service domain → service group → operation), A4 by its network zones; each region an existing standard record, nesting only through structural links; the layout every drawing uses — read-only
+a layer drawn by what owns what — A1 as a capability map, A2 as BIAN's service landscape (business area → business domain → service domain → service group → operation), A4 by its network zones; each region an existing standard record, nesting only through structural links; the layout every drawing uses — read-only
 
 ```
 sdem layout --layer {A1,A2,A3,A4} --workspace WORKSPACE [--environment ENVIRONMENT]

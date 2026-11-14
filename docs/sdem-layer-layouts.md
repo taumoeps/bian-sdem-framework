@@ -1,6 +1,6 @@
 # How SDEM draws each layer
 
-> **Status: current — A2 and A4 are built (SDEM 0.18.0); A1 and A3 follow.** The decisions behind it are in the [containment design](design/sdem-layer-containment-design.md) (C1–C6) and, for A4, the [network-zones design](design/sdem-network-zones-design.md); this page is for the people who read the drawings.
+> **Status: current — A1, A2 and A4 are built (SDEM 0.18.0); A3 follows.** The decisions behind it are in the [containment design](design/sdem-layer-containment-design.md) (C1–C6) and, for A4, the [network-zones design](design/sdem-network-zones-design.md); this page is for the people who read the drawings.
 
 SDEM draws every layer **by what owns what**: each record sits inside the record that owns it, using that layer's own framework — BIAN for A2, ArchiMate and TOGAF for A1 and A3. A4 is the exception: it is drawn by network zone, because it is the physical deployment ([A4: the physical deployment](sdem-a4-physical-deployment.md)).
 
@@ -42,9 +42,18 @@ The same layout is used everywhere a layer is drawn: the 3D view, `sdem view`, a
 
 Beside the landscape: the *Customer credit transfer* scenario, the business objects *Payment Instruction* (with *amount*) and *Party* (with *party reference*), and the asset types and functional patterns.
 
-## 3. A1 — the capability map (coming)
+## 3. A1 — the capability map (built)
 
-Capability → sub-capability → the processes that realise it → their activities. Value streams and their stages, actors and roles, business objects and requirements stay in groups of their own, linked by lines — TOGAF and BIZBOK cross-map value streams to capabilities rather than nest them, and actors belong to the organisation, not to a capability.
+| Region | Holds | Rule |
+|---|---|---|
+| Capability | its sub-capabilities | RA1-01, RA1-02 |
+| Capability | the processes and activities that realise it — in the most specific capability when they realise several | RA1-08, RA1-16 |
+| Process | its activities and sub-processes (an activity is a region only if it has parts) | RA1-24, RA1-25, RA1-26 |
+| Value stream | its stages | RA1-05 |
+
+**In groups of their own:** value streams (TOGAF and BIZBOK cross-map them to capabilities rather than nest them), actors and roles (they belong to the organisation, not to a capability), business objects, business services and requirements — linked to the map by lines.
+
+**The payment example:** *Payments* → *Initiate Payment* → *Capture and validate payment instruction* (activities *Capture instruction*, *Validate instruction*) and *Execute and confirm payment* (*Execute payment*, *Retrieve status*). Beside the map: the value stream *Make a Payment* with its four stages, the *Payments Operations Officer*, and the business objects *Payment Instruction* and *Payee*.
 
 ## 4. A3 — the application structure (coming)
 
@@ -64,8 +73,9 @@ Cloud or on premises → DMZ or internal → private segments, with every shape 
 
 | Command | Shows |
 |---|---|
+| `sdem layout --layer A1 --workspace <dir>` | A1 as a capability map |
 | `sdem layout --layer A2 --workspace <dir>` | A2 as BIAN's landscape — each region and what it holds; `--json` for the coordinates every drawing uses |
 | `sdem layout --layer A4 --workspace <dir>` | A4 by network zone (the same as `sdem zones --layout`) |
-| `sdem view --graph <dir>/graph` | all four layers; A2 and A4 drawn by these layouts |
+| `sdem view --graph <dir>/graph` | all four layers; A1, A2 and A4 drawn by these layouts |
 
 The DESNRE site's 3D view draws the same layouts.
