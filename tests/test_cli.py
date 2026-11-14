@@ -58,7 +58,7 @@ class CliTests(unittest.TestCase):
         code, out, _ = run('trace', 'a2', '--direction', 'up', '--only-gaps', '--graph', G)            # only kinds that can connect up count as gaps
         self.assertIn('(gaps): 3', out); self.assertIn("SD-PE 'Payment Execution (synthetic selection)'", out); self.assertNotIn('AT-AUTH', out); self.assertNotIn('CHAINS', out)
         code, out, _ = run('trace', 'A2', '--direction', 'all', '--to', 'A3', '--graph', G)            # --to applies only in its own direction
-        self.assertIn('traced down to A3 Application', out); self.assertIn('A2 BIAN — 24 record(s), traced up\n', out)
+        self.assertIn('traced down to A3 Application', out); self.assertIn('A2 BIAN — 48 record(s), traced up\n', out)
         f = Path(tempfile.mkdtemp()) / 'chains.csv'
         code, out, _ = run('trace', 'A1', '--direction', 'downstream', '--csv', str(f), '--graph', G)
         self.assertEqual(code, 0); rows = f.read_text().splitlines()

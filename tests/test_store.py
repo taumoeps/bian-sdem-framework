@@ -137,7 +137,7 @@ class StoreTests(unittest.TestCase):
         self.assertIn({'direction': 'out', 'relation': 'composition', 'id': 'ACT-PAY-01a'}, r.neighbours('PRC-PAY-01'))
         self.assertEqual(r.neighbours('PRC-PAY-01', relation='realization'), [{'direction': 'out', 'relation': 'realization', 'id': 'CAP-PAY-010'}])
         # unmapped: hand count — A2 records with no approved cross-level link of any type the catalogue expects for them
-        self.assertEqual(sorted(n['id'] for n in r.unmapped('A2')), ['BBO-PARTY', 'SD-PA', 'SD-PE', 'SO-PI-06'])
+        self.assertEqual(sorted(n['id'] for n in r.unmapped('A2')), ['BBO-PARTY', 'SD-PA', 'SD-PE'] + [f'SO-PA-0{i}' for i in range(1, 8)] + [f'SO-PE-0{i}' for i in range(1, 4)] + ['SO-PI-06'])   # the operations of the planned and partly adopted domains: nothing in A3 implements them yet
         self.assertEqual(sorted(n['id'] for n in GraphReader.from_store(self.tmp / 'legacy-core-ledger').unmapped('A4')),
                          sorted(n['id'] for n in GraphReader.from_exports(inputs('legacy-core-ledger')).unmapped('A4')))
 

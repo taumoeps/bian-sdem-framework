@@ -64,7 +64,8 @@ class UsageAndReleaseTests(unittest.TestCase):
         self.assertGreater(d['entity_types']['A3.ApplicationComponent'], 0)
         self.assertIn('A2.ServiceDomain REALIZED_BY A3.ApplicationComponent', d['link_types'])
         unused = [x['type'] for x in d['unused_core_types']]
-        self.assertIn('A2.BusinessArea', unused); self.assertNotIn('A3.ApplicationComponent', unused)
+        self.assertIn('A2.BOMModel', unused)   # A2.BusinessArea is used since the payment example's landscape was completed (2026-11-15)
+        self.assertNotIn('A3.ApplicationComponent', unused)
         self.assertEqual(d['unused_core_types'][0]['unsettled'] != [], True)                          # the unsettled ones first
 
     def test_a_release_impact_lists_what_points_at_changed_records(self):  # MS-08

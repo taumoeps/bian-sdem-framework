@@ -371,6 +371,499 @@
         "personal_information": false,
         "data_type": "Amount"
       }
+    },
+    {
+      "id": "BA-OPS-EXEC",
+      "type": "A2.BusinessArea",
+      "version": "1.0",
+      "name": "Operations and Execution",
+      "lifecycle_status": "active",
+      "description": "BIAN's business area for the operational domains, payments among them (BIAN Service Landscape; the business area is not in SDEM's shipped Semantic API catalogue)."
+    },
+    {
+      "id": "CR-PA",
+      "type": "A2.ControlRecord",
+      "version": "14.0.0",
+      "name": "Party Authentication Assessment",
+      "lifecycle_status": "active",
+      "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+      "attributes": {
+        "attributes": [
+          "CustomerReference",
+          "PartyReference",
+          "PartyAuthenticationAssessmentProfile",
+          "AuthenticationType",
+          "PartyAuthenticationConsolidationRecord",
+          "CustomerContactAuthenticationLevel",
+          "AuthorisationTokenReference",
+          "RefreshTokenReference"
+        ],
+        "source_id": "bian-semantic-api:14.0.0:PartyAuthentication.yaml",
+        "conforms_to": [
+          "BIAN 14.0.0"
+        ]
+      }
+    },
+    {
+      "id": "BQ-PA-PASSWORD",
+      "type": "A2.BehaviorQualifier",
+      "version": "14.0.0",
+      "name": "Password",
+      "lifecycle_status": "active",
+      "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+      "attributes": {
+        "source_id": "bian-semantic-api:14.0.0:PartyAuthentication.yaml",
+        "conforms_to": [
+          "BIAN 14.0.0"
+        ]
+      }
+    },
+    {
+      "id": "BQ-PA-QUESTION",
+      "type": "A2.BehaviorQualifier",
+      "version": "14.0.0",
+      "name": "Question",
+      "lifecycle_status": "active",
+      "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+      "attributes": {
+        "source_id": "bian-semantic-api:14.0.0:PartyAuthentication.yaml",
+        "conforms_to": [
+          "BIAN 14.0.0"
+        ]
+      }
+    },
+    {
+      "id": "BQ-PA-DOCUMENT",
+      "type": "A2.BehaviorQualifier",
+      "version": "14.0.0",
+      "name": "Document",
+      "lifecycle_status": "active",
+      "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+      "attributes": {
+        "source_id": "bian-semantic-api:14.0.0:PartyAuthentication.yaml",
+        "conforms_to": [
+          "BIAN 14.0.0"
+        ]
+      }
+    },
+    {
+      "id": "BQ-PA-DEVICE",
+      "type": "A2.BehaviorQualifier",
+      "version": "14.0.0",
+      "name": "Device",
+      "lifecycle_status": "active",
+      "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+      "attributes": {
+        "source_id": "bian-semantic-api:14.0.0:PartyAuthentication.yaml",
+        "conforms_to": [
+          "BIAN 14.0.0"
+        ]
+      }
+    },
+    {
+      "id": "BQ-PA-BIOMETRIC",
+      "type": "A2.BehaviorQualifier",
+      "version": "14.0.0",
+      "name": "Biometric",
+      "lifecycle_status": "active",
+      "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+      "attributes": {
+        "source_id": "bian-semantic-api:14.0.0:PartyAuthentication.yaml",
+        "conforms_to": [
+          "BIAN 14.0.0"
+        ]
+      }
+    },
+    {
+      "id": "BQ-PA-BEHAVIOR",
+      "type": "A2.BehaviorQualifier",
+      "version": "14.0.0",
+      "name": "Behavior",
+      "lifecycle_status": "active",
+      "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+      "attributes": {
+        "source_id": "bian-semantic-api:14.0.0:PartyAuthentication.yaml",
+        "conforms_to": [
+          "BIAN 14.0.0"
+        ]
+      }
+    },
+    {
+      "id": "SG-PA-1",
+      "type": "A2.ServiceGroup",
+      "version": "14.0.0",
+      "name": "Party Authentication Assessment",
+      "lifecycle_status": "active",
+      "description": "The operations BIAN tags 'PartyAuthenticationAssessment' in Party Authentication.",
+      "attributes": {
+        "source_id": "bian-semantic-api:14.0.0:PartyAuthentication.yaml",
+        "conforms_to": [
+          "BIAN 14.0.0"
+        ]
+      }
+    },
+    {
+      "id": "SO-PA-01",
+      "type": "A2.ServiceOperation",
+      "version": "14.0.0",
+      "name": "Party Authentication: Update",
+      "lifecycle_status": "active",
+      "canonical_id": "BIAN-PARTY-AUTHENTICATION-UPDATE",
+      "description": "PUT /PartyAuthentication/{partyauthenticationid}/Update in BIAN's Semantic API 14.0.0.",
+      "attributes": {
+        "action_term": "Update",
+        "http_method": "PUT",
+        "input_attributes": [
+          "CustomerReference",
+          "PartyReference",
+          "PartyAuthenticationAssessmentProfile",
+          "AuthenticationType",
+          "PartyAuthenticationConsolidationRecord",
+          "CustomerContactAuthenticationLevel",
+          "AuthorisationTokenReference",
+          "RefreshTokenReference"
+        ],
+        "output_attributes": [
+          "CustomerReference",
+          "PartyReference",
+          "PartyAuthenticationAssessmentProfile",
+          "AuthenticationType",
+          "PartyAuthenticationConsolidationRecord",
+          "CustomerContactAuthenticationLevel",
+          "AuthorisationTokenReference",
+          "RefreshTokenReference"
+        ],
+        "source_id": "bian-semantic-api:14.0.0:PartyAuthentication.yaml",
+        "conforms_to": [
+          "BIAN 14.0.0"
+        ]
+      }
+    },
+    {
+      "id": "SO-PA-02",
+      "type": "A2.ServiceOperation",
+      "version": "14.0.0",
+      "name": "Party Authentication: Evaluate",
+      "lifecycle_status": "active",
+      "canonical_id": "BIAN-PARTY-AUTHENTICATION-EVALUATE",
+      "description": "POST /PartyAuthentication/Evaluate in BIAN's Semantic API 14.0.0.",
+      "attributes": {
+        "action_term": "Evaluate",
+        "http_method": "POST",
+        "input_attributes": [
+          "CustomerReference",
+          "PartyReference",
+          "PartyAuthenticationAssessmentProfile",
+          "AuthenticationType",
+          "PartyAuthenticationConsolidationRecord",
+          "CustomerContactAuthenticationLevel",
+          "AuthorisationTokenReference",
+          "RefreshTokenReference"
+        ],
+        "output_attributes": [
+          "CustomerReference",
+          "PartyReference",
+          "PartyAuthenticationAssessmentProfile",
+          "AuthenticationType",
+          "PartyAuthenticationConsolidationRecord",
+          "CustomerContactAuthenticationLevel",
+          "AuthorisationTokenReference",
+          "RefreshTokenReference"
+        ],
+        "source_id": "bian-semantic-api:14.0.0:PartyAuthentication.yaml",
+        "conforms_to": [
+          "BIAN 14.0.0"
+        ]
+      }
+    },
+    {
+      "id": "SO-PA-03",
+      "type": "A2.ServiceOperation",
+      "version": "14.0.0",
+      "name": "Party Authentication: Exchange",
+      "lifecycle_status": "active",
+      "canonical_id": "BIAN-PARTY-AUTHENTICATION-EXCHANGE",
+      "description": "PUT /PartyAuthentication/{partyauthenticationid}/Exchange in BIAN's Semantic API 14.0.0.",
+      "attributes": {
+        "action_term": "Exchange",
+        "http_method": "PUT",
+        "input_attributes": [
+          "CustomerReference",
+          "PartyReference",
+          "PartyAuthenticationAssessmentProfile",
+          "AuthenticationType",
+          "PartyAuthenticationConsolidationRecord",
+          "CustomerContactAuthenticationLevel",
+          "AuthorisationTokenReference",
+          "RefreshTokenReference"
+        ],
+        "output_attributes": [
+          "CustomerReference",
+          "PartyReference",
+          "PartyAuthenticationAssessmentProfile",
+          "AuthenticationType",
+          "PartyAuthenticationConsolidationRecord",
+          "CustomerContactAuthenticationLevel",
+          "AuthorisationTokenReference",
+          "RefreshTokenReference"
+        ],
+        "source_id": "bian-semantic-api:14.0.0:PartyAuthentication.yaml",
+        "conforms_to": [
+          "BIAN 14.0.0"
+        ]
+      }
+    },
+    {
+      "id": "SO-PA-04",
+      "type": "A2.ServiceOperation",
+      "version": "14.0.0",
+      "name": "Party Authentication: Execute",
+      "lifecycle_status": "active",
+      "canonical_id": "BIAN-PARTY-AUTHENTICATION-EXECUTE",
+      "description": "PUT /PartyAuthentication/{partyauthenticationid}/Execute in BIAN's Semantic API 14.0.0.",
+      "attributes": {
+        "action_term": "Execute",
+        "http_method": "PUT",
+        "input_attributes": [
+          "CustomerReference",
+          "PartyReference",
+          "PartyAuthenticationAssessmentProfile",
+          "AuthenticationType",
+          "PartyAuthenticationConsolidationRecord",
+          "CustomerContactAuthenticationLevel",
+          "AuthorisationTokenReference",
+          "RefreshTokenReference"
+        ],
+        "output_attributes": [
+          "CustomerReference",
+          "PartyReference",
+          "PartyAuthenticationAssessmentProfile",
+          "AuthenticationType",
+          "PartyAuthenticationConsolidationRecord",
+          "CustomerContactAuthenticationLevel",
+          "AuthorisationTokenReference",
+          "RefreshTokenReference"
+        ],
+        "source_id": "bian-semantic-api:14.0.0:PartyAuthentication.yaml",
+        "conforms_to": [
+          "BIAN 14.0.0"
+        ]
+      }
+    },
+    {
+      "id": "SO-PA-05",
+      "type": "A2.ServiceOperation",
+      "version": "14.0.0",
+      "name": "Party Authentication: Request",
+      "lifecycle_status": "active",
+      "canonical_id": "BIAN-PARTY-AUTHENTICATION-REQUEST",
+      "description": "PUT /PartyAuthentication/{partyauthenticationid}/Request in BIAN's Semantic API 14.0.0.",
+      "attributes": {
+        "action_term": "Request",
+        "http_method": "PUT",
+        "input_attributes": [
+          "CustomerReference",
+          "PartyReference",
+          "PartyAuthenticationAssessmentProfile",
+          "AuthenticationType",
+          "PartyAuthenticationConsolidationRecord",
+          "CustomerContactAuthenticationLevel",
+          "AuthorisationTokenReference",
+          "RefreshTokenReference"
+        ],
+        "output_attributes": [
+          "CustomerReference",
+          "PartyReference",
+          "PartyAuthenticationAssessmentProfile",
+          "AuthenticationType",
+          "PartyAuthenticationConsolidationRecord",
+          "CustomerContactAuthenticationLevel",
+          "AuthorisationTokenReference",
+          "RefreshTokenReference"
+        ],
+        "source_id": "bian-semantic-api:14.0.0:PartyAuthentication.yaml",
+        "conforms_to": [
+          "BIAN 14.0.0"
+        ]
+      }
+    },
+    {
+      "id": "SO-PA-06",
+      "type": "A2.ServiceOperation",
+      "version": "14.0.0",
+      "name": "Party Authentication: Grant",
+      "lifecycle_status": "active",
+      "canonical_id": "BIAN-PARTY-AUTHENTICATION-GRANT",
+      "description": "PUT /PartyAuthentication/{partyauthenticationid}/Grant in BIAN's Semantic API 14.0.0.",
+      "attributes": {
+        "action_term": "Grant",
+        "http_method": "PUT",
+        "input_attributes": [
+          "CustomerReference",
+          "PartyReference",
+          "PartyAuthenticationAssessmentProfile",
+          "AuthenticationType",
+          "PartyAuthenticationConsolidationRecord",
+          "CustomerContactAuthenticationLevel",
+          "AuthorisationTokenReference",
+          "RefreshTokenReference"
+        ],
+        "output_attributes": [
+          "CustomerReference",
+          "PartyReference",
+          "PartyAuthenticationAssessmentProfile",
+          "AuthenticationType",
+          "PartyAuthenticationConsolidationRecord",
+          "CustomerContactAuthenticationLevel",
+          "AuthorisationTokenReference",
+          "RefreshTokenReference"
+        ],
+        "source_id": "bian-semantic-api:14.0.0:PartyAuthentication.yaml",
+        "conforms_to": [
+          "BIAN 14.0.0"
+        ]
+      }
+    },
+    {
+      "id": "SO-PA-07",
+      "type": "A2.ServiceOperation",
+      "version": "14.0.0",
+      "name": "Party Authentication: Retrieve",
+      "lifecycle_status": "active",
+      "canonical_id": "BIAN-PARTY-AUTHENTICATION-RETRIEVE",
+      "description": "GET /PartyAuthentication/{partyauthenticationid}/Retrieve in BIAN's Semantic API 14.0.0.",
+      "attributes": {
+        "action_term": "Retrieve",
+        "http_method": "GET",
+        "input_attributes": [],
+        "output_attributes": [
+          "CustomerReference",
+          "PartyReference",
+          "PartyAuthenticationAssessmentProfile",
+          "AuthenticationType",
+          "PartyAuthenticationConsolidationRecord",
+          "CustomerContactAuthenticationLevel",
+          "AuthorisationTokenReference",
+          "RefreshTokenReference"
+        ],
+        "source_id": "bian-semantic-api:14.0.0:PartyAuthentication.yaml",
+        "conforms_to": [
+          "BIAN 14.0.0"
+        ]
+      }
+    },
+    {
+      "id": "CR-PE",
+      "type": "A2.ControlRecord",
+      "version": "1.0",
+      "name": "Payment Execution Operating Session",
+      "lifecycle_status": "active",
+      "description": "Synthetic: the session in which payment instructions are executed, cleared and settled (modelled on BIAN 14.0.0 Payment Rail).",
+      "attributes": {
+        "attributes": [
+          "execution_reference",
+          "payment_instruction_reference",
+          "amount",
+          "currency",
+          "settlement_date",
+          "execution_status"
+        ]
+      }
+    },
+    {
+      "id": "BQ-PE-CLEARING",
+      "type": "A2.BehaviorQualifier",
+      "version": "1.0",
+      "name": "Clearing and Settlement",
+      "lifecycle_status": "active",
+      "description": "Synthetic: clearing the payment and settling it between institutions."
+    },
+    {
+      "id": "BQ-PE-OUTBOUND",
+      "type": "A2.BehaviorQualifier",
+      "version": "1.0",
+      "name": "Outbound Transaction",
+      "lifecycle_status": "active",
+      "description": "Synthetic: sending the payment to the receiving institution."
+    },
+    {
+      "id": "SG-PE-1",
+      "type": "A2.ServiceGroup",
+      "version": "1.0",
+      "name": "Execution",
+      "lifecycle_status": "active",
+      "description": "Synthetic: operations that execute and report a payment."
+    },
+    {
+      "id": "SO-PE-01",
+      "type": "A2.ServiceOperation",
+      "version": "1.0",
+      "name": "Initiate Payment Execution",
+      "lifecycle_status": "active",
+      "description": "Synthetic: initiate payment execution (in the style of BIAN 14.0.0 Payment Rail).",
+      "attributes": {
+        "action_term": "Initiate",
+        "behavior_qualifier": null,
+        "input_attributes": [
+          "payment_instruction_reference",
+          "amount",
+          "currency"
+        ],
+        "output_attributes": [
+          "execution_reference",
+          "execution_status"
+        ]
+      }
+    },
+    {
+      "id": "SO-PE-02",
+      "type": "A2.ServiceOperation",
+      "version": "1.0",
+      "name": "Execute Payment Clearing and Settlement",
+      "lifecycle_status": "active",
+      "description": "Synthetic: execute payment clearing and settlement (in the style of BIAN 14.0.0 Payment Rail).",
+      "attributes": {
+        "action_term": "Execute",
+        "behavior_qualifier": null,
+        "input_attributes": [
+          "execution_reference"
+        ],
+        "output_attributes": [
+          "execution_status",
+          "settlement_date"
+        ]
+      }
+    },
+    {
+      "id": "SO-PE-03",
+      "type": "A2.ServiceOperation",
+      "version": "1.0",
+      "name": "Retrieve Payment Execution",
+      "lifecycle_status": "active",
+      "description": "Synthetic: retrieve payment execution (in the style of BIAN 14.0.0 Payment Rail).",
+      "attributes": {
+        "action_term": "Retrieve",
+        "behavior_qualifier": null,
+        "input_attributes": [
+          "execution_reference"
+        ],
+        "output_attributes": [
+          "execution_status",
+          "settlement_date"
+        ]
+      }
+    },
+    {
+      "id": "BBOA-PARTY-REF",
+      "type": "A2.BusinessObjectAttribute",
+      "version": "1.0",
+      "name": "party reference",
+      "lifecycle_status": "active",
+      "description": "The reference that identifies the party (PartyReference in BIAN 14.0.0 Semantic APIs, e.g. Party Authentication).",
+      "attributes": {
+        "personal_information": false,
+        "data_type": "string"
+      }
     }
   ],
   "relationships": [
@@ -543,6 +1036,176 @@
       "source": "CR-PI",
       "kind": "association",
       "target": "BBO-PARTY"
+    },
+    {
+      "source": "BA-OPS-EXEC",
+      "kind": "composition",
+      "target": "BD-PAYMENTS"
+    },
+    {
+      "source": "SD-PA",
+      "kind": "aggregation",
+      "target": "CR-PA"
+    },
+    {
+      "source": "CR-PA",
+      "kind": "composition",
+      "target": "BQ-PA-PASSWORD"
+    },
+    {
+      "source": "CR-PA",
+      "kind": "composition",
+      "target": "BQ-PA-QUESTION"
+    },
+    {
+      "source": "CR-PA",
+      "kind": "composition",
+      "target": "BQ-PA-DOCUMENT"
+    },
+    {
+      "source": "CR-PA",
+      "kind": "composition",
+      "target": "BQ-PA-DEVICE"
+    },
+    {
+      "source": "CR-PA",
+      "kind": "composition",
+      "target": "BQ-PA-BIOMETRIC"
+    },
+    {
+      "source": "CR-PA",
+      "kind": "composition",
+      "target": "BQ-PA-BEHAVIOR"
+    },
+    {
+      "source": "SD-PA",
+      "kind": "composition",
+      "target": "SG-PA-1"
+    },
+    {
+      "source": "SG-PA-1",
+      "kind": "composition",
+      "target": "SO-PA-01"
+    },
+    {
+      "source": "SO-PA-01",
+      "kind": "access",
+      "target": "CR-PA"
+    },
+    {
+      "source": "SG-PA-1",
+      "kind": "composition",
+      "target": "SO-PA-02"
+    },
+    {
+      "source": "SO-PA-02",
+      "kind": "access",
+      "target": "CR-PA"
+    },
+    {
+      "source": "SG-PA-1",
+      "kind": "composition",
+      "target": "SO-PA-03"
+    },
+    {
+      "source": "SO-PA-03",
+      "kind": "access",
+      "target": "CR-PA"
+    },
+    {
+      "source": "SG-PA-1",
+      "kind": "composition",
+      "target": "SO-PA-04"
+    },
+    {
+      "source": "SO-PA-04",
+      "kind": "access",
+      "target": "CR-PA"
+    },
+    {
+      "source": "SG-PA-1",
+      "kind": "composition",
+      "target": "SO-PA-05"
+    },
+    {
+      "source": "SO-PA-05",
+      "kind": "access",
+      "target": "CR-PA"
+    },
+    {
+      "source": "SG-PA-1",
+      "kind": "composition",
+      "target": "SO-PA-06"
+    },
+    {
+      "source": "SO-PA-06",
+      "kind": "access",
+      "target": "CR-PA"
+    },
+    {
+      "source": "SG-PA-1",
+      "kind": "composition",
+      "target": "SO-PA-07"
+    },
+    {
+      "source": "SO-PA-07",
+      "kind": "access",
+      "target": "CR-PA"
+    },
+    {
+      "source": "SD-PE",
+      "kind": "aggregation",
+      "target": "CR-PE"
+    },
+    {
+      "source": "CR-PE",
+      "kind": "composition",
+      "target": "BQ-PE-CLEARING"
+    },
+    {
+      "source": "CR-PE",
+      "kind": "composition",
+      "target": "BQ-PE-OUTBOUND"
+    },
+    {
+      "source": "SD-PE",
+      "kind": "composition",
+      "target": "SG-PE-1"
+    },
+    {
+      "source": "SG-PE-1",
+      "kind": "composition",
+      "target": "SO-PE-01"
+    },
+    {
+      "source": "SO-PE-01",
+      "kind": "access",
+      "target": "CR-PE"
+    },
+    {
+      "source": "SG-PE-1",
+      "kind": "composition",
+      "target": "SO-PE-02"
+    },
+    {
+      "source": "SO-PE-02",
+      "kind": "access",
+      "target": "CR-PE"
+    },
+    {
+      "source": "SG-PE-1",
+      "kind": "composition",
+      "target": "SO-PE-03"
+    },
+    {
+      "source": "SO-PE-03",
+      "kind": "access",
+      "target": "CR-PE"
+    },
+    {
+      "source": "BBO-PARTY",
+      "kind": "composition",
+      "target": "BBOA-PARTY-REF"
     }
   ]
 }

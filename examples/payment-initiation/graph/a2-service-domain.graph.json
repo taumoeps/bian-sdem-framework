@@ -6,7 +6,7 @@
     "directed": true,
     "metadata": {
       "sdem_store_version": "1.0",
-      "export_sha256": "0a230ae6a34b4695ae7efa1a10a5cc5feaff30a5b576a5cd582929ecf3048203",
+      "export_sha256": "7ff5c80e3df0e31f69628a088d5225ebf1f9a3697a9d7487d9595c19b32b40c2",
       "level": "A2",
       "model_id": "synthetic-bank-payments-a2",
       "model_version": "2026.10",
@@ -452,6 +452,571 @@
             "data_type": "Amount"
           }
         }
+      },
+      "A2:BA-OPS-EXEC@1.0": {
+        "label": "Operations and Execution",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessArea",
+          "id": "BA-OPS-EXEC",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "BIAN's business area for the operational domains, payments among them (BIAN Service Landscape; the business area is not in SDEM's shipped Semantic API catalogue)."
+        }
+      },
+      "A2:CR-PA@14.0.0": {
+        "label": "Party Authentication Assessment",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ControlRecord",
+          "id": "CR-PA",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "attributes": [
+              "CustomerReference",
+              "PartyReference",
+              "PartyAuthenticationAssessmentProfile",
+              "AuthenticationType",
+              "PartyAuthenticationConsolidationRecord",
+              "CustomerContactAuthenticationLevel",
+              "AuthorisationTokenReference",
+              "RefreshTokenReference"
+            ],
+            "source_id": "bian-semantic-api:14.0.0:PartyAuthentication.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BQ-PA-PASSWORD@14.0.0": {
+        "label": "Password",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BehaviorQualifier",
+          "id": "BQ-PA-PASSWORD",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "source_id": "bian-semantic-api:14.0.0:PartyAuthentication.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BQ-PA-QUESTION@14.0.0": {
+        "label": "Question",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BehaviorQualifier",
+          "id": "BQ-PA-QUESTION",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "source_id": "bian-semantic-api:14.0.0:PartyAuthentication.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BQ-PA-DOCUMENT@14.0.0": {
+        "label": "Document",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BehaviorQualifier",
+          "id": "BQ-PA-DOCUMENT",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "source_id": "bian-semantic-api:14.0.0:PartyAuthentication.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BQ-PA-DEVICE@14.0.0": {
+        "label": "Device",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BehaviorQualifier",
+          "id": "BQ-PA-DEVICE",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "source_id": "bian-semantic-api:14.0.0:PartyAuthentication.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BQ-PA-BIOMETRIC@14.0.0": {
+        "label": "Biometric",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BehaviorQualifier",
+          "id": "BQ-PA-BIOMETRIC",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "source_id": "bian-semantic-api:14.0.0:PartyAuthentication.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BQ-PA-BEHAVIOR@14.0.0": {
+        "label": "Behavior",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BehaviorQualifier",
+          "id": "BQ-PA-BEHAVIOR",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "source_id": "bian-semantic-api:14.0.0:PartyAuthentication.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:SG-PA-1@14.0.0": {
+        "label": "Party Authentication Assessment",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceGroup",
+          "id": "SG-PA-1",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "The operations BIAN tags 'PartyAuthenticationAssessment' in Party Authentication.",
+          "attributes": {
+            "source_id": "bian-semantic-api:14.0.0:PartyAuthentication.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:SO-PA-01@14.0.0": {
+        "label": "Party Authentication: Update",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-PA-01",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "canonical_id": "BIAN-PARTY-AUTHENTICATION-UPDATE",
+          "description": "PUT /PartyAuthentication/{partyauthenticationid}/Update in BIAN's Semantic API 14.0.0.",
+          "attributes": {
+            "action_term": "Update",
+            "http_method": "PUT",
+            "input_attributes": [
+              "CustomerReference",
+              "PartyReference",
+              "PartyAuthenticationAssessmentProfile",
+              "AuthenticationType",
+              "PartyAuthenticationConsolidationRecord",
+              "CustomerContactAuthenticationLevel",
+              "AuthorisationTokenReference",
+              "RefreshTokenReference"
+            ],
+            "output_attributes": [
+              "CustomerReference",
+              "PartyReference",
+              "PartyAuthenticationAssessmentProfile",
+              "AuthenticationType",
+              "PartyAuthenticationConsolidationRecord",
+              "CustomerContactAuthenticationLevel",
+              "AuthorisationTokenReference",
+              "RefreshTokenReference"
+            ],
+            "source_id": "bian-semantic-api:14.0.0:PartyAuthentication.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:SO-PA-02@14.0.0": {
+        "label": "Party Authentication: Evaluate",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-PA-02",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "canonical_id": "BIAN-PARTY-AUTHENTICATION-EVALUATE",
+          "description": "POST /PartyAuthentication/Evaluate in BIAN's Semantic API 14.0.0.",
+          "attributes": {
+            "action_term": "Evaluate",
+            "http_method": "POST",
+            "input_attributes": [
+              "CustomerReference",
+              "PartyReference",
+              "PartyAuthenticationAssessmentProfile",
+              "AuthenticationType",
+              "PartyAuthenticationConsolidationRecord",
+              "CustomerContactAuthenticationLevel",
+              "AuthorisationTokenReference",
+              "RefreshTokenReference"
+            ],
+            "output_attributes": [
+              "CustomerReference",
+              "PartyReference",
+              "PartyAuthenticationAssessmentProfile",
+              "AuthenticationType",
+              "PartyAuthenticationConsolidationRecord",
+              "CustomerContactAuthenticationLevel",
+              "AuthorisationTokenReference",
+              "RefreshTokenReference"
+            ],
+            "source_id": "bian-semantic-api:14.0.0:PartyAuthentication.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:SO-PA-03@14.0.0": {
+        "label": "Party Authentication: Exchange",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-PA-03",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "canonical_id": "BIAN-PARTY-AUTHENTICATION-EXCHANGE",
+          "description": "PUT /PartyAuthentication/{partyauthenticationid}/Exchange in BIAN's Semantic API 14.0.0.",
+          "attributes": {
+            "action_term": "Exchange",
+            "http_method": "PUT",
+            "input_attributes": [
+              "CustomerReference",
+              "PartyReference",
+              "PartyAuthenticationAssessmentProfile",
+              "AuthenticationType",
+              "PartyAuthenticationConsolidationRecord",
+              "CustomerContactAuthenticationLevel",
+              "AuthorisationTokenReference",
+              "RefreshTokenReference"
+            ],
+            "output_attributes": [
+              "CustomerReference",
+              "PartyReference",
+              "PartyAuthenticationAssessmentProfile",
+              "AuthenticationType",
+              "PartyAuthenticationConsolidationRecord",
+              "CustomerContactAuthenticationLevel",
+              "AuthorisationTokenReference",
+              "RefreshTokenReference"
+            ],
+            "source_id": "bian-semantic-api:14.0.0:PartyAuthentication.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:SO-PA-04@14.0.0": {
+        "label": "Party Authentication: Execute",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-PA-04",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "canonical_id": "BIAN-PARTY-AUTHENTICATION-EXECUTE",
+          "description": "PUT /PartyAuthentication/{partyauthenticationid}/Execute in BIAN's Semantic API 14.0.0.",
+          "attributes": {
+            "action_term": "Execute",
+            "http_method": "PUT",
+            "input_attributes": [
+              "CustomerReference",
+              "PartyReference",
+              "PartyAuthenticationAssessmentProfile",
+              "AuthenticationType",
+              "PartyAuthenticationConsolidationRecord",
+              "CustomerContactAuthenticationLevel",
+              "AuthorisationTokenReference",
+              "RefreshTokenReference"
+            ],
+            "output_attributes": [
+              "CustomerReference",
+              "PartyReference",
+              "PartyAuthenticationAssessmentProfile",
+              "AuthenticationType",
+              "PartyAuthenticationConsolidationRecord",
+              "CustomerContactAuthenticationLevel",
+              "AuthorisationTokenReference",
+              "RefreshTokenReference"
+            ],
+            "source_id": "bian-semantic-api:14.0.0:PartyAuthentication.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:SO-PA-05@14.0.0": {
+        "label": "Party Authentication: Request",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-PA-05",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "canonical_id": "BIAN-PARTY-AUTHENTICATION-REQUEST",
+          "description": "PUT /PartyAuthentication/{partyauthenticationid}/Request in BIAN's Semantic API 14.0.0.",
+          "attributes": {
+            "action_term": "Request",
+            "http_method": "PUT",
+            "input_attributes": [
+              "CustomerReference",
+              "PartyReference",
+              "PartyAuthenticationAssessmentProfile",
+              "AuthenticationType",
+              "PartyAuthenticationConsolidationRecord",
+              "CustomerContactAuthenticationLevel",
+              "AuthorisationTokenReference",
+              "RefreshTokenReference"
+            ],
+            "output_attributes": [
+              "CustomerReference",
+              "PartyReference",
+              "PartyAuthenticationAssessmentProfile",
+              "AuthenticationType",
+              "PartyAuthenticationConsolidationRecord",
+              "CustomerContactAuthenticationLevel",
+              "AuthorisationTokenReference",
+              "RefreshTokenReference"
+            ],
+            "source_id": "bian-semantic-api:14.0.0:PartyAuthentication.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:SO-PA-06@14.0.0": {
+        "label": "Party Authentication: Grant",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-PA-06",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "canonical_id": "BIAN-PARTY-AUTHENTICATION-GRANT",
+          "description": "PUT /PartyAuthentication/{partyauthenticationid}/Grant in BIAN's Semantic API 14.0.0.",
+          "attributes": {
+            "action_term": "Grant",
+            "http_method": "PUT",
+            "input_attributes": [
+              "CustomerReference",
+              "PartyReference",
+              "PartyAuthenticationAssessmentProfile",
+              "AuthenticationType",
+              "PartyAuthenticationConsolidationRecord",
+              "CustomerContactAuthenticationLevel",
+              "AuthorisationTokenReference",
+              "RefreshTokenReference"
+            ],
+            "output_attributes": [
+              "CustomerReference",
+              "PartyReference",
+              "PartyAuthenticationAssessmentProfile",
+              "AuthenticationType",
+              "PartyAuthenticationConsolidationRecord",
+              "CustomerContactAuthenticationLevel",
+              "AuthorisationTokenReference",
+              "RefreshTokenReference"
+            ],
+            "source_id": "bian-semantic-api:14.0.0:PartyAuthentication.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:SO-PA-07@14.0.0": {
+        "label": "Party Authentication: Retrieve",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-PA-07",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "canonical_id": "BIAN-PARTY-AUTHENTICATION-RETRIEVE",
+          "description": "GET /PartyAuthentication/{partyauthenticationid}/Retrieve in BIAN's Semantic API 14.0.0.",
+          "attributes": {
+            "action_term": "Retrieve",
+            "http_method": "GET",
+            "input_attributes": [],
+            "output_attributes": [
+              "CustomerReference",
+              "PartyReference",
+              "PartyAuthenticationAssessmentProfile",
+              "AuthenticationType",
+              "PartyAuthenticationConsolidationRecord",
+              "CustomerContactAuthenticationLevel",
+              "AuthorisationTokenReference",
+              "RefreshTokenReference"
+            ],
+            "source_id": "bian-semantic-api:14.0.0:PartyAuthentication.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:CR-PE@1.0": {
+        "label": "Payment Execution Operating Session",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ControlRecord",
+          "id": "CR-PE",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic: the session in which payment instructions are executed, cleared and settled (modelled on BIAN 14.0.0 Payment Rail).",
+          "attributes": {
+            "attributes": [
+              "execution_reference",
+              "payment_instruction_reference",
+              "amount",
+              "currency",
+              "settlement_date",
+              "execution_status"
+            ]
+          }
+        }
+      },
+      "A2:BQ-PE-CLEARING@1.0": {
+        "label": "Clearing and Settlement",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BehaviorQualifier",
+          "id": "BQ-PE-CLEARING",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic: clearing the payment and settling it between institutions."
+        }
+      },
+      "A2:BQ-PE-OUTBOUND@1.0": {
+        "label": "Outbound Transaction",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BehaviorQualifier",
+          "id": "BQ-PE-OUTBOUND",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic: sending the payment to the receiving institution."
+        }
+      },
+      "A2:SG-PE-1@1.0": {
+        "label": "Execution",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceGroup",
+          "id": "SG-PE-1",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic: operations that execute and report a payment."
+        }
+      },
+      "A2:SO-PE-01@1.0": {
+        "label": "Initiate Payment Execution",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-PE-01",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic: initiate payment execution (in the style of BIAN 14.0.0 Payment Rail).",
+          "attributes": {
+            "action_term": "Initiate",
+            "behavior_qualifier": null,
+            "input_attributes": [
+              "payment_instruction_reference",
+              "amount",
+              "currency"
+            ],
+            "output_attributes": [
+              "execution_reference",
+              "execution_status"
+            ]
+          }
+        }
+      },
+      "A2:SO-PE-02@1.0": {
+        "label": "Execute Payment Clearing and Settlement",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-PE-02",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic: execute payment clearing and settlement (in the style of BIAN 14.0.0 Payment Rail).",
+          "attributes": {
+            "action_term": "Execute",
+            "behavior_qualifier": null,
+            "input_attributes": [
+              "execution_reference"
+            ],
+            "output_attributes": [
+              "execution_status",
+              "settlement_date"
+            ]
+          }
+        }
+      },
+      "A2:SO-PE-03@1.0": {
+        "label": "Retrieve Payment Execution",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-PE-03",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic: retrieve payment execution (in the style of BIAN 14.0.0 Payment Rail).",
+          "attributes": {
+            "action_term": "Retrieve",
+            "behavior_qualifier": null,
+            "input_attributes": [
+              "execution_reference"
+            ],
+            "output_attributes": [
+              "execution_status",
+              "settlement_date"
+            ]
+          }
+        }
+      },
+      "A2:BBOA-PARTY-REF@1.0": {
+        "label": "party reference",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-PARTY-REF",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "The reference that identifies the party (PartyReference in BIAN 14.0.0 Semantic APIs, e.g. Party Authentication).",
+          "attributes": {
+            "personal_information": false,
+            "data_type": "string"
+          }
+        }
       }
     },
     "edges": [
@@ -793,6 +1358,346 @@
         "metadata": {
           "scope": "within-level",
           "row": "RA2-12"
+        }
+      },
+      {
+        "id": "A2:BA-OPS-EXEC-composition-BD-PAYMENTS",
+        "source": "A2:BA-OPS-EXEC@1.0",
+        "target": "A2:BD-PAYMENTS@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-01"
+        }
+      },
+      {
+        "id": "A2:SD-PA-aggregation-CR-PA",
+        "source": "A2:SD-PA@1.0",
+        "target": "A2:CR-PA@14.0.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-05"
+        }
+      },
+      {
+        "id": "A2:CR-PA-composition-BQ-PA-PASSWORD",
+        "source": "A2:CR-PA@14.0.0",
+        "target": "A2:BQ-PA-PASSWORD@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-11"
+        }
+      },
+      {
+        "id": "A2:CR-PA-composition-BQ-PA-QUESTION",
+        "source": "A2:CR-PA@14.0.0",
+        "target": "A2:BQ-PA-QUESTION@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-11"
+        }
+      },
+      {
+        "id": "A2:CR-PA-composition-BQ-PA-DOCUMENT",
+        "source": "A2:CR-PA@14.0.0",
+        "target": "A2:BQ-PA-DOCUMENT@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-11"
+        }
+      },
+      {
+        "id": "A2:CR-PA-composition-BQ-PA-DEVICE",
+        "source": "A2:CR-PA@14.0.0",
+        "target": "A2:BQ-PA-DEVICE@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-11"
+        }
+      },
+      {
+        "id": "A2:CR-PA-composition-BQ-PA-BIOMETRIC",
+        "source": "A2:CR-PA@14.0.0",
+        "target": "A2:BQ-PA-BIOMETRIC@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-11"
+        }
+      },
+      {
+        "id": "A2:CR-PA-composition-BQ-PA-BEHAVIOR",
+        "source": "A2:CR-PA@14.0.0",
+        "target": "A2:BQ-PA-BEHAVIOR@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-11"
+        }
+      },
+      {
+        "id": "A2:SD-PA-composition-SG-PA-1",
+        "source": "A2:SD-PA@1.0",
+        "target": "A2:SG-PA-1@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-03"
+        }
+      },
+      {
+        "id": "A2:SG-PA-1-composition-SO-PA-01",
+        "source": "A2:SG-PA-1@14.0.0",
+        "target": "A2:SO-PA-01@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-04"
+        }
+      },
+      {
+        "id": "A2:SO-PA-01-access-CR-PA",
+        "source": "A2:SO-PA-01@14.0.0",
+        "target": "A2:CR-PA@14.0.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-13"
+        }
+      },
+      {
+        "id": "A2:SG-PA-1-composition-SO-PA-02",
+        "source": "A2:SG-PA-1@14.0.0",
+        "target": "A2:SO-PA-02@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-04"
+        }
+      },
+      {
+        "id": "A2:SO-PA-02-access-CR-PA",
+        "source": "A2:SO-PA-02@14.0.0",
+        "target": "A2:CR-PA@14.0.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-13"
+        }
+      },
+      {
+        "id": "A2:SG-PA-1-composition-SO-PA-03",
+        "source": "A2:SG-PA-1@14.0.0",
+        "target": "A2:SO-PA-03@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-04"
+        }
+      },
+      {
+        "id": "A2:SO-PA-03-access-CR-PA",
+        "source": "A2:SO-PA-03@14.0.0",
+        "target": "A2:CR-PA@14.0.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-13"
+        }
+      },
+      {
+        "id": "A2:SG-PA-1-composition-SO-PA-04",
+        "source": "A2:SG-PA-1@14.0.0",
+        "target": "A2:SO-PA-04@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-04"
+        }
+      },
+      {
+        "id": "A2:SO-PA-04-access-CR-PA",
+        "source": "A2:SO-PA-04@14.0.0",
+        "target": "A2:CR-PA@14.0.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-13"
+        }
+      },
+      {
+        "id": "A2:SG-PA-1-composition-SO-PA-05",
+        "source": "A2:SG-PA-1@14.0.0",
+        "target": "A2:SO-PA-05@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-04"
+        }
+      },
+      {
+        "id": "A2:SO-PA-05-access-CR-PA",
+        "source": "A2:SO-PA-05@14.0.0",
+        "target": "A2:CR-PA@14.0.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-13"
+        }
+      },
+      {
+        "id": "A2:SG-PA-1-composition-SO-PA-06",
+        "source": "A2:SG-PA-1@14.0.0",
+        "target": "A2:SO-PA-06@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-04"
+        }
+      },
+      {
+        "id": "A2:SO-PA-06-access-CR-PA",
+        "source": "A2:SO-PA-06@14.0.0",
+        "target": "A2:CR-PA@14.0.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-13"
+        }
+      },
+      {
+        "id": "A2:SG-PA-1-composition-SO-PA-07",
+        "source": "A2:SG-PA-1@14.0.0",
+        "target": "A2:SO-PA-07@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-04"
+        }
+      },
+      {
+        "id": "A2:SO-PA-07-access-CR-PA",
+        "source": "A2:SO-PA-07@14.0.0",
+        "target": "A2:CR-PA@14.0.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-13"
+        }
+      },
+      {
+        "id": "A2:SD-PE-aggregation-CR-PE",
+        "source": "A2:SD-PE@1.0",
+        "target": "A2:CR-PE@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-05"
+        }
+      },
+      {
+        "id": "A2:CR-PE-composition-BQ-PE-CLEARING",
+        "source": "A2:CR-PE@1.0",
+        "target": "A2:BQ-PE-CLEARING@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-11"
+        }
+      },
+      {
+        "id": "A2:CR-PE-composition-BQ-PE-OUTBOUND",
+        "source": "A2:CR-PE@1.0",
+        "target": "A2:BQ-PE-OUTBOUND@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-11"
+        }
+      },
+      {
+        "id": "A2:SD-PE-composition-SG-PE-1",
+        "source": "A2:SD-PE@1.0",
+        "target": "A2:SG-PE-1@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-03"
+        }
+      },
+      {
+        "id": "A2:SG-PE-1-composition-SO-PE-01",
+        "source": "A2:SG-PE-1@1.0",
+        "target": "A2:SO-PE-01@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-04"
+        }
+      },
+      {
+        "id": "A2:SO-PE-01-access-CR-PE",
+        "source": "A2:SO-PE-01@1.0",
+        "target": "A2:CR-PE@1.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-13"
+        }
+      },
+      {
+        "id": "A2:SG-PE-1-composition-SO-PE-02",
+        "source": "A2:SG-PE-1@1.0",
+        "target": "A2:SO-PE-02@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-04"
+        }
+      },
+      {
+        "id": "A2:SO-PE-02-access-CR-PE",
+        "source": "A2:SO-PE-02@1.0",
+        "target": "A2:CR-PE@1.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-13"
+        }
+      },
+      {
+        "id": "A2:SG-PE-1-composition-SO-PE-03",
+        "source": "A2:SG-PE-1@1.0",
+        "target": "A2:SO-PE-03@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-04"
+        }
+      },
+      {
+        "id": "A2:SO-PE-03-access-CR-PE",
+        "source": "A2:SO-PE-03@1.0",
+        "target": "A2:CR-PE@1.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-13"
+        }
+      },
+      {
+        "id": "A2:BBO-PARTY-composition-BBOA-PARTY-REF",
+        "source": "A2:BBO-PARTY@1.0",
+        "target": "A2:BBOA-PARTY-REF@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
         }
       }
     ]
