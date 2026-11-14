@@ -285,9 +285,9 @@ Checked by `sdem check`: both ends in the architecture dataset (LC-03), kind all
 | `A3.ApplicationComponent` | `DEPLOYED_ON` | `A4.Device` | architecture | `enterprise_rule` | deployment_design | high |
 | `A3.ApplicationComponent` | `DEPLOYED_ON` | `A4.SystemSoftware` | architecture | `enterprise_rule` | deployment_design | high |
 | `A3.ApplicationComponent` | `DEPLOYED_AS` | `A4.Deployment` | architecture | `enterprise_rule` | deployment_design | high |
-| `A3.ApplicationInterface` | `EXPOSED_THROUGH` | `A4.Node` | architecture | `enterprise_rule` | network_design | low |
-| `A3.ApplicationInterface` | `EXPOSED_THROUGH` | `A4.Device` | architecture | `enterprise_rule` | network_design | low |
-| `A3.ApplicationInterface` | `EXPOSED_THROUGH` | `A4.SystemSoftware` | architecture | `enterprise_rule` | network_design | low |
+| `A3.ApplicationInterface` | `EXPOSED_THROUGH` | `A4.Node` | architecture | `enterprise_rule` | network_design | high |
+| `A3.ApplicationInterface` | `EXPOSED_THROUGH` | `A4.Device` | architecture | `enterprise_rule` | network_design | high |
+| `A3.ApplicationInterface` | `EXPOSED_THROUGH` | `A4.SystemSoftware` | architecture | `enterprise_rule` | network_design | high |
 
 #### 6.2a Relationship type record
 
@@ -308,7 +308,7 @@ Every field of a relationship type in `schema/relationship-types.json`. *Aligned
 | `owner` | yes | 14 of 14 | `application-architecture`, `business-architecture`, `data-architecture`, `enterprise-architecture`, `infrastructure-architecture` | who governs the type |
 | `source_reference` | yes | 14 of 14 | text | source reference |
 | `verification` | yes | 14 of 14 | `sdem_definition`, `sdem_definition_grounded`, `unverified_w135`, `verified`, `verified_against_archi`, `verified_intent_or_target_only` | how the type was checked |
-| `confidence` | yes | 14 of 14 | `high`, `low`, `medium` | high / medium / low |
+| `confidence` | yes | 14 of 14 | `high`, `medium` | high / medium / low |
 | `confidence_basis` | yes | 14 of 14 | text | which clause of the rule applied |
 | `reasoning` | yes | 14 of 14 | text | why the type exists |
 
@@ -457,7 +457,7 @@ Every field of a plan row in `metamodel/relationship-rules.json`.
 
 **Gap G-13** (addition; decided 2026-10-25 (owner): recorded in the detail spec; the high-level spec is not changed).
 
-Every entity, within-level row, relationship type and attribute names its source and carries reasoning and a confidence from one rule (`sdem/confidence.py`; CI fails on disagreement). Across these records: 242 high, 79 medium, 36 low.
+Every entity, within-level row, relationship type and attribute names its source and carries reasoning and a confidence from one rule (`sdem/confidence.py`; CI fails on disagreement). Across these records: 245 high, 79 medium, 33 low.
 
 ## 18. Inference engine
 

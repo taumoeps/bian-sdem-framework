@@ -726,6 +726,13 @@ class Extraction:
         if base not in used: return base
         return f"{base}-{etype.split('.')[1].upper()}"
 
+    def _boolean(self, etype, attr):
+        """Whether the metamodel types this entity's attribute as a boolean (it or a type it extends)."""
+        if not hasattr(self, '_bools'):
+            from .metamodel import MM_DIR
+            self._bools = [(x['entity'], x['name']) for x in json.loads((MM_DIR / 'entity-attributes.json').read_text(encoding='utf-8'))['attributes'] if x.get('type') == 'boolean']
+        return any(n == attr and self.mm.is_a(etype, e) for e, n in self._bools)
+
     def record(self, etype, name, page, where, rule, how, reasoning, description='', lifecycle=None, attributes=None):
         name = clean(name)
         if not name or not self.mm.known(etype) or self.mm.is_abstract(etype): return None
@@ -868,12 +875,18 @@ class Extraction:
             if not name: empty += 1; continue
             cell = lambda i: clean(row[i]) if i is not None and i < len(row) else ''
             attrs = {a: cell(i) for a, i in ai.items() if cell(i)}
+            odd = {}
+            for a_ in [x for x in attrs if self._boolean(tr['type'], x)]:   # a yes/no column into a boolean attribute — the rule's words only (HI-H01)
+                v = norm(attrs[a_]); bv = self.rules.get('boolean_values') or {}
+                if v in map(norm, bv.get('true', [])): attrs[a_] = True
+                elif v in map(norm, bv.get('false', [])): attrs[a_] = False
+                else: odd[headers[ai[a_]]] = attrs.pop(a_)   # never guessed: kept with the entity as unmapped
             r = self.record(tr['type'], name, page, f'{where}, {at(k)}', tr['id'], 'table',
                             f"listed in a table whose '{headers[ni]}' column names {tr['type'].split('.')[1]} records",
                             cell(di) or rest, self.lifecycle(cell(li)), attrs)
             if r:
                 refs.add(r['id'])
-                um = {headers[i]: cell(i) for i in extra if cell(i)}
+                um = {**{headers[i]: cell(i) for i in extra if cell(i)}, **odd}
                 if um: r.setdefault('unmapped', {}).update(um)
         self.account(page, 'table', where, 'captured', f"{tr['type'].split('.')[1]} entities read by rule {tr['id']} ({len(rows) - empty} rows)", text=' | '.join(headers), refs=refs)
         if empty: self.account(page, 'table rows', where, 'skipped', f'{empty} row(s) with an empty name')

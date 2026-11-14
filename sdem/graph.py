@@ -622,6 +622,17 @@ def main(argv=None):
             for est in sorted({Path(p).resolve().parent for p in args.paths if (Path(p).resolve().parent / _req.FILE).exists()}):
                 reg = _req.load(est)
                 report[f'requirements ({len(reg.get("requirements", []))} requirement(s))'] = _req.check(reg, {l: g.doc for l, g in fg.levels.items()})
+        if reader.origin != 'store':   # LC-16 is an error in a workspace started with zones (sdem new --hosting, WS-12): it chose them
+            for est in sorted({Path(p).resolve().parent for p in args.paths if (Path(p).resolve().parent / 'workspace.json').exists()}):
+                try: started = json.loads((est / 'workspace.json').read_text(encoding='utf-8')).get('hosting')
+                except (OSError, ValueError): started = None
+                if not started: continue
+                for k in list(fg.warnings):
+                    lc16 = [w for w in fg.warnings[k] if 'LC-16' in w]
+                    if lc16:
+                        fg.warnings[k] = [w for w in fg.warnings[k] if 'LC-16' not in w]
+                        report.setdefault(k, [])
+                        report[k] = list(report[k]) + [f"{w} — an error here: the workspace was started with its zones ({started.get('template')}, sdem new --hosting)" for w in lc16]
         edits = {}
         if reader.origin != 'store':   # AF-07: files changed since SDEM last wrote them
             from sdem.files import unrecorded

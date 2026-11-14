@@ -273,11 +273,11 @@
       ],
       "rule_version": "1.0",
       "owner": "infrastructure-architecture",
-      "source_reference": "ArchiMate 3.2 application–technology relationship: technology serves an application interface (the edge platform makes the interface reachable); SDEM names the pattern one connection, as it does for DEPLOYED_ON (B1). the owner's decisions X1–X6, 2026-11-14 (docs/design/sdem-edge-exposure-design.md).",
-      "verification": "sdem_definition",
-      "confidence": "low",
-      "confidence_basis": "no standard basis; not validated",
-      "reasoning": "What an internet-facing edge component fronts is an API — an application interface — not a platform. The target must be internet facing and in a DMZ (LC-18); sdem aid proposes it when exactly one candidate exists (AID-X01), and a person approves it with network_design evidence."
+      "source_reference": "ArchiMate 3.2 application–technology relationship: Node serving Application Interface — Archi's implementation of the ArchiMate 3.2 relationship tables (relationships.xml, version 3.2, read 2026-11-14: Node → ApplicationInterface allows 'fortv', v = serving). The owner's decisions X1–X6, 2026-11-14 (docs/design/sdem-edge-exposure-design.md).",
+      "verification": "sdem_definition_grounded",
+      "confidence": "high",
+      "confidence_basis": "SDEM's own definition, grounded in an ArchiMate 3.2 pattern checked against the relationship tables",
+      "reasoning": "What an internet-facing edge platform fronts is an API — an application interface. ArchiMate 3.2 lets a Node serve an Application Interface directly; EXPOSED_THROUGH names that serving from the interface's side, limited to a platform that is internet facing and in a DMZ (LC-18). sdem aid proposes it when exactly one candidate exists (AID-X01); a person approves it with network_design evidence."
     },
     {
       "mapping_type_id": "INTERFACE_EXPOSED_THROUGH_DEVICE",
@@ -293,11 +293,11 @@
       ],
       "rule_version": "1.0",
       "owner": "infrastructure-architecture",
-      "source_reference": "ArchiMate 3.2 application–technology relationship: technology serves an application interface (the edge platform makes the interface reachable); SDEM names the pattern one connection, as it does for DEPLOYED_ON (B1). the owner's decisions X1–X6, 2026-11-14 (docs/design/sdem-edge-exposure-design.md).",
-      "verification": "sdem_definition",
-      "confidence": "low",
-      "confidence_basis": "no standard basis; not validated",
-      "reasoning": "What an internet-facing edge component fronts is an API — an application interface — not a platform. The target must be internet facing and in a DMZ (LC-18); sdem aid proposes it when exactly one candidate exists (AID-X01), and a person approves it with network_design evidence."
+      "source_reference": "ArchiMate 3.2 application–technology relationship: Device serving Application Interface — Archi's implementation of the ArchiMate 3.2 relationship tables (relationships.xml, version 3.2, read 2026-11-14: Device → ApplicationInterface allows 'fortv', v = serving). The owner's decisions X1–X6, 2026-11-14 (docs/design/sdem-edge-exposure-design.md).",
+      "verification": "sdem_definition_grounded",
+      "confidence": "high",
+      "confidence_basis": "SDEM's own definition, grounded in an ArchiMate 3.2 pattern checked against the relationship tables",
+      "reasoning": "What an internet-facing edge platform fronts is an API — an application interface. ArchiMate 3.2 lets a Device serve an Application Interface directly; EXPOSED_THROUGH names that serving from the interface's side, limited to a platform that is internet facing and in a DMZ (LC-18). sdem aid proposes it when exactly one candidate exists (AID-X01); a person approves it with network_design evidence."
     },
     {
       "mapping_type_id": "INTERFACE_EXPOSED_THROUGH_SYSTEM_SOFTWARE",
@@ -313,11 +313,11 @@
       ],
       "rule_version": "1.0",
       "owner": "infrastructure-architecture",
-      "source_reference": "ArchiMate 3.2 application–technology relationship: technology serves an application interface (the edge platform makes the interface reachable); SDEM names the pattern one connection, as it does for DEPLOYED_ON (B1). the owner's decisions X1–X6, 2026-11-14 (docs/design/sdem-edge-exposure-design.md).",
-      "verification": "sdem_definition",
-      "confidence": "low",
-      "confidence_basis": "no standard basis; not validated",
-      "reasoning": "What an internet-facing edge component fronts is an API — an application interface — not a platform. The target must be internet facing and in a DMZ (LC-18); sdem aid proposes it when exactly one candidate exists (AID-X01), and a person approves it with network_design evidence."
+      "source_reference": "ArchiMate 3.2 application–technology relationship: SystemSoftware serving Application Interface — Archi's implementation of the ArchiMate 3.2 relationship tables (relationships.xml, version 3.2, read 2026-11-14: SystemSoftware → ApplicationInterface allows 'fortv', v = serving). The owner's decisions X1–X6, 2026-11-14 (docs/design/sdem-edge-exposure-design.md).",
+      "verification": "sdem_definition_grounded",
+      "confidence": "high",
+      "confidence_basis": "SDEM's own definition, grounded in an ArchiMate 3.2 pattern checked against the relationship tables",
+      "reasoning": "What an internet-facing edge platform fronts is an API — an application interface. ArchiMate 3.2 lets a SystemSoftware serve an Application Interface directly; EXPOSED_THROUGH names that serving from the interface's side, limited to a platform that is internet facing and in a DMZ (LC-18). sdem aid proposes it when exactly one candidate exists (AID-X01); a person approves it with network_design evidence."
     }
   ],
   "deprecated_relationships": []

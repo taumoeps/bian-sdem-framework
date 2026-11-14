@@ -154,7 +154,10 @@
       "lifecycle": [
         "status",
         "lifecycle"
-      ]
+      ],
+      "attributes": {
+        "internet_facing": ["internet facing", "internet-facing", "public", "exposure", "exposed to internet"]
+      }
     },
     {
       "id": "HT-04",
@@ -180,7 +183,13 @@
       "lifecycle": [
         "status",
         "lifecycle"
-      ]
+      ],
+      "attributes": {
+        "site": ["site", "hosting site", "data centre", "data center"],
+        "cloud_provider": ["cloud provider", "cloud"],
+        "region": ["region", "cloud region"],
+        "internet_facing": ["internet facing", "internet-facing", "public", "exposure", "exposed to internet"]
+      }
     },
     {
       "id": "HT-05",
@@ -202,7 +211,13 @@
       "lifecycle": [
         "status",
         "lifecycle"
-      ]
+      ],
+      "attributes": {
+        "site": ["site", "hosting site", "data centre", "data center"],
+        "cloud_provider": ["cloud provider", "cloud"],
+        "region": ["region", "cloud region"],
+        "internet_facing": ["internet facing", "internet-facing", "public", "exposure", "exposed to internet"]
+      }
     },
     {
       "id": "HT-06",
@@ -219,7 +234,13 @@
       "lifecycle": [
         "status",
         "lifecycle"
-      ]
+      ],
+      "attributes": {
+        "site": ["site", "hosting site", "data centre", "data center"],
+        "cloud_provider": ["cloud provider", "cloud"],
+        "region": ["region", "cloud region"],
+        "internet_facing": ["internet facing", "internet-facing", "public", "exposure", "exposed to internet"]
+      }
     },
     {
       "id": "HT-07",
@@ -298,6 +319,7 @@
     "action item",
     "open question"
   ],
+  "boolean_values": {"note": "a yes/no column read into a boolean attribute (internet_facing): these words only; any other value stays with the entity as unmapped, never guessed", "true": ["yes", "y", "true", "public", "external", "internet", "internet facing", "internet-facing", "exposed"], "false": ["no", "n", "false", "internal", "private", "not exposed", "none"]},
   "link_tables": [
     {
       "id": "HL-01",

@@ -21,7 +21,7 @@ def sdem(*args, cwd=ROOT):
 class TemplateTests(unittest.TestCase):
     def test_the_templates_match_the_metamodel(self):                                    # DG-02
         self.assertEqual(vp.check(), [])
-        self.assertEqual(set(IDS), {'capabilities', 'process', 'bian', 'application', 'technology', 'layered'})
+        self.assertEqual(set(IDS), {'capabilities', 'process', 'bian', 'application', 'technology', 'layered', 'zones'})   # T8 zones: 2026-11-14
 
     def test_the_check_catches_a_type_the_metamodel_does_not_have(self):
         tf = vp.templates(); tf['templates'][0]['rows'][0]['groups'][0]['type'] = 'A1.NoSuchType'

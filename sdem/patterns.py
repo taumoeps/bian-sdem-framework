@@ -72,6 +72,8 @@ def structure_issues(st, all_types, base_mm, merged, known_attr):
     zones = {z['id']: z for z in S.get('zones', [])}
     for z in zones.values():
         if z.get('entity') and z['entity'] not in all_types: out.append(f"{who}: zone {z['id']}: {z['entity']} is not a type")
+        if 'zone_kind' in z and z['zone_kind'] not in ('cloud', 'on_premises', 'internal', 'dmz', 'private'):   # PR-13a
+            out.append(f"{who}: zone {z['id']}: zone_kind {z['zone_kind']!r} — cloud, on_premises, internal, dmz or private (a network zone's kind, AT-A4-35)")
     for r in roles.values():
         if r.get('zone') and r['zone'] not in zones: out.append(f"{who}: role {r['id']} is in zone {r['zone']!r}, which is not declared")
         z = zones.get(r.get('zone'))
@@ -165,6 +167,15 @@ def evaluate(datasets, maps, mm, structures, exceptions=(), as_of=None):
     from . import profile as _p
     as_of = as_of or today()
     recs = {i['id']: (l, i) for l, d in datasets.items() for i in d.get('instances', [])}
+    placed, zkind = {}, {}   # PR-13a: each A4 shape's zones, innermost first, and each zone's kind — from the zone records (RA4-38)
+    if datasets.get('A4'):
+        from .conformance import zones_of
+        shapes, zparent, _ = zones_of(datasets['A4'], mm)
+        zkind = {i['id']: (i.get('attributes') or {}).get('zone_kind') for i in datasets['A4'].get('instances', []) if mm.is_a(i['type'], 'A4.NetworkZone')}
+        for x, zs in shapes.items():
+            chain, q = [], (zs or [None])[0]
+            while q: chain.append(q); q = zparent.get(q)
+            placed[x] = chain
     inside, across = {}, {}
     for d in datasets.values():
         for r in d.get('relationships', []):
@@ -227,6 +238,11 @@ def evaluate(datasets, maps, mm, structures, exceptions=(), as_of=None):
                     at = recs[x][1].get('attributes') or {}
                     miss = [n for n in r.get('require', []) if _unknown(at, n)]
                     if miss: fails.append(f"{x}: missing {', '.join(miss)}")
+                    if z and z.get('zone_kind') and recs[x][0] == 'A4' and (not z.get('entity') or mm.is_a(recs[x][1]['type'], z['entity'])):   # PR-13a
+                        chain = placed.get(x) or []
+                        if not chain: unknown.append(f"{x}: in no network zone — where it sits is not known ({z.get('label') or z['id']}, LC-16)")
+                        elif z['zone_kind'] not in {zkind.get(q) for q in chain}:
+                            fails.append(f"{x}: is in {chain[0]} ({zkind.get(chain[0])}) — must be in a {z['zone_kind']} zone ({z.get('label') or z['id']})")
                     for c in checks:
                         ok = test(c, recs[x][1].get(c['attribute'], at.get(c['attribute'])), as_of)
                         where = f" ({z['label']})" if z and c is z.get('check') else ''

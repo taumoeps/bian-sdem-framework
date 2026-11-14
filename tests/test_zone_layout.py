@@ -56,6 +56,18 @@ class LayoutTests(unittest.TestCase):
         page = render(EX / 'fx-dealing' / 'graph', now='2026-11-14 00:00:00')
         self.assertIn('A4 Technology — by network zone', page); self.assertIn('Level 2 · Co-location rack — markets', page)
 
+    def test_the_zones_diagram_and_the_workbench(self):   # T8, DG-13
+        from sdem import viewpoints
+        d = viewpoints.build(viewpoints.Data(EX / 'payment-initiation'), 'zones')
+        self.assertIn('INF-APIGW-PAY', d['elements']); self.assertIn('ENV-PAY-UAT', d['elements'])   # every environment: a record view
+        self.assertIn('class="dv-zone"', d['svg']); self.assertIn('Level 1 · Security zone (DMZ) — payments', d['svg'])
+        self.assertEqual(d['svg'].count('class="dv-zonelink"'), 2)   # ZC-01 and ZC-02
+        self.assertEqual(viewpoints.check(), [])
+        from sdem.workbench import _diagrams
+        self.assertIn('zones', _diagrams(EX / 'payment-initiation'))
+        empty = viewpoints.build(viewpoints.Data(EX / 'digital-lending'), 'zones')   # no A4: said, not drawn
+        self.assertEqual(empty['elements'], []); self.assertTrue(empty['notes'])
+
 
 class ExamplesPhysicallyCompleteTests(unittest.TestCase):   # the gate: no physical gap in any example (LC-15, LC-16, LC-21, LC-22)
     def test_no_physical_gap_in_any_example(self):

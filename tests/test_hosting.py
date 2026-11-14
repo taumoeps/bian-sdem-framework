@@ -117,6 +117,17 @@ class PolicyTests(Base):   # PR-32, WS-12
         self.assertFalse(any('inferred' in i['attributes'] for i in d['instances']))                         # the person's choice
         self.assertEqual(sdem('check', '--workspace', self.tmp / 'ledger', cwd=self.tmp)[0], 0)
 
+    def test_a_shape_in_no_zone_is_an_error_in_a_workspace_started_with_zones(self):   # LC-16, the owner 2026-11-14
+        for name, hosting in (('zoned', ['--hosting', 'cloud']), ('plain', [])):
+            self.assertEqual(sdem('new', '--workspace', name, '--person', 'jane.architect', *hosting, cwd=self.tmp)[0], 0)
+            d = a4(self.tmp / name)
+            d['instances'].append({'id': 'INF-LONE', 'type': 'A4.Node', 'version': '1', 'name': 'A server', 'lifecycle_status': 'active'})
+            (self.tmp / name / 'a4-technology.json').write_text(json.dumps(d), encoding='utf-8')
+        code, out, err = sdem('check', '--workspace', self.tmp / 'zoned', cwd=self.tmp)
+        self.assertNotEqual(code, 0); self.assertRegex(out + err, r'ERROR: .*INF-LONE.*LC-16.*an error here')
+        code, out, err = sdem('check', '--workspace', self.tmp / 'plain', cwd=self.tmp)
+        self.assertEqual(code, 0, out + err); self.assertRegex(out + err, r'WARN: .*LC-16')
+
 
 class ConnectionTests(Base):   # ZC-01…ZC-04
     def test_the_zone_connections_are_worked_out(self):
@@ -133,6 +144,16 @@ class ConnectionTests(Base):   # ZC-01…ZC-04
         d = a4(PAY); next(i for i in d['instances'] if i['id'] == 'INF-PG-PAY-PROD')['attributes']['site'] = 'DC-1'
         _, w, _ = check_level(d, self.mm)
         self.assertTrue(any(x.startswith('instance INF-PG-PAY-PROD: is in a cloud zone, but HS-01') for x in w), w)
+
+    def test_what_a_lost_zone_connection_cuts_off(self):   # ZC-05
+        from sdem.zones import cut
+        r = cut(PAY, 'ZONE-PAY-DMZ', 'ZONE-PAY-INTERNAL')   # the firewall between them — nesting is no way round it
+        self.assertEqual([(x['source'], x['target']) for x in r['crossing']], [('INF-APIGW-PAY', 'DEP-PAYHUB-PROD')])
+        dep = {d['id']: d['level'] for d in r['depends']}
+        self.assertEqual((dep['IFC-PAY-API'], dep['APP-PAY-HUB'], dep['SD-PI'], dep['CAP-PAY-010']), ('A3', 'A3', 'A2', 'A1'))   # up to the business
+        r = cut(PAY, 'ZONE-PAY-CLOUD', 'ZONE-PAY-ONPREM')
+        self.assertEqual([(x['source'], x['target']) for x in r['crossing']], [('DEP-PAYEXEC-PROD', 'INF-CORE-LEDGER-HOST')])
+        with self.assertRaises(ValueError): cut(PAY, 'ZONE-PAY-DMZ', 'ZONE-PAY-ONPREM')   # not a connection SDEM works out
 
 
 class EvidenceAgainstTheExamplesTests(unittest.TestCase):   # G1–G3 (HS-11…HS-13): with its zones removed, each example's hosting is inferred as recorded

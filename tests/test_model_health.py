@@ -21,7 +21,7 @@ class StatusTests(unittest.TestCase):
     def test_every_unsettled_item_has_a_source_and_a_way_to_settle_it(self):  # MS-01, MS-02
         r = H.status()
         self.assertEqual(r['summary']['cross-layer link type']['total'], 14)                                       # ten link types; DEPLOYED_ON and EXPOSED_THROUGH have three target types each (B1, X1)
-        self.assertEqual(len({i['id'].rsplit(' ', 1)[0] for i in r['items'] if i['area'] == 'cross-layer link type'}), 6)   # 6 of the 10 unsettled: 5 after B1, and EXPOSED_THROUGH (SDEM's own, not yet checked against ArchiMate)
+        self.assertEqual(len({i['id'].rsplit(' ', 1)[0] for i in r['items'] if i['area'] == 'cross-layer link type'}), 6)   # 5 after B1, and EXPOSED_THROUGH — grounded in the ArchiMate 3.2 tables (2026-11-14), still confirmed on review like B1's grounded types
         links = {i['id']: i for i in r['items'] if i['area'] == 'cross-layer link type'}
         self.assertIn('A3.ApplicationComponent DEPLOYED_AS A4.Deployment', links)                                # an SDEM definition, not a standard's
         self.assertNotIn('A3.ApplicationComponent DEPLOYED_ON A4.SystemSoftware', links)                         # verified against ArchiMate 3.2 (B1)

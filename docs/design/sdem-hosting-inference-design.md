@@ -84,3 +84,4 @@ The connections between zones are SDEM's rules, worked out from the zone structu
 | ZC-02 | the level-1 zones of one level 0 are connected with each other (DMZ ↔ internal) |
 | ZC-03 | a zone is connected with the zone it is part of |
 | ZC-04 | a shape reaches another through their zones — `sdem zones path A B` names the route |
+| ZC-05 | what a lost zone connection cuts off — `sdem zones cut A B`: the A4 links with one end on each side, and everything that depends on their ends up to A1 (trace up). Nesting is containment, not a way round a firewall: cutting ZC-03 puts the inner zone against the rest, cutting ZC-01 or ZC-02 the one zone against the other (the owner, 2026-11-14) |

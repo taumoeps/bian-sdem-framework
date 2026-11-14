@@ -107,9 +107,53 @@ def _focus_set(D, fid):
     return keep
 
 
+def _zones_build(D, T, nt, focus=None):
+    """T8: A4 laid out by its network zones (sdem/zone_layout.py) — every environment; zones as ArchiMate groupings, ZC-01/ZC-02 as arrows."""
+    from .zone_layout import layout, LayoutError
+    from .metamodel import Metamodel
+    mm = Metamodel.load()
+    a4 = {i: r for i, r in D.rec.items() if r['layer'] == 'A4'}
+    doc = {'instances': [{k: v for k, v in r.items() if k not in ('layer', 't')} for r in a4.values()],
+           'relationships': [r for r in D.rels if r['source'] in a4 and r['target'] in a4]}
+    try: lay = layout(doc, mm, environment='all')
+    except LayoutError as x: return None, [f'Nothing to draw by zone: {x}.']
+    keep = _focus_set(D, focus) if focus else None
+    sh = [s for s in lay['shapes'] if keep is None or s['id'] in keep]
+    dy = [abs(a['at'][1] - b['at'][1]) for a in sh for b in sh if a is not b and a['at'][0] == b['at'][0] and a['at'][1] != b['at'][1]]
+    H = max(560, min(6000, int((LEAF_H + 40) / min(dy)) if dy else 560))   # a stack under its platform: a box and its label apart
+    W = 900
+    for a in sh:   # then wide enough that no two boxes overlap: any pair closer than a box in height must be a box apart in width
+        for b in sh:
+            ddx, ddy = abs(a['at'][0] - b['at'][0]), abs(a['at'][1] - b['at'][1])
+            if a is not b and ddx > 0 and ddy * (H - 90) < LEAF_H + 18: W = max(W, min(6000, int((LEAF_W + 24) / ddx) + 60))
+    X = lambda f: 30 + f * (W - 60); Y = lambda f: 60 + f * (H - 90)
+    drawn = {s['id']: {'id': s['id'], 'r': D.rec[s['id']], 'kids': [], 'w': LEAF_W, 'h': LEAF_H, 'x': X(s['at'][0]) - LEAF_W / 2, 'y': Y(s['at'][1]) - LEAF_H / 2} for s in sh}
+    groups = [(z['label'], X(z['rect'][0]), Y(z['rect'][1]), X(z['rect'][2]), Y(z['rect'][3])) for z in lay['zones']]
+    if lay['strip']: q = lay['strip']['rect']; groups.append((lay['strip']['label'], X(q[0]), Y(q[1]), X(q[2]), Y(q[3])))
+    rect = {z['id']: (X(z['rect'][0]), Y(z['rect'][1]), X(z['rect'][2]), Y(z['rect'][3])) for z in lay['zones']}
+    arrows = []
+    for c in lay['connections']:
+        a, b = rect[c['from']], rect[c['to']]
+        if a[2] <= b[0] or b[2] <= a[0]:   # side by side: across the gap, at the middle of their overlap
+            l, r = (a, b) if a[2] <= b[0] else (b, a); y = (max(l[1], r[1]) + min(l[3], r[3])) / 2; arrows.append((l[2] + 4, y, r[0] - 4, y, c['rule']))
+        else:                              # one above the other
+            t, u = (a, b) if a[3] <= b[1] else (b, a); x = (max(t[0], u[0]) + min(t[2], u[2])) / 2; arrows.append((x, t[3] + 4, x, u[1] - 4, c['rule']))
+    return {'drawn': drawn, 'groups': groups, 'arrows': arrows, 'W': W + 20, 'H': H + 20, 'lay': lay}, []
+
+
 def build(D, tid, focus=None):
     """The diagram for one template: {'template', 'svg', 'notes', 'elements', 'lines', 'missing_layers'} (DG-01…DG-12)."""
     T, nt = template(tid), templates()['notation']
+    if T.get('layout') == 'zones':
+        z, notes = _zones_build(D, T, nt, focus) if 'A4' in D.present else (None, ['The workspace has no A4 dataset (a4-technology.json), so this view is empty.'])
+        drawn = z['drawn'] if z else {}
+        edges = _route(D, T, nt, drawn) if drawn else []
+        uid = hashlib.sha1(f'{tid}|{focus}'.encode()).hexdigest()[:6]
+        svg = _svg(D, T, drawn, edges, [], z['W'] if z else 700, z['H'] if z else 160, uid, groups=z['groups'] if z else (), arrows=z['arrows'] if z else ())
+        if z and z['lay']['left_out']: notes.append(f"{len(z['lay']['left_out'])} retired record(s) are not drawn: {', '.join(z['lay']['left_out'])}.")
+        return {'template': tid, 'code': T['code'], 'name': T['name'], 'viewpoint': T['viewpoint'], 'layer': T['layer'], 'focus': focus,
+                'svg': svg, 'notes': notes, 'missing_layers': [] if 'A4' in D.present else ['A4'], 'elements': list(drawn),
+                'lines': [{'source': x['s'], 'target': x['t'], 'line': x['style'], 'label': x['label'], 'stands_for': x['refs']} for x in edges]}
     keep = _focus_set(D, focus) if focus else None
     rows, drawn, missing = [], {}, []
     for row in T['rows']:
@@ -309,13 +353,15 @@ CSS = """.sdv{--dv-bg:#fff;--dv-card:#fff;--dv-text:#1f2933;--dv-muted:#5f6c7b;-
 .sdv .dv-mk-hollow{fill:var(--dv-card);stroke:var(--dv-line);stroke-width:1.3}.sdv .dv-mk-fill{fill:var(--dv-line)}.sdv .dv-mk-line{fill:none;stroke:var(--dv-line);stroke-width:1.4}
 .sdv .dv-pill{fill:var(--dv-pill)}.sdv .dv-plabel{fill:var(--dv-pilltext);font-size:10.5px;font-weight:600}
 .sdv .dv-node{cursor:pointer;outline:none}.sdv .dv-node:focus>.dv-box,.sdv .dv-node:hover>.dv-box{stroke-width:3}
-.sdv.dv-focus .dv-node,.sdv.dv-focus .dv-link{opacity:.18}.sdv.dv-focus .dv-on{opacity:1}"""
+.sdv.dv-focus .dv-node,.sdv.dv-focus .dv-link{opacity:.18}.sdv.dv-focus .dv-on{opacity:1}
+.dv-zone rect{fill:none;stroke:var(--dv-muted);stroke-width:1.2;stroke-dasharray:7 4}.dv-zonelabel{fill:var(--dv-muted);font-size:12px;font-weight:700}
+.dv-zonelink path{stroke:var(--dv-line);stroke-width:1.6;fill:none}"""
 
 LINE = {'realization': ('tri', 'dash'), 'serving': ('open', ''), 'access': ('small', 'dot'), 'assignment': ('fill', ''), 'triggering': ('fill', ''),
         'flow': ('fill', 'dash'), 'association': (None, ''), 'composition': (None, ''), 'aggregation': (None, ''), 'specialization': ('tri', '')}
 
 
-def _svg(D, T, drawn, edges, bands, W, H, uid):
+def _svg(D, T, drawn, edges, bands, W, H, uid, groups=(), arrows=()):
     m = lambda k: f'dv{uid}-{k}'
     out = [f'<svg class="sdv" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W:.0f} {H:.0f}" width="{W:.0f}" height="{H:.0f}" role="img" aria-label="{e(T["name"])}">',
            f'<style>{CSS}</style><defs>'
@@ -327,6 +373,11 @@ def _svg(D, T, drawn, edges, bands, W, H, uid):
            f'<marker id="{m("dia")}" viewBox="0 0 14 12" refX="1" refY="6" markerWidth="13" markerHeight="11" orient="auto-start-reverse"><path d="M1 6L7 1L13 6L7 11z" class="dv-mk-fill"/></marker>'
            f'<marker id="{m("odia")}" viewBox="0 0 14 12" refX="1" refY="6" markerWidth="13" markerHeight="11" orient="auto-start-reverse"><path d="M1 6L7 1L13 6L7 11z" class="dv-mk-hollow"/></marker>'
            '</defs>', f'<rect class="dv-bg" width="{W:.0f}" height="{H:.0f}" rx="12"/>']
+    for label, x0, y0, x1, y1 in groups:   # T8: a network zone, drawn as an ArchiMate grouping
+        out.append(f'<g class="dv-zone"><rect x="{x0:.0f}" y="{y0:.0f}" width="{x1 - x0:.0f}" height="{y1 - y0:.0f}" rx="4"/>'
+                   f'<text class="dv-zonelabel" x="{x0 + 10:.0f}" y="{y0 + 17:.0f}">{e(label)}</text></g>')
+    for x0, y0, x1, y1, rule in arrows:   # T8: a zone connection SDEM works out (ZC-01, ZC-02)
+        out.append(f'<g class="dv-zonelink"><path d="M{x0:.0f} {y0:.0f} L{x1:.0f} {y1:.0f}" marker-start="url(#{m("fill")})" marker-end="url(#{m("fill")})"/><title>{e(rule)}</title></g>')
     for layer, label, by, bh in bands:
         if label:
             out.append(f'<rect class="dv-lane {LAYER_CLASS[layer]}" x="12" y="{by}" width="{W-24:.0f}" height="{bh}" rx="18"/>'

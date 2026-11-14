@@ -2,7 +2,8 @@
 
 Read-only. The zone connections are worked out from the zone structure — never stored as records:
   ZC-01 level-0 zones with each other (on premises ↔ cloud) · ZC-02 the level-1 zones of one level 0 with each other (DMZ ↔ internal) ·
-  ZC-03 a zone with the zone it is part of · ZC-04 a shape reaches another through their zones (`sdem zones path A B`).
+  ZC-03 a zone with the zone it is part of · ZC-04 a shape reaches another through their zones (`sdem zones path A B`) ·
+  ZC-05 what is lost when a zone connection fails (`sdem zones cut A B`).
 
   sdem zones --workspace examples/payment-initiation
   sdem zones path INF-APIGW-PAY INF-PG-PAY-PROD --workspace examples/payment-initiation
@@ -34,8 +35,74 @@ def collect(workspace):
     return {'workspace': ws.as_posix(), 'zones': sorted(zones, key=lambda z: (z['level'] if z['level'] is not None else 9, z['id'])), 'placements': placed, 'connections': conns}
 
 
+def cut(workspace, a, b):
+    """ZC-05: what is lost when the connection between zones a and b fails. Nesting is containment, not a way round a firewall, so the
+    two sides are fixed by the kind of connection: ZC-03 (a zone and the zone it is part of) — the inner zone, with everything in it,
+    against the rest; ZC-01 and ZC-02 (two level-0 zones; two level-1 zones of one level 0) — the one zone, with everything in it, against
+    the other. Lost: every A4 link with one end on each side, and everything that depends on those ends, up to A1 (trace up). JSON-ready."""
+    from .conformance import zones_of
+    from .hosting import zone_connections
+    from .metamodel import Metamodel
+    from .graph import FederatedGraph
+    ws = Path(workspace); f = ws / 'a4-technology.json'
+    if not f.exists(): raise ValueError(f'{ws}: no a4-technology.json — no technology layer')
+    doc = json.loads(f.read_text(encoding='utf-8')); mm = Metamodel.load()
+    conns = zone_connections(doc, mm)
+    rule = next((r for x, y, r in conns if {x, y} == {a, b}), None)
+    if not rule: raise ValueError(f"{a} and {b} are not connected — the zone connections are: {', '.join(f'{x}—{y} ({r})' for x, y, r in conns) or 'none'}")
+    shapes, parent, _ = zones_of(doc, mm)
+    def within(z):
+        out, todo = {z}, [z]
+        while todo:
+            q = todo.pop()
+            for k, p in parent.items():
+                if p == q and k not in out: out.add(k); todo.append(k)
+        return out
+    if rule == 'ZC-03':
+        inner = a if parent.get(a) == b else b
+        one = within(inner); two = None   # the inner zone against everything else
+    else:
+        one, two = within(a), within(b)
+    zone_ids = {i['id'] for i in doc.get('instances', []) if mm.is_a(i['type'], 'A4.NetworkZone')}
+    where = {x: zs[0] for x, zs in shapes.items() if zs}
+    def across(x, y):
+        if two is None: return (x in one) != (y in one)
+        return (x in one and y in two) or (x in two and y in one)
+    crossing = [{'source': r['source'], 'kind': r['kind'], 'target': r['target'], 'zones': [where[r['source']], where[r['target']]]}
+                for r in doc.get('relationships', []) if r['source'] in where and r['target'] in where
+                and r['source'] not in zone_ids and r['target'] not in zone_ids and across(where[r['source']], where[r['target']])]
+    ends = sorted({c['source'] for c in crossing} | {c['target'] for c in crossing})
+    files = [p for p in (ws / n for n in ('a1-business.json', 'a2-service-domain.json', 'a3-application.json', 'a4-technology.json')) if p.exists()]
+    fg = FederatedGraph.load(files + ([ws / 'mappings.json'] if (ws / 'mappings.json').exists() else []))
+    seen = {}
+    def walk(node, through):
+        for ch in node.get('children', []):
+            n = ch.get('node') or ch; x = n['id']
+            if x not in ends and x not in zone_ids and x not in seen:
+                seen[x] = {'id': x, 'level': n.get('level'), 'name': n.get('name'), 'through': through, 'via': (ch.get('via') or {}).get('relationship')}
+            walk(n, through)
+    for x in ends: walk(fg.trace(x, 'up'), x)
+    return {'workspace': ws.as_posix(), 'connection': {'from': a, 'to': b, 'rule': rule}, 'crossing': crossing, 'affected': ends,
+            'depends': sorted(seen.values(), key=lambda r: (str(r['level']), r['id']))}
+
+
 def main(argv=None):
     argv = list(sys.argv[1:] if argv is None else argv)
+    if argv[:1] == ['cut']:
+        ap = argparse.ArgumentParser(prog='sdem zones cut', description='What is lost when the connection between two zones fails (ZC-05): the A4 links that cross it and what depends on their ends.')
+        ap.add_argument('a', metavar='ZONE'); ap.add_argument('b', metavar='ZONE')
+        ap.add_argument('--workspace', dest='estate', required=True, metavar='DIR'); ap.add_argument('--json', action='store_true')
+        a = ap.parse_args(argv[1:])
+        try: res = cut(a.estate, a.a, a.b)
+        except ValueError as e: print(f'ERROR: {e}', file=sys.stderr); return 2
+        if a.json: print(json.dumps(res, indent=2)); return 0
+        c = res['connection']
+        print(f"if {c['from']} — {c['to']} ({c['rule']}) fails:")
+        if not res['crossing']: print('  no A4 link crosses it — nothing deployed depends on it'); return 0
+        for x in res['crossing']: print(f"  broken  {x['source']} {x['kind']} {x['target']}  ({x['zones'][0]} → {x['zones'][1]})")
+        print(f"  affected: {', '.join(res['affected'])}")
+        for r in res['depends']: print(f"  depends   {r['level'] or '':<3} {r['id']:<22} {r['name'] or ''}  (through {r['through']})")
+        return 0
     if argv[:1] == ['path']:
         ap = argparse.ArgumentParser(prog='sdem zones path', description='How one shape reaches another through their network zones (ZC-04).')
         ap.add_argument('a', metavar='SHAPE', help='the shape to start from'); ap.add_argument('b', metavar='SHAPE', help='the shape to reach')

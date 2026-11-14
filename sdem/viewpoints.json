@@ -66,6 +66,9 @@
        {"layer": "A2", "label": "BIAN", "groups": [{"type": "A2.BusinessDomain", "contains": ["A2.ServiceDomain"]}, {"type": "A2.ServiceDomain"}, {"type": "A2.BusinessScenario"}, {"type": "A2.BusinessObject"}]},
        {"layer": "A3", "label": "Application", "groups": [{"type": "A3.ApplicationComponent", "contains": ["A3.ApplicationComponent", "A3.ApplicationInterface"]}, {"type": "A3.ApplicationService"}, {"type": "A3.DataEntity"}]},
        {"layer": "A4", "label": "Technology", "groups": [{"type": "A4.DeploymentEnvironment", "contains": ["A4.Deployment"]}, {"type": "A4.Node", "contains": ["A4.SystemSoftware"]}, {"type": "A4.SystemSoftware"}]}],
-     "links": {"inside_layers": false, "relationships": null}}
+     "links": {"inside_layers": false, "relationships": null}},
+    {"id": "zones", "code": "T8", "layer": "A4", "name": "Deployment by network zone", "viewpoint": "ArchiMate Technology viewpoint, grouped by network zone (SDEM deployment-zones layout, ZL-01…ZL-06)",
+     "layout": "zones", "rows": [],
+     "links": {"inside_layers": true, "relationships": []}}
   ]
 }

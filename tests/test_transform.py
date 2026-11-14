@@ -115,6 +115,22 @@ class TransformTests(unittest.TestCase):
         self.assertTrue(any(t['rule'] == 'page facts' for t in r['tables']))   # the key-value table (HI-N04)
         self.assertTrue(any(s['type'] == 'unclassified' for s in r['shapes']))
 
+    def test_hosting_columns_are_read(self):  # HI-H01: a server table's site, cloud and internet-facing columns — evidence sdem aid reads for zones
+        src = self.tmp / 'hosting-src'; (src / 'Payments Hub Design').mkdir(parents=True)
+        (src / 'Payments Hub Design' / 'servers.csv').write_text(
+            'Server,Description,Site,Cloud provider,Region,Internet facing\n'
+            'LNXPAY01,Payments application server,Primary data centre,,,No\n'
+            'GWPAY01,Payments API gateway,,CloudCo,region-a,Yes\n'
+            'MQPAY01,Payments messaging,,CloudCo,region-a,Sometimes\n', encoding='utf-8')
+        x, ds, issues = transform.extract(src, self.tmp / 'hosting-out', now='2026-11-14T00:00:00', ocr='off')
+        a4 = {i['name']: i for i in ds['A4']['instances']}
+        self.assertEqual(a4['LNXPAY01']['attributes']['site'], 'Primary data centre'); self.assertIs(a4['LNXPAY01']['attributes']['internet_facing'], False)
+        self.assertEqual((a4['GWPAY01']['attributes']['cloud_provider'], a4['GWPAY01']['attributes']['region']), ('CloudCo', 'region-a'))
+        self.assertIs(a4['GWPAY01']['attributes']['internet_facing'], True)
+        self.assertNotIn('internet_facing', a4['MQPAY01']['attributes'])   # "Sometimes": never guessed
+        rec = next(r for r in json.loads((self.tmp / 'hosting-out' / 'extraction.json').read_text())['records'] if r['name'] == 'MQPAY01')
+        self.assertEqual(rec['unmapped'].get('Internet facing'), 'Sometimes')
+
     def test_no_ai_no_network(self):  # HI-G01
         src = (ROOT / 'sdem' / 'transform.py').read_text()
         self.assertIsNone(re.search(r'\bimport (socket|requests|http\.client)|urllib\.request|anthropic|openai', src))

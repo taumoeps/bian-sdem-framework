@@ -142,7 +142,7 @@
 | [`sdem requirements show`](#cmd-requirements-show) | one requirement: condition, evidence, history and its measurements |
 | [`sdem requirements trace`](#cmd-requirements-trace) | a requirement through the layers: its subject and allocations, what they depend on and serve, and the requirements it derives from |
 | [`sdem trace`](#cmd-trace) | trace what a record depends on (down) or what depends on it (up) |
-| [`sdem zones`](#cmd-zones) | a workspace's network zones: each zone and what it holds, how the zones connect (ZC-01…ZC-03 … |
+| [`sdem zones`](#cmd-zones) | a workspace's network zones: each zone and what it holds, how the zones connect (ZC-01…ZC-03, worked out from the zone structure) … |
 
 ### J6 · Infer with AID
 
@@ -2622,7 +2622,7 @@ sdem workbench --workspace examples/payment-initiation -o work/workbench.html
 
 <a id="cmd-zones"></a>
 
-a workspace's network zones: each zone and what it holds, how the zones connect (ZC-01…ZC-03, worked out from the zone structure) and how one shape reaches another through them (ZC-04) — read-only
+a workspace's network zones: each zone and what it holds, how the zones connect (ZC-01…ZC-03, worked out from the zone structure), how one shape reaches another through them (ZC-04), what a lost zone connection cuts off (ZC-05, sdem zones cut) and the layout every drawing of A4 uses (--layout) — read-only
 
 ```
 sdem zones --workspace WORKSPACE [--layout] [--environment ENVIRONMENT]

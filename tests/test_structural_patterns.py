@@ -216,6 +216,25 @@ class Evaluation(Design):
         self.assertEqual(out['container-platform'][0], 'non_compliant')
         self.assertIn("INF-K8S-PAY-UAT: network_zone is 'dmz' — must be in ['restricted'] (Restricted zone)", out['container-platform'][1])
 
+    def test_a_zone_checked_against_the_zone_records(self):                            # PR-13a: where a part is placed (RA4-38), not an attribute
+        import copy
+        comply.workspace_data(self.ws)   # activates the workspace's profile
+        structs = copy.deepcopy(profile.structures())
+        for st in structs:
+            for z in st['structure'].get('zones', []):
+                if z['id'] == next(r['zone'] for r in st['structure']['roles'] if r['id'] == 'container-platform'): z.pop('check', None); z['zone_kind'] = 'private'
+        def parts():
+            datasets, maps, mm, _ = comply.workspace_data(self.ws)
+            found, _ = patterns.evaluate(datasets, maps, mm, structs, profile.exceptions(), AS_OF)
+            return {f['part']['id']: (f['outcome'], f['detail']) for f in found if f['record'] == 'APP-PAY-HUB'}
+        self.assertEqual(parts()['container-platform'][0], 'compliant')                 # both clusters sit in the payments private network
+        d = _j(self.ws / 'a4-technology.json')
+        for r in d['relationships']:
+            if r['kind'] == 'aggregation' and r['target'] == 'INF-K8S-PAY-UAT' and r['source'] == 'NET-PAY-PRIVATE': r['source'] = 'ZONE-PAY-INTERNAL'
+        _w(self.ws / 'a4-technology.json', d)
+        out = parts()['container-platform']
+        self.assertEqual(out[0], 'non_compliant'); self.assertIn('INF-K8S-PAY-UAT: is in ZONE-PAY-INTERNAL (internal) — must be in a private zone', out[1])
+
     def test_only_approved_links_fill_a_part(self):                                     # PR-16, PR-22
         reg = _j(self.ws / 'mappings.json')
         for m in reg['mappings']:
