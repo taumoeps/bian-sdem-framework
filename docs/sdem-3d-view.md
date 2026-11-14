@@ -37,14 +37,16 @@ All three are checked against ArchiMate 3.2 (EXPOSED_THROUGH as serving, BUILT_A
 | 1. Make the workspace complete and clean — fix or approve what is open | the architect | `sdem check --workspace <ws>`, `sdem zones --workspace <ws>`, `sdem trace A4 --direction up --graph <ws>/graph` |
 | 2. Rebuild the graph | the architect | `python -m sdem.graph build <ws>/a*.json <ws>/mappings.json --out <ws>/graph` |
 | 3. Preview each layer — what you see is what the 3D view draws | the architect | `sdem layout --layer A1\|A2\|A3\|A4 --workspace <ws>`, or `sdem view --graph <ws>/graph` |
-| 4. Build the 3D model | the site's maintainer | in the DESNRE site: `python3 scripts/build-hero.py <ws>` — reads the four layer files and `mappings.json`, asks SDEM for each layer's layout, writes `assets/hero-model.json` (the same workspace always gives the same file) |
-| 5. Check it | the site's maintainer | serve the site locally; look at every layer; every record has a line |
-| 6. Publish | the site's maintainer | commit and push the site; it is deployed from its repository |
+| 4. Mark it made-up (once) | the architect | `sdem-desnre mark <ws> --by "<name>" --synthetic` |
+| 5. Publish a draft | the architect | `sdem-desnre publish <ws> --name <name>` — checks versions, the mark and `sdem check`; builds the model from `sdem layout` and `sdem zones --layout`; sends it as a **draft**, not public; prints a preview link (`--dry-run` builds it and sends nothing) |
+| 6. Look and approve | a person with the approve token | open the preview link; `sdem-desnre approve <name>` makes it live at `?model=<name>` |
+
+Steps 4–6 are the **`sdem-desnre` extension** (in the DESNRE site's repository, `tools/sdem-desnre/`): SDEM's first extension, following [the extension contract](design/sdem-extensions-spec.md) — it uses SDEM only through `--json`, so SDEM's core did not change. The site's own default model is still rebuilt with `scripts/build-hero.py`, which uses the same builder.
 
 **What the 3D view draws:** each layer's records where `sdem layout` places them; the links inside a layer; the mappings between layers; regions with their own blocks and faint "part of" lines; links SDEM only implies are hidden.
 
 ## 6. Limits
 
 - **The DESNRE site is public: only made-up workspaces go on it.** A real organisation's architecture never goes through step 6 (SDEM's rule: made-up data only).
-- **Tried only with SDEM's own examples.** `build-hero.py` finds SDEM in the folders above the workspace; a workspace elsewhere needs SDEM installed, which has not been tried.
-- **Steps 4–6 are not an `sdem` command.** A `sdem` command that writes the 3D model could follow if wanted.
+- **Tried only with SDEM's own examples.** The extension finds SDEM on the PATH, above the workspace, or through `SDEM_CMD`.
+- **The page's heading text is fixed** ("Example payments design"), so another model shows under it; the counts and records are the model's own.
