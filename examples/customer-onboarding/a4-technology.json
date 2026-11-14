@@ -72,6 +72,21 @@
       "source": "ENV-001",
       "kind": "aggregation",
       "target": "DEP-001"
+    },
+    {
+      "source": "INF-001",
+      "kind": "assignment",
+      "target": "DEP-001"
+    },
+    {
+      "source": "INF-003",
+      "kind": "association",
+      "target": "DEP-001"
+    },
+    {
+      "source": "INF-001",
+      "kind": "association",
+      "target": "INF-002"
     }
   ]
 }

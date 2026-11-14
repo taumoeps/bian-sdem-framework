@@ -33,9 +33,9 @@ Two or more candidates: **unresolved**, both named, never guessed. The proposal 
 
 ## 4. The checks change
 
-- **LC-21** stays; an internet-facing shape with an approved `EXPOSED_THROUGH` is connected.
+- **LC-21** counts only links inside A4 (the owner, 2026-11-14): A4 is the physical deployment, so an edge platform with an `EXPOSED_THROUGH` still needs an A4 link to what it fronts — AID-C06 proposes it.
 - **New LC-22 (warning):** an internet-facing A3 interface with no `EXPOSED_THROUGH` — something says it is reached from the internet, but nothing says through what.
-- The payment example's association (gateway → Payments Hub deployment) becomes `EXPOSED_THROUGH` from Payments API v2 to the gateway, with evidence; the association is removed (one source of truth).
+- The payment example: `EXPOSED_THROUGH` from Payments API v2 to the gateway, with evidence, **and** the gateway's A4 association to the Payments Hub's production deployment. Both are true — the interface is exposed through the gateway (between layers), and the gateway fronts the hub (the physical deployment). The association is what AID-C06 derives from the `EXPOSED_THROUGH`, so it stays in step.
 
 ## 5. What people see
 
@@ -49,22 +49,23 @@ The hero and the workbench draw `EXPOSED_THROUGH` like any approved connection b
 | X2 | Mark internet-facing interfaces with an `internet_facing` attribute on `A3.ApplicationInterface` (as on A4 shapes)? | **yes** — one word for one idea across layers |
 | X3 | Evidence kinds: `network_design` and `api_gateway_configuration`? | **yes** |
 | X4 | AID proposes it only with exactly one candidate gateway; otherwise unresolved? | **yes** — never guessed |
-| X5 | The payment example: Payments API v2 marked internet facing, `EXPOSED_THROUGH` the Managed API gateway (approved, made up), the association removed? | **yes** |
+| X5 | The payment example: Payments API v2 marked internet facing, `EXPOSED_THROUGH` the Managed API gateway (approved, made up), the association removed? | **yes** — *revised 2026-11-14: the association stays, derived by AID-C06 (§4)* |
 | X6 | *(the owner's addition)* At A4 — the physical deployment level — AID infers a connection for **every** shape that has none (LC-21) | **approved** — the rules are §7 |
 
 Version: metamodel **0.12.0** — a link type, an attribute, AID rules, LC-22.
 
 ## 7. A4: a connection for every shape (X6)
 
-A4 is the physical deployment: every shape there is connected to something. For each A4 shape LC-21 names (linked to nothing besides its zone, and to no other layer), `sdem aid` proposes connections — each a link marked **inferred** (H5) with the rule, what it read and its confidence; a person confirms or rejects them by the shape's id (`sdem aid confirm|reject <shape>`). Nothing is set silently; a shape no rule reaches stays **unresolved**, named, never guessed.
+A4 is the physical deployment: every shape there is connected to something. For each A4 shape LC-21 names (linked to nothing inside A4 besides its zone — a connection to another layer does not count; retired shapes are left out), and each deployment no platform runs, `sdem aid` proposes connections — each a link marked **inferred** (H5) with the rule, what it read and its confidence; a person confirms or rejects them by the shape's id (`sdem aid confirm|reject <shape>`). Nothing is set silently; a shape no rule reaches stays **unresolved**, named, never guessed.
 
 | Rule | For a shape that is | It proposes | From | Confidence |
 |---|---|---|---|---|
-| AID-C01 | a deployment no platform runs (even one with a `DEPLOYED_AS` connection) | `assignment` from the platform its component is `DEPLOYED_ON`, where the component is `DEPLOYED_AS` this deployment | approved connections | high |
+| AID-C01 | a deployment no platform runs (even one with a `DEPLOYED_AS` connection) | `assignment` from the platform its record names (`platform_id`) — else from the platform its component is `DEPLOYED_ON`, where the component is `DEPLOYED_AS` this deployment | the record; approved connections | high |
 | AID-C02 | a data platform (its name or product says a database) | `association` from each platform that runs a component using a data entity `stored_in` it — else from the platforms that run deployments in its zone | A3 data entities; zones | medium; low |
 | AID-C03 | a technology service | `serving` to each platform that runs deployments in its zone (or the zone it is in) | zones | low |
 | AID-C04 | an artifact | `assignment` from the platform that runs a deployment whose name shares a word with it | names | low |
 | AID-C05 | any other platform | `association` with the platforms that run deployments in its innermost zone | zones | low |
+| AID-C06 | an internet-facing edge platform | `association` to the production deployment of the application that composes each interface `EXPOSED_THROUGH` it | approved connections | high |
 
 
-AID-X01 proposes `EXPOSED_THROUGH` in the run's proposals file (a person approves it with `sdem approve`); AID-C01…C05 add links marked inferred to `a4-technology.json`. LC-19 counts both kinds of inferred link still to decide.
+AID-X01 proposes `EXPOSED_THROUGH` in the run's proposals file (a person approves it with `sdem approve`); AID-C01…C06 add links marked inferred to `a4-technology.json`. LC-19 counts both kinds of inferred link still to decide.

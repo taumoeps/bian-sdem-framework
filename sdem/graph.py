@@ -216,24 +216,16 @@ class FederatedGraph:
         return hops
 
     def unconnected(self):
-        """LC-21 (warning): an A4 shape — not a network, zone, path or environment — with no link inside the layer other than its zone
-        placement, and no connection across layers (any status: a proposed one is the person's to decide). An internet-facing shape
-        fronts nothing; any other is connected to nothing."""
+        """LC-21 (warning): an A4 shape — not a network, zone, path or environment, and not retired — with no link inside A4 other than
+        its zone placement. A4 is the physical deployment: a connection to another layer does not count (sdem/a4_connect.py lone).
+        An internet-facing shape fronts nothing; any other is connected to nothing. sdem aid proposes connections (AID-C01…C06)."""
         g = self.levels.get('A4')
         if not g: return []
-        typ = {i['id']: i['type'] for i in g.doc.get('instances', [])}
-        attrs = {i['id']: (i.get('attributes') or {}) for i in g.doc.get('instances', [])}
-        zone = lambda x: self.mm.is_a(typ.get(x, ''), 'A4.NetworkZone')
-        linked = {x for r in g.doc.get('relationships', []) if not (zone(r['source']) or zone(r['target'])) for x in (r['source'], r['target'])}
-        linked |= {x for d in self.mapping_docs for m in d.get('mappings', []) for x in ((m.get('source') or {}).get('id'), (m.get('target') or {}).get('id'))}
-        out = []
-        for x, t in sorted(typ.items()):
-            if x in linked or any(self.mm.is_a(t, s) for s in ('A4.CommunicationNetwork', 'A4.DeploymentEnvironment', 'A4.Path')): continue
-            if attrs[x].get('internet_facing') is True:
-                out.append(f"instance {x}: is internet facing but fronts nothing — link it to what it exposes (LC-21)")
-            else:
-                out.append(f"instance {x}: is connected to nothing — no link inside A4 besides its zone, and none to another layer (LC-21)")
-        return out
+        from .a4_connect import lone
+        facing = {i['id'] for i in g.doc.get('instances', []) if (i.get('attributes') or {}).get('internet_facing') is True}
+        return [f"instance {x}: is internet facing but fronts nothing inside A4 — link it to what it fronts (sdem aid proposes it, AID-C06) (LC-21)" if x in facing
+                else f"instance {x}: is connected to nothing inside A4 besides its zone — sdem aid proposes connections (AID-C01…C06) (LC-21)"
+                for x in sorted(lone(g.doc, self.mm))]
 
     def unexposed(self):
         """LC-22 (warning; metamodel 0.12.0): an A3 interface marked internet facing with no EXPOSED_THROUGH connection (any status) —

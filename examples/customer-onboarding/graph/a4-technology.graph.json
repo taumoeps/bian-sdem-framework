@@ -6,7 +6,7 @@
     "directed": true,
     "metadata": {
       "sdem_store_version": "1.0",
-      "export_sha256": "ba276b0f6d769836c0877fa2c348871a5963c7dd33ff0d883c19cd876124420d",
+      "export_sha256": "221ce8223c219df1c50baf905469f50c1f5cda351a37ddd5e5dd838a7b744540",
       "level": "A4",
       "model_id": "synthetic-bank-onboarding-a4",
       "model_version": "2026.10",
@@ -103,6 +103,36 @@
         "metadata": {
           "scope": "within-level",
           "row": "RA4-31"
+        }
+      },
+      {
+        "id": "A4:INF-001-assignment-DEP-001",
+        "source": "A4:INF-001@1.0",
+        "target": "A4:DEP-001@1.0",
+        "relation": "assignment",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-21"
+        }
+      },
+      {
+        "id": "A4:INF-003-association-DEP-001",
+        "source": "A4:INF-003@1.0",
+        "target": "A4:DEP-001@1.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "association"
+        }
+      },
+      {
+        "id": "A4:INF-001-association-INF-002",
+        "source": "A4:INF-001@1.0",
+        "target": "A4:INF-002@16",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "association"
         }
       }
     ]

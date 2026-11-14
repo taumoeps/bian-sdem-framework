@@ -102,7 +102,7 @@ class UnconnectedTests(unittest.TestCase):   # LC-21
             if f == 'mappings.json': d['mappings'] = [m for m in d['mappings'] if m['target']['id'] != 'INF-APIGW-PAY']   # what it exposes (EXPOSED_THROUGH) goes too
             (tmp / f).write_text(json.dumps(d), encoding='utf-8')
         code, out, err = sdem_in(tmp, 'check', '--workspace', tmp)
-        self.assertIn('instance INF-APIGW-PAY: is internet facing but fronts nothing — link it to what it exposes (LC-21)', out + err)
+        self.assertIn('instance INF-APIGW-PAY: is internet facing but fronts nothing inside A4 — link it to what it fronts (sdem aid proposes it, AID-C06) (LC-21)', out + err)
         code, out, err = sdem_in(PAY, 'check', '--workspace', PAY)
         self.assertNotIn('LC-21', out + err)                                                     # every shape in the example is connected
 

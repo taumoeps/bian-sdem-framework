@@ -428,6 +428,18 @@
       "kind": "aggregation",
       "target": "RS-Artifact-1",
       "name": "RA4-38"
+    },
+    {
+      "source": "RS-Deployment-2",
+      "kind": "aggregation",
+      "target": "RS-Artifact-1",
+      "name": "RA4-35"
+    },
+    {
+      "source": "RS-TechnologyInterface-2",
+      "kind": "assignment",
+      "target": "RS-TechnologyService-1",
+      "name": "RA4-22"
     }
   ]
 }

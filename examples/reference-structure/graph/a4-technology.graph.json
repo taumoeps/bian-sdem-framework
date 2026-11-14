@@ -6,7 +6,7 @@
     "directed": true,
     "metadata": {
       "sdem_store_version": "1.0",
-      "export_sha256": "92c81e8d1e53f8a736e4a0b1f7631a12b055e58a5d42e7410aceb37d587a6b51",
+      "export_sha256": "09cf2e30a886bc1a350447e3006ade44e3bbbb7db12ed9214c525c9c2e0d32b8",
       "level": "A4",
       "model_id": "reference-structure-a4",
       "model_version": "2026.10",
@@ -693,6 +693,28 @@
           "row": "RA4-38"
         },
         "label": "RA4-38"
+      },
+      {
+        "id": "A4:RS-Deployment-2-aggregation-RS-Artifact-1",
+        "source": "A4:RS-Deployment-2@1.0",
+        "target": "A4:RS-Artifact-1@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-35"
+        },
+        "label": "RA4-35"
+      },
+      {
+        "id": "A4:RS-TechnologyInterface-2-assignment-RS-TechnologyService-1",
+        "source": "A4:RS-TechnologyInterface-2@1.0",
+        "target": "A4:RS-TechnologyService-1@1.0",
+        "relation": "assignment",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-22"
+        },
+        "label": "RA4-22"
       }
     ]
   }

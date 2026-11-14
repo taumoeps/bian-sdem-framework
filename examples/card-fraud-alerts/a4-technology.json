@@ -72,6 +72,16 @@
       "source": "ENV-PROD",
       "kind": "aggregation",
       "target": "DEP-FRAUD-PROD"
+    },
+    {
+      "source": "INF-CLOUD-K8S-PROD",
+      "kind": "assignment",
+      "target": "DEP-FRAUD-PROD"
+    },
+    {
+      "source": "INF-ONPREM-VM-CLUSTER-B",
+      "kind": "association",
+      "target": "NET-PRIVATE"
     }
   ]
 }

@@ -34,7 +34,7 @@ In the payment-initiation example:
 | A1 local | 16 | 16 within A1 |
 | A2 local | 24 | 34 within A2 |
 | A3 local | 16 | 19 within A3 |
-| A4 local | 19 | 24 within A4 |
+| A4 local | 19 | 25 within A4 |
 | Federated | — (it points into the four above) | 19 approved cross-architecture links |
 
 ---

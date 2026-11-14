@@ -258,6 +258,36 @@
       "source": "DEV-SCAN-01",
       "kind": "assignment",
       "target": "ART-DOC-IMG"
+    },
+    {
+      "source": "NODE-TF-PROD",
+      "kind": "assignment",
+      "target": "DEP-DOC-PROD"
+    },
+    {
+      "source": "NODE-TF-PROD",
+      "kind": "assignment",
+      "target": "DEP-LC-PROD"
+    },
+    {
+      "source": "SYS-RUNTIME-TF",
+      "kind": "association",
+      "target": "SYS-DB-TF"
+    },
+    {
+      "source": "TS-OCR",
+      "kind": "serving",
+      "target": "SYS-RUNTIME-TF"
+    },
+    {
+      "source": "TS-SIGNING",
+      "kind": "serving",
+      "target": "SYS-RUNTIME-TF"
+    },
+    {
+      "source": "SYS-RUNTIME-TF",
+      "kind": "association",
+      "target": "ART-DOC-STORE"
     }
   ]
 }

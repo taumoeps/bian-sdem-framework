@@ -117,7 +117,7 @@ def fill(workspace, person, dry_run=False, now=None):
         for r in links:
             if (r['source'], r['kind'], r['target']) not in have and r['source'] in present:
                 after['A4'].setdefault('relationships', []).append(r); placements += 1 if r.get('inferred') else 0
-        from .a4_connect import propose_connections   # AID-C01…C05 (X6): at A4 every shape is connected — proposed, marked inferred
+        from .a4_connect import propose_connections   # AID-C01…C06 (X6): at A4 every shape is connected — proposed, marked inferred
         crej = {r['id'] for r in _rejected(ws)['rejected'] if '|' in r['id']}
         clinks, conn_unresolved = propose_connections(after.get('A3') or {}, after['A4'], registry.get('mappings', []), Metamodel.load(), run, person.strip(), now, crej)
         after['A4'].setdefault('relationships', []).extend(clinks); placements += len(clinks); connections = len(clinks)
@@ -173,7 +173,7 @@ def decide(workspace, ids, person, action, reason='', all_=False, now=None):
     now = now or datetime.datetime.now(datetime.timezone.utc).replace(microsecond=0).isoformat()   # UTC with its offset, like change sets
     inferred = {i['id']: (lvl, i) for lvl, d in docs.items() for i in d['instances'] if is_inferred(i, confirmed=False if all_ else None)}
     marked = lambda r: isinstance(r.get('inferred'), dict) and (not all_ or r['inferred'].get('status') != 'confirmed')
-    placed = {}   # a shape's inferred links (H5): its zone placement (AID-Z01) and its connections at A4 (AID-C01…C05)
+    placed = {}   # a shape's inferred links (H5): its zone placement (AID-Z01) and its connections at A4 (AID-C01…C06)
     for r in (docs.get('A4') or {}).get('relationships', []):
         if marked(r):
             for end in (r['source'], r['target']): placed.setdefault(end, []).append(r)
@@ -280,7 +280,7 @@ def main(argv):
         print(f"zones: {rec['zone_placements']} shape(s) {'would be placed' if a.dry_run else 'placed'} in a proposed zone (AID-Z01) — from the hosting signals and the organisation's default; "
               f"decide each: sdem aid confirm|reject <shape> --workspace {a.estate} --person <you>")
     if rec.get('a4_connections'):
-        print(f"A4: {rec['a4_connections']} connection(s) {'would be proposed' if a.dry_run else 'proposed'} for shapes linked to nothing (AID-C01…C05) — confirm or reject by the shape's id")
+        print(f"A4: {rec['a4_connections']} connection(s) {'would be proposed' if a.dry_run else 'proposed'} for shapes linked to nothing (AID-C01…C06) — confirm or reject by the shape's id")
     for u in rec.get('a4_unresolved', []): print(f"A4: {u['id']} not connected — {u['why']}")
     for u in rec.get('exposure_unresolved', []):
         print(f"exposure: {u['id']} is internet facing — {'no internet-facing edge platform to expose it through' if not u['candidates'] else 'several candidates: ' + ', '.join(u['candidates'])} (AID-X01): a person decides")

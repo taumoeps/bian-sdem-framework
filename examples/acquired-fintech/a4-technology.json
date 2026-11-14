@@ -183,6 +183,56 @@
       "source": "ENV-ZIPPA-PROD",
       "kind": "aggregation",
       "target": "DEP-SHIELD-PROD"
+    },
+    {
+      "source": "INF-EKS-ZIPPA-PROD",
+      "kind": "assignment",
+      "target": "DEP-BUDDIES-PROD"
+    },
+    {
+      "source": "INF-EKS-ZIPPA-PROD",
+      "kind": "assignment",
+      "target": "DEP-FLOW-PROD"
+    },
+    {
+      "source": "INF-EKS-ZIPPA-PROD",
+      "kind": "assignment",
+      "target": "DEP-PERKS-PROD"
+    },
+    {
+      "source": "INF-EKS-ZIPPA-PROD",
+      "kind": "assignment",
+      "target": "DEP-POTS-PROD"
+    },
+    {
+      "source": "INF-EKS-ZIPPA-PROD",
+      "kind": "assignment",
+      "target": "DEP-SHIELD-PROD"
+    },
+    {
+      "source": "INF-EKS-ZIPPA-PROD",
+      "kind": "assignment",
+      "target": "DEP-VAULTS-PROD"
+    },
+    {
+      "source": "INF-EKS-ZIPPA-PROD",
+      "kind": "assignment",
+      "target": "DEP-ZAP-PROD"
+    },
+    {
+      "source": "INF-EKS-ZIPPA-PROD",
+      "kind": "association",
+      "target": "INF-PG-ZIPPA-PROD"
+    },
+    {
+      "source": "INF-EKS-ZIPPA-PROD",
+      "kind": "association",
+      "target": "INF-REDIS-ZIPPA-PROD"
+    },
+    {
+      "source": "TS-QUEUE",
+      "kind": "serving",
+      "target": "INF-EKS-ZIPPA-PROD"
     }
   ]
 }

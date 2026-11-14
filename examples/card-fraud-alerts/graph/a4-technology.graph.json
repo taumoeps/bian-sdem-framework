@@ -6,7 +6,7 @@
     "directed": true,
     "metadata": {
       "sdem_store_version": "1.0",
-      "export_sha256": "c4bc1924897a606c3fd2b7b61f0283ad461d0a2ab6b3c014283a716cdf3f98cc",
+      "export_sha256": "81213dd0d4d6be2a1ac7b9254f8cfd0885eb4bdb677972bd1de007f26af9dfe6",
       "level": "A4",
       "model_id": "synthetic-bank-a4",
       "model_version": "2026.10",
@@ -110,6 +110,26 @@
         "metadata": {
           "scope": "within-level",
           "row": "RA4-31"
+        }
+      },
+      {
+        "id": "A4:INF-CLOUD-K8S-PROD-assignment-DEP-FRAUD-PROD",
+        "source": "A4:INF-CLOUD-K8S-PROD@1.3",
+        "target": "A4:DEP-FRAUD-PROD@1.0",
+        "relation": "assignment",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-21"
+        }
+      },
+      {
+        "id": "A4:INF-ONPREM-VM-CLUSTER-B-association-NET-PRIVATE",
+        "source": "A4:INF-ONPREM-VM-CLUSTER-B@2.0",
+        "target": "A4:NET-PRIVATE@1.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-37"
         }
       }
     ]

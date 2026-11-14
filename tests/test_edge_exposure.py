@@ -1,6 +1,6 @@
 """Edge exposure and A4 connections (metamodel 0.12.0; docs/design/sdem-edge-exposure-design.md, the owner's decisions X1–X6, 2026-11-14):
 EXPOSED_THROUGH between an internet-facing A3 interface and an A4 edge platform (LC-22, AID-X01), and at A4 a proposed connection for every
-shape linked to nothing (AID-C01…C05). Synthetic examples only."""
+shape linked to nothing (AID-C01…C06). Synthetic examples only."""
 import json, os, shutil, subprocess, sys, tempfile, unittest
 from pathlib import Path
 
@@ -54,9 +54,15 @@ class ExposureTests(Base):   # X1–X5, LC-22, AID-X01
         self.assertEqual(pairs, []); self.assertEqual(unresolved[0]['id'], 'IFC-PAY-API'); self.assertEqual(sorted(unresolved[0]['candidates']), ['INF-APIGW-PAY', 'INF-WAF'])
 
 
-class ConnectionTests(Base):   # X6, AID-C01…C05
+class ConnectionTests(Base):   # X6, AID-C01…C06
+    def unlinked(self):   # acquired-fintech as it was before its A4 links were recorded (2026-11-14): its platforms linked to nothing inside A4
+        ws = self.copy('acquired-fintech'); d = self.j(ws, 'a4-technology.json')
+        lone = {'INF-EKS-ZIPPA-PROD', 'INF-PG-ZIPPA-PROD', 'INF-REDIS-ZIPPA-PROD', 'TS-QUEUE'}
+        d['relationships'] = [r for r in d['relationships'] if not ({r['source'], r['target']} & lone)]; self.w(ws, 'a4-technology.json', d)
+        return ws
+
     def test_every_a4_shape_linked_to_nothing_gets_a_proposed_connection(self):
-        ws = self.copy('acquired-fintech')
+        ws = self.unlinked()
         before = ''.join(sdem('check', '--workspace', ws, cwd=self.tmp)[1:]).count('LC-21')
         self.assertGreater(before, 0)
         code, out, err = sdem('aid', '--workspace', ws, '--person', 'jane.architect', cwd=self.tmp)
@@ -66,7 +72,7 @@ class ConnectionTests(Base):   # X6, AID-C01…C05
         self.assertEqual(''.join(sdem('check', '--workspace', ws, cwd=self.tmp)[1:]).count('LC-21'), 0)
 
     def test_a_person_decides_them_by_the_shape(self):
-        ws = self.copy('acquired-fintech'); sdem('aid', '--workspace', ws, '--person', 'jane.architect', cwd=self.tmp)
+        ws = self.unlinked(); sdem('aid', '--workspace', ws, '--person', 'jane.architect', cwd=self.tmp)
         code, out, err = sdem('aid', 'reject', 'TS-QUEUE', '--workspace', ws, '--person', 'jane.architect', '--reason', 'serves another platform', cwd=self.tmp)
         self.assertEqual(code, 0, err)
         self.assertFalse([r for r in self.j(ws, 'a4-technology.json')['relationships'] if 'TS-QUEUE' in (r['source'], r['target']) and r.get('inferred')])
@@ -82,6 +88,25 @@ class ConnectionTests(Base):   # X6, AID-C01…C05
         links, _ = propose_connections(self.j(ws, 'a3-application.json'), a4, self.j(ws, 'mappings.json')['mappings'], Metamodel.load(), 'AID-T', 'jane.architect', '2026-11-14')
         self.assertIn(('INF-K8S-PAY-PROD', 'assignment', 'DEP-PAYEXEC-PROD', 'AID-C01', 'high'),
                       [(r['source'], r['kind'], r['target'], r['inferred']['rule'], r['inferred']['confidence']) for r in links])
+
+    def test_a_deployment_runs_on_the_platform_its_record_names(self):   # AID-C01, platform_id first
+        from sdem.a4_connect import propose_connections
+        from sdem.metamodel import Metamodel
+        ws = EX / 'trade-finance'; a4 = self.j(ws, 'a4-technology.json')
+        a4['relationships'] = [r for r in a4['relationships'] if not (r['kind'] == 'assignment' and r['target'] == 'DEP-DOC-PROD')]
+        links, _ = propose_connections(self.j(ws, 'a3-application.json'), a4, self.j(ws, 'mappings.json')['mappings'], Metamodel.load(), 'AID-T', 'jane.architect', '2026-11-14')
+        self.assertIn(('NODE-TF-PROD', 'assignment', 'DEP-DOC-PROD', 'AID-C01'), [(r['source'], r['kind'], r['target'], r['inferred']['rule']) for r in links])
+
+    def test_an_edge_platform_fronts_the_deployment_of_what_it_exposes(self):   # AID-C06, LC-21 counts only links inside A4
+        from sdem.a4_connect import propose_connections
+        from sdem.metamodel import Metamodel
+        ws = self.copy('payment-initiation'); a4 = self.j(ws, 'a4-technology.json')
+        a4['relationships'] = [r for r in a4['relationships'] if not (r['source'] == 'INF-APIGW-PAY' and r['kind'] == 'association')]; self.w(ws, 'a4-technology.json', a4)
+        out = ''.join(sdem('check', '--workspace', ws, cwd=self.tmp)[1:])
+        self.assertIn('instance INF-APIGW-PAY: is internet facing but fronts nothing inside A4', out)   # EXPOSED_THROUGH (another layer) does not count
+        links, _ = propose_connections(self.j(ws, 'a3-application.json'), a4, self.j(ws, 'mappings.json')['mappings'], Metamodel.load(), 'AID-T', 'jane.architect', '2026-11-14')
+        self.assertIn(('INF-APIGW-PAY', 'association', 'DEP-PAYHUB-PROD', 'AID-C06', 'high'),
+                      [(r['source'], r['kind'], r['target'], r['inferred']['rule'], r['inferred']['confidence']) for r in links])   # production, not UAT
 
 
 if __name__ == '__main__':

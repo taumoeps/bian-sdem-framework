@@ -819,6 +819,90 @@
           "edges": 24
         }
       ]
+    },
+    {
+      "build": 11,
+      "at": "2026-11-13T23:57:21+00:00",
+      "inputs": [
+        {
+          "path": "examples/trade-finance/a1-business.json",
+          "kind": "export",
+          "level": "A1",
+          "model_id": "synthetic-bank-trade-a1",
+          "model_version": "2026.10",
+          "sha256": "78d0c3622f22796244b999eb472ecef7a35d7f2f1eaea1b7ae29eb7e3bd3000e"
+        },
+        {
+          "path": "examples/trade-finance/a2-service-domain.json",
+          "kind": "export",
+          "level": "A2",
+          "model_id": "synthetic-bank-trade-a2",
+          "model_version": "2026.10",
+          "sha256": "09ebeacbbd7e3f44794adac1a9c0ee20ffb92a69cc61da9e6c638c9a8b23d931"
+        },
+        {
+          "path": "examples/trade-finance/a3-application.json",
+          "kind": "export",
+          "level": "A3",
+          "model_id": "synthetic-bank-trade-a3",
+          "model_version": "2026.10",
+          "sha256": "d82e28265b0709130eb12ba4c817f2569173340cfa050c756a064e3e6964c66b"
+        },
+        {
+          "path": "examples/trade-finance/a4-technology.json",
+          "kind": "export",
+          "level": "A4",
+          "model_id": "synthetic-bank-trade-a4",
+          "model_version": "2026.10",
+          "sha256": "95a90e96c07c4aa023811672a46a308c92997b46c03247eb24aadffbd0149ccc"
+        },
+        {
+          "path": "examples/trade-finance/mappings.json",
+          "kind": "registry",
+          "registry_version": "0.4.0",
+          "sha256": "f95a6b55d8663107deb203a7ecc363803fc2444687083a668108476f31a6b67d"
+        }
+      ],
+      "metamodel_version": "0.12.0",
+      "errors": [],
+      "warnings": [
+        "level A3 (synthetic-bank-trade-a3): instance APP-LC: attribute 'network_zone' is deprecated (LC-13)",
+        "level A3 (synthetic-bank-trade-a3): instance APP-DOC: attribute 'network_zone' is deprecated (LC-13)",
+        "level A4 (synthetic-bank-trade-a4): no network zones recorded — place each of the 15 shape(s) in a zone: on premises or cloud, internal or DMZ (RA4-38, LC-16)"
+      ],
+      "result": "accepted",
+      "outputs": [
+        {
+          "file": "a1-business.graph.json",
+          "sha256": "999581b37f9da3dfa9b3c14ecdc22deb36a36c5ee389c0075b2dc04e970b97b8",
+          "nodes": 20,
+          "edges": 19
+        },
+        {
+          "file": "a2-service-domain.graph.json",
+          "sha256": "96d449027372294b4b64d1783e0cf55998cdfc0e3f3c100bcc6685360acb7f4a",
+          "nodes": 27,
+          "edges": 35
+        },
+        {
+          "file": "a3-application.graph.json",
+          "sha256": "55f2de929155b031f1523dbde94bf83b8999669963febc95cf26075236a7bd70",
+          "nodes": 20,
+          "edges": 25
+        },
+        {
+          "file": "a4-technology.graph.json",
+          "sha256": "df1e3214a6d60c005d5c92b64efdbff193165fea7a039e0ba3436443d3bbf7ed",
+          "nodes": 18,
+          "edges": 17
+        },
+        {
+          "file": "federated.graph.json",
+          "sha256": "d2f8d490f63907bd86f9d2a8d860fad5aee24814b018ad87defc25fd09b0c45d",
+          "nodes": 32,
+          "edges": 24
+        }
+      ]
     }
   ]
 }

@@ -43,6 +43,15 @@ def render(metamodel=None, level_rels=None):
         concrete = lambda want: want if want in ents else next(t for t in sorted(ents) if mm.is_a(t, want))   # a row may name a parent type (RA4-37)
         rels = [{"source": f"RS-{short(concrete(c['source_type']))}-1", "kind": c['kind'], "target": f"RS-{short(concrete(c['target_type']))}-{2 if c['source_type'] == c['target_type'] else 1}", "name": c['id']}
                 for c in lr['constraints'] if c['level'] == lvl and c.get('enforceable') is not False]
+        if lvl == 'A4':   # A4 is the physical deployment: a second instance no row reaches is linked too (LC-21), by its type's first row
+            used = {x for r in rels for x in (r['source'], r['target'])}
+            rows = [c for c in lr['constraints'] if c['level'] == lvl and c.get('enforceable') is not False]
+            for t in ents:
+                me = f"RS-{short(t)}-2"
+                if me in used or any(mm.is_a(t, u) for u in ('A4.CommunicationNetwork', 'A4.DeploymentEnvironment', 'A4.Path', 'A4.NetworkZone')): continue
+                c = next((c for c in rows if concrete(c['source_type']) == t), None) or next((c for c in rows if concrete(c['target_type']) == t), None)
+                if c and concrete(c['source_type']) == t: rels.append({"source": me, "kind": c['kind'], "target": f"RS-{short(concrete(c['target_type']))}-1", "name": c['id']})
+                elif c: rels.append({"source": f"RS-{short(concrete(c['source_type']))}-1", "kind": c['kind'], "target": me, "name": c['id']})
         docs[lvl] = {"level": lvl, "model_id": f"reference-structure-{lvl.lower()}", "model_version": "2026.10", "metamodel_version": mm.version, "source_system": "SDEM-GENERATED-FROM-RECORD", "instances": inst, "relationships": rels}
     return docs
 

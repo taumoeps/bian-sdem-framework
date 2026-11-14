@@ -6,7 +6,7 @@
     "directed": true,
     "metadata": {
       "sdem_store_version": "1.0",
-      "export_sha256": "4abc01fbaad8dafb359507ab4c5c4701320bc7485dd65840421e31e24aa91668",
+      "export_sha256": "3d1c7ee60cd61d7512c48ba67719329fb6cf7aee83344c58af2d6f424c83defe",
       "level": "A4",
       "model_id": "synthetic-fintech-a4",
       "model_version": "2026.10",
@@ -262,6 +262,106 @@
         "metadata": {
           "scope": "within-level",
           "row": "RA4-31"
+        }
+      },
+      {
+        "id": "A4:INF-EKS-ZIPPA-PROD-assignment-DEP-BUDDIES-PROD",
+        "source": "A4:INF-EKS-ZIPPA-PROD@1.30",
+        "target": "A4:DEP-BUDDIES-PROD@1.0",
+        "relation": "assignment",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-21"
+        }
+      },
+      {
+        "id": "A4:INF-EKS-ZIPPA-PROD-assignment-DEP-FLOW-PROD",
+        "source": "A4:INF-EKS-ZIPPA-PROD@1.30",
+        "target": "A4:DEP-FLOW-PROD@1.0",
+        "relation": "assignment",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-21"
+        }
+      },
+      {
+        "id": "A4:INF-EKS-ZIPPA-PROD-assignment-DEP-PERKS-PROD",
+        "source": "A4:INF-EKS-ZIPPA-PROD@1.30",
+        "target": "A4:DEP-PERKS-PROD@1.0",
+        "relation": "assignment",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-21"
+        }
+      },
+      {
+        "id": "A4:INF-EKS-ZIPPA-PROD-assignment-DEP-POTS-PROD",
+        "source": "A4:INF-EKS-ZIPPA-PROD@1.30",
+        "target": "A4:DEP-POTS-PROD@1.0",
+        "relation": "assignment",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-21"
+        }
+      },
+      {
+        "id": "A4:INF-EKS-ZIPPA-PROD-assignment-DEP-SHIELD-PROD",
+        "source": "A4:INF-EKS-ZIPPA-PROD@1.30",
+        "target": "A4:DEP-SHIELD-PROD@1.0",
+        "relation": "assignment",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-21"
+        }
+      },
+      {
+        "id": "A4:INF-EKS-ZIPPA-PROD-assignment-DEP-VAULTS-PROD",
+        "source": "A4:INF-EKS-ZIPPA-PROD@1.30",
+        "target": "A4:DEP-VAULTS-PROD@1.0",
+        "relation": "assignment",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-21"
+        }
+      },
+      {
+        "id": "A4:INF-EKS-ZIPPA-PROD-assignment-DEP-ZAP-PROD",
+        "source": "A4:INF-EKS-ZIPPA-PROD@1.30",
+        "target": "A4:DEP-ZAP-PROD@1.0",
+        "relation": "assignment",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-21"
+        }
+      },
+      {
+        "id": "A4:INF-EKS-ZIPPA-PROD-association-INF-PG-ZIPPA-PROD",
+        "source": "A4:INF-EKS-ZIPPA-PROD@1.30",
+        "target": "A4:INF-PG-ZIPPA-PROD@16",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "association"
+        }
+      },
+      {
+        "id": "A4:INF-EKS-ZIPPA-PROD-association-INF-REDIS-ZIPPA-PROD",
+        "source": "A4:INF-EKS-ZIPPA-PROD@1.30",
+        "target": "A4:INF-REDIS-ZIPPA-PROD@7",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "association"
+        }
+      },
+      {
+        "id": "A4:TS-QUEUE-serving-INF-EKS-ZIPPA-PROD",
+        "source": "A4:TS-QUEUE@1.0",
+        "target": "A4:INF-EKS-ZIPPA-PROD@1.30",
+        "relation": "serving",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-20"
         }
       }
     ]

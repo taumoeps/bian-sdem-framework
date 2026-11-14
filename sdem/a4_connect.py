@@ -2,7 +2,7 @@
 
   · AID-X01 — EXPOSED_THROUGH: an internet-facing A3 interface, exposed through the one internet-facing edge platform (a connection
     between layers, proposed for a person to approve with network_design evidence; two or more candidates: unresolved, never guessed);
-  · AID-C01…C05 — a connection for every A4 shape linked to nothing (LC-21): each a link marked inferred, with the rule, what it read and
+  · AID-C01…C06 — a connection for every A4 shape linked to nothing (LC-21): each a link marked inferred, with the rule, what it read and
     how sure, for a person to confirm or reject by the shape's id. A shape no rule reaches is unresolved, never guessed.
 """
 import re
@@ -16,13 +16,14 @@ def _approved(maps, rel):
     return [(m['source']['id'], m['target']['id']) for m in maps if m.get('relationship') == rel and m.get('status') == 'approved']
 
 
-def lone(a4, maps, mm):
-    """LC-21's shapes: no link inside A4 besides zone placement and nesting, and no connection to another layer (any status)."""
+def lone(a4, mm):
+    """LC-21's shapes: A4 is the physical deployment, so a shape is connected only by a link inside A4 — its zone placement aside.
+    A connection to another layer (DEPLOYED_ON, EXPOSED_THROUGH) does not count (the owner, 2026-11-14). Retired shapes are not deployed."""
     typ = {i['id']: i['type'] for i in a4.get('instances', [])}
+    retired = {i['id'] for i in a4.get('instances', []) if i.get('lifecycle_status') == 'retired'}
     zone = lambda x: mm.is_a(typ.get(x, ''), 'A4.NetworkZone')
     linked = {x for r in a4.get('relationships', []) if not (zone(r['source']) or zone(r['target'])) for x in (r['source'], r['target'])}
-    linked |= {x for m in maps for x in ((m.get('source') or {}).get('id'), (m.get('target') or {}).get('id'))}
-    return [x for x, t in typ.items() if x not in linked and not any(mm.is_a(t, s) for s in NOT_SHAPES)]
+    return [x for x, t in typ.items() if x not in linked and x not in retired and not any(mm.is_a(t, s) for s in NOT_SHAPES)]
 
 
 def propose_exposure(a3, a4, maps, mm):
@@ -38,7 +39,7 @@ def propose_exposure(a3, a4, maps, mm):
 
 
 def propose_connections(a3, a4, maps, mm, run, person, now, rejected=()):
-    """AID-C01…C05 for each A4 shape linked to nothing: ([links marked inferred], [unresolved ids with why])."""
+    """AID-C01…C06 for each A4 shape linked to nothing: ([links marked inferred], [unresolved ids with why])."""
     from .conformance import zones_of
     recs = {i['id']: i for i in a4.get('instances', [])}
     typ = {k: v['type'] for k, v in recs.items()}
@@ -55,7 +56,9 @@ def propose_connections(a3, a4, maps, mm, run, person, now, rejected=()):
     env_of = {}
     for r in rels:
         if r['kind'] == 'aggregation' and typ.get(r['source']) == 'A4.DeploymentEnvironment': env_of.setdefault(r['target'], set()).add(r['source'])
-    deployed_as = _approved(maps, 'DEPLOYED_AS'); deployed_on = _approved(maps, 'DEPLOYED_ON')
+    deployed_as = _approved(maps, 'DEPLOYED_AS'); deployed_on = _approved(maps, 'DEPLOYED_ON'); exposed = _approved(maps, 'EXPOSED_THROUGH')
+    env_name = {i['id']: (i.get('name') or '').lower() for i in a4.get('instances', []) if i['type'] == 'A4.DeploymentEnvironment'}
+    offers = {r['target']: r['source'] for r in (a3 or {}).get('relationships', []) if r['kind'] == 'composition'}   # interface -> the application composing it
     links, unresolved = [], []
     def mark(rule, src, conf, why):
         return {'by': 'sdem aid', 'run': run, 'at': now, 'requested_by': person, 'rule': rule, 'status': 'proposed', 'source': src, 'confidence': conf, 'reasoning': why}
@@ -64,10 +67,15 @@ def propose_connections(a3, a4, maps, mm, run, person, now, rejected=()):
         links.append({'source': s, 'kind': k, 'target': t, 'inferred': mark(rule, src, conf, why)})
     running = lambda: sorted({p for p, ds in hosts.items() if ds} | {p for _, p in deployed_on if p in typ})   # runs a deployment, or an application component (DEPLOYED_ON)
     run_by = {d for ds in hosts.values() for d in ds}
-    todo = set(lone(a4, maps, mm)) | {x for x, t in typ.items() if t == 'A4.Deployment' and x not in run_by}   # AID-C01: a deployment no platform runs
+    todo = set(lone(a4, mm)) | {x for x, t in typ.items() if t == 'A4.Deployment' and x not in run_by}   # AID-C01: a deployment no platform runs
     for x in sorted(todo, key=lambda x: (typ[x] != 'A4.Deployment', x)):   # deployments first: they make platforms hosts for the rules after
         t, name = typ[x], recs[x].get('name', '')
+        if t != 'A4.Deployment' and any(x in (l['source'], l['target']) for l in links): continue   # a rule already connected it (e.g. as a deployment's platform)
         if t == 'A4.Deployment':   # AID-C01
+            named = (recs[x].get('attributes') or {}).get('platform_id')
+            if named in typ and any(mm.is_a(typ[named], p) for p in PLATFORMS):   # the deployment record names its platform
+                add(named, 'assignment', x, 'AID-C01', f'{x} names its platform: platform_id {named}', 'high', 'the deployment runs on the platform its record names')
+                hosts.setdefault(named, []).append(x); continue
             comps = [c for c, d in deployed_as if d == x]
             cand = sorted({p for c, p in deployed_on if c in comps and p in typ})
             if env_of.get(x): cand = [p for p in cand if not env_of.get(p) or env_of[p] & env_of[x]] or cand
@@ -75,6 +83,13 @@ def propose_connections(a3, a4, maps, mm, run, person, now, rejected=()):
                 add(cand[0], 'assignment', x, 'AID-C01', f"{', '.join(comps)} DEPLOYED_ON {cand[0]} and DEPLOYED_AS {x} (approved)", 'high', 'the deployment runs on the platform its component is deployed on')
                 hosts.setdefault(cand[0], []).append(x); continue
             unresolved.append({'id': x, 'why': 'no single platform its component is deployed on' if not cand else f"its component is deployed on {', '.join(cand)} — which one?"}); continue
+        if any(mm.is_a(t, p) for p in PLATFORMS) and (recs[x].get('attributes') or {}).get('internet_facing') is True:   # AID-C06
+            ifcs = [i for i, p in exposed if p == x]; apps = {offers[i] for i in ifcs if i in offers}
+            deps = sorted({d for c, d in deployed_as if c in apps and d in typ})
+            prod = [d for d in deps if any('prod' in env_name.get(e, '') for e in env_of.get(d, ()))]
+            if prod or deps:
+                for d in (prod or deps): add(x, 'association', d, 'AID-C06', f"{', '.join(ifcs)} EXPOSED_THROUGH {x}; {', '.join(sorted(apps))} composes it and is DEPLOYED_AS {d} (approved)", 'high', 'an edge platform fronts the deployment of the application whose interface it exposes')
+                continue
         if any(mm.is_a(t, p) for p in PLATFORMS) and DATABASE.search(name):   # AID-C02
             users = {c for e in [i for i in a3.get('instances', []) if (i.get('attributes') or {}).get('stored_in') == x]
                      for c in [r['source'] for r in a3.get('relationships', []) if r['target'] == e['id'] and r['kind'] == 'access']}
