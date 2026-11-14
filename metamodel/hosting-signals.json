@@ -18,6 +18,12 @@
      "description": "the name or description names a cloud provider's managed service"},
     {"id": "HS-08", "points_to": "cloud", "confidence": "medium", "read": {"attribute_in": {"cloud_service_model": ["IaaS", "PaaS", "SaaS"]}, "for_types": ["A4.TechnologyService"]},
      "description": "a technology service delivered as IaaS, PaaS or SaaS (AT-A4-19, NIST SP 800-145)"},
+    {"id": "HS-11", "points_to": "on_premises", "confidence": "high", "read": {"name_words": ["on-prem", "on prem", "on-premises", "on premises", "data centre", "data center", "co-location", "colocation", "colo"]},
+     "description": "the name or description says it is on premises, in a data centre or in a co-location rack (the owner's decision G1, 2026-11-14)"},
+    {"id": "HS-12", "points_to": "on_premises", "confidence": "medium", "read": {"environment_attribute_in": {"cloud_deployment_model": ["private"]}, "environment_words": ["data centre", "data center"]},
+     "description": "its deployment environment is a private cloud (AT-A4-17, NIST SP 800-145 — usually on premises) or is described as in a data centre (G2)"},
+    {"id": "HS-13", "points_to": "on_premises", "confidence": "medium", "read": {"attribute_in": {"virtualisation": ["physical"]}},
+     "description": "a physical server the organisation runs (AT-A4-18; bare-metal cloud exists, so medium) (G3)"},
     {"id": "HS-09", "points_to": "cloud", "confidence": "low", "read": {"name_words": ["managed"]},
      "description": "the name or description says managed"}
   ]

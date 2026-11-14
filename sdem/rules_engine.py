@@ -321,11 +321,25 @@ class Run:
                         if s['id'] in _list(self.attr(t, back)): found.setdefault(t['id'], (t, []))[1].append(f"{t['level'].lower()} {t['id']}.{back} names {s['id']}")
                 for t, via in found.values():
                     self.report(plan, s, t, 1, 'data join; ' + '; '.join(via), via)
-        # S37 network zone: the component's network_zone wins over a network's `connects` (C3 finding 3)
+        # S37 the component's network: the network its platform is on (RA4-37) first; the deprecated network_zone (AT-A3-07) only when
+        # no platform route gives one (the owner's decisions G4, G5, 2026-11-14 — docs/design/sdem-hosting-evidence-s37-design.md)
         for c in comps:
+            nets = {}
+            for _, p, lab in self.links_by('DEPLOYED_ON', src=c['id']):
+                for e in self.wedges:
+                    if e['kind'] != 'association' or p not in (e['source'], e['target']): continue
+                    n = e['target'] if e['source'] == p else e['source']
+                    net = self.get(n, 'A4.CommunicationNetwork')
+                    if net and not self.mm.is_a(net['type'], 'A4.NetworkZone'):
+                        nets.setdefault(n, (net, []))[1].append(f'{c["id"]} DEPLOYED_ON {p} ({lab}); a4 {p} association {n} (RA4-37)')
             z = self.attr(c, 'network_zone')
+            for n, (net, via) in nets.items():
+                self.report('S37', c, net, 1, 'data join; ' + '; '.join(via), via)
             if z and self.get(z, 'A4.CommunicationNetwork'):
-                self.report('S37', c, self.get(z, 'A4.CommunicationNetwork'), 1, f"data join; a3 {c['id']}.network_zone = {z}", [f"{c['id']}.network_zone"])
+                if not nets:
+                    self.report('S37', c, self.get(z, 'A4.CommunicationNetwork'), 1, f"data join; a3 {c['id']}.network_zone = {z} (deprecated, AT-A3-07 — no platform route gives a network)", [f"{c['id']}.network_zone"])
+                elif z not in nets:
+                    self.attempt('S37', c['id'], z, 1, [f"a3 {c['id']}.network_zone = {z}"], f"the deprecated network_zone names {z}, but its platform is on {', '.join(sorted(nets))} — the platform route wins; a person corrects one of them")
         # S38 path carries the component
         for p in self.of('A4.Path'):
             for x in _list(self.attr(p, 'carries')):

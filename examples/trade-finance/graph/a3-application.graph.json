@@ -6,7 +6,7 @@
     "directed": true,
     "metadata": {
       "sdem_store_version": "1.0",
-      "export_sha256": "d82e28265b0709130eb12ba4c817f2569173340cfa050c756a064e3e6964c66b",
+      "export_sha256": "8317a6f85356c70e9f4d1da3ffa3e6061b826ffb0d6426373ff00d74774e01cc",
       "level": "A3",
       "model_id": "synthetic-bank-trade-a3",
       "model_version": "2026.10",
@@ -50,8 +50,7 @@
             ],
             "built_as": [
               "ART-LC-IMG"
-            ],
-            "network_zone": "NET-TF"
+            ]
           }
         }
       },
@@ -75,8 +74,7 @@
             ],
             "built_as": [
               "ART-DOC-IMG"
-            ],
-            "network_zone": "NET-TF"
+            ]
           }
         }
       },

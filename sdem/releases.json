@@ -252,7 +252,7 @@
         {
           "item": "attribute network_zone of A3.ApplicationComponent (AT-A3-07)",
           "removed_in_metamodel": "1.0.0",
-          "do": "place the platform the component is deployed on in its network zone (RA4-38) — the component's zone is its platform's"
+          "do": "place the platform the component is deployed on in its network zone (RA4-38), and link the platform to its network (RA4-37) — S37 reads that route first"
         }
       ],
       "actions": [

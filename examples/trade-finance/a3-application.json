@@ -36,8 +36,7 @@
         ],
         "built_as": [
           "ART-LC-IMG"
-        ],
-        "network_zone": "NET-TF"
+        ]
       }
     },
     {
@@ -58,8 +57,7 @@
         ],
         "built_as": [
           "ART-DOC-IMG"
-        ],
-        "network_zone": "NET-TF"
+        ]
       }
     },
     {

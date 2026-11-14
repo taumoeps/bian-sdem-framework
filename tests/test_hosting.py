@@ -113,5 +113,51 @@ class ConnectionTests(Base):   # ZC-01…ZC-04
         self.assertTrue(any(x.startswith('instance INF-PG-PAY-PROD: is in a cloud zone, but HS-01') for x in w), w)
 
 
+class EvidenceAgainstTheExamplesTests(unittest.TestCase):   # G1–G3 (HS-11…HS-13): with its zones removed, each example's hosting is inferred as recorded
+    def test_every_example_reinferred_as_recorded(self):
+        from sdem.hosting import propose
+        from sdem.conformance import zones_of
+        from sdem.metamodel import Metamodel
+        mm = Metamodel.load()
+        for ws in sorted(p.parent for p in (ROOT / 'examples').glob('*/a4-technology.json')):
+            if ws.name == 'reference-structure': continue
+            with self.subTest(ws.name):
+                d = json.loads((ws / 'a4-technology.json').read_text(encoding='utf-8'))
+                at = {i['id']: (i.get('attributes') or {}) for i in d['instances']}
+                shapes, parent, direct = zones_of(d, mm)
+                def top(z):
+                    while parent.get(z): z = parent[z]
+                    return z
+                want = {x: at[top(zs[0])].get('zone_kind') for x, zs in shapes.items() if zs and any(x in v for v in direct.values())}
+                zid = {i['id'] for i in d['instances'] if i['type'] == 'A4.NetworkZone'}
+                bare = {**d, 'instances': [i for i in d['instances'] if i['id'] not in zid], 'relationships': [r for r in d['relationships'] if r['source'] not in zid and r['target'] not in zid]}
+                zones, links, unresolved = propose(bare, mm, 'T', 'jane.architect', '2026-11-14')
+                kind = {z['id']: z['attributes']['zone_kind'] for z in zones}; par = {l['target']: l['source'] for l in links if l['kind'] == 'composition'}
+                got = {l['target']: kind[par.get(l['source'], l['source'])] for l in links if l['kind'] == 'aggregation'}
+                self.assertEqual({x: got.get(x) for x in want}, want); self.assertEqual(unresolved, [])
+
+    def test_the_new_signals_read_what_the_record_says(self):
+        from sdem.hosting import evidence
+        from sdem.metamodel import Metamodel
+        mm = Metamodel.load()
+        fx = json.loads((ROOT / 'examples/fx-dealing/a4-technology.json').read_text(encoding='utf-8'))
+        cf = json.loads((ROOT / 'examples/card-fraud-alerts/a4-technology.json').read_text(encoding='utf-8'))
+        ids = lambda doc, x: {e['id'] for e in evidence(next(i for i in doc['instances'] if i['id'] == x), doc, mm)}
+        self.assertIn('HS-11', ids(cf, 'INF-ONPREM-VM-CLUSTER-B'))   # "On-prem VM cluster B"
+        self.assertIn('HS-11', ids(fx, 'NODE-RATEGW-01'))            # "co-location rack"
+        self.assertIn('HS-13', ids(fx, 'NODE-RATEGW-01'))            # virtualisation: physical
+        self.assertIn('HS-12', ids(fx, 'SYS-PG-FX-PROD'))            # in the private-cloud, data-centre environment
+
+
+class S37Tests(unittest.TestCase):   # G4–G6: the network of the component's platform, not the deprecated network_zone
+    def test_trade_finance_needs_no_network_zone(self):
+        a3 = json.loads((ROOT / 'examples/trade-finance/a3-application.json').read_text(encoding='utf-8'))
+        self.assertFalse([i['id'] for i in a3['instances'] if 'network_zone' in (i.get('attributes') or {})])
+        from sdem.acceptance import run
+        from sdem.rules_engine import RulesEngine
+        c3 = next(r for r in run(RulesEngine(), ids=['C3']) if r['case'] == 'C3') if 'ids' in run.__code__.co_varnames else next(r for r in run(RulesEngine()) if r['case'] == 'C3')
+        self.assertTrue(c3['passed']); self.assertEqual(c3['score']['candidates']['fn'], 0)
+
+
 if __name__ == '__main__':
     unittest.main()

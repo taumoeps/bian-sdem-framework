@@ -907,7 +907,7 @@
       "source_reference": "[SL14]; [SAPG]; [RN14]; [AM]; [TOGAF]; [W135] not readable in this review",
       "rule_decision": "institution_only",
       "fill_step": 1,
-      "data_needed": "A3.ApplicationComponent.attributes.network_zone, or the network the component's platform is connected to (RA4-37; the deprecated A4.CommunicationNetwork.connects before metamodel 0.9.0); when network_zone and the platform's network disagree, the component's network_zone wins and the disagreement is a finding (C3 finding 3)",
+      "data_needed": "the network the component's platform is on: A3.ApplicationComponent DEPLOYED_ON a platform, and that platform's association with an A4.CommunicationNetwork (RA4-37) — read first (the owner's decision G4, 2026-11-14); the deprecated A3.ApplicationComponent.attributes.network_zone (AT-A3-07) only when no platform route gives a network (G5)",
       "confidence": "low",
       "reasoning": "Component→network: reached through node and path in ArchiMate; a direct arrow is rarely how workspaces are recorded. Institution-only.",
       "basis_confidence": "medium",

@@ -815,7 +815,7 @@
       "verification": "SDEM design; exercised by the use-case runs",
       "reasoning": "Deprecated in metamodel 0.10.0: a component's zone is the zone of the platform it is deployed on (network zones, Z3) — one source of truth. `sdem check` names each use (LC-13) for the person to place the platform in its zone; the migration never guesses.",
       "confidence": "low",
-      "read_by": "S37 (until removed)",
+      "read_by": "S37 — only when no platform route gives a network (G5), until removed in metamodel 1.0.0",
       "confidence_basis": "deprecated",
       "kind": "reference",
       "references": [

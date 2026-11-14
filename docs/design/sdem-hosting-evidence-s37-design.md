@@ -1,6 +1,6 @@
 # On-premises evidence the hosting signals miss, and S37 without a deprecated attribute
 
-> **Status: proposed — for the owner's decision (G1–G6, §4), 2026-11-14.** Nothing is built. Both were found while placing five examples in network zones with SDEM's own inference (`sdem/hosting.py`, AID-Z01) and checking every proposal against what the records say. A metamodel change: it needs the owner's approval, a new `metamodel_version` (0.13.0) and a migration.
+> **Status: approved and built — the owner approved G1–G6 (2026-11-14).** Both were found while placing five examples in network zones with SDEM's own inference (`sdem/hosting.py`, AID-Z01) and checking every proposal against what the records say. **Built within metamodel 0.12.0, not 0.13.0:** SDEM's stability rule (MS-05) moves the version only when the core changes — entity types, link types, within-layer rules, attributes — and these change none of them (new signals, how the engine reads S37, a rule's notes). **G5 as built:** `network_zone` stays S37's fallback until its removal in metamodel 1.0.0, as the release notes already announced — not 0.14.0, which would have broken that promise.
 
 ## 1. The hosting signals miss plain on-premises evidence
 
@@ -36,7 +36,7 @@ S37's own entry already names the right source — *"or the network the componen
 
 - **S37 reads the platform route first:** a component `DEPLOYED_ON` a platform (approved) → the networks that platform is associated with (RA4-37) → a candidate for each. In trade-finance this finds the same two candidates (`APP-LC` and `APP-DOC` run on `NODE-TF-PROD`, which is on `NET-TF`), so C3's answer key stays valid unchanged.
 - **`network_zone` stays as a fallback until it is removed**, cited as deprecated in the candidate's reasoning; when both give a network and they differ, the platform route wins and the difference is reported.
-- **Removal:** AT-A3-07 removed in metamodel 0.14.0, with a migration step that drops it where the platform route gives the same network and reports any workspace where it does not (a person decides).
+- **Removal:** AT-A3-07 is removed in metamodel 1.0.0 as already announced (the release notes' deprecations), with a migration step then that drops it where the platform route gives the same network and reports any workspace where it does not (a person decides).
 - trade-finance drops `network_zone` (LC-13 clears).
 
 ## 3. What changes
@@ -47,8 +47,8 @@ S37's own entry already names the right source — *"or the network the componen
 | `sdem/hosting.py` | read an environment's description (HS-12) as well as its attributes |
 | `sdem/rules_engine.py` | S37: the platform route, then the deprecated attribute |
 | `metamodel/relationship-rules.json` | S37's `data_needed`: the platform route first |
-| `metamodel/entity-attributes.json` | AT-A3-07: `removed_in_metamodel` 0.14.0 |
-| `metamodel/migrations.json` | 0.12.0 → 0.13.0, additive |
+| `metamodel/entity-attributes.json` | AT-A3-07: read by S37 only as the fallback |
+| `sdem/releases.json` | AT-A3-07's deprecation says to link the platform to its network |
 | examples | trade-finance without `network_zone` |
 | tests | the five examples' zones re-inferred; C3 still passes without the attribute |
 
@@ -60,5 +60,5 @@ S37's own entry already names the right source — *"or the network the componen
 | G2 | Add HS-12 (environment is a private cloud, or in a data centre), medium? | **yes** |
 | G3 | Add HS-13 (`virtualisation: physical`), medium? | **yes** |
 | G4 | S37 reads the network of the component's platform first (RA4-37), as its entry already says? | **yes** |
-| G5 | Keep `network_zone` as S37's fallback until removed in metamodel 0.14.0, with a migration that drops it where the platform route agrees? | **yes** |
+| G5 | Keep `network_zone` as S37's fallback until removed in metamodel 0.14.0, with a migration that drops it where the platform route agrees? | **yes** — *built with the removal kept at 1.0.0, as already announced* |
 | G6 | trade-finance drops `network_zone` once S37 reads the platform route? | **yes** |

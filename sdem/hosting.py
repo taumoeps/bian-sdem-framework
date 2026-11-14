@@ -1,7 +1,7 @@
 """Hosting and zone connectivity (metamodel 0.11.0; docs/design/sdem-hosting-inference-design.md, the owner's decisions H1–H8, 2026-11-14).
 
   · the organisation's hosting default and zone templates (PR-32) — SDEM's default is cloud first;
-  · the evidence for a shape's hosting: the signals in metamodel/hosting-signals.json (HS-01…HS-10) and the profile's own;
+  · the evidence for a shape's hosting: the signals in metamodel/hosting-signals.json (HS-01…HS-13) and the profile's own;
   · the zone connections SDEM works out from the zone structure (ZC-01…ZC-04) — never records;
   · zone placements proposed for a person to decide (AID-Z01…AID-Z04), each marked inferred with the signals it read.
 """
@@ -35,7 +35,7 @@ def _words(rec):
 
 
 def evidence(rec, doc, mm, signals=None):
-    """The signals a shape carries: [{id, points_to, confidence, read}] — what was read, so the proposal can cite it (HS-01…HS-10)."""
+    """The signals a shape carries: [{id, points_to, confidence, read}] — what was read, so the proposal can cite it (HS-01…HS-13)."""
     signals = signals if signals is not None else policy()['signals']
     at = rec.get('attributes') or {}
     envs = [i for i in doc.get('instances', []) if i['type'] == 'A4.DeploymentEnvironment'
@@ -51,6 +51,9 @@ def evidence(rec, doc, mm, signals=None):
         for k, vals in (read.get('environment_attribute_in') or {}).items():
             for e in envs:
                 if not got and (e.get('attributes') or {}).get(k) in vals: got = f"environment {e['id']} {k} = {e['attributes'][k]!r}"
+        for w in read.get('environment_words') or []:   # HS-12: the environment's own description
+            for e in envs:
+                if not got and re.search(r'(?<![a-z0-9])' + re.escape(w.casefold()) + r'(?![a-z0-9])', _words(e)): got = f"environment {e['id']} says {w!r}"
         words = read.get('name_words') or []
         if not got and words:
             hit = next((w for w in words if re.search(r'(?<![a-z0-9])' + re.escape(w.casefold()) + r'(?![a-z0-9])', _words(rec))), None)
