@@ -109,7 +109,7 @@ def layout(doc, layer, mm=None):
         return out
     def place(z, x0, y0, x1, y1, lv):
         rects[z] = (x0, y0, x1, y1); level[z] = lv
-        if z.startswith('R:'): pos[z[2:]] = (max(x0 + 0.08, x1 - 0.05), y0 + HDR / 2)   # the container's own record: in its header band, right of the heading — lines to it end on it
+        if z.startswith('R:'): pos[z[2:]] = (x1 - min(0.05, (x1 - x0) / 2), y0 + min(HDR, y1 - y0) / 2)   # the container's own record: in its header band, right of the heading — lines to it end on it
         ix0, iy0, ix1, iy1 = x0 + PAD, y0 + HDR, x1 - PAD, y1 - PAD
         mine, ks = own.get(z, []), kids.get(z, [])
         parts = ([('own', len(mine))] if mine else []) + [(k, wt(k)) for k in ks]
