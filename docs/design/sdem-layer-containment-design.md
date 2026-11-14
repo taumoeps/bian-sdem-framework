@@ -1,6 +1,6 @@
 # Grouping A1–A3 by what owns what — the containment layout
 
-> **Status: proposed — for the owner's decision (C1–C7, §7), 2026-11-15.** Nothing is built. It asks whether the way A4 is drawn — regions that hold what belongs to them — can be used for A1, A2 and A3 **without deviating from BIAN, ArchiMate or TOGAF** (the owner's condition: only A4 may deviate). The answer below is yes, under one ArchiMate rule and with each framework's own structures. Expected to need **no metamodel change**: no new entity types, no new rules between records.
+> **Status: approved — the owner approved C1–C6 as recommended (2026-11-15); A2 built (`sdem/containment.py`, `sdem layout --layer A2`, `sdem view`, the 3D view; tests `tests/test_containment.py`); A1 and A3 next.** Built for A2 as designed, with one choice made while building: a container is drawn as its region only — its record anchored at the region's heading, where links from other layers meet it — since in ArchiMate's nested notation the container *is* the box. C7 is recorded as: consistent with Archi's implementation (`NEW_RELATIONS_TYPES`) and an independent review (Gemini, 2026-11-15) that cites ArchiMate 3.2 §5.1.2 (nesting) and §5.7 (derivation); the specification text itself was not read (behind an Open Group sign-in). It asks whether the way A4 is drawn — regions that hold what belongs to them — can be used for A1, A2 and A3 **without deviating from BIAN, ArchiMate or TOGAF** (the owner's condition: only A4 may deviate). Expected to need **no metamodel change**.
 
 ## 1. The problem
 
@@ -13,7 +13,7 @@ The 3D view groups A4 by network zone; A1, A2 and A3 are grouped by **record typ
    - *Basis:* ArchiMate lets nesting stand for a relationship. Archi, the reference tool, creates a relationship from nesting by default for composition, aggregation, assignment, specialisation, realisation **and access** (`PreferenceInitializer.java`, `NEW_RELATIONS_TYPES`, read 2026-11-15). SDEM takes the stricter set, without access, so a drawing is never read as saying more than the data does. The ArchiMate 3.2 specification text is behind an Open Group sign-in and was not read; this is to be checked against it before building (C7).
 3. **One primary hierarchy per layer.** A record can have two structural owners — a service operation is in its service group *and* aggregated by a business scenario; a process realises a capability *and* a value stream stage. A drawing nests it once, in the primary hierarchy; its other structural links are drawn as lines, which ArchiMate always allows.
 4. **What has no structural owner stays in its own group** — an ArchiMate Grouping by kind, as today: value streams, actors and roles, business objects, data entities, events, scenarios.
-5. **Links between regions are derived, never stored.** When parts in two regions are linked, their regions are shown as related — ArchiMate's derivation of relationships. SDEM marks them derived, as it does A4's zone connections (ZC-01…ZC-03). To be checked against the specification's derivation rules (C7).
+5. **Links between regions are derived, never stored.** When parts in two regions are linked, their regions are shown as related — a *potential* derivation in ArchiMate's terms (a link between the parts does not prove the wholes are linked in every sense). SDEM marks them **derived (potential)**, as it does A4's zone connections (ZC-01…ZC-03), and never records them.
 6. **Each framework's own names** — business area, business domain, service domain; capability; application, component — never "level 0/1/2" (that is A4's).
 
 ## 3. A2 — the BIAN service landscape
@@ -64,7 +64,7 @@ The primary hierarchy is BIAN's own, already in SDEM's rules:
 
 ## 6. What would be built
 
-- **One layout for every layer:** SDEM's deployment-zones layout (`sdem/zone_layout.py`) generalised to a containment layout that takes a layer's primary hierarchy as data. A4 keeps its zones; A1–A3 use the hierarchies above. Drawn the same in the 3D view, `sdem view`, and `sdem diagram`.
+- **One layout for every layer:** a containment layout (`sdem/containment.py`, `sdem layout --layer …`) that takes a layer's primary hierarchy as data — each region splits along its longer side and gives its parts room by what they hold. A4 keeps its zones; A1–A3 use the hierarchies above. Drawn the same in the 3D view, `sdem view`, and `sdem diagram`.
 - **The rules** each layer already has (LC-10m: the minimum links BIAN and the metamodel expect) — shown, not added to. A record with no owner goes in a "Not in a …" strip, as in A4.
 - **No metamodel change** expected: no new entity types, no new link types, no new rules between records. If building shows otherwise, it comes back for approval.
 

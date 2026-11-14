@@ -2,7 +2,7 @@
 
 > **Generated** from the code by `sdem model regenerate` (`sdem/clidoc.py`), from the same catalogue as `sdem commands --json`; `sdem model check` fails in CI when it is stale — **do not edit by hand**. Each command's `--help` has the same options and a worked example. For *when* to use which command, in order, see the [scenarios](../sdem-scenarios.md); for what each does to your data, the [user guide](../sdem-workbench-user-guide.md#7-command-reference).
 
-120 commands and subcommands.
+121 commands and subcommands.
 
 ## Every command takes
 
@@ -130,6 +130,7 @@
 | Command | What it does |
 |---|---|
 | [`sdem impact`](#cmd-impact) | classify what a change to a record affects |
+| [`sdem layout`](#cmd-layout) | a layer drawn by what owns what |
 | [`sdem matrix`](#cmd-matrix) | business → BIAN → application → technology matrices from approved links |
 | [`sdem requirements`](#cmd-requirements) | requirements and constraints the workspace must keep meeting, their measurements, and what a change does to them: in scope, satisfied, breached, not evaluable |
 | [`sdem requirements check`](#cmd-requirements-check) | the registry against its schema and the workspace |
@@ -1543,6 +1544,31 @@ Example:
 
 ```bash
 sdem impact INF-CLOUD-K8S-PROD --change rehost --graph examples/card-fraud-alerts/graph
+```
+
+### sdem layout
+
+<a id="cmd-layout"></a>
+
+a layer drawn by what owns what — A2 as BIAN's service landscape (business area → business domain → service domain → service group → operation), A4 by its network zones; each region an existing standard record, nesting only through structural links; the layout every drawing uses — read-only
+
+```
+sdem layout --layer {A1,A2,A3,A4} --workspace WORKSPACE [--environment ENVIRONMENT]
+```
+
+*JSON: native · dry run: sandbox*
+
+| Argument | Required | What it is |
+|---|---|---|
+| `--layer` {A1, A2, A3, A4} | yes | the layer |
+| `--workspace` | yes | the workspace folder — found from the current folder when you are inside one (WS-11) |
+| `--environment` |  | A4 only: the one environment drawn (default production; all for every one) |
+| `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
+
+Example:
+
+```bash
+sdem layout --layer A2 --workspace examples/payment-initiation
 ```
 
 ### sdem link

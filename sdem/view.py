@@ -32,14 +32,15 @@ def layout(reader, pkg=None):
     """Deterministic positions: per band, records grouped by entity type in catalogue order, wrapped PER_ROW to a row."""
     order = {t: n for n, t in enumerate(reader.mm.entities)}
     nodes, bands, y = [], [], 30; extra = _projected(pkg, reader); zones, width = [], PAD_X + PER_ROW * STEP_X
-    zl = _zone_layout(reader)
-    if zl:   # the band's width must hold the busiest zone's shapes side by side
+    lays = {l: x for l, x in (('A2', _containment(reader, 'A2')), ('A4', _zone_layout(reader))) if x}   # A2 by what owns what, A4 by zone
+    for zl in lays.values():   # the band's width must hold the busiest region's shapes side by side
         gaps = [abs(a['at'][0] - b['at'][0]) for a in zl['shapes'] for b in zl['shapes'] if a is not b and abs(a['at'][1] - b['at'][1]) < 0.03 and a['at'][0] != b['at'][0]]
         if gaps: width = max(width, min(6000, int((BOX_W + 16) / min(gaps)) + 40))   # the closest pair on one row stays a box apart
     for lvl in LEVELS:
         recs = sorted(list(reader.nodes(level=lvl)) + extra.get(lvl, []), key=lambda r: (order.get(r['type'], 999), 'prj' in r, r['id']))
         if not recs: continue
-        if lvl == 'A4' and zl:   # A4 by its network zones — SDEM's deployment-zones viewpoint (sdem/zone_layout.py), every environment
+        zl = lays.get(lvl)
+        if zl:   # A4 by its network zones (sdem/zone_layout.py, every environment); A2 by BIAN's service landscape (sdem/containment.py)
             deep = max([sum(1 for t in zl['shapes'] if t['zone'] == sh['zone'] and t['at'][0] == sh['at'][0]) for sh in zl['shapes']] or [1])
             vg = [abs(a['at'][1] - b['at'][1]) for a in zl['shapes'] for b in zl['shapes'] if a is not b and a['at'][0] == b['at'][0] and a['at'][1] != b['at'][1]]
             h = max(560, min(6000, int((BOX_H + 14) / min(vg)) + 60 if vg else 560))   # a stack under its platform stays a box apart
@@ -54,7 +55,7 @@ def layout(reader, pkg=None):
                 nodes.append({'k': r['key'], 'id': r['id'], 'v': r['version'], 'name': r['name'], 'type': r['type'], 'lvl': lvl,
                               'x': X(at[r['id']][0]) - BOX_W / 2, 'y': Y(at[r['id']][1]) - BOX_H / 2,
                               'meta': {k: r[k] for k in ('lifecycle_status', 'canonical_id', 'description', 'definition_uri') if k in r}, 'attrs': r.get('attributes', {})})
-            bands.append({'lvl': lvl, 'label': NAMES[lvl] + ' — by network zone', 'y': y, 'h': h}); y += h + BAND_GAP
+            bands.append({'lvl': lvl, 'label': NAMES[lvl] + (' — by network zone' if lvl == 'A4' else ' — by what owns what'), 'y': y, 'h': h}); y += h + BAND_GAP
             continue
         rows = (len(recs) + PER_ROW - 1) // PER_ROW; top = y
         for n, r in enumerate(recs):
@@ -76,6 +77,17 @@ def layout(reader, pkg=None):
         s, t = (keyof.get((reader.mm.level(x['type']) or '', x['id'])) for x in (l['source'], l['target']))
         if s and t: edges.append({'s': s, 't': t, 'rel': l['relationship'], 'scope': 'p', 'mid': f"PROJECTED {l['confidence']} · {l['mapping_id']}"})
     return {'nodes': nodes, 'edges': edges, 'bands': bands, 'zones': zones, 'width': width, 'height': y, 'box': [BOX_W, BOX_H]}
+
+
+def _containment(reader, lvl):
+    """The containment layout of the store's layer (sdem/containment.py), or None."""
+    from .containment import layout, ContainmentError
+    ns = list(reader.nodes(level=lvl))
+    if not ns: return None
+    doc = {'instances': [{'id': n['id'], 'type': n['type'], 'name': n['name'], 'attributes': n.get('attributes', {})} for n in ns],
+           'relationships': [{'source': e['source'], 'kind': e['kind'], 'target': e['target']} for e in reader.edges('within-level') if e['level'] == lvl]}
+    try: return layout(doc, lvl, reader.mm)
+    except ContainmentError: return None
 
 
 def _zone_layout(reader):

@@ -56,6 +56,7 @@ This repository holds architecture kept with **SDEM, the Service Domain Enterpri
 | does the design meet the organisation's standards and reference-architecture patterns? | `sdem comply --workspace <dir> --json` — per rule and record: compliant, non-compliant, unresolved, under an exception; separate from `sdem check`. Never claim a standard is met that a rule cannot express — hand it back |
 | fill gaps (inferred, marked) | `sdem aid --workspace <dir> --person <person> --dry-run`, then without `--dry-run` when the person agrees |
 | A4 network zones, and how the zones connect | `sdem zones --workspace <dir> --json`; the layout every drawing of A4 uses: `sdem zones --layout --workspace <dir> --json` — A4 is the physical deployment: every shape in a zone and linked inside A4 (skill `sdem-records`) |
+| a layer drawn by what owns what (A2 as BIAN's service landscape; A4 by zone) — the layout every drawing uses | `sdem layout --layer <A2|A4> --workspace <dir> --json` (read-only) |
 | decide what `sdem aid` inferred for an A4 shape (its zone, its A4 links) | the person runs `sdem aid confirm|reject <shape> --workspace <dir> --person <person>` — never you |
 | propose links between layers | `sdem link --workspace <dir> --out <dir>/links` → each proposal's `mapping_id` |
 | a person approves one | `sdem approve <mapping_id> --proposals <dir>/links/proposals.json --workspace <dir> --reviewer <person> --evidence <kind:ref>` |
