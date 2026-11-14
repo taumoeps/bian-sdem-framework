@@ -2,7 +2,7 @@
 
 > **Generated** from the code by `sdem model regenerate` (`sdem/clidoc.py`), from the same catalogue as `sdem commands --json`; `sdem model check` fails in CI when it is stale — **do not edit by hand**. Each command's `--help` has the same options and a worked example. For *when* to use which command, in order, see the [scenarios](../sdem-scenarios.md); for what each does to your data, the [user guide](../sdem-workbench-user-guide.md#7-command-reference).
 
-121 commands and subcommands.
+122 commands and subcommands.
 
 ## Every command takes
 
@@ -59,6 +59,7 @@
 | [`sdem bian select`](#cmd-bian-select) 👤 | set exactly which BIAN service domains one workspace holds |
 | [`sdem bian update`](#cmd-bian-update) 👤 | replace a workspace's BIAN layer with your shared one |
 | [`sdem designs`](#cmd-designs) | design records and gap records: the pages onboarded designs came from, and what did not fit an entity |
+| [`sdem extensions`](#cmd-extensions) | the installed SDEM extensions (a program called sdem-<name> beside SDEM, with a manifest) |
 | [`sdem load`](#cmd-load) 👤 | load reviewed candidate entities from sdem transform into a workspace |
 | [`sdem new`](#cmd-new) 👤 | start a workspace: the four layers (A2 your BIAN layer) and an empty registry of connections |
 | [`sdem releases`](#cmd-releases) | what each SDEM release changed: migrations, breaking changes, deprecations and the actions to take |
@@ -1440,6 +1441,28 @@ Example:
 
 ```bash
 sdem explain SD-PI --projection work/prj
+```
+
+### sdem extensions
+
+<a id="cmd-extensions"></a>
+
+the installed SDEM extensions (a program called sdem-<name> beside SDEM, with a manifest) — run one as sdem <name> …; SDEM knows none by name (EXT-15)
+
+```
+sdem extensions
+```
+
+*JSON: native · dry run: sandbox*
+
+| Argument | Required | What it is |
+|---|---|---|
+| `--json` |  | as data: {"count", "items"} |
+
+Example:
+
+```bash
+sdem extensions
 ```
 
 ### sdem governance

@@ -1,12 +1,16 @@
 # SDEM extensions — the contract
 
-> **Status: approved by the SDEM owner (2026-11-15) — D1, D2 yes; D3 (EXT-15) later.** EXT-01…EXT-14 need **no change to SDEM's core** (code, metamodel, commands); EXT-15 is the one optional core change and is decided separately. The first extension is the DESNRE 3D publisher (`desnre-publish-design.md`, in the DESNRE site's repository).
+> **Status: approved by the SDEM owner (2026-11-15) — D1, D2 yes; EXT-15 approved the same day and built (`sdem/extensions.py`: `sdem <name>`, `sdem extensions`).** EXT-01…EXT-14 need **no change to SDEM's core** (code, metamodel, commands); EXT-15 is the one optional core change and is decided separately. The first extension is the DESNRE 3D publisher.
 
 ## 1. Why
 
 SDEM is open source, and its core stays small and standard: the metamodel, the checks, inference, the knowledge graph and the commands. Organisations and tools will want more — publish a workspace to a site, feed a CMDB, export to a modelling tool, add their own checks or reports. Those belong **outside** the core, built on what SDEM already offers, so the core never grows for one adopter's need and an extension never breaks when SDEM changes inside.
 
-## 2. What an extension is
+## 2. Where extensions live
+
+Not in SDEM's repository: an extension changes when its target changes, may need what SDEM does not allow itself (a dependency, a network call), and may be an organisation's own. Shareable extensions live in **[sdem-extensions](https://github.com/taumoeps/sdem-extensions)** (public, Apache 2.0) — one folder per extension, each its own package, with a `template/` to start from and every extension tested against SDEM's examples. The first is `desnre/`, the DESNRE 3D publisher. An organisation's own extensions live in its own, usually private, repository. Install one into SDEM's environment — `pip install "git+https://github.com/taumoeps/sdem-extensions#subdirectory=<name>"` — and `sdem extensions` lists it.
+
+## 2a. What an extension is
 
 | ID | Rule |
 |---|---|
@@ -19,7 +23,7 @@ SDEM is open source, and its core stays small and standard: the metamodel, the c
 
 | ID | Rule |
 |---|---|
-| **EXT-05** | Every extension has a manifest, `sdem-extension.json`, shipped with it: |
+| **EXT-05** | Every extension has a manifest, `sdem-extension.json`, shipped with it, and prints it when run as `sdem-<name> --manifest` (how SDEM recognises it, EXT-15): |
 
 ```json
 {
@@ -70,7 +74,7 @@ One extension may be more than one kind; its manifest lists each.
 
 | ID | Rule |
 |---|---|
-| **EXT-15** | *Proposed, not decided.* `sdem <name> …` runs an installed `sdem-<name>` command (the way `git` finds its add-ons), and `sdem extensions` lists the installed ones with their manifests. It is generic — it knows no extension by name — and small, but it **is** a change to the core, so it waits for the owner's decision. Without it, every extension still works as its own command (`sdem-desnre …`). |
+| **EXT-15** | *Approved and built.* `sdem <name> …` runs an installed extension `sdem-<name>` (the way `git` finds its add-ons) with the rest of the line **untouched** — its own `--help`, `--dry-run` and `--json` — and its exit code is SDEM's. An extension is found beside SDEM (the same environment, so `pip install <its folder>` installs it) or on the PATH, and is run only if it answers `--manifest` with its manifest, so a stray `sdem-<name>` program is never run; SDEM's own commands and its own `sdem-*` programs always win. `sdem extensions` lists the installed ones. SDEM knows no extension by name. Every extension also still runs as its own command (`sdem-desnre …`). |
 
 ## 7. What SDEM keeps stable for extensions
 
@@ -89,4 +93,4 @@ Nothing new is built for this; it is what SDEM already promises its agents, writ
 | D2 | The synthetic mark lives in the extension's own file (EXT-11), not in SDEM | yes — keeps the core unchanged; a core-level mark can follow if many extensions need it |
 | D3 | EXT-15, `sdem <name>` finding installed extensions | later — only once a second extension exists |
 
-**Decided (2026-11-15):** D1 yes, D2 yes, D3 later — EXT-15 stays proposed.
+**Decided (2026-11-15):** D1 yes, D2 yes, D3 later — then, the same day, EXT-15 approved by the owner ("install the extension so it expands onto sdem core") and built.

@@ -93,6 +93,8 @@ JOURNEYS = {
                  'sdem commands --json'),
     'upgrade':  ('J9', 'before you switch SDEM versions: run the new version, installed side by side, against your workspaces — migrations, profile, deprecations, agent files, actions; writes nothing', 'sdem.upgrade', [],
                  'sdem upgrade check --root workspaces'),
+    'extensions': ('J9', "the installed SDEM extensions (a program called sdem-<name> beside SDEM, with a manifest) — run one as sdem <name> …; SDEM knows none by name (EXT-15)", 'sdem.extensions', [],
+                   'sdem extensions'),
     'releases': ('J9', 'what each SDEM release changed: migrations, breaking changes, deprecations and the actions to take', 'sdem.release_notes', [],
                  'sdem releases --since 0.15.0'),
     'types':    ('J1', "what you may write: each layer's kinds of record, their fields (type, required, allowed values) and allowed links; the requirement and change-set formats — your profile's included with --workspace", 'sdem.typeinfo', [],
@@ -460,7 +462,13 @@ def _main(argv=None):
         if (getattr(stream, 'encoding', '') or '').lower().replace('-', '') != 'utf8' and hasattr(stream, 'reconfigure'):
             try: stream.reconfigure(encoding='utf-8', errors='replace')
             except (ValueError, OSError): pass
-    argv = ['--workspace' if x == '--estate' else x for x in (sys.argv[1:] if argv is None else argv)]   # --estate: the old name, still accepted
+    argv = list(sys.argv[1:] if argv is None else argv)
+    if argv and argv[0] not in JOURNEYS and not argv[0].startswith('-'):   # EXT-15: sdem <name> runs the installed extension sdem-<name>,
+        from . import extensions                                            # with the rest of the line untouched — its own --help, --dry-run, --json
+        code = extensions.run(argv[0], argv[1:])
+        if code is not None:
+            return code
+    argv = ['--workspace' if x == '--estate' else x for x in argv]   # --estate: the old name, still accepted
     every = '\n'.join(f"  {n:<10} {w}" for n, w in EVERYDAY)
     lines = [f"  {n:<9} {j:<3} {w}" for n, (j, w, *_rest) in JOURNEYS.items() if n not in dict(EVERYDAY)]
     epilog = ('Everyday (inside a workspace folder, --workspace is found for you; a quick start: docs/sdem-quick-start.md):\n' + every +
@@ -538,7 +546,7 @@ def _run(argv):
 
 
 # WS-11: inside a workspace folder, --workspace is found — never for sdem new (it starts one), never over --root or --graph or files given
-NO_FINDING = ('new', 'commands', 'model', 'releases', 'diff', 'agents', 'copilot')
+NO_FINDING = ('new', 'commands', 'model', 'releases', 'extensions', 'diff', 'agents', 'copilot')
 
 
 def find_workspace(start=None):

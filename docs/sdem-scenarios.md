@@ -292,3 +292,14 @@ sdem model status                                               # this SDEM's me
 ```
 
 **A person decides:** migrating each workspace (recorded).
+
+## 16. Extensions — what is installed, and running one
+
+```bash
+sdem extensions                                                 # the installed extensions: what each reads, where it sends data
+sdem extensions --json                                          # the same, as data
+```
+
+An installed extension runs as `sdem <name> …` — its own commands and options, listed by `sdem <name> --help`. Extensions are not part of SDEM; they are installed beside it (for example the DESNRE 3D publisher, from the sdem-extensions repository).
+
+**A person decides:** installing an extension, and anything it sends — every extension follows SDEM's extension contract: a dry run, and a person's step before anything leaves.

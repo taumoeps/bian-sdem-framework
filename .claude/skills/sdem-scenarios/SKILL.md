@@ -1,6 +1,6 @@
 ---
 name: sdem-scenarios
-description: Which SDEM commands to run, in what order, and who decides, for every job — set up an organisation and its first workspace; explore the bundled example; create a new design; onboard existing designs — Confluence, a folder, Word or Excel; a design document into all four layers, with an agent; link the architectures and approve the links; build the knowledge graph and see it; trace dependencies and assess a change's impact; a change event — from change set to accepted, planned work; requirements and risk; the organisation's design spec, standards and patterns; a reference pattern from the organisation's diagram; design documents and narratives; manage the BIAN layer; upgrade SDEM. Use when asked to do any of these jobs, when unsure which command comes next, or before using a command no other skill covers.
+description: Which SDEM commands to run, in what order, and who decides, for every job — set up an organisation and its first workspace; explore the bundled example; create a new design; onboard existing designs — Confluence, a folder, Word or Excel; a design document into all four layers, with an agent; link the architectures and approve the links; build the knowledge graph and see it; trace dependencies and assess a change's impact; a change event — from change set to accepted, planned work; requirements and risk; the organisation's design spec, standards and patterns; a reference pattern from the organisation's diagram; design documents and narratives; manage the BIAN layer; upgrade SDEM; extensions — what is installed, and running one. Use when asked to do any of these jobs, when unsure which command comes next, or before using a command no other skill covers.
 ---
 
 # SDEM jobs, end to end
@@ -299,3 +299,14 @@ sdem model status                                               # this SDEM's me
 ```
 
 **A person decides:** migrating each workspace (recorded).
+
+## 16. Extensions — what is installed, and running one
+
+```bash
+sdem extensions                                                 # the installed extensions: what each reads, where it sends data
+sdem extensions --json                                          # the same, as data
+```
+
+An installed extension runs as `sdem <name> …` — its own commands and options, listed by `sdem <name> --help`. Extensions are not part of SDEM; they are installed beside it (for example the DESNRE 3D publisher, from the sdem-extensions repository).
+
+**A person decides:** installing an extension, and anything it sends — every extension follows SDEM's extension contract: a dry run, and a person's step before anything leaves.

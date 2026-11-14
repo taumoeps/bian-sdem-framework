@@ -1,5 +1,5 @@
-"""PRIVACY.md's claims about the software, checked on every push: SDEM imports no networking library, starts only git and
-on-device text recognition, and the HTML pages it writes load nothing from the internet."""
+"""PRIVACY.md's claims about the software, checked on every push: SDEM imports no networking library, starts only git,
+on-device text recognition and — when you run one — an installed extension, and the HTML pages it writes load nothing from the internet."""
 import ast, contextlib, io, re, shutil, sys, tempfile, unittest
 from pathlib import Path
 
@@ -34,8 +34,12 @@ class PrivacyTests(unittest.TestCase):
             src = f.read_text(encoding='utf-8')
             self.assertNotRegex(src, r'os\.(system|popen|exec\w*|spawn\w*)\(', f.name)
             started |= set(re.findall(r"subprocess\.\w+\(\s*\[\s*'([\w.-]+)'", src))
-            self.assertEqual(len(re.findall(r'subprocess\.\w+\(', src)), len(re.findall(r"subprocess\.\w+\(\s*\[\s*'", src)),
-                             f'{f.name}: every program SDEM starts is named literally')
+            named = len(re.findall(r"subprocess\.\w+\(\s*\[\s*'", src))
+            if f.name == 'extensions.py':   # PRIVACY.md §2, EXT-15: an installed extension sdem-<name>, found by find() and run only if it answers --manifest
+                self.assertEqual(re.findall(r'subprocess\.\w+\(\s*\[\s*(\w+)', src), ['program', 'prog'], f.name)
+                self.assertIn("f'sdem-{name}'", src); self.assertIn('if not prog or not manifest(prog):', src)
+                named += 2
+            self.assertEqual(len(re.findall(r'subprocess\.\w+\(', src)), named, f'{f.name}: every program SDEM starts is named literally')
         self.assertLessEqual(started, PROGRAMS)
 
     def test_pages_load_nothing_from_the_internet(self):

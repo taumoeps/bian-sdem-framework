@@ -82,7 +82,7 @@ class GuideTests(unittest.TestCase):   # CR-02, CR-03
     def test_every_scenario_names_who_decides_and_links_the_reference(self):
         text = (ROOT / 'docs' / 'sdem-scenarios.md').read_text(encoding='utf-8')
         self.assertIn('reference/cli-reference.md', text)
-        self.assertEqual(len(re.findall(r'^## \d+\. ', text, re.M)), 15)
+        self.assertEqual(len(re.findall(r'^## \d+\. ', text, re.M)), 16)
 
     def test_a_wrong_option_is_caught(self):
         self.assertTrue(self.chk.problems('sdem new --workspace w --persn x'))

@@ -27,6 +27,7 @@ Every SDEM command runs on the machine where you type it.
 
 - **`git`** — to compare data with an earlier commit (`sdem validate`/`diff` against a revision) and to read the current branch name (agents' work items).
 - **Text recognition in pictures**, during `sdem transform`: macOS's built-in Vision framework (through `osascript`), or Tesseract if installed. Both run on the machine. `--ocr off` turns text recognition off.
+- **An extension you installed, only when you run it** — `sdem <name> …` starts the program `sdem-<name>` you installed beside SDEM, and only if it answers `--manifest` as an SDEM extension (`sdem extensions` lists them). SDEM itself sends nothing; what the extension does is its own — its manifest says what it reads and where it sends data (`sends_to`).
 
 ## 3. Data collection and telemetry
 
@@ -68,6 +69,7 @@ Optional tools and services around SDEM are **not** covered by this — each has
 | Around SDEM | What leaves your machine |
 |---|---|
 | **Installing SDEM** (`pip install` from GitHub) | a download from GitHub; nothing about your data |
+| **An extension, when you run it** (`sdem <name>`) | what its manifest's `sends_to` says — for example `sdem desnre create` sends the 3D model of a workspace you confirmed made-up to the DESNRE site; nothing until you run it |
 | **GitHub Copilot** (optional) | what you and Copilot put in the chat, under your organisation's agreement with GitHub. SDEM's agents and prompts only run SDEM commands, when you ask |
 | **Other AI services** | SDEM calls none. If you use one alongside SDEM, its terms apply |
 | **Text recognition** | none — macOS Vision and Tesseract run on the machine |
