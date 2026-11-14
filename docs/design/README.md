@@ -8,6 +8,7 @@
 | **Knowledge graph and store** | [knowledge-graph design](knowledge-graph-design.md) · [spec](knowledge-graph-spec.md) (generated) · [graph store design](graph-store-design.md) · [spec](graph-store-spec.md) |
 | **Workbench and dashboards** | [workbench design](sdem-workbench-design.md) · [spec](sdem-workbench-spec.md) · [dashboard design](sdem-dashboard-design.md) · [spec](sdem-dashboard-spec.md) · [UX upgrade spec](sdem-workbench-ux-spec.md) |
 | **Workspaces** | [workspace spec](sdem-workspace-spec.md) |
+| **Extensions** | [the extension contract](sdem-extensions-spec.md) (EXT-01…EXT-15: an extension is its own command, uses SDEM only through `--json`, never changes the core) |
 | **Design onboarding** | [what happens inside](sdem-onboarding-internals.md) · [transform design](sdem-transform-design.md) · [spec](sdem-transform-spec.md) · [load design](sdem-load-design.md) · [spec](sdem-load-spec.md) |
 | **BIAN import and base BIAN** | [import design](sdem-bian-import-design.md) · [spec](sdem-bian-import-spec.md) · [base design](sdem-bian-base-design.md) · [spec](sdem-bian-base-spec.md) |
 | **Planning missing layers (AID)** | [design](aid-design.md) · [spec](aid-spec.md) |
