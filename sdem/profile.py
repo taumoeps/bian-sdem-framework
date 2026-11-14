@@ -155,6 +155,9 @@ def resolve(path, _seen=()):
         if 'default' in own: h['default'] = own['default']
         h['templates'] = {**(h.get('templates') or {}), **(own.get('templates') or {})}
         h['signals'] = list(h.get('signals') or []) + list(own.get('signals') or [])
+        if own.get('signal_overrides'):   # PR-33: a team profile's override of the same signal replaces the one above it
+            mine = {o.get('id') for o in own['signal_overrides'] if isinstance(o, dict)}
+            h['signal_overrides'] = [o for o in (h.get('signal_overrides') or []) if o.get('id') not in mine] + list(own['signal_overrides'])
     merged['chain'].append({'file': path.as_posix(), 'name': doc.get('name', path.stem), 'version': doc.get('version', 1)})
     reqs = [r for r in (merged.get('requires_sdem'), doc.get('requires_sdem')) if r]   # UF-04: every profile in the chain must accept this SDEM
     if reqs: merged['requires_sdem'] = ','.join(reqs)
@@ -387,6 +390,14 @@ def hosting_issues(merged):
     for sg in h.get('signals') or []:
         if not (isinstance(sg, dict) and sg.get('id') and sg.get('points_to') in ('cloud', 'on_premises') and sg.get('confidence') in ('low', 'medium', 'high') and sg.get('read')):
             out.append(f"hosting.signals: {sg.get('id') if isinstance(sg, dict) else sg!r} needs id, points_to (cloud | on_premises), confidence (low | medium | high) and read")
+    from .hosting import _sdem_signals
+    builtin = {s['id'] for s in _sdem_signals()}
+    for o in h.get('signal_overrides') or []:   # PR-33: switch off, or re-weight, one of SDEM's signals — with a reason; never flip its direction
+        who = o.get('id') if isinstance(o, dict) else o
+        if not isinstance(o, dict) or o.get('id') not in builtin: out.append(f"hosting.signal_overrides: {who!r} is not one of SDEM's signals ({', '.join(sorted(builtin))}) — add your own under hosting.signals instead"); continue
+        if not str(o.get('reason') or '').strip(): out.append(f"hosting.signal_overrides: {who} needs a reason — it is shown with every proposal it changes")
+        if set(o) - {'id', 'off', 'confidence', 'reason'}: out.append(f"hosting.signal_overrides: {who} may set only off or confidence (and reason) — {', '.join(sorted(set(o) - {'id', 'off', 'confidence', 'reason'}))} not allowed; to point the other way, add your own signal")
+        if o.get('off') is not True and o.get('confidence') not in ('low', 'medium', 'high'): out.append(f"hosting.signal_overrides: {who} sets neither off: true nor a confidence (low | medium | high)")
     return out
 
 
@@ -700,6 +711,8 @@ def main(argv=None):
         for st in merged.get('structures', []):   # PR-21
             S = st['structure']
             print(f"  structure  {st['pattern']['id']}: {len(S['roles'])} part(s), {len(S.get('connectors', []))} connector(s), {len(S.get('zones', []))} zone(s), anchor {S.get('anchor')}  ({st['file']})")
+        for o in (merged.get('hosting') or {}).get('signal_overrides') or []:   # PR-33
+            print(f"  hosting    signal {o['id']} {'off' if o.get('off') else 'confidence ' + str(o.get('confidence'))} — {o.get('reason', '')}")
         dm = merged.get('diagram_map') or {}
         if any(dm.values()):   # PR-28
             print(f"  diagram    map: {len(dm.get('shapes', []))} shape(s), {len(dm.get('connectors', []))} connector label(s), {len(dm.get('zones', []))} zone(s) — read by sdem pattern extract")

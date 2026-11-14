@@ -87,6 +87,28 @@ class PolicyTests(Base):   # PR-32, WS-12
         bad = P.resolve(prof); bad['hosting'] = {'default': 'moon'}
         self.assertTrue(any('hosting.default' in i for i in P.hosting_issues(bad)))
 
+    def test_a_profile_tunes_a_builtin_signal(self):   # PR-33
+        from sdem import profile as P
+        from sdem.hosting import policy, propose
+        prof = self.tmp / 'p.json'
+        prof.write_text(json.dumps({'format': 'sdem-profile/1', 'name': 'regions-called-data-centres', 'version': 1, 'hosting': {'signal_overrides': [
+            {'id': 'HS-11', 'off': True, 'reason': "our cloud regions are named 'data centre 1' and 'data centre 2'"},
+            {'id': 'HS-09', 'confidence': 'medium', 'reason': "'managed' always means our cloud provider"}]}}))
+        P.activate_file(prof); self.addCleanup(P.deactivate)
+        pol = policy(); sig = {x['id']: x for x in pol['signals']}
+        self.assertNotIn('HS-11', sig); self.assertEqual(sig['HS-09']['confidence'], 'medium')
+        cf = json.loads((ROOT / 'examples/card-fraud-alerts/a4-technology.json').read_text(encoding='utf-8'))
+        zid = {i['id'] for i in cf['instances'] if i['type'] == 'A4.NetworkZone'}
+        cf = {**cf, 'instances': [i for i in cf['instances'] if i['id'] not in zid], 'relationships': [r for r in cf['relationships'] if r['source'] not in zid and r['target'] not in zid]}
+        zones, links, _ = propose(cf, self.mm, 'T', 'jane.architect', '2026-11-14')
+        vm = next(l for l in links if l.get('target') == 'INF-ONPREM-VM-CLUSTER-B')
+        self.assertTrue(vm['source'].endswith('-CLOUD-INTERNAL'))                                  # HS-11 off: the default (cloud) decides
+        self.assertIn("HS-11 off by the profile (our cloud regions are named", vm['inferred']['source'])   # and the reviewer sees why
+        for bad, why in (({'id': 'HS-11', 'off': True}, 'needs a reason'), ({'id': 'HS-99', 'off': True, 'reason': 'x'}, "not one of SDEM's signals"),
+                         ({'id': 'HS-11', 'points_to': 'cloud', 'reason': 'x'}, 'may set only off or confidence'), ({'id': 'HS-11', 'reason': 'x'}, 'neither off')):
+            m = P.resolve(prof); m['hosting'] = {'signal_overrides': [bad]}
+            self.assertTrue(any(why in i for i in P.hosting_issues(m)), (bad, P.hosting_issues(m)))
+
     def test_a_new_workspace_starts_with_its_hosting_template(self):
         code, out, err = sdem('new', '--workspace', 'ledger', '--person', 'jane.architect', '--hosting', 'hybrid', cwd=self.tmp)
         self.assertEqual(code, 0, err)

@@ -27,7 +27,14 @@ def policy():
     """The active profile's hosting policy (PR-32), or SDEM's: cloud first, the standard templates."""
     from . import profile as _p
     h = _p.hosting() or {}
-    return {'default': h.get('default', 'cloud'), 'templates': {**DEFAULT_TEMPLATES, **(h.get('templates') or {})}, 'signals': _sdem_signals() + list(h.get('signals') or [])}
+    over = {o['id']: o for o in h.get('signal_overrides') or [] if isinstance(o, dict) and o.get('id')}   # PR-33
+    ours, off = [], []
+    for s in _sdem_signals():
+        o = over.get(s['id'])
+        if o and o.get('off') is True: off.append({**s, 'reason': o.get('reason', '')}); continue
+        ours.append({**s, 'confidence': o['confidence'], 'overridden': o.get('reason', '')} if o and o.get('confidence') else s)
+    return {'default': h.get('default', 'cloud'), 'templates': {**DEFAULT_TEMPLATES, **(h.get('templates') or {})},
+            'signals': ours + list(h.get('signals') or []), 'off': off}
 
 
 def _words(rec):
@@ -59,7 +66,8 @@ def evidence(rec, doc, mm, signals=None):
             hit = next((w for w in words if re.search(r'(?<![a-z0-9])' + re.escape(w.casefold()) + r'(?![a-z0-9])', _words(rec))), None)
             if hit: got = f'name or description says {hit!r}'
         if got and (not read.get('for_types') or any(mm.is_a(rec['type'], t) for t in read['for_types'])):
-            out.append({'id': s['id'], 'points_to': s['points_to'], 'confidence': s['confidence'], 'read': got})
+            out.append({'id': s['id'], 'points_to': s['points_to'], 'confidence': s['confidence'], 'read': got,
+                        **({'overridden': s['overridden']} if s.get('overridden') else {})})
     return out
 
 
@@ -187,7 +195,9 @@ def propose(doc, mm, run, person, now, rejected=(), stem=None):
         if f'{x}@{z}' in rejected: continue
         links.append({'source': z, 'kind': 'aggregation', 'target': x, 'inferred': {
             'by': 'sdem aid', 'run': run, 'at': now, 'requested_by': person, 'rule': 'AID-Z01, AID-Z02', 'status': 'proposed',
-            'source': '; '.join(f"{e['id']} {e['read']}" for e in used), 'confidence': conf,
+            'source': '; '.join(f"{e['id']} {e['read']}" + (f" (confidence {e['confidence']} by the profile: {e['overridden']})" if e.get('overridden') else '') for e in used)
+                      + ''.join(f"; {e['id']} off by the profile ({e['reason']}) — it would have read {e['read']}" for e in evidence(rec, doc, mm, pol.get('off') or [])
+                                for e in [{**e, 'reason': next((s['reason'] for s in pol['off'] if s['id'] == e['id']), '')}]), 'confidence': conf,
             'reasoning': f"{'on premises' if kind == 'on_premises' else 'cloud'} from {', '.join(e['id'] for e in used)}; {'internet facing' if level1 == 'dmz' else 'not internet facing'} → {level1}"}})
     return new_zones, links, unresolved
 
