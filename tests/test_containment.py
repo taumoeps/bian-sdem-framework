@@ -1,5 +1,5 @@
-"""The containment layout (sdem/containment.py; docs/design/sdem-layer-containment-design.md, the owner's decisions C1–C6): A2 drawn as
-BIAN's service landscape. Synthetic examples only."""
+"""The containment layout (sdem/containment.py; docs/design/sdem-layer-containment-design.md, the owner's decisions C1–C6): A1, A2 and A3 drawn by what owns what (A2 as
+BIAN's service landscape). Synthetic examples only."""
 import copy, json, os, subprocess, sys, unittest
 from pathlib import Path
 
@@ -61,7 +61,7 @@ class A2LandscapeTests(unittest.TestCase):
         self.assertEqual((strip['label'], strip['not_in_a_zone']), ('Not in the service landscape', ['SO-LOOSE']))
 
     def test_a_layer_not_built_yet_says_so(self):
-        with self.assertRaises(ContainmentError): layout({'instances': [], 'relationships': []}, 'A3')
+        with self.assertRaises(ContainmentError): layout({'instances': [], 'relationships': []}, 'A0')   # a layer with no hierarchy (a profile's own) says so
 
     def test_cli_and_view(self):
         env = {**os.environ, 'PYTHONPATH': str(ROOT) + os.pathsep + os.environ.get('PYTHONPATH', '')}
@@ -97,6 +97,25 @@ class A1CapabilityMapTests(unittest.TestCase):   # C3, C4: capability → sub-ca
         self.assertEqual(z['R:PRC-PAY-01']['part_of'], 'R:CAP-PAY-010')
         other = [l for l in lay['links'] if l['source'] == 'PRC-PAY-01' and l['target'] == 'CAP-PAY-000']
         self.assertEqual([l['shown_by'] for l in other], ['line'])                        # its other capability: a line
+
+
+class A3ApplicationStructureTests(unittest.TestCase):   # application → components, services, functions, interfaces → API operations
+    def test_payment_is_drawn_as_its_application_structure(self):
+        lay = load(EX / 'payment-initiation', 'A3')
+        z = {x['id']: x for x in lay['zones']}
+        at = {s['id']: s['zone'] for s in lay['shapes']}
+        self.assertEqual(z['R:IFC-PAY-API']['part_of'], 'R:APP-PAY-HUB')                # the interface in its application (RA3-03)
+        self.assertEqual(at['API-PI-01'], 'R:IFC-PAY-API')                               # an API operation in its interface (RA3-27)
+        self.assertEqual(at['CMP-PAY-CAPTURE'], 'R:APP-PAY-HUB'); self.assertNotIn('R:CMP-PAY-CAPTURE', z)   # a component with no parts: a block, not an empty region
+        self.assertEqual(at['SVC-PAY-INIT'], 'R:APP-PAY-HUB')                            # the service it realises (RA3-06)
+        self.assertEqual(at['ENT-PAY-INSTR'], 'G:Data entities'); self.assertEqual(at['EVT-PAY-STATUS'], 'G:Events')   # accessed or triggered, not owned (C4)
+        assign = [l for l in lay['links'] if l['source'] == 'IFC-PAY-API' and l['target'] == 'SVC-PAY-INIT']
+        self.assertEqual([l['shown_by'] for l in assign], ['line'])                      # the service's second owner: a line
+
+    def test_a_solution_building_block_holds_its_applications(self):
+        z = {x['id']: x for x in load(EX / 'trade-finance', 'A3')['zones']}
+        self.assertEqual(z['R:APP-LC']['part_of'], z['R:APP-DOC']['part_of'])
+        self.assertTrue(z['R:APP-LC']['part_of'].startswith('R:SBB'))
 
 if __name__ == '__main__':
     unittest.main()

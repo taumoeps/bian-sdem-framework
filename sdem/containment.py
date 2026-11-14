@@ -53,6 +53,23 @@ HIERARCHY = {
                    ('Requirements', ['A1.BusinessRequirement'])],
         'not_in': 'Not in the capability map',
     },
+    'A3': {   # the application structure (ArchiMate Application Structure viewpoint; TOGAF)
+        'nest': [('A3.SolutionBuildingBlock', 'composition', 'A3.SolutionBuildingBlock'), ('A3.SolutionBuildingBlock', 'aggregation', 'A3.ApplicationComponent'),
+                 ('A3.ApplicationComponent', 'composition', 'A3.ApplicationComponent'), ('A3.ApplicationComponent', 'aggregation', 'A3.ApplicationComponent'),
+                 ('A3.ApplicationComponent', 'composition', 'A3.ApplicationInterface'), ('A3.ApplicationComponent', 'assignment', 'A3.ApplicationFunction'),
+                 ('A3.ApplicationComponent', 'realization', 'A3.ApplicationService'), ('A3.ApplicationFunction', 'composition', 'A3.ApplicationFunction'),
+                 ('A3.ApplicationFunction', 'realization', 'A3.ApplicationService'),
+                 ('A3.ApplicationInterface', 'composition', 'A3.APIOperation'), ('A3.ApplicationComponent', 'composition', 'A3.APIOperation'),
+                 ('A3.DataEntity', 'composition', 'A3.DataEntity'), ('A3.DataEntity', 'aggregation', 'A3.DataEntity')],
+        'containers': ['A3.SolutionBuildingBlock', 'A3.ApplicationComponent', 'A3.ApplicationInterface', 'A3.ApplicationFunction'],
+        'always': ['A3.SolutionBuildingBlock'],
+        'kinds': {'A3.SolutionBuildingBlock': 'Solution building block', 'A3.ApplicationComponent': 'Application', 'A3.ApplicationInterface': 'Interface',
+                  'A3.ApplicationFunction': 'Function'},
+        'groups': [('Data entities', ['A3.DataEntity']), ('Events', ['A3.Event']),
+                   ('Applications', ['A3.ApplicationComponent']), ('Services', ['A3.ApplicationService']), ('Interfaces', ['A3.ApplicationInterface']),
+                   ('Functions', ['A3.ApplicationFunction'])],
+        'not_in': 'Not in the application structure',
+    },
 }
 
 
@@ -68,7 +85,7 @@ def layout(doc, layer, mm=None):
         from .zone_layout import layout as zl
         return zl(doc, mm)
     H = HIERARCHY.get(layer)
-    if not H: raise ContainmentError(f'layer {layer}: no containment hierarchy yet — A1 and A2 are built (A3 follows, C6)')
+    if not H: raise ContainmentError(f'layer {layer}: no containment hierarchy for this layer')
     recs = {i['id']: i for i in doc.get('instances', [])}
     typ = {x: r['type'] for x, r in recs.items()}
     is_ = lambda x, t: x in typ and mm.is_a(typ[x], t)
@@ -88,7 +105,8 @@ def layout(doc, layer, mm=None):
             a, link = max(opts, key=lambda o: (depth(o[0]), o[0]))
             parent[b] = a; used.add(link)
     owners = set(parent.values())   # a region: a record of a listed container type itself, or a record that does hold others (an activity is a kind of process, but a region only if it has parts)
-    containers = {x for x in recs if typ[x] in H['containers'] or (x in owners and any(is_(x, t) for t in H['containers']))}
+    always = H.get('always', H['containers'])   # A1, A2: a capability or service domain is a region even when empty (an empty one is a gap worth seeing); A3: only when it holds something
+    containers = {x for x in recs if typ[x] in always or (x in owners and any(is_(x, t) for t in H['containers']))}
     group_of = {}
     for label, types in H['groups']:
         for x in recs:

@@ -1,6 +1,6 @@
 # How SDEM draws each layer
 
-> **Status: current — A1, A2 and A4 are built (SDEM 0.18.0); A3 follows.** The decisions behind it are in the [containment design](design/sdem-layer-containment-design.md) (C1–C6) and, for A4, the [network-zones design](design/sdem-network-zones-design.md); this page is for the people who read the drawings.
+> **Status: current — all four layers are built (SDEM 0.18.0).** The decisions behind it are in the [containment design](design/sdem-layer-containment-design.md) (C1–C6) and, for A4, the [network-zones design](design/sdem-network-zones-design.md); this page is for the people who read the drawings.
 
 SDEM draws every layer **by what owns what**: each record sits inside the record that owns it, using that layer's own framework — BIAN for A2, ArchiMate and TOGAF for A1 and A3. A4 is the exception: it is drawn by network zone, because it is the physical deployment ([A4: the physical deployment](sdem-a4-physical-deployment.md)).
 
@@ -55,9 +55,20 @@ Beside the landscape: the *Customer credit transfer* scenario, the business obje
 
 **The payment example:** *Payments* → *Initiate Payment* → *Capture and validate payment instruction* (activities *Capture instruction*, *Validate instruction*) and *Execute and confirm payment* (*Execute payment*, *Retrieve status*). Beside the map: the value stream *Make a Payment* with its four stages, the *Payments Operations Officer*, and the business objects *Payment Instruction* and *Payee*.
 
-## 4. A3 — the application structure (coming)
+## 4. A3 — the application structure (built)
 
-Application → its components, the services it realises, the functions assigned to it and its interfaces → each interface's API operations. Data entities and events stay in groups of their own: they are accessed and triggered, not owned.
+| Region | Holds | Rule |
+|---|---|---|
+| Solution building block | its applications | RA3-01 |
+| Application | its components, interfaces, assigned functions and the services it realises | RA3-02, RA3-03, RA3-05, RA3-06 |
+| Interface | its API operations | RA3-27 |
+| Function | its sub-functions and the services it realises | — |
+
+A component, interface or function is a region only when it holds something; otherwise it is a block inside its application.
+
+**In groups of their own:** data entities (accessed, not owned) and events (triggered, not owned); applications that belong to no solution building block sit together under *Applications*.
+
+**The payment example:** *Payments Hub* holds its three components (*Instruction Capture*, *Instruction Validation*, *Execution Gateway*), the *Payment Initiation Service* it realises, and *Payments API v2* with its six operations. Beside it: the data entities *payment_instruction*, *account_cache* and *payment_event*, and the event *PaymentStatusChanged*.
 
 ## 5. A4 — by network zone (built)
 
@@ -74,8 +85,9 @@ Cloud or on premises → DMZ or internal → private segments, with every shape 
 | Command | Shows |
 |---|---|
 | `sdem layout --layer A1 --workspace <dir>` | A1 as a capability map |
+| `sdem layout --layer A3 --workspace <dir>` | A3 as the application structure |
 | `sdem layout --layer A2 --workspace <dir>` | A2 as BIAN's landscape — each region and what it holds; `--json` for the coordinates every drawing uses |
 | `sdem layout --layer A4 --workspace <dir>` | A4 by network zone (the same as `sdem zones --layout`) |
-| `sdem view --graph <dir>/graph` | all four layers; A1, A2 and A4 drawn by these layouts |
+| `sdem view --graph <dir>/graph` | all four layers, each drawn by these layouts |
 
 The DESNRE site's 3D view draws the same layouts.
