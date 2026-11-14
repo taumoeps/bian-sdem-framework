@@ -2,7 +2,7 @@
   "level": "A4",
   "model_id": "harbourline-fx-a4",
   "model_version": "2026.11",
-  "metamodel_version": "0.13.0",
+  "metamodel_version": "0.14.0",
   "source_system": "SYNTHETIC-CMDB",
   "instances": [
     {
@@ -591,6 +591,21 @@
       "source": "ZONE-FX-INTERNAL",
       "kind": "aggregation",
       "target": "TS-PAYMENT-GATEWAY"
+    },
+    {
+      "source": "SYS-K8S-MKT-PROD",
+      "kind": "association",
+      "target": "SYS-PG-FX-PROD"
+    },
+    {
+      "source": "SYS-K8S-MKT-PROD",
+      "kind": "association",
+      "target": "SYS-PG-REF-PROD"
+    },
+    {
+      "source": "NODE-FXSM-01",
+      "kind": "association",
+      "target": "SYS-PG-STL-PROD"
     }
   ]
 }

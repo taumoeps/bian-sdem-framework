@@ -6,11 +6,11 @@
     "directed": true,
     "metadata": {
       "sdem_store_version": "1.0",
-      "export_sha256": "dcf6ccd26c6d0f0a337e25edcc1c534fa9070bf82aa9a5a06b062dffed58a225",
+      "export_sha256": "449319fbc19adf707a6a2e6e746830a28218e0e7217557c29c0aca1100581847",
       "level": "A4",
       "model_id": "synthetic-bank-payments-a4",
       "model_version": "2026.10",
-      "metamodel_version": "0.13.0",
+      "metamodel_version": "0.14.0",
       "source_system": "SYNTHETIC-CMDB"
     },
     "nodes": {
@@ -607,6 +607,26 @@
         "metadata": {
           "scope": "within-level",
           "row": "RA4-37"
+        }
+      },
+      {
+        "id": "A4:INF-K8S-PAY-PROD-association-INF-PG-PAY-PROD",
+        "source": "A4:INF-K8S-PAY-PROD@1.29",
+        "target": "A4:INF-PG-PAY-PROD@16",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "association"
+        }
+      },
+      {
+        "id": "A4:DEP-PAYHUB-PROD-aggregation-ART-PAYHUB-IMG",
+        "source": "A4:DEP-PAYHUB-PROD@1.0",
+        "target": "A4:ART-PAYHUB-IMG@7.1",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-35"
         }
       }
     ]

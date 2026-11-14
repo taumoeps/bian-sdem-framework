@@ -91,6 +91,7 @@ a3_applicationcomponent -[#1565C0,bold]-> a4_deployment : **DEPLOYED_AS**\nenter
 a3_applicationinterface -[#1565C0,bold]-> a4_node : **EXPOSED_THROUGH**\nenterprise_rule
 a3_applicationinterface -[#1565C0,bold]-> a4_device : **EXPOSED_THROUGH**\nenterprise_rule
 a3_applicationinterface -[#1565C0,bold]-> a4_systemsoftware : **EXPOSED_THROUGH**\nenterprise_rule
+a3_applicationcomponent -[#1565C0,bold]-> a4_artifact : **BUILT_AS**\nenterprise_rule
 
 note "**G-03 (decided)**\nhigh-level: composite\nimplemented: related" as N_G03
 N_G03 .. a4_deployment

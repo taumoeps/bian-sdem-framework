@@ -6,11 +6,11 @@
     "directed": true,
     "metadata": {
       "sdem_store_version": "1.0",
-      "export_sha256": "4bcce8fb20281032d8fd59bcb34da20db78a08d5802da42ddfa4965a83699770",
+      "export_sha256": "d07d61b59c34c45339e2729368dd525cb1956b39b18943ab254cfcc3ba003789",
       "level": "A1",
       "model_id": "harbourline-fx-a1",
       "model_version": "2026.11",
-      "metamodel_version": "0.13.0",
+      "metamodel_version": "0.14.0",
       "source_system": "SYNTHETIC-EA-TOOL"
     },
     "nodes": {

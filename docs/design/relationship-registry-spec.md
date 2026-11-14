@@ -81,6 +81,7 @@ From the relationship type catalogue (Architecture Metamodel).
 | `EXPOSED_THROUGH` (INTERFACE_EXPOSED_THROUGH_NODE) | A3.ApplicationInterface → A4.Node | enterprise_rule | network_design |
 | `EXPOSED_THROUGH` (INTERFACE_EXPOSED_THROUGH_DEVICE) | A3.ApplicationInterface → A4.Device | enterprise_rule | network_design |
 | `EXPOSED_THROUGH` (INTERFACE_EXPOSED_THROUGH_SYSTEM_SOFTWARE) | A3.ApplicationInterface → A4.SystemSoftware | enterprise_rule | network_design |
+| `BUILT_AS` (COMPONENT_BUILT_AS_ARTIFACT) | A3.ApplicationComponent → A4.Artifact | enterprise_rule | build_pipeline |
 
 ## 6. Validation
 

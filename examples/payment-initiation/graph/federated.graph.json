@@ -6,7 +6,7 @@
     "directed": true,
     "metadata": {
       "sdem_store_version": "1.0",
-      "metamodel_version": "0.13.0",
+      "metamodel_version": "0.14.0",
       "levels": {
         "A1": "2026.10",
         "A2": "2026.10",
@@ -16,9 +16,9 @@
       "registries": [
         {
           "file": "mappings.json",
-          "sha256": "c42771aba46f007ebacf7c61606c465a60e4e70f4295476f0cd4570825cda51d",
+          "sha256": "6509c366efc2ee74e8d143c75bb507812406c1d92629fa52ee01c882c3128d77",
           "registry_version": "0.4.0",
-          "metamodel_version": "0.13.0"
+          "metamodel_version": "0.14.0"
         }
       ],
       "statuses": [
@@ -330,6 +330,17 @@
           "type": "A4.SystemSoftware",
           "id": "INF-APIGW-PAY",
           "version": "2.4",
+          "stub": true,
+          "graph": "a4-technology.graph.json"
+        }
+      },
+      "A4:ART-PAYHUB-IMG@7.1": {
+        "label": "payments-hub:7.1",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.Artifact",
+          "id": "ART-PAYHUB-IMG",
+          "version": "7.1",
           "stub": true,
           "graph": "a4-technology.graph.json"
         }
@@ -892,6 +903,35 @@
             "network_design:ND-PAY-2026#edge"
           ],
           "rationale": "Payments API v2 is reached from the internet through the managed API gateway in the security zone (DMZ) (made up).",
+          "baseline_id": "PAY-BASE-2026-Q4",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-11-14"
+        }
+      },
+      {
+        "id": "PAY-115",
+        "source": "A3:APP-PAY-HUB@7.1",
+        "target": "A4:ART-PAYHUB-IMG@7.1",
+        "relation": "BUILT_AS",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "APP-PAY-HUB",
+            "type": "A3.ApplicationComponent",
+            "version": "7.1"
+          },
+          "target_ref": {
+            "id": "ART-PAYHUB-IMG",
+            "type": "A4.Artifact",
+            "version": "7.1"
+          },
+          "perspective": "architecture",
+          "status": "approved",
+          "evidence": [
+            "build_pipeline:CI-PAY-HUB#7.1"
+          ],
+          "rationale": "The Payments Hub 7.1 is built as the container image payments-hub:7.1 by its build pipeline (made up).",
           "baseline_id": "PAY-BASE-2026-Q4",
           "reviewer_id": "jane.architect",
           "approved_at": "2026-11-14"

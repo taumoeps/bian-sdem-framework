@@ -109,5 +109,42 @@ class ConnectionTests(Base):   # X6, AID-C01…C06
                       [(r['source'], r['kind'], r['target'], r['inferred']['rule'], r['inferred']['confidence']) for r in links])   # production, not UAT
 
 
+class DatabaseConnectionTests(Base):   # LC-21 counts only links to another shape; AID-C02 reads stored_in lists and the environment
+    def test_a_database_on_a_network_but_used_by_no_shape_is_named_and_proposed(self):
+        from sdem.a4_connect import propose_connections
+        from sdem.metamodel import Metamodel
+        ws = self.copy('payment-initiation'); a4 = self.j(ws, 'a4-technology.json')
+        a4['relationships'] = [r for r in a4['relationships'] if not (r['source'] == 'INF-K8S-PAY-PROD' and r['target'] == 'INF-PG-PAY-PROD')]
+        self.w(ws, 'a4-technology.json', a4)   # left: its environment, its zone and its network — none of them a shape that uses it
+        out = ''.join(sdem('check', '--workspace', ws, cwd=self.tmp)[1:])
+        self.assertIn('instance INF-PG-PAY-PROD: is connected to nothing inside A4', out)
+        links, _ = propose_connections(self.j(ws, 'a3-application.json'), a4, self.j(ws, 'mappings.json')['mappings'], Metamodel.load(), 'AID-T', 'jane.architect', '2026-11-14')
+        self.assertEqual([(r['source'], r['target'], r['inferred']['rule'], r['inferred']['confidence']) for r in links],
+                         [('INF-K8S-PAY-PROD', 'INF-PG-PAY-PROD', 'AID-C02', 'medium')])   # the production cluster — not the UAT one
+
+class BuiltAsTests(Base):   # metamodel 0.14.0: an application BUILT_AS its artifact (AID-X02)
+    def test_the_payment_hub_is_built_as_its_image(self):
+        m = next(x for x in self.j(EX / 'payment-initiation', 'mappings.json')['mappings'] if x['relationship'] == 'BUILT_AS')
+        self.assertEqual((m['source']['id'], m['target']['id'], m['status']), ('APP-PAY-HUB', 'ART-PAYHUB-IMG', 'approved'))
+        self.assertTrue(m['evidence'][0].startswith('build_pipeline:'))
+        from sdem.graph import FederatedGraph
+        P = EX / 'payment-initiation'
+        fg = FederatedGraph.load(sorted(P.glob('a[1-4]-*.json')) + [P / 'mappings.json'])
+        hit = {r['id'] for r in fg.impact('ART-PAYHUB-IMG', 'modify')['instances'] if r['classification'] != 'no_impact'}
+        self.assertIn('APP-PAY-HUB', hit)   # a rebuilt image reaches the application
+
+    def test_sdem_aid_proposes_it_from_what_the_records_say(self):
+        from sdem.a4_connect import propose_builds
+        from sdem.metamodel import Metamodel
+        mm = Metamodel.load()
+        tf = EX / 'trade-finance'
+        got = propose_builds(self.j(tf, 'a3-application.json'), self.j(tf, 'a4-technology.json'), self.j(tf, 'mappings.json')['mappings'], mm)
+        self.assertEqual([(c, a) for c, a, _ in got], [('APP-DOC', 'ART-DOC-IMG'), ('APP-LC', 'ART-LC-IMG')])
+        ws = self.copy('payment-initiation'); d = self.j(ws, 'mappings.json')
+        d['mappings'] = [x for x in d['mappings'] if x['relationship'] != 'BUILT_AS']; self.w(ws, 'mappings.json', d)
+        got = propose_builds(self.j(ws, 'a3-application.json'), self.j(ws, 'a4-technology.json'), d['mappings'], mm)
+        self.assertEqual([(c, a) for c, a, _ in got], [('APP-PAY-HUB', 'ART-PAYHUB-IMG')])   # the image is in the hub's deployment (RA4-35)
+        self.assertIn('RA4-35', got[0][2])
+
 if __name__ == '__main__':
     unittest.main()

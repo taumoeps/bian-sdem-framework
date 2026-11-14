@@ -6,11 +6,11 @@
     "directed": true,
     "metadata": {
       "sdem_store_version": "1.0",
-      "export_sha256": "c80f422340102d9fb647c39d0ed395ed76dda9e72d7a320eeab3e6e43cd4299a",
+      "export_sha256": "dd99ae803b24814e80dfc046cf5a4ca7efeaf5552d8c69235920983380e293a7",
       "level": "A4",
       "model_id": "synthetic-bank-onboarding-a4",
       "model_version": "2026.10",
-      "metamodel_version": "0.13.0",
+      "metamodel_version": "0.14.0",
       "source_system": "SYNTHETIC-CMDB"
     },
     "nodes": {
@@ -137,6 +137,21 @@
             "zone_kind": "dmz"
           }
         }
+      },
+      "A4:ART-001@1.0": {
+        "label": "onboarding-portal:1.0",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.Artifact",
+          "id": "ART-001",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Container image of the onboarding portal (made up).",
+          "attributes": {
+            "artifact_kind": "container image",
+            "of_component": "APP-001"
+          }
+        }
       }
     },
     "edges": [
@@ -228,6 +243,26 @@
         "metadata": {
           "scope": "within-level",
           "row": "RA4-38"
+        }
+      },
+      {
+        "id": "A4:INF-001-assignment-ART-001",
+        "source": "A4:INF-001@1.0",
+        "target": "A4:ART-001@1.0",
+        "relation": "assignment",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-17"
+        }
+      },
+      {
+        "id": "A4:DEP-001-aggregation-ART-001",
+        "source": "A4:DEP-001@1.0",
+        "target": "A4:ART-001@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-35"
         }
       }
     ]

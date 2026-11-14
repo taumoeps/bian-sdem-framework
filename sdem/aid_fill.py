@@ -142,6 +142,13 @@ def fill(workspace, person, dry_run=False, now=None):
         from .a4_connect import propose_exposure
         from .metamodel import Metamodel as _MM
         pairs, exposure_unresolved = propose_exposure(after['A3'], after['A4'], registry.get('mappings', []) + proposals, _MM.load())
+        from .a4_connect import propose_builds   # AID-X02: an application BUILT_AS its artifact — for a person to approve
+        for comp, art, why in propose_builds(after['A3'], after['A4'], registry.get('mappings', []) + proposals, _MM.load()):
+            s_, t_ = by_id[comp], by_id[art]
+            proposals.append({'mapping_id': f'{run}-P{len(proposals) + 1:03d}', 'source': {'id': comp, 'type': s_['type'], 'version': s_['version']}, 'relationship': 'BUILT_AS',
+                              'target': {'id': art, 'type': t_['type'], 'version': t_['version']}, 'status': 'proposed', 'confidence': 'medium',
+                              'evidence': [f'engine_rationale:{run} AID-X02'], 'rationale': f'Inferred by sdem aid (AID-X02): {why} — approve with build_pipeline evidence',
+                              'baseline_id': run, 'created_by': 'sdem aid'})
         for iface, plat in [(a, b) for a, b, _ in pairs]:
             s_, t_ = by_id[iface], by_id[plat]
             proposals.append({'mapping_id': f'{run}-P{len(proposals) + 1:03d}', 'source': {'id': iface, 'type': s_['type'], 'version': s_['version']}, 'relationship': 'EXPOSED_THROUGH',

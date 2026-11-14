@@ -1670,6 +1670,7 @@ The model above covers each architecture on its own. Links **between** architect
 | `EXPOSED_THROUGH` | `A3.ApplicationInterface` → `A4.Node` | many to many |
 | `EXPOSED_THROUGH` | `A3.ApplicationInterface` → `A4.Device` | many to many |
 | `EXPOSED_THROUGH` | `A3.ApplicationInterface` → `A4.SystemSoftware` | many to many |
+| `BUILT_AS` | `A3.ApplicationComponent` → `A4.Artifact` | many to many |
 
 ---
 
@@ -1700,23 +1701,23 @@ The rules the data must satisfy, and which the checker enforces today.
 | LC-18 | Internet-facing shapes in a DMZ | a shape with `internet_facing: true` is in a DMZ (or a zone inside one), and a DMZ holds only internet-facing shapes (metamodel 0.10.0) | **enforced** |
 | LC-19 | Inferred zone placements decided | a zone placement sdem aid proposed (a link marked inferred, AID-Z01) is confirmed or rejected by a person (the owner's decisions H2, H5, 2026-11-14; metamodel 0.11.0) | **enforced** |
 | LC-20 | Placement agrees with the evidence | a shape is not in a zone that a high-confidence hosting signal contradicts (a mainframe in a cloud zone — metamodel/hosting-signals.json; metamodel 0.11.0) | **enforced** |
-| LC-21 | Every A4 shape connected | an A4 shape (not a network, zone, path or environment, and not retired) has a link inside A4 other than its zone placement — A4 is the physical deployment, so a connection to another layer does not count; an internet-facing one fronts nothing without one; sdem aid proposes connections (AID-C01…C06) (the owner, 2026-11-14) | **enforced** |
+| LC-21 | Every A4 shape connected | an A4 shape (not a network, zone, path or environment, and not retired or deprecated) has a link inside A4 to another shape — not only to its zone, environment, network or a path, and not only to another layer: A4 is the physical deployment; an internet-facing one fronts nothing without one; sdem aid proposes connections (AID-C01…C06) (the owner, 2026-11-14) | **enforced** |
 | LC-22 | Every internet-facing interface exposed | an A3 interface marked internet facing has an EXPOSED_THROUGH connection (any status) to an internet-facing edge platform — checked over the whole workspace (the owner, X1–X6, 2026-11-14) | **enforced** |
 
 ## Appendix B. How the example data measures up
 
-The 8 example workspaces (856 instances) (the generated reference-structure workspace excluded) checked by `sdem check` against the enforced rules. No errors; 36 completeness warning(s), where an example architecture datasets part of BIAN's structure (a business domain without its area, a business object without attribute instances, a stub Service Domain without its groups or control record).
+The 8 example workspaces (857 instances) (the generated reference-structure workspace excluded) checked by `sdem check` against the enforced rules. No errors; 36 completeness warning(s), where an example architecture datasets part of BIAN's structure (a business domain without its area, a business object without attribute instances, a stub Service Domain without its groups or control record).
 
 | Rule | Values checked | Failures |
 |---|---|---|
 | LC-04 | 1222 | 0 |
-| LC-05 | 2753 | 0 |
-| LC-06 | 1497 | 0 |
+| LC-05 | 2755 | 0 |
+| LC-06 | 1499 | 0 |
 | LC-07 | 169 | 0 |
-| LC-08 (warning) | 182 | 0 |
-| LC-09 | 800 | 0 |
-| LC-10 | 2368 | 0 |
-| LC-10m (warning) | 2368 | 36 |
+| LC-08 (warning) | 183 | 0 |
+| LC-09 | 801 | 0 |
+| LC-10 | 2370 | 0 |
+| LC-10m (warning) | 2370 | 36 |
 | LC-13 deprecated field in use | — | 0 |
 | fields not in the model | — | 0 |
 

@@ -6,11 +6,11 @@
     "directed": true,
     "metadata": {
       "sdem_store_version": "1.0",
-      "export_sha256": "53a2e89101ae5bf7d00af119a012ebf727efdc22cd343f067890e65b85f20043",
+      "export_sha256": "18b1c5d8ff2be9584798820bf167a0c380ce62ad843b0dca614a1f5df34ad9bd",
       "level": "A4",
       "model_id": "harbourline-fx-a4",
       "model_version": "2026.11",
-      "metamodel_version": "0.13.0",
+      "metamodel_version": "0.14.0",
       "source_system": "SYNTHETIC-CMDB"
     },
     "nodes": {
@@ -908,6 +908,36 @@
         "metadata": {
           "scope": "within-level",
           "row": "RA4-38"
+        }
+      },
+      {
+        "id": "A4:SYS-K8S-MKT-PROD-association-SYS-PG-FX-PROD",
+        "source": "A4:SYS-K8S-MKT-PROD@1.30",
+        "target": "A4:SYS-PG-FX-PROD@16",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "association"
+        }
+      },
+      {
+        "id": "A4:SYS-K8S-MKT-PROD-association-SYS-PG-REF-PROD",
+        "source": "A4:SYS-K8S-MKT-PROD@1.30",
+        "target": "A4:SYS-PG-REF-PROD@16",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "association"
+        }
+      },
+      {
+        "id": "A4:NODE-FXSM-01-association-SYS-PG-STL-PROD",
+        "source": "A4:NODE-FXSM-01@1.0",
+        "target": "A4:SYS-PG-STL-PROD@15",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "association"
         }
       }
     ]

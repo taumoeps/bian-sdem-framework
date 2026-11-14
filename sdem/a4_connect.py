@@ -1,5 +1,6 @@
 """What sdem aid proposes at A4, the physical deployment (metamodel 0.12.0; docs/design/sdem-edge-exposure-design.md, the owner's decisions X1–X6):
 
+  · AID-X02 — BUILT_AS: an application built as its artifact, from what the records say (metamodel 0.14.0);
   · AID-X01 — EXPOSED_THROUGH: an internet-facing A3 interface, exposed through the one internet-facing edge platform (a connection
     between layers, proposed for a person to approve with network_design evidence; two or more candidates: unresolved, never guessed);
   · AID-C01…C06 — a connection for every A4 shape linked to nothing (LC-21): each a link marked inferred, with the rule, what it read and
@@ -17,12 +18,14 @@ def _approved(maps, rel):
 
 
 def lone(a4, mm):
-    """LC-21's shapes: A4 is the physical deployment, so a shape is connected only by a link inside A4 — its zone placement aside.
-    A connection to another layer (DEPLOYED_ON, EXPOSED_THROUGH) does not count (the owner, 2026-11-14). Retired shapes are not deployed."""
+    """LC-21's shapes: A4 is the physical deployment, so a shape is connected only by a link inside A4 to another SHAPE — not to its zone,
+    its environment, its network or a path (they group or carry shapes; they are not what a shape works with), and not to another layer
+    (DEPLOYED_ON, EXPOSED_THROUGH) (the owner, 2026-11-14). Retired shapes are not deployed; a deprecated one is on its way out, and
+    being connected to nothing is its expected state while it is decommissioned."""
     typ = {i['id']: i['type'] for i in a4.get('instances', [])}
-    retired = {i['id'] for i in a4.get('instances', []) if i.get('lifecycle_status') == 'retired'}
-    zone = lambda x: mm.is_a(typ.get(x, ''), 'A4.NetworkZone')
-    linked = {x for r in a4.get('relationships', []) if not (zone(r['source']) or zone(r['target'])) for x in (r['source'], r['target'])}
+    retired = {i['id'] for i in a4.get('instances', []) if i.get('lifecycle_status') in ('retired', 'deprecated')}
+    shape = lambda x: x in typ and not any(mm.is_a(typ[x], s) for s in NOT_SHAPES)
+    linked = {x for r in a4.get('relationships', []) if shape(r['source']) and shape(r['target']) for x in (r['source'], r['target'])}
     return [x for x, t in typ.items() if x not in linked and x not in retired and not any(mm.is_a(t, s) for s in NOT_SHAPES)]
 
 
@@ -36,6 +39,29 @@ def propose_exposure(a3, a4, maps, mm):
         if len(edge) == 1: out.append((i['id'], edge[0], f"{i['id']} is internet facing and {edge[0]} is the one internet-facing edge platform"))
         else: unresolved.append({'id': i['id'], 'candidates': edge})
     return out, unresolved
+
+
+def propose_builds(a3, a4, maps, mm):
+    """AID-X02 (metamodel 0.14.0): an application BUILT_AS an artifact — from what the records say: the artifact names its application
+    (`of_component`), the application names its artifact (`built_as`), or the artifact is in a deployment of that application (RA4-35 with
+    an approved DEPLOYED_AS). Returns [(component, artifact, why)] — each for a person to approve with build_pipeline evidence."""
+    comps = {i['id'] for i in a3.get('instances', []) if mm.is_a(i['type'], 'A3.ApplicationComponent')}
+    arts = {i['id']: i for i in a4.get('instances', []) if mm.is_a(i['type'], 'A4.Artifact') and i.get('lifecycle_status') != 'retired'}
+    have = {((m.get('source') or {}).get('id'), (m.get('target') or {}).get('id')) for m in maps if m.get('relationship') == 'BUILT_AS'}
+    as_list = lambda v: v if isinstance(v, list) else ([v] if v else [])
+    out = {}
+    for x, a in arts.items():
+        for c in as_list((a.get('attributes') or {}).get('of_component')):
+            if c in comps: out.setdefault((c, x), []).append(f'{x}.of_component names {c}')
+    for i in a3.get('instances', []):
+        for x in as_list((i.get('attributes') or {}).get('built_as')):
+            if i['id'] in comps and x in arts: out.setdefault((i['id'], x), []).append(f"{i['id']}.built_as names {x}")
+    deployed_as = _approved(maps, 'DEPLOYED_AS')
+    for r in a4.get('relationships', []):
+        if r['kind'] == 'aggregation' and r['target'] in arts:
+            for c, d in deployed_as:
+                if d == r['source'] and c in comps: out.setdefault((c, r['target']), []).append(f"{r['source']} holds {r['target']} (RA4-35) and {c} is DEPLOYED_AS {r['source']}")
+    return [(c, x, '; '.join(why)) for (c, x), why in sorted(out.items()) if (c, x) not in have]
 
 
 def propose_connections(a3, a4, maps, mm, run, person, now, rejected=()):
@@ -91,11 +117,20 @@ def propose_connections(a3, a4, maps, mm, run, person, now, rejected=()):
                 for d in (prod or deps): add(x, 'association', d, 'AID-C06', f"{', '.join(ifcs)} EXPOSED_THROUGH {x}; {', '.join(sorted(apps))} composes it and is DEPLOYED_AS {d} (approved)", 'high', 'an edge platform fronts the deployment of the application whose interface it exposes')
                 continue
         if any(mm.is_a(t, p) for p in PLATFORMS) and DATABASE.search(name):   # AID-C02
-            users = {c for e in [i for i in a3.get('instances', []) if (i.get('attributes') or {}).get('stored_in') == x]
+            held = lambda v: x in (v if isinstance(v, list) else [v])   # stored_in names one platform or several
+            users = {c for e in [i for i in a3.get('instances', []) if held((i.get('attributes') or {}).get('stored_in'))]
                      for c in [r['source'] for r in a3.get('relationships', []) if r['target'] == e['id'] and r['kind'] == 'access']}
+            whole = {r['target']: r['source'] for r in a3.get('relationships', []) if r['kind'] == 'composition'}   # a component is part of an application
+            def up(c):
+                out = [c]
+                while c in whole and whole[c] not in out: c = whole[c]; out.append(c)
+                return out
+            users = {u for c in users for u in up(c)}
             plats = sorted({p for c, p in deployed_on if c in users and p in typ and p != x})
+            penv = lambda p: set(env_of.get(p, ())) | {e for d in hosts.get(p, []) for e in env_of.get(d, ())}   # a platform's environments: its own, or its deployments'
+            if env_of.get(x): plats = [p for p in plats if penv(p) & env_of[x]] or plats   # the platforms in its own environment
             if plats:
-                for p in plats: add(p, 'association', x, 'AID-C02', f"components {', '.join(sorted(users))} use data stored in {x} and run on {p}", 'medium', 'the platform running the data\'s users reaches its database')
+                for p in plats: add(p, 'association', x, 'AID-C02', f"{', '.join(sorted(users))} use data stored in {x}; {p} runs them", 'medium', 'the platform running the data\'s users reaches its database')
                 continue
             near = [p for p in running() if p != x and zone_of(p) and zone_of(p) == zone_of(x)]
             if near:

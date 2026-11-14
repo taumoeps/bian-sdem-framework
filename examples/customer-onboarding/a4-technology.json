@@ -2,7 +2,7 @@
   "level": "A4",
   "model_id": "synthetic-bank-onboarding-a4",
   "model_version": "2026.10",
-  "metamodel_version": "0.13.0",
+  "metamodel_version": "0.14.0",
   "source_system": "SYNTHETIC-CMDB",
   "instances": [
     {
@@ -101,6 +101,18 @@
         "zone_level": 1,
         "zone_kind": "dmz"
       }
+    },
+    {
+      "id": "ART-001",
+      "type": "A4.Artifact",
+      "version": "1.0",
+      "name": "onboarding-portal:1.0",
+      "lifecycle_status": "active",
+      "description": "Container image of the onboarding portal (made up).",
+      "attributes": {
+        "artifact_kind": "container image",
+        "of_component": "APP-001"
+      }
     }
   ],
   "relationships": [
@@ -148,6 +160,16 @@
       "source": "ZONE-ONB-DMZ",
       "kind": "aggregation",
       "target": "INF-003"
+    },
+    {
+      "source": "INF-001",
+      "kind": "assignment",
+      "target": "ART-001"
+    },
+    {
+      "source": "DEP-001",
+      "kind": "aggregation",
+      "target": "ART-001"
     }
   ]
 }

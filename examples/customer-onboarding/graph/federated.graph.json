@@ -6,7 +6,7 @@
     "directed": true,
     "metadata": {
       "sdem_store_version": "1.0",
-      "metamodel_version": "0.13.0",
+      "metamodel_version": "0.14.0",
       "levels": {
         "A1": "2026.10",
         "A2": "2026.10",
@@ -16,9 +16,9 @@
       "registries": [
         {
           "file": "mappings.json",
-          "sha256": "5b267ab769aa9ee2e80cceac3cec792b9f5b77f31708c954363a3ff3dac64bcb",
+          "sha256": "43ae6539a2eeb865039adbeb02563808dc628ab5e1f42305c6bb5f035c564d7c",
           "registry_version": "0.4.0",
-          "metamodel_version": "0.13.0"
+          "metamodel_version": "0.14.0"
         }
       ],
       "statuses": [
@@ -164,6 +164,17 @@
           "level": "A4",
           "type": "A4.Node",
           "id": "INF-003",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a4-technology.graph.json"
+        }
+      },
+      "A4:ART-001@1.0": {
+        "label": "onboarding-portal:1.0",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.Artifact",
+          "id": "ART-001",
           "version": "1.0",
           "stub": true,
           "graph": "a4-technology.graph.json"
@@ -437,6 +448,35 @@
             "network_design:SYNTHETIC-ND-001"
           ],
           "rationale": "The onboarding API is reached from the internet through the channels edge gateway (made up).",
+          "baseline_id": "DEMO-BASE-002",
+          "reviewer_id": "DEMO-ARCHITECT",
+          "approved_at": "2026-11-14"
+        }
+      },
+      {
+        "id": "MAP-013",
+        "source": "A3:APP-001@1.0",
+        "target": "A4:ART-001@1.0",
+        "relation": "BUILT_AS",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "APP-001",
+            "type": "A3.ApplicationComponent",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "ART-001",
+            "type": "A4.Artifact",
+            "version": "1.0"
+          },
+          "perspective": "architecture",
+          "status": "approved",
+          "evidence": [
+            "build_pipeline:SYNTHETIC-CI-001"
+          ],
+          "rationale": "The onboarding portal is built as its container image (made up).",
           "baseline_id": "DEMO-BASE-002",
           "reviewer_id": "DEMO-ARCHITECT",
           "approved_at": "2026-11-14"

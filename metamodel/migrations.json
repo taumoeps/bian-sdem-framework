@@ -1,5 +1,5 @@
 {
-  "metamodel_version": "0.13.0",
+  "metamodel_version": "0.14.0",
   "note": "How a workspace moves from one metamodel (metamodel) version to the next — `sdem migrate --workspace DIR`. Every change to the metamodel that affects data bumps metamodel_version in every metamodel file and adds one entry here, from the old version to the new: its steps are applied to the workspace's datasets and registry, then the workspace is checked; an entry with no steps only moves the version (an additive change — new optional attributes or types). Step kinds: rename_type {from, to}; rename_attribute {type (optional), from, to}; drop_attribute {type (optional), name}; set_attribute {type, name, value} (only where missing); rename_kind {from, to} (a within-architecture link kind); rename_relationship {from, to} (a link type between architectures, in the registry). Policy: docs/sdem-metamodel-versioning.md.",
   "migrations": [
     {
@@ -111,6 +111,14 @@
           ]
         }
       ]
+    },
+    {
+      "from": "0.13.0",
+      "to": "0.14.0",
+      "date": "2026-11-14",
+      "approved_by": "the SDEM owner",
+      "note": "BUILT_AS (the owner's decision, 2026-11-14): a connection between layers — an A3 application component built as an A4 artifact (its package or container image), grounded in ArchiMate 3.2 (Artifact realization Application Component), approved with build_pipeline evidence. sdem aid proposes it (AID-X02) from the artifact's of_component, the component's built_as, or the artifact being in the component's deployment (RA4-35). Additive — no steps.",
+      "steps": []
     }
   ]
 }

@@ -69,3 +69,16 @@ A4 is the physical deployment: every shape there is connected to something. For 
 
 
 AID-X01 proposes `EXPOSED_THROUGH` in the run's proposals file (a person approves it with `sdem approve`); AID-C01…C06 add links marked inferred to `a4-technology.json`. LC-19 counts both kinds of inferred link still to decide.
+
+## 8. BUILT_AS — what an artifact is the build of (metamodel 0.14.0; the owner's decision, 2026-11-14)
+
+Found in the 3D view: the payment hub's image `payments-hub:7.1` was linked only to the cluster that runs it — nothing said it was the Payments Hub, so a change to the image reached nothing above A4.
+
+| Id | Source | Relationship | Target | Evidence |
+|---|---|---|---|---|
+| `COMPONENT_BUILT_AS_ARTIFACT` | `A3.ApplicationComponent` | `BUILT_AS` | `A4.Artifact` | `build_pipeline` |
+
+- **Basis:** ArchiMate 3.2 — an Artifact realises an Application Component (Archi's relationships.xml, read 2026-11-14: Artifact → ApplicationComponent allows `r`); BUILT_AS names it from the application's side.
+- **AID-X02** proposes it — never approves it — from what the records say: the artifact's `of_component`, the component's `built_as`, or the artifact in a deployment of the component (RA4-35 with an approved `DEPLOYED_AS`).
+- **Inside A4** the image is part of its deployment (RA4-35): payment's *Payments Hub — production* aggregates `payments-hub:7.1`.
+

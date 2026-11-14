@@ -127,7 +127,7 @@ class HardeningTests(unittest.TestCase):
         code, _, err = sdem(*base, '--reviewer', 'jane.architect', '--evidence', 'deployment_design:X'); self.assertEqual(code, 1); self.assertIn('nothing was written', err)
         self.assertNotIn('P-RUN-001', (self.est / 'mappings.json').read_text())
         code, out, err = sdem(*base, '--reviewer', 'jane.architect', '--evidence', 'application_architecture_document:AA#s3', '--date', '2026-10-28')
-        self.assertEqual(code, 0, err); self.assertIn('approved PAY-115', out)
+        self.assertEqual(code, 0, err); self.assertIn('approved PAY-116', out)
         self.assertEqual(sdem('validate', '--strict', '--workspace', self.est)[0], 0)
         self.assertEqual(sdem(*base, '--reviewer', 'jane.architect', '--evidence', 'application_architecture_document:AA')[0], 1)   # already approved
 

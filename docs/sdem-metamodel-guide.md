@@ -87,7 +87,7 @@ The same numbers appear in the [rules specification](design/relationship-rules-s
 |---|---|---|---|
 | Entity types (boxes) | 45 | §2 | every box |
 | Within-level rows: links allowed *inside* one architecture | 135 | §3.1 (`RA…`) | thin grey arrows |
-| Relationship type catalogue: kinds of link allowed *between* architectures | 10 | §4.1 | named on the blue arrows |
+| Relationship type catalogue: kinds of link allowed *between* architectures | 11 | §4.1 | named on the blue arrows |
 | Plan rows: rules for finding cross-level relationships | 69 | §4.2 (`S…`, `B…`) | — |
 | …of which drawn as cross-level rules | 50 | §4.3 | coloured arrows |
 | …of which catalogue rules, the only ones that produce registry records | 9 | §4.3 | blue arrows |

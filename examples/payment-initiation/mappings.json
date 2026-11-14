@@ -1,6 +1,6 @@
 {
   "registry_version": "0.4.0",
-  "metamodel_version": "0.13.0",
+  "metamodel_version": "0.14.0",
   "mappings": [
     {
       "mapping_id": "PAY-001",
@@ -445,6 +445,29 @@
         "network_design:ND-PAY-2026#edge"
       ],
       "rationale": "Payments API v2 is reached from the internet through the managed API gateway in the security zone (DMZ) (made up).",
+      "baseline_id": "PAY-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-11-14"
+    },
+    {
+      "mapping_id": "PAY-115",
+      "source": {
+        "id": "APP-PAY-HUB",
+        "type": "A3.ApplicationComponent",
+        "version": "7.1"
+      },
+      "relationship": "BUILT_AS",
+      "target": {
+        "id": "ART-PAYHUB-IMG",
+        "type": "A4.Artifact",
+        "version": "7.1"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "build_pipeline:CI-PAY-HUB#7.1"
+      ],
+      "rationale": "The Payments Hub 7.1 is built as the container image payments-hub:7.1 by its build pipeline (made up).",
       "baseline_id": "PAY-BASE-2026-Q4",
       "reviewer_id": "jane.architect",
       "approved_at": "2026-11-14"

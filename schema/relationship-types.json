@@ -318,6 +318,26 @@
       "confidence": "high",
       "confidence_basis": "SDEM's own definition, grounded in an ArchiMate 3.2 pattern checked against the relationship tables",
       "reasoning": "What an internet-facing edge platform fronts is an API — an application interface. ArchiMate 3.2 lets a SystemSoftware serve an Application Interface directly; EXPOSED_THROUGH names that serving from the interface's side, limited to a platform that is internet facing and in a DMZ (LC-18). sdem aid proposes it when exactly one candidate exists (AID-X01); a person approves it with network_design evidence."
+    },
+    {
+      "mapping_type_id": "COMPONENT_BUILT_AS_ARTIFACT",
+      "source_type": "A3.ApplicationComponent",
+      "relationship": "BUILT_AS",
+      "target_type": "A4.Artifact",
+      "cardinality": "many_to_many",
+      "perspective": "architecture",
+      "authority": "enterprise_rule",
+      "direction_semantics": "The application component is built as this artifact — the package or container image that is deployed.",
+      "required_evidence": [
+        "build_pipeline"
+      ],
+      "rule_version": "1.0",
+      "owner": "infrastructure-architecture",
+      "source_reference": "ArchiMate 3.2 application–technology relationship: Artifact realization Application Component — Archi's implementation of the ArchiMate 3.2 relationship tables (relationships.xml, version 3.2, read 2026-11-14: Artifact → ApplicationComponent allows 'or', r = realization). The owner's decision, 2026-11-14 (BUILT_AS, metamodel 0.14.0).",
+      "verification": "sdem_definition_grounded",
+      "confidence": "high",
+      "confidence_basis": "SDEM's own definition, grounded in an ArchiMate 3.2 pattern checked against the relationship tables",
+      "reasoning": "An image or package realises the application it is built from (ArchiMate: Artifact realizes Application Component); BUILT_AS names that from the application's side, as DEPLOYED_ON does for hosting. With it, trace and impact reach from an image — a vulnerable base image, a rebuilt package — to the application, its service domain and the business. sdem aid proposes it (AID-X02); a person approves it with build_pipeline evidence."
     }
   ],
   "deprecated_relationships": []

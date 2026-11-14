@@ -249,7 +249,7 @@ class CustomerOnboardingExampleTests(unittest.TestCase):
         t = self._fg().trace('CAP-001', 'down')
         app = t['children'][0]['node']['children'][0]['node']
         self.assertEqual(app['id'], 'APP-001')
-        self.assertEqual({c['node']['id'] for c in app['children']}, {'INF-001', 'DEP-001'})
+        self.assertEqual({c['node']['id'] for c in app['children']}, {'INF-001', 'DEP-001', 'ART-001'})   # and its image (BUILT_AS, 0.14.0)
 
     def test_e2_4_upstream_from_entity_is_information_only(self):
         t = self._fg().trace('ENT-001', 'up')

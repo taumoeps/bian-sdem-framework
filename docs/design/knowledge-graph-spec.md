@@ -136,6 +136,7 @@ Every allowed edge is a row in `metamodel/level-relationships.json`, listed with
 | `EXPOSED_THROUGH` (INTERFACE_EXPOSED_THROUGH_NODE) | A3.ApplicationInterface → A4.Node | many to many | architecture | enterprise_rule |
 | `EXPOSED_THROUGH` (INTERFACE_EXPOSED_THROUGH_DEVICE) | A3.ApplicationInterface → A4.Device | many to many | architecture | enterprise_rule |
 | `EXPOSED_THROUGH` (INTERFACE_EXPOSED_THROUGH_SYSTEM_SOFTWARE) | A3.ApplicationInterface → A4.SystemSoftware | many to many | architecture | enterprise_rule |
+| `BUILT_AS` (COMPONENT_BUILT_AS_ARTIFACT) | A3.ApplicationComponent → A4.Artifact | many to many | architecture | enterprise_rule |
 
 Adjacent levels only (A1→A2, A2→A3, A3→A4). A level-skipping answer is a path, never a stored edge. The 41 candidate and derived rows of the plan are never federated edges.
 

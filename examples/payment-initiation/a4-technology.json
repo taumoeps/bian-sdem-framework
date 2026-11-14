@@ -2,7 +2,7 @@
   "level": "A4",
   "model_id": "synthetic-bank-payments-a4",
   "model_version": "2026.10",
-  "metamodel_version": "0.13.0",
+  "metamodel_version": "0.14.0",
   "source_system": "SYNTHETIC-CMDB",
   "instances": [
     {
@@ -399,6 +399,16 @@
       "source": "INF-PG-PAY-PROD",
       "kind": "association",
       "target": "NET-PAY-PRIVATE"
+    },
+    {
+      "source": "INF-K8S-PAY-PROD",
+      "kind": "association",
+      "target": "INF-PG-PAY-PROD"
+    },
+    {
+      "source": "DEP-PAYHUB-PROD",
+      "kind": "aggregation",
+      "target": "ART-PAYHUB-IMG"
     }
   ]
 }

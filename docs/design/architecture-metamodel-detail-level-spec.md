@@ -65,7 +65,7 @@
 | Value | Relationship types |
 |---|---|
 | `bian_alignment_guidance` | 2 |
-| `enterprise_rule` | 12 |
+| `enterprise_rule` | 13 |
 
 Registry self-check (high-level §1.2) — a `bian_*` rule needs a `bian_*` endpoint: **enforced** (`sdem/validate.py` `validate_registry`).
 
@@ -288,6 +288,7 @@ Checked by `sdem check`: both ends in the architecture dataset (LC-03), kind all
 | `A3.ApplicationInterface` | `EXPOSED_THROUGH` | `A4.Node` | architecture | `enterprise_rule` | network_design | high |
 | `A3.ApplicationInterface` | `EXPOSED_THROUGH` | `A4.Device` | architecture | `enterprise_rule` | network_design | high |
 | `A3.ApplicationInterface` | `EXPOSED_THROUGH` | `A4.SystemSoftware` | architecture | `enterprise_rule` | network_design | high |
+| `A3.ApplicationComponent` | `BUILT_AS` | `A4.Artifact` | architecture | `enterprise_rule` | build_pipeline | high |
 
 #### 6.2a Relationship type record
 
@@ -295,22 +296,22 @@ Every field of a relationship type in `schema/relationship-types.json`. *Aligned
 
 | Field | Required | In records | Values | Meaning |
 |---|---|---|---|---|
-| `mapping_type_id` | yes | 14 of 14 | text | permanent ID of the type (legacy name) |
-| `source_type` | yes | 14 of 14 | `A1.BusinessCapability`, `A1.BusinessObject`, `A1.BusinessProcess`, `A1.ValueStream`, `A2.BusinessObject`, `A2.ServiceDomain`, `A2.ServiceOperation`, `A3.ApplicationComponent`, `A3.ApplicationInterface` | entity type at the source end (is-a) |
-| `relationship` | yes | 14 of 14 | `ALIGNED_TO`, `DEPLOYED_AS`, `DEPLOYED_ON`, `EXPOSED_THROUGH`, `IMPLEMENTED_BY`, `MAPPED_TO`, `REALIZED_BY`, `SUPPORTED_BY`, `USES_DOMAIN` | the type name used in registry records |
-| `target_type` | yes | 14 of 14 | `A2.BusinessObject`, `A2.BusinessScenario`, `A2.ServiceDomain`, `A3.APIOperation`, `A3.ApplicationComponent`, `A3.DataEntity`, `A4.Deployment`, `A4.Device`, `A4.Node`, `A4.SystemSoftware` | entity type at the target end (is-a) |
-| `cardinality` | yes | 14 of 14 | `many_to_many` | many_to_many, one_to_many, … |
-| `perspective` | yes | 14 of 14 | `architecture`, `information`, `process` | architecture, process or information |
-| `authority` | yes | 14 of 14 | `bian_alignment_guidance`, `enterprise_rule` | bian_reference, bian_alignment_guidance or enterprise_rule (high-level §1.2) |
-| `direction_semantics` | yes | 14 of 14 | text | what the arrow means, read source → target |
-| `required_evidence` | yes | 14 of 14 | list | evidence kinds a record must carry before approval |
-| `rule_version` | yes | 14 of 14 | `1.0`, `2.0` | version of this type definition |
-| `owner` | yes | 14 of 14 | `application-architecture`, `business-architecture`, `data-architecture`, `enterprise-architecture`, `infrastructure-architecture` | who governs the type |
-| `source_reference` | yes | 14 of 14 | text | source reference |
-| `verification` | yes | 14 of 14 | `sdem_definition`, `sdem_definition_grounded`, `unverified_w135`, `verified`, `verified_against_archi`, `verified_intent_or_target_only` | how the type was checked |
-| `confidence` | yes | 14 of 14 | `high`, `medium` | high / medium / low |
-| `confidence_basis` | yes | 14 of 14 | text | which clause of the rule applied |
-| `reasoning` | yes | 14 of 14 | text | why the type exists |
+| `mapping_type_id` | yes | 15 of 15 | text | permanent ID of the type (legacy name) |
+| `source_type` | yes | 15 of 15 | `A1.BusinessCapability`, `A1.BusinessObject`, `A1.BusinessProcess`, `A1.ValueStream`, `A2.BusinessObject`, `A2.ServiceDomain`, `A2.ServiceOperation`, `A3.ApplicationComponent`, `A3.ApplicationInterface` | entity type at the source end (is-a) |
+| `relationship` | yes | 15 of 15 | `ALIGNED_TO`, `BUILT_AS`, `DEPLOYED_AS`, `DEPLOYED_ON`, `EXPOSED_THROUGH`, `IMPLEMENTED_BY`, `MAPPED_TO`, `REALIZED_BY`, `SUPPORTED_BY`, `USES_DOMAIN` | the type name used in registry records |
+| `target_type` | yes | 15 of 15 | `A2.BusinessObject`, `A2.BusinessScenario`, `A2.ServiceDomain`, `A3.APIOperation`, `A3.ApplicationComponent`, `A3.DataEntity`, `A4.Artifact`, `A4.Deployment`, `A4.Device`, `A4.Node`, `A4.SystemSoftware` | entity type at the target end (is-a) |
+| `cardinality` | yes | 15 of 15 | `many_to_many` | many_to_many, one_to_many, … |
+| `perspective` | yes | 15 of 15 | `architecture`, `information`, `process` | architecture, process or information |
+| `authority` | yes | 15 of 15 | `bian_alignment_guidance`, `enterprise_rule` | bian_reference, bian_alignment_guidance or enterprise_rule (high-level §1.2) |
+| `direction_semantics` | yes | 15 of 15 | text | what the arrow means, read source → target |
+| `required_evidence` | yes | 15 of 15 | list | evidence kinds a record must carry before approval |
+| `rule_version` | yes | 15 of 15 | `1.0`, `2.0` | version of this type definition |
+| `owner` | yes | 15 of 15 | `application-architecture`, `business-architecture`, `data-architecture`, `enterprise-architecture`, `infrastructure-architecture` | who governs the type |
+| `source_reference` | yes | 15 of 15 | text | source reference |
+| `verification` | yes | 15 of 15 | `sdem_definition`, `sdem_definition_grounded`, `unverified_w135`, `verified`, `verified_against_archi`, `verified_intent_or_target_only` | how the type was checked |
+| `confidence` | yes | 15 of 15 | `high`, `medium` | high / medium / low |
+| `confidence_basis` | yes | 15 of 15 | text | which clause of the rule applied |
+| `reasoning` | yes | 15 of 15 | text | why the type exists |
 
 Is-a matching lets `DEPLOYED_ON → A4.InfrastructureComponent` accept any concrete A4 type — aligned. Detail: [`relationship-registry-spec.md`](relationship-registry-spec.md).
 
@@ -457,7 +458,7 @@ Every field of a plan row in `metamodel/relationship-rules.json`.
 
 **Gap G-13** (addition; decided 2026-10-25 (owner): recorded in the detail spec; the high-level spec is not changed).
 
-Every entity, within-level row, relationship type and attribute names its source and carries reasoning and a confidence from one rule (`sdem/confidence.py`; CI fails on disagreement). Across these records: 245 high, 78 medium, 35 low.
+Every entity, within-level row, relationship type and attribute names its source and carries reasoning and a confidence from one rule (`sdem/confidence.py`; CI fails on disagreement). Across these records: 246 high, 78 medium, 35 low.
 
 ## 18. Inference engine
 

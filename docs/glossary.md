@@ -10,7 +10,7 @@ Plain-language meanings of the terms used across the SDEM documents. Grouped by 
 |---|---|
 | **A1 … A4** | the four architectures: A1 Business, A2 Service Domain (BIAN), A3 Application, A4 Technology |
 | **Abstract entity type** | a type that groups others and never has instances of its own, e.g. `A4.InfrastructureComponent` (a node, device or system software is one) |
-| **Architecture Metamodel** | the definition of what can exist: entity types, the links allowed inside each architecture, and the ten link types allowed between them |
+| **Architecture Metamodel** | the definition of what can exist: entity types, the links allowed inside each architecture, and the eleven link types allowed between them |
 | **Artefact** | a published document or model file (e.g. BIAN's Business Object Model, a Semantic API definition), recorded for reference but never an instance in an architecture dataset |
 | **Attribute** | one piece of information recorded about an entity, e.g. a process's `owner` or `criticality`. *Field* means the same |
 | **Common attribute** | an attribute every entity type has, in all four architectures (11: owner, created, modified, valid from/to, replaces, replaced by, conforms to, subject, source id, access classification) |
@@ -27,7 +27,7 @@ Plain-language meanings of the terms used across the SDEM documents. Grouped by 
 |---|---|
 | **Within-level row** | a link allowed inside one architecture, e.g. `RA3-27`; taken from that architecture's reference (BIAN, ArchiMate, TOGAF) |
 | **Cardinality** | how many links of a kind a record may or must have, e.g. a service group belongs to exactly one Service Domain |
-| **Relationship type catalogue** | the ten link types allowed between architectures, e.g. `USES_DOMAIN`, `IMPLEMENTED_BY`, `EXPOSED_THROUGH` |
+| **Relationship type catalogue** | the eleven link types allowed between architectures, e.g. `USES_DOMAIN`, `IMPLEMENTED_BY`, `EXPOSED_THROUGH`, `BUILT_AS` |
 | **Relationship Rules Model** | how each cross-level link is found: 69 plan rows (S01…S54, B01…B15) and the join keys |
 | **Plan row / rule / S-rule** | one way of establishing a cross-level link, e.g. `S24` (a BIAN operation is implemented by an API operation) |
 | **Join key** | an attribute in an architecture dataset that names a record in another architecture, e.g. an application's `deployed_on`; the engine uses it to propose a link exactly |

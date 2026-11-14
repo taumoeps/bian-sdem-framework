@@ -287,7 +287,30 @@
       "baseline_id": "DEMO-BASE-002",
       "reviewer_id": "DEMO-ARCHITECT",
       "approved_at": "2026-11-14"
+    },
+    {
+      "mapping_id": "MAP-013",
+      "source": {
+        "id": "APP-001",
+        "type": "A3.ApplicationComponent",
+        "version": "1.0"
+      },
+      "relationship": "BUILT_AS",
+      "target": {
+        "id": "ART-001",
+        "type": "A4.Artifact",
+        "version": "1.0"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "build_pipeline:SYNTHETIC-CI-001"
+      ],
+      "rationale": "The onboarding portal is built as its container image (made up).",
+      "baseline_id": "DEMO-BASE-002",
+      "reviewer_id": "DEMO-ARCHITECT",
+      "approved_at": "2026-11-14"
     }
   ],
-  "metamodel_version": "0.13.0"
+  "metamodel_version": "0.14.0"
 }
