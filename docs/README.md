@@ -34,6 +34,7 @@ flowchart LR
 | Read | For |
 |---|---|
 | [The metamodel in plain words](sdem-metamodel-guide.md) | the kinds of thing, the eleven connections between layers, how sure SDEM is, what it refuses |
+| [How SDEM draws each layer](sdem-layer-layouts.md) | each layer drawn by what owns what — A2 as BIAN's service landscape, A1 and A3 next, A4 by zone |
 | [A4: the physical deployment](sdem-a4-physical-deployment.md) | network zones, how technology shapes connect, the rules SDEM checks, what it proposes, the 3D view |
 | [SDEM architecture](sdem-architecture.md) | the parts, where every file lives, how a change flows, what checks it, limits |
 

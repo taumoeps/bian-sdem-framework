@@ -174,7 +174,7 @@ def main(argv=None):
     try: lay = load(a.estate, a.layer, a.environment)
     except (ContainmentError, ValueError) as e: print(f'ERROR: {e}', file=sys.stderr); return 2
     if a.json: print(json.dumps(lay, indent=2)); return 0
-    print(f"{a.layer} drawn by what owns what — {len(lay['zones'])} region(s), {len(lay['shapes'])} record(s)")
+    print(f"{a.layer} drawn {'by network zone' if a.layer == 'A4' else 'by what owns what'} — {len(lay['zones'])} region(s), {len(lay['shapes'])} record(s)")
     for z in lay['zones']:
         held = [s['id'] for s in lay['shapes'] if s['zone'] == z['id'] and s['id'] != (z.get('record') or '')]
         print(f"{'  ' * (z['level'] or 0)}{z['label']}" + (f"  — {', '.join(held)}" if held else ''))
