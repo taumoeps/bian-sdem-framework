@@ -33,7 +33,8 @@ flowchart LR
 
 | Read | For |
 |---|---|
-| [The metamodel in plain words](sdem-metamodel-guide.md) | the kinds of thing, the nine connections between layers, how sure SDEM is, what it refuses |
+| [The metamodel in plain words](sdem-metamodel-guide.md) | the kinds of thing, the eleven connections between layers, how sure SDEM is, what it refuses |
+| [A4: the physical deployment](sdem-a4-physical-deployment.md) | network zones, how technology shapes connect, the rules SDEM checks, what it proposes, the 3D view |
 | [SDEM architecture](sdem-architecture.md) | the parts, where every file lives, how a change flows, what checks it, limits |
 
 ## Setting it up and running it

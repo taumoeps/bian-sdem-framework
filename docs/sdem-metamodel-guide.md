@@ -25,13 +25,13 @@ An organisation adds its own kinds of thing, fields, rules and names **on top** 
 | **A1 · Business** (10) | what the business does and who does it | capability, value stream and stage, process, activity, business service, business object, actor, role, requirement |
 | **A2 · BIAN Service Domains** (15) | BIAN's standard building blocks | business area and domain, service domain, service operation, control record, business object, business scenario, semantic API … |
 | **A3 · Applications** (8) | the systems that do the work | application component, service, function, interface, API operation, event, data entity, solution building block |
-| **A4 · Technology** (10) | where the systems run | node, device, system software, network, path, technology service and interface, deployment, deployment environment, artifact |
+| **A4 · Technology** (11) | where the systems run | node, device, system software, network, path, technology service and interface, deployment, deployment environment, artifact, network zone |
 
-Plus one *abstract* kind (A4 infrastructure component) that groups the technology an application can run on. Every kind with its attributes, sources and reasoning: [entity design](reference/architecture-entity-design.md) · [attribute design](reference/architecture-attribute-design.md).
+Plus one *abstract* kind (A4 infrastructure component) that groups the technology an application can run on. A4 is the physical deployment — zones, connections, rules and the 3D view: [A4: the physical deployment](sdem-a4-physical-deployment.md). Every kind with its attributes, sources and reasoning: [entity design](reference/architecture-entity-design.md) · [attribute design](reference/architecture-attribute-design.md).
 
-## The nine connections between layers
+## The eleven connections between layers
 
-Only these nine are allowed. Each needs **evidence of a named kind** before a person can approve it.
+Only these eleven are allowed. Each needs **evidence of a named kind** before a person can approve it.
 
 | From | Connection | To | Evidence needed |
 |---|---|---|---|
@@ -44,6 +44,8 @@ Only these nine are allowed. Each needs **evidence of a named kind** before a pe
 | A2 business object | is **mapped to** | A3 data entity | data model |
 | A3 application component | is **deployed on** | A4 node, device or system software — what hosts software (ArchiMate 3.2; since metamodel 0.8.0) | deployment design |
 | A3 application component | is **deployed as** | A4 deployment | deployment design |
+| A3 application interface | is **exposed through** | A4 node, device or system software that is internet facing (since metamodel 0.12.0) | network design |
+| A3 application component | is **built as** | A4 artifact — its image or package (since metamodel 0.14.0) | build pipeline |
 
 ## Four things that look alike
 
@@ -62,14 +64,14 @@ Every proposed connection says how sure the engine is — **high**, **medium** o
 
 ## How the metamodel changes — the stability policy
 
-SDEM's core — its kinds of thing, the nine connections between layers, the rules inside each layer, the attributes — changes only for a reason (a new release of a standard, a proven error, or the owner's decision on evidence of use), always with a new metamodel version, a recorded migration and the owner's approval, and never by removing something without first marking it deprecated. Your organisation's own needs go into a profile instead ([`sdem-profile-spec.md`](design/sdem-profile-spec.md)). CI holds the core to its last freeze (`metamodel/stability.json`). To see what is not yet settled: `sdem model status`; what your workspaces use: `sdem model usage --root workspaces`. Detail: [`sdem-metamodel-stability.md`](design/sdem-metamodel-stability.md).
+SDEM's core — its kinds of thing, the eleven connections between layers, the rules inside each layer, the attributes — changes only for a reason (a new release of a standard, a proven error, or the owner's decision on evidence of use), always with a new metamodel version, a recorded migration and the owner's approval, and never by removing something without first marking it deprecated. Your organisation's own needs go into a profile instead ([`sdem-profile-spec.md`](design/sdem-profile-spec.md)). CI holds the core to its last freeze (`metamodel/stability.json`). To see what is not yet settled: `sdem model status`; what your workspaces use: `sdem model usage --root workspaces`. Detail: [`sdem-metamodel-stability.md`](design/sdem-metamodel-stability.md).
 
 ## The controls — what SDEM refuses
 
 | What it protects | Controls | SDEM refuses … |
 |---|---|---|
 | **Records** | CTL-01 … 04, 24 | an unknown kind of thing; a wrong or missing attribute; a link inside a layer that the metamodel does not allow; a record that does not match its format; a BIAN record taken from a design document instead of a BIAN source |
-| **Connections** | CTL-05 … 08 | a connection that is not one of the nine; an approval with no reviewer, date or evidence; any edit to an approved connection (it is superseded instead); a connection to a record that does not exist |
+| **Connections** | CTL-05 … 08 | a connection that is not one of the eleven; an approval with no reviewer, date or evidence; any edit to an approved connection (it is superseded instead); a connection to a record that does not exist |
 | **People in charge** | CTL-21, 20, 23 | an approval by an agent; a change without the person behind it; an onboarded design that a person has not loaded |
 | **The engine** | CTL-09, 10, 22 | an engine that finds fewer right connections than the tested runs; output that is not *proposed*; a rule that is not in the metamodel |
 | **The metamodel itself** | CTL-11 … 14 | an item without its source and reasoning; a confidence that breaks the rule; a generated document out of date; any change to the owner's frozen specification |
@@ -125,5 +127,5 @@ The specifications use formal names; in plain words they are:
 | the rules for finding connections | **Architecture Relationship Rules Model** |
 | the engine (`sdem link`) | **Architecture Relationship Inference Engine** |
 | the registry — approved connections (`mappings.json`) | **Architecture Relationship Registry** |
-| the nine connections | **relationship type catalogue** |
+| the eleven connections | **relationship type catalogue** |
 | one layer's records as a graph · all four joined | **local** · **federated architecture knowledge graph** |
