@@ -6,11 +6,11 @@
     "directed": true,
     "metadata": {
       "sdem_store_version": "1.0",
-      "export_sha256": "09cf2e30a886bc1a350447e3006ade44e3bbbb7db12ed9214c525c9c2e0d32b8",
+      "export_sha256": "3fdb73296c1eaa1a8d911f841b81769d0689dab83818ee91df2c5530608334e5",
       "level": "A4",
       "model_id": "reference-structure-a4",
       "model_version": "2026.10",
-      "metamodel_version": "0.12.0",
+      "metamodel_version": "0.13.0",
       "source_system": "SDEM-GENERATED-FROM-RECORD"
     },
     "nodes": {
@@ -211,7 +211,7 @@
           "description": "Synthetic instance of A4.NetworkZone carrying one relationship per constraint row of A4; no business meaning.",
           "attributes": {
             "zone_level": 0,
-            "zone_kind": "on_premises"
+            "zone_kind": "cloud"
           }
         }
       },
@@ -225,8 +225,8 @@
           "lifecycle_status": "active",
           "description": "Synthetic instance of A4.NetworkZone carrying one relationship per constraint row of A4; no business meaning.",
           "attributes": {
-            "zone_level": 0,
-            "zone_kind": "cloud"
+            "zone_level": 1,
+            "zone_kind": "internal"
           }
         }
       },
@@ -693,6 +693,17 @@
           "row": "RA4-38"
         },
         "label": "RA4-38"
+      },
+      {
+        "id": "A4:RS-NetworkZone-1-composition-RS-NetworkZone-2",
+        "source": "A4:RS-NetworkZone-1@1.0",
+        "target": "A4:RS-NetworkZone-2@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-39"
+        },
+        "label": "RA4-39"
       },
       {
         "id": "A4:RS-Deployment-2-aggregation-RS-Artifact-1",

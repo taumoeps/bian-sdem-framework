@@ -253,7 +253,7 @@ class FederatedGraph:
             for x, zs in direct.items():
                 if not any(self.mm.is_a((self.instance(x) or {}).get('type', ''), t) for t in ('A4.Node', 'A4.Device', 'A4.SystemSoftware')):
                     for z in zs: hop(x, z, 'RA4-38')   # a platform's zone is added below, as its network
-            for z, p in parent.items(): hop(z, p, 'RA4-27')
+            for z, p in parent.items(): hop(z, p, 'RA4-39')
         for g in self.levels.values():
             if g.doc.get('level') != 'A4': continue
             for p, nets in networks_of(g.doc, self.mm).items():

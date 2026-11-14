@@ -231,12 +231,12 @@
       "version": "0.18.0",
       "date": "2026-11-10",
       "kind": "minor",
-      "metamodel": "0.12.0",
+      "metamodel": "0.13.0",
       "migration": {
         "from": "0.8.0",
-        "to": "0.12.0",
+        "to": "0.13.0",
         "automatic": true,
-        "note": "0.8.0 → 0.8.1, additive: attribute sources (CA-13) and link citations; a placeholder in a required attribute now fails sdem check (LC-04). 0.8.1 → 0.9.0: a platform's network is a link (RA4-37) — a network's `connects` list becomes those links; a hosting platform on no network is a warning (LC-15); trace and impact follow networks (KG-Q-08). 0.9.0 → 0.10.0: network zones — level 0 on premises or cloud, level 1 internal or DMZ, level 2 private — hold the shapes deployed in them (RA4-38); every shape in a zone (LC-16), the structure checked (LC-17), internet-facing shapes in a DMZ (LC-18); additive. 0.10.0 → 0.11.0: hosting — cloud first by default, on premises by evidence (metamodel/hosting-signals.json); sdem aid proposes each shape's zone, marked inferred, for a person to confirm; zone connections ZC-01…ZC-04; additive. 0.11.0 → 0.12.0: an A3 interface reached from the internet is EXPOSED_THROUGH an A4 edge platform (LC-22); sdem aid proposes it, and a connection for every A4 shape linked to nothing (AID-C01…C06), for a person to decide; additive"
+        "note": "0.8.0 → 0.8.1, additive: attribute sources (CA-13) and link citations; a placeholder in a required attribute now fails sdem check (LC-04). 0.8.1 → 0.9.0: a platform's network is a link (RA4-37) — a network's `connects` list becomes those links; a hosting platform on no network is a warning (LC-15); trace and impact follow networks (KG-Q-08). 0.9.0 → 0.10.0: network zones — level 0 on premises or cloud, level 1 internal or DMZ, level 2 private — hold the shapes deployed in them (RA4-38); every shape in a zone (LC-16), the structure checked (LC-17), internet-facing shapes in a DMZ (LC-18); additive. 0.10.0 → 0.11.0: hosting — cloud first by default, on premises by evidence (metamodel/hosting-signals.json); sdem aid proposes each shape's zone, marked inferred, for a person to confirm; zone connections ZC-01…ZC-04; additive. 0.11.0 → 0.12.0: an A3 interface reached from the internet is EXPOSED_THROUGH an A4 edge platform (LC-22); sdem aid proposes it, and a connection for every A4 shape linked to nothing (AID-C01…C06), for a person to decide; additive. 0.12.0 → 0.13.0: a network zone is an ArchiMate Grouping, not a network — zones nest by RA4-39; a zone carrying a network's attributes is split into the zone and its network"
       },
       "breaking": [
         "sdem check reads TBD, unknown, /TBD or an empty string in a required attribute as missing: an error on an active record — leave the value out and mark the record planned (LC-04)",

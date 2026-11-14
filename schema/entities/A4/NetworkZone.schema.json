@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/taumoeps/bian-sdem-framework/schema/entities/A4/NetworkZone.schema.json",
   "title": "A4.NetworkZone",
-  "description": "A network zone a shape is deployed in: on premises or cloud (level 0), the internal network or a DMZ inside one (level 1), or a private network inside that (level 2)",
+  "description": "A network zone a shape is deployed in: on premises or cloud (level 0), the internal network or a DMZ inside one (level 1), or a private network inside that (level 2) — a grouping of the shapes deployed there, not a network itself",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -333,101 +333,6 @@
           "x-sdem-reasoning": "A record's source_id says where the record came from; a design often gives one fact in another section, or a second document gives it. Recording the source per attribute lets a reviewer check each value against its evidence, in the same dataset — no second store — and with the same `kind:ref` convention as source_id and the registry's evidence.",
           "x-sdem-confidence": "low"
         },
-        "internet_facing": {
-          "type": "boolean",
-          "description": "whether it is reached from the internet (a web server, an API gateway) — it belongs in a DMZ (LC-18)",
-          "x-sdem-id": "AT-A4-36",
-          "x-sdem-group": "inherited",
-          "x-sdem-kind": "value",
-          "x-sdem-source": {
-            "standard": "SDEM-defined (no open standard)",
-            "locator": "docs/design/sdem-network-zones-design.md (M2, M2b)",
-            "uri": "https://github.com/taumoeps/bian-sdem-framework"
-          },
-          "x-sdem-reasoning": "Answers: Which shapes are reached from the internet, and are they all in a DMZ?",
-          "x-sdem-confidence": "low"
-        },
-        "site": {
-          "type": "string",
-          "description": "the data centre or site the organisation runs it in — it is on premises (HS-01)",
-          "x-sdem-id": "AT-A4-37",
-          "x-sdem-group": "inherited",
-          "x-sdem-kind": "value",
-          "x-sdem-source": {
-            "standard": "SDEM-defined (no open standard)",
-            "locator": "docs/design/sdem-hosting-inference-design.md (§3, H6)",
-            "uri": "https://github.com/taumoeps/bian-sdem-framework"
-          },
-          "x-sdem-reasoning": "Answers: Where is it physically? Explicit evidence that a shape is on premises; beats name matching.",
-          "x-sdem-confidence": "low"
-        },
-        "cloud_provider": {
-          "type": "string",
-          "description": "the cloud provider it runs on, by name — it is in the cloud (HS-06)",
-          "x-sdem-id": "AT-A4-38",
-          "x-sdem-group": "inherited",
-          "x-sdem-kind": "value",
-          "x-sdem-source": {
-            "standard": "SDEM-defined (no open standard)",
-            "locator": "docs/design/sdem-hosting-inference-design.md (§3, H6)",
-            "uri": "https://github.com/taumoeps/bian-sdem-framework"
-          },
-          "x-sdem-reasoning": "Answers: Which provider is it on? Explicit evidence that a shape is in the cloud.",
-          "x-sdem-confidence": "low"
-        },
-        "region": {
-          "type": "string",
-          "description": "the cloud region it runs in (e.g. region-a) — it is in the cloud (HS-06)",
-          "x-sdem-id": "AT-A4-39",
-          "x-sdem-group": "inherited",
-          "x-sdem-kind": "value",
-          "x-sdem-source": {
-            "standard": "SDEM-defined (no open standard)",
-            "locator": "docs/design/sdem-hosting-inference-design.md (§3, H6)",
-            "uri": "https://github.com/taumoeps/bian-sdem-framework"
-          },
-          "x-sdem-reasoning": "Answers: Which region is it in? Explicit evidence that a shape is in the cloud.",
-          "x-sdem-confidence": "low"
-        },
-        "connects": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "description": "ids of nodes and devices on the network",
-          "deprecated": true,
-          "x-sdem-id": "AT-A4-07",
-          "x-sdem-group": "inherited",
-          "x-sdem-kind": "reference",
-          "x-sdem-references": [
-            "A4.Node",
-            "A4.Device"
-          ],
-          "x-sdem-source": {
-            "standard": "ArchiMate 3.2 (relationship)",
-            "locator": "duplicates the A4 network link (RA4-37)",
-            "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/"
-          },
-          "x-sdem-reasoning": "Duplicates the within-level link a platform has to its network (RA4-37, metamodel 0.9.0); `sdem migrate` turns each listed id into that link. Deprecated: use the link.",
-          "x-sdem-confidence": "low"
-        },
-        "address_range": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "description": "the network's address ranges in CIDR notation (e.g. 10.20.0.0/16)",
-          "x-sdem-id": "AT-A4-28",
-          "x-sdem-group": "inherited",
-          "x-sdem-kind": "value",
-          "x-sdem-source": {
-            "standard": "IETF RFC 4632 (BCP 122, public)",
-            "locator": "CIDR prefix notation (§3.1)",
-            "uri": "https://www.rfc-editor.org/rfc/rfc4632.html"
-          },
-          "x-sdem-reasoning": "Answers: Which address ranges does this network cover? IETF best current practice for writing address ranges; checked 2026-10-24.",
-          "x-sdem-confidence": "high"
-        },
         "zone_level": {
           "type": "integer",
           "minimum": 0,
@@ -472,18 +377,18 @@
   },
   "x-sdem-entity": {
     "level": "A4",
-    "extends": "A4.CommunicationNetwork",
+    "extends": null,
     "identifier": [
       "name"
     ],
     "source": {
       "standard": "ArchiMate 3.2",
       "release": "3.2",
-      "concept": "Communication Network",
-      "locator": "chapter 10 (the concept it specialises)",
+      "concept": "Grouping",
+      "locator": "chapter 4 (generic metamodel: Grouping — the concept it specialises)",
       "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/"
     },
-    "reasoning": "SDEM extension: a Communication Network given a place in the deployment structure (the owner's decision, 2026-11-14 (network zones, Z1–Z6); docs/design/sdem-network-zones-design.md). Zones nest by network composition (RA4-27) and hold the shapes deployed in them (RA4-38); the connections between zones follow from the structure.",
+    "reasoning": "SDEM extension: an ArchiMate Grouping given a place in the deployment structure (network zones Z1–Z6; re-aligned from Communication Network to Grouping, the owner's decision (option 1), 2026-11-14 — ArchiMate 3.2 relationship tables as implemented by Archi (relationships.xml, version 3.2, read 2026-11-14)). A Grouping may aggregate every A4 element — Node, Device, System Software, Technology Service and Interface, Artifact, Communication Network — and compose another Grouping; a Communication Network may not aggregate a Node, Technology Service or Artifact, so a zone is not a network. A zone that is also a network is two records: the zone, and the network it holds. Zones nest by composition (RA4-39) and hold the shapes deployed in them (RA4-38); the connections between zones follow from the structure (ZC-01…ZC-05).",
     "confidence": "medium"
   },
   "x-sdem-generated-from": "metamodel/a1…a4-*.json, metamodel/entity-attributes.json (python -m sdem.physical)"

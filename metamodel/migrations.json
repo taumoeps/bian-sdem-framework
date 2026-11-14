@@ -1,5 +1,5 @@
 {
-  "metamodel_version": "0.12.0",
+  "metamodel_version": "0.13.0",
   "note": "How a workspace moves from one metamodel (metamodel) version to the next — `sdem migrate --workspace DIR`. Every change to the metamodel that affects data bumps metamodel_version in every metamodel file and adds one entry here, from the old version to the new: its steps are applied to the workspace's datasets and registry, then the workspace is checked; an entry with no steps only moves the version (an additive change — new optional attributes or types). Step kinds: rename_type {from, to}; rename_attribute {type (optional), from, to}; drop_attribute {type (optional), name}; set_attribute {type, name, value} (only where missing); rename_kind {from, to} (a within-architecture link kind); rename_relationship {from, to} (a link type between architectures, in the registry). Policy: docs/sdem-metamodel-versioning.md.",
   "migrations": [
     {
@@ -87,6 +87,30 @@
       "approved_by": "the SDEM owner",
       "note": "Edge exposure (the owner's decisions X1–X6, 2026-11-14 (docs/design/sdem-edge-exposure-design.md)): a connection between layers, EXPOSED_THROUGH — an A3 application interface reached from the internet through an A4 edge platform (node, device or system software), approved with network_design evidence; `internet_facing` on A3 interfaces (AT-A3-39); LC-22 (an internet-facing interface exposed through nothing). sdem aid proposes EXPOSED_THROUGH (AID-X01) and, at A4, a connection for every shape linked to nothing (AID-C01…C06), marked inferred for a person to decide. Additive — no steps.",
       "steps": []
+    },
+    {
+      "from": "0.12.0",
+      "to": "0.13.0",
+      "date": "2026-11-14",
+      "approved_by": "the SDEM owner",
+      "note": "A network zone is an ArchiMate Grouping, not a Communication Network (the owner's decision, option 1, 2026-11-14): ArchiMate 3.2 lets a Grouping aggregate every A4 element (a Communication Network may not aggregate a Node, Technology Service or Artifact) and compose another Grouping. Zones nest by RA4-39 (they nested as networks, RA4-27). A zone that carried a network's own attributes is split into the zone and its network (<zone id>-NET), with the zone's platforms associated with the network (RA4-37). The 3D view, the checks, the inference and the layout are unchanged.",
+      "steps": [
+        {
+          "step": "zone_network_split",
+          "type": "A4.NetworkZone",
+          "network_type": "A4.CommunicationNetwork",
+          "zone_attributes": [
+            "zone_level",
+            "zone_kind",
+            "inferred"
+          ],
+          "platform_types": [
+            "A4.Node",
+            "A4.Device",
+            "A4.SystemSoftware"
+          ]
+        }
+      ]
     }
   ]
 }

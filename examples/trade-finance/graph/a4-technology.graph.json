@@ -6,11 +6,11 @@
     "directed": true,
     "metadata": {
       "sdem_store_version": "1.0",
-      "export_sha256": "fb65718963a77363cdc570f61f64aba4c4e1e5d789774881bcb7b2aa5c22cbea",
+      "export_sha256": "eef977e58107e08d28599d9444b364ad6bd6579efb5c7cf099e4d208d36ca7a0",
       "level": "A4",
       "model_id": "synthetic-bank-trade-a4",
       "model_version": "2026.10",
-      "metamodel_version": "0.12.0",
+      "metamodel_version": "0.13.0",
       "source_system": "SYNTHETIC-CMDB"
     },
     "nodes": {
@@ -520,7 +520,7 @@
         "relation": "composition",
         "metadata": {
           "scope": "within-level",
-          "row": "RA4-27"
+          "row": "RA4-39"
         }
       },
       {
@@ -530,7 +530,7 @@
         "relation": "composition",
         "metadata": {
           "scope": "within-level",
-          "row": "RA4-27"
+          "row": "RA4-39"
         }
       },
       {
@@ -540,7 +540,7 @@
         "relation": "composition",
         "metadata": {
           "scope": "within-level",
-          "row": "RA4-27"
+          "row": "RA4-39"
         }
       },
       {

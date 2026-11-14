@@ -77,7 +77,7 @@ customer's payment instruction, checking it, executing it and telling the custom
 - Deployments: **Payments Hub — production**, **Payments Hub — UAT** and **Execution Gateway — production**.
 - Traffic stays on the **Payments private network**. The hub ships as the container image **payments-hub:7.1**.
 - Network zones: everything runs in **Cloud — payments**. Inside it, the **Internal network — payments** holds the messaging and
-  secrets services and the Payments private network (both clusters and PostgreSQL); the **Security zone (DMZ) — payments** holds
+  secrets services and the **Payments private network zone** (both clusters and PostgreSQL, which are on the Payments private network); the **Security zone (DMZ) — payments** holds
   the internet-facing **Managed API gateway — payments**. The Execution Gateway posts payments to the **Core banking ledger host**,
   in **On premises — core banking**, inside its **Internal network — on premises (core banking)**.
 """
@@ -122,7 +122,8 @@ REFERENCE = [
     ('A4', 'A4.DeploymentEnvironment', 'UAT', ['uat environment']),
     ('A4', 'A4.Deployment', 'Payments Hub — production', []), ('A4', 'A4.Deployment', 'Payments Hub — UAT', []),
     ('A4', 'A4.Deployment', 'Execution Gateway — production', []),
-    ('A4', 'A4.NetworkZone', 'Payments private network', []), ('A4', 'A4.Artifact', 'payments-hub:7.1', []),
+    ('A4', 'A4.CommunicationNetwork', 'Payments private network', []), ('A4', 'A4.NetworkZone', 'Payments private network zone', ['private network zone']),
+    ('A4', 'A4.Artifact', 'payments-hub:7.1', []),
     ('A4', 'A4.NetworkZone', 'Cloud — payments', ['cloud']), ('A4', 'A4.NetworkZone', 'Internal network — payments', ['internal network']),
     ('A4', 'A4.NetworkZone', 'Security zone (DMZ) — payments', ['dmz', 'security zone']), ('A4', 'A4.SystemSoftware', 'Managed API gateway — payments', ['api gateway']),
     ('A4', 'A4.NetworkZone', 'On premises — core banking', ['on premises']), ('A4', 'A4.NetworkZone', 'Internal network — on premises (core banking)', ['on premises internal network']),

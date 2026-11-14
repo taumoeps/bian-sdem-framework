@@ -355,4 +355,4 @@ class ReferenceStructureTests(unittest.TestCase):
         enforceable = {c['id'] for c in lr['constraints'] if c.get('enforceable') is not False}
         present = {r['name'] for f in self.P.glob('a*.json') for r in json.loads(f.read_text(encoding='utf-8'))['relationships']}
         self.assertEqual(enforceable - present, set())
-        self.assertEqual(len(enforceable), 131)   # RA4-37 (0.9.0), RA4-38 (0.10.0)
+        self.assertEqual(len(enforceable), 132)   # RA4-37 (0.9.0), RA4-38 (0.10.0), RA4-39 (0.13.0)

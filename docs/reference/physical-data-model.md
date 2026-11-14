@@ -74,11 +74,11 @@ Artefact types (BOM model, wireframe, Semantic API) and abstract types are not a
 | `A4.TechnologyService` | [`A4/TechnologyService.schema.json`](../../schema/entities/A4/TechnologyService.schema.json) | 8 | 13 | 4 | 1 | 0 | 10 / 2 / 6 |
 | `A4.TechnologyInterface` | [`A4/TechnologyInterface.schema.json`](../../schema/entities/A4/TechnologyInterface.schema.json) | 8 | 13 | 4 | 4 | 0 | 11 / 4 / 6 |
 | `A4.CommunicationNetwork` | [`A4/CommunicationNetwork.schema.json`](../../schema/entities/A4/CommunicationNetwork.schema.json) | 8 | 13 | 4 | 2 | 0 | 10 / 2 / 7 |
-| `A4.NetworkZone` | [`A4/NetworkZone.schema.json`](../../schema/entities/A4/NetworkZone.schema.json) | 8 | 13 | 6 | 2 | 2 | 10 / 2 / 9 |
+| `A4.NetworkZone` | [`A4/NetworkZone.schema.json`](../../schema/entities/A4/NetworkZone.schema.json) | 8 | 13 | 0 | 2 | 2 | 9 / 2 / 4 |
 | `A4.Path` | [`A4/Path.schema.json`](../../schema/entities/A4/Path.schema.json) | 8 | 13 | 4 | 6 | 0 | 10 / 6 / 7 |
 | `A4.Artifact` | [`A4/Artifact.schema.json`](../../schema/entities/A4/Artifact.schema.json) | 8 | 13 | 4 | 4 | 0 | 11 / 4 / 6 |
 
-Attribute definitions across all schemas: **425 high, 144 medium, 159 low** (the 11 common attributes are counted in every schema).
+Attribute definitions across all schemas: **424 high, 144 medium, 154 low** (the 11 common attributes are counted in every schema).
 
 ## Using a schema
 

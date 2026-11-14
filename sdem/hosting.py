@@ -165,7 +165,7 @@ def propose(doc, mm, run, person, now, rejected=(), stem=None):
     shapes, parent, _ = zones_of(doc, mm)
     local = {i['id']: i for i in doc.get('instances', [])}
     hosted = {r['target'] for r in doc.get('relationships', []) if r['kind'] in ('assignment', 'composition', 'aggregation', 'realization')
-              and r['source'] in local and r['target'] in local and not mm.is_a(local[r['source']]['type'], 'A4.CommunicationNetwork')
+              and r['source'] in local and r['target'] in local and not mm.is_a(local[r['source']]['type'], 'A4.CommunicationNetwork') and not mm.is_a(local[r['source']]['type'], ZONE)
               and local[r['source']]['type'] != 'A4.DeploymentEnvironment'}   # AID-Z04: in its host's zone
     zones = {i['id']: (i.get('attributes') or {}) for i in local.values() if mm.is_a(i['type'], ZONE)}
     stem = re.sub(r'[^A-Z0-9]+', '-', (stem or doc.get('model_id') or 'WS').upper()).strip('-')[:24] or 'WS'

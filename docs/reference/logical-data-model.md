@@ -1328,6 +1328,7 @@ erDiagram
     A4_Device |o--o{ A4_Device : "composition"
     A4_InfrastructureComponent }o--o{ A4_CommunicationNetwork : "association"
     A4_NetworkZone }o--o{ A4_InfrastructureComponent : "aggregation"
+    A4_NetworkZone |o--o{ A4_NetworkZone : "composition"
 ```
 
 ### `A4.InfrastructureComponent`
@@ -1576,9 +1577,9 @@ Communication infrastructure
 
 ### `A4.NetworkZone`
 
-*entity* · a kind of `A4.CommunicationNetwork` and inherits its fields
+*entity*
 
-A network zone a shape is deployed in: on premises or cloud (level 0), the internal network or a DMZ inside one (level 1), or a private network inside that (level 2)
+A network zone a shape is deployed in: on premises or cloud (level 0), the internal network or a DMZ inside one (level 1), or a private network inside that (level 2) — a grouping of the shapes deployed there, not a network itself
 
 **Identified by:** `name` — no standard key; a unique name within the architecture dataset
 
@@ -1594,6 +1595,7 @@ A network zone a shape is deployed in: on premises or cloud (level 0), the inter
 | Link | With | How many |
 |---|---|---|
 | aggregation → | `InfrastructureComponent` | any number |
+| composition (with itself) | `NetworkZone` | any number |
 
 ### `A4.Path`
 
@@ -1703,18 +1705,18 @@ The rules the data must satisfy, and which the checker enforces today.
 
 ## Appendix B. How the example data measures up
 
-The 8 example workspaces (855 instances) (the generated reference-structure workspace excluded) checked by `sdem check` against the enforced rules. No errors; 36 completeness warning(s), where an example architecture datasets part of BIAN's structure (a business domain without its area, a business object without attribute instances, a stub Service Domain without its groups or control record).
+The 8 example workspaces (856 instances) (the generated reference-structure workspace excluded) checked by `sdem check` against the enforced rules. No errors; 36 completeness warning(s), where an example architecture datasets part of BIAN's structure (a business domain without its area, a business object without attribute instances, a stub Service Domain without its groups or control record).
 
 | Rule | Values checked | Failures |
 |---|---|---|
 | LC-04 | 1222 | 0 |
 | LC-05 | 2753 | 0 |
-| LC-06 | 1496 | 0 |
+| LC-06 | 1497 | 0 |
 | LC-07 | 169 | 0 |
 | LC-08 (warning) | 182 | 0 |
-| LC-09 | 799 | 0 |
-| LC-10 | 2366 | 0 |
-| LC-10m (warning) | 2366 | 36 |
+| LC-09 | 800 | 0 |
+| LC-10 | 2368 | 0 |
+| LC-10m (warning) | 2368 | 36 |
 | LC-13 deprecated field in use | — | 0 |
 | fields not in the model | — | 0 |
 
@@ -1728,6 +1730,7 @@ Each entity's, field's and link's source, reasoning and confidence are in [`arch
 | Link counts — ArchiMate composition semantics | 25 | a part belongs to at most one whole (ArchiMate) |
 | Link counts — BIAN | 14 | stated by BIAN |
 | Link counts — SDEM reading | 1 | SDEM's reading of a BIAN page |
+| Link counts — SDEM | 1 | a part belongs to at most one whole (ArchiMate) |
 | Identifiers — SDEM | 35 | SDEM recommendation: a unique name |
 | Identifiers — BIAN | 5 | BIAN concept ids and operation naming |
 | Identifiers — OpenAPI | 1 | path and method unique per API |

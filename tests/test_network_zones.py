@@ -23,11 +23,14 @@ def found(doc, *ids):
 
 
 class ModelTests(unittest.TestCase):
-    def test_a_zone_is_a_network_with_a_level_and_a_kind(self):
+    def test_a_zone_is_a_grouping_with_a_level_and_a_kind(self):   # option 1, 2026-11-14: an ArchiMate Grouping, not a network (metamodel 0.13.0)
         mm = Metamodel.load()
-        self.assertTrue(mm.is_a('A4.NetworkZone', 'A4.CommunicationNetwork'))
+        self.assertFalse(mm.is_a('A4.NetworkZone', 'A4.CommunicationNetwork'))
+        zone = next(e for e in json.loads((ROOT / 'metamodel' / 'a4-technology.json').read_text(encoding='utf-8'))['entities'] if e['type'] == 'A4.NetworkZone')
+        self.assertEqual(zone['reference']['concept'], 'Grouping')
         rows = {c['id']: c for c in json.loads((ROOT / 'metamodel' / 'level-relationships.json').read_text(encoding='utf-8'))['constraints']}
         self.assertEqual((rows['RA4-38']['source_type'], rows['RA4-38']['kind']), ('A4.NetworkZone', 'aggregation'))
+        self.assertEqual((rows['RA4-39']['source_type'], rows['RA4-39']['kind'], rows['RA4-39']['target_type']), ('A4.NetworkZone', 'composition', 'A4.NetworkZone'))
         at = {a['id']: a for a in json.loads((ROOT / 'metamodel' / 'entity-attributes.json').read_text(encoding='utf-8'))['attributes']}
         self.assertEqual(at['AT-A4-35']['values'], ['on_premises', 'cloud', 'internal', 'dmz', 'private'])
         self.assertEqual(at['AT-A3-07']['status'], 'deprecated')   # a component's zone is its platform's (Z3)
@@ -37,10 +40,10 @@ class PlacementTests(unittest.TestCase):   # LC-16
     def test_the_payment_example_places_every_shape(self):
         shapes, parent, _ = zones_of(a4(), Metamodel.load())
         self.assertEqual({x for x, z in shapes.items() if not z}, set())
-        self.assertEqual(shapes['DEP-PAYHUB-PROD'], ['NET-PAY-PRIVATE'])   # through the cluster it runs on
+        self.assertEqual(shapes['DEP-PAYHUB-PROD'], ['ZONE-PAY-PRIVATE'])   # through the cluster it runs on
         self.assertEqual(shapes['TS-MQ'], ['ZONE-PAY-INTERNAL'])
         self.assertNotIn('ENV-PAY-PROD', shapes)                            # environments are not placed (Z2)
-        self.assertEqual(parent, {'ZONE-PAY-INTERNAL': 'ZONE-PAY-CLOUD', 'ZONE-PAY-DMZ': 'ZONE-PAY-CLOUD', 'NET-PAY-PRIVATE': 'ZONE-PAY-INTERNAL',
+        self.assertEqual(parent, {'ZONE-PAY-INTERNAL': 'ZONE-PAY-CLOUD', 'ZONE-PAY-DMZ': 'ZONE-PAY-CLOUD', 'ZONE-PAY-PRIVATE': 'ZONE-PAY-INTERNAL',
                                   'ZONE-PAY-ONPREM-INTERNAL': 'ZONE-PAY-ONPREM'})   # hybrid since 0.11.0
         self.assertEqual(found(a4(), 15, 16, 17, 18), [])
 
@@ -80,7 +83,7 @@ class DmzTests(unittest.TestCase):   # LC-18
         d = a4(); next(i for i in d['instances'] if i['id'] == 'INF-APIGW-PAY')['attributes']['internet_facing'] = False
         self.assertEqual(found(d, 18), ['instance INF-APIGW-PAY: is in DMZ ZONE-PAY-DMZ but not internet facing — a DMZ holds only internet-facing shapes (LC-18)'])
         d = a4(); next(i for i in d['instances'] if i['id'] == 'INF-PG-PAY-PROD')['attributes']['internet_facing'] = True
-        self.assertEqual(found(d, 18), ['instance INF-PG-PAY-PROD: is internet facing but in NET-PAY-PRIVATE, not a DMZ (LC-18)'])
+        self.assertEqual(found(d, 18), ['instance INF-PG-PAY-PROD: is internet facing but in ZONE-PAY-PRIVATE, not a DMZ (LC-18)'])
 
 
 class ImpactTests(unittest.TestCase):   # KG-Q-08 with zones
@@ -89,8 +92,8 @@ class ImpactTests(unittest.TestCase):   # KG-Q-08 with zones
         r = subprocess.run([sys.executable, '-m', 'sdem', 'impact', 'ZONE-PAY-CLOUD', '--change', 'retire', *FILES, '--json'], cwd=PAY, capture_output=True, text=True, env=env)
         self.assertEqual(r.returncode, 0, r.stderr)
         got = {x['id']: x for x in json.loads(r.stdout)['instances']}
-        for rid in ('ZONE-PAY-INTERNAL', 'ZONE-PAY-DMZ', 'NET-PAY-PRIVATE', 'INF-K8S-PAY-PROD', 'TS-MQ', 'INF-APIGW-PAY', 'APP-PAY-HUB', 'CAP-PAY-010'): self.assertIn(rid, got)
-        self.assertEqual(got['ZONE-PAY-INTERNAL']['via'], ['RA4-27'])
+        for rid in ('ZONE-PAY-INTERNAL', 'ZONE-PAY-DMZ', 'ZONE-PAY-PRIVATE', 'INF-K8S-PAY-PROD', 'TS-MQ', 'INF-APIGW-PAY', 'APP-PAY-HUB', 'CAP-PAY-010'): self.assertIn(rid, got)
+        self.assertEqual(got['ZONE-PAY-INTERNAL']['via'], ['RA4-39'])
 
 
 class UnconnectedTests(unittest.TestCase):   # LC-21
@@ -112,6 +115,30 @@ def sdem_in(cwd, *args):
     r = subprocess.run([sys.executable, '-m', 'sdem', *map(str, args)], cwd=cwd, capture_output=True, text=True, env=env)
     return r.returncode, r.stdout, r.stderr
 
+
+
+class GroupingMigrationTests(unittest.TestCase):   # 0.12.0 → 0.13.0: a zone that was also a network becomes the zone and its network
+    def test_a_zone_carrying_a_network_is_split(self):
+        from sdem.migrate import _apply_dataset
+        from collections import Counter
+        doc = {'instances': [
+            {'id': 'Z-PRIV', 'type': 'A4.NetworkZone', 'version': '1', 'name': 'Private', 'lifecycle_status': 'active', 'attributes': {'zone_level': 2, 'zone_kind': 'private', 'address_range': ['10.0.0.0/16']}},
+            {'id': 'Z-INT', 'type': 'A4.NetworkZone', 'version': '1', 'name': 'Internal', 'lifecycle_status': 'active', 'attributes': {'zone_level': 1, 'zone_kind': 'internal'}},
+            {'id': 'N1', 'type': 'A4.Node', 'version': '1', 'name': 'Server', 'lifecycle_status': 'active'},
+            {'id': 'N2', 'type': 'A4.Node', 'version': '1', 'name': 'Other', 'lifecycle_status': 'active'}],
+            'relationships': [{'source': 'Z-INT', 'kind': 'composition', 'target': 'Z-PRIV'}, {'source': 'Z-PRIV', 'kind': 'aggregation', 'target': 'N1'},
+                              {'source': 'N2', 'kind': 'association', 'target': 'Z-PRIV'}]}
+        step = next(m for m in json.loads((ROOT / 'metamodel' / 'migrations.json').read_text(encoding='utf-8'))['migrations'] if m['to'] == '0.13.0')['steps']
+        counts = Counter(); _apply_dataset(doc, step, counts)
+        by = {i['id']: i for i in doc['instances']}
+        self.assertEqual(counts['zone_network_split'], 1)
+        self.assertEqual(by['Z-PRIV']['attributes'], {'zone_level': 2, 'zone_kind': 'private'})
+        self.assertEqual((by['Z-PRIV-NET']['type'], by['Z-PRIV-NET']['attributes']), ('A4.CommunicationNetwork', {'address_range': ['10.0.0.0/16']}))
+        rels = {(r['source'], r['kind'], r['target']) for r in doc['relationships']}
+        self.assertIn(('N1', 'association', 'Z-PRIV-NET'), rels)      # a platform the zone holds is on its network (RA4-37)
+        self.assertIn(('N2', 'association', 'Z-PRIV-NET'), rels)      # an association with the zone was one with its network
+        self.assertIn(('Z-PRIV', 'aggregation', 'N1'), rels); self.assertIn(('Z-INT', 'composition', 'Z-PRIV'), rels)   # placement and nesting kept
+        self.assertEqual(counts['zone_network_split'], 1); _apply_dataset(doc, step, counts); self.assertEqual(counts['zone_network_split'], 1)   # run twice: nothing more
 
 if __name__ == '__main__':
     unittest.main()

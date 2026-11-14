@@ -230,7 +230,7 @@ class Evaluation(Design):
         self.assertEqual(parts()['container-platform'][0], 'compliant')                 # both clusters sit in the payments private network
         d = _j(self.ws / 'a4-technology.json')
         for r in d['relationships']:
-            if r['kind'] == 'aggregation' and r['target'] == 'INF-K8S-PAY-UAT' and r['source'] == 'NET-PAY-PRIVATE': r['source'] = 'ZONE-PAY-INTERNAL'
+            if r['kind'] == 'aggregation' and r['target'] == 'INF-K8S-PAY-UAT' and r['source'] == 'ZONE-PAY-PRIVATE': r['source'] = 'ZONE-PAY-INTERNAL'
         _w(self.ws / 'a4-technology.json', d)
         out = parts()['container-platform']
         self.assertEqual(out[0], 'non_compliant'); self.assertIn('INF-K8S-PAY-UAT: is in ZONE-PAY-INTERNAL (internal) — must be in a private zone', out[1])

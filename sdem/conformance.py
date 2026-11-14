@@ -241,13 +241,13 @@ def check_level(doc, mm, estate_index=None):
 
 PLATFORM, NETWORK, ZONE = 'A4.InfrastructureComponent', 'A4.CommunicationNetwork', 'A4.NetworkZone'
 ZONE_KINDS = {0: ('on_premises', 'cloud'), 1: ('internal', 'dmz'), 2: ('private',)}
-UNPLACED = ('A4.CommunicationNetwork', 'A4.DeploymentEnvironment', 'A4.Path')   # networks and zones, environments (they group deployments: Z2) and paths are not placed
+UNPLACED = ('A4.CommunicationNetwork', 'A4.NetworkZone', 'A4.DeploymentEnvironment', 'A4.Path')   # networks, zones, environments (they group deployments: Z2) and paths are not placed
 
 
 def zones_of(doc, mm, local=None):
     """Network zones (metamodel 0.10.0; docs/design/sdem-network-zones-design.md): {shape: [innermost zones it is in]} — directly (RA4-38: the
     zone holds it) or through what hosts it (a deployment or artifact assigned to a platform, software on a node, a service a platform
-    realises, a part of a whole) — and {zone: parent zone} (RA4-27: the parent is composed of it)."""
+    realises, a part of a whole) — and {zone: parent zone} (RA4-39: the parent is composed of it)."""
     local = local or {i['id']: i['type'] for i in doc.get('instances', [])}
     direct, parent, hosts = {}, {}, {}
     for r in doc.get('relationships', []):
@@ -257,7 +257,7 @@ def zones_of(doc, mm, local=None):
             if k == 'aggregation' and not mm.is_a(local[b], NETWORK): direct.setdefault(b, []).append(a)
             elif k == 'composition' and mm.is_a(local[b], ZONE): parent[b] = a
             continue
-        if mm.is_a(local[a], NETWORK) or mm.is_a(local[b], NETWORK) or mm.is_a(local[a], 'A4.DeploymentEnvironment'): continue
+        if mm.is_a(local[a], NETWORK) or mm.is_a(local[b], NETWORK) or mm.is_a(local[b], ZONE) or mm.is_a(local[a], 'A4.DeploymentEnvironment'): continue
         if k in ('assignment', 'composition', 'aggregation', 'realization'): hosts.setdefault(b, []).append(a)   # b runs on, or is part of, a
     def find(x, seen):
         if direct.get(x): return direct[x]
@@ -286,7 +286,7 @@ def zone_checks(doc, mm, local, byid, errors, warnings, n):
         p = parent.get(z)
         if at.get('zone_level') == 0 and p: bad.append(f'a level-0 zone is inside no other zone, but {p} is composed of it')
         if at.get('zone_level') in (1, 2) and (not p or p not in zones or lvl(p) != at['zone_level'] - 1):
-            bad.append(f"a level-{at['zone_level']} zone is part of a level-{at['zone_level'] - 1} zone (composition, RA4-27){f' — {p} is level {lvl(p)}' if p in zones else ''}")
+            bad.append(f"a level-{at['zone_level']} zone is part of a level-{at['zone_level'] - 1} zone (composition, RA4-39){f' — {p} is level {lvl(p)}' if p in zones else ''}")
         for b in bad: n['LC-17 failed'] += 1; errors.append(f"instance {z}: {b} (LC-17)")
     tops = [z for z in zones if lvl(z) == 0]
     for kind in ('on_premises', 'cloud'):
@@ -352,7 +352,7 @@ def networks_of(doc, mm, local=None):
                 if mm.is_a(local[p], PLATFORM) and mm.is_a(local[x], NETWORK) and not mm.is_a(local[p], NETWORK): own.setdefault(p, []).append(x)
         elif k == 'aggregation' and mm.is_a(local[a], ZONE):   # RA4-38: the zone holds it — it is on that zone (0.10.0)
             if not mm.is_a(local[b], NETWORK): own.setdefault(b, []).append(a)
-        elif mm.is_a(local[a], NETWORK) or mm.is_a(local[b], NETWORK): continue   # network nesting (RA4-27) is not hosting
+        elif mm.is_a(local[a], NETWORK) or mm.is_a(local[b], NETWORK) or mm.is_a(local[a], ZONE) or mm.is_a(local[b], ZONE): continue   # network nesting (RA4-27), zone nesting (RA4-39): not hosting
         elif k in ('assignment', 'composition', 'aggregation') and mm.is_a(local[a], PLATFORM) and mm.is_a(local[b], PLATFORM):
             hosts.setdefault(b, []).append(a)   # b runs on (or is part of) a
     def find(p, seen):

@@ -26,7 +26,7 @@ def required_values(mm, etype, short, n=1):
             v = f"RS-{short(t)}-{n}"  # instance n refers to the nth target, so natural keys built from references stay distinct
         else: v = PLACEHOLDER.get(a['type'], 'structure')
         out[k] = [v] if a['type'] == 'list<string>' and not isinstance(v, list) else v
-    if etype == 'A4.NetworkZone': out.update(zone_level=0, zone_kind=('on_premises', 'cloud')[n - 1])   # a valid pair of level-0 zones (LC-17)
+    if etype == 'A4.NetworkZone': out.update(zone_level=n - 1, zone_kind=('cloud', 'internal')[n - 1])   # a cloud zone made of an internal zone (RA4-39, LC-17)
     return out
 
 

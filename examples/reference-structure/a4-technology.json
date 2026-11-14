@@ -2,7 +2,7 @@
   "level": "A4",
   "model_id": "reference-structure-a4",
   "model_version": "2026.10",
-  "metamodel_version": "0.12.0",
+  "metamodel_version": "0.13.0",
   "source_system": "SDEM-GENERATED-FROM-RECORD",
   "instances": [
     {
@@ -152,7 +152,7 @@
       "description": "Synthetic instance of A4.NetworkZone carrying one relationship per constraint row of A4; no business meaning.",
       "attributes": {
         "zone_level": 0,
-        "zone_kind": "on_premises"
+        "zone_kind": "cloud"
       }
     },
     {
@@ -163,8 +163,8 @@
       "lifecycle_status": "active",
       "description": "Synthetic instance of A4.NetworkZone carrying one relationship per constraint row of A4; no business meaning.",
       "attributes": {
-        "zone_level": 0,
-        "zone_kind": "cloud"
+        "zone_level": 1,
+        "zone_kind": "internal"
       }
     },
     {
@@ -428,6 +428,12 @@
       "kind": "aggregation",
       "target": "RS-Artifact-1",
       "name": "RA4-38"
+    },
+    {
+      "source": "RS-NetworkZone-1",
+      "kind": "composition",
+      "target": "RS-NetworkZone-2",
+      "name": "RA4-39"
     },
     {
       "source": "RS-Deployment-2",

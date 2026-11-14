@@ -388,7 +388,7 @@ class MetamodelTests(unittest.TestCase):
 
     def test_every_concrete_a4_entity_extends_the_supertype(self):
         for t, e in self.mm.entities.items():
-            if e['level'] == 'A4' and not e['abstract']:
+            if e['level'] == 'A4' and not e['abstract'] and t != 'A4.NetworkZone':   # a zone is an ArchiMate Grouping, not a shape (0.13.0)
                 self.assertTrue(self.mm.is_a(t, 'A4.InfrastructureComponent'), t)
 
     def test_registry_endpoints_exist_and_taxonomies_agree(self):

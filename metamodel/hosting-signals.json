@@ -1,5 +1,5 @@
 {
-  "metamodel_version": "0.12.0",
+  "metamodel_version": "0.13.0",
   "note": "Evidence for where an A4 shape is hosted (docs/design/sdem-hosting-inference-design.md §3; the owner's decision H4, 2026-11-14). Read by sdem aid to PROPOSE a shape's zone (AID-Z01) — a person confirms or rejects every proposal (CTL-16, CTL-21) — and by sdem check for a shape placed against strong evidence (LC-20). An organisation's profile adds its own signals (PR-32). Product and provider names are read only to recognise what a record names; SDEM claims no affiliation with them.",
   "signals": [
     {"id": "HS-01", "points_to": "on_premises", "confidence": "high", "read": {"attribute": ["site"]},

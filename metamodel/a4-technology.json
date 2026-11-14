@@ -1,5 +1,5 @@
 {
-  "metamodel_version": "0.12.0",
+  "metamodel_version": "0.13.0",
   "level": "A4",
   "entities": [
     {
@@ -258,20 +258,20 @@
       "type": "A4.NetworkZone",
       "level": "A4",
       "abstract": false,
-      "extends": "A4.CommunicationNetwork",
+      "extends": null,
       "artefact": false,
-      "definition": "A network zone a shape is deployed in: on premises or cloud (level 0), the internal network or a DMZ inside one (level 1), or a private network inside that (level 2)",
+      "definition": "A network zone a shape is deployed in: on premises or cloud (level 0), the internal network or a DMZ inside one (level 1), or a private network inside that (level 2) — a grouping of the shapes deployed there, not a network itself",
       "definition_source": "sdem_extension",
       "alignment_kind": "specialization",
       "reference": {
         "standard": "ArchiMate 3.2",
         "release": "3.2",
-        "concept": "Communication Network",
+        "concept": "Grouping",
         "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
-        "locator": "chapter 10 (the concept it specialises)"
+        "locator": "chapter 4 (generic metamodel: Grouping — the concept it specialises)"
       },
       "evidence_status": "proposed_extension",
-      "reasoning": "SDEM extension: a Communication Network given a place in the deployment structure (the owner's decision, 2026-11-14 (network zones, Z1–Z6); docs/design/sdem-network-zones-design.md). Zones nest by network composition (RA4-27) and hold the shapes deployed in them (RA4-38); the connections between zones follow from the structure.",
+      "reasoning": "SDEM extension: an ArchiMate Grouping given a place in the deployment structure (network zones Z1–Z6; re-aligned from Communication Network to Grouping, the owner's decision (option 1), 2026-11-14 — ArchiMate 3.2 relationship tables as implemented by Archi (relationships.xml, version 3.2, read 2026-11-14)). A Grouping may aggregate every A4 element — Node, Device, System Software, Technology Service and Interface, Artifact, Communication Network — and compose another Grouping; a Communication Network may not aggregate a Node, Technology Service or Artifact, so a zone is not a network. A zone that is also a network is two records: the zone, and the network it holds. Zones nest by composition (RA4-39) and hold the shapes deployed in them (RA4-38); the connections between zones follow from the structure (ZC-01…ZC-05).",
       "confidence": "medium",
       "confidence_basis": "built on a standard concept as SDEM chose to model it",
       "identifier": {

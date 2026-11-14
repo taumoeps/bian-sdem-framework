@@ -200,7 +200,7 @@ Document pins: `registry_version` — yes; `metamodel_version` — yes; `profile
 | `A4.TechnologyService` | extends `A4.InfrastructureComponent` | Technical behaviour delivered to consumers | `archimate_native` | `exact` | `interpreted_from_official_source` | high | ✓ |
 | `A4.TechnologyInterface` | extends `A4.InfrastructureComponent` | An access point for a technology service | `archimate_native` | `exact` | `interpreted_from_official_source` | high | ✓ |
 | `A4.CommunicationNetwork` | extends `A4.InfrastructureComponent` | Communication infrastructure | `archimate_native` | `exact` | `interpreted_from_official_source` | high | ✓ |
-| `A4.NetworkZone` | extends `A4.CommunicationNetwork` | A network zone a shape is deployed in: on premises or cloud (level 0), the internal network or a DMZ inside one (level 1), or a private network inside that (level 2) | `sdem_extension` | `specialization` | `proposed_extension` | medium | **not in high-level §5** |
+| `A4.NetworkZone` | concrete | A network zone a shape is deployed in: on premises or cloud (level 0), the internal network or a DMZ inside one (level 1), or a private network inside that (level 2) — a grouping of the shapes deployed there, not a network itself | `sdem_extension` | `specialization` | `proposed_extension` | medium | **not in high-level §5** |
 | `A4.Path` | extends `A4.InfrastructureComponent` | A route between nodes | `archimate_native` | `exact` | `interpreted_from_official_source` | high | ✓ |
 | `A4.Artifact` | extends `A4.InfrastructureComponent` | A deployable technology-level artefact | `archimate_native` | `exact` | `interpreted_from_official_source` | high | ✓ |
 
@@ -212,7 +212,7 @@ Catalogue check: 41 entity rows read from high-level §5; 1 differs (A4.Deployme
 
 **Gap G-01** (contradiction; decided 2026-10-25 (owner): recorded in the detail spec; the high-level spec is not changed — detail §6.1 supersedes high-level §6.1) — **this section supersedes high-level §6.1.** Within-level relationships are in scope: each architecture's allowed links come from its own reference architecture and are enforced by `sdem check` (LC-03).
 
-134 rows + 13 inheritance rows (A1 48, A2 17, A3 31, A4 38); 131 enforced (A2 artefact rows are documentation only). Verification: sdem_definition 1, sdem_reading 1, unverified_togaf 2, verified 16, verified_against_archi 114. Every row carries cardinality, source reference, reasoning and confidence. Detail: [`relationships-planning.md`](../reference/relationships-planning.md).
+135 rows + 12 inheritance rows (A1 48, A2 17, A3 31, A4 39); 132 enforced (A2 artefact rows are documentation only). Verification: sdem_definition_grounded 2, sdem_reading 1, unverified_togaf 2, verified 16, verified_against_archi 114. Every row carries cardinality, source reference, reasoning and confidence. Detail: [`relationships-planning.md`](../reference/relationships-planning.md).
 
 #### 6.1a Within-level relationship row — the allowed link
 
@@ -220,22 +220,22 @@ One row per (source type, kind, target type) an architecture allows. **Gap G-01*
 
 | Field | Required | In records | Values | Meaning |
 |---|---|---|---|---|
-| `id` | yes | 134 of 134 | text | permanent row ID (RA<level>-nn) |
-| `level` | yes | 134 of 134 | `A1`, `A2`, `A3`, `A4` | the architecture the row belongs to |
-| `source_type` | yes | 134 of 134 | text | entity type the link starts from (subtypes included, is-a) |
-| `kind` | yes | 134 of 134 | `access`, `aggregation`, `assignment`, `association`, `composition`, `flow`, `realization`, `serving`, `specialization`, `triggering` | relationship kind (ArchiMate / BIAN vocabulary) |
-| `target_type` | yes | 134 of 134 | text | entity type the link points to (subtypes included) |
-| `cardinality` | yes | 134 of 134 | object | {source_per_target, target_per_source, basis, reasoning} — e.g. 1..1 / 0..*; checked by LC-10 (maximum, error) and LC-10m (minimum, warning) where the basis is BIAN or ArchiMate |
-| `basis` | yes | 134 of 134 | text | the reference architecture the row comes from |
-| `official_id` | no | 17 of 134 | text | the BIAN structural row (B-row) it encodes, if any |
-| `description` | yes | 134 of 134 | text | what the link means |
-| `reference_source` | yes | 134 of 134 | text | source reference (standard, section) |
-| `verification` | yes | 134 of 134 | `sdem_definition`, `sdem_reading`, `unverified_togaf`, `verified`, `verified_against_archi` | how it was checked |
-| `enforceable` | no | 3 of 134 | `False` | `false` only for documentation rows (A2 artefacts); otherwise enforced by `sdem check` (LC-03) |
-| `inference` | no | 117 of 134 | object | how the row was first inferred, before checking {pattern, reasoning, confidence} |
-| `reasoning` | yes | 134 of 134 | text | why the link is allowed |
-| `confidence` | yes | 134 of 134 | `high`, `low`, `medium` | high / medium / low (single rule) |
-| `confidence_basis` | yes | 134 of 134 | text | which clause of the rule applied |
+| `id` | yes | 135 of 135 | text | permanent row ID (RA<level>-nn) |
+| `level` | yes | 135 of 135 | `A1`, `A2`, `A3`, `A4` | the architecture the row belongs to |
+| `source_type` | yes | 135 of 135 | text | entity type the link starts from (subtypes included, is-a) |
+| `kind` | yes | 135 of 135 | `access`, `aggregation`, `assignment`, `association`, `composition`, `flow`, `realization`, `serving`, `specialization`, `triggering` | relationship kind (ArchiMate / BIAN vocabulary) |
+| `target_type` | yes | 135 of 135 | text | entity type the link points to (subtypes included) |
+| `cardinality` | yes | 135 of 135 | object | {source_per_target, target_per_source, basis, reasoning} — e.g. 1..1 / 0..*; checked by LC-10 (maximum, error) and LC-10m (minimum, warning) where the basis is BIAN or ArchiMate |
+| `basis` | yes | 135 of 135 | text | the reference architecture the row comes from |
+| `official_id` | no | 17 of 135 | text | the BIAN structural row (B-row) it encodes, if any |
+| `description` | yes | 135 of 135 | text | what the link means |
+| `reference_source` | yes | 135 of 135 | text | source reference (standard, section) |
+| `verification` | yes | 135 of 135 | `sdem_definition_grounded`, `sdem_reading`, `unverified_togaf`, `verified`, `verified_against_archi` | how it was checked |
+| `enforceable` | no | 3 of 135 | `False` | `false` only for documentation rows (A2 artefacts); otherwise enforced by `sdem check` (LC-03) |
+| `inference` | no | 118 of 135 | object | how the row was first inferred, before checking {pattern, reasoning, confidence} |
+| `reasoning` | yes | 135 of 135 | text | why the link is allowed |
+| `confidence` | yes | 135 of 135 | `high`, `low`, `medium` | high / medium / low (single rule) |
+| `confidence_basis` | yes | 135 of 135 | text | which clause of the rule applied |
 
 #### 6.1b Inheritance row
 
@@ -243,15 +243,15 @@ One row per is-a link between entity types (the `extends` of §3), so a link all
 
 | Field | Required | In records | Values | Meaning |
 |---|---|---|---|---|
-| `id` | yes | 13 of 13 | text | permanent row ID (XA<level>-nn) |
-| `level` | yes | 13 of 13 | `A1`, `A4` | architecture |
-| `entity` | yes | 13 of 13 | text | the specialised entity type |
-| `extends` | yes | 13 of 13 | `A1.BusinessProcess`, `A1.ValueStream`, `A4.CommunicationNetwork`, `A4.InfrastructureComponent` | its parent type |
-| `description` | yes | 13 of 13 | text | the is-a statement |
-| `reference_source` | yes | 13 of 13 | text | source reference |
-| `verification` | yes | 13 of 13 | `sdem_definition` | how it was checked |
-| `reasoning` | yes | 13 of 13 | text | why the type specialises the parent |
-| `confidence` | yes | 13 of 13 | `high` | high / medium / low |
+| `id` | yes | 12 of 12 | `XA1-01`, `XA1-02`, `XA4-01`, `XA4-02`, `XA4-03`, `XA4-04`, `XA4-05`, `XA4-06`, `XA4-07`, `XA4-08`, `XA4-09`, `XA4-10` | permanent row ID (XA<level>-nn) |
+| `level` | yes | 12 of 12 | `A1`, `A4` | architecture |
+| `entity` | yes | 12 of 12 | `A1.BusinessActivity`, `A1.ValueStreamStage`, `A4.Artifact`, `A4.CommunicationNetwork`, `A4.Deployment`, `A4.DeploymentEnvironment`, `A4.Device`, `A4.Node`, `A4.Path`, `A4.SystemSoftware`, `A4.TechnologyInterface`, `A4.TechnologyService` | the specialised entity type |
+| `extends` | yes | 12 of 12 | `A1.BusinessProcess`, `A1.ValueStream`, `A4.InfrastructureComponent` | its parent type |
+| `description` | yes | 12 of 12 | text | the is-a statement |
+| `reference_source` | yes | 12 of 12 | text | source reference |
+| `verification` | yes | 12 of 12 | `sdem_definition` | how it was checked |
+| `reasoning` | yes | 12 of 12 | text | why the type specialises the parent |
+| `confidence` | yes | 12 of 12 | `high` | high / medium / low |
 
 #### 6.1c Within-level relationship — an actual link
 
@@ -457,7 +457,7 @@ Every field of a plan row in `metamodel/relationship-rules.json`.
 
 **Gap G-13** (addition; decided 2026-10-25 (owner): recorded in the detail spec; the high-level spec is not changed).
 
-Every entity, within-level row, relationship type and attribute names its source and carries reasoning and a confidence from one rule (`sdem/confidence.py`; CI fails on disagreement). Across these records: 245 high, 79 medium, 33 low.
+Every entity, within-level row, relationship type and attribute names its source and carries reasoning and a confidence from one rule (`sdem/confidence.py`; CI fails on disagreement). Across these records: 245 high, 78 medium, 35 low.
 
 ## 18. Inference engine
 

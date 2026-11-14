@@ -48,7 +48,7 @@ package "A3 Application  —  detail §5.3, within-level rows: 31 (§6.1, G-01 (
   rectangle "A3.Event\narchimate_aligned / related\nevidence: interpreted from official source" as a3_event #E8F5E9
   rectangle "A3.SolutionBuildingBlock\ntogaf_informed / conceptual\nevidence: interpreted from official source" as a3_solutionbuildingblock #FFE0B2
 }
-package "A4 Technology  [high-level: Infrastructure — G-04 (decided)]  —  detail §5.4, within-level rows: 38 (§6.1, G-01 (decided))" as PA4 {
+package "A4 Technology  [high-level: Infrastructure — G-04 (decided)]  —  detail §5.4, within-level rows: 39 (§6.1, G-01 (decided))" as PA4 {
   rectangle "A4.InfrastructureComponent\n«abstract»\nsdem_extension / none\nevidence: proposed extension" as a4_infrastructurecomponent #EEEEEE
   rectangle "A4.Deployment\nsdem_extension / related\nevidence: proposed extension" as a4_deployment #EEEEEE
   rectangle "A4.DeploymentEnvironment\nsdem_extension / related\nevidence: proposed extension" as a4_deploymentenvironment #EEEEEE
@@ -73,7 +73,6 @@ a4_systemsoftware -[#9E9E9E,dashed]-|> a4_infrastructurecomponent
 a4_technologyservice -[#9E9E9E,dashed]-|> a4_infrastructurecomponent
 a4_technologyinterface -[#9E9E9E,dashed]-|> a4_infrastructurecomponent
 a4_communicationnetwork -[#9E9E9E,dashed]-|> a4_infrastructurecomponent
-a4_networkzone -[#9E9E9E,dashed]-|> a4_communicationnetwork
 a4_path -[#9E9E9E,dashed]-|> a4_infrastructurecomponent
 a4_artifact -[#9E9E9E,dashed]-|> a4_infrastructurecomponent
 

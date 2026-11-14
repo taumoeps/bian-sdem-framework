@@ -134,11 +134,11 @@ class ConnectionTests(Base):   # ZC-01…ZC-04
         c = {(a, b): r for a, b, r in zone_connections(a4(PAY), self.mm)}
         self.assertEqual(c[('ZONE-PAY-CLOUD', 'ZONE-PAY-ONPREM')], 'ZC-01')
         self.assertEqual(c[('ZONE-PAY-DMZ', 'ZONE-PAY-INTERNAL')], 'ZC-02')
-        self.assertEqual(c[('ZONE-PAY-INTERNAL', 'NET-PAY-PRIVATE')], 'ZC-03')
+        self.assertEqual(c[('ZONE-PAY-INTERNAL', 'ZONE-PAY-PRIVATE')], 'ZC-03')
         self.assertEqual(path(a4(PAY), self.mm, 'INF-APIGW-PAY', 'INF-CORE-LEDGER-HOST'),
                          ['INF-APIGW-PAY', 'ZONE-PAY-DMZ', 'ZONE-PAY-CLOUD', 'ZONE-PAY-ONPREM', 'ZONE-PAY-ONPREM-INTERNAL', 'INF-CORE-LEDGER-HOST'])
         code, out, _ = sdem('zones', 'path', 'INF-APIGW-PAY', 'INF-PG-PAY-PROD', '--workspace', PAY, cwd=self.tmp)
-        self.assertEqual((code, out.strip()), (0, 'INF-APIGW-PAY → ZONE-PAY-DMZ → ZONE-PAY-INTERNAL → NET-PAY-PRIVATE → INF-PG-PAY-PROD'))
+        self.assertEqual((code, out.strip()), (0, 'INF-APIGW-PAY → ZONE-PAY-DMZ → ZONE-PAY-INTERNAL → ZONE-PAY-PRIVATE → INF-PG-PAY-PROD'))
 
     def test_a_shape_placed_against_strong_evidence_is_named(self):   # LC-20
         d = a4(PAY); next(i for i in d['instances'] if i['id'] == 'INF-PG-PAY-PROD')['attributes']['site'] = 'DC-1'

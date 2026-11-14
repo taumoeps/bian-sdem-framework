@@ -9,7 +9,7 @@ skinparam package {
   BorderColor #9E9E9E
 }
 skinparam ArrowFontSize 9
-title SDEM architecture model — Architecture Metamodel (entity types, within-level rows) and Architecture Relationship Rules Model (cross-level rules), by ID; the Architecture Relationship Registry is not drawn: 134 within-level rows (thin grey, RA…) and 50 cross-level rules (plan rows S…, coloured by decision)
+title SDEM architecture model — Architecture Metamodel (entity types, within-level rows) and Architecture Relationship Rules Model (cross-level rules), by ID; the Architecture Relationship Registry is not drawn: 135 within-level rows (thin grey, RA…) and 50 cross-level rules (plan rows S…, coloured by decision)
 
 package "A1 Business Architecture" as A1 {
   rectangle "A1.BusinessCapability" as a1_businesscapability
@@ -165,7 +165,7 @@ package "A4 Technology Architecture" as A4 {
   rectangle "A4.NetworkZone" as a4_networkzone #EEEEEE
   rectangle "A4.Path" as a4_path
   rectangle "A4.Artifact" as a4_artifact
-  ' within A4 — constraint rows (38)
+  ' within A4 — constraint rows (39)
   a4_node -[#B0BEC5]-> a4_node : <size:8>RA4-01 composition</size>
   a4_node -[#B0BEC5]-> a4_node : <size:8>RA4-02 aggregation</size>
   a4_node -[#B0BEC5]-> a4_device : <size:8>RA4-03 aggregation</size>
@@ -204,6 +204,7 @@ package "A4 Technology Architecture" as A4 {
   a4_device -[#B0BEC5]-> a4_device : <size:8>RA4-36 composition</size>
   a4_infrastructurecomponent -[#B0BEC5]-> a4_communicationnetwork : <size:8>RA4-37 association</size>
   a4_networkzone -[#B0BEC5]-> a4_infrastructurecomponent : <size:8>RA4-38 aggregation</size>
+  a4_networkzone -[#B0BEC5]-> a4_networkzone : <size:8>RA4-39 composition</size>
 }
 
 ' --- cross-level: catalogue rule (SDEM relationship type) (9)

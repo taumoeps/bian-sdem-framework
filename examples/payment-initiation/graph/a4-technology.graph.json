@@ -6,11 +6,11 @@
     "directed": true,
     "metadata": {
       "sdem_store_version": "1.0",
-      "export_sha256": "0b4db1161ffffe971033ad049e8b58b5b67647a72c57675e23060f644d494103",
+      "export_sha256": "dcf6ccd26c6d0f0a337e25edcc1c534fa9070bf82aa9a5a06b062dffed58a225",
       "level": "A4",
       "model_id": "synthetic-bank-payments-a4",
       "model_version": "2026.10",
-      "metamodel_version": "0.12.0",
+      "metamodel_version": "0.13.0",
       "source_system": "SYNTHETIC-CMDB"
     },
     "nodes": {
@@ -221,11 +221,26 @@
           }
         }
       },
+      "A4:ZONE-PAY-PRIVATE@1.0": {
+        "label": "Payments private network zone",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.NetworkZone",
+          "id": "ZONE-PAY-PRIVATE",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "The private zone inside the internal network where the payment platforms run (made up).",
+          "attributes": {
+            "zone_level": 2,
+            "zone_kind": "private"
+          }
+        }
+      },
       "A4:NET-PAY-PRIVATE@1.0": {
         "label": "Payments private network",
         "metadata": {
           "level": "A4",
-          "type": "A4.NetworkZone",
+          "type": "A4.CommunicationNetwork",
           "id": "NET-PAY-PRIVATE",
           "version": "1.0",
           "lifecycle_status": "active",
@@ -233,9 +248,7 @@
           "attributes": {
             "address_range": [
               "10.20.0.0/16"
-            ],
-            "zone_level": 2,
-            "zone_kind": "private"
+            ]
           }
         }
       },
@@ -443,7 +456,7 @@
         "relation": "composition",
         "metadata": {
           "scope": "within-level",
-          "row": "RA4-27"
+          "row": "RA4-39"
         }
       },
       {
@@ -453,22 +466,22 @@
         "relation": "composition",
         "metadata": {
           "scope": "within-level",
-          "row": "RA4-27"
+          "row": "RA4-39"
         }
       },
       {
-        "id": "A4:ZONE-PAY-INTERNAL-composition-NET-PAY-PRIVATE",
+        "id": "A4:ZONE-PAY-INTERNAL-composition-ZONE-PAY-PRIVATE",
         "source": "A4:ZONE-PAY-INTERNAL@1.0",
-        "target": "A4:NET-PAY-PRIVATE@1.0",
+        "target": "A4:ZONE-PAY-PRIVATE@1.0",
         "relation": "composition",
         "metadata": {
           "scope": "within-level",
-          "row": "RA4-27"
+          "row": "RA4-39"
         }
       },
       {
-        "id": "A4:NET-PAY-PRIVATE-aggregation-INF-K8S-PAY-PROD",
-        "source": "A4:NET-PAY-PRIVATE@1.0",
+        "id": "A4:ZONE-PAY-PRIVATE-aggregation-INF-K8S-PAY-PROD",
+        "source": "A4:ZONE-PAY-PRIVATE@1.0",
         "target": "A4:INF-K8S-PAY-PROD@1.29",
         "relation": "aggregation",
         "metadata": {
@@ -477,8 +490,8 @@
         }
       },
       {
-        "id": "A4:NET-PAY-PRIVATE-aggregation-INF-K8S-PAY-UAT",
-        "source": "A4:NET-PAY-PRIVATE@1.0",
+        "id": "A4:ZONE-PAY-PRIVATE-aggregation-INF-K8S-PAY-UAT",
+        "source": "A4:ZONE-PAY-PRIVATE@1.0",
         "target": "A4:INF-K8S-PAY-UAT@1.29",
         "relation": "aggregation",
         "metadata": {
@@ -487,8 +500,8 @@
         }
       },
       {
-        "id": "A4:NET-PAY-PRIVATE-aggregation-INF-PG-PAY-PROD",
-        "source": "A4:NET-PAY-PRIVATE@1.0",
+        "id": "A4:ZONE-PAY-PRIVATE-aggregation-INF-PG-PAY-PROD",
+        "source": "A4:ZONE-PAY-PRIVATE@1.0",
         "target": "A4:INF-PG-PAY-PROD@16",
         "relation": "aggregation",
         "metadata": {
@@ -533,7 +546,7 @@
         "relation": "composition",
         "metadata": {
           "scope": "within-level",
-          "row": "RA4-27"
+          "row": "RA4-39"
         }
       },
       {
@@ -564,6 +577,36 @@
         "metadata": {
           "scope": "within-level",
           "row": "association"
+        }
+      },
+      {
+        "id": "A4:INF-K8S-PAY-PROD-association-NET-PAY-PRIVATE",
+        "source": "A4:INF-K8S-PAY-PROD@1.29",
+        "target": "A4:NET-PAY-PRIVATE@1.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-37"
+        }
+      },
+      {
+        "id": "A4:INF-K8S-PAY-UAT-association-NET-PAY-PRIVATE",
+        "source": "A4:INF-K8S-PAY-UAT@1.29",
+        "target": "A4:NET-PAY-PRIVATE@1.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-37"
+        }
+      },
+      {
+        "id": "A4:INF-PG-PAY-PROD-association-NET-PAY-PRIVATE",
+        "source": "A4:INF-PG-PAY-PROD@16",
+        "target": "A4:NET-PAY-PRIVATE@1.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-37"
         }
       }
     ]

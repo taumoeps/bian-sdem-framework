@@ -70,7 +70,7 @@ class MigrateTests(unittest.TestCase):
     def test_the_metamodel_record_is_well_formed(self):
         rec = json.loads((ROOT / 'metamodel' / 'migrations.json').read_text())
         self.assertEqual(rec['metamodel_version'], CUR)
-        kinds = {'rename_type', 'rename_attribute', 'drop_attribute', 'set_attribute', 'rename_kind', 'rename_relationship', 'narrow_endpoint_type', 'attribute_to_links'}
+        kinds = {'rename_type', 'rename_attribute', 'drop_attribute', 'set_attribute', 'rename_kind', 'rename_relationship', 'narrow_endpoint_type', 'attribute_to_links', 'zone_network_split'}
         for m in rec['migrations']:
             self.assertTrue({'from', 'to'} <= set(m)); self.assertTrue(all(s['step'] in kinds for s in m.get('steps', [])))
         if rec['migrations']:  # every older version reaches the current one

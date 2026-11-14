@@ -48,6 +48,31 @@ def _apply_dataset(doc, steps, counts):
         if kind == 'rename_kind':
             for r in doc.get('relationships', []):
                 if r['kind'] == st['from']: r['kind'] = st['to']; counts[kind] += 1
+        if kind == 'zone_network_split':   # 0.12.0 → 0.13.0: a zone is an ArchiMate Grouping, not a network — a zone carrying a network's own
+            # attributes becomes two records: the zone, and the network (<zone id>-NET) its platforms are on (RA4-37)
+            keep = set(st.get('zone_attributes', []))
+            insts, rels = doc.get('instances', []), doc.setdefault('relationships', [])
+            typ = {i['id']: i['type'] for i in insts}
+            platforms = set(st.get('platform_types', []))
+            for z in list(insts):
+                at = z.get('attributes') or {}
+                extra = {k: v for k, v in at.items() if k not in keep}
+                if z['type'] != st['type'] or not extra: continue
+                nid = z['id'] + '-NET'
+                if nid in typ: continue
+                insts.insert(insts.index(z) + 1, {'id': nid, 'type': st['network_type'], 'version': z.get('version', '1.0'), 'name': z.get('name', nid),
+                                                  'lifecycle_status': z.get('lifecycle_status', 'active'),
+                                                  'description': f"The network of zone {z['id']} (split from it by sdem migrate: a zone is a grouping, not a network).", 'attributes': extra})
+                z['attributes'] = {k: v for k, v in at.items() if k in keep}
+                for r in rels:   # an association with the zone was an association with its network
+                    if r['kind'] == 'association' and z['id'] in (r['source'], r['target']):
+                        if r['source'] == z['id']: r['source'] = nid
+                        else: r['target'] = nid
+                held = [r['target'] for r in rels if r['source'] == z['id'] and r['kind'] == 'aggregation' and typ.get(r['target']) in platforms]
+                for x in held:
+                    if not any(r['source'] == x and r['kind'] == 'association' and r['target'] == nid for r in rels):
+                        rels.append({'source': x, 'kind': 'association', 'target': nid})
+                typ[nid] = st['network_type']; counts[kind] += 1
         if kind == 'attribute_to_links':   # a list of ids held as an attribute becomes links (0.8.1 → 0.9.0: a network's `connects` → RA4-37)
             rels, ids = doc.setdefault('relationships', []), {i['id'] for i in doc.get('instances', [])}
             for i in doc.get('instances', []):

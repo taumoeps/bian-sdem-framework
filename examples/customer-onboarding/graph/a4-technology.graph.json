@@ -6,11 +6,11 @@
     "directed": true,
     "metadata": {
       "sdem_store_version": "1.0",
-      "export_sha256": "eca8e6e180b78b8ab372c7ce7b99764fad6afc465172be8b882cdcc018772746",
+      "export_sha256": "c80f422340102d9fb647c39d0ed395ed76dda9e72d7a320eeab3e6e43cd4299a",
       "level": "A4",
       "model_id": "synthetic-bank-onboarding-a4",
       "model_version": "2026.10",
-      "metamodel_version": "0.12.0",
+      "metamodel_version": "0.13.0",
       "source_system": "SYNTHETIC-CMDB"
     },
     "nodes": {
@@ -187,7 +187,7 @@
         "relation": "composition",
         "metadata": {
           "scope": "within-level",
-          "row": "RA4-27"
+          "row": "RA4-39"
         }
       },
       {
@@ -197,7 +197,7 @@
         "relation": "composition",
         "metadata": {
           "scope": "within-level",
-          "row": "RA4-27"
+          "row": "RA4-39"
         }
       },
       {

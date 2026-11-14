@@ -2,7 +2,7 @@
   "level": "A4",
   "model_id": "synthetic-bank-payments-a4",
   "model_version": "2026.10",
-  "metamodel_version": "0.12.0",
+  "metamodel_version": "0.13.0",
   "source_system": "SYNTHETIC-CMDB",
   "instances": [
     {
@@ -174,8 +174,20 @@
       }
     },
     {
-      "id": "NET-PAY-PRIVATE",
+      "id": "ZONE-PAY-PRIVATE",
       "type": "A4.NetworkZone",
+      "version": "1.0",
+      "name": "Payments private network zone",
+      "lifecycle_status": "active",
+      "description": "The private zone inside the internal network where the payment platforms run (made up).",
+      "attributes": {
+        "zone_level": 2,
+        "zone_kind": "private"
+      }
+    },
+    {
+      "id": "NET-PAY-PRIVATE",
+      "type": "A4.CommunicationNetwork",
       "version": "1.0",
       "name": "Payments private network",
       "lifecycle_status": "active",
@@ -183,9 +195,7 @@
       "attributes": {
         "address_range": [
           "10.20.0.0/16"
-        ],
-        "zone_level": 2,
-        "zone_kind": "private"
+        ]
       }
     },
     {
@@ -323,20 +333,20 @@
     {
       "source": "ZONE-PAY-INTERNAL",
       "kind": "composition",
-      "target": "NET-PAY-PRIVATE"
+      "target": "ZONE-PAY-PRIVATE"
     },
     {
-      "source": "NET-PAY-PRIVATE",
+      "source": "ZONE-PAY-PRIVATE",
       "kind": "aggregation",
       "target": "INF-K8S-PAY-PROD"
     },
     {
-      "source": "NET-PAY-PRIVATE",
+      "source": "ZONE-PAY-PRIVATE",
       "kind": "aggregation",
       "target": "INF-K8S-PAY-UAT"
     },
     {
-      "source": "NET-PAY-PRIVATE",
+      "source": "ZONE-PAY-PRIVATE",
       "kind": "aggregation",
       "target": "INF-PG-PAY-PROD"
     },
@@ -374,6 +384,21 @@
       "source": "INF-APIGW-PAY",
       "kind": "association",
       "target": "DEP-PAYHUB-PROD"
+    },
+    {
+      "source": "INF-K8S-PAY-PROD",
+      "kind": "association",
+      "target": "NET-PAY-PRIVATE"
+    },
+    {
+      "source": "INF-K8S-PAY-UAT",
+      "kind": "association",
+      "target": "NET-PAY-PRIVATE"
+    },
+    {
+      "source": "INF-PG-PAY-PROD",
+      "kind": "association",
+      "target": "NET-PAY-PRIVATE"
     }
   ]
 }

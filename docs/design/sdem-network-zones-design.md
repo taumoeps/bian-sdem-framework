@@ -35,7 +35,7 @@ SDEM's technology layer (A4) is ArchiMate's: nodes, devices, system software, ne
 
 | # | What | How | Basis |
 |---|---|---|---|
-| M1 | **A zone is a record**: `A4.NetworkZone`, a specialisation of `A4.CommunicationNetwork` | so a zone is a network: impact through it (KG-Q-08) and nesting (RA4-27) work as they do | SDEM extension of ArchiMate's Communication Network |
+| M1 | **A zone is a record**: `A4.NetworkZone` — *re-aligned in metamodel 0.13.0 from a specialisation of Communication Network to ArchiMate's Grouping (below)* | impact through it (KG-Q-08) and nesting (RA4-39) | SDEM extension of ArchiMate's Grouping |
 | M2 | **What kind of zone**: `zone_level` 0, 1 or 2, and `zone_kind`: level 0 `on_premises` · `cloud`; level 1 `internal` · `dmz`; level 2 `private` | the owner's structure, §2 | SDEM |
 | M2b | **Internet facing**: a boolean `internet_facing` on A4 shapes (SDEM's own — today only an example profile has `exposure`) | so LC-18 can check a DMZ | SDEM |
 | M3 | **Zones nest**: a level-1 zone is part of a level 0, a level-2 zone part of a level 1 | composition (RA4-27, already allowed) | ArchiMate (network decomposition) |
@@ -89,4 +89,12 @@ SDEM owns how A4 is laid out by its zones, so every drawing agrees — `sdem zon
 | ZL-04 | One environment at a time (default production): the others, and what only they run, are left out; retired shapes are left out. |
 | ZL-05 | Placement and nesting are shown by position, never a line; zone connections (ZC-01, ZC-02) are arrows between regions. |
 | ZL-06 | A shape no zone holds goes in a "Not in a zone" strip — LC-16 names it. |
+
+## A zone is an ArchiMate Grouping (metamodel 0.13.0; the owner's decision, option 1, 2026-11-14)
+
+Checked against the ArchiMate 3.2 relationship tables (Archi's relationships.xml, read 2026-11-14): a Communication Network may not aggregate a Node, a Technology Service or an Artifact, so "the DMZ holds the API gateway" was not valid ArchiMate while a zone was a network. A **Grouping** may aggregate every A4 element and compose another Grouping, which is what a zone does. So `A4.NetworkZone` now specialises Grouping:
+
+- placement stays RA4-38 (zone aggregates a shape) — now grounded in the tables; zones nest by **RA4-39** (zone composes zone) instead of the network rule RA4-27;
+- a zone that is also a network is **two records**: the zone, and the Communication Network it holds, with the zone's platforms on that network (RA4-37) — the payment example's private network became `ZONE-PAY-PRIVATE` and `NET-PAY-PRIVATE`; `sdem migrate` splits any such zone (`<zone id>-NET`);
+- nothing else changes: the 3D view, `sdem zones`, the checks (LC-15…LC-22), the inference and the layout (ZL-01…ZL-06) read the zone records as before, and `sdem diagram` draws a zone as an ArchiMate Grouping.
 
