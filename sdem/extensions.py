@@ -57,7 +57,8 @@ def installed():
             continue
         for f in entries:
             name = f[5:] if f.startswith('sdem-') else ''
-            if name.endswith('.exe'): name = name[:-4]
+            for ext in ('.exe', '.cmd', '.bat'):   # Windows: pip installs sdem-<name>.exe
+                if name.lower().endswith(ext): name = name[:-len(ext)]
             if not NAME.match(name) or name in seen or f'sdem-{name}' in _own():
                 continue
             prog = os.path.join(folder, f)

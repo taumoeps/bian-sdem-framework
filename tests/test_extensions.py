@@ -18,8 +18,13 @@ class ExtensionTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.bin = Path(tempfile.mkdtemp(prefix='sdem-ext-'))
-        for name, text in (('sdem-hello', HELLO.format(py=sys.executable)), ('sdem-stray', STRAY)):
-            p = cls.bin / name; p.write_text(text); p.chmod(p.stat().st_mode | stat.S_IEXEC)
+        if os.name == 'nt':   # Windows runs a program by its extension: a .cmd that starts the script, as pip's .exe would
+            (cls.bin / 'hello.py').write_text(HELLO.format(py=sys.executable).split('\n', 1)[1])
+            (cls.bin / 'sdem-hello.cmd').write_text(f'@"{sys.executable}" "{cls.bin / "hello.py"}" %*\r\n')
+            (cls.bin / 'sdem-stray.cmd').write_text('@echo stray\r\n')
+        else:
+            for name, text in (('sdem-hello', HELLO.format(py=sys.executable)), ('sdem-stray', STRAY)):
+                p = cls.bin / name; p.write_text(text); p.chmod(p.stat().st_mode | stat.S_IEXEC)
         cls.env = {**os.environ, 'PATH': str(cls.bin) + os.pathsep + os.environ.get('PATH', ''),
                    'PYTHONPATH': str(ROOT) + os.pathsep + os.environ.get('PYTHONPATH', '')}
 
