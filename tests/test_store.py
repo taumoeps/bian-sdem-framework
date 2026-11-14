@@ -147,8 +147,10 @@ class StoreTests(unittest.TestCase):
             page = render(self.tmp / e)
             data = json.loads(re.search(r'const D=(\{.*?\});const NS', page, re.S).group(1).replace('<\\/', '</'))
             r = GraphReader.from_store(self.tmp / e)
-            self.assertEqual(len(data['nodes']), len(r.nodes()), e)
-            self.assertEqual(len(data['edges']), len(r.edges('within-level')) + len(r.edges('cross-level')), e)
+            zones = {n['id'] for n in r.nodes(level='A4') if r.mm.is_a(n['type'], 'A4.NetworkZone')} if data.get('zones') else set()   # drawn as regions, not boxes
+            self.assertEqual(len(data['nodes']), len(r.nodes()) - len(zones), e)
+            within = [x for x in r.edges('within-level') if not (x['level'] == 'A4' and {x['source'], x['target']} & zones)]   # a placement or nesting is shown by position
+            self.assertEqual(len(data['edges']), len(within) + len(r.edges('cross-level')), e)
             self.assertNotRegex(page, r'<(script|link)[^>]+(src|href)=', e)  # nothing loaded from elsewhere
 
     def test_cli(self):

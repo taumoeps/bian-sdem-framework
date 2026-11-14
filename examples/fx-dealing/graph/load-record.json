@@ -556,6 +556,94 @@
           "edges": 0
         }
       ]
+    },
+    {
+      "build": 7,
+      "at": "2026-11-14T01:21:48+00:00",
+      "inputs": [
+        {
+          "path": "examples/fx-dealing/a1-business.json",
+          "kind": "export",
+          "level": "A1",
+          "model_id": "harbourline-fx-a1",
+          "model_version": "2026.11",
+          "sha256": "eda9b6fbe4d19e15226a7739b5b2737e08b71417fd2638eee94ff672720ec5d3"
+        },
+        {
+          "path": "examples/fx-dealing/a2-service-domain.json",
+          "kind": "export",
+          "level": "A2",
+          "model_id": "harbourline-fx-a2",
+          "model_version": "2026.11",
+          "sha256": "694932b21e98232996146bc5a1c2d302b2df748490901b222864fffdf8b10a0d"
+        },
+        {
+          "path": "examples/fx-dealing/a3-application.json",
+          "kind": "export",
+          "level": "A3",
+          "model_id": "harbourline-fx-a3",
+          "model_version": "2026.11",
+          "sha256": "a6ba558b4fefb407d6e6d53f531881d1d9235f0c112b8cdce93e99b909870cbf"
+        },
+        {
+          "path": "examples/fx-dealing/a4-technology.json",
+          "kind": "export",
+          "level": "A4",
+          "model_id": "harbourline-fx-a4",
+          "model_version": "2026.11",
+          "sha256": "0ba83ce16086109cbbb07f7a999d1949d10db9eaab44f72e8b7ff858f4806630"
+        },
+        {
+          "path": "examples/fx-dealing/mappings.json",
+          "kind": "registry",
+          "registry_version": "0.4.0",
+          "sha256": "0aa6e1eeabf76a5fed3c0122a964310378f3e53999ac0dba68f409433283ade3"
+        }
+      ],
+      "metamodel_version": "0.12.0",
+      "errors": [],
+      "warnings": [
+        "level A2 (harbourline-fx-a2): instance SD-DEALER-DESK: 0 composition links with A2.BusinessDomain, RA2-02 expects at least 1 (LC-10m)",
+        "level A2 (harbourline-fx-a2): instance SD-CURRENCY-EXCHANGE: 0 composition links with A2.BusinessDomain, RA2-02 expects at least 1 (LC-10m)",
+        "level A2 (harbourline-fx-a2): instance SD-TRADE-CONFIRMATION-MATCHING: 0 composition links with A2.BusinessDomain, RA2-02 expects at least 1 (LC-10m)",
+        "level A2 (harbourline-fx-a2): instance SD-TRADE-SETTLEMENT: 0 composition links with A2.BusinessDomain, RA2-02 expects at least 1 (LC-10m)",
+        "level A2 (harbourline-fx-a2): instance SD-TRADER-POSITION-OPERATIONS: 0 composition links with A2.BusinessDomain, RA2-02 expects at least 1 (LC-10m)",
+        "level A2 (harbourline-fx-a2): instance SD-COUNTERPARTY-ADMINISTRATION: 0 composition links with A2.BusinessDomain, RA2-02 expects at least 1 (LC-10m)",
+        "level A2 (harbourline-fx-a2): instance SD-MARKET-DATA-SWITCH-OPERATION: 0 composition links with A2.BusinessDomain, RA2-02 expects at least 1 (LC-10m)"
+      ],
+      "result": "accepted",
+      "outputs": [
+        {
+          "file": "a1-business.graph.json",
+          "sha256": "7b373572a92b2226301620007990a5221c4848e769036ced01d208ffa8d5a5b9",
+          "nodes": 42,
+          "edges": 55
+        },
+        {
+          "file": "a2-service-domain.graph.json",
+          "sha256": "29361f30496ae76691e0b04a3f4dd7ecbdab4f4c770448407d0a2aca38336f24",
+          "nodes": 261,
+          "edges": 575
+        },
+        {
+          "file": "a3-application.graph.json",
+          "sha256": "5600b7fe8d6c923c349c13c23680adfa431a2553e4efb4fd1aefa75c9712e72a",
+          "nodes": 54,
+          "edges": 59
+        },
+        {
+          "file": "a4-technology.graph.json",
+          "sha256": "6b5d9cea4adce1edd9c9309dcaaf214881f487b59dd1914abd0d2abeda816357",
+          "nodes": 28,
+          "edges": 45
+        },
+        {
+          "file": "federated.graph.json",
+          "sha256": "642030d94f7bcb5bf21bef23073e19ed4b9db35bbd9d215d754173aff6924e44",
+          "nodes": 0,
+          "edges": 0
+        }
+      ]
     }
   ]
 }

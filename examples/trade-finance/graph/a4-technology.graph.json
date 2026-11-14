@@ -6,7 +6,7 @@
     "directed": true,
     "metadata": {
       "sdem_store_version": "1.0",
-      "export_sha256": "95a90e96c07c4aa023811672a46a308c92997b46c03247eb24aadffbd0149ccc",
+      "export_sha256": "fb65718963a77363cdc570f61f64aba4c4e1e5d789774881bcb7b2aa5c22cbea",
       "level": "A4",
       "model_id": "synthetic-bank-trade-a4",
       "model_version": "2026.10",
@@ -133,7 +133,8 @@
             "exposes": [
               "IFC-LC",
               "IFC-DOC"
-            ]
+            ],
+            "internet_facing": true
           }
         }
       },
@@ -262,6 +263,81 @@
             "component_id": "APP-DOC",
             "environment_id": "ENV-TF-PROD",
             "platform_id": "NODE-TF-PROD"
+          }
+        }
+      },
+      "A4:ZONE-TF-CLOUD@1.0": {
+        "label": "Cloud — trade finance",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.NetworkZone",
+          "id": "ZONE-TF-CLOUD",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "The trade finance cloud deployment (made up).",
+          "attributes": {
+            "zone_level": 0,
+            "zone_kind": "cloud"
+          }
+        }
+      },
+      "A4:ZONE-TF-INTERNAL@1.0": {
+        "label": "Internal network — trade finance",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.NetworkZone",
+          "id": "ZONE-TF-INTERNAL",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "The internal network inside the cloud deployment; nothing in it is reached from the internet.",
+          "attributes": {
+            "zone_level": 1,
+            "zone_kind": "internal"
+          }
+        }
+      },
+      "A4:ZONE-TF-DMZ@1.0": {
+        "label": "Security zone (DMZ) — trade finance",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.NetworkZone",
+          "id": "ZONE-TF-DMZ",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "The internet-facing zone; firewalls form its boundary.",
+          "attributes": {
+            "zone_level": 1,
+            "zone_kind": "dmz"
+          }
+        }
+      },
+      "A4:ZONE-TF-ONPREM@1.0": {
+        "label": "On premises — trade finance",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.NetworkZone",
+          "id": "ZONE-TF-ONPREM",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "The branches (made up), where the document scanning appliances sit.",
+          "attributes": {
+            "zone_level": 0,
+            "zone_kind": "on_premises"
+          }
+        }
+      },
+      "A4:ZONE-TF-ONPREM-INTERNAL@1.0": {
+        "label": "Internal network — on premises (trade finance)",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.NetworkZone",
+          "id": "ZONE-TF-ONPREM-INTERNAL",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "The internal network of the on-premises site.",
+          "attributes": {
+            "zone_level": 1,
+            "zone_kind": "internal"
           }
         }
       }
@@ -435,6 +511,116 @@
         "metadata": {
           "scope": "within-level",
           "row": "association"
+        }
+      },
+      {
+        "id": "A4:ZONE-TF-CLOUD-composition-ZONE-TF-INTERNAL",
+        "source": "A4:ZONE-TF-CLOUD@1.0",
+        "target": "A4:ZONE-TF-INTERNAL@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-27"
+        }
+      },
+      {
+        "id": "A4:ZONE-TF-CLOUD-composition-ZONE-TF-DMZ",
+        "source": "A4:ZONE-TF-CLOUD@1.0",
+        "target": "A4:ZONE-TF-DMZ@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-27"
+        }
+      },
+      {
+        "id": "A4:ZONE-TF-ONPREM-composition-ZONE-TF-ONPREM-INTERNAL",
+        "source": "A4:ZONE-TF-ONPREM@1.0",
+        "target": "A4:ZONE-TF-ONPREM-INTERNAL@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-27"
+        }
+      },
+      {
+        "id": "A4:ZONE-TF-INTERNAL-aggregation-NODE-TF-PROD",
+        "source": "A4:ZONE-TF-INTERNAL@1.0",
+        "target": "A4:NODE-TF-PROD@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-38"
+        }
+      },
+      {
+        "id": "A4:ZONE-TF-INTERNAL-aggregation-SYS-DB-TF",
+        "source": "A4:ZONE-TF-INTERNAL@1.0",
+        "target": "A4:SYS-DB-TF@16",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-38"
+        }
+      },
+      {
+        "id": "A4:ZONE-TF-INTERNAL-aggregation-TI-TOPIC-LC",
+        "source": "A4:ZONE-TF-INTERNAL@1.0",
+        "target": "A4:TI-TOPIC-LC@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-38"
+        }
+      },
+      {
+        "id": "A4:ZONE-TF-INTERNAL-aggregation-TS-OCR",
+        "source": "A4:ZONE-TF-INTERNAL@1.0",
+        "target": "A4:TS-OCR@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-38"
+        }
+      },
+      {
+        "id": "A4:ZONE-TF-INTERNAL-aggregation-TS-SIGNING",
+        "source": "A4:ZONE-TF-INTERNAL@1.0",
+        "target": "A4:TS-SIGNING@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-38"
+        }
+      },
+      {
+        "id": "A4:ZONE-TF-INTERNAL-aggregation-ART-DOC-STORE",
+        "source": "A4:ZONE-TF-INTERNAL@1.0",
+        "target": "A4:ART-DOC-STORE@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-38"
+        }
+      },
+      {
+        "id": "A4:ZONE-TF-DMZ-aggregation-TI-INGRESS",
+        "source": "A4:ZONE-TF-DMZ@1.0",
+        "target": "A4:TI-INGRESS@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-38"
+        }
+      },
+      {
+        "id": "A4:ZONE-TF-ONPREM-INTERNAL-aggregation-DEV-SCAN-01",
+        "source": "A4:ZONE-TF-ONPREM-INTERNAL@1.0",
+        "target": "A4:DEV-SCAN-01@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-38"
         }
       }
     ]

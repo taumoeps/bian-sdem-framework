@@ -31,10 +31,31 @@ def _projected(pkg, reader):
 def layout(reader, pkg=None):
     """Deterministic positions: per band, records grouped by entity type in catalogue order, wrapped PER_ROW to a row."""
     order = {t: n for n, t in enumerate(reader.mm.entities)}
-    nodes, bands, y = [], [], 30; extra = _projected(pkg, reader)
+    nodes, bands, y = [], [], 30; extra = _projected(pkg, reader); zones, width = [], PAD_X + PER_ROW * STEP_X
+    zl = _zone_layout(reader)
+    if zl:   # the band's width must hold the busiest zone's shapes side by side
+        gaps = [abs(a['at'][0] - b['at'][0]) for a in zl['shapes'] for b in zl['shapes'] if a is not b and abs(a['at'][1] - b['at'][1]) < 0.03 and a['at'][0] != b['at'][0]]
+        if gaps: width = max(width, min(6000, int((BOX_W + 16) / min(gaps)) + 40))   # the closest pair on one row stays a box apart
     for lvl in LEVELS:
         recs = sorted(list(reader.nodes(level=lvl)) + extra.get(lvl, []), key=lambda r: (order.get(r['type'], 999), 'prj' in r, r['id']))
         if not recs: continue
+        if lvl == 'A4' and zl:   # A4 by its network zones — SDEM's deployment-zones viewpoint (sdem/zone_layout.py), every environment
+            deep = max([sum(1 for t in zl['shapes'] if t['zone'] == sh['zone'] and t['at'][0] == sh['at'][0]) for sh in zl['shapes']] or [1])
+            vg = [abs(a['at'][1] - b['at'][1]) for a in zl['shapes'] for b in zl['shapes'] if a is not b and a['at'][0] == b['at'][0] and a['at'][1] != b['at'][1]]
+            h = max(560, min(6000, int((BOX_H + 14) / min(vg)) + 60 if vg else 560))   # a stack under its platform stays a box apart
+            X = lambda f: 20 + f * (width - 40); Y = lambda f: y + 30 + f * (h - 40)
+            for z in zl['zones']:
+                zones.append({'label': z['label'], 'level': z['level'], 'x': X(z['rect'][0]), 'y': Y(z['rect'][1]), 'w': X(z['rect'][2]) - X(z['rect'][0]), 'h': Y(z['rect'][3]) - Y(z['rect'][1])})
+            if zl['not_in_a_zone']:
+                q = zl['not_in_a_zone']; zones.append({'label': zl['strip']['label'] + (' (LC-16)' if zl['strip']['not_in_a_zone'] else ''), 'level': 0, 'x': X(q[0]), 'y': Y(q[1]), 'w': X(q[2]) - X(q[0]), 'h': Y(q[3]) - Y(q[1])})
+            at = {sh['id']: sh['at'] for sh in zl['shapes']}; zone_ids = {z['id'] for z in zl['zones']}
+            for r in recs:
+                if r['id'] in zone_ids or r['id'] not in at: continue
+                nodes.append({'k': r['key'], 'id': r['id'], 'v': r['version'], 'name': r['name'], 'type': r['type'], 'lvl': lvl,
+                              'x': X(at[r['id']][0]) - BOX_W / 2, 'y': Y(at[r['id']][1]) - BOX_H / 2,
+                              'meta': {k: r[k] for k in ('lifecycle_status', 'canonical_id', 'description', 'definition_uri') if k in r}, 'attrs': r.get('attributes', {})})
+            bands.append({'lvl': lvl, 'label': NAMES[lvl] + ' — by network zone', 'y': y, 'h': h}); y += h + BAND_GAP
+            continue
         rows = (len(recs) + PER_ROW - 1) // PER_ROW; top = y
         for n, r in enumerate(recs):
             nodes.append({'k': r['key'], 'id': r['id'], 'v': r['version'], 'name': r['name'], 'type': r['type'], 'lvl': lvl,
@@ -54,7 +75,18 @@ def layout(reader, pkg=None):
     for l in (pkg or {}).get('links', {}).get('links', []):
         s, t = (keyof.get((reader.mm.level(x['type']) or '', x['id'])) for x in (l['source'], l['target']))
         if s and t: edges.append({'s': s, 't': t, 'rel': l['relationship'], 'scope': 'p', 'mid': f"PROJECTED {l['confidence']} · {l['mapping_id']}"})
-    return {'nodes': nodes, 'edges': edges, 'bands': bands, 'width': PAD_X + PER_ROW * STEP_X, 'height': y, 'box': [BOX_W, BOX_H]}
+    return {'nodes': nodes, 'edges': edges, 'bands': bands, 'zones': zones, 'width': width, 'height': y, 'box': [BOX_W, BOX_H]}
+
+
+def _zone_layout(reader):
+    """The deployment-zones layout of the store's A4, or None (no zones, or a projection's extra records)."""
+    from .zone_layout import layout, LayoutError
+    a4 = list(reader.nodes(level='A4'))
+    if not any(reader.mm.is_a(n['type'], 'A4.NetworkZone') for n in a4): return None
+    doc = {'instances': [{'id': n['id'], 'type': n['type'], 'name': n['name'], 'attributes': n.get('attributes', {})} for n in a4],
+           'relationships': [{'source': e['source'], 'kind': e['kind'], 'target': e['target']} for e in reader.edges('within-level') if e['level'] == 'A4']}
+    try: return layout(doc, reader.mm, environment='all')
+    except LayoutError: return None
 
 
 def render(store, title=None, projection=None, links=None, now=None):
@@ -103,7 +135,7 @@ select,button{font:inherit;font-size:13px;padding:3px 8px;border:1px solid var(-
 main{display:flex;flex-wrap:wrap;gap:0}#canvas{flex:1 1 640px;min-width:0;overflow:auto;height:calc(100vh - 110px)}
 aside{flex:0 1 340px;min-width:260px;border-left:1px solid var(--line);padding:12px 16px;overflow:auto;height:calc(100vh - 110px);background:var(--panel)}
 @media (max-width:760px){#canvas{height:60vh;flex-basis:100%}aside{flex-basis:100%;border-left:0;border-top:1px solid var(--line);height:auto}}
-svg text{fill:var(--fg);font-size:11px}.band{fill:var(--band)}.bandlbl{font-size:13px;font-weight:600;fill:var(--muted)}
+svg text{fill:var(--fg);font-size:11px}.band{fill:var(--band)}.bandlbl{font-size:13px;font-weight:600;fill:var(--muted)}.zone{fill:none;stroke:var(--a4);stroke-dasharray:6 4;stroke-opacity:.7}.zonelbl{font-size:12px;font-weight:600;fill:var(--a4)}
 .node rect{fill:var(--panel);stroke-width:1.5}.node{cursor:pointer}.node.dim{opacity:.18}.node.sel rect{stroke:var(--hl);stroke-width:3}.node.hl rect{stroke:var(--hl);stroke-width:2.2}
 .node.prj rect{stroke-dasharray:5 3}.prjtag{fill:var(--hl)!important;font-weight:700;font-size:9px}.e.p{stroke:var(--hl);stroke-width:1.3;stroke-dasharray:5 4;opacity:.8}
 .e{fill:none;stroke-width:1}.e.w{stroke:var(--line)}.e.x{stroke:var(--x);stroke-width:1.4;opacity:.75}.e.dim{opacity:.06}.e.hl{stroke:var(--hl);stroke-width:2.4;opacity:1}
@@ -129,6 +161,7 @@ function size(){svg.setAttribute("width",D.width*zoom);svg.setAttribute("height"
 document.getElementById("canvas").appendChild(svg);
 function el(t,a,p){const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);(p||svg).appendChild(e);return e}
 D.bands.forEach(b=>{el("rect",{class:"band",x:8,y:b.y,width:D.width-16,height:b.h,rx:8});const t=el("text",{class:"bandlbl",x:20,y:b.y+20});t.textContent=b.label});
+(D.zones||[]).forEach(z=>{el("rect",{class:"zone",x:z.x,y:z.y,width:z.w,height:z.h,rx:6});const t=el("text",{class:"zonelbl",x:z.x+8,y:z.y+15});t.textContent=z.label});
 const [W,H]=D.box;const eg=el("g",{});const ng=el("g",{});
 D.edges.forEach(e=>{const s=byK[e.s],t=byK[e.t];let d;
  if(e.scope==="w"&&s.y===t.y){const m=Math.min(s.y,t.y)-14;d=`M${s.x+W/2},${s.y} C${s.x+W/2},${m} ${t.x+W/2},${m} ${t.x+W/2},${t.y}`}

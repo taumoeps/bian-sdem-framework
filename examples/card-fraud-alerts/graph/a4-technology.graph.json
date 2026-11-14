@@ -6,7 +6,7 @@
     "directed": true,
     "metadata": {
       "sdem_store_version": "1.0",
-      "export_sha256": "81213dd0d4d6be2a1ac7b9254f8cfd0885eb4bdb677972bd1de007f26af9dfe6",
+      "export_sha256": "6aaf8b45e84f16bd981bfb7af49eaf8986fc5cac4a9ba07f97d9ec142ed3eaf3",
       "level": "A4",
       "model_id": "synthetic-bank-a4",
       "model_version": "2026.10",
@@ -78,6 +78,66 @@
             "platform_id": "INF-CLOUD-K8S-PROD"
           }
         }
+      },
+      "A4:ZONE-CARD-CLOUD@1.0": {
+        "label": "Cloud — card fraud",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.NetworkZone",
+          "id": "ZONE-CARD-CLOUD",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "The card fraud cloud deployment (made up).",
+          "attributes": {
+            "zone_level": 0,
+            "zone_kind": "cloud"
+          }
+        }
+      },
+      "A4:ZONE-CARD-INTERNAL@1.0": {
+        "label": "Internal network — card fraud",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.NetworkZone",
+          "id": "ZONE-CARD-INTERNAL",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "The internal network inside the cloud deployment; nothing in it is reached from the internet.",
+          "attributes": {
+            "zone_level": 1,
+            "zone_kind": "internal"
+          }
+        }
+      },
+      "A4:ZONE-CARD-ONPREM@1.0": {
+        "label": "On premises — card fraud",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.NetworkZone",
+          "id": "ZONE-CARD-ONPREM",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "The bank's own data centre (made up), where the legacy VM cluster is being decommissioned.",
+          "attributes": {
+            "zone_level": 0,
+            "zone_kind": "on_premises"
+          }
+        }
+      },
+      "A4:ZONE-CARD-ONPREM-INTERNAL@1.0": {
+        "label": "Internal network — on premises (card fraud)",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.NetworkZone",
+          "id": "ZONE-CARD-ONPREM-INTERNAL",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "The internal network of the on-premises site.",
+          "attributes": {
+            "zone_level": 1,
+            "zone_kind": "internal"
+          }
+        }
       }
     },
     "edges": [
@@ -130,6 +190,46 @@
         "metadata": {
           "scope": "within-level",
           "row": "RA4-37"
+        }
+      },
+      {
+        "id": "A4:ZONE-CARD-CLOUD-composition-ZONE-CARD-INTERNAL",
+        "source": "A4:ZONE-CARD-CLOUD@1.0",
+        "target": "A4:ZONE-CARD-INTERNAL@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-27"
+        }
+      },
+      {
+        "id": "A4:ZONE-CARD-ONPREM-composition-ZONE-CARD-ONPREM-INTERNAL",
+        "source": "A4:ZONE-CARD-ONPREM@1.0",
+        "target": "A4:ZONE-CARD-ONPREM-INTERNAL@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-27"
+        }
+      },
+      {
+        "id": "A4:ZONE-CARD-INTERNAL-aggregation-INF-CLOUD-K8S-PROD",
+        "source": "A4:ZONE-CARD-INTERNAL@1.0",
+        "target": "A4:INF-CLOUD-K8S-PROD@1.3",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-38"
+        }
+      },
+      {
+        "id": "A4:ZONE-CARD-ONPREM-INTERNAL-aggregation-INF-ONPREM-VM-CLUSTER-B",
+        "source": "A4:ZONE-CARD-ONPREM-INTERNAL@1.0",
+        "target": "A4:INF-ONPREM-VM-CLUSTER-B@2.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-38"
         }
       }
     ]

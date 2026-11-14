@@ -76,3 +76,17 @@ Version: metamodel **0.10.0** — a new entity, one row (RA4-38), the `internet_
 ## 8. Decided alongside
 
 The link type `COMPONENT_DEPLOYED_ON_INFRASTRUCTURE`, deprecated in 0.8.0, was removed in metamodel 0.9.0 as release 0.15.0 had scheduled (the owner, 2026-11-14).
+
+## Drawing A4: the deployment-zones viewpoint (built 2026-11-14)
+
+SDEM owns how A4 is laid out by its zones, so every drawing agrees — `sdem zones --layout` (JSON for any renderer, coordinates as fractions of the plate), `sdem view` (its A4 band), and the DESNRE 3D hero, which reads the JSON. `sdem/zone_layout.py`. The rules, set by the owner while reviewing the 3D view:
+
+| Id | Rule |
+|---|---|
+| ZL-01 | A zone is a region, not a shape. Level-0 zones share the plate side by side (cloud first), each at least 30% wide; level-1 zones (DMZ first) fill their level 0; level-2 zones fill their level 1. |
+| ZL-02 | A shape sits in the zone that holds it, or in its host's zone stacked under the host (a "runs on" group). A zone's shapes are spread evenly over its space and kept inside it. |
+| ZL-03 | An environment, a network or a path is not deployed: it is drawn in the smallest zone holding everything it groups or connects; one joining different level-0 zones is drawn "across zones" — it is not missing a zone. |
+| ZL-04 | One environment at a time (default production): the others, and what only they run, are left out; retired shapes are left out. |
+| ZL-05 | Placement and nesting are shown by position, never a line; zone connections (ZC-01, ZC-02) are arrows between regions. |
+| ZL-06 | A shape no zone holds goes in a "Not in a zone" strip — LC-16 names it. |
+

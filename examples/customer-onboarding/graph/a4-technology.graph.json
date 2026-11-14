@@ -6,7 +6,7 @@
     "directed": true,
     "metadata": {
       "sdem_store_version": "1.0",
-      "export_sha256": "221ce8223c219df1c50baf905469f50c1f5cda351a37ddd5e5dd838a7b744540",
+      "export_sha256": "eca8e6e180b78b8ab372c7ce7b99764fad6afc465172be8b882cdcc018772746",
       "level": "A4",
       "model_id": "synthetic-bank-onboarding-a4",
       "model_version": "2026.10",
@@ -92,6 +92,51 @@
             "internet_facing": true
           }
         }
+      },
+      "A4:ZONE-ONB-CLOUD@1.0": {
+        "label": "Cloud — onboarding",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.NetworkZone",
+          "id": "ZONE-ONB-CLOUD",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "The onboarding cloud deployment (made up).",
+          "attributes": {
+            "zone_level": 0,
+            "zone_kind": "cloud"
+          }
+        }
+      },
+      "A4:ZONE-ONB-INTERNAL@1.0": {
+        "label": "Internal network — onboarding",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.NetworkZone",
+          "id": "ZONE-ONB-INTERNAL",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "The internal network inside the cloud deployment; nothing in it is reached from the internet.",
+          "attributes": {
+            "zone_level": 1,
+            "zone_kind": "internal"
+          }
+        }
+      },
+      "A4:ZONE-ONB-DMZ@1.0": {
+        "label": "Security zone (DMZ) — onboarding",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.NetworkZone",
+          "id": "ZONE-ONB-DMZ",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "The internet-facing zone; firewalls form its boundary.",
+          "attributes": {
+            "zone_level": 1,
+            "zone_kind": "dmz"
+          }
+        }
       }
     },
     "edges": [
@@ -133,6 +178,56 @@
         "metadata": {
           "scope": "within-level",
           "row": "association"
+        }
+      },
+      {
+        "id": "A4:ZONE-ONB-CLOUD-composition-ZONE-ONB-INTERNAL",
+        "source": "A4:ZONE-ONB-CLOUD@1.0",
+        "target": "A4:ZONE-ONB-INTERNAL@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-27"
+        }
+      },
+      {
+        "id": "A4:ZONE-ONB-CLOUD-composition-ZONE-ONB-DMZ",
+        "source": "A4:ZONE-ONB-CLOUD@1.0",
+        "target": "A4:ZONE-ONB-DMZ@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-27"
+        }
+      },
+      {
+        "id": "A4:ZONE-ONB-INTERNAL-aggregation-INF-001",
+        "source": "A4:ZONE-ONB-INTERNAL@1.0",
+        "target": "A4:INF-001@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-38"
+        }
+      },
+      {
+        "id": "A4:ZONE-ONB-INTERNAL-aggregation-INF-002",
+        "source": "A4:ZONE-ONB-INTERNAL@1.0",
+        "target": "A4:INF-002@16",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-38"
+        }
+      },
+      {
+        "id": "A4:ZONE-ONB-DMZ-aggregation-INF-003",
+        "source": "A4:ZONE-ONB-DMZ@1.0",
+        "target": "A4:INF-003@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-38"
         }
       }
     ]

@@ -53,7 +53,23 @@ def main(argv=None):
                                  description="A workspace's network zones: each zone and what it holds, and how the zones connect (ZC-01…ZC-03, worked out from the structure). Read-only.",
                                  epilog=__doc__.split('\n\n')[2])
     ap.add_argument('--workspace', dest='estate', required=True, metavar='DIR'); ap.add_argument('--json', action='store_true')
+    ap.add_argument('--layout', action='store_true', help='the deployment-zones layout: zone regions, where each shape sits, the zone arrows (sdem/zone_layout.py) — what every drawing of A4 uses')
+    ap.add_argument('--environment', default='production', metavar='NAME', help='with --layout: the one environment drawn (name or kind; default production; all for every one)')
     a = ap.parse_args(argv)
+    if a.layout:
+        from .zone_layout import load, LayoutError
+        try: lay = load(a.estate, a.environment)
+        except LayoutError as e: print(f'ERROR: {e}', file=sys.stderr); return 2
+        if a.json: print(json.dumps(lay, indent=2)); return 0
+        left = f" ({len(lay['left_out'])} record(s) of other environments left out)" if lay['left_out'] else ''
+        print(f"deployment-zones layout of {lay['model_id']} — environment {lay['environment']}{left}")
+        for z in lay['zones']:
+            held = [s['id'] for s in lay['shapes'] if s['zone'] == z['id']]
+            print(f"{'  ' * (z['level'] or 0)}{z['label']}  [{', '.join(f'{c:.2f}' for c in z['rect'])}]" + (f"  — {', '.join(held)}" if held else ''))
+        for c in lay['connections']: print(f"  arrow {c['from']} ↔ {c['to']}  ({c['rule']})")
+        lines = [l for l in lay['links'] if l['shown_by'] == 'line']
+        print(f"{len(lay['shapes'])} shapes · {len(lines)} links drawn as lines · {len(lay['links']) - len(lines)} shown by position · use --json for the coordinates")
+        return 0
     try: res = collect(a.estate)
     except ValueError as e: print(f'ERROR: {e}', file=sys.stderr); return 2
     if a.json: print(json.dumps(res, indent=2)); return 0

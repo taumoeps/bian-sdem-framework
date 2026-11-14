@@ -98,7 +98,8 @@
         "exposes": [
           "IFC-LC",
           "IFC-DOC"
-        ]
+        ],
+        "internet_facing": true
       }
     },
     {
@@ -201,6 +202,66 @@
         "environment_id": "ENV-TF-PROD",
         "platform_id": "NODE-TF-PROD"
       }
+    },
+    {
+      "id": "ZONE-TF-CLOUD",
+      "type": "A4.NetworkZone",
+      "version": "1.0",
+      "name": "Cloud — trade finance",
+      "lifecycle_status": "active",
+      "description": "The trade finance cloud deployment (made up).",
+      "attributes": {
+        "zone_level": 0,
+        "zone_kind": "cloud"
+      }
+    },
+    {
+      "id": "ZONE-TF-INTERNAL",
+      "type": "A4.NetworkZone",
+      "version": "1.0",
+      "name": "Internal network — trade finance",
+      "lifecycle_status": "active",
+      "description": "The internal network inside the cloud deployment; nothing in it is reached from the internet.",
+      "attributes": {
+        "zone_level": 1,
+        "zone_kind": "internal"
+      }
+    },
+    {
+      "id": "ZONE-TF-DMZ",
+      "type": "A4.NetworkZone",
+      "version": "1.0",
+      "name": "Security zone (DMZ) — trade finance",
+      "lifecycle_status": "active",
+      "description": "The internet-facing zone; firewalls form its boundary.",
+      "attributes": {
+        "zone_level": 1,
+        "zone_kind": "dmz"
+      }
+    },
+    {
+      "id": "ZONE-TF-ONPREM",
+      "type": "A4.NetworkZone",
+      "version": "1.0",
+      "name": "On premises — trade finance",
+      "lifecycle_status": "active",
+      "description": "The branches (made up), where the document scanning appliances sit.",
+      "attributes": {
+        "zone_level": 0,
+        "zone_kind": "on_premises"
+      }
+    },
+    {
+      "id": "ZONE-TF-ONPREM-INTERNAL",
+      "type": "A4.NetworkZone",
+      "version": "1.0",
+      "name": "Internal network — on premises (trade finance)",
+      "lifecycle_status": "active",
+      "description": "The internal network of the on-premises site.",
+      "attributes": {
+        "zone_level": 1,
+        "zone_kind": "internal"
+      }
     }
   ],
   "relationships": [
@@ -288,6 +349,61 @@
       "source": "SYS-RUNTIME-TF",
       "kind": "association",
       "target": "ART-DOC-STORE"
+    },
+    {
+      "source": "ZONE-TF-CLOUD",
+      "kind": "composition",
+      "target": "ZONE-TF-INTERNAL"
+    },
+    {
+      "source": "ZONE-TF-CLOUD",
+      "kind": "composition",
+      "target": "ZONE-TF-DMZ"
+    },
+    {
+      "source": "ZONE-TF-ONPREM",
+      "kind": "composition",
+      "target": "ZONE-TF-ONPREM-INTERNAL"
+    },
+    {
+      "source": "ZONE-TF-INTERNAL",
+      "kind": "aggregation",
+      "target": "NODE-TF-PROD"
+    },
+    {
+      "source": "ZONE-TF-INTERNAL",
+      "kind": "aggregation",
+      "target": "SYS-DB-TF"
+    },
+    {
+      "source": "ZONE-TF-INTERNAL",
+      "kind": "aggregation",
+      "target": "TI-TOPIC-LC"
+    },
+    {
+      "source": "ZONE-TF-INTERNAL",
+      "kind": "aggregation",
+      "target": "TS-OCR"
+    },
+    {
+      "source": "ZONE-TF-INTERNAL",
+      "kind": "aggregation",
+      "target": "TS-SIGNING"
+    },
+    {
+      "source": "ZONE-TF-INTERNAL",
+      "kind": "aggregation",
+      "target": "ART-DOC-STORE"
+    },
+    {
+      "source": "ZONE-TF-DMZ",
+      "kind": "aggregation",
+      "target": "TI-INGRESS"
+    },
+    {
+      "source": "ZONE-TF-ONPREM-INTERNAL",
+      "kind": "aggregation",
+      "target": "DEV-SCAN-01"
     }
   ]
 }

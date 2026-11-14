@@ -304,6 +304,66 @@
         "environment_id": "ENV-FX-PROD",
         "platform_id": "NODE-RATEGW-01"
       }
+    },
+    {
+      "id": "ZONE-FX-ONPREM",
+      "type": "A4.NetworkZone",
+      "version": "1.0",
+      "name": "On premises — markets",
+      "lifecycle_status": "active",
+      "description": "The bank's primary data centre (made up), running the markets private cloud.",
+      "attributes": {
+        "zone_level": 0,
+        "zone_kind": "on_premises"
+      }
+    },
+    {
+      "id": "ZONE-FX-ONPREM-INTERNAL",
+      "type": "A4.NetworkZone",
+      "version": "1.0",
+      "name": "Internal network — on premises (markets)",
+      "lifecycle_status": "active",
+      "description": "The internal network of the on-premises site.",
+      "attributes": {
+        "zone_level": 1,
+        "zone_kind": "internal"
+      }
+    },
+    {
+      "id": "ZONE-FX-COLO",
+      "type": "A4.NetworkZone",
+      "version": "1.0",
+      "name": "Co-location rack — markets",
+      "lifecycle_status": "active",
+      "description": "The low-latency rack in the exchange co-location facility, reached from the data centre over a private cross-connect.",
+      "attributes": {
+        "zone_level": 2,
+        "zone_kind": "private"
+      }
+    },
+    {
+      "id": "ZONE-FX-CLOUD",
+      "type": "A4.NetworkZone",
+      "version": "1.0",
+      "name": "Cloud — markets",
+      "lifecycle_status": "active",
+      "description": "The markets cloud deployment (made up).",
+      "attributes": {
+        "zone_level": 0,
+        "zone_kind": "cloud"
+      }
+    },
+    {
+      "id": "ZONE-FX-INTERNAL",
+      "type": "A4.NetworkZone",
+      "version": "1.0",
+      "name": "Internal network — markets",
+      "lifecycle_status": "active",
+      "description": "The internal network inside the cloud deployment; nothing in it is reached from the internet.",
+      "attributes": {
+        "zone_level": 1,
+        "zone_kind": "internal"
+      }
     }
   ],
   "relationships": [
@@ -466,6 +526,71 @@
       "source": "NODE-RATEGW-01",
       "kind": "association",
       "target": "NET-COLO-LL"
+    },
+    {
+      "source": "ZONE-FX-ONPREM",
+      "kind": "composition",
+      "target": "ZONE-FX-ONPREM-INTERNAL"
+    },
+    {
+      "source": "ZONE-FX-ONPREM-INTERNAL",
+      "kind": "composition",
+      "target": "ZONE-FX-COLO"
+    },
+    {
+      "source": "ZONE-FX-CLOUD",
+      "kind": "composition",
+      "target": "ZONE-FX-INTERNAL"
+    },
+    {
+      "source": "ZONE-FX-ONPREM-INTERNAL",
+      "kind": "aggregation",
+      "target": "SYS-K8S-MKT-PROD"
+    },
+    {
+      "source": "ZONE-FX-ONPREM-INTERNAL",
+      "kind": "aggregation",
+      "target": "SYS-K8S-MKT-UAT"
+    },
+    {
+      "source": "ZONE-FX-ONPREM-INTERNAL",
+      "kind": "aggregation",
+      "target": "SYS-PG-FX-PROD"
+    },
+    {
+      "source": "ZONE-FX-ONPREM-INTERNAL",
+      "kind": "aggregation",
+      "target": "SYS-PG-REF-PROD"
+    },
+    {
+      "source": "ZONE-FX-ONPREM-INTERNAL",
+      "kind": "aggregation",
+      "target": "SYS-PG-STL-PROD"
+    },
+    {
+      "source": "ZONE-FX-ONPREM-INTERNAL",
+      "kind": "aggregation",
+      "target": "NODE-CONF-01"
+    },
+    {
+      "source": "ZONE-FX-ONPREM-INTERNAL",
+      "kind": "aggregation",
+      "target": "NODE-FXSM-01"
+    },
+    {
+      "source": "ZONE-FX-COLO",
+      "kind": "aggregation",
+      "target": "NODE-RATEGW-01"
+    },
+    {
+      "source": "ZONE-FX-INTERNAL",
+      "kind": "aggregation",
+      "target": "TS-EVENT-STREAM"
+    },
+    {
+      "source": "ZONE-FX-INTERNAL",
+      "kind": "aggregation",
+      "target": "TS-PAYMENT-GATEWAY"
     }
   ]
 }

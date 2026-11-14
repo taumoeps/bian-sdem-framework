@@ -6,7 +6,7 @@
     "directed": true,
     "metadata": {
       "sdem_store_version": "1.0",
-      "export_sha256": "53e2ecbe8af1a3ce5c5e08490f4314b7d3331d4f858b725ea436ab13e335b7af",
+      "export_sha256": "0ba83ce16086109cbbb07f7a999d1949d10db9eaab44f72e8b7ff858f4806630",
       "level": "A4",
       "model_id": "harbourline-fx-a4",
       "model_version": "2026.11",
@@ -382,6 +382,81 @@
             "platform_id": "NODE-RATEGW-01"
           }
         }
+      },
+      "A4:ZONE-FX-ONPREM@1.0": {
+        "label": "On premises — markets",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.NetworkZone",
+          "id": "ZONE-FX-ONPREM",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "The bank's primary data centre (made up), running the markets private cloud.",
+          "attributes": {
+            "zone_level": 0,
+            "zone_kind": "on_premises"
+          }
+        }
+      },
+      "A4:ZONE-FX-ONPREM-INTERNAL@1.0": {
+        "label": "Internal network — on premises (markets)",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.NetworkZone",
+          "id": "ZONE-FX-ONPREM-INTERNAL",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "The internal network of the on-premises site.",
+          "attributes": {
+            "zone_level": 1,
+            "zone_kind": "internal"
+          }
+        }
+      },
+      "A4:ZONE-FX-COLO@1.0": {
+        "label": "Co-location rack — markets",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.NetworkZone",
+          "id": "ZONE-FX-COLO",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "The low-latency rack in the exchange co-location facility, reached from the data centre over a private cross-connect.",
+          "attributes": {
+            "zone_level": 2,
+            "zone_kind": "private"
+          }
+        }
+      },
+      "A4:ZONE-FX-CLOUD@1.0": {
+        "label": "Cloud — markets",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.NetworkZone",
+          "id": "ZONE-FX-CLOUD",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "The markets cloud deployment (made up).",
+          "attributes": {
+            "zone_level": 0,
+            "zone_kind": "cloud"
+          }
+        }
+      },
+      "A4:ZONE-FX-INTERNAL@1.0": {
+        "label": "Internal network — markets",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.NetworkZone",
+          "id": "ZONE-FX-INTERNAL",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "The internal network inside the cloud deployment; nothing in it is reached from the internet.",
+          "attributes": {
+            "zone_level": 1,
+            "zone_kind": "internal"
+          }
+        }
       }
     },
     "edges": [
@@ -703,6 +778,136 @@
         "metadata": {
           "scope": "within-level",
           "row": "RA4-37"
+        }
+      },
+      {
+        "id": "A4:ZONE-FX-ONPREM-composition-ZONE-FX-ONPREM-INTERNAL",
+        "source": "A4:ZONE-FX-ONPREM@1.0",
+        "target": "A4:ZONE-FX-ONPREM-INTERNAL@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-27"
+        }
+      },
+      {
+        "id": "A4:ZONE-FX-ONPREM-INTERNAL-composition-ZONE-FX-COLO",
+        "source": "A4:ZONE-FX-ONPREM-INTERNAL@1.0",
+        "target": "A4:ZONE-FX-COLO@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-27"
+        }
+      },
+      {
+        "id": "A4:ZONE-FX-CLOUD-composition-ZONE-FX-INTERNAL",
+        "source": "A4:ZONE-FX-CLOUD@1.0",
+        "target": "A4:ZONE-FX-INTERNAL@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-27"
+        }
+      },
+      {
+        "id": "A4:ZONE-FX-ONPREM-INTERNAL-aggregation-SYS-K8S-MKT-PROD",
+        "source": "A4:ZONE-FX-ONPREM-INTERNAL@1.0",
+        "target": "A4:SYS-K8S-MKT-PROD@1.30",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-38"
+        }
+      },
+      {
+        "id": "A4:ZONE-FX-ONPREM-INTERNAL-aggregation-SYS-K8S-MKT-UAT",
+        "source": "A4:ZONE-FX-ONPREM-INTERNAL@1.0",
+        "target": "A4:SYS-K8S-MKT-UAT@1.30",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-38"
+        }
+      },
+      {
+        "id": "A4:ZONE-FX-ONPREM-INTERNAL-aggregation-SYS-PG-FX-PROD",
+        "source": "A4:ZONE-FX-ONPREM-INTERNAL@1.0",
+        "target": "A4:SYS-PG-FX-PROD@16",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-38"
+        }
+      },
+      {
+        "id": "A4:ZONE-FX-ONPREM-INTERNAL-aggregation-SYS-PG-REF-PROD",
+        "source": "A4:ZONE-FX-ONPREM-INTERNAL@1.0",
+        "target": "A4:SYS-PG-REF-PROD@16",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-38"
+        }
+      },
+      {
+        "id": "A4:ZONE-FX-ONPREM-INTERNAL-aggregation-SYS-PG-STL-PROD",
+        "source": "A4:ZONE-FX-ONPREM-INTERNAL@1.0",
+        "target": "A4:SYS-PG-STL-PROD@15",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-38"
+        }
+      },
+      {
+        "id": "A4:ZONE-FX-ONPREM-INTERNAL-aggregation-NODE-CONF-01",
+        "source": "A4:ZONE-FX-ONPREM-INTERNAL@1.0",
+        "target": "A4:NODE-CONF-01@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-38"
+        }
+      },
+      {
+        "id": "A4:ZONE-FX-ONPREM-INTERNAL-aggregation-NODE-FXSM-01",
+        "source": "A4:ZONE-FX-ONPREM-INTERNAL@1.0",
+        "target": "A4:NODE-FXSM-01@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-38"
+        }
+      },
+      {
+        "id": "A4:ZONE-FX-COLO-aggregation-NODE-RATEGW-01",
+        "source": "A4:ZONE-FX-COLO@1.0",
+        "target": "A4:NODE-RATEGW-01@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-38"
+        }
+      },
+      {
+        "id": "A4:ZONE-FX-INTERNAL-aggregation-TS-EVENT-STREAM",
+        "source": "A4:ZONE-FX-INTERNAL@1.0",
+        "target": "A4:TS-EVENT-STREAM@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-38"
+        }
+      },
+      {
+        "id": "A4:ZONE-FX-INTERNAL-aggregation-TS-PAYMENT-GATEWAY",
+        "source": "A4:ZONE-FX-INTERNAL@1.0",
+        "target": "A4:TS-PAYMENT-GATEWAY@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-38"
         }
       }
     ]

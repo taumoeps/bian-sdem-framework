@@ -54,6 +54,54 @@
         "environment_id": "ENV-PROD",
         "platform_id": "INF-CLOUD-K8S-PROD"
       }
+    },
+    {
+      "id": "ZONE-CARD-CLOUD",
+      "type": "A4.NetworkZone",
+      "version": "1.0",
+      "name": "Cloud — card fraud",
+      "lifecycle_status": "active",
+      "description": "The card fraud cloud deployment (made up).",
+      "attributes": {
+        "zone_level": 0,
+        "zone_kind": "cloud"
+      }
+    },
+    {
+      "id": "ZONE-CARD-INTERNAL",
+      "type": "A4.NetworkZone",
+      "version": "1.0",
+      "name": "Internal network — card fraud",
+      "lifecycle_status": "active",
+      "description": "The internal network inside the cloud deployment; nothing in it is reached from the internet.",
+      "attributes": {
+        "zone_level": 1,
+        "zone_kind": "internal"
+      }
+    },
+    {
+      "id": "ZONE-CARD-ONPREM",
+      "type": "A4.NetworkZone",
+      "version": "1.0",
+      "name": "On premises — card fraud",
+      "lifecycle_status": "active",
+      "description": "The bank's own data centre (made up), where the legacy VM cluster is being decommissioned.",
+      "attributes": {
+        "zone_level": 0,
+        "zone_kind": "on_premises"
+      }
+    },
+    {
+      "id": "ZONE-CARD-ONPREM-INTERNAL",
+      "type": "A4.NetworkZone",
+      "version": "1.0",
+      "name": "Internal network — on premises (card fraud)",
+      "lifecycle_status": "active",
+      "description": "The internal network of the on-premises site.",
+      "attributes": {
+        "zone_level": 1,
+        "zone_kind": "internal"
+      }
     }
   ],
   "relationships": [
@@ -82,6 +130,26 @@
       "source": "INF-ONPREM-VM-CLUSTER-B",
       "kind": "association",
       "target": "NET-PRIVATE"
+    },
+    {
+      "source": "ZONE-CARD-CLOUD",
+      "kind": "composition",
+      "target": "ZONE-CARD-INTERNAL"
+    },
+    {
+      "source": "ZONE-CARD-ONPREM",
+      "kind": "composition",
+      "target": "ZONE-CARD-ONPREM-INTERNAL"
+    },
+    {
+      "source": "ZONE-CARD-INTERNAL",
+      "kind": "aggregation",
+      "target": "INF-CLOUD-K8S-PROD"
+    },
+    {
+      "source": "ZONE-CARD-ONPREM-INTERNAL",
+      "kind": "aggregation",
+      "target": "INF-ONPREM-VM-CLUSTER-B"
     }
   ]
 }

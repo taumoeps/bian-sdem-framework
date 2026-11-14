@@ -2625,7 +2625,7 @@ sdem workbench --workspace examples/payment-initiation -o work/workbench.html
 a workspace's network zones: each zone and what it holds, how the zones connect (ZC-01…ZC-03, worked out from the zone structure) and how one shape reaches another through them (ZC-04) — read-only
 
 ```
-sdem zones --workspace WORKSPACE
+sdem zones --workspace WORKSPACE [--layout] [--environment ENVIRONMENT]
 ```
 
 *JSON: native · dry run: sandbox*
@@ -2634,6 +2634,8 @@ sdem zones --workspace WORKSPACE
 |---|---|---|
 | `--workspace` | yes | the workspace folder — found from the current folder when you are inside one (WS-11) |
 | `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
+| `--layout` |  | the deployment-zones layout: zone regions, where each shape sits, the zone arrows (sdem/zone_layout.py) — what every drawing of A4 uses |
+| `--environment` |  | with --layout: the one environment drawn (name or kind; default production; all for every one) |
 
 Example:
 

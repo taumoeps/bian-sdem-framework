@@ -146,6 +146,30 @@
         "environment_id": "ENV-ZIPPA-PROD",
         "platform_id": "INF-EKS-ZIPPA-PROD"
       }
+    },
+    {
+      "id": "ZONE-FIN-CLOUD",
+      "type": "A4.NetworkZone",
+      "version": "1.0",
+      "name": "Cloud — Zippa",
+      "lifecycle_status": "active",
+      "description": "The Zippa cloud deployment (made up).",
+      "attributes": {
+        "zone_level": 0,
+        "zone_kind": "cloud"
+      }
+    },
+    {
+      "id": "ZONE-FIN-INTERNAL",
+      "type": "A4.NetworkZone",
+      "version": "1.0",
+      "name": "Internal network — Zippa",
+      "lifecycle_status": "active",
+      "description": "The internal network inside the cloud deployment; nothing in it is reached from the internet.",
+      "attributes": {
+        "zone_level": 1,
+        "zone_kind": "internal"
+      }
     }
   ],
   "relationships": [
@@ -233,6 +257,31 @@
       "source": "TS-QUEUE",
       "kind": "serving",
       "target": "INF-EKS-ZIPPA-PROD"
+    },
+    {
+      "source": "ZONE-FIN-CLOUD",
+      "kind": "composition",
+      "target": "ZONE-FIN-INTERNAL"
+    },
+    {
+      "source": "ZONE-FIN-INTERNAL",
+      "kind": "aggregation",
+      "target": "INF-EKS-ZIPPA-PROD"
+    },
+    {
+      "source": "ZONE-FIN-INTERNAL",
+      "kind": "aggregation",
+      "target": "INF-PG-ZIPPA-PROD"
+    },
+    {
+      "source": "ZONE-FIN-INTERNAL",
+      "kind": "aggregation",
+      "target": "INF-REDIS-ZIPPA-PROD"
+    },
+    {
+      "source": "ZONE-FIN-INTERNAL",
+      "kind": "aggregation",
+      "target": "TS-QUEUE"
     }
   ]
 }

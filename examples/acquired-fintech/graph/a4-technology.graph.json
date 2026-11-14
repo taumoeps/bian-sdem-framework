@@ -6,7 +6,7 @@
     "directed": true,
     "metadata": {
       "sdem_store_version": "1.0",
-      "export_sha256": "3d1c7ee60cd61d7512c48ba67719329fb6cf7aee83344c58af2d6f424c83defe",
+      "export_sha256": "52a66fa2318f9a8e8da9d43a827187f7c63d874f13cd83a2151a10651d77ad71",
       "level": "A4",
       "model_id": "synthetic-fintech-a4",
       "model_version": "2026.10",
@@ -191,6 +191,36 @@
             "platform_id": "INF-EKS-ZIPPA-PROD"
           }
         }
+      },
+      "A4:ZONE-FIN-CLOUD@1.0": {
+        "label": "Cloud — Zippa",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.NetworkZone",
+          "id": "ZONE-FIN-CLOUD",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "The Zippa cloud deployment (made up).",
+          "attributes": {
+            "zone_level": 0,
+            "zone_kind": "cloud"
+          }
+        }
+      },
+      "A4:ZONE-FIN-INTERNAL@1.0": {
+        "label": "Internal network — Zippa",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.NetworkZone",
+          "id": "ZONE-FIN-INTERNAL",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "The internal network inside the cloud deployment; nothing in it is reached from the internet.",
+          "attributes": {
+            "zone_level": 1,
+            "zone_kind": "internal"
+          }
+        }
       }
     },
     "edges": [
@@ -362,6 +392,56 @@
         "metadata": {
           "scope": "within-level",
           "row": "RA4-20"
+        }
+      },
+      {
+        "id": "A4:ZONE-FIN-CLOUD-composition-ZONE-FIN-INTERNAL",
+        "source": "A4:ZONE-FIN-CLOUD@1.0",
+        "target": "A4:ZONE-FIN-INTERNAL@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-27"
+        }
+      },
+      {
+        "id": "A4:ZONE-FIN-INTERNAL-aggregation-INF-EKS-ZIPPA-PROD",
+        "source": "A4:ZONE-FIN-INTERNAL@1.0",
+        "target": "A4:INF-EKS-ZIPPA-PROD@1.30",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-38"
+        }
+      },
+      {
+        "id": "A4:ZONE-FIN-INTERNAL-aggregation-INF-PG-ZIPPA-PROD",
+        "source": "A4:ZONE-FIN-INTERNAL@1.0",
+        "target": "A4:INF-PG-ZIPPA-PROD@16",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-38"
+        }
+      },
+      {
+        "id": "A4:ZONE-FIN-INTERNAL-aggregation-INF-REDIS-ZIPPA-PROD",
+        "source": "A4:ZONE-FIN-INTERNAL@1.0",
+        "target": "A4:INF-REDIS-ZIPPA-PROD@7",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-38"
+        }
+      },
+      {
+        "id": "A4:ZONE-FIN-INTERNAL-aggregation-TS-QUEUE",
+        "source": "A4:ZONE-FIN-INTERNAL@1.0",
+        "target": "A4:TS-QUEUE@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-38"
         }
       }
     ]

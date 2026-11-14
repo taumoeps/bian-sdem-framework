@@ -45,6 +45,17 @@ Give these and the engine (`sdem link`) can propose the cross-layer links with h
 | A4 platform | `hosts`: the applications it runs | **DEPLOYED_ON** |
 | A4 deployment | `component_id`, `environment_id`, `platform_id` | **DEPLOYED_AS** |
 
+## A4 is the physical deployment: zones and connections
+
+Every A4 shape sits in a network zone and is connected inside A4 — `sdem check` warns otherwise (LC-15, LC-16, LC-21, LC-22).
+
+- **Zones** are `A4.NetworkZone` records: `zone_level` 0 (`zone_kind` `cloud` or `on_premises`), 1 (`internal` or `dmz`), 2 (`private`). A zone is part of the one above by `composition` (zone → zone); a zone holds a shape by `aggregation` (zone → shape, RA4-38). A shape a platform runs (a deployment, an artifact) is in its platform's zone — do not place it again.
+- **Internet facing**: `internet_facing: true` on an A4 shape puts it in a DMZ (LC-18). On an A3 interface it means it is reached from the internet: it needs an `EXPOSED_THROUGH` connection to the edge platform (LC-22) — proposed by `sdem aid`, approved by a person with `network_design` evidence, never written by hand.
+- **Connected inside A4** (another layer does not count): a deployment is assigned from the platform in its `platform_id`; a platform is on a network (`association`, RA4-37) or in a zone; a database is associated from the platforms that use it; a technology service serves the platforms it is for; an edge platform is associated with the deployment it fronts.
+- **Zone connections are worked out, never recorded** (ZC-01…ZC-04): `sdem zones --workspace <dir>` lists them; `sdem zones path <a> <b>` shows how two shapes reach each other.
+- **Let SDEM propose, a person decides**: `sdem aid` proposes a zone for each shape (AID-Z01…Z04, from the hosting evidence — cloud first unless the record says otherwise) and the A4 links a shape lacks (AID-C01…C06), each marked inferred with what it read; the person confirms or rejects them by the shape's id: `sdem aid confirm|reject <shape> --workspace <dir> --person <person>`. Say in a record's name or description what decides its hosting (a site, "on premises", a cloud provider) so the proposal is right.
+- **See it**: `sdem zones --layout --workspace <dir>` (the deployment-zones viewpoint — zones as regions, every shape in its zone); `sdem view --graph <dir>/graph` draws A4 the same way.
+
 ## Records imported from past designs (`HIS-` ids)
 
 Records loaded from a Confluence export (`sdem transform` → `sdem load`) have ids `HIS-<layer>-<NAME>` and `attributes.source_id` = `confluence:<page ids>`. They are real records once loaded — change them through change sets like any other — but they were **read from a document**: links the engine proposes for them are capped at low (DEC-E-11). The transform's own output folder holds **candidates**, not data: never copy from it into a dataset, and a graph store refuses it (CTL-23). Skill **sdem-onboard-designs**.
