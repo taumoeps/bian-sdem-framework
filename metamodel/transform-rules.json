@@ -358,6 +358,181 @@
         "detail",
         "acceptance criteria"
       ]
+    },
+    {
+      "id": "HT-11",
+      "type": "A1.BusinessEvent",
+      "name": [
+        "business event",
+        "event",
+        "trigger",
+        "event name"
+      ],
+      "description": [
+        "description",
+        "purpose",
+        "summary"
+      ],
+      "lifecycle": [
+        "status",
+        "lifecycle",
+        "lifecycle status",
+        "state"
+      ],
+      "attributes": {
+        "event_kind": [
+          "event kind",
+          "event type",
+          "kind",
+          "source"
+        ],
+        "schedule": [
+          "schedule",
+          "when",
+          "time",
+          "cut-off",
+          "cutoff"
+        ]
+      }
+    },
+    {
+      "id": "HT-12",
+      "type": "A1.Product",
+      "name": [
+        "product",
+        "product name",
+        "offering"
+      ],
+      "description": [
+        "description",
+        "purpose",
+        "summary"
+      ],
+      "lifecycle": [
+        "status",
+        "lifecycle",
+        "lifecycle status",
+        "state"
+      ],
+      "attributes": {
+        "product_kind": [
+          "product kind",
+          "product type",
+          "kind"
+        ],
+        "segment": [
+          "segment",
+          "customer segment",
+          "market"
+        ],
+        "regulated": [
+          "regulated"
+        ]
+      }
+    },
+    {
+      "id": "HT-13",
+      "type": "A1.BusinessInterface",
+      "name": [
+        "channel",
+        "channel name",
+        "business channel",
+        "customer channel"
+      ],
+      "description": [
+        "description",
+        "purpose",
+        "summary"
+      ],
+      "lifecycle": [
+        "status",
+        "lifecycle",
+        "lifecycle status",
+        "state"
+      ],
+      "attributes": {
+        "channel_kind": [
+          "channel kind",
+          "channel type",
+          "kind"
+        ],
+        "customer_facing": [
+          "customer facing",
+          "customer-facing"
+        ],
+        "availability": [
+          "availability",
+          "hours",
+          "opening hours"
+        ]
+      }
+    },
+    {
+      "id": "HT-14",
+      "type": "A4.Location",
+      "name": [
+        "location",
+        "location name",
+        "data centre",
+        "data center",
+        "site name",
+        "country"
+      ],
+      "description": [
+        "description",
+        "purpose",
+        "summary"
+      ],
+      "lifecycle": [
+        "status",
+        "lifecycle",
+        "lifecycle status",
+        "state"
+      ],
+      "attributes": {
+        "location_kind": [
+          "location kind",
+          "location type",
+          "kind"
+        ],
+        "country": [
+          "country",
+          "country code"
+        ]
+      }
+    },
+    {
+      "id": "HT-15",
+      "type": "A3.DataEntity",
+      "name": [
+        "table",
+        "table name",
+        "data entity",
+        "entity",
+        "data object"
+      ],
+      "description": [
+        "description",
+        "purpose",
+        "summary"
+      ],
+      "lifecycle": [
+        "status",
+        "lifecycle",
+        "lifecycle status",
+        "state"
+      ],
+      "attributes": {
+        "system_of_record": [
+          "system of record",
+          "sor",
+          "master"
+        ],
+        "retention_period": [
+          "retention",
+          "retention period"
+        ]
+      }
     }
   ],
   "no_entity_type_words": [
@@ -677,6 +852,37 @@
         "shape": "mxgraph.archimate3.actor"
       },
       "type": "A1.BusinessActor"
+    },
+    {
+      "id": "HD-24",
+      "match": {
+        "shape": "mxgraph.archimate3.business",
+        "busType": "event"
+      },
+      "type": "A1.BusinessEvent"
+    },
+    {
+      "id": "HD-25",
+      "match": {
+        "shape": "mxgraph.archimate3.business",
+        "busType": "product"
+      },
+      "type": "A1.Product"
+    },
+    {
+      "id": "HD-26",
+      "match": {
+        "shape": "mxgraph.archimate3.business",
+        "busType": "interface"
+      },
+      "type": "A1.BusinessInterface"
+    },
+    {
+      "id": "HD-27",
+      "match": {
+        "shape": "mxgraph.archimate3.location"
+      },
+      "type": "A4.Location"
     }
   ],
   "diagram_colours": {
@@ -971,7 +1177,11 @@
     "technologyservice": "A4.TechnologyService",
     "technologyinterface": "A4.TechnologyInterface",
     "technologyartifact": "A4.Artifact",
-    "technologycommunicationnetwork": "A4.CommunicationNetwork"
+    "technologycommunicationnetwork": "A4.CommunicationNetwork",
+    "businessevent": "A1.BusinessEvent",
+    "businessproduct": "A1.Product",
+    "businessinterface": "A1.BusinessInterface",
+    "location": "A4.Location"
   },
   "plantuml_groups": [
     "package",

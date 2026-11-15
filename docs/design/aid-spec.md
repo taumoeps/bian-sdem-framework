@@ -19,6 +19,16 @@ AID projects the missing architecture layers from the architecture datasets an a
 | AID-A01 | **Attributes as evidence** (metamodel 0.16.0, AT-01): a data entity's `stored_in` → `STORED_IN` that artifact or system software, proposed. | `test_aid_proposes_what_attributes_say_and_links_a_path_to_its_ends` |
 | AID-A02 | An application function's `consumes` → `SERVED_BY` that technology service, proposed. | same file |
 | AID-A03 | A path's `from` and `to` → the path associated with each end, a link inside A4 marked inferred (confirm or reject by the path's id). | same |
+| AID-L01 | **Direct links, proposed from approved paths** (the owner's approval 2, 2026-11-16; `sdem/aid_links.py`): a process that USES_DOMAIN a domain REALIZED_BY a component (or its whole) that realises one application service is SERVED_BY it; actors and roles performing the process too (low). | `test_aid_links.py` |
+| AID-L02 | A process whose (activities') BIAN operations are IMPLEMENTED_BY APIs of a service one function realises — the function doing what the process says (a shared word) — is AUTOMATED_BY it. | same |
+| AID-L03 | A business service a process realises, the process SERVED_BY one application service → REALIZED_BY it. | same |
+| AID-L04 | A business event a process *raises*, the component serving the process raising exactly one application event → REALIZED_BY it. | same |
+| AID-L05 | An API channel associated with a business service REALIZED_BY a service with exactly one interface → REALIZED_BY that interface. | same |
+| AID-L06 | A technology service an application service consumes → SERVED_BY to the one component that realises the service. | same |
+| AID-I05 | An A1 business object ALIGNED_TO the one BIAN business object of the same name. | same |
+| AID-I06 | A *confirmed* inferred data entity STORED_IN the one database every other table of the design is stored in. | same |
+| AID-K02 | **Before inferring a table** (AID-I01): a BIAN object MAPPED_TO an existing table when at least two, and at least half, of its columns say what the object's fields say, the table named for the object counts, each object to its one best table, no close second (15 points). | same |
+| AID-K01 | **Field matches** (the owner's approval 2b): each column of a mapped table to the BIAN field that says the same (words with banking synonyms, a compatible type, the object's own fields before those BIAN repeats from parents — fix 3), at least 60%, one field per column, no close second — never a guess. | same |
 
 ## 3. Forward projection (downstream)
 

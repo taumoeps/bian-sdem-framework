@@ -57,3 +57,17 @@ a zone appears twice (part of, and connected to).
 `examples/payment-initiation` is the engine's sealed evaluation set (its gold mappings and acceptance cases score the inference
 against fixed answers) and about 50 tests encode its exact records. Replacing it would invalidate the benchmark, so v2 is its own
 example; the owner's decision D7 ("v2 replaces v1") is revisited on that evidence.
+
+## After the fixes (the owner's approvals 2, 2b, 3, 4 — 2026-11-16)
+
+v2 rebuilt from the same change sets, then `sdem aid` once:
+
+| | Before | After |
+|---|---|---|
+| The owner's 25 hand-stated links that SDEM now proposes | 0 | **16** in one pass — every direct A1→A3 link (SERVED_BY ×3, AUTOMATED_BY, REALIZED_BY for the business service, the event and the channel), the platform service, the BIAN alignment, both object-to-table mappings and 5 field mappings; 3 more (where the kept tables are stored) on the second pass, once the person has confirmed them |
+| Inferred tables that duplicated an existing one | 2 (payment transaction, account) | **0** — an existing table is matched first (AID-K02) |
+| Left to the person | — | 2 field mappings where BIAN offers two equal fields (debtor and creditor account: FinancialTransaction*From*Account or MoneyTransfer*Source*Account) — never guessed; 2 where SDEM proposed a defensible other BIAN field; 1 column already matched to the starter's own field; the payee's direct A1→A3 mapping (the chain through BIAN already holds it) |
+| Proposals beyond the owner's design | — | 4, each plausible: the execution process also served by the payment initiation service, the hub served by the secrets service, the payee aligned to BIAN's payee, the starter's amount field mapped to the amount column |
+
+Documents now mark which of a BIAN object's fields are its own and which BIAN repeats from parent objects; onboarding (`sdem transform`)
+reads business events, products, channels, locations and data tables from documents and draw.io / PlantUML diagrams.

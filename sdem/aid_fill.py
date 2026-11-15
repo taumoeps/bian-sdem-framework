@@ -145,6 +145,13 @@ def fill(workspace, person, dry_run=False, now=None):
                                        'evidence_class': 'attribute_join', 'from': frm}
         a3doc = after.setdefault('A3', {'level': 'A3', 'model_id': f'{stem}-A3', 'model_version': now[:10], 'metamodel_version': after['A2'].get('metamodel_version'),
                                          'source_system': 'SDEM-AID', 'instances': [], 'relationships': []})
+        from .aid_links import match_existing   # AID-K02 first: an object an existing table stores is not given a new one
+        from .metamodel import Metamodel as _MMk
+        for src, rel, tgt, rule, why, conf in match_existing(after, registry.get('mappings', []) + proposals, _MMk.load()):
+            if src in by_id and tgt in by_id and (src, rel, tgt) not in approved:
+                proposals.append({'mapping_id': f'{run}-P{len(proposals) + 1:03d}', 'source': end({'id': src, 'type': by_id[src]['type'], 'version': by_id[src]['version']}), 'relationship': rel,
+                                  'target': {'id': tgt, 'type': by_id[tgt]['type'], 'version': by_id[tgt]['version']}, 'status': 'proposed', 'confidence': conf,
+                                  'evidence': [f'engine_rationale:{run} {rule}'], 'rationale': f'Inferred by sdem aid ({rule}): {why}', 'baseline_id': run, 'created_by': 'sdem aid'})
         iinst, irels, ilinks = propose_information(after['A2'], a3doc, registry.get('mappings', []) + proposals, mark, rejected, lambda r: is_inferred(r, confirmed=False))
         for rec in iinst:
             if rec['id'] in present: continue
@@ -175,6 +182,18 @@ def fill(workspace, person, dry_run=False, now=None):
             if ends:
                 after['A4'].setdefault('relationships', []).extend(ends); placements += len(ends); connections += len(ends)
                 if 'A4' not in added: added['A4'] = []
+    if after.get('A1') or after.get('A2'):   # AID-L01…L05, AID-K01 (the owner's approvals 2, 2b, 2026-11-16): direct A1->A3 links and field matches, proposed
+        from .aid_links import propose_direct, propose_fields
+        from .metamodel import Metamodel as _MMl
+        _mml = _MMl.load()
+        for fn in (propose_direct, propose_fields):
+            for src, rel, tgt, rule, why, conf in fn(after, registry.get('mappings', []) + proposals, _mml):
+                if src not in by_id or tgt not in by_id or (src, rel, tgt) in approved: continue
+                s_, t_ = by_id[src], by_id[tgt]
+                proposals.append({'mapping_id': f'{run}-P{len(proposals) + 1:03d}', 'source': end({'id': src, 'type': s_['type'], 'version': s_['version']}), 'relationship': rel,
+                                  'target': {'id': tgt, 'type': t_['type'], 'version': t_['version']}, 'status': 'proposed', 'confidence': conf,
+                                  'evidence': [f'engine_rationale:{run} {rule}'], 'rationale': f'Inferred by sdem aid ({rule}): {why}',
+                                  'baseline_id': run, 'created_by': 'sdem aid'})
     if after.get('A3') and after.get('A4'):   # AID-X01: an internet-facing interface EXPOSED_THROUGH the one edge platform — for a person to approve
         from .a4_connect import propose_exposure
         from .metamodel import Metamodel as _MM

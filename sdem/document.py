@@ -64,6 +64,11 @@ def provenance(rec):
     return '; '.join(parts) or 'no source recorded (written by a person or an agent)'
 
 
+def _family(field, obj):
+    from .aid_links import family
+    return family(field, obj)
+
+
 def document(ws, layer):
     """The structured document for one layer: {'layer', 'title', 'workspace', 'fingerprint', 'summary', 'sections', 'requirements', 'gaps'}."""
     from .layers import FILES
@@ -114,7 +119,8 @@ def document(ws, layer):
             ref = next((names.get(y['target'], y['target']) for y in rels if y['source'] == f['id'] and y['kind'] == 'association'), None)
             out.append({'id': f['id'], 'name': f.get('name') or f['id'], 'type': a.get('physical_type') or a.get('data_type') or '—',
                         'key': bool(a.get('primary_key') or a.get('identifier')), 'required': bool(a.get('required')), 'refers_to': ref,
-                        'allowed_values': a.get('allowed_values') or [], 'personal': a.get('personal_information') is True})
+                        'allowed_values': a.get('allowed_values') or [], 'personal': a.get('personal_information') is True,
+                        'family': (_family(f.get('name', ''), byid[rid].get('name', '')) if mm.is_a(f['type'], 'A2.BusinessObjectAttribute') else None)})
         return out
 
     sections, gaps = [], {'unconfirmed': [], 'no_connection': [], 'placeholders': [], 'requirements_not_confirmed': []}
@@ -173,9 +179,12 @@ def markdown(doc):
             meta = [f"version {r['version']}" if r['version'] else None, r['lifecycle_status']]
             L += [f"- **Status:** {', '.join(x for x in meta if x) or '—'}", f"- **Source:** {r['provenance']}"]
             for k, v in r['attributes'].items(): L.append(f"- **{k.replace('_', ' ')}:** {_value(v)}" + (f" — from {r['attribute_sources'][k]}" if k in r.get('attribute_sources', {}) else ''))
-            if r.get('fields'):   # TL-02: the fields as a table
-                L += ['', '| Field | Type | Key | Required | Refers to | Allowed values | Personal |', '|---|---|---|---|---|---|---|']
-                L += [f"| {f['name']} ({f['id']}) | {f['type']} | {'yes' if f['key'] else ''} | {'yes' if f['required'] else ''} | {f['refers_to'] or ''} | {', '.join(f['allowed_values'])} | {'yes' if f['personal'] else ''} |" for f in r['fields']]
+            if r.get('fields'):   # TL-02: the fields as a table; a BIAN object's own fields first, then those BIAN repeats from parent objects (fix 3)
+                fam = any(f.get('family') for f in r['fields'])
+                L += ['', '| Field | Type | Key | Required | Refers to | Allowed values | Personal |' + (' BIAN family |' if fam else ''), '|---|---|---|---|---|---|---|' + ('---|' if fam else '')]
+                for f in sorted(r['fields'], key=lambda f: (f.get('family') == 'inherited', f['name'])):
+                    L.append(f"| {f['name']} ({f['id']}) | {f['type']} | {'yes' if f['key'] else ''} | {'yes' if f['required'] else ''} | {f['refers_to'] or ''} | {', '.join(f['allowed_values'])} | {'yes' if f['personal'] else ''} |"
+                             + (f" {'its own' if f.get('family') == 'own' else 'from a parent object'} |" if fam else ''))
                 L.append('')
             if r['links_out'] or r['links_in']:
                 cite = lambda x: f" — from {x['source_id']}" if x.get('source_id') else ''   # where the link came from (D4)
