@@ -2,7 +2,7 @@
   "level": "A4",
   "model_id": "reference-structure-a4",
   "model_version": "2026.10",
-  "metamodel_version": "0.15.0",
+  "metamodel_version": "0.16.0",
   "source_system": "SDEM-GENERATED-FROM-RECORD",
   "instances": [
     {
@@ -434,6 +434,18 @@
       "kind": "composition",
       "target": "RS-NetworkZone-2",
       "name": "RA4-39"
+    },
+    {
+      "source": "RS-Path-1",
+      "kind": "association",
+      "target": "RS-Node-1",
+      "name": "RA4-40"
+    },
+    {
+      "source": "RS-Path-1",
+      "kind": "association",
+      "target": "RS-Device-1",
+      "name": "RA4-41"
     },
     {
       "source": "RS-Deployment-2",

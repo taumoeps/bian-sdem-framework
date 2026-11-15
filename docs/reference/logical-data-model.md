@@ -964,7 +964,7 @@ erDiagram
         string id PK
         list published_to FK
         string event_type
-        string event_source
+        string event_source FK
         string schema_uri
     }
     A3_SolutionBuildingBlock {
@@ -1033,7 +1033,7 @@ A modular, deployable part of an application
 | `deployed_on` | list | no | ids of the A4 platforms that host it | `A4.InfrastructureComponent` *(join key)* |
 | `deployed_as` | list | no | ids of its A4 deployments | `A4.Deployment` *(join key)* |
 | `built_as` | list | no | ids of the A4 artifacts it is built as | `A4.Artifact` *(join key)* |
-| `network_zone` *(deprecated)* | text | no | id of the A4 network it sits in | `A4.CommunicationNetwork` *(join key)* |
+| `network_zone` *(deprecated)* | text | no | id of the A4 network it sits in | `A4.NetworkZone` *(join key)* |
 | `vendor` | text | no | the supplier of the component ("in-house" when built by the bank) | — |
 | `accesses` *(deprecated)* | list | no | data entities it accesses | `A3.DataEntity` |
 | `release_version` | text | no | the product release that is in use (not the version of this model record) | — |
@@ -1224,7 +1224,7 @@ An event an application produces or consumes
 |---|---|---|---|---|
 | `published_to` | list | no | ids of A4 technology services (brokers) it is published to | `A4.TechnologyService` *(join key)* |
 | `event_type` | text | no | the type name the event carries (e.g. "payment.initiated") | — |
-| `event_source` | text | no | the source the event identifies itself with | — |
+| `event_source` | text | no | the source the event identifies itself with | `A3.ApplicationComponent` |
 | `schema_uri` | text | no | link to the schema the event data follows | — |
 
 **Links**
@@ -1407,6 +1407,8 @@ erDiagram
     A4_InfrastructureComponent }o--o{ A4_CommunicationNetwork : "association"
     A4_NetworkZone }o--o{ A4_InfrastructureComponent : "aggregation"
     A4_NetworkZone |o--o{ A4_NetworkZone : "composition"
+    A4_Path }o--o{ A4_Node : "association"
+    A4_Path }o--o{ A4_Device : "association"
 ```
 
 ### `A4.InfrastructureComponent`
@@ -1513,6 +1515,7 @@ A computational host, physical or virtual
 | flow (with itself) | `Node` | any number |
 | triggering (with itself) | `Node` | any number |
 | ← aggregation | `DeploymentEnvironment` | any number |
+| ← association | `Path` | any number |
 
 ### `A4.Device`
 
@@ -1544,6 +1547,7 @@ Physical computing hardware
 | aggregation (with itself) | `Device` | any number |
 | ← aggregation | `DeploymentEnvironment` | any number |
 | composition (with itself) | `Device` | any number |
+| ← association | `Path` | any number |
 
 ### `A4.SystemSoftware`
 
@@ -1700,6 +1704,8 @@ A route between nodes
 | Link | With | How many |
 |---|---|---|
 | ← realization | `CommunicationNetwork` | any number |
+| association → | `Node` | any number |
+| association → | `Device` | any number |
 
 ### `A4.Artifact`
 
@@ -1751,6 +1757,18 @@ The model above covers each architecture on its own. Links **between** architect
 | `EXPOSED_THROUGH` | `A3.ApplicationInterface` → `A4.SystemSoftware` | many to many |
 | `BUILT_AS` | `A3.ApplicationComponent` → `A4.Artifact` | many to many |
 | `FIELD_MAPPED_TO` | `A2.BusinessObjectAttribute` → `A3.DataAttribute` | many to many |
+| `SERVED_BY` | `A1.BusinessProcess` → `A3.ApplicationService` | many to many |
+| `SERVED_BY` | `A1.BusinessActor` → `A3.ApplicationService` | many to many |
+| `SERVED_BY` | `A1.BusinessRole` → `A3.ApplicationService` | many to many |
+| `AUTOMATED_BY` | `A1.BusinessProcess` → `A3.ApplicationFunction` | many to many |
+| `REALIZED_BY` | `A1.BusinessService` → `A3.ApplicationService` | many to many |
+| `REALIZED_BY` | `A1.BusinessService` → `A3.ApplicationComponent` | many to many |
+| `MAPPED_TO` | `A1.BusinessObject` → `A3.DataEntity` | many to many |
+| `IMPLEMENTED_BY` | `A2.ServiceOperation` → `A3.Event` | many to many |
+| `SERVED_BY` | `A3.ApplicationComponent` → `A4.TechnologyService` | many to many |
+| `SERVED_BY` | `A3.ApplicationFunction` → `A4.TechnologyService` | many to many |
+| `STORED_IN` | `A3.DataEntity` → `A4.Artifact` | many to many |
+| `STORED_IN` | `A3.DataEntity` → `A4.SystemSoftware` | many to many |
 
 ---
 
@@ -1791,18 +1809,18 @@ The rules the data must satisfy, and which the checker enforces today.
 
 ## Appendix B. How the example data measures up
 
-The 8 example workspaces (883 instances) (the generated reference-structure workspace excluded) checked by `sdem check` against the enforced rules. No errors; 29 completeness warning(s), where an example architecture datasets part of BIAN's structure (a business domain without its area, a business object without attribute instances, a stub Service Domain without its groups or control record).
+The 8 example workspaces (890 instances) (the generated reference-structure workspace excluded) checked by `sdem check` against the enforced rules. No errors; 29 completeness warning(s), where an example architecture datasets part of BIAN's structure (a business domain without its area, a business object without attribute instances, a stub Service Domain without its groups or control record).
 
 | Rule | Values checked | Failures |
 |---|---|---|
 | LC-04 | 1254 | 0 |
-| LC-05 | 2837 | 0 |
-| LC-06 | 1546 | 0 |
-| LC-07 | 180 | 0 |
+| LC-05 | 2846 | 0 |
+| LC-06 | 1556 | 0 |
+| LC-07 | 186 | 0 |
 | LC-08 (warning) | 183 | 0 |
-| LC-09 | 820 | 0 |
-| LC-10 | 2755 | 0 |
-| LC-10m (warning) | 2755 | 29 |
+| LC-09 | 827 | 0 |
+| LC-10 | 2777 | 0 |
+| LC-10m (warning) | 2777 | 29 |
 | LC-13 deprecated field in use | — | 0 |
 | fields not in the model | — | 0 |
 
@@ -1815,7 +1833,7 @@ Each entity's, field's and link's source, reasoning and confidence are in [`arch
 | Link counts — SDEM default | 95 | no standard sets a number; left open |
 | Link counts — ArchiMate composition semantics | 26 | a part belongs to at most one whole (ArchiMate) |
 | Link counts — BIAN | 14 | stated by BIAN |
-| Link counts — SDEM | 4 | a part belongs to at most one whole (ArchiMate) |
+| Link counts — SDEM | 6 | a part belongs to at most one whole (ArchiMate) |
 | Link counts — ArchiMate association semantics | 3 | a part belongs to at most one whole (ArchiMate) |
 | Link counts — SDEM reading | 1 | SDEM's reading of a BIAN page |
 | Link counts — ArchiMate aggregation semantics | 1 | a part belongs to at most one whole (ArchiMate) |

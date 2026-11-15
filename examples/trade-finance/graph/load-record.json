@@ -1667,6 +1667,103 @@
           "edges": 24
         }
       ]
+    },
+    {
+      "build": 21,
+      "at": "2026-11-15T18:04:18+00:00",
+      "inputs": [
+        {
+          "path": "examples/trade-finance//a1-business.json",
+          "kind": "export",
+          "level": "A1",
+          "model_id": "synthetic-bank-trade-a1",
+          "model_version": "2026.10",
+          "sha256": "e7252354f470161f367d56108731072f583e0af764bf86c9dcdf591293f6ab07"
+        },
+        {
+          "path": "examples/trade-finance//a2-service-domain.json",
+          "kind": "export",
+          "level": "A2",
+          "model_id": "synthetic-bank-trade-a2",
+          "model_version": "2026.10",
+          "sha256": "74c64b7c7c88b809bd9be1ab2ad409b8d42da87d8b5b6122943cea1d2f557af1"
+        },
+        {
+          "path": "examples/trade-finance//a3-application.json",
+          "kind": "export",
+          "level": "A3",
+          "model_id": "synthetic-bank-trade-a3",
+          "model_version": "2026.10",
+          "sha256": "786518f49637c6f647575d7316cb6f18073d40d229a8fde3ea97b24d5985db17"
+        },
+        {
+          "path": "examples/trade-finance//a4-technology.json",
+          "kind": "export",
+          "level": "A4",
+          "model_id": "synthetic-bank-trade-a4",
+          "model_version": "2026.10",
+          "sha256": "ba5863cb1720aaf63278180a054ae2c2cb794b5a619980ab6a299234ca0339c3"
+        },
+        {
+          "path": "examples/trade-finance//mappings.json",
+          "kind": "registry",
+          "registry_version": "0.4.0",
+          "sha256": "954c654c7e80ce90285ebd22acb68538b73021313aef4944f5fac97c6f00e58f"
+        }
+      ],
+      "metamodel_version": "0.16.0",
+      "errors": [],
+      "warnings": [
+        "level A1 (synthetic-bank-trade-a1): instance BSV-LC-APP: attribute 'inputs' refers to 'applicant_reference', which is not a A1.BusinessObject in this architecture dataset (LC-07)",
+        "level A1 (synthetic-bank-trade-a1): instance BSV-LC-APP: attribute 'inputs' refers to 'beneficiary_reference', which is not a A1.BusinessObject in this architecture dataset (LC-07)",
+        "level A1 (synthetic-bank-trade-a1): instance BSV-LC-APP: attribute 'inputs' refers to 'credit_amount', which is not a A1.BusinessObject in this architecture dataset (LC-07)",
+        "level A1 (synthetic-bank-trade-a1): instance BSV-LC-APP: attribute 'inputs' refers to 'currency', which is not a A1.BusinessObject in this architecture dataset (LC-07)",
+        "level A1 (synthetic-bank-trade-a1): instance BSV-LC-APP: attribute 'inputs' refers to 'expiry_date', which is not a A1.BusinessObject in this architecture dataset (LC-07)",
+        "level A1 (synthetic-bank-trade-a1): instance BSV-LC-APP: attribute 'outputs' refers to 'letter_of_credit_reference', which is not a A1.BusinessObject in this architecture dataset (LC-07)",
+        "level A1 (synthetic-bank-trade-a1): instance BSV-LC-APP: attribute 'outputs' refers to 'application_status', which is not a A1.BusinessObject in this architecture dataset (LC-07)",
+        "level A1 (synthetic-bank-trade-a1): instance BSV-DOC-CHECK: attribute 'inputs' refers to 'document_set_reference', which is not a A1.BusinessObject in this architecture dataset (LC-07)",
+        "level A1 (synthetic-bank-trade-a1): instance BSV-DOC-CHECK: attribute 'inputs' refers to 'letter_of_credit_reference', which is not a A1.BusinessObject in this architecture dataset (LC-07)",
+        "level A1 (synthetic-bank-trade-a1): instance BSV-DOC-CHECK: attribute 'outputs' refers to 'compliance_outcome', which is not a A1.BusinessObject in this architecture dataset (LC-07)",
+        "level A1 (synthetic-bank-trade-a1): instance BSV-DOC-CHECK: attribute 'outputs' refers to 'discrepancies', which is not a A1.BusinessObject in this architecture dataset (LC-07)",
+        "level A2 (synthetic-bank-trade-a2): instance BBO-LC: its field names and its field records disagree — no record for applicant_reference, application_status, beneficiary_reference, currency, issuance_reference, letter_of_credit_reference (LC-24)",
+        "level A2 (synthetic-bank-trade-a2): instance BBO-DOCSET: its field names and its field records disagree — no record for checked_at, document_set_reference, letter_of_credit_reference (LC-24)",
+        "level A3 (synthetic-bank-trade-a3): instance ENT-LC: is thin — its 9 field(s) are names only; give each as a record (DataAttribute, composed of ENT-LC) — sdem bian import --objects or sdem aid fills them (LC-23)",
+        "level A3 (synthetic-bank-trade-a3): instance ENT-LC-AMEND: is thin — its 5 field(s) are names only; give each as a record (DataAttribute, composed of ENT-LC-AMEND) — sdem bian import --objects or sdem aid fills them (LC-23)",
+        "level A3 (synthetic-bank-trade-a3): instance ENT-DOCSET: is thin — its 6 field(s) are names only; give each as a record (DataAttribute, composed of ENT-DOCSET) — sdem bian import --objects or sdem aid fills them (LC-23)"
+      ],
+      "result": "accepted",
+      "outputs": [
+        {
+          "file": "a1-business.graph.json",
+          "sha256": "c6d3f2052d4a36913ac3a1d2fe1efe8773f9418fb445563ae8bcdf4e8dab6c6f",
+          "nodes": 20,
+          "edges": 19
+        },
+        {
+          "file": "a2-service-domain.graph.json",
+          "sha256": "9615a510d3a1b87ac4803ca02227ba9ec4898ffb71896444b287f6a620a31b66",
+          "nodes": 27,
+          "edges": 35
+        },
+        {
+          "file": "a3-application.graph.json",
+          "sha256": "74c9fbde41d8d12da44cfd8dbf13ef833fb4c7e9ef607673e8d5db4827a25b1a",
+          "nodes": 20,
+          "edges": 25
+        },
+        {
+          "file": "a4-technology.graph.json",
+          "sha256": "414a3d53dd1971e2faf8af1450a76083a074711bc7eee83a87c833b89b476b81",
+          "nodes": 23,
+          "edges": 28
+        },
+        {
+          "file": "federated.graph.json",
+          "sha256": "54f2371b473bd03a05682b61b8df5eba165a9801107c96d43e0ce079c6b28491",
+          "nodes": 32,
+          "edges": 24
+        }
+      ]
     }
   ]
 }

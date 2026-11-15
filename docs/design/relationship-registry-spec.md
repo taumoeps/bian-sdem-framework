@@ -83,6 +83,18 @@ From the relationship type catalogue (Architecture Metamodel).
 | `EXPOSED_THROUGH` (INTERFACE_EXPOSED_THROUGH_SYSTEM_SOFTWARE) | A3.ApplicationInterface → A4.SystemSoftware | enterprise_rule | network_design |
 | `BUILT_AS` (COMPONENT_BUILT_AS_ARTIFACT) | A3.ApplicationComponent → A4.Artifact | enterprise_rule | build_pipeline |
 | `FIELD_MAPPED_TO` (BIAN_ATTRIBUTE_FIELD_MAPPED_TO_DATA_ATTRIBUTE) | A2.BusinessObjectAttribute → A3.DataAttribute | enterprise_rule | data_model |
+| `SERVED_BY` (BUSINESSPROCESS_SERVED_BY_APPLICATION_SERVICE) | A1.BusinessProcess → A3.ApplicationService | enterprise_rule | process_model |
+| `SERVED_BY` (BUSINESSACTOR_SERVED_BY_APPLICATION_SERVICE) | A1.BusinessActor → A3.ApplicationService | enterprise_rule | process_model |
+| `SERVED_BY` (BUSINESSROLE_SERVED_BY_APPLICATION_SERVICE) | A1.BusinessRole → A3.ApplicationService | enterprise_rule | process_model |
+| `AUTOMATED_BY` (PROCESS_AUTOMATED_BY_APPLICATION_FUNCTION) | A1.BusinessProcess → A3.ApplicationFunction | enterprise_rule | process_model |
+| `REALIZED_BY` (BUSINESS_SERVICE_REALIZED_BY_APPLICATION_SERVICE) | A1.BusinessService → A3.ApplicationService | enterprise_rule | application_architecture_document |
+| `REALIZED_BY` (BUSINESS_SERVICE_REALIZED_BY_APPLICATION_COMPONENT) | A1.BusinessService → A3.ApplicationComponent | enterprise_rule | application_architecture_document |
+| `MAPPED_TO` (BUSINESS_OBJECT_MAPPED_TO_DATA_ENTITY) | A1.BusinessObject → A3.DataEntity | enterprise_rule | data_model |
+| `IMPLEMENTED_BY` (NOTIFY_OPERATION_IMPLEMENTED_BY_EVENT) | A2.ServiceOperation → A3.Event | enterprise_rule | event_design |
+| `SERVED_BY` (COMPONENT_SERVED_BY_TECHNOLOGY_SERVICE) | A3.ApplicationComponent → A4.TechnologyService | enterprise_rule | deployment_design |
+| `SERVED_BY` (FUNCTION_SERVED_BY_TECHNOLOGY_SERVICE) | A3.ApplicationFunction → A4.TechnologyService | enterprise_rule | deployment_design |
+| `STORED_IN` (DATA_ENTITY_STORED_IN_ARTIFACT) | A3.DataEntity → A4.Artifact | enterprise_rule | deployment_design |
+| `STORED_IN` (DATA_ENTITY_STORED_IN_SYSTEM_SOFTWARE) | A3.DataEntity → A4.SystemSoftware | enterprise_rule | deployment_design |
 
 ## 6. Validation
 

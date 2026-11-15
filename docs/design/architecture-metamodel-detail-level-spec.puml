@@ -49,7 +49,7 @@ package "A3 Application  —  detail §5.3, within-level rows: 34 (§6.1, G-01 (
   rectangle "A3.SolutionBuildingBlock\ntogaf_informed / conceptual\nevidence: interpreted from official source" as a3_solutionbuildingblock #FFE0B2
   rectangle "A3.DataAttribute\nsdem_extension / related\nevidence: sdem extension" as a3_dataattribute #EEEEEE
 }
-package "A4 Technology  [high-level: Infrastructure — G-04 (decided)]  —  detail §5.4, within-level rows: 39 (§6.1, G-01 (decided))" as PA4 {
+package "A4 Technology  [high-level: Infrastructure — G-04 (decided)]  —  detail §5.4, within-level rows: 41 (§6.1, G-01 (decided))" as PA4 {
   rectangle "A4.InfrastructureComponent\n«abstract»\nsdem_extension / none\nevidence: proposed extension" as a4_infrastructurecomponent #EEEEEE
   rectangle "A4.Deployment\nsdem_extension / related\nevidence: proposed extension" as a4_deployment #EEEEEE
   rectangle "A4.DeploymentEnvironment\nsdem_extension / related\nevidence: proposed extension" as a4_deploymentenvironment #EEEEEE
@@ -94,6 +94,18 @@ a3_applicationinterface -[#1565C0,bold]-> a4_device : **EXPOSED_THROUGH**\nenter
 a3_applicationinterface -[#1565C0,bold]-> a4_systemsoftware : **EXPOSED_THROUGH**\nenterprise_rule
 a3_applicationcomponent -[#1565C0,bold]-> a4_artifact : **BUILT_AS**\nenterprise_rule
 a2_businessobjectattribute -[#1565C0,bold]-> a3_dataattribute : **FIELD_MAPPED_TO**\nenterprise_rule
+a1_businessprocess -[#1565C0,bold]-> a3_applicationservice : **SERVED_BY**\nenterprise_rule
+a1_businessactor -[#1565C0,bold]-> a3_applicationservice : **SERVED_BY**\nenterprise_rule
+a1_businessrole -[#1565C0,bold]-> a3_applicationservice : **SERVED_BY**\nenterprise_rule
+a1_businessprocess -[#1565C0,bold]-> a3_applicationfunction : **AUTOMATED_BY**\nenterprise_rule
+a1_businessservice -[#1565C0,bold]-> a3_applicationservice : **REALIZED_BY**\nenterprise_rule
+a1_businessservice -[#1565C0,bold]-> a3_applicationcomponent : **REALIZED_BY**\nenterprise_rule
+a1_businessobject -[#1565C0,bold]-> a3_dataentity : **MAPPED_TO**\nenterprise_rule
+a2_serviceoperation -[#1565C0,bold]-> a3_event : **IMPLEMENTED_BY**\nenterprise_rule
+a3_applicationcomponent -[#1565C0,bold]-> a4_technologyservice : **SERVED_BY**\nenterprise_rule
+a3_applicationfunction -[#1565C0,bold]-> a4_technologyservice : **SERVED_BY**\nenterprise_rule
+a3_dataentity -[#1565C0,bold]-> a4_artifact : **STORED_IN**\nenterprise_rule
+a3_dataentity -[#1565C0,bold]-> a4_systemsoftware : **STORED_IN**\nenterprise_rule
 
 note "**G-03 (decided)**\nhigh-level: composite\nimplemented: related" as N_G03
 N_G03 .. a4_deployment

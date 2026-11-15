@@ -1,5 +1,5 @@
 {
-  "metamodel_version": "0.15.0",
+  "metamodel_version": "0.16.0",
   "note": "Within-level relationships are held by each level model, never by SDEM mapping documents. 0.5.15: A1, A3 and A4 constraint sets added from each level's reference architecture (previously any catalogued kind was accepted and the diagram showed what the examples happened to use). 0.5.14: artefact rows (B14, B15, BOM → objects). 0.5.17: artefact rows flagged enforceable=false; device composition added (relationships test findings 1, 2). 0.5.20: Phase 2 — 113 rows verified_against_archi (112 direct, RA4-31 via its stated alternative); RA3-30/31 (TOGAF) remain unverified_togaf.",
   "kinds": [
     {
@@ -4066,6 +4066,64 @@
         "confidence": "medium",
         "test": "none — an SDEM definition, not an ArchiMate relationship",
         "oracle_verdict": "not tested"
+      }
+    },
+    {
+      "level": "A4",
+      "source_type": "A4.Path",
+      "kind": "association",
+      "target_type": "A4.Node",
+      "id": "RA4-40",
+      "description": "A path connects a node — one of its two ends (WL-04).",
+      "reasoning": "A path's ends as links, so trace follows them; from and to stay as evidence (AT-01).",
+      "basis": "[ARCHI] Archi's implementation of the ArchiMate 3.2 relationship tables (relationships.xml, version 3.2, read 2026-11-16): Path → Node allows 'fgiotv'",
+      "reference_source": "[ARCHI]",
+      "confidence": "high",
+      "verification": "verified_against_archi",
+      "inference": {
+        "archimate_source": "Path",
+        "archimate_target": "Node",
+        "pattern": "path to its end",
+        "reasoning": "ArchiMate permits association from a path to the node it connects.",
+        "confidence": "high",
+        "test": "Archi relationship matrix: Path → Node must list 'o'",
+        "oracle_verdict": "confirmed"
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM",
+        "reasoning": "a path has two ends; a node is the end of many paths"
+      }
+    },
+    {
+      "level": "A4",
+      "source_type": "A4.Path",
+      "kind": "association",
+      "target_type": "A4.Device",
+      "id": "RA4-41",
+      "description": "A path connects a device — one of its two ends (WL-04).",
+      "reasoning": "A path's ends as links, so trace follows them; from and to stay as evidence (AT-01).",
+      "basis": "[ARCHI] Archi's implementation of the ArchiMate 3.2 relationship tables (relationships.xml, version 3.2, read 2026-11-16): Path → Device allows 'fgiotv'",
+      "reference_source": "[ARCHI]",
+      "confidence": "high",
+      "verification": "verified_against_archi",
+      "inference": {
+        "archimate_source": "Path",
+        "archimate_target": "Device",
+        "pattern": "path to its end",
+        "reasoning": "ArchiMate permits association from a path to the device it connects.",
+        "confidence": "high",
+        "test": "Archi relationship matrix: Path → Device must list 'o'",
+        "oracle_verdict": "confirmed"
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM",
+        "reasoning": "a path has two ends; a node is the end of many paths"
       }
     }
   ],

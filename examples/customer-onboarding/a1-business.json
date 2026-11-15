@@ -2,7 +2,7 @@
   "level": "A1",
   "model_id": "synthetic-bank-onboarding-a1",
   "model_version": "2026.10",
-  "metamodel_version": "0.15.0",
+  "metamodel_version": "0.16.0",
   "source_system": "SYNTHETIC-EA-TOOL",
   "instances": [
     {
@@ -83,6 +83,46 @@
           "verification_status"
         ]
       }
+    },
+    {
+      "id": "ACT-001",
+      "type": "A1.BusinessActor",
+      "version": "1.0",
+      "name": "Retail customer",
+      "lifecycle_status": "active",
+      "description": "A person who opens an account (made-up)",
+      "attributes": {
+        "actor_kind": "person",
+        "external": true
+      }
+    },
+    {
+      "id": "ROL-001",
+      "type": "A1.BusinessRole",
+      "version": "1.0",
+      "name": "Onboarding officer",
+      "lifecycle_status": "active",
+      "description": "Checks and approves a new customer (made-up)",
+      "attributes": {
+        "role_kind": "role"
+      }
+    },
+    {
+      "id": "BSV-001",
+      "type": "A1.BusinessService",
+      "version": "1.0",
+      "name": "Customer onboarding service",
+      "lifecycle_status": "active",
+      "description": "Opening a customer relationship (made-up)",
+      "attributes": {
+        "inputs": [
+          "BO-001"
+        ],
+        "outputs": [
+          "BO-001"
+        ],
+        "customer_facing": true
+      }
     }
   ],
   "relationships": [
@@ -115,6 +155,21 @@
       "source": "PRC-001",
       "kind": "access",
       "target": "BO-001"
+    },
+    {
+      "source": "ACT-001",
+      "kind": "assignment",
+      "target": "ROL-001"
+    },
+    {
+      "source": "ROL-001",
+      "kind": "assignment",
+      "target": "PRC-001"
+    },
+    {
+      "source": "PRC-001",
+      "kind": "realization",
+      "target": "BSV-001"
     }
   ]
 }

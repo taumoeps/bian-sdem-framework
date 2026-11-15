@@ -2,7 +2,7 @@
   "note": "The core of SDEM's metamodel at its last freeze (docs/design/sdem-metamodel-stability.md). Written by `sdem model freeze` after an approved, versioned change; CI fails if the core changes without one.",
   "frozen_by": "the SDEM owner",
   "frozen_at": "2026-11-16",
-  "metamodel_version": "0.15.0",
+  "metamodel_version": "0.16.0",
   "entity_types": {
     "A1.BusinessCapability": "active",
     "A1.ValueStream": "active",
@@ -67,7 +67,19 @@
     "INTERFACE_EXPOSED_THROUGH_DEVICE": "active",
     "INTERFACE_EXPOSED_THROUGH_SYSTEM_SOFTWARE": "active",
     "COMPONENT_BUILT_AS_ARTIFACT": "active",
-    "BIAN_ATTRIBUTE_FIELD_MAPPED_TO_DATA_ATTRIBUTE": "active"
+    "BIAN_ATTRIBUTE_FIELD_MAPPED_TO_DATA_ATTRIBUTE": "active",
+    "BUSINESSPROCESS_SERVED_BY_APPLICATION_SERVICE": "active",
+    "BUSINESSACTOR_SERVED_BY_APPLICATION_SERVICE": "active",
+    "BUSINESSROLE_SERVED_BY_APPLICATION_SERVICE": "active",
+    "PROCESS_AUTOMATED_BY_APPLICATION_FUNCTION": "active",
+    "BUSINESS_SERVICE_REALIZED_BY_APPLICATION_SERVICE": "active",
+    "BUSINESS_SERVICE_REALIZED_BY_APPLICATION_COMPONENT": "active",
+    "BUSINESS_OBJECT_MAPPED_TO_DATA_ENTITY": "active",
+    "NOTIFY_OPERATION_IMPLEMENTED_BY_EVENT": "active",
+    "COMPONENT_SERVED_BY_TECHNOLOGY_SERVICE": "active",
+    "FUNCTION_SERVED_BY_TECHNOLOGY_SERVICE": "active",
+    "DATA_ENTITY_STORED_IN_ARTIFACT": "active",
+    "DATA_ENTITY_STORED_IN_SYSTEM_SOFTWARE": "active"
   },
   "within_layer_rules": {
     "RA2-01": "active",
@@ -214,7 +226,9 @@
     "RA2-23": "active",
     "RA3-32": "active",
     "RA3-33": "active",
-    "RA3-34": "active"
+    "RA3-34": "active",
+    "RA4-40": "active",
+    "RA4-41": "active"
   },
   "attributes": {
     "AT-A1-01": "active",

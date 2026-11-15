@@ -1995,6 +1995,93 @@
           "edges": 20
         }
       ]
+    },
+    {
+      "build": 24,
+      "at": "2026-11-15T18:04:18+00:00",
+      "inputs": [
+        {
+          "path": "examples/payment-initiation//a1-business.json",
+          "kind": "export",
+          "level": "A1",
+          "model_id": "synthetic-bank-payments-a1",
+          "model_version": "2026.10",
+          "sha256": "e4533683747afbdfa87d51c7b7057148a9f5eb29a150d8ff7197cd59063b10d0"
+        },
+        {
+          "path": "examples/payment-initiation//a2-service-domain.json",
+          "kind": "export",
+          "level": "A2",
+          "model_id": "synthetic-bank-payments-a2",
+          "model_version": "2026.10",
+          "sha256": "b9ad256481709e03b34ec6d584d3a34cff4fb1f40fbae6e7765fbc59dd664b3d"
+        },
+        {
+          "path": "examples/payment-initiation//a3-application.json",
+          "kind": "export",
+          "level": "A3",
+          "model_id": "synthetic-bank-payments-a3",
+          "model_version": "2026.10",
+          "sha256": "2be2d48cbae98cf5e6089ca24feff65d11d16b641842b8c78fca6e254f3cbb69"
+        },
+        {
+          "path": "examples/payment-initiation//a4-technology.json",
+          "kind": "export",
+          "level": "A4",
+          "model_id": "synthetic-bank-payments-a4",
+          "model_version": "2026.10",
+          "sha256": "79679485fc03ed7a4866224bbc955867a0c954258ee52aca716b7e99563002bf"
+        },
+        {
+          "path": "examples/payment-initiation//mappings.json",
+          "kind": "registry",
+          "registry_version": "0.4.0",
+          "sha256": "c156f1011c2afd67705f42720e380e8d5acb63028af81c18bb75a6de8b5158ed"
+        }
+      ],
+      "metamodel_version": "0.16.0",
+      "errors": [],
+      "warnings": [
+        "level A3 (synthetic-bank-payments-a3): instance EVT-PAY-STATUS: attribute 'event_source' refers to '/payments-hub', which is not a A3.ApplicationComponent in this architecture dataset (LC-07)",
+        "level A3 (synthetic-bank-payments-a3): instance ENT-PAY-INSTR: is thin — its 11 field(s) are names only; give each as a record (DataAttribute, composed of ENT-PAY-INSTR) — sdem bian import --objects or sdem aid fills them (LC-23)",
+        "level A3 (synthetic-bank-payments-a3): instance ENT-PAY-EVENT: is thin — its 4 field(s) are names only; give each as a record (DataAttribute, composed of ENT-PAY-EVENT) — sdem bian import --objects or sdem aid fills them (LC-23)",
+        "level A3 (synthetic-bank-payments-a3): instance ENT-ACCOUNT-CACHE: is thin — its 5 field(s) are names only; give each as a record (DataAttribute, composed of ENT-ACCOUNT-CACHE) — sdem bian import --objects or sdem aid fills them (LC-23)",
+        "level A2 (synthetic-bank-payments-a2): instance BBO-PAY-INSTR: its field names and its field records disagree — no record for creditor_account_reference, currency, debtor_account_reference, payment_instruction_reference, payment_status, remittance_information, value_date (LC-24)",
+        "level A2 (synthetic-bank-payments-a2): instance BBO-PARTY: its field names and its field records disagree — no record for party_name, party_reference, party_type — not in its list: party reference (LC-24)"
+      ],
+      "result": "accepted",
+      "outputs": [
+        {
+          "file": "a1-business.graph.json",
+          "sha256": "7d08a6e6589a4f767254267920153724647674fc3be4bdb81a6c0c8e24f02b81",
+          "nodes": 16,
+          "edges": 16
+        },
+        {
+          "file": "a2-service-domain.graph.json",
+          "sha256": "e2766558735cc04ab1b742a3e0e43b0419a2834fde4fa55815b58feef1c277c7",
+          "nodes": 48,
+          "edges": 68
+        },
+        {
+          "file": "a3-application.graph.json",
+          "sha256": "7902bea23d8a94b460f652364ea9984f7626ebdca8de87436ec2655a9ab8d49e",
+          "nodes": 16,
+          "edges": 19
+        },
+        {
+          "file": "a4-technology.graph.json",
+          "sha256": "04a0842f1977b3be0afc49474596fa64cf20af3bfd88f83733ab7dc529b4b31f",
+          "nodes": 20,
+          "edges": 30
+        },
+        {
+          "file": "federated.graph.json",
+          "sha256": "009ecbf1acff0e32a55c8ca3fd7e91939209328aa0ae77b2f7555dc2c4319132",
+          "nodes": 29,
+          "edges": 20
+        }
+      ]
     }
   ]
 }

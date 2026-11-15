@@ -15,8 +15,8 @@ Generated from `metamodel/level-relationships.json` by `python -m sdem.relations
 | A1 Business Architecture | ArchiMate 3.2 chapters 6 (Motivation), 7 (Strategy) and 8 (Business) | 49 | 49 | 0 | 0 |
 | A2 Service Domain Architecture | BIAN Service Landscape 14 metamodel, Control Record Model, Business Object Model and the Semantic API Practitioner Guide | 23 | 20 | 2 | 1 |
 | A3 Application Architecture | ArchiMate 3.2 chapter 9 (Application) and TOGAF 10 (Solution Building Block); SDEM extension rows for API operations | 34 | 30 | 4 | 0 |
-| A4 Technology Architecture | ArchiMate 3.2 chapter 10 (Technology); SDEM extension rows for Deployment and Deployment Environment | 39 | 37 | 0 | 2 |
-| **Total** | | **145** | 136 | 6 | 3 |
+| A4 Technology Architecture | ArchiMate 3.2 chapter 10 (Technology); SDEM extension rows for Deployment and Deployment Environment | 41 | 39 | 0 | 2 |
+| **Total** | | **147** | 138 | 6 | 3 |
 
 ## A1 Business Architecture
 
@@ -190,6 +190,8 @@ Reference: ArchiMate 3.2 chapter 10 (Technology); SDEM extension rows for Deploy
 | RA4-37 | A4.InfrastructureComponent | association | A4.CommunicationNetwork | A platform — a node, a device or system software — is connected to a communication network. | Node → Communication Network | node connected to a communication network | ArchiMate associates nodes and devices with the communication networks that connect them; system software is a platform SDEM records in a node's place. | high | Archi relationship matrix: Node → Communication Network must list 'o' (association) | verified_against_archi |
 | RA4-38 | A4.NetworkZone | aggregation | A4.InfrastructureComponent | A network zone holds a shape deployed in it. | Grouping → Node | a grouping aggregates the elements placed in it | A network zone holds shapes the way ArchiMate's Grouping aggregates elements of any kind — checked: Grouping → Node, Device, System Software, Technology Service, Technology Interface, Artifact and Communication Network all list 'g' (aggregation) (the owner's decision (option 1), 2026-11-14 — ArchiMate 3.2 relationship tables as implemented by Archi (relationships.xml, version 3.2, read 2026-11-14)). | high | Archi relationship matrix: Grouping → Node must list 'g' (aggregation) | sdem_definition_grounded |
 | RA4-39 | A4.NetworkZone | composition | A4.NetworkZone | A network zone is composed of the zones inside it: a level-0 zone of its level-1 zones, a level-1 zone of its level-2 zones. | Grouping → Grouping | a grouping is composed of groupings | ArchiMate 3.2: Grouping → Grouping lists 'c' (composition) (the owner's decision (option 1), 2026-11-14 — ArchiMate 3.2 relationship tables as implemented by Archi (relationships.xml, version 3.2, read 2026-11-14)). | high | Archi relationship matrix: Grouping → Grouping must list 'c' | sdem_definition_grounded |
+| RA4-40 | A4.Path | association | A4.Node | A path connects a node — one of its two ends (WL-04). | Path → Node | path to its end | ArchiMate permits association from a path to the node it connects. | high | Archi relationship matrix: Path → Node must list 'o' | verified_against_archi |
+| RA4-41 | A4.Path | association | A4.Device | A path connects a device — one of its two ends (WL-04). | Path → Device | path to its end | ArchiMate permits association from a path to the device it connects. | high | Archi relationship matrix: Path → Device must list 'o' | verified_against_archi |
 
 ## Catalogue inheritance (is-a)
 
@@ -216,7 +218,7 @@ How far each row has been checked, and against what. `verified_against_archi` is
 
 | Status | Rows | Meaning |
 |---|---|---|
-| verified_against_archi | 120 | concept pair and kind listed by the open-source Archi relationship matrix — an implementation of the ArchiMate 3.2 relationship tables, cited by commit below |
+| verified_against_archi | 122 | concept pair and kind listed by the open-source Archi relationship matrix — an implementation of the ArchiMate 3.2 relationship tables, cited by commit below |
 | verified | 16 | checked against BIAN's public pages (A2) |
 | sdem_definition | 4 | follows from an SDEM extension entity's definition |
 | unverified_togaf | 2 | paraphrased from TOGAF; no public oracle |
@@ -229,7 +231,7 @@ How far each row has been checked, and against what. `verified_against_archi` is
 
 | Inference confidence | Rows | Oracle verdict |
 |---|---|---|
-| high | 71 | confirmed: 69, not tested: 2 |
+| high | 73 | confirmed: 71, not tested: 2 |
 | medium | 46 | confirmed: 42, not tested: 4 |
 | low | 5 | confirmed: 4, confirmed, alternative accepted: 1 |
 
@@ -240,5 +242,5 @@ The test plan is `docs/evidence/relationships-testing.md`; its results sections 
 | Phase | What was tested | Result |
 |---|---|---|
 | 1 (2026-10-23) | provenance, grounding, consistency, enforcement probes, coverage, rule dependencies — all 131 rows and 12 inheritance links | 0 fail; 3 artefact rows not enforceable; 6 findings applied in v0.5.17 |
-| 2 (2026-10-23) | every A1 / A3 / A4 inference against the Archi relationship matrix | 115 confirmed, 1 confirmed via stated alternative, 0 contradicted, 2 not testable (TOGAF); applied in v0.5.20 |
+| 2 (2026-10-23) | every A1 / A3 / A4 inference against the Archi relationship matrix | 117 confirmed, 1 confirmed via stated alternative, 0 contradicted, 2 not testable (TOGAF); applied in v0.5.20 |
 

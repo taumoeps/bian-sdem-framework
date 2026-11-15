@@ -358,6 +358,260 @@
       "confidence": "low",
       "confidence_basis": "no standard basis; not validated",
       "reasoning": "With fields as records, a BIAN attribute is mapped to the column that stores it, so impact reaches a field and lineage is checked, not matched by name."
+    },
+    {
+      "mapping_type_id": "BUSINESSPROCESS_SERVED_BY_APPLICATION_SERVICE",
+      "source_type": "A1.BusinessProcess",
+      "relationship": "SERVED_BY",
+      "target_type": "A3.ApplicationService",
+      "cardinality": "many_to_many",
+      "perspective": "process",
+      "authority": "enterprise_rule",
+      "direction_semantics": "The application service serves the process — the software the business uses (XL-01).",
+      "required_evidence": [
+        "process_model"
+      ],
+      "rule_version": "1.0",
+      "owner": "business-architecture",
+      "source_reference": "Archi's implementation of the ArchiMate 3.2 relationship tables (relationships.xml, version 3.2, read 2026-11-16): ApplicationService → BusinessProcess allows 'v' (serving). The owner's decision, 2026-11-16 (metamodel 0.16.0, docs/design/sdem-full-design-metamodel-design.md).",
+      "verification": "sdem_definition_grounded",
+      "confidence": "high",
+      "confidence_basis": "SDEM's own definition, grounded in an ArchiMate 3.2 pattern checked against the relationship tables",
+      "reasoning": "ArchiMate: an application service serves business behaviour and the actors and roles that perform it. Named from the business side, as SUPPORTED_BY is. Skips A2 by the owner’s decision D9.",
+      "skips_level": true,
+      "skips_level_reasoning": "The owner's decision D9 (2026-11-16, option 1): links stay between adjacent layers (KG-F-03), except a named list of direct A1↔A3 types ArchiMate defines and BIAN has no counterpart for."
+    },
+    {
+      "mapping_type_id": "BUSINESSACTOR_SERVED_BY_APPLICATION_SERVICE",
+      "source_type": "A1.BusinessActor",
+      "relationship": "SERVED_BY",
+      "target_type": "A3.ApplicationService",
+      "cardinality": "many_to_many",
+      "perspective": "process",
+      "authority": "enterprise_rule",
+      "direction_semantics": "The application service serves the actor — the software the business uses (XL-01).",
+      "required_evidence": [
+        "process_model"
+      ],
+      "rule_version": "1.0",
+      "owner": "business-architecture",
+      "source_reference": "Archi's implementation of the ArchiMate 3.2 relationship tables (relationships.xml, version 3.2, read 2026-11-16): ApplicationService → BusinessActor allows 'v' (serving). The owner's decision, 2026-11-16 (metamodel 0.16.0, docs/design/sdem-full-design-metamodel-design.md).",
+      "verification": "sdem_definition_grounded",
+      "confidence": "high",
+      "confidence_basis": "SDEM's own definition, grounded in an ArchiMate 3.2 pattern checked against the relationship tables",
+      "reasoning": "ArchiMate: an application service serves business behaviour and the actors and roles that perform it. Named from the business side, as SUPPORTED_BY is. Skips A2 by the owner’s decision D9.",
+      "skips_level": true,
+      "skips_level_reasoning": "The owner's decision D9 (2026-11-16, option 1): links stay between adjacent layers (KG-F-03), except a named list of direct A1↔A3 types ArchiMate defines and BIAN has no counterpart for."
+    },
+    {
+      "mapping_type_id": "BUSINESSROLE_SERVED_BY_APPLICATION_SERVICE",
+      "source_type": "A1.BusinessRole",
+      "relationship": "SERVED_BY",
+      "target_type": "A3.ApplicationService",
+      "cardinality": "many_to_many",
+      "perspective": "process",
+      "authority": "enterprise_rule",
+      "direction_semantics": "The application service serves the role — the software the business uses (XL-01).",
+      "required_evidence": [
+        "process_model"
+      ],
+      "rule_version": "1.0",
+      "owner": "business-architecture",
+      "source_reference": "Archi's implementation of the ArchiMate 3.2 relationship tables (relationships.xml, version 3.2, read 2026-11-16): ApplicationService → BusinessRole allows 'v' (serving). The owner's decision, 2026-11-16 (metamodel 0.16.0, docs/design/sdem-full-design-metamodel-design.md).",
+      "verification": "sdem_definition_grounded",
+      "confidence": "high",
+      "confidence_basis": "SDEM's own definition, grounded in an ArchiMate 3.2 pattern checked against the relationship tables",
+      "reasoning": "ArchiMate: an application service serves business behaviour and the actors and roles that perform it. Named from the business side, as SUPPORTED_BY is. Skips A2 by the owner’s decision D9.",
+      "skips_level": true,
+      "skips_level_reasoning": "The owner's decision D9 (2026-11-16, option 1): links stay between adjacent layers (KG-F-03), except a named list of direct A1↔A3 types ArchiMate defines and BIAN has no counterpart for."
+    },
+    {
+      "mapping_type_id": "PROCESS_AUTOMATED_BY_APPLICATION_FUNCTION",
+      "source_type": "A1.BusinessProcess",
+      "relationship": "AUTOMATED_BY",
+      "target_type": "A3.ApplicationFunction",
+      "cardinality": "many_to_many",
+      "perspective": "process",
+      "authority": "enterprise_rule",
+      "direction_semantics": "The application function performs (part of) the process — automation (XL-02).",
+      "required_evidence": [
+        "process_model"
+      ],
+      "rule_version": "1.0",
+      "owner": "business-architecture",
+      "source_reference": "Archi's implementation of the ArchiMate 3.2 relationship tables (relationships.xml, version 3.2, read 2026-11-16): ApplicationFunction → BusinessProcess allows 'r' (realization). The owner's decision, 2026-11-16 (metamodel 0.16.0, docs/design/sdem-full-design-metamodel-design.md).",
+      "verification": "sdem_definition_grounded",
+      "confidence": "high",
+      "confidence_basis": "SDEM's own definition, grounded in an ArchiMate 3.2 pattern checked against the relationship tables",
+      "reasoning": "ArchiMate: application behaviour realises business behaviour — the process, or the activity (is-a), is automated. Replaces guessing from automation_level. Skips A2 (D9).",
+      "skips_level": true,
+      "skips_level_reasoning": "The owner's decision D9 (2026-11-16, option 1): links stay between adjacent layers (KG-F-03), except a named list of direct A1↔A3 types ArchiMate defines and BIAN has no counterpart for."
+    },
+    {
+      "mapping_type_id": "BUSINESS_SERVICE_REALIZED_BY_APPLICATION_SERVICE",
+      "source_type": "A1.BusinessService",
+      "relationship": "REALIZED_BY",
+      "target_type": "A3.ApplicationService",
+      "cardinality": "many_to_many",
+      "perspective": "architecture",
+      "authority": "enterprise_rule",
+      "direction_semantics": "The application service realises the business service (XL-03).",
+      "required_evidence": [
+        "application_architecture_document"
+      ],
+      "rule_version": "1.0",
+      "owner": "business-architecture",
+      "source_reference": "Archi's implementation of the ArchiMate 3.2 relationship tables (relationships.xml, version 3.2, read 2026-11-16): ApplicationService → BusinessService allows 'r' (realization). The owner's decision, 2026-11-16 (metamodel 0.16.0, docs/design/sdem-full-design-metamodel-design.md).",
+      "verification": "sdem_definition_grounded",
+      "confidence": "high",
+      "confidence_basis": "SDEM's own definition, grounded in an ArchiMate 3.2 pattern checked against the relationship tables",
+      "reasoning": "ArchiMate: application behaviour or structure realises a business service. Skips A2 (D9).",
+      "skips_level": true,
+      "skips_level_reasoning": "The owner's decision D9 (2026-11-16, option 1): links stay between adjacent layers (KG-F-03), except a named list of direct A1↔A3 types ArchiMate defines and BIAN has no counterpart for."
+    },
+    {
+      "mapping_type_id": "BUSINESS_SERVICE_REALIZED_BY_APPLICATION_COMPONENT",
+      "source_type": "A1.BusinessService",
+      "relationship": "REALIZED_BY",
+      "target_type": "A3.ApplicationComponent",
+      "cardinality": "many_to_many",
+      "perspective": "architecture",
+      "authority": "enterprise_rule",
+      "direction_semantics": "The application component realises the business service (XL-03).",
+      "required_evidence": [
+        "application_architecture_document"
+      ],
+      "rule_version": "1.0",
+      "owner": "business-architecture",
+      "source_reference": "Archi's implementation of the ArchiMate 3.2 relationship tables (relationships.xml, version 3.2, read 2026-11-16): ApplicationComponent → BusinessService allows 'r' (realization). The owner's decision, 2026-11-16 (metamodel 0.16.0, docs/design/sdem-full-design-metamodel-design.md).",
+      "verification": "sdem_definition_grounded",
+      "confidence": "high",
+      "confidence_basis": "SDEM's own definition, grounded in an ArchiMate 3.2 pattern checked against the relationship tables",
+      "reasoning": "ArchiMate: application behaviour or structure realises a business service. Skips A2 (D9).",
+      "skips_level": true,
+      "skips_level_reasoning": "The owner's decision D9 (2026-11-16, option 1): links stay between adjacent layers (KG-F-03), except a named list of direct A1↔A3 types ArchiMate defines and BIAN has no counterpart for."
+    },
+    {
+      "mapping_type_id": "BUSINESS_OBJECT_MAPPED_TO_DATA_ENTITY",
+      "source_type": "A1.BusinessObject",
+      "relationship": "MAPPED_TO",
+      "target_type": "A3.DataEntity",
+      "cardinality": "many_to_many",
+      "perspective": "information",
+      "authority": "enterprise_rule",
+      "direction_semantics": "The data entity stores (part of) the business object — directly, for the organisation’s own concepts BIAN has no object for (IM-06).",
+      "required_evidence": [
+        "data_model"
+      ],
+      "rule_version": "1.0",
+      "owner": "data-architecture",
+      "source_reference": "Archi's implementation of the ArchiMate 3.2 relationship tables (relationships.xml, version 3.2, read 2026-11-16): DataObject → BusinessObject allows 'r' (realization). The owner's decision, 2026-11-16 (metamodel 0.16.0, docs/design/sdem-full-design-metamodel-design.md).",
+      "verification": "sdem_definition_grounded",
+      "confidence": "high",
+      "confidence_basis": "SDEM's own definition, grounded in an ArchiMate 3.2 pattern checked against the relationship tables",
+      "reasoning": "A data object realises a business object (ArchiMate). With it the information chain runs for every A1 object, through BIAN where BIAN has one, directly where it has not. Skips A2 (D9).",
+      "skips_level": true,
+      "skips_level_reasoning": "The owner's decision D9 (2026-11-16, option 1): links stay between adjacent layers (KG-F-03), except a named list of direct A1↔A3 types ArchiMate defines and BIAN has no counterpart for."
+    },
+    {
+      "mapping_type_id": "NOTIFY_OPERATION_IMPLEMENTED_BY_EVENT",
+      "source_type": "A2.ServiceOperation",
+      "relationship": "IMPLEMENTED_BY",
+      "target_type": "A3.Event",
+      "cardinality": "many_to_many",
+      "perspective": "architecture",
+      "authority": "enterprise_rule",
+      "direction_semantics": "The application event implements a BIAN Notify operation (XL-09) — the registered candidate.",
+      "required_evidence": [
+        "event_design"
+      ],
+      "rule_version": "1.0",
+      "owner": "application-architecture",
+      "source_reference": "Archi's implementation of the ArchiMate 3.2 relationship tables (relationships.xml, version 3.2, read 2026-11-16): BIAN Semantic API Practitioner Guide §3.5: Notify has no REST form; an event is its natural implementation (candidate in metamodel/relationship-rules.json). The owner's decision, 2026-11-16 (metamodel 0.16.0, docs/design/sdem-full-design-metamodel-design.md).",
+      "verification": "sdem_definition_grounded",
+      "confidence": "high",
+      "confidence_basis": "SDEM's own definition, grounded in an ArchiMate 3.2 pattern checked against the relationship tables",
+      "reasoning": "A Notify operation is delivered as an event, not an API call; IMPLEMENTED_BY names it as it does for an API operation."
+    },
+    {
+      "mapping_type_id": "COMPONENT_SERVED_BY_TECHNOLOGY_SERVICE",
+      "source_type": "A3.ApplicationComponent",
+      "relationship": "SERVED_BY",
+      "target_type": "A4.TechnologyService",
+      "cardinality": "many_to_many",
+      "perspective": "architecture",
+      "authority": "enterprise_rule",
+      "direction_semantics": "The technology service serves the application component — a platform service it uses (XL-06).",
+      "required_evidence": [
+        "deployment_design"
+      ],
+      "rule_version": "1.0",
+      "owner": "infrastructure-architecture",
+      "source_reference": "Archi's implementation of the ArchiMate 3.2 relationship tables (relationships.xml, version 3.2, read 2026-11-16): TechnologyService → ApplicationComponent allows 'v' (serving). The owner's decision, 2026-11-16 (metamodel 0.16.0, docs/design/sdem-full-design-metamodel-design.md).",
+      "verification": "sdem_definition_grounded",
+      "confidence": "high",
+      "confidence_basis": "SDEM's own definition, grounded in an ArchiMate 3.2 pattern checked against the relationship tables",
+      "reasoning": "ArchiMate: a technology service serves application structure and behaviour. Was the attribute consumes (A3 → A4); now a link, proposed from it (AT-01)."
+    },
+    {
+      "mapping_type_id": "FUNCTION_SERVED_BY_TECHNOLOGY_SERVICE",
+      "source_type": "A3.ApplicationFunction",
+      "relationship": "SERVED_BY",
+      "target_type": "A4.TechnologyService",
+      "cardinality": "many_to_many",
+      "perspective": "architecture",
+      "authority": "enterprise_rule",
+      "direction_semantics": "The technology service serves the application function — a platform service it uses (XL-06).",
+      "required_evidence": [
+        "deployment_design"
+      ],
+      "rule_version": "1.0",
+      "owner": "infrastructure-architecture",
+      "source_reference": "Archi's implementation of the ArchiMate 3.2 relationship tables (relationships.xml, version 3.2, read 2026-11-16): TechnologyService → ApplicationFunction allows 'v' (serving). The owner's decision, 2026-11-16 (metamodel 0.16.0, docs/design/sdem-full-design-metamodel-design.md).",
+      "verification": "sdem_definition_grounded",
+      "confidence": "high",
+      "confidence_basis": "SDEM's own definition, grounded in an ArchiMate 3.2 pattern checked against the relationship tables",
+      "reasoning": "ArchiMate: a technology service serves application structure and behaviour. Was the attribute consumes (A3 → A4); now a link, proposed from it (AT-01)."
+    },
+    {
+      "mapping_type_id": "DATA_ENTITY_STORED_IN_ARTIFACT",
+      "source_type": "A3.DataEntity",
+      "relationship": "STORED_IN",
+      "target_type": "A4.Artifact",
+      "cardinality": "many_to_many",
+      "perspective": "information",
+      "authority": "enterprise_rule",
+      "direction_semantics": "The data entity is stored in the artifact (a database, a file) (XL-07).",
+      "required_evidence": [
+        "deployment_design"
+      ],
+      "rule_version": "1.0",
+      "owner": "data-architecture",
+      "source_reference": "Archi's implementation of the ArchiMate 3.2 relationship tables (relationships.xml, version 3.2, read 2026-11-16): Artifact → DataObject allows 'r' (realization). The owner's decision, 2026-11-16 (metamodel 0.16.0, docs/design/sdem-full-design-metamodel-design.md).",
+      "verification": "sdem_definition_grounded",
+      "confidence": "high",
+      "confidence_basis": "SDEM's own definition, grounded in an ArchiMate 3.2 pattern checked against the relationship tables",
+      "reasoning": "Where data rests: ArchiMate lets an artifact realise a data object. Was the attribute stored_in; now a link, proposed from it (AT-01), so trace and impact reach data at rest."
+    },
+    {
+      "mapping_type_id": "DATA_ENTITY_STORED_IN_SYSTEM_SOFTWARE",
+      "source_type": "A3.DataEntity",
+      "relationship": "STORED_IN",
+      "target_type": "A4.SystemSoftware",
+      "cardinality": "many_to_many",
+      "perspective": "information",
+      "authority": "enterprise_rule",
+      "direction_semantics": "The data entity is stored in the system software (a database server) (XL-07).",
+      "required_evidence": [
+        "deployment_design"
+      ],
+      "rule_version": "1.0",
+      "owner": "data-architecture",
+      "source_reference": "Archi's implementation of the ArchiMate 3.2 relationship tables (relationships.xml, version 3.2, read 2026-11-16): SystemSoftware → Artifact allows 'n' (assignment) and an artifact realizes a data object. The owner's decision, 2026-11-16 (metamodel 0.16.0, docs/design/sdem-full-design-metamodel-design.md).",
+      "verification": "sdem_definition_grounded",
+      "confidence": "high",
+      "confidence_basis": "SDEM's own definition, grounded in an ArchiMate 3.2 pattern checked against the relationship tables",
+      "reasoning": "Where data rests: ArchiMate lets an artifact realise a data object. Was the attribute stored_in; now a link, proposed from it (AT-01), so trace and impact reach data at rest."
     }
   ],
   "deprecated_relationships": []

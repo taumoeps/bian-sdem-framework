@@ -249,7 +249,7 @@ class CustomerOnboardingExampleTests(unittest.TestCase):
         t = self._fg().trace('CAP-001', 'down')
         app = t['children'][0]['node']['children'][0]['node']
         self.assertEqual(app['id'], 'APP-001')
-        self.assertEqual({c['node']['id'] for c in app['children']}, {'INF-001', 'DEP-001', 'ART-001'})   # and its image (BUILT_AS, 0.14.0)
+        self.assertEqual({c['node']['id'] for c in app['children']}, {'INF-001', 'DEP-001', 'ART-001', 'TSV-001'})   # and its image (BUILT_AS, 0.14.0), the platform service it uses (SERVED_BY, 0.16.0)
 
     def test_e2_4_upstream_from_entity_is_information_only(self):
         t = self._fg().trace('ENT-001', 'up')
@@ -355,4 +355,4 @@ class ReferenceStructureTests(unittest.TestCase):
         enforceable = {c['id'] for c in lr['constraints'] if c.get('enforceable') is not False}
         present = {r['name'] for f in self.P.glob('a*.json') for r in json.loads(f.read_text(encoding='utf-8'))['relationships']}
         self.assertEqual(enforceable - present, set())
-        self.assertEqual(len(enforceable), 142)   # RA4-37 (0.9.0), RA4-38 (0.10.0), RA4-39 (0.13.0); RA1-49, RA2-18…RA2-23, RA3-32…RA3-34 (0.15.0)
+        self.assertEqual(len(enforceable), 144)   # RA4-37 (0.9.0), RA4-38 (0.10.0), RA4-39 (0.13.0); RA1-49, RA2-18…RA2-23, RA3-32…RA3-34 (0.15.0); RA4-40, RA4-41 (0.16.0)

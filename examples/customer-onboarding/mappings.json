@@ -333,7 +333,214 @@
       "baseline_id": "DEMO-BASE-001",
       "reviewer_id": "DEMO-ARCHITECT",
       "approved_at": "2026-01-15"
+    },
+    {
+      "mapping_id": "MAP-015",
+      "source": {
+        "id": "PRC-001",
+        "type": "A1.BusinessProcess",
+        "version": "1.0"
+      },
+      "relationship": "SERVED_BY",
+      "target": {
+        "id": "ASV-001",
+        "type": "A3.ApplicationService",
+        "version": "1.0"
+      },
+      "perspective": "process",
+      "status": "approved",
+      "evidence": [
+        "process_model:SYNTHETIC-PM-001"
+      ],
+      "rationale": "The onboarding process uses the identity verification service. (made-up, metamodel 0.16.0)",
+      "baseline_id": "DEMO-BASE-001",
+      "reviewer_id": "DEMO-ARCHITECT",
+      "approved_at": "2026-01-15"
+    },
+    {
+      "mapping_id": "MAP-016",
+      "source": {
+        "id": "ACT-001",
+        "type": "A1.BusinessActor",
+        "version": "1.0"
+      },
+      "relationship": "SERVED_BY",
+      "target": {
+        "id": "ASV-001",
+        "type": "A3.ApplicationService",
+        "version": "1.0"
+      },
+      "perspective": "process",
+      "status": "approved",
+      "evidence": [
+        "process_model:SYNTHETIC-PM-001"
+      ],
+      "rationale": "The customer uses the identity verification service through the portal. (made-up, metamodel 0.16.0)",
+      "baseline_id": "DEMO-BASE-001",
+      "reviewer_id": "DEMO-ARCHITECT",
+      "approved_at": "2026-01-15"
+    },
+    {
+      "mapping_id": "MAP-017",
+      "source": {
+        "id": "ROL-001",
+        "type": "A1.BusinessRole",
+        "version": "1.0"
+      },
+      "relationship": "SERVED_BY",
+      "target": {
+        "id": "ASV-001",
+        "type": "A3.ApplicationService",
+        "version": "1.0"
+      },
+      "perspective": "process",
+      "status": "approved",
+      "evidence": [
+        "process_model:SYNTHETIC-PM-001"
+      ],
+      "rationale": "The onboarding officer uses it to review a case. (made-up, metamodel 0.16.0)",
+      "baseline_id": "DEMO-BASE-001",
+      "reviewer_id": "DEMO-ARCHITECT",
+      "approved_at": "2026-01-15"
+    },
+    {
+      "mapping_id": "MAP-018",
+      "source": {
+        "id": "PRC-001",
+        "type": "A1.BusinessProcess",
+        "version": "1.0"
+      },
+      "relationship": "AUTOMATED_BY",
+      "target": {
+        "id": "AFN-001",
+        "type": "A3.ApplicationFunction",
+        "version": "1.0"
+      },
+      "perspective": "process",
+      "status": "approved",
+      "evidence": [
+        "process_model:SYNTHETIC-PM-001"
+      ],
+      "rationale": "Document checking in onboarding is automated by this function. (made-up, metamodel 0.16.0)",
+      "baseline_id": "DEMO-BASE-001",
+      "reviewer_id": "DEMO-ARCHITECT",
+      "approved_at": "2026-01-15"
+    },
+    {
+      "mapping_id": "MAP-019",
+      "source": {
+        "id": "BSV-001",
+        "type": "A1.BusinessService",
+        "version": "1.0"
+      },
+      "relationship": "REALIZED_BY",
+      "target": {
+        "id": "ASV-001",
+        "type": "A3.ApplicationService",
+        "version": "1.0"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "application_architecture_document:SYNTHETIC-AAD-001"
+      ],
+      "rationale": "The onboarding service is delivered by identity verification. (made-up, metamodel 0.16.0)",
+      "baseline_id": "DEMO-BASE-001",
+      "reviewer_id": "DEMO-ARCHITECT",
+      "approved_at": "2026-01-15"
+    },
+    {
+      "mapping_id": "MAP-020",
+      "source": {
+        "id": "BO-001",
+        "type": "A1.BusinessObject",
+        "version": "1.0"
+      },
+      "relationship": "MAPPED_TO",
+      "target": {
+        "id": "ENT-001",
+        "type": "A3.DataEntity",
+        "version": "1.0"
+      },
+      "perspective": "information",
+      "status": "approved",
+      "evidence": [
+        "data_model:SYNTHETIC-DM-001"
+      ],
+      "rationale": "The customer identity table stores the business object directly. (made-up, metamodel 0.16.0)",
+      "baseline_id": "DEMO-BASE-001",
+      "reviewer_id": "DEMO-ARCHITECT",
+      "approved_at": "2026-01-15"
+    },
+    {
+      "mapping_id": "MAP-021",
+      "source": {
+        "id": "APP-001",
+        "type": "A3.ApplicationComponent",
+        "version": "1.0"
+      },
+      "relationship": "SERVED_BY",
+      "target": {
+        "id": "TSV-001",
+        "type": "A4.TechnologyService",
+        "version": "1.0"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "deployment_design:SYNTHETIC-DD-001"
+      ],
+      "rationale": "The portal publishes its events to the platform's streaming service. (made-up, metamodel 0.16.0)",
+      "baseline_id": "DEMO-BASE-001",
+      "reviewer_id": "DEMO-ARCHITECT",
+      "approved_at": "2026-01-15"
+    },
+    {
+      "mapping_id": "MAP-022",
+      "source": {
+        "id": "AFN-001",
+        "type": "A3.ApplicationFunction",
+        "version": "1.0"
+      },
+      "relationship": "SERVED_BY",
+      "target": {
+        "id": "TSV-001",
+        "type": "A4.TechnologyService",
+        "version": "1.0"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "deployment_design:SYNTHETIC-DD-001"
+      ],
+      "rationale": "The function reads document events from the streaming service. (made-up, metamodel 0.16.0)",
+      "baseline_id": "DEMO-BASE-001",
+      "reviewer_id": "DEMO-ARCHITECT",
+      "approved_at": "2026-01-15"
+    },
+    {
+      "mapping_id": "MAP-023",
+      "source": {
+        "id": "ENT-001",
+        "type": "A3.DataEntity",
+        "version": "1.0"
+      },
+      "relationship": "STORED_IN",
+      "target": {
+        "id": "INF-002",
+        "type": "A4.SystemSoftware",
+        "version": "16"
+      },
+      "perspective": "information",
+      "status": "approved",
+      "evidence": [
+        "deployment_design:SYNTHETIC-DD-001"
+      ],
+      "rationale": "The customer identity table is held by the channels PostgreSQL. (made-up, metamodel 0.16.0)",
+      "baseline_id": "DEMO-BASE-001",
+      "reviewer_id": "DEMO-ARCHITECT",
+      "approved_at": "2026-01-15"
     }
   ],
-  "metamodel_version": "0.15.0"
+  "metamodel_version": "0.16.0"
 }

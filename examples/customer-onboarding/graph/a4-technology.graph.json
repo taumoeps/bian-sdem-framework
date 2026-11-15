@@ -6,11 +6,11 @@
     "directed": true,
     "metadata": {
       "sdem_store_version": "1.0",
-      "export_sha256": "fc16804be045b382aacf8e161f453174fb66e649cae6bc425b40ad37d71fba00",
+      "export_sha256": "cd5a1ffd321f8684fa0e57473dc2b2ead25f698d1fbbea9c0a55ed3548a13754",
       "level": "A4",
       "model_id": "synthetic-bank-onboarding-a4",
       "model_version": "2026.10",
-      "metamodel_version": "0.15.0",
+      "metamodel_version": "0.16.0",
       "source_system": "SYNTHETIC-CMDB"
     },
     "nodes": {
@@ -152,6 +152,20 @@
             "of_component": "APP-001"
           }
         }
+      },
+      "A4:TSV-001@1.0": {
+        "label": "Managed event streaming — channels",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.TechnologyService",
+          "id": "TSV-001",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "The platform's event streaming service (made-up)",
+          "attributes": {
+            "cloud_service_model": "PaaS"
+          }
+        }
       }
     },
     "edges": [
@@ -263,6 +277,26 @@
         "metadata": {
           "scope": "within-level",
           "row": "RA4-35"
+        }
+      },
+      {
+        "id": "A4:INF-001-realization-TSV-001",
+        "source": "A4:INF-001@1.0",
+        "target": "A4:TSV-001@1.0",
+        "relation": "realization",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-18"
+        }
+      },
+      {
+        "id": "A4:ZONE-ONB-INTERNAL-aggregation-TSV-001",
+        "source": "A4:ZONE-ONB-INTERNAL@1.0",
+        "target": "A4:TSV-001@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-38"
         }
       }
     ]

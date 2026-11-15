@@ -6,11 +6,11 @@
     "directed": true,
     "metadata": {
       "sdem_store_version": "1.0",
-      "export_sha256": "987981a76aac516538fd5447b8ddabf97192ea21dd51f43429f715c70e5654c7",
+      "export_sha256": "9d297541c86be29599baba02f948f3f4f114a37f3ea49cb296127c04b6c42fbd",
       "level": "A1",
       "model_id": "synthetic-bank-onboarding-a1",
       "model_version": "2026.10",
-      "metamodel_version": "0.15.0",
+      "metamodel_version": "0.16.0",
       "source_system": "SYNTHETIC-EA-TOOL"
     },
     "nodes": {
@@ -113,6 +113,55 @@
             ]
           }
         }
+      },
+      "A1:ACT-001@1.0": {
+        "label": "Retail customer",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessActor",
+          "id": "ACT-001",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "A person who opens an account (made-up)",
+          "attributes": {
+            "actor_kind": "person",
+            "external": true
+          }
+        }
+      },
+      "A1:ROL-001@1.0": {
+        "label": "Onboarding officer",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessRole",
+          "id": "ROL-001",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Checks and approves a new customer (made-up)",
+          "attributes": {
+            "role_kind": "role"
+          }
+        }
+      },
+      "A1:BSV-001@1.0": {
+        "label": "Customer onboarding service",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessService",
+          "id": "BSV-001",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Opening a customer relationship (made-up)",
+          "attributes": {
+            "inputs": [
+              "BO-001"
+            ],
+            "outputs": [
+              "BO-001"
+            ],
+            "customer_facing": true
+          }
+        }
       }
     },
     "edges": [
@@ -174,6 +223,36 @@
         "metadata": {
           "scope": "within-level",
           "row": "RA1-12"
+        }
+      },
+      {
+        "id": "A1:ACT-001-assignment-ROL-001",
+        "source": "A1:ACT-001@1.0",
+        "target": "A1:ROL-001@1.0",
+        "relation": "assignment",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-35"
+        }
+      },
+      {
+        "id": "A1:ROL-001-assignment-PRC-001",
+        "source": "A1:ROL-001@1.0",
+        "target": "A1:PRC-001@1.0",
+        "relation": "assignment",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-36"
+        }
+      },
+      {
+        "id": "A1:PRC-001-realization-BSV-001",
+        "source": "A1:PRC-001@1.0",
+        "target": "A1:BSV-001@1.0",
+        "relation": "realization",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-11"
         }
       }
     ]

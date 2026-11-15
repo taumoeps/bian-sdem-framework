@@ -1,5 +1,5 @@
 {
-  "metamodel_version": "0.15.0",
+  "metamodel_version": "0.16.0",
   "note": "Attribute definitions of the Architecture Metamodel: the fields every instance carries (core_fields) and each entity type's own attributes. Source, reasoning, verification and confidence per attribute. Enforced by sdem-graph check (sdem/conformance.py, logical rules LC-04…LC-13) and published as per-entity JSON Schemas (sdem/physical.py); export-conventions.json keys must all appear here (test). Common attributes (common_attributes) apply to every entity type in every architecture; approved in the A1 data-model review 2026-10-24.",
   "confidence_rule": "high   — defined by a public standard and checked (BIAN public material, OpenAPI, or a standard concept or\n           relationship confirmed by the open-source Archi oracle); or an SDEM data-contract field, which SDEM defines\n           authoritatively.\n  medium — built on a standard concept or relationship as SDEM chose to model it; or BIAN intent / target only;\n           or an SDEM definition, a login-gated source, or a cited-but-unverified source that was validated against\n           sealed answers; or institution data under an SDEM convention.\n  low    — no standard basis and not validated against sealed answers; or deprecated.",
   "placeholders": {
@@ -831,9 +831,11 @@
       "confidence_basis": "deprecated",
       "kind": "reference",
       "references": [
-        "A4.CommunicationNetwork"
+        "A4.NetworkZone"
       ],
-      "reference_scope": "cross-level — a join key the inference engine resolves; never a federated edge itself"
+      "reference_scope": "cross-level — a join key the inference engine resolves; never a federated edge itself",
+      "enforcement": "warning",
+      "enforcement_reasoning": "From 0.16.0 it names an A4.NetworkZone (AT-02; network zones are records since 0.10.0); a network id written before is reported, never refused (FD-P2)."
     },
     {
       "id": "AT-A3-08",
@@ -3389,8 +3391,14 @@
         "date": "2026-10-25",
         "draft_id": "DA3-18"
       },
-      "kind": "value",
-      "confidence_basis": "defined by a public standard (CloudEvents) and checked"
+      "kind": "reference",
+      "confidence_basis": "defined by a public standard (CloudEvents) and checked",
+      "references": [
+        "A3.ApplicationComponent"
+      ],
+      "reference_scope": "within-level — the component that publishes the event",
+      "enforcement": "warning",
+      "enforcement_reasoning": "From 0.16.0 it names the A3 application component that raises the event (AT-02); text written before is reported, never refused (FD-P2)."
     },
     {
       "id": "AT-A3-38",

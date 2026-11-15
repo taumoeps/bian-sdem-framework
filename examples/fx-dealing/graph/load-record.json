@@ -1022,6 +1022,108 @@
           "edges": 0
         }
       ]
+    },
+    {
+      "build": 12,
+      "at": "2026-11-15T18:04:18+00:00",
+      "inputs": [
+        {
+          "path": "examples/fx-dealing//a1-business.json",
+          "kind": "export",
+          "level": "A1",
+          "model_id": "harbourline-fx-a1",
+          "model_version": "2026.11",
+          "sha256": "342ceb0b5b500442a285e8d0d7d5fcdf94cb98ff5f9c975b289c9457d676f796"
+        },
+        {
+          "path": "examples/fx-dealing//a2-service-domain.json",
+          "kind": "export",
+          "level": "A2",
+          "model_id": "harbourline-fx-a2",
+          "model_version": "2026.11",
+          "sha256": "5308299dd6c04a789ae4f1b3a1512a0ac49e0b37b37f0d637a5def0090316f36"
+        },
+        {
+          "path": "examples/fx-dealing//a3-application.json",
+          "kind": "export",
+          "level": "A3",
+          "model_id": "harbourline-fx-a3",
+          "model_version": "2026.11",
+          "sha256": "11667cdf62bcd20fe8647ef8818b5abc09c3925b936daef3307dc13aa8b4c29e"
+        },
+        {
+          "path": "examples/fx-dealing//a4-technology.json",
+          "kind": "export",
+          "level": "A4",
+          "model_id": "harbourline-fx-a4",
+          "model_version": "2026.11",
+          "sha256": "1b40030e3cf6f30d45483f77ba91407bc0e8b463a018edc992af23ca9bc1c9a0"
+        },
+        {
+          "path": "examples/fx-dealing//mappings.json",
+          "kind": "registry",
+          "registry_version": "0.4.0",
+          "sha256": "a92f365df43f3c2c2c251c4ab9d6e314c7540f741387c9e56a37645aab27ef99"
+        }
+      ],
+      "metamodel_version": "0.16.0",
+      "errors": [],
+      "warnings": [
+        "level A2 (harbourline-fx-a2): instance SD-DEALER-DESK: 0 composition links with A2.BusinessDomain, RA2-02 expects at least 1 (LC-10m)",
+        "level A2 (harbourline-fx-a2): instance SD-CURRENCY-EXCHANGE: 0 composition links with A2.BusinessDomain, RA2-02 expects at least 1 (LC-10m)",
+        "level A2 (harbourline-fx-a2): instance SD-TRADE-CONFIRMATION-MATCHING: 0 composition links with A2.BusinessDomain, RA2-02 expects at least 1 (LC-10m)",
+        "level A2 (harbourline-fx-a2): instance SD-TRADE-SETTLEMENT: 0 composition links with A2.BusinessDomain, RA2-02 expects at least 1 (LC-10m)",
+        "level A2 (harbourline-fx-a2): instance SD-TRADER-POSITION-OPERATIONS: 0 composition links with A2.BusinessDomain, RA2-02 expects at least 1 (LC-10m)",
+        "level A2 (harbourline-fx-a2): instance SD-COUNTERPARTY-ADMINISTRATION: 0 composition links with A2.BusinessDomain, RA2-02 expects at least 1 (LC-10m)",
+        "level A2 (harbourline-fx-a2): instance SD-MARKET-DATA-SWITCH-OPERATION: 0 composition links with A2.BusinessDomain, RA2-02 expects at least 1 (LC-10m)",
+        "level A3 (harbourline-fx-a3): instance EVT-FX-DEAL-BOOKED: attribute 'event_source' refers to '/ledgerline', which is not a A3.ApplicationComponent in this architecture dataset (LC-07)",
+        "level A3 (harbourline-fx-a3): instance EVT-RATE-TICK: attribute 'event_source' refers to '/rates-gateway', which is not a A3.ApplicationComponent in this architecture dataset (LC-07)",
+        "level A3 (harbourline-fx-a3): instance ENT-FX-QUOTE: is thin — its 10 field(s) are names only; give each as a record (DataAttribute, composed of ENT-FX-QUOTE) — sdem bian import --objects or sdem aid fills them (LC-23)",
+        "level A3 (harbourline-fx-a3): instance ENT-FX-DEAL: is thin — its 14 field(s) are names only; give each as a record (DataAttribute, composed of ENT-FX-DEAL) — sdem bian import --objects or sdem aid fills them (LC-23)",
+        "level A3 (harbourline-fx-a3): instance ENT-IB-TRADE: is thin — its 10 field(s) are names only; give each as a record (DataAttribute, composed of ENT-IB-TRADE) — sdem bian import --objects or sdem aid fills them (LC-23)",
+        "level A3 (harbourline-fx-a3): instance ENT-DESK-POSITION: is thin — its 4 field(s) are names only; give each as a record (DataAttribute, composed of ENT-DESK-POSITION) — sdem bian import --objects or sdem aid fills them (LC-23)",
+        "level A3 (harbourline-fx-a3): instance ENT-DEALER-LIMIT: is thin — its 4 field(s) are names only; give each as a record (DataAttribute, composed of ENT-DEALER-LIMIT) — sdem bian import --objects or sdem aid fills them (LC-23)",
+        "level A3 (harbourline-fx-a3): instance ENT-CONFIRMATION: is thin — its 7 field(s) are names only; give each as a record (DataAttribute, composed of ENT-CONFIRMATION) — sdem bian import --objects or sdem aid fills them (LC-23)",
+        "level A3 (harbourline-fx-a3): instance ENT-MATCH-BREAK: is thin — its 6 field(s) are names only; give each as a record (DataAttribute, composed of ENT-MATCH-BREAK) — sdem bian import --objects or sdem aid fills them (LC-23)",
+        "level A3 (harbourline-fx-a3): instance ENT-SETTLEMENT-INSTR: is thin — its 8 field(s) are names only; give each as a record (DataAttribute, composed of ENT-SETTLEMENT-INSTR) — sdem bian import --objects or sdem aid fills them (LC-23)",
+        "level A3 (harbourline-fx-a3): instance ENT-NOSTRO-ADVICE: is thin — its 6 field(s) are names only; give each as a record (DataAttribute, composed of ENT-NOSTRO-ADVICE) — sdem bian import --objects or sdem aid fills them (LC-23)",
+        "level A3 (harbourline-fx-a3): instance ENT-COUNTERPARTY: is thin — its 5 field(s) are names only; give each as a record (DataAttribute, composed of ENT-COUNTERPARTY) — sdem bian import --objects or sdem aid fills them (LC-23)",
+        "level A3 (harbourline-fx-a3): instance ENT-SSI: is thin — its 6 field(s) are names only; give each as a record (DataAttribute, composed of ENT-SSI) — sdem bian import --objects or sdem aid fills them (LC-23)",
+        "level A3 (harbourline-fx-a3): instance ENT-RATE-SNAPSHOT: is thin — its 6 field(s) are names only; give each as a record (DataAttribute, composed of ENT-RATE-SNAPSHOT) — sdem bian import --objects or sdem aid fills them (LC-23)"
+      ],
+      "result": "accepted",
+      "outputs": [
+        {
+          "file": "a1-business.graph.json",
+          "sha256": "cee8da2530e37be8301252217b74353c52a42bb659292b36e56ce45d0949ef36",
+          "nodes": 42,
+          "edges": 55
+        },
+        {
+          "file": "a2-service-domain.graph.json",
+          "sha256": "113f8a9e7e3b0052008adea48bf03a849d1cc4685b39cc6213d6ee472bc32c64",
+          "nodes": 261,
+          "edges": 575
+        },
+        {
+          "file": "a3-application.graph.json",
+          "sha256": "1e96b79e4fc6102d25b4045e440325a29d96660171493ddf1da07f6f6fe80c26",
+          "nodes": 54,
+          "edges": 59
+        },
+        {
+          "file": "a4-technology.graph.json",
+          "sha256": "24e9266a4125f7a41b52b4bbecf68a7b54d8a3bed6f6ab0c71e5b7703b9639d8",
+          "nodes": 28,
+          "edges": 48
+        },
+        {
+          "file": "federated.graph.json",
+          "sha256": "f50374b4d44e6bcd622bd2a6977c13a51477a2bca2172e7cc88a50b8115e700c",
+          "nodes": 0,
+          "edges": 0
+        }
+      ]
     }
   ]
 }

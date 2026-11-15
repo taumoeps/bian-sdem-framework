@@ -6,11 +6,11 @@
     "directed": true,
     "metadata": {
       "sdem_store_version": "1.0",
-      "export_sha256": "e0e68c8cb3ffb86bbd95c687847f298cee44191014cbfea89dea38ba0f4036db",
+      "export_sha256": "1b27eeb1b1ad44e3657a1aecb78ab268fa8b7284f02d342f196e9dc3763accbf",
       "level": "A3",
       "model_id": "reference-structure-a3",
       "model_version": "2026.10",
-      "metamodel_version": "0.15.0",
+      "metamodel_version": "0.16.0",
       "source_system": "SDEM-GENERATED-FROM-RECORD"
     },
     "nodes": {
@@ -113,7 +113,10 @@
           "description": "Synthetic instance of A3.APIOperation carrying one relationship per constraint row of A3; no business meaning.",
           "attributes": {
             "method": "GET",
-            "path": "structure"
+            "path": "structure",
+            "payload_fields": [
+              "structure"
+            ]
           }
         }
       },
@@ -128,7 +131,10 @@
           "description": "Synthetic instance of A3.APIOperation carrying one relationship per constraint row of A3; no business meaning.",
           "attributes": {
             "method": "GET",
-            "path": "structure"
+            "path": "structure",
+            "payload_fields": [
+              "structure"
+            ]
           }
         }
       },

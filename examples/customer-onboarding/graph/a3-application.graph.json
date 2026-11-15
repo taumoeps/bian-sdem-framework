@@ -6,11 +6,11 @@
     "directed": true,
     "metadata": {
       "sdem_store_version": "1.0",
-      "export_sha256": "d2185ee1d1ebf7a41a0e0b456186c3f9d169911a2b2c7b2aa96d03b97c282024",
+      "export_sha256": "ad69410618ce81be960dfe173bb5331b9e35e8d1f90f80bc7beebef044707d8d",
       "level": "A3",
       "model_id": "synthetic-bank-onboarding-a3",
       "model_version": "2026.10",
-      "metamodel_version": "0.15.0",
+      "metamodel_version": "0.16.0",
       "source_system": "SYNTHETIC-APM"
     },
     "nodes": {
@@ -132,6 +132,43 @@
             "unique": true
           }
         }
+      },
+      "A3:ASV-001@1.0": {
+        "label": "Identity verification service",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.ApplicationService",
+          "id": "ASV-001",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Verifies a customer's identity documents (made-up)"
+        }
+      },
+      "A3:AFN-001@1.0": {
+        "label": "Verify identity documents",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.ApplicationFunction",
+          "id": "AFN-001",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Reads and checks the documents a customer gives (made-up)"
+        }
+      },
+      "A3:EVT-001@1.0": {
+        "label": "CustomerOnboarded",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.Event",
+          "id": "EVT-001",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Raised when a customer is onboarded (made-up)",
+          "attributes": {
+            "event_type": "domain",
+            "event_source": "APP-001"
+          }
+        }
       }
     },
     "edges": [
@@ -183,6 +220,36 @@
         "metadata": {
           "scope": "within-level",
           "row": "RA3-33"
+        }
+      },
+      {
+        "id": "A3:APP-001-assignment-AFN-001",
+        "source": "A3:APP-001@1.0",
+        "target": "A3:AFN-001@1.0",
+        "relation": "assignment",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-04"
+        }
+      },
+      {
+        "id": "A3:AFN-001-realization-ASV-001",
+        "source": "A3:AFN-001@1.0",
+        "target": "A3:ASV-001@1.0",
+        "relation": "realization",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-05"
+        }
+      },
+      {
+        "id": "A3:APP-001-triggering-EVT-001",
+        "source": "A3:APP-001@1.0",
+        "target": "A3:EVT-001@1.0",
+        "relation": "triggering",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-22"
         }
       }
     ]

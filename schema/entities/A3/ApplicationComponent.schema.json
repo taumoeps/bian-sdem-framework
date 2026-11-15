@@ -396,7 +396,7 @@
           "x-sdem-group": "specific",
           "x-sdem-kind": "reference",
           "x-sdem-references": [
-            "A4.CommunicationNetwork"
+            "A4.NetworkZone"
           ],
           "x-sdem-source": {
             "standard": "SDEM",

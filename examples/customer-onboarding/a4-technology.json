@@ -2,7 +2,7 @@
   "level": "A4",
   "model_id": "synthetic-bank-onboarding-a4",
   "model_version": "2026.10",
-  "metamodel_version": "0.15.0",
+  "metamodel_version": "0.16.0",
   "source_system": "SYNTHETIC-CMDB",
   "instances": [
     {
@@ -113,6 +113,17 @@
         "artifact_kind": "container image",
         "of_component": "APP-001"
       }
+    },
+    {
+      "id": "TSV-001",
+      "type": "A4.TechnologyService",
+      "version": "1.0",
+      "name": "Managed event streaming — channels",
+      "lifecycle_status": "active",
+      "description": "The platform's event streaming service (made-up)",
+      "attributes": {
+        "cloud_service_model": "PaaS"
+      }
     }
   ],
   "relationships": [
@@ -170,6 +181,16 @@
       "source": "DEP-001",
       "kind": "aggregation",
       "target": "ART-001"
+    },
+    {
+      "source": "INF-001",
+      "kind": "realization",
+      "target": "TSV-001"
+    },
+    {
+      "source": "ZONE-ONB-INTERNAL",
+      "kind": "aggregation",
+      "target": "TSV-001"
     }
   ]
 }

@@ -367,7 +367,10 @@
           "description": "the source the event identifies itself with",
           "x-sdem-id": "AT-A3-37",
           "x-sdem-group": "specific",
-          "x-sdem-kind": "value",
+          "x-sdem-kind": "reference",
+          "x-sdem-references": [
+            "A3.ApplicationComponent"
+          ],
           "x-sdem-source": {
             "standard": "CloudEvents 1.0 (CNCF, public)",
             "locator": "context attribute source",

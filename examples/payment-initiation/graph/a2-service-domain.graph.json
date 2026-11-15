@@ -6,11 +6,11 @@
     "directed": true,
     "metadata": {
       "sdem_store_version": "1.0",
-      "export_sha256": "21c324d99ef10e8d32cf2c941134235853b99f19029ecd380d8b34ba4b4a323a",
+      "export_sha256": "b9ad256481709e03b34ec6d584d3a34cff4fb1f40fbae6e7765fbc59dd664b3d",
       "level": "A2",
       "model_id": "synthetic-bank-payments-a2",
       "model_version": "2026.10",
-      "metamodel_version": "0.15.0",
+      "metamodel_version": "0.16.0",
       "source_system": "SYNTHETIC-BIAN-WORKBENCH"
     },
     "nodes": {
@@ -449,7 +449,7 @@
           "description": "Monetary amount of the instruction.",
           "attributes": {
             "personal_information": false,
-            "data_type": "Amount"
+            "data_type": "amount"
           }
         }
       },
