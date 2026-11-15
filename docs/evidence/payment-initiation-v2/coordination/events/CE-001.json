@@ -1,0 +1,1406 @@
+{
+  "id": "CE-001",
+  "change_set": "CS-001",
+  "layer": "A2",
+  "round": 1,
+  "at": "2026-11-15T18:58:36+00:00",
+  "agent": "architect",
+  "person": "a tester",
+  "impact": {
+    "records": [
+      {
+        "id": "BBO-ACCOUNT",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBO-ACCOUNT added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BBO-COMPLIANCE-CHECK",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBO-COMPLIANCE-CHECK added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BBO-FUNDING-CHECK",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBO-FUNDING-CHECK added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BBO-PAYEE",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBO-PAYEE added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BBO-PAYEE-BANK",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBO-PAYEE-BANK added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BBO-PAYER",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBO-PAYER added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BBO-PAYER-BANK",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBO-PAYER-BANK added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BBO-PAYMENT-TRANSACTION",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBO-PAYMENT-TRANSACTION added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BBOA-ACCOUNT-ACCOUNT-BALANCE",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBOA-ACCOUNT-ACCOUNT-BALANCE added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BBOA-ACCOUNT-ACCOUNT-CURRENCY",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBOA-ACCOUNT-ACCOUNT-CURRENCY added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BBOA-ACCOUNT-ACCOUNT-DATE",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBOA-ACCOUNT-ACCOUNT-DATE added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BBOA-ACCOUNT-ACCOUNT-DESCRIPTION",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBOA-ACCOUNT-ACCOUNT-DESCRIPTION added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BBOA-ACCOUNT-ACCOUNT-IDENTIFICATION",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBOA-ACCOUNT-ACCOUNT-IDENTIFICATION added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BBOA-ACCOUNT-ACCOUNT-NAME",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBOA-ACCOUNT-ACCOUNT-NAME added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BBOA-ACCOUNT-ACCOUNT-PURPOSE",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBOA-ACCOUNT-ACCOUNT-PURPOSE added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BBOA-ACCOUNT-ACCOUNT-STATUS",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBOA-ACCOUNT-ACCOUNT-STATUS added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BBOA-ACCOUNT-ACCOUNT-TYPE",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBOA-ACCOUNT-ACCOUNT-TYPE added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BBOA-ACCOUNT-LOG-DATE",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBOA-ACCOUNT-LOG-DATE added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BBOA-ACCOUNT-LOG-IDENTIFICATION",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBOA-ACCOUNT-LOG-IDENTIFICATION added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BBOA-ACCOUNT-LOG-PERIOD",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBOA-ACCOUNT-LOG-PERIOD added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BBOA-ACCOUNT-LOG-TYPE",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBOA-ACCOUNT-LOG-TYPE added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BBOA-COMPLIANCE-CHECK-COMPLIANCE-CHECK-TYPE",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBOA-COMPLIANCE-CHECK-COMPLIANCE-CHECK-TYPE added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BBOA-FUNDING-CHECK-ASSESSMENT-DATE-TIME",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBOA-FUNDING-CHECK-ASSESSMENT-DATE-TIME added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BBOA-FUNDING-CHECK-ASSESSMENT-DESCRIPTION",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBOA-FUNDING-CHECK-ASSESSMENT-DESCRIPTION added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BBOA-FUNDING-CHECK-ASSESSMENT-EXPIRY-DATE",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBOA-FUNDING-CHECK-ASSESSMENT-EXPIRY-DATE added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BBOA-FUNDING-CHECK-ASSESSMENT-IDENTIFICATION",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBOA-FUNDING-CHECK-ASSESSMENT-IDENTIFICATION added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BBOA-FUNDING-CHECK-ASSESSMENT-METHOD",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBOA-FUNDING-CHECK-ASSESSMENT-METHOD added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BBOA-FUNDING-CHECK-ASSESSMENT-MODEL",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBOA-FUNDING-CHECK-ASSESSMENT-MODEL added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BBOA-FUNDING-CHECK-ASSESSMENT-REPRESENTING-DOCUMENT",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBOA-FUNDING-CHECK-ASSESSMENT-REPRESENTING-DOCUMENT added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BBOA-FUNDING-CHECK-ASSESSMENT-REQUIRED-ADJUSTMENT",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBOA-FUNDING-CHECK-ASSESSMENT-REQUIRED-ADJUSTMENT added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BBOA-FUNDING-CHECK-ASSESSMENT-REQUIREMENT",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBOA-FUNDING-CHECK-ASSESSMENT-REQUIREMENT added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BBOA-FUNDING-CHECK-ASSESSMENT-RESULT",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBOA-FUNDING-CHECK-ASSESSMENT-RESULT added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BBOA-FUNDING-CHECK-ASSESSMENT-SCHEDULE",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBOA-FUNDING-CHECK-ASSESSMENT-SCHEDULE added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BBOA-FUNDING-CHECK-ASSESSMENT-STATUS",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBOA-FUNDING-CHECK-ASSESSMENT-STATUS added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BBOA-FUNDING-CHECK-ASSESSMENT-SUPPORTING-DOCUMENT",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBOA-FUNDING-CHECK-ASSESSMENT-SUPPORTING-DOCUMENT added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BBOA-FUNDING-CHECK-ASSESSMENT-TYPE",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBOA-FUNDING-CHECK-ASSESSMENT-TYPE added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BBOA-PARTY-PARTY-ACTIVITY-INDICATOR",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBOA-PARTY-PARTY-ACTIVITY-INDICATOR added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BBOA-PARTY-PARTY-DATE-TIME",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBOA-PARTY-PARTY-DATE-TIME added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BBOA-PARTY-PARTY-IDENTIFICATION",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBOA-PARTY-PARTY-IDENTIFICATION added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BBOA-PARTY-PARTY-LEGAL-STRUCTURE-TYPE",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBOA-PARTY-PARTY-LEGAL-STRUCTURE-TYPE added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BBOA-PARTY-PARTY-NAME",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBOA-PARTY-PARTY-NAME added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BBOA-PARTY-PARTY-TYPE",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBOA-PARTY-PARTY-TYPE added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BBOA-PAYEE-BANK-PARTY-INVOLVEMENT-TYPE",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBOA-PAYEE-BANK-PARTY-INVOLVEMENT-TYPE added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BBOA-PAYEE-BANK-PARTY-ROLE-NAME",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBOA-PAYEE-BANK-PARTY-ROLE-NAME added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BBOA-PAYEE-BANK-PARTY-ROLE-TYPE",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBOA-PAYEE-BANK-PARTY-ROLE-TYPE added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BBOA-PAYEE-BANK-PARTY-ROLE-VALIDITY-PERIOD",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBOA-PAYEE-BANK-PARTY-ROLE-VALIDITY-PERIOD added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BBOA-PAYEE-BANK-PAYEE-BANK-IDENTIFIER",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBOA-PAYEE-BANK-PAYEE-BANK-IDENTIFIER added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BBOA-PAYEE-BANK-PAYMENT-INSTRUCTION-INVOLVEMENT-TYPE",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBOA-PAYEE-BANK-PAYMENT-INSTRUCTION-INVOLVEMENT-TYPE added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BBOA-PAYEE-PAYEE-IDENTIFIER",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBOA-PAYEE-PAYEE-IDENTIFIER added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BBOA-PAYEE-PAYMENT-INSTRUCTION-INVOLVEMENT-TYPE",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBOA-PAYEE-PAYMENT-INSTRUCTION-INVOLVEMENT-TYPE added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BBOA-PAYER-BANK-PAYER-BANK-IDENTIFIER",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBOA-PAYER-BANK-PAYER-BANK-IDENTIFIER added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BBOA-PAYER-BANK-PAYMENT-INSTRUCTION-INVOLVEMENT-TYPE",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBOA-PAYER-BANK-PAYMENT-INSTRUCTION-INVOLVEMENT-TYPE added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BBOA-PAYER-PAYER-IDENTIFIER",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBOA-PAYER-PAYER-IDENTIFIER added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BBOA-PAYER-PAYMENT-INSTRUCTION-INVOLVEMENT-TYPE",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBOA-PAYER-PAYMENT-INSTRUCTION-INVOLVEMENT-TYPE added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BBOA-PAYMENT-TRANSACTION-FINANCIAL-TRANSACTION-AMOUNT",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBOA-PAYMENT-TRANSACTION-FINANCIAL-TRANSACTION-AMOUNT added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BBOA-PAYMENT-TRANSACTION-FINANCIAL-TRANSACTION-CURRENCY",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBOA-PAYMENT-TRANSACTION-FINANCIAL-TRANSACTION-CURRENCY added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BBOA-PAYMENT-TRANSACTION-FINANCIAL-TRANSACTION-DATE-TIME",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBOA-PAYMENT-TRANSACTION-FINANCIAL-TRANSACTION-DATE-TIME added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BBOA-PAYMENT-TRANSACTION-FINANCIAL-TRANSACTION-FROM-ACCOUNT",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBOA-PAYMENT-TRANSACTION-FINANCIAL-TRANSACTION-FROM-ACCOUNT added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BBOA-PAYMENT-TRANSACTION-FINANCIAL-TRANSACTION-TARGET-ACCOUNT",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBOA-PAYMENT-TRANSACTION-FINANCIAL-TRANSACTION-TARGET-ACCOUNT added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BBOA-PAYMENT-TRANSACTION-FINANCIAL-TRANSACTION-TYPE",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBOA-PAYMENT-TRANSACTION-FINANCIAL-TRANSACTION-TYPE added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BBOA-PAYMENT-TRANSACTION-MONEY-TRANSFER-INSTRUCTION-REFERENCE",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBOA-PAYMENT-TRANSACTION-MONEY-TRANSFER-INSTRUCTION-REFERENCE added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BBOA-PAYMENT-TRANSACTION-MONEY-TRANSFER-TRANSACTION-AMOUNT",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBOA-PAYMENT-TRANSACTION-MONEY-TRANSFER-TRANSACTION-AMOUNT added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BBOA-PAYMENT-TRANSACTION-MONEY-TRANSFER-TRANSACTION-CURRENCY",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBOA-PAYMENT-TRANSACTION-MONEY-TRANSFER-TRANSACTION-CURRENCY added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BBOA-PAYMENT-TRANSACTION-MONEY-TRANSFER-TRANSACTION-SOURCE-ACCOUNT",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBOA-PAYMENT-TRANSACTION-MONEY-TRANSFER-TRANSACTION-SOURCE-ACCOUNT added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BBOA-PAYMENT-TRANSACTION-MONEY-TRANSFER-TRANSACTION-TARGET-ACCOUNT",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBOA-PAYMENT-TRANSACTION-MONEY-TRANSFER-TRANSACTION-TARGET-ACCOUNT added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BBOA-PAYMENT-TRANSACTION-MONEY-TRANSFER-USED-METHOD",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBOA-PAYMENT-TRANSACTION-MONEY-TRANSFER-USED-METHOD added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BBOA-PAYMENT-TRANSACTION-MONEY-TRANSFER-VALUE-DATE",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBOA-PAYMENT-TRANSACTION-MONEY-TRANSFER-VALUE-DATE added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-AMOUNT",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-AMOUNT added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-APPLIED-FEE-AMOUNT",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-APPLIED-FEE-AMOUNT added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-CREDIT-DEBIT-INDICATOR",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-CREDIT-DEBIT-INDICATOR added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-CURRENCY",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-CURRENCY added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-DATETIME",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-DATETIME added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-IDENTIFICATION",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-IDENTIFICATION added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-PURPOSE",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-PURPOSE added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-STATUS",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-STATUS added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-TYPE",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-TYPE added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-USED-MECHANISM",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-USED-MECHANISM added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BBOA-PAYMENT-TRANSACTION-TRANSACTION-DATE",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBOA-PAYMENT-TRANSACTION-TRANSACTION-DATE added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BBOA-PAYMENT-TRANSACTION-TRANSACTION-DESCRIPTION",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBOA-PAYMENT-TRANSACTION-TRANSACTION-DESCRIPTION added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BBOA-PAYMENT-TRANSACTION-TRANSACTION-IDENTIFICATION",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBOA-PAYMENT-TRANSACTION-TRANSACTION-IDENTIFICATION added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BBOA-PAYMENT-TRANSACTION-TRANSACTION-NAME",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBOA-PAYMENT-TRANSACTION-TRANSACTION-NAME added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BBOA-PAYMENT-TRANSACTION-TRANSACTION-STATUS",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBOA-PAYMENT-TRANSACTION-TRANSACTION-STATUS added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BBOA-PAYMENT-TRANSACTION-TRANSACTION-TYPE",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBOA-PAYMENT-TRANSACTION-TRANSACTION-TYPE added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BBOA-PAYMENT-TRANSACTION-UNDERTAKING-TRANSACTION-TYPE",
+        "level": "A2",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BBOA-PAYMENT-TRANSACTION-UNDERTAKING-TRANSACTION-TYPE added",
+        "rule": "add → design_change_required"
+      }
+    ],
+    "mappings_to_supersede": [],
+    "changed": [
+      "BBO-COMPLIANCE-CHECK",
+      "BBOA-COMPLIANCE-CHECK-COMPLIANCE-CHECK-TYPE",
+      "BBO-FUNDING-CHECK",
+      "BBOA-FUNDING-CHECK-ASSESSMENT-TYPE",
+      "BBOA-FUNDING-CHECK-ASSESSMENT-METHOD",
+      "BBOA-FUNDING-CHECK-ASSESSMENT-SCHEDULE",
+      "BBOA-FUNDING-CHECK-ASSESSMENT-DESCRIPTION",
+      "BBOA-FUNDING-CHECK-ASSESSMENT-MODEL",
+      "BBOA-FUNDING-CHECK-ASSESSMENT-DATE-TIME",
+      "BBOA-FUNDING-CHECK-ASSESSMENT-RESULT",
+      "BBOA-FUNDING-CHECK-ASSESSMENT-SUPPORTING-DOCUMENT",
+      "BBOA-FUNDING-CHECK-ASSESSMENT-REPRESENTING-DOCUMENT",
+      "BBOA-FUNDING-CHECK-ASSESSMENT-REQUIRED-ADJUSTMENT",
+      "BBOA-FUNDING-CHECK-ASSESSMENT-REQUIREMENT",
+      "BBOA-FUNDING-CHECK-ASSESSMENT-EXPIRY-DATE",
+      "BBOA-FUNDING-CHECK-ASSESSMENT-STATUS",
+      "BBOA-FUNDING-CHECK-ASSESSMENT-IDENTIFICATION",
+      "BBOA-PARTY-PARTY-NAME",
+      "BBOA-PARTY-PARTY-TYPE",
+      "BBOA-PARTY-PARTY-DATE-TIME",
+      "BBOA-PARTY-PARTY-IDENTIFICATION",
+      "BBOA-PARTY-PARTY-LEGAL-STRUCTURE-TYPE",
+      "BBOA-PARTY-PARTY-ACTIVITY-INDICATOR",
+      "BBO-ACCOUNT",
+      "BBOA-ACCOUNT-ACCOUNT-STATUS",
+      "BBOA-ACCOUNT-ACCOUNT-IDENTIFICATION",
+      "BBOA-ACCOUNT-ACCOUNT-DATE",
+      "BBOA-ACCOUNT-ACCOUNT-TYPE",
+      "BBOA-ACCOUNT-ACCOUNT-PURPOSE",
+      "BBOA-ACCOUNT-ACCOUNT-BALANCE",
+      "BBOA-ACCOUNT-ACCOUNT-CURRENCY",
+      "BBOA-ACCOUNT-ACCOUNT-DESCRIPTION",
+      "BBOA-ACCOUNT-ACCOUNT-NAME",
+      "BBOA-ACCOUNT-LOG-TYPE",
+      "BBOA-ACCOUNT-LOG-PERIOD",
+      "BBOA-ACCOUNT-LOG-DATE",
+      "BBOA-ACCOUNT-LOG-IDENTIFICATION",
+      "BBO-PAYMENT-TRANSACTION",
+      "BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-TYPE",
+      "BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-AMOUNT",
+      "BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-IDENTIFICATION",
+      "BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-USED-MECHANISM",
+      "BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-DATETIME",
+      "BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-PURPOSE",
+      "BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-STATUS",
+      "BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-APPLIED-FEE-AMOUNT",
+      "BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-CURRENCY",
+      "BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-CREDIT-DEBIT-INDICATOR",
+      "BBOA-PAYMENT-TRANSACTION-TRANSACTION-IDENTIFICATION",
+      "BBOA-PAYMENT-TRANSACTION-TRANSACTION-DATE",
+      "BBOA-PAYMENT-TRANSACTION-TRANSACTION-TYPE",
+      "BBOA-PAYMENT-TRANSACTION-TRANSACTION-DESCRIPTION",
+      "BBOA-PAYMENT-TRANSACTION-TRANSACTION-STATUS",
+      "BBOA-PAYMENT-TRANSACTION-TRANSACTION-NAME",
+      "BBOA-PAYMENT-TRANSACTION-UNDERTAKING-TRANSACTION-TYPE",
+      "BBOA-PAYMENT-TRANSACTION-MONEY-TRANSFER-TRANSACTION-AMOUNT",
+      "BBOA-PAYMENT-TRANSACTION-MONEY-TRANSFER-TRANSACTION-CURRENCY",
+      "BBOA-PAYMENT-TRANSACTION-MONEY-TRANSFER-TRANSACTION-SOURCE-ACCOUNT",
+      "BBOA-PAYMENT-TRANSACTION-MONEY-TRANSFER-TRANSACTION-TARGET-ACCOUNT",
+      "BBOA-PAYMENT-TRANSACTION-MONEY-TRANSFER-INSTRUCTION-REFERENCE",
+      "BBOA-PAYMENT-TRANSACTION-MONEY-TRANSFER-USED-METHOD",
+      "BBOA-PAYMENT-TRANSACTION-MONEY-TRANSFER-VALUE-DATE",
+      "BBOA-PAYMENT-TRANSACTION-FINANCIAL-TRANSACTION-TYPE",
+      "BBOA-PAYMENT-TRANSACTION-FINANCIAL-TRANSACTION-CURRENCY",
+      "BBOA-PAYMENT-TRANSACTION-FINANCIAL-TRANSACTION-AMOUNT",
+      "BBOA-PAYMENT-TRANSACTION-FINANCIAL-TRANSACTION-FROM-ACCOUNT",
+      "BBOA-PAYMENT-TRANSACTION-FINANCIAL-TRANSACTION-TARGET-ACCOUNT",
+      "BBOA-PAYMENT-TRANSACTION-FINANCIAL-TRANSACTION-DATE-TIME",
+      "BBO-PAYER",
+      "BBOA-PAYER-PAYER-IDENTIFIER",
+      "BBOA-PAYER-PAYMENT-INSTRUCTION-INVOLVEMENT-TYPE",
+      "BBO-PAYER-BANK",
+      "BBOA-PAYER-BANK-PAYER-BANK-IDENTIFIER",
+      "BBOA-PAYER-BANK-PAYMENT-INSTRUCTION-INVOLVEMENT-TYPE",
+      "BBO-PAYEE",
+      "BBOA-PAYEE-PAYEE-IDENTIFIER",
+      "BBOA-PAYEE-PAYMENT-INSTRUCTION-INVOLVEMENT-TYPE",
+      "BBO-PAYEE-BANK",
+      "BBOA-PAYEE-BANK-PAYEE-BANK-IDENTIFIER",
+      "BBOA-PAYEE-BANK-PAYMENT-INSTRUCTION-INVOLVEMENT-TYPE",
+      "BBOA-PAYEE-BANK-PARTY-ROLE-TYPE",
+      "BBOA-PAYEE-BANK-PARTY-ROLE-NAME",
+      "BBOA-PAYEE-BANK-PARTY-ROLE-VALIDITY-PERIOD",
+      "BBOA-PAYEE-BANK-PARTY-INVOLVEMENT-TYPE"
+    ],
+    "coverage": {
+      "A1": {
+        "present": true,
+        "reached": false,
+        "result": "evidence_incomplete",
+        "classification": "no_impact",
+        "related_within_layer": [],
+        "records": [],
+        "paths": [],
+        "unapproved_links": [],
+        "unmapped_records": [
+          "ACT-PAY-01a",
+          "ACT-PAY-01b",
+          "ACT-PAY-02a",
+          "ACT-PAY-02b",
+          "BO-PAYEE",
+          "CAP-PAY-000",
+          "ROLE-PAY-OFFICER",
+          "VSS-P1",
+          "VSS-P2",
+          "VSS-P3",
+          "VSS-P4"
+        ],
+        "unmapped_count": 11,
+        "evidence": "incomplete",
+        "confirmed": false,
+        "reason": "no approved path reaches this layer, and its links are incomplete — impact through the missing links cannot be seen"
+      },
+      "A2": {
+        "present": true,
+        "reached": true,
+        "result": "impact_detected",
+        "classification": "design_change_required",
+        "related_within_layer": [
+          "BBO-PARTY",
+          "CR-PI"
+        ],
+        "records": [
+          {
+            "id": "BBO-ACCOUNT",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BBO-COMPLIANCE-CHECK",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BBO-FUNDING-CHECK",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BBO-PAYEE",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BBO-PAYEE-BANK",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BBO-PAYER",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BBO-PAYER-BANK",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BBO-PAYMENT-TRANSACTION",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BBOA-ACCOUNT-ACCOUNT-BALANCE",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BBOA-ACCOUNT-ACCOUNT-CURRENCY",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BBOA-ACCOUNT-ACCOUNT-DATE",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BBOA-ACCOUNT-ACCOUNT-DESCRIPTION",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BBOA-ACCOUNT-ACCOUNT-IDENTIFICATION",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BBOA-ACCOUNT-ACCOUNT-NAME",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BBOA-ACCOUNT-ACCOUNT-PURPOSE",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BBOA-ACCOUNT-ACCOUNT-STATUS",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BBOA-ACCOUNT-ACCOUNT-TYPE",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BBOA-ACCOUNT-LOG-DATE",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BBOA-ACCOUNT-LOG-IDENTIFICATION",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BBOA-ACCOUNT-LOG-PERIOD",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BBOA-ACCOUNT-LOG-TYPE",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BBOA-COMPLIANCE-CHECK-COMPLIANCE-CHECK-TYPE",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BBOA-FUNDING-CHECK-ASSESSMENT-DATE-TIME",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BBOA-FUNDING-CHECK-ASSESSMENT-DESCRIPTION",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BBOA-FUNDING-CHECK-ASSESSMENT-EXPIRY-DATE",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BBOA-FUNDING-CHECK-ASSESSMENT-IDENTIFICATION",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BBOA-FUNDING-CHECK-ASSESSMENT-METHOD",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BBOA-FUNDING-CHECK-ASSESSMENT-MODEL",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BBOA-FUNDING-CHECK-ASSESSMENT-REPRESENTING-DOCUMENT",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BBOA-FUNDING-CHECK-ASSESSMENT-REQUIRED-ADJUSTMENT",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BBOA-FUNDING-CHECK-ASSESSMENT-REQUIREMENT",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BBOA-FUNDING-CHECK-ASSESSMENT-RESULT",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BBOA-FUNDING-CHECK-ASSESSMENT-SCHEDULE",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BBOA-FUNDING-CHECK-ASSESSMENT-STATUS",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BBOA-FUNDING-CHECK-ASSESSMENT-SUPPORTING-DOCUMENT",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BBOA-FUNDING-CHECK-ASSESSMENT-TYPE",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BBOA-PARTY-PARTY-ACTIVITY-INDICATOR",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BBOA-PARTY-PARTY-DATE-TIME",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BBOA-PARTY-PARTY-IDENTIFICATION",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BBOA-PARTY-PARTY-LEGAL-STRUCTURE-TYPE",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BBOA-PARTY-PARTY-NAME",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BBOA-PARTY-PARTY-TYPE",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BBOA-PAYEE-BANK-PARTY-INVOLVEMENT-TYPE",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BBOA-PAYEE-BANK-PARTY-ROLE-NAME",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BBOA-PAYEE-BANK-PARTY-ROLE-TYPE",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BBOA-PAYEE-BANK-PARTY-ROLE-VALIDITY-PERIOD",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BBOA-PAYEE-BANK-PAYEE-BANK-IDENTIFIER",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BBOA-PAYEE-BANK-PAYMENT-INSTRUCTION-INVOLVEMENT-TYPE",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BBOA-PAYEE-PAYEE-IDENTIFIER",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BBOA-PAYEE-PAYMENT-INSTRUCTION-INVOLVEMENT-TYPE",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BBOA-PAYER-BANK-PAYER-BANK-IDENTIFIER",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BBOA-PAYER-BANK-PAYMENT-INSTRUCTION-INVOLVEMENT-TYPE",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BBOA-PAYER-PAYER-IDENTIFIER",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BBOA-PAYER-PAYMENT-INSTRUCTION-INVOLVEMENT-TYPE",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BBOA-PAYMENT-TRANSACTION-FINANCIAL-TRANSACTION-AMOUNT",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BBOA-PAYMENT-TRANSACTION-FINANCIAL-TRANSACTION-CURRENCY",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BBOA-PAYMENT-TRANSACTION-FINANCIAL-TRANSACTION-DATE-TIME",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BBOA-PAYMENT-TRANSACTION-FINANCIAL-TRANSACTION-FROM-ACCOUNT",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BBOA-PAYMENT-TRANSACTION-FINANCIAL-TRANSACTION-TARGET-ACCOUNT",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BBOA-PAYMENT-TRANSACTION-FINANCIAL-TRANSACTION-TYPE",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BBOA-PAYMENT-TRANSACTION-MONEY-TRANSFER-INSTRUCTION-REFERENCE",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BBOA-PAYMENT-TRANSACTION-MONEY-TRANSFER-TRANSACTION-AMOUNT",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BBOA-PAYMENT-TRANSACTION-MONEY-TRANSFER-TRANSACTION-CURRENCY",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BBOA-PAYMENT-TRANSACTION-MONEY-TRANSFER-TRANSACTION-SOURCE-ACCOUNT",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BBOA-PAYMENT-TRANSACTION-MONEY-TRANSFER-TRANSACTION-TARGET-ACCOUNT",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BBOA-PAYMENT-TRANSACTION-MONEY-TRANSFER-USED-METHOD",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BBOA-PAYMENT-TRANSACTION-MONEY-TRANSFER-VALUE-DATE",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-AMOUNT",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-APPLIED-FEE-AMOUNT",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-CREDIT-DEBIT-INDICATOR",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-CURRENCY",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-DATETIME",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-IDENTIFICATION",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-PURPOSE",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-STATUS",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-TYPE",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-USED-MECHANISM",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BBOA-PAYMENT-TRANSACTION-TRANSACTION-DATE",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BBOA-PAYMENT-TRANSACTION-TRANSACTION-DESCRIPTION",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BBOA-PAYMENT-TRANSACTION-TRANSACTION-IDENTIFICATION",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BBOA-PAYMENT-TRANSACTION-TRANSACTION-NAME",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BBOA-PAYMENT-TRANSACTION-TRANSACTION-STATUS",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BBOA-PAYMENT-TRANSACTION-TRANSACTION-TYPE",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BBOA-PAYMENT-TRANSACTION-UNDERTAKING-TRANSACTION-TYPE",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          }
+        ],
+        "paths": [],
+        "unapproved_links": [],
+        "unmapped_records": [
+          "BBO-ACCOUNT",
+          "BBO-COMPLIANCE-CHECK",
+          "BBO-FUNDING-CHECK",
+          "BBO-PARTY",
+          "BBO-PAYEE",
+          "BBO-PAYEE-BANK",
+          "BBO-PAYER",
+          "BBO-PAYER-BANK",
+          "BBO-PAYMENT-TRANSACTION",
+          "BBOA-ACCOUNT-ACCOUNT-BALANCE",
+          "BBOA-ACCOUNT-ACCOUNT-CURRENCY",
+          "BBOA-ACCOUNT-ACCOUNT-DATE",
+          "BBOA-ACCOUNT-ACCOUNT-DESCRIPTION",
+          "BBOA-ACCOUNT-ACCOUNT-IDENTIFICATION",
+          "BBOA-ACCOUNT-ACCOUNT-NAME",
+          "BBOA-ACCOUNT-ACCOUNT-PURPOSE",
+          "BBOA-ACCOUNT-ACCOUNT-STATUS",
+          "BBOA-ACCOUNT-ACCOUNT-TYPE",
+          "BBOA-ACCOUNT-LOG-DATE",
+          "BBOA-ACCOUNT-LOG-IDENTIFICATION",
+          "BBOA-ACCOUNT-LOG-PERIOD",
+          "BBOA-ACCOUNT-LOG-TYPE",
+          "BBOA-AMOUNT",
+          "BBOA-COMPLIANCE-CHECK-COMPLIANCE-CHECK-TYPE",
+          "BBOA-FUNDING-CHECK-ASSESSMENT-DATE-TIME"
+        ],
+        "unmapped_count": 100,
+        "evidence": "incomplete",
+        "confirmed": false,
+        "reason": "84 record(s) reached through approved links; the strongest rule gives design_change_required; evidence incomplete: 0 link(s) not approved, 100 record(s) with no approved link where one is expected; 2 record(s) linked inside the layer to the changed record(s) are not followed by the impact rules: BBO-PARTY, CR-PI"
+      },
+      "A3": {
+        "present": true,
+        "reached": false,
+        "result": "evidence_incomplete",
+        "classification": "no_impact",
+        "related_within_layer": [],
+        "records": [],
+        "paths": [],
+        "unapproved_links": [],
+        "unmapped_records": [
+          "API-PI-06",
+          "CMP-PAY-CAPTURE",
+          "CMP-PAY-VALIDATE",
+          "ENT-ACCOUNT-CACHE",
+          "ENT-PAY-EVENT",
+          "EVT-PAY-STATUS",
+          "SVC-PAY-INIT"
+        ],
+        "unmapped_count": 7,
+        "evidence": "incomplete",
+        "confirmed": false,
+        "reason": "no approved path reaches this layer, and its links are incomplete — impact through the missing links cannot be seen"
+      },
+      "A4": {
+        "present": true,
+        "reached": false,
+        "result": "evidence_incomplete",
+        "classification": "no_impact",
+        "related_within_layer": [],
+        "records": [],
+        "paths": [],
+        "unapproved_links": [],
+        "unmapped_records": [
+          "INF-CORE-LEDGER-HOST",
+          "INF-PG-PAY-PROD",
+          "TS-MQ",
+          "TS-SECRETS"
+        ],
+        "unmapped_count": 4,
+        "evidence": "incomplete",
+        "confirmed": false,
+        "reason": "no approved path reaches this layer, and its links are incomplete — impact through the missing links cannot be seen"
+      }
+    },
+    "basis": {
+      "rules_version": "0.5.0",
+      "files": {
+        "a1-business.json": "d84a9383bca1de80f1df1b193cc28ed55da23933dd73ff9eb0f2989b9802be4d",
+        "a2-service-domain.json": "4a98036138e2bd58cd3b937ee4611a320e3c90c9b90139374055956ff97a9ea5",
+        "a3-application.json": "7a786bc632a216e8038b91a2fb1c1a8e0c7519321ceafdef74d084902ae3a1fb",
+        "a4-technology.json": "cbd69a81600abf2be880386d70be586d28715bd824242a3c9f5a99eded28c590",
+        "mappings.json": "71499d610d500e9e4c1c0786aa726d3b7aff384541a658a0391ee61982cc12fe",
+        "requirements.json": "508c4cd476074239e9788464171776f0ff0b83f078c899952a22b2671ee3f430"
+      },
+      "approved_links": 20,
+      "approved_links_sha256": "cc8151e22fdb71b0aca6692c139eb344481f41315731b7c58854d4f0d7795fb7"
+    }
+  }
+}

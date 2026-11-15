@@ -1,0 +1,400 @@
+{
+  "rejected": [
+    {
+      "id": "AID-ENT-ACCOUNT",
+      "by": "Steven Taumoepeau",
+      "at": "2026-11-15T20:00:35+00:00",
+      "reason": "already stored by an existing table, or mastered outside the payments hub"
+    },
+    {
+      "id": "AID-ENT-PARTY",
+      "by": "Steven Taumoepeau",
+      "at": "2026-11-15T20:00:35+00:00",
+      "reason": "already stored by an existing table, or mastered outside the payments hub"
+    },
+    {
+      "id": "AID-ENT-PAYEE-BANK",
+      "by": "Steven Taumoepeau",
+      "at": "2026-11-15T20:00:35+00:00",
+      "reason": "already stored by an existing table, or mastered outside the payments hub"
+    },
+    {
+      "id": "AID-ENT-PAYER",
+      "by": "Steven Taumoepeau",
+      "at": "2026-11-15T20:00:35+00:00",
+      "reason": "already stored by an existing table, or mastered outside the payments hub"
+    },
+    {
+      "id": "AID-ENT-PAYER-BANK",
+      "by": "Steven Taumoepeau",
+      "at": "2026-11-15T20:00:35+00:00",
+      "reason": "already stored by an existing table, or mastered outside the payments hub"
+    },
+    {
+      "id": "AID-ENT-PAYMENT-TRANSACTION",
+      "by": "Steven Taumoepeau",
+      "at": "2026-11-15T20:00:35+00:00",
+      "reason": "already stored by an existing table, or mastered outside the payments hub"
+    },
+    {
+      "id": "AID-ENTF-ACCOUNT-ACCOUNTBALANCE",
+      "by": "Steven Taumoepeau",
+      "at": "2026-11-15T20:00:35+00:00",
+      "reason": "already stored by an existing table, or mastered outside the payments hub"
+    },
+    {
+      "id": "AID-ENTF-ACCOUNT-ACCOUNTCURRENCY",
+      "by": "Steven Taumoepeau",
+      "at": "2026-11-15T20:00:35+00:00",
+      "reason": "already stored by an existing table, or mastered outside the payments hub"
+    },
+    {
+      "id": "AID-ENTF-ACCOUNT-ACCOUNTDATE",
+      "by": "Steven Taumoepeau",
+      "at": "2026-11-15T20:00:35+00:00",
+      "reason": "already stored by an existing table, or mastered outside the payments hub"
+    },
+    {
+      "id": "AID-ENTF-ACCOUNT-ACCOUNTDESCRIPTION",
+      "by": "Steven Taumoepeau",
+      "at": "2026-11-15T20:00:35+00:00",
+      "reason": "already stored by an existing table, or mastered outside the payments hub"
+    },
+    {
+      "id": "AID-ENTF-ACCOUNT-ACCOUNTIDENTIFICATION",
+      "by": "Steven Taumoepeau",
+      "at": "2026-11-15T20:00:35+00:00",
+      "reason": "already stored by an existing table, or mastered outside the payments hub"
+    },
+    {
+      "id": "AID-ENTF-ACCOUNT-ACCOUNTNAME",
+      "by": "Steven Taumoepeau",
+      "at": "2026-11-15T20:00:35+00:00",
+      "reason": "already stored by an existing table, or mastered outside the payments hub"
+    },
+    {
+      "id": "AID-ENTF-ACCOUNT-ACCOUNTPURPOSE",
+      "by": "Steven Taumoepeau",
+      "at": "2026-11-15T20:00:35+00:00",
+      "reason": "already stored by an existing table, or mastered outside the payments hub"
+    },
+    {
+      "id": "AID-ENTF-ACCOUNT-ACCOUNTSTATUS",
+      "by": "Steven Taumoepeau",
+      "at": "2026-11-15T20:00:35+00:00",
+      "reason": "already stored by an existing table, or mastered outside the payments hub"
+    },
+    {
+      "id": "AID-ENTF-ACCOUNT-ACCOUNTTYPE",
+      "by": "Steven Taumoepeau",
+      "at": "2026-11-15T20:00:35+00:00",
+      "reason": "already stored by an existing table, or mastered outside the payments hub"
+    },
+    {
+      "id": "AID-ENTF-ACCOUNT-LOGDATE",
+      "by": "Steven Taumoepeau",
+      "at": "2026-11-15T20:00:35+00:00",
+      "reason": "already stored by an existing table, or mastered outside the payments hub"
+    },
+    {
+      "id": "AID-ENTF-ACCOUNT-LOGIDENTIFICATION",
+      "by": "Steven Taumoepeau",
+      "at": "2026-11-15T20:00:35+00:00",
+      "reason": "already stored by an existing table, or mastered outside the payments hub"
+    },
+    {
+      "id": "AID-ENTF-ACCOUNT-LOGPERIOD",
+      "by": "Steven Taumoepeau",
+      "at": "2026-11-15T20:00:35+00:00",
+      "reason": "already stored by an existing table, or mastered outside the payments hub"
+    },
+    {
+      "id": "AID-ENTF-ACCOUNT-LOGTYPE",
+      "by": "Steven Taumoepeau",
+      "at": "2026-11-15T20:00:35+00:00",
+      "reason": "already stored by an existing table, or mastered outside the payments hub"
+    },
+    {
+      "id": "AID-ENTF-PARTY-PARTY-REFERENCE",
+      "by": "Steven Taumoepeau",
+      "at": "2026-11-15T20:00:35+00:00",
+      "reason": "already stored by an existing table, or mastered outside the payments hub"
+    },
+    {
+      "id": "AID-ENTF-PARTY-PARTYACTIVITYINDICATOR",
+      "by": "Steven Taumoepeau",
+      "at": "2026-11-15T20:00:35+00:00",
+      "reason": "already stored by an existing table, or mastered outside the payments hub"
+    },
+    {
+      "id": "AID-ENTF-PARTY-PARTYDATETIME",
+      "by": "Steven Taumoepeau",
+      "at": "2026-11-15T20:00:35+00:00",
+      "reason": "already stored by an existing table, or mastered outside the payments hub"
+    },
+    {
+      "id": "AID-ENTF-PARTY-PARTYIDENTIFICATION",
+      "by": "Steven Taumoepeau",
+      "at": "2026-11-15T20:00:35+00:00",
+      "reason": "already stored by an existing table, or mastered outside the payments hub"
+    },
+    {
+      "id": "AID-ENTF-PARTY-PARTYLEGALSTRUCTURETYPE",
+      "by": "Steven Taumoepeau",
+      "at": "2026-11-15T20:00:35+00:00",
+      "reason": "already stored by an existing table, or mastered outside the payments hub"
+    },
+    {
+      "id": "AID-ENTF-PARTY-PARTYNAME",
+      "by": "Steven Taumoepeau",
+      "at": "2026-11-15T20:00:35+00:00",
+      "reason": "already stored by an existing table, or mastered outside the payments hub"
+    },
+    {
+      "id": "AID-ENTF-PARTY-PARTYTYPE",
+      "by": "Steven Taumoepeau",
+      "at": "2026-11-15T20:00:35+00:00",
+      "reason": "already stored by an existing table, or mastered outside the payments hub"
+    },
+    {
+      "id": "AID-ENTF-PAYEE-BANK-PARTYINVOLVEMENTTYPE",
+      "by": "Steven Taumoepeau",
+      "at": "2026-11-15T20:00:35+00:00",
+      "reason": "already stored by an existing table, or mastered outside the payments hub"
+    },
+    {
+      "id": "AID-ENTF-PAYEE-BANK-PARTYROLENAME",
+      "by": "Steven Taumoepeau",
+      "at": "2026-11-15T20:00:35+00:00",
+      "reason": "already stored by an existing table, or mastered outside the payments hub"
+    },
+    {
+      "id": "AID-ENTF-PAYEE-BANK-PARTYROLETYPE",
+      "by": "Steven Taumoepeau",
+      "at": "2026-11-15T20:00:35+00:00",
+      "reason": "already stored by an existing table, or mastered outside the payments hub"
+    },
+    {
+      "id": "AID-ENTF-PAYEE-BANK-PARTYROLEVALIDITYPERIOD",
+      "by": "Steven Taumoepeau",
+      "at": "2026-11-15T20:00:35+00:00",
+      "reason": "already stored by an existing table, or mastered outside the payments hub"
+    },
+    {
+      "id": "AID-ENTF-PAYEE-BANK-PAYEEBANKIDENTIFIER",
+      "by": "Steven Taumoepeau",
+      "at": "2026-11-15T20:00:35+00:00",
+      "reason": "already stored by an existing table, or mastered outside the payments hub"
+    },
+    {
+      "id": "AID-ENTF-PAYEE-BANK-PAYMENTINSTRUCTIONINVOLVEMENTTYPE",
+      "by": "Steven Taumoepeau",
+      "at": "2026-11-15T20:00:35+00:00",
+      "reason": "already stored by an existing table, or mastered outside the payments hub"
+    },
+    {
+      "id": "AID-ENTF-PAYER-BANK-PAYERBANKIDENTIFIER",
+      "by": "Steven Taumoepeau",
+      "at": "2026-11-15T20:00:35+00:00",
+      "reason": "already stored by an existing table, or mastered outside the payments hub"
+    },
+    {
+      "id": "AID-ENTF-PAYER-BANK-PAYMENTINSTRUCTIONINVOLVEMENTTYPE",
+      "by": "Steven Taumoepeau",
+      "at": "2026-11-15T20:00:35+00:00",
+      "reason": "already stored by an existing table, or mastered outside the payments hub"
+    },
+    {
+      "id": "AID-ENTF-PAYER-PAYERIDENTIFIER",
+      "by": "Steven Taumoepeau",
+      "at": "2026-11-15T20:00:35+00:00",
+      "reason": "already stored by an existing table, or mastered outside the payments hub"
+    },
+    {
+      "id": "AID-ENTF-PAYER-PAYMENTINSTRUCTIONINVOLVEMENTTYPE",
+      "by": "Steven Taumoepeau",
+      "at": "2026-11-15T20:00:35+00:00",
+      "reason": "already stored by an existing table, or mastered outside the payments hub"
+    },
+    {
+      "id": "AID-ENTF-PAYMENT-TRANSACTION-FINANCIALTRANSACTIONAMOUNT",
+      "by": "Steven Taumoepeau",
+      "at": "2026-11-15T20:00:35+00:00",
+      "reason": "already stored by an existing table, or mastered outside the payments hub"
+    },
+    {
+      "id": "AID-ENTF-PAYMENT-TRANSACTION-FINANCIALTRANSACTIONCURRENCY",
+      "by": "Steven Taumoepeau",
+      "at": "2026-11-15T20:00:35+00:00",
+      "reason": "already stored by an existing table, or mastered outside the payments hub"
+    },
+    {
+      "id": "AID-ENTF-PAYMENT-TRANSACTION-FINANCIALTRANSACTIONDATETIME",
+      "by": "Steven Taumoepeau",
+      "at": "2026-11-15T20:00:35+00:00",
+      "reason": "already stored by an existing table, or mastered outside the payments hub"
+    },
+    {
+      "id": "AID-ENTF-PAYMENT-TRANSACTION-FINANCIALTRANSACTIONFROMACCOUNT",
+      "by": "Steven Taumoepeau",
+      "at": "2026-11-15T20:00:35+00:00",
+      "reason": "already stored by an existing table, or mastered outside the payments hub"
+    },
+    {
+      "id": "AID-ENTF-PAYMENT-TRANSACTION-FINANCIALTRANSACTIONTARGETACCOUNT",
+      "by": "Steven Taumoepeau",
+      "at": "2026-11-15T20:00:35+00:00",
+      "reason": "already stored by an existing table, or mastered outside the payments hub"
+    },
+    {
+      "id": "AID-ENTF-PAYMENT-TRANSACTION-FINANCIALTRANSACTIONTYPE",
+      "by": "Steven Taumoepeau",
+      "at": "2026-11-15T20:00:35+00:00",
+      "reason": "already stored by an existing table, or mastered outside the payments hub"
+    },
+    {
+      "id": "AID-ENTF-PAYMENT-TRANSACTION-MONEYTRANSFERINSTRUCTIONREFERENCE",
+      "by": "Steven Taumoepeau",
+      "at": "2026-11-15T20:00:35+00:00",
+      "reason": "already stored by an existing table, or mastered outside the payments hub"
+    },
+    {
+      "id": "AID-ENTF-PAYMENT-TRANSACTION-MONEYTRANSFERTRANSACTIONAMOUNT",
+      "by": "Steven Taumoepeau",
+      "at": "2026-11-15T20:00:35+00:00",
+      "reason": "already stored by an existing table, or mastered outside the payments hub"
+    },
+    {
+      "id": "AID-ENTF-PAYMENT-TRANSACTION-MONEYTRANSFERTRANSACTIONCURRENCY",
+      "by": "Steven Taumoepeau",
+      "at": "2026-11-15T20:00:35+00:00",
+      "reason": "already stored by an existing table, or mastered outside the payments hub"
+    },
+    {
+      "id": "AID-ENTF-PAYMENT-TRANSACTION-MONEYTRANSFERTRANSACTIONSOURCEACCOUNT",
+      "by": "Steven Taumoepeau",
+      "at": "2026-11-15T20:00:35+00:00",
+      "reason": "already stored by an existing table, or mastered outside the payments hub"
+    },
+    {
+      "id": "AID-ENTF-PAYMENT-TRANSACTION-MONEYTRANSFERTRANSACTIONTARGETACCOUNT",
+      "by": "Steven Taumoepeau",
+      "at": "2026-11-15T20:00:35+00:00",
+      "reason": "already stored by an existing table, or mastered outside the payments hub"
+    },
+    {
+      "id": "AID-ENTF-PAYMENT-TRANSACTION-MONEYTRANSFERUSEDMETHOD",
+      "by": "Steven Taumoepeau",
+      "at": "2026-11-15T20:00:35+00:00",
+      "reason": "already stored by an existing table, or mastered outside the payments hub"
+    },
+    {
+      "id": "AID-ENTF-PAYMENT-TRANSACTION-MONEYTRANSFERVALUEDATE",
+      "by": "Steven Taumoepeau",
+      "at": "2026-11-15T20:00:35+00:00",
+      "reason": "already stored by an existing table, or mastered outside the payments hub"
+    },
+    {
+      "id": "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONAMOUNT",
+      "by": "Steven Taumoepeau",
+      "at": "2026-11-15T20:00:35+00:00",
+      "reason": "already stored by an existing table, or mastered outside the payments hub"
+    },
+    {
+      "id": "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONAPPLIEDFEEAMOUNT",
+      "by": "Steven Taumoepeau",
+      "at": "2026-11-15T20:00:35+00:00",
+      "reason": "already stored by an existing table, or mastered outside the payments hub"
+    },
+    {
+      "id": "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONCREDITDEBITINDICATOR",
+      "by": "Steven Taumoepeau",
+      "at": "2026-11-15T20:00:35+00:00",
+      "reason": "already stored by an existing table, or mastered outside the payments hub"
+    },
+    {
+      "id": "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONCURRENCY",
+      "by": "Steven Taumoepeau",
+      "at": "2026-11-15T20:00:35+00:00",
+      "reason": "already stored by an existing table, or mastered outside the payments hub"
+    },
+    {
+      "id": "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONDATETIME",
+      "by": "Steven Taumoepeau",
+      "at": "2026-11-15T20:00:35+00:00",
+      "reason": "already stored by an existing table, or mastered outside the payments hub"
+    },
+    {
+      "id": "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONIDENTIFICATION",
+      "by": "Steven Taumoepeau",
+      "at": "2026-11-15T20:00:35+00:00",
+      "reason": "already stored by an existing table, or mastered outside the payments hub"
+    },
+    {
+      "id": "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONPURPOSE",
+      "by": "Steven Taumoepeau",
+      "at": "2026-11-15T20:00:35+00:00",
+      "reason": "already stored by an existing table, or mastered outside the payments hub"
+    },
+    {
+      "id": "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONSTATUS",
+      "by": "Steven Taumoepeau",
+      "at": "2026-11-15T20:00:35+00:00",
+      "reason": "already stored by an existing table, or mastered outside the payments hub"
+    },
+    {
+      "id": "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONTYPE",
+      "by": "Steven Taumoepeau",
+      "at": "2026-11-15T20:00:35+00:00",
+      "reason": "already stored by an existing table, or mastered outside the payments hub"
+    },
+    {
+      "id": "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONUSEDMECHANISM",
+      "by": "Steven Taumoepeau",
+      "at": "2026-11-15T20:00:35+00:00",
+      "reason": "already stored by an existing table, or mastered outside the payments hub"
+    },
+    {
+      "id": "AID-ENTF-PAYMENT-TRANSACTION-TRANSACTIONDATE",
+      "by": "Steven Taumoepeau",
+      "at": "2026-11-15T20:00:35+00:00",
+      "reason": "already stored by an existing table, or mastered outside the payments hub"
+    },
+    {
+      "id": "AID-ENTF-PAYMENT-TRANSACTION-TRANSACTIONDESCRIPTION",
+      "by": "Steven Taumoepeau",
+      "at": "2026-11-15T20:00:35+00:00",
+      "reason": "already stored by an existing table, or mastered outside the payments hub"
+    },
+    {
+      "id": "AID-ENTF-PAYMENT-TRANSACTION-TRANSACTIONIDENTIFICATION",
+      "by": "Steven Taumoepeau",
+      "at": "2026-11-15T20:00:35+00:00",
+      "reason": "already stored by an existing table, or mastered outside the payments hub"
+    },
+    {
+      "id": "AID-ENTF-PAYMENT-TRANSACTION-TRANSACTIONNAME",
+      "by": "Steven Taumoepeau",
+      "at": "2026-11-15T20:00:35+00:00",
+      "reason": "already stored by an existing table, or mastered outside the payments hub"
+    },
+    {
+      "id": "AID-ENTF-PAYMENT-TRANSACTION-TRANSACTIONSTATUS",
+      "by": "Steven Taumoepeau",
+      "at": "2026-11-15T20:00:35+00:00",
+      "reason": "already stored by an existing table, or mastered outside the payments hub"
+    },
+    {
+      "id": "AID-ENTF-PAYMENT-TRANSACTION-TRANSACTIONTYPE",
+      "by": "Steven Taumoepeau",
+      "at": "2026-11-15T20:00:35+00:00",
+      "reason": "already stored by an existing table, or mastered outside the payments hub"
+    },
+    {
+      "id": "AID-ENTF-PAYMENT-TRANSACTION-UNDERTAKINGTRANSACTIONTYPE",
+      "by": "Steven Taumoepeau",
+      "at": "2026-11-15T20:00:35+00:00",
+      "reason": "already stored by an existing table, or mastered outside the payments hub"
+    }
+  ]
+}

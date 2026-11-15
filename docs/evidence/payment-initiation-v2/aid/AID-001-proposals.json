@@ -1,0 +1,1993 @@
+{
+  "mappings": [
+    {
+      "mapping_id": "AID-001-P001",
+      "source": {
+        "id": "BBO-ACCOUNT",
+        "type": "A2.BusinessObject",
+        "version": "14.0.0",
+        "canonical_id": "BIAN-BO-ACCOUNT"
+      },
+      "relationship": "MAPPED_TO",
+      "target": {
+        "id": "AID-ENT-ACCOUNT",
+        "type": "A3.DataEntity",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data entity stores the business object Account (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P002",
+      "source": {
+        "id": "BBOA-ACCOUNT-ACCOUNT-STATUS",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-ACCOUNT-ACCOUNTSTATUS",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute account_status stores the BIAN attribute AccountStatus (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P003",
+      "source": {
+        "id": "BBOA-ACCOUNT-ACCOUNT-IDENTIFICATION",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-ACCOUNT-ACCOUNTIDENTIFICATION",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute account_identification stores the BIAN attribute AccountIdentification (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P004",
+      "source": {
+        "id": "BBOA-ACCOUNT-ACCOUNT-DATE",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-ACCOUNT-ACCOUNTDATE",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute account_date stores the BIAN attribute AccountDate (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P005",
+      "source": {
+        "id": "BBOA-ACCOUNT-ACCOUNT-TYPE",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-ACCOUNT-ACCOUNTTYPE",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute account_type stores the BIAN attribute AccountType (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P006",
+      "source": {
+        "id": "BBOA-ACCOUNT-ACCOUNT-PURPOSE",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-ACCOUNT-ACCOUNTPURPOSE",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute account_purpose stores the BIAN attribute AccountPurpose (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P007",
+      "source": {
+        "id": "BBOA-ACCOUNT-ACCOUNT-BALANCE",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-ACCOUNT-ACCOUNTBALANCE",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute account_balance stores the BIAN attribute AccountBalance (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P008",
+      "source": {
+        "id": "BBOA-ACCOUNT-ACCOUNT-CURRENCY",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-ACCOUNT-ACCOUNTCURRENCY",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute account_currency stores the BIAN attribute AccountCurrency (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P009",
+      "source": {
+        "id": "BBOA-ACCOUNT-ACCOUNT-DESCRIPTION",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-ACCOUNT-ACCOUNTDESCRIPTION",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute account_description stores the BIAN attribute AccountDescription (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P010",
+      "source": {
+        "id": "BBOA-ACCOUNT-ACCOUNT-NAME",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-ACCOUNT-ACCOUNTNAME",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute account_name stores the BIAN attribute AccountName (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P011",
+      "source": {
+        "id": "BBOA-ACCOUNT-LOG-TYPE",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-ACCOUNT-LOGTYPE",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute log_type stores the BIAN attribute LogType (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P012",
+      "source": {
+        "id": "BBOA-ACCOUNT-LOG-PERIOD",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-ACCOUNT-LOGPERIOD",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute log_period stores the BIAN attribute LogPeriod (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P013",
+      "source": {
+        "id": "BBOA-ACCOUNT-LOG-DATE",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-ACCOUNT-LOGDATE",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute log_date stores the BIAN attribute LogDate (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P014",
+      "source": {
+        "id": "BBOA-ACCOUNT-LOG-IDENTIFICATION",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-ACCOUNT-LOGIDENTIFICATION",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute log_identification stores the BIAN attribute LogIdentification (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P015",
+      "source": {
+        "id": "BBO-COMPLIANCE-CHECK",
+        "type": "A2.BusinessObject",
+        "version": "14.0.0",
+        "canonical_id": "BIAN-BO-COMPLIANCE-CHECK"
+      },
+      "relationship": "MAPPED_TO",
+      "target": {
+        "id": "AID-ENT-COMPLIANCE-CHECK",
+        "type": "A3.DataEntity",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data entity stores the business object Compliance Check (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P016",
+      "source": {
+        "id": "BBOA-COMPLIANCE-CHECK-COMPLIANCE-CHECK-TYPE",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-COMPLIANCE-CHECK-COMPLIANCECHECKTYPE",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute compliance_check_type stores the BIAN attribute ComplianceCheckType (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P017",
+      "source": {
+        "id": "BBO-FUNDING-CHECK",
+        "type": "A2.BusinessObject",
+        "version": "14.0.0",
+        "canonical_id": "BIAN-BO-FUNDING-CHECK"
+      },
+      "relationship": "MAPPED_TO",
+      "target": {
+        "id": "AID-ENT-FUNDING-CHECK",
+        "type": "A3.DataEntity",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data entity stores the business object Funding Check (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P018",
+      "source": {
+        "id": "BBOA-FUNDING-CHECK-ASSESSMENT-TYPE",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTTYPE",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute assessment_type stores the BIAN attribute AssessmentType (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P019",
+      "source": {
+        "id": "BBOA-FUNDING-CHECK-ASSESSMENT-METHOD",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTMETHOD",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute assessment_method stores the BIAN attribute AssessmentMethod (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P020",
+      "source": {
+        "id": "BBOA-FUNDING-CHECK-ASSESSMENT-SCHEDULE",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTSCHEDULE",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute assessment_schedule stores the BIAN attribute AssessmentSchedule (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P021",
+      "source": {
+        "id": "BBOA-FUNDING-CHECK-ASSESSMENT-DESCRIPTION",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTDESCRIPTION",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute assessment_description stores the BIAN attribute AssessmentDescription (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P022",
+      "source": {
+        "id": "BBOA-FUNDING-CHECK-ASSESSMENT-MODEL",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTMODEL",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute assessment_model stores the BIAN attribute AssessmentModel (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P023",
+      "source": {
+        "id": "BBOA-FUNDING-CHECK-ASSESSMENT-DATE-TIME",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTDATETIME",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute assessment_date_time stores the BIAN attribute AssessmentDateTime (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P024",
+      "source": {
+        "id": "BBOA-FUNDING-CHECK-ASSESSMENT-RESULT",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTRESULT",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute assessment_result stores the BIAN attribute AssessmentResult (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P025",
+      "source": {
+        "id": "BBOA-FUNDING-CHECK-ASSESSMENT-SUPPORTING-DOCUMENT",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTSUPPORTINGDOCUMENT",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute assessment_supporting_document stores the BIAN attribute AssessmentSupportingDocument (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P026",
+      "source": {
+        "id": "BBOA-FUNDING-CHECK-ASSESSMENT-REPRESENTING-DOCUMENT",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTREPRESENTINGDOCUMENT",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute assessment_representing_document stores the BIAN attribute AssessmentRepresentingDocument (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P027",
+      "source": {
+        "id": "BBOA-FUNDING-CHECK-ASSESSMENT-REQUIRED-ADJUSTMENT",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTREQUIREDADJUSTMENT",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute assessment_required_adjustment stores the BIAN attribute AssessmentRequiredAdjustment (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P028",
+      "source": {
+        "id": "BBOA-FUNDING-CHECK-ASSESSMENT-REQUIREMENT",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTREQUIREMENT",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute assessment_requirement stores the BIAN attribute AssessmentRequirement (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P029",
+      "source": {
+        "id": "BBOA-FUNDING-CHECK-ASSESSMENT-EXPIRY-DATE",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTEXPIRYDATE",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute assessment_expiry_date stores the BIAN attribute AssessmentExpiryDate (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P030",
+      "source": {
+        "id": "BBOA-FUNDING-CHECK-ASSESSMENT-STATUS",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTSTATUS",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute assessment_status stores the BIAN attribute AssessmentStatus (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P031",
+      "source": {
+        "id": "BBOA-FUNDING-CHECK-ASSESSMENT-IDENTIFICATION",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTIDENTIFICATION",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute assessment_identification stores the BIAN attribute AssessmentIdentification (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P032",
+      "source": {
+        "id": "BBO-PARTY",
+        "type": "A2.BusinessObject",
+        "version": "1.0",
+        "canonical_id": "BIAN-BO-PARTY"
+      },
+      "relationship": "MAPPED_TO",
+      "target": {
+        "id": "AID-ENT-PARTY",
+        "type": "A3.DataEntity",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data entity stores the business object Party (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P033",
+      "source": {
+        "id": "BBOA-PARTY-REF",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "1.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-PARTY-PARTY-REFERENCE",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute party_reference stores the BIAN attribute party reference (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P034",
+      "source": {
+        "id": "BBOA-PARTY-PARTY-NAME",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-PARTY-PARTYNAME",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute party_name stores the BIAN attribute PartyName (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P035",
+      "source": {
+        "id": "BBOA-PARTY-PARTY-TYPE",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-PARTY-PARTYTYPE",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute party_type stores the BIAN attribute PartyType (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P036",
+      "source": {
+        "id": "BBOA-PARTY-PARTY-DATE-TIME",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-PARTY-PARTYDATETIME",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute party_date_time stores the BIAN attribute PartyDateTime (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P037",
+      "source": {
+        "id": "BBOA-PARTY-PARTY-IDENTIFICATION",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-PARTY-PARTYIDENTIFICATION",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute party_identification stores the BIAN attribute PartyIdentification (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P038",
+      "source": {
+        "id": "BBOA-PARTY-PARTY-LEGAL-STRUCTURE-TYPE",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-PARTY-PARTYLEGALSTRUCTURETYPE",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute party_legal_structure_type stores the BIAN attribute PartyLegalStructureType (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P039",
+      "source": {
+        "id": "BBOA-PARTY-PARTY-ACTIVITY-INDICATOR",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-PARTY-PARTYACTIVITYINDICATOR",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute party_activity_indicator stores the BIAN attribute PartyActivityIndicator (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P040",
+      "source": {
+        "id": "BBO-PAYEE",
+        "type": "A2.BusinessObject",
+        "version": "14.0.0",
+        "canonical_id": "BIAN-BO-PAYEE"
+      },
+      "relationship": "MAPPED_TO",
+      "target": {
+        "id": "AID-ENT-PAYEE",
+        "type": "A3.DataEntity",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data entity stores the business object Payee (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P041",
+      "source": {
+        "id": "BBOA-PAYEE-PAYEE-IDENTIFIER",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-PAYEE-PAYEEIDENTIFIER",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute payee_identifier stores the BIAN attribute PayeeIdentifier (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P042",
+      "source": {
+        "id": "BBOA-PAYEE-PAYMENT-INSTRUCTION-INVOLVEMENT-TYPE",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-PAYEE-PAYMENTINSTRUCTIONINVOLVEMENTTYPE",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute payment_instruction_involvement_type stores the BIAN attribute PaymentInstructionInvolvementType (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P043",
+      "source": {
+        "id": "BBO-PAYEE-BANK",
+        "type": "A2.BusinessObject",
+        "version": "14.0.0",
+        "canonical_id": "BIAN-BO-PAYEE-BANK"
+      },
+      "relationship": "MAPPED_TO",
+      "target": {
+        "id": "AID-ENT-PAYEE-BANK",
+        "type": "A3.DataEntity",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data entity stores the business object Payee Bank (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P044",
+      "source": {
+        "id": "BBOA-PAYEE-BANK-PAYEE-BANK-IDENTIFIER",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-PAYEE-BANK-PAYEEBANKIDENTIFIER",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute payee_bank_identifier stores the BIAN attribute PayeeBankIdentifier (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P045",
+      "source": {
+        "id": "BBOA-PAYEE-BANK-PAYMENT-INSTRUCTION-INVOLVEMENT-TYPE",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-PAYEE-BANK-PAYMENTINSTRUCTIONINVOLVEMENTTYPE",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute payment_instruction_involvement_type stores the BIAN attribute PaymentInstructionInvolvementType (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P046",
+      "source": {
+        "id": "BBOA-PAYEE-BANK-PARTY-ROLE-TYPE",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-PAYEE-BANK-PARTYROLETYPE",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute party_role_type stores the BIAN attribute PartyRoleType (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P047",
+      "source": {
+        "id": "BBOA-PAYEE-BANK-PARTY-ROLE-NAME",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-PAYEE-BANK-PARTYROLENAME",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute party_role_name stores the BIAN attribute PartyRoleName (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P048",
+      "source": {
+        "id": "BBOA-PAYEE-BANK-PARTY-ROLE-VALIDITY-PERIOD",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-PAYEE-BANK-PARTYROLEVALIDITYPERIOD",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute party_role_validity_period stores the BIAN attribute PartyRoleValidityPeriod (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P049",
+      "source": {
+        "id": "BBOA-PAYEE-BANK-PARTY-INVOLVEMENT-TYPE",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-PAYEE-BANK-PARTYINVOLVEMENTTYPE",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute party_involvement_type stores the BIAN attribute PartyInvolvementType (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P050",
+      "source": {
+        "id": "BBO-PAYER",
+        "type": "A2.BusinessObject",
+        "version": "14.0.0",
+        "canonical_id": "BIAN-BO-PAYER"
+      },
+      "relationship": "MAPPED_TO",
+      "target": {
+        "id": "AID-ENT-PAYER",
+        "type": "A3.DataEntity",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data entity stores the business object Payer (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P051",
+      "source": {
+        "id": "BBOA-PAYER-PAYER-IDENTIFIER",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-PAYER-PAYERIDENTIFIER",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute payer_identifier stores the BIAN attribute PayerIdentifier (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P052",
+      "source": {
+        "id": "BBOA-PAYER-PAYMENT-INSTRUCTION-INVOLVEMENT-TYPE",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-PAYER-PAYMENTINSTRUCTIONINVOLVEMENTTYPE",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute payment_instruction_involvement_type stores the BIAN attribute PaymentInstructionInvolvementType (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P053",
+      "source": {
+        "id": "BBO-PAYER-BANK",
+        "type": "A2.BusinessObject",
+        "version": "14.0.0",
+        "canonical_id": "BIAN-BO-PAYER-BANK"
+      },
+      "relationship": "MAPPED_TO",
+      "target": {
+        "id": "AID-ENT-PAYER-BANK",
+        "type": "A3.DataEntity",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data entity stores the business object Payer Bank (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P054",
+      "source": {
+        "id": "BBOA-PAYER-BANK-PAYER-BANK-IDENTIFIER",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-PAYER-BANK-PAYERBANKIDENTIFIER",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute payer_bank_identifier stores the BIAN attribute PayerBankIdentifier (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P055",
+      "source": {
+        "id": "BBOA-PAYER-BANK-PAYMENT-INSTRUCTION-INVOLVEMENT-TYPE",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-PAYER-BANK-PAYMENTINSTRUCTIONINVOLVEMENTTYPE",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute payment_instruction_involvement_type stores the BIAN attribute PaymentInstructionInvolvementType (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P056",
+      "source": {
+        "id": "BBO-PAYMENT-TRANSACTION",
+        "type": "A2.BusinessObject",
+        "version": "14.0.0",
+        "canonical_id": "BIAN-BO-PAYMENT-TRANSACTION"
+      },
+      "relationship": "MAPPED_TO",
+      "target": {
+        "id": "AID-ENT-PAYMENT-TRANSACTION",
+        "type": "A3.DataEntity",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data entity stores the business object Payment Transaction (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P057",
+      "source": {
+        "id": "BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-TYPE",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONTYPE",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute payment_transaction_type stores the BIAN attribute PaymentTransactionType (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P058",
+      "source": {
+        "id": "BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-AMOUNT",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONAMOUNT",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute payment_transaction_amount stores the BIAN attribute PaymentTransactionAmount (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P059",
+      "source": {
+        "id": "BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-IDENTIFICATION",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONIDENTIFICATION",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute payment_transaction_identification stores the BIAN attribute PaymentTransactionIdentification (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P060",
+      "source": {
+        "id": "BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-USED-MECHANISM",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONUSEDMECHANISM",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute payment_transaction_used_mechanism stores the BIAN attribute PaymentTransactionUsedMechanism (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P061",
+      "source": {
+        "id": "BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-DATETIME",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONDATETIME",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute payment_transaction_datetime stores the BIAN attribute PaymentTransactionDatetime (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P062",
+      "source": {
+        "id": "BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-PURPOSE",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONPURPOSE",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute payment_transaction_purpose stores the BIAN attribute PaymentTransactionPurpose (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P063",
+      "source": {
+        "id": "BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-STATUS",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONSTATUS",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute payment_transaction_status stores the BIAN attribute PaymentTransactionStatus (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P064",
+      "source": {
+        "id": "BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-APPLIED-FEE-AMOUNT",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONAPPLIEDFEEAMOUNT",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute payment_transaction_applied_fee_amount stores the BIAN attribute PaymentTransactionAppliedFeeAmount (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P065",
+      "source": {
+        "id": "BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-CURRENCY",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONCURRENCY",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute payment_transaction_currency stores the BIAN attribute PaymentTransactionCurrency (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P066",
+      "source": {
+        "id": "BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-CREDIT-DEBIT-INDICATOR",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONCREDITDEBITINDICATOR",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute payment_transaction_credit_debit_indicator stores the BIAN attribute PaymentTransactionCreditDebitIndicator (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P067",
+      "source": {
+        "id": "BBOA-PAYMENT-TRANSACTION-TRANSACTION-IDENTIFICATION",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-TRANSACTIONIDENTIFICATION",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute transaction_identification stores the BIAN attribute TransactionIdentification (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P068",
+      "source": {
+        "id": "BBOA-PAYMENT-TRANSACTION-TRANSACTION-DATE",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-TRANSACTIONDATE",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute transaction_date stores the BIAN attribute TransactionDate (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P069",
+      "source": {
+        "id": "BBOA-PAYMENT-TRANSACTION-TRANSACTION-TYPE",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-TRANSACTIONTYPE",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute transaction_type stores the BIAN attribute TransactionType (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P070",
+      "source": {
+        "id": "BBOA-PAYMENT-TRANSACTION-TRANSACTION-DESCRIPTION",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-TRANSACTIONDESCRIPTION",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute transaction_description stores the BIAN attribute TransactionDescription (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P071",
+      "source": {
+        "id": "BBOA-PAYMENT-TRANSACTION-TRANSACTION-STATUS",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-TRANSACTIONSTATUS",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute transaction_status stores the BIAN attribute TransactionStatus (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P072",
+      "source": {
+        "id": "BBOA-PAYMENT-TRANSACTION-TRANSACTION-NAME",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-TRANSACTIONNAME",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute transaction_name stores the BIAN attribute TransactionName (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P073",
+      "source": {
+        "id": "BBOA-PAYMENT-TRANSACTION-UNDERTAKING-TRANSACTION-TYPE",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-UNDERTAKINGTRANSACTIONTYPE",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute undertaking_transaction_type stores the BIAN attribute UndertakingTransactionType (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P074",
+      "source": {
+        "id": "BBOA-PAYMENT-TRANSACTION-MONEY-TRANSFER-TRANSACTION-AMOUNT",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-MONEYTRANSFERTRANSACTIONAMOUNT",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute money_transfer_transaction_amount stores the BIAN attribute MoneyTransferTransactionAmount (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P075",
+      "source": {
+        "id": "BBOA-PAYMENT-TRANSACTION-MONEY-TRANSFER-TRANSACTION-CURRENCY",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-MONEYTRANSFERTRANSACTIONCURRENCY",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute money_transfer_transaction_currency stores the BIAN attribute MoneyTransferTransactionCurrency (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P076",
+      "source": {
+        "id": "BBOA-PAYMENT-TRANSACTION-MONEY-TRANSFER-TRANSACTION-SOURCE-ACCOUNT",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-MONEYTRANSFERTRANSACTIONSOURCEACCOUNT",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute money_transfer_transaction_source_account stores the BIAN attribute MoneyTransferTransactionSourceAccount (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P077",
+      "source": {
+        "id": "BBOA-PAYMENT-TRANSACTION-MONEY-TRANSFER-TRANSACTION-TARGET-ACCOUNT",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-MONEYTRANSFERTRANSACTIONTARGETACCOUNT",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute money_transfer_transaction_target_account stores the BIAN attribute MoneyTransferTransactionTargetAccount (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P078",
+      "source": {
+        "id": "BBOA-PAYMENT-TRANSACTION-MONEY-TRANSFER-INSTRUCTION-REFERENCE",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-MONEYTRANSFERINSTRUCTIONREFERENCE",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute money_transfer_instruction_reference stores the BIAN attribute MoneyTransferInstructionReference (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P079",
+      "source": {
+        "id": "BBOA-PAYMENT-TRANSACTION-MONEY-TRANSFER-USED-METHOD",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-MONEYTRANSFERUSEDMETHOD",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute money_transfer_used_method stores the BIAN attribute MoneyTransferUsedMethod (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P080",
+      "source": {
+        "id": "BBOA-PAYMENT-TRANSACTION-MONEY-TRANSFER-VALUE-DATE",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-MONEYTRANSFERVALUEDATE",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute money_transfer_value_date stores the BIAN attribute MoneyTransferValueDate (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P081",
+      "source": {
+        "id": "BBOA-PAYMENT-TRANSACTION-FINANCIAL-TRANSACTION-TYPE",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-FINANCIALTRANSACTIONTYPE",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute financial_transaction_type stores the BIAN attribute FinancialTransactionType (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P082",
+      "source": {
+        "id": "BBOA-PAYMENT-TRANSACTION-FINANCIAL-TRANSACTION-CURRENCY",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-FINANCIALTRANSACTIONCURRENCY",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute financial_transaction_currency stores the BIAN attribute FinancialTransactionCurrency (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P083",
+      "source": {
+        "id": "BBOA-PAYMENT-TRANSACTION-FINANCIAL-TRANSACTION-AMOUNT",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-FINANCIALTRANSACTIONAMOUNT",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute financial_transaction_amount stores the BIAN attribute FinancialTransactionAmount (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P084",
+      "source": {
+        "id": "BBOA-PAYMENT-TRANSACTION-FINANCIAL-TRANSACTION-FROM-ACCOUNT",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-FINANCIALTRANSACTIONFROMACCOUNT",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute financial_transaction_from_account stores the BIAN attribute FinancialTransactionFromAccount (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P085",
+      "source": {
+        "id": "BBOA-PAYMENT-TRANSACTION-FINANCIAL-TRANSACTION-TARGET-ACCOUNT",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-FINANCIALTRANSACTIONTARGETACCOUNT",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute financial_transaction_target_account stores the BIAN attribute FinancialTransactionTargetAccount (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P086",
+      "source": {
+        "id": "BBOA-PAYMENT-TRANSACTION-FINANCIAL-TRANSACTION-DATE-TIME",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-FINANCIALTRANSACTIONDATETIME",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "proposed",
+      "confidence": 0.4,
+      "evidence": [
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute financial_transaction_date_time stores the BIAN attribute FinancialTransactionDateTime (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P087",
+      "source": {
+        "id": "ENT-PAY-INSTR",
+        "type": "A3.DataEntity",
+        "version": "7.1"
+      },
+      "relationship": "STORED_IN",
+      "target": {
+        "id": "INF-PG-PAY-PROD",
+        "type": "A4.SystemSoftware",
+        "version": "16"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:AID-001 AID-A01"
+      ],
+      "rationale": "Inferred by sdem aid from an attribute: ENT-PAY-INSTR.stored_in names INF-PG-PAY-PROD (AID-A01) — approve with deployment_design evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P088",
+      "source": {
+        "id": "ENT-PAY-EVENT",
+        "type": "A3.DataEntity",
+        "version": "7.1"
+      },
+      "relationship": "STORED_IN",
+      "target": {
+        "id": "INF-PG-PAY-PROD",
+        "type": "A4.SystemSoftware",
+        "version": "16"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:AID-001 AID-A01"
+      ],
+      "rationale": "Inferred by sdem aid from an attribute: ENT-PAY-EVENT.stored_in names INF-PG-PAY-PROD (AID-A01) — approve with deployment_design evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P089",
+      "source": {
+        "id": "ENT-ACCOUNT-CACHE",
+        "type": "A3.DataEntity",
+        "version": "7.1"
+      },
+      "relationship": "STORED_IN",
+      "target": {
+        "id": "INF-PG-PAY-PROD",
+        "type": "A4.SystemSoftware",
+        "version": "16"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:AID-001 AID-A01"
+      ],
+      "rationale": "Inferred by sdem aid from an attribute: ENT-ACCOUNT-CACHE.stored_in names INF-PG-PAY-PROD (AID-A01) — approve with deployment_design evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    },
+    {
+      "mapping_id": "AID-001-P090",
+      "source": {
+        "id": "AFN-PAY-VALIDATE",
+        "type": "A3.ApplicationFunction",
+        "version": "1.0"
+      },
+      "relationship": "SERVED_BY",
+      "target": {
+        "id": "TS-SECRETS",
+        "type": "A4.TechnologyService",
+        "version": "1.0"
+      },
+      "status": "proposed",
+      "confidence": 0.8,
+      "evidence": [
+        "engine_rationale:AID-001 AID-A02"
+      ],
+      "rationale": "Inferred by sdem aid from an attribute: AFN-PAY-VALIDATE.consumes names TS-SECRETS (AID-A02) — approve with deployment_design evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid"
+    }
+  ]
+}

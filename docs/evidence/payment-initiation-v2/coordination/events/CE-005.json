@@ -1,0 +1,1462 @@
+{
+  "id": "CE-005",
+  "change_set": "CS-005",
+  "layer": "A3",
+  "round": 1,
+  "at": "2026-11-15T18:58:53+00:00",
+  "agent": "architect",
+  "person": "a tester",
+  "impact": {
+    "records": [
+      {
+        "id": "AID-ENT-ACCOUNT",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENT-ACCOUNT added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENT-COMPLIANCE-CHECK",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENT-COMPLIANCE-CHECK added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENT-FUNDING-CHECK",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENT-FUNDING-CHECK added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENT-PARTY",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENT-PARTY added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENT-PAYEE",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENT-PAYEE added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENT-PAYEE-BANK",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENT-PAYEE-BANK added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENT-PAYER",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENT-PAYER added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENT-PAYER-BANK",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENT-PAYER-BANK added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENT-PAYMENT-TRANSACTION",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENT-PAYMENT-TRANSACTION added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENTF-ACCOUNT-ACCOUNTBALANCE",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENTF-ACCOUNT-ACCOUNTBALANCE added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENTF-ACCOUNT-ACCOUNTCURRENCY",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENTF-ACCOUNT-ACCOUNTCURRENCY added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENTF-ACCOUNT-ACCOUNTDATE",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENTF-ACCOUNT-ACCOUNTDATE added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENTF-ACCOUNT-ACCOUNTDESCRIPTION",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENTF-ACCOUNT-ACCOUNTDESCRIPTION added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENTF-ACCOUNT-ACCOUNTIDENTIFICATION",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENTF-ACCOUNT-ACCOUNTIDENTIFICATION added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENTF-ACCOUNT-ACCOUNTNAME",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENTF-ACCOUNT-ACCOUNTNAME added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENTF-ACCOUNT-ACCOUNTPURPOSE",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENTF-ACCOUNT-ACCOUNTPURPOSE added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENTF-ACCOUNT-ACCOUNTSTATUS",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENTF-ACCOUNT-ACCOUNTSTATUS added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENTF-ACCOUNT-ACCOUNTTYPE",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENTF-ACCOUNT-ACCOUNTTYPE added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENTF-ACCOUNT-LOGDATE",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENTF-ACCOUNT-LOGDATE added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENTF-ACCOUNT-LOGIDENTIFICATION",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENTF-ACCOUNT-LOGIDENTIFICATION added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENTF-ACCOUNT-LOGPERIOD",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENTF-ACCOUNT-LOGPERIOD added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENTF-ACCOUNT-LOGTYPE",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENTF-ACCOUNT-LOGTYPE added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENTF-COMPLIANCE-CHECK-COMPLIANCECHECKTYPE",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENTF-COMPLIANCE-CHECK-COMPLIANCECHECKTYPE added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTDATETIME",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENTF-FUNDING-CHECK-ASSESSMENTDATETIME added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTDESCRIPTION",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENTF-FUNDING-CHECK-ASSESSMENTDESCRIPTION added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTEXPIRYDATE",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENTF-FUNDING-CHECK-ASSESSMENTEXPIRYDATE added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTIDENTIFICATION",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENTF-FUNDING-CHECK-ASSESSMENTIDENTIFICATION added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTMETHOD",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENTF-FUNDING-CHECK-ASSESSMENTMETHOD added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTMODEL",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENTF-FUNDING-CHECK-ASSESSMENTMODEL added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTREPRESENTINGDOCUMENT",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENTF-FUNDING-CHECK-ASSESSMENTREPRESENTINGDOCUMENT added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTREQUIREDADJUSTMENT",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENTF-FUNDING-CHECK-ASSESSMENTREQUIREDADJUSTMENT added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTREQUIREMENT",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENTF-FUNDING-CHECK-ASSESSMENTREQUIREMENT added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTRESULT",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENTF-FUNDING-CHECK-ASSESSMENTRESULT added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTSCHEDULE",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENTF-FUNDING-CHECK-ASSESSMENTSCHEDULE added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTSTATUS",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENTF-FUNDING-CHECK-ASSESSMENTSTATUS added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTSUPPORTINGDOCUMENT",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENTF-FUNDING-CHECK-ASSESSMENTSUPPORTINGDOCUMENT added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTTYPE",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENTF-FUNDING-CHECK-ASSESSMENTTYPE added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENTF-PARTY-PARTY-REFERENCE",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENTF-PARTY-PARTY-REFERENCE added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENTF-PARTY-PARTYACTIVITYINDICATOR",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENTF-PARTY-PARTYACTIVITYINDICATOR added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENTF-PARTY-PARTYDATETIME",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENTF-PARTY-PARTYDATETIME added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENTF-PARTY-PARTYIDENTIFICATION",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENTF-PARTY-PARTYIDENTIFICATION added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENTF-PARTY-PARTYLEGALSTRUCTURETYPE",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENTF-PARTY-PARTYLEGALSTRUCTURETYPE added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENTF-PARTY-PARTYNAME",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENTF-PARTY-PARTYNAME added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENTF-PARTY-PARTYTYPE",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENTF-PARTY-PARTYTYPE added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENTF-PAYEE-BANK-PARTYINVOLVEMENTTYPE",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENTF-PAYEE-BANK-PARTYINVOLVEMENTTYPE added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENTF-PAYEE-BANK-PARTYROLENAME",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENTF-PAYEE-BANK-PARTYROLENAME added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENTF-PAYEE-BANK-PARTYROLETYPE",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENTF-PAYEE-BANK-PARTYROLETYPE added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENTF-PAYEE-BANK-PARTYROLEVALIDITYPERIOD",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENTF-PAYEE-BANK-PARTYROLEVALIDITYPERIOD added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENTF-PAYEE-BANK-PAYEEBANKIDENTIFIER",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENTF-PAYEE-BANK-PAYEEBANKIDENTIFIER added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENTF-PAYEE-BANK-PAYMENTINSTRUCTIONINVOLVEMENTTYPE",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENTF-PAYEE-BANK-PAYMENTINSTRUCTIONINVOLVEMENTTYPE added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENTF-PAYEE-PAYEEIDENTIFIER",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENTF-PAYEE-PAYEEIDENTIFIER added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENTF-PAYEE-PAYMENTINSTRUCTIONINVOLVEMENTTYPE",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENTF-PAYEE-PAYMENTINSTRUCTIONINVOLVEMENTTYPE added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENTF-PAYER-BANK-PAYERBANKIDENTIFIER",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENTF-PAYER-BANK-PAYERBANKIDENTIFIER added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENTF-PAYER-BANK-PAYMENTINSTRUCTIONINVOLVEMENTTYPE",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENTF-PAYER-BANK-PAYMENTINSTRUCTIONINVOLVEMENTTYPE added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENTF-PAYER-PAYERIDENTIFIER",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENTF-PAYER-PAYERIDENTIFIER added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENTF-PAYER-PAYMENTINSTRUCTIONINVOLVEMENTTYPE",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENTF-PAYER-PAYMENTINSTRUCTIONINVOLVEMENTTYPE added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-FINANCIALTRANSACTIONAMOUNT",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENTF-PAYMENT-TRANSACTION-FINANCIALTRANSACTIONAMOUNT added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-FINANCIALTRANSACTIONCURRENCY",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENTF-PAYMENT-TRANSACTION-FINANCIALTRANSACTIONCURRENCY added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-FINANCIALTRANSACTIONDATETIME",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENTF-PAYMENT-TRANSACTION-FINANCIALTRANSACTIONDATETIME added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-FINANCIALTRANSACTIONFROMACCOUNT",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENTF-PAYMENT-TRANSACTION-FINANCIALTRANSACTIONFROMACCOUNT added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-FINANCIALTRANSACTIONTARGETACCOUNT",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENTF-PAYMENT-TRANSACTION-FINANCIALTRANSACTIONTARGETACCOUNT added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-FINANCIALTRANSACTIONTYPE",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENTF-PAYMENT-TRANSACTION-FINANCIALTRANSACTIONTYPE added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-MONEYTRANSFERINSTRUCTIONREFERENCE",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENTF-PAYMENT-TRANSACTION-MONEYTRANSFERINSTRUCTIONREFERENCE added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-MONEYTRANSFERTRANSACTIONAMOUNT",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENTF-PAYMENT-TRANSACTION-MONEYTRANSFERTRANSACTIONAMOUNT added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-MONEYTRANSFERTRANSACTIONCURRENCY",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENTF-PAYMENT-TRANSACTION-MONEYTRANSFERTRANSACTIONCURRENCY added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-MONEYTRANSFERTRANSACTIONSOURCEACCOUNT",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENTF-PAYMENT-TRANSACTION-MONEYTRANSFERTRANSACTIONSOURCEACCOUNT added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-MONEYTRANSFERTRANSACTIONTARGETACCOUNT",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENTF-PAYMENT-TRANSACTION-MONEYTRANSFERTRANSACTIONTARGETACCOUNT added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-MONEYTRANSFERUSEDMETHOD",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENTF-PAYMENT-TRANSACTION-MONEYTRANSFERUSEDMETHOD added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-MONEYTRANSFERVALUEDATE",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENTF-PAYMENT-TRANSACTION-MONEYTRANSFERVALUEDATE added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONAMOUNT",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONAMOUNT added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONAPPLIEDFEEAMOUNT",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONAPPLIEDFEEAMOUNT added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONCREDITDEBITINDICATOR",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONCREDITDEBITINDICATOR added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONCURRENCY",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONCURRENCY added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONDATETIME",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONDATETIME added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONIDENTIFICATION",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONIDENTIFICATION added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONPURPOSE",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONPURPOSE added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONSTATUS",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONSTATUS added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONTYPE",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONTYPE added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONUSEDMECHANISM",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONUSEDMECHANISM added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-TRANSACTIONDATE",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENTF-PAYMENT-TRANSACTION-TRANSACTIONDATE added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-TRANSACTIONDESCRIPTION",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENTF-PAYMENT-TRANSACTION-TRANSACTIONDESCRIPTION added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-TRANSACTIONIDENTIFICATION",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENTF-PAYMENT-TRANSACTION-TRANSACTIONIDENTIFICATION added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-TRANSACTIONNAME",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENTF-PAYMENT-TRANSACTION-TRANSACTIONNAME added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-TRANSACTIONSTATUS",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENTF-PAYMENT-TRANSACTION-TRANSACTIONSTATUS added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-TRANSACTIONTYPE",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENTF-PAYMENT-TRANSACTION-TRANSACTIONTYPE added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-UNDERTAKINGTRANSACTIONTYPE",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AID-ENTF-PAYMENT-TRANSACTION-UNDERTAKINGTRANSACTIONTYPE added",
+        "rule": "add → design_change_required"
+      }
+    ],
+    "mappings_to_supersede": [],
+    "changed": [
+      "AID-ENT-ACCOUNT",
+      "AID-ENTF-ACCOUNT-ACCOUNTSTATUS",
+      "AID-ENTF-ACCOUNT-ACCOUNTIDENTIFICATION",
+      "AID-ENTF-ACCOUNT-ACCOUNTDATE",
+      "AID-ENTF-ACCOUNT-ACCOUNTTYPE",
+      "AID-ENTF-ACCOUNT-ACCOUNTPURPOSE",
+      "AID-ENTF-ACCOUNT-ACCOUNTBALANCE",
+      "AID-ENTF-ACCOUNT-ACCOUNTCURRENCY",
+      "AID-ENTF-ACCOUNT-ACCOUNTDESCRIPTION",
+      "AID-ENTF-ACCOUNT-ACCOUNTNAME",
+      "AID-ENTF-ACCOUNT-LOGTYPE",
+      "AID-ENTF-ACCOUNT-LOGPERIOD",
+      "AID-ENTF-ACCOUNT-LOGDATE",
+      "AID-ENTF-ACCOUNT-LOGIDENTIFICATION",
+      "AID-ENT-COMPLIANCE-CHECK",
+      "AID-ENTF-COMPLIANCE-CHECK-COMPLIANCECHECKTYPE",
+      "AID-ENT-FUNDING-CHECK",
+      "AID-ENTF-FUNDING-CHECK-ASSESSMENTTYPE",
+      "AID-ENTF-FUNDING-CHECK-ASSESSMENTMETHOD",
+      "AID-ENTF-FUNDING-CHECK-ASSESSMENTSCHEDULE",
+      "AID-ENTF-FUNDING-CHECK-ASSESSMENTDESCRIPTION",
+      "AID-ENTF-FUNDING-CHECK-ASSESSMENTMODEL",
+      "AID-ENTF-FUNDING-CHECK-ASSESSMENTDATETIME",
+      "AID-ENTF-FUNDING-CHECK-ASSESSMENTRESULT",
+      "AID-ENTF-FUNDING-CHECK-ASSESSMENTSUPPORTINGDOCUMENT",
+      "AID-ENTF-FUNDING-CHECK-ASSESSMENTREPRESENTINGDOCUMENT",
+      "AID-ENTF-FUNDING-CHECK-ASSESSMENTREQUIREDADJUSTMENT",
+      "AID-ENTF-FUNDING-CHECK-ASSESSMENTREQUIREMENT",
+      "AID-ENTF-FUNDING-CHECK-ASSESSMENTEXPIRYDATE",
+      "AID-ENTF-FUNDING-CHECK-ASSESSMENTSTATUS",
+      "AID-ENTF-FUNDING-CHECK-ASSESSMENTIDENTIFICATION",
+      "AID-ENT-PARTY",
+      "AID-ENTF-PARTY-PARTY-REFERENCE",
+      "AID-ENTF-PARTY-PARTYNAME",
+      "AID-ENTF-PARTY-PARTYTYPE",
+      "AID-ENTF-PARTY-PARTYDATETIME",
+      "AID-ENTF-PARTY-PARTYIDENTIFICATION",
+      "AID-ENTF-PARTY-PARTYLEGALSTRUCTURETYPE",
+      "AID-ENTF-PARTY-PARTYACTIVITYINDICATOR",
+      "AID-ENT-PAYEE",
+      "AID-ENTF-PAYEE-PAYEEIDENTIFIER",
+      "AID-ENTF-PAYEE-PAYMENTINSTRUCTIONINVOLVEMENTTYPE",
+      "AID-ENT-PAYEE-BANK",
+      "AID-ENTF-PAYEE-BANK-PAYEEBANKIDENTIFIER",
+      "AID-ENTF-PAYEE-BANK-PAYMENTINSTRUCTIONINVOLVEMENTTYPE",
+      "AID-ENTF-PAYEE-BANK-PARTYROLETYPE",
+      "AID-ENTF-PAYEE-BANK-PARTYROLENAME",
+      "AID-ENTF-PAYEE-BANK-PARTYROLEVALIDITYPERIOD",
+      "AID-ENTF-PAYEE-BANK-PARTYINVOLVEMENTTYPE",
+      "AID-ENT-PAYER",
+      "AID-ENTF-PAYER-PAYERIDENTIFIER",
+      "AID-ENTF-PAYER-PAYMENTINSTRUCTIONINVOLVEMENTTYPE",
+      "AID-ENT-PAYER-BANK",
+      "AID-ENTF-PAYER-BANK-PAYERBANKIDENTIFIER",
+      "AID-ENTF-PAYER-BANK-PAYMENTINSTRUCTIONINVOLVEMENTTYPE",
+      "AID-ENT-PAYMENT-TRANSACTION",
+      "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONTYPE",
+      "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONAMOUNT",
+      "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONIDENTIFICATION",
+      "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONUSEDMECHANISM",
+      "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONDATETIME",
+      "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONPURPOSE",
+      "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONSTATUS",
+      "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONAPPLIEDFEEAMOUNT",
+      "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONCURRENCY",
+      "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONCREDITDEBITINDICATOR",
+      "AID-ENTF-PAYMENT-TRANSACTION-TRANSACTIONIDENTIFICATION",
+      "AID-ENTF-PAYMENT-TRANSACTION-TRANSACTIONDATE",
+      "AID-ENTF-PAYMENT-TRANSACTION-TRANSACTIONTYPE",
+      "AID-ENTF-PAYMENT-TRANSACTION-TRANSACTIONDESCRIPTION",
+      "AID-ENTF-PAYMENT-TRANSACTION-TRANSACTIONSTATUS",
+      "AID-ENTF-PAYMENT-TRANSACTION-TRANSACTIONNAME",
+      "AID-ENTF-PAYMENT-TRANSACTION-UNDERTAKINGTRANSACTIONTYPE",
+      "AID-ENTF-PAYMENT-TRANSACTION-MONEYTRANSFERTRANSACTIONAMOUNT",
+      "AID-ENTF-PAYMENT-TRANSACTION-MONEYTRANSFERTRANSACTIONCURRENCY",
+      "AID-ENTF-PAYMENT-TRANSACTION-MONEYTRANSFERTRANSACTIONSOURCEACCOUNT",
+      "AID-ENTF-PAYMENT-TRANSACTION-MONEYTRANSFERTRANSACTIONTARGETACCOUNT",
+      "AID-ENTF-PAYMENT-TRANSACTION-MONEYTRANSFERINSTRUCTIONREFERENCE",
+      "AID-ENTF-PAYMENT-TRANSACTION-MONEYTRANSFERUSEDMETHOD",
+      "AID-ENTF-PAYMENT-TRANSACTION-MONEYTRANSFERVALUEDATE",
+      "AID-ENTF-PAYMENT-TRANSACTION-FINANCIALTRANSACTIONTYPE",
+      "AID-ENTF-PAYMENT-TRANSACTION-FINANCIALTRANSACTIONCURRENCY",
+      "AID-ENTF-PAYMENT-TRANSACTION-FINANCIALTRANSACTIONAMOUNT",
+      "AID-ENTF-PAYMENT-TRANSACTION-FINANCIALTRANSACTIONFROMACCOUNT",
+      "AID-ENTF-PAYMENT-TRANSACTION-FINANCIALTRANSACTIONTARGETACCOUNT",
+      "AID-ENTF-PAYMENT-TRANSACTION-FINANCIALTRANSACTIONDATETIME"
+    ],
+    "coverage": {
+      "A1": {
+        "present": true,
+        "reached": false,
+        "result": "evidence_incomplete",
+        "classification": "no_impact",
+        "related_within_layer": [],
+        "records": [],
+        "paths": [],
+        "unapproved_links": [],
+        "unmapped_records": [
+          "ACT-PAY-01a",
+          "ACT-PAY-01b",
+          "ACT-PAY-02a",
+          "ACT-PAY-02b",
+          "ACTOR-CUSTOMER",
+          "BEV-PAY-CUTOFF",
+          "BEV-PAY-EXECUTED",
+          "BEV-PAY-RECEIVED",
+          "BO-ACCOUNT",
+          "BO-PAYEE",
+          "BSV-MAKE-PAYMENT",
+          "CAP-PAY-000",
+          "CHN-MOBILE",
+          "CHN-OBAPI",
+          "ROLE-PAY-OFFICER",
+          "VSS-P1",
+          "VSS-P2",
+          "VSS-P3",
+          "VSS-P4"
+        ],
+        "unmapped_count": 19,
+        "evidence": "incomplete",
+        "confirmed": false,
+        "reason": "no approved path reaches this layer, and its links are incomplete — impact through the missing links cannot be seen"
+      },
+      "A2": {
+        "present": true,
+        "reached": false,
+        "result": "evidence_incomplete",
+        "classification": "no_impact",
+        "related_within_layer": [],
+        "records": [],
+        "paths": [],
+        "unapproved_links": [],
+        "unmapped_records": [
+          "BBO-ACCOUNT",
+          "BBO-COMPLIANCE-CHECK",
+          "BBO-FUNDING-CHECK",
+          "BBO-PARTY",
+          "BBO-PAYEE",
+          "BBO-PAYEE-BANK",
+          "BBO-PAYER",
+          "BBO-PAYER-BANK",
+          "BBO-PAYMENT-TRANSACTION",
+          "BBOA-ACCOUNT-ACCOUNT-BALANCE",
+          "BBOA-ACCOUNT-ACCOUNT-CURRENCY",
+          "BBOA-ACCOUNT-ACCOUNT-DATE",
+          "BBOA-ACCOUNT-ACCOUNT-DESCRIPTION",
+          "BBOA-ACCOUNT-ACCOUNT-IDENTIFICATION",
+          "BBOA-ACCOUNT-ACCOUNT-NAME",
+          "BBOA-ACCOUNT-ACCOUNT-PURPOSE",
+          "BBOA-ACCOUNT-ACCOUNT-STATUS",
+          "BBOA-ACCOUNT-ACCOUNT-TYPE",
+          "BBOA-ACCOUNT-LOG-DATE",
+          "BBOA-ACCOUNT-LOG-IDENTIFICATION",
+          "BBOA-ACCOUNT-LOG-PERIOD",
+          "BBOA-ACCOUNT-LOG-TYPE",
+          "BBOA-AMOUNT",
+          "BBOA-COMPLIANCE-CHECK-COMPLIANCE-CHECK-TYPE",
+          "BBOA-FUNDING-CHECK-ASSESSMENT-DATE-TIME"
+        ],
+        "unmapped_count": 100,
+        "evidence": "incomplete",
+        "confirmed": false,
+        "reason": "no approved path reaches this layer, and its links are incomplete — impact through the missing links cannot be seen"
+      },
+      "A3": {
+        "present": true,
+        "reached": true,
+        "result": "impact_detected",
+        "classification": "design_change_required",
+        "related_within_layer": [],
+        "records": [
+          {
+            "id": "AID-ENT-ACCOUNT",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENT-COMPLIANCE-CHECK",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENT-FUNDING-CHECK",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENT-PARTY",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENT-PAYEE",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENT-PAYEE-BANK",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENT-PAYER",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENT-PAYER-BANK",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENT-PAYMENT-TRANSACTION",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENTF-ACCOUNT-ACCOUNTBALANCE",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENTF-ACCOUNT-ACCOUNTCURRENCY",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENTF-ACCOUNT-ACCOUNTDATE",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENTF-ACCOUNT-ACCOUNTDESCRIPTION",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENTF-ACCOUNT-ACCOUNTIDENTIFICATION",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENTF-ACCOUNT-ACCOUNTNAME",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENTF-ACCOUNT-ACCOUNTPURPOSE",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENTF-ACCOUNT-ACCOUNTSTATUS",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENTF-ACCOUNT-ACCOUNTTYPE",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENTF-ACCOUNT-LOGDATE",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENTF-ACCOUNT-LOGIDENTIFICATION",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENTF-ACCOUNT-LOGPERIOD",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENTF-ACCOUNT-LOGTYPE",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENTF-COMPLIANCE-CHECK-COMPLIANCECHECKTYPE",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTDATETIME",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTDESCRIPTION",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTEXPIRYDATE",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTIDENTIFICATION",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTMETHOD",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTMODEL",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTREPRESENTINGDOCUMENT",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTREQUIREDADJUSTMENT",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTREQUIREMENT",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTRESULT",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTSCHEDULE",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTSTATUS",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTSUPPORTINGDOCUMENT",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTTYPE",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENTF-PARTY-PARTY-REFERENCE",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENTF-PARTY-PARTYACTIVITYINDICATOR",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENTF-PARTY-PARTYDATETIME",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENTF-PARTY-PARTYIDENTIFICATION",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENTF-PARTY-PARTYLEGALSTRUCTURETYPE",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENTF-PARTY-PARTYNAME",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENTF-PARTY-PARTYTYPE",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENTF-PAYEE-BANK-PARTYINVOLVEMENTTYPE",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENTF-PAYEE-BANK-PARTYROLENAME",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENTF-PAYEE-BANK-PARTYROLETYPE",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENTF-PAYEE-BANK-PARTYROLEVALIDITYPERIOD",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENTF-PAYEE-BANK-PAYEEBANKIDENTIFIER",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENTF-PAYEE-BANK-PAYMENTINSTRUCTIONINVOLVEMENTTYPE",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENTF-PAYEE-PAYEEIDENTIFIER",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENTF-PAYEE-PAYMENTINSTRUCTIONINVOLVEMENTTYPE",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENTF-PAYER-BANK-PAYERBANKIDENTIFIER",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENTF-PAYER-BANK-PAYMENTINSTRUCTIONINVOLVEMENTTYPE",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENTF-PAYER-PAYERIDENTIFIER",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENTF-PAYER-PAYMENTINSTRUCTIONINVOLVEMENTTYPE",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENTF-PAYMENT-TRANSACTION-FINANCIALTRANSACTIONAMOUNT",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENTF-PAYMENT-TRANSACTION-FINANCIALTRANSACTIONCURRENCY",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENTF-PAYMENT-TRANSACTION-FINANCIALTRANSACTIONDATETIME",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENTF-PAYMENT-TRANSACTION-FINANCIALTRANSACTIONFROMACCOUNT",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENTF-PAYMENT-TRANSACTION-FINANCIALTRANSACTIONTARGETACCOUNT",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENTF-PAYMENT-TRANSACTION-FINANCIALTRANSACTIONTYPE",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENTF-PAYMENT-TRANSACTION-MONEYTRANSFERINSTRUCTIONREFERENCE",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENTF-PAYMENT-TRANSACTION-MONEYTRANSFERTRANSACTIONAMOUNT",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENTF-PAYMENT-TRANSACTION-MONEYTRANSFERTRANSACTIONCURRENCY",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENTF-PAYMENT-TRANSACTION-MONEYTRANSFERTRANSACTIONSOURCEACCOUNT",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENTF-PAYMENT-TRANSACTION-MONEYTRANSFERTRANSACTIONTARGETACCOUNT",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENTF-PAYMENT-TRANSACTION-MONEYTRANSFERUSEDMETHOD",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENTF-PAYMENT-TRANSACTION-MONEYTRANSFERVALUEDATE",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONAMOUNT",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONAPPLIEDFEEAMOUNT",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONCREDITDEBITINDICATOR",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONCURRENCY",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONDATETIME",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONIDENTIFICATION",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONPURPOSE",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONSTATUS",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONTYPE",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONUSEDMECHANISM",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENTF-PAYMENT-TRANSACTION-TRANSACTIONDATE",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENTF-PAYMENT-TRANSACTION-TRANSACTIONDESCRIPTION",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENTF-PAYMENT-TRANSACTION-TRANSACTIONIDENTIFICATION",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENTF-PAYMENT-TRANSACTION-TRANSACTIONNAME",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENTF-PAYMENT-TRANSACTION-TRANSACTIONSTATUS",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENTF-PAYMENT-TRANSACTION-TRANSACTIONTYPE",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "AID-ENTF-PAYMENT-TRANSACTION-UNDERTAKINGTRANSACTIONTYPE",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          }
+        ],
+        "paths": [],
+        "unapproved_links": [],
+        "unmapped_records": [
+          "AFN-PAY-VALIDATE",
+          "AID-ENT-ACCOUNT",
+          "AID-ENT-COMPLIANCE-CHECK",
+          "AID-ENT-FUNDING-CHECK",
+          "AID-ENT-PARTY",
+          "AID-ENT-PAYEE",
+          "AID-ENT-PAYEE-BANK",
+          "AID-ENT-PAYER",
+          "AID-ENT-PAYER-BANK",
+          "AID-ENT-PAYMENT-TRANSACTION",
+          "AID-ENTF-ACCOUNT-ACCOUNTBALANCE",
+          "AID-ENTF-ACCOUNT-ACCOUNTCURRENCY",
+          "AID-ENTF-ACCOUNT-ACCOUNTDATE",
+          "AID-ENTF-ACCOUNT-ACCOUNTDESCRIPTION",
+          "AID-ENTF-ACCOUNT-ACCOUNTIDENTIFICATION",
+          "AID-ENTF-ACCOUNT-ACCOUNTNAME",
+          "AID-ENTF-ACCOUNT-ACCOUNTPURPOSE",
+          "AID-ENTF-ACCOUNT-ACCOUNTSTATUS",
+          "AID-ENTF-ACCOUNT-ACCOUNTTYPE",
+          "AID-ENTF-ACCOUNT-LOGDATE",
+          "AID-ENTF-ACCOUNT-LOGIDENTIFICATION",
+          "AID-ENTF-ACCOUNT-LOGPERIOD",
+          "AID-ENTF-ACCOUNT-LOGTYPE",
+          "AID-ENTF-COMPLIANCE-CHECK-COMPLIANCECHECKTYPE",
+          "AID-ENTF-FUNDING-CHECK-ASSESSMENTDATETIME"
+        ],
+        "unmapped_count": 114,
+        "evidence": "incomplete",
+        "confirmed": false,
+        "reason": "86 record(s) reached through approved links; the strongest rule gives design_change_required; evidence incomplete: 0 link(s) not approved, 114 record(s) with no approved link where one is expected"
+      },
+      "A4": {
+        "present": true,
+        "reached": false,
+        "result": "evidence_incomplete",
+        "classification": "no_impact",
+        "related_within_layer": [],
+        "records": [],
+        "paths": [],
+        "unapproved_links": [],
+        "unmapped_records": [
+          "DEV-PAY-HSM",
+          "INF-CORE-LEDGER-HOST",
+          "INF-PG-PAY-PROD",
+          "TS-APIGW",
+          "TS-HSM-SIGN",
+          "TS-MQ",
+          "TS-SECRETS"
+        ],
+        "unmapped_count": 7,
+        "evidence": "incomplete",
+        "confirmed": false,
+        "reason": "no approved path reaches this layer, and its links are incomplete — impact through the missing links cannot be seen"
+      }
+    },
+    "basis": {
+      "rules_version": "0.5.0",
+      "files": {
+        "a1-business.json": "531ab8f05d36398c1ccbfc613b1b2cb9d074f5610e61ccd89abc7df239902f2a",
+        "a2-service-domain.json": "4a98036138e2bd58cd3b937ee4611a320e3c90c9b90139374055956ff97a9ea5",
+        "a3-application.json": "20f181fd880485d7a501e6d994c753e0cfc3e68831ed8ceba83a311b801fc0cc",
+        "a4-technology.json": "8a55d009214c2576a0e4eb577960a3fce4376f857bcde68f3bbe4c9346dfc02e",
+        "mappings.json": "71499d610d500e9e4c1c0786aa726d3b7aff384541a658a0391ee61982cc12fe",
+        "requirements.json": "508c4cd476074239e9788464171776f0ff0b83f078c899952a22b2671ee3f430"
+      },
+      "approved_links": 20,
+      "approved_links_sha256": "cc8151e22fdb71b0aca6692c139eb344481f41315731b7c58854d4f0d7795fb7"
+    }
+  }
+}

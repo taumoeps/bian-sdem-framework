@@ -1,0 +1,1683 @@
+{
+  "registry_version": "0.4.0",
+  "metamodel_version": "0.17.0",
+  "mappings": [
+    {
+      "mapping_id": "PAY-001",
+      "source": {
+        "id": "CAP-PAY-010",
+        "type": "A1.BusinessCapability",
+        "version": "1.0"
+      },
+      "relationship": "SUPPORTED_BY",
+      "target": {
+        "id": "SD-PI",
+        "type": "A2.ServiceDomain",
+        "version": "1.0",
+        "canonical_id": "BIAN-PAYMENT-INITIATION"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "business_architecture_document:BA-PAY-2026#s2",
+        "domain_scope_assessment:DSA-PAY-INIT-001"
+      ],
+      "rationale": "Initiate Payment sits inside the payment-initiation domain's scope",
+      "baseline_id": "PAY-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22",
+      "bian_release": "BIAN-RELEASE-X"
+    },
+    {
+      "mapping_id": "PAY-002",
+      "source": {
+        "id": "VS-MAKE-PAYMENT",
+        "type": "A1.ValueStream",
+        "version": "1.0"
+      },
+      "relationship": "ALIGNED_TO",
+      "target": {
+        "id": "BS-CREDIT-TRANSFER",
+        "type": "A2.BusinessScenario",
+        "version": "1.0",
+        "canonical_id": "BIAN-SCENARIO-CREDIT-TRANSFER"
+      },
+      "perspective": "process",
+      "status": "approved",
+      "evidence": [
+        "process_model:PM-MAKE-PAYMENT-2026",
+        "scenario_suitability_review:SCN-REVIEW-CT-001"
+      ],
+      "rationale": "The four stages of Make a Payment correspond to the credit-transfer scenario's four operations",
+      "baseline_id": "PAY-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22",
+      "bian_release": "BIAN-RELEASE-X"
+    },
+    {
+      "mapping_id": "PAY-003",
+      "source": {
+        "id": "PRC-PAY-01",
+        "type": "A1.BusinessProcess",
+        "version": "1.0"
+      },
+      "relationship": "USES_DOMAIN",
+      "target": {
+        "id": "SD-PI",
+        "type": "A2.ServiceDomain",
+        "version": "1.0"
+      },
+      "perspective": "process",
+      "status": "approved",
+      "evidence": [
+        "process_model:PM-MAKE-PAYMENT-2026"
+      ],
+      "rationale": "Capture and validation invoke Initiate and Evaluate of the domain",
+      "baseline_id": "PAY-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "PAY-004",
+      "source": {
+        "id": "PRC-PAY-02",
+        "type": "A1.BusinessProcess",
+        "version": "1.0"
+      },
+      "relationship": "USES_DOMAIN",
+      "target": {
+        "id": "SD-PI",
+        "type": "A2.ServiceDomain",
+        "version": "1.0"
+      },
+      "perspective": "process",
+      "status": "approved",
+      "evidence": [
+        "process_model:PM-MAKE-PAYMENT-2026"
+      ],
+      "rationale": "Execution and confirmation invoke Execute and Retrieve of the domain",
+      "baseline_id": "PAY-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "PAY-005",
+      "source": {
+        "id": "BO-PAY-INSTR",
+        "type": "A1.BusinessObject",
+        "version": "1.0"
+      },
+      "relationship": "ALIGNED_TO",
+      "target": {
+        "id": "BBO-PAY-INSTR",
+        "type": "A2.BusinessObject",
+        "version": "1.0",
+        "canonical_id": "BIAN-BO-PAYMENT-INSTRUCTION"
+      },
+      "perspective": "information",
+      "status": "approved",
+      "evidence": [
+        "business_glossary:GL-PAY-2026#payment-instruction",
+        "object_alignment_review:OAR-PAY-001"
+      ],
+      "rationale": "The bank's Payment Instruction carries the same meaning as the canonical object; 6 of 8 attributes align",
+      "baseline_id": "PAY-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22",
+      "bian_release": "BIAN-RELEASE-X"
+    },
+    {
+      "mapping_id": "PAY-101",
+      "source": {
+        "id": "SO-PI-01",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "API-PI-01",
+        "type": "A3.APIOperation",
+        "version": "2.0"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "api_contract:payments-api-v2.yaml#/paths/~1payment-instructions/post"
+      ],
+      "rationale": "Initiate ↔ POST; no qualifier; 8/8 attributes in payload",
+      "baseline_id": "PAY-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "PAY-102",
+      "source": {
+        "id": "SO-PI-02",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "API-PI-02",
+        "type": "A3.APIOperation",
+        "version": "2.0"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "api_contract:payments-api-v2.yaml#/paths/~1payment-instructions~1{id}~1validation/post"
+      ],
+      "rationale": "Evaluate ↔ POST; Validation qualifier in path; 3/3 attributes",
+      "baseline_id": "PAY-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "PAY-103",
+      "source": {
+        "id": "SO-PI-03",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "API-PI-03",
+        "type": "A3.APIOperation",
+        "version": "2.0"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "api_contract:payments-api-v2.yaml#/paths/~1payment-instructions~1{id}~1execution/put"
+      ],
+      "rationale": "Execute ↔ PUT; Execution qualifier in path; 3/3 attributes",
+      "baseline_id": "PAY-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "PAY-104",
+      "source": {
+        "id": "SO-PI-04",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "API-PI-04",
+        "type": "A3.APIOperation",
+        "version": "2.0"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "api_contract:payments-api-v2.yaml#/paths/~1payment-instructions~1{id}/post",
+        "application_architecture_document:ADR-PAY-017"
+      ],
+      "rationale": "Retrieve implemented as POST (legacy channel constraint, ADR-PAY-017) — approved with a recorded deviation from the REST mapping",
+      "baseline_id": "PAY-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "PAY-105",
+      "source": {
+        "id": "SO-PI-05",
+        "type": "A2.ServiceOperation",
+        "version": "1.0"
+      },
+      "relationship": "IMPLEMENTED_BY",
+      "target": {
+        "id": "API-PI-05",
+        "type": "A3.APIOperation",
+        "version": "2.0"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "api_contract:payments-api-v2.yaml#/paths/~1payment-instructions~1{id}/patch"
+      ],
+      "rationale": "Update ↔ PATCH; 4/4 attributes",
+      "baseline_id": "PAY-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "PAY-106",
+      "source": {
+        "id": "SD-PI",
+        "type": "A2.ServiceDomain",
+        "version": "1.0"
+      },
+      "relationship": "REALIZED_BY",
+      "target": {
+        "id": "APP-PAY-HUB",
+        "type": "A3.ApplicationComponent",
+        "version": "7.1"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "application_architecture_document:AA-PAYHUB-HLD#s3"
+      ],
+      "rationale": "The hub implements five of the domain's six operations through Payments API v2",
+      "baseline_id": "PAY-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "PAY-107",
+      "source": {
+        "id": "BBO-PAY-INSTR",
+        "type": "A2.BusinessObject",
+        "version": "1.0"
+      },
+      "relationship": "MAPPED_TO",
+      "target": {
+        "id": "ENT-PAY-INSTR",
+        "type": "A3.DataEntity",
+        "version": "7.1"
+      },
+      "perspective": "information",
+      "status": "approved",
+      "evidence": [
+        "data_model:DM-PAYHUB-7.1#payment_instruction"
+      ],
+      "rationale": "8/8 canonical attributes present in the hub table; channel_id is an extension",
+      "baseline_id": "PAY-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "PAY-108",
+      "source": {
+        "id": "APP-PAY-HUB",
+        "type": "A3.ApplicationComponent",
+        "version": "7.1"
+      },
+      "relationship": "DEPLOYED_ON",
+      "target": {
+        "id": "INF-K8S-PAY-PROD",
+        "type": "A4.SystemSoftware",
+        "version": "1.29"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "deployment_design:DD-PAY-2026#prod"
+      ],
+      "rationale": "Production hosting",
+      "baseline_id": "PAY-BASE-2026-Q4",
+      "reviewer_id": "sam.infra",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "PAY-109",
+      "source": {
+        "id": "APP-PAY-HUB",
+        "type": "A3.ApplicationComponent",
+        "version": "7.1"
+      },
+      "relationship": "DEPLOYED_AS",
+      "target": {
+        "id": "DEP-PAYHUB-PROD",
+        "type": "A4.Deployment",
+        "version": "1.0"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "deployment_design:DD-PAY-2026#prod"
+      ],
+      "rationale": "Production deployment of the hub",
+      "baseline_id": "PAY-BASE-2026-Q4",
+      "reviewer_id": "sam.infra",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "PAY-110",
+      "source": {
+        "id": "APP-PAY-HUB",
+        "type": "A3.ApplicationComponent",
+        "version": "7.1"
+      },
+      "relationship": "DEPLOYED_AS",
+      "target": {
+        "id": "DEP-PAYHUB-UAT",
+        "type": "A4.Deployment",
+        "version": "1.0"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "deployment_design:DD-PAY-2026#uat"
+      ],
+      "rationale": "UAT deployment of the hub",
+      "baseline_id": "PAY-BASE-2026-Q4",
+      "reviewer_id": "sam.infra",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "PAY-111",
+      "source": {
+        "id": "CMP-PAY-EXEC",
+        "type": "A3.ApplicationComponent",
+        "version": "3.4"
+      },
+      "relationship": "DEPLOYED_ON",
+      "target": {
+        "id": "INF-K8S-PAY-PROD",
+        "type": "A4.SystemSoftware",
+        "version": "1.29"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "deployment_design:DD-PAY-2026#prod"
+      ],
+      "rationale": "The execution gateway is deployed separately on the production cluster",
+      "baseline_id": "PAY-BASE-2026-Q4",
+      "reviewer_id": "sam.infra",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "PAY-112",
+      "source": {
+        "id": "CMP-PAY-EXEC",
+        "type": "A3.ApplicationComponent",
+        "version": "3.4"
+      },
+      "relationship": "DEPLOYED_AS",
+      "target": {
+        "id": "DEP-PAYEXEC-PROD",
+        "type": "A4.Deployment",
+        "version": "1.0"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "deployment_design:DD-PAY-2026#prod"
+      ],
+      "rationale": "Production deployment of the gateway",
+      "baseline_id": "PAY-BASE-2026-Q4",
+      "reviewer_id": "sam.infra",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "PAY-113",
+      "source": {
+        "id": "APP-PAY-HUB",
+        "type": "A3.ApplicationComponent",
+        "version": "7.1"
+      },
+      "relationship": "DEPLOYED_ON",
+      "target": {
+        "id": "INF-K8S-PAY-UAT",
+        "type": "A4.SystemSoftware",
+        "version": "1.29"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "deployment_design:DD-PAY-2026#uat"
+      ],
+      "rationale": "UAT hosting of the hub; DEPLOYED_ON is environment-agnostic, the environment is on DEP-PAYHUB-UAT (added after M1: the CMDB and the UAT deployment both state it)",
+      "baseline_id": "PAY-BASE-2026-Q4",
+      "reviewer_id": "sam.infra",
+      "approved_at": "2026-10-22"
+    },
+    {
+      "mapping_id": "PAY-114",
+      "source": {
+        "id": "IFC-PAY-API",
+        "type": "A3.ApplicationInterface",
+        "version": "2.0"
+      },
+      "relationship": "EXPOSED_THROUGH",
+      "target": {
+        "id": "INF-APIGW-PAY",
+        "type": "A4.SystemSoftware",
+        "version": "2.4"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "network_design:ND-PAY-2026#edge"
+      ],
+      "rationale": "Payments API v2 is reached from the internet through the managed API gateway in the security zone (DMZ) (made up).",
+      "baseline_id": "PAY-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-11-14"
+    },
+    {
+      "mapping_id": "PAY-115",
+      "source": {
+        "id": "APP-PAY-HUB",
+        "type": "A3.ApplicationComponent",
+        "version": "7.1"
+      },
+      "relationship": "BUILT_AS",
+      "target": {
+        "id": "ART-PAYHUB-IMG",
+        "type": "A4.Artifact",
+        "version": "7.1"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "build_pipeline:CI-PAY-HUB#7.1"
+      ],
+      "rationale": "The Payments Hub 7.1 is built as the container image payments-hub:7.1 by its build pipeline (made up).",
+      "baseline_id": "PAY-BASE-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-11-14"
+    },
+    {
+      "mapping_id": "PAY-116",
+      "source": {
+        "id": "BBO-COMPLIANCE-CHECK",
+        "type": "A2.BusinessObject",
+        "version": "14.0.0",
+        "canonical_id": "BIAN-BO-COMPLIANCE-CHECK"
+      },
+      "relationship": "MAPPED_TO",
+      "target": {
+        "id": "AID-ENT-COMPLIANCE-CHECK",
+        "type": "A3.DataEntity",
+        "version": "1"
+      },
+      "status": "approved",
+      "confidence": 0.4,
+      "evidence": [
+        "data_model:PAY-DM-2026",
+        "deployment_design:PAY-DD-01",
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data entity stores the business object Compliance Check (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid",
+      "reviewer_id": "Steven Taumoepeau",
+      "approved_at": "2026-11-16"
+    },
+    {
+      "mapping_id": "PAY-117",
+      "source": {
+        "id": "BBOA-COMPLIANCE-CHECK-COMPLIANCE-CHECK-TYPE",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-COMPLIANCE-CHECK-COMPLIANCECHECKTYPE",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "approved",
+      "confidence": 0.4,
+      "evidence": [
+        "data_model:PAY-DM-2026",
+        "deployment_design:PAY-DD-01",
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute compliance_check_type stores the BIAN attribute ComplianceCheckType (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid",
+      "reviewer_id": "Steven Taumoepeau",
+      "approved_at": "2026-11-16"
+    },
+    {
+      "mapping_id": "PAY-118",
+      "source": {
+        "id": "BBO-FUNDING-CHECK",
+        "type": "A2.BusinessObject",
+        "version": "14.0.0",
+        "canonical_id": "BIAN-BO-FUNDING-CHECK"
+      },
+      "relationship": "MAPPED_TO",
+      "target": {
+        "id": "AID-ENT-FUNDING-CHECK",
+        "type": "A3.DataEntity",
+        "version": "1"
+      },
+      "status": "approved",
+      "confidence": 0.4,
+      "evidence": [
+        "data_model:PAY-DM-2026",
+        "deployment_design:PAY-DD-01",
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data entity stores the business object Funding Check (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid",
+      "reviewer_id": "Steven Taumoepeau",
+      "approved_at": "2026-11-16"
+    },
+    {
+      "mapping_id": "PAY-119",
+      "source": {
+        "id": "BBOA-FUNDING-CHECK-ASSESSMENT-TYPE",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTTYPE",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "approved",
+      "confidence": 0.4,
+      "evidence": [
+        "data_model:PAY-DM-2026",
+        "deployment_design:PAY-DD-01",
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute assessment_type stores the BIAN attribute AssessmentType (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid",
+      "reviewer_id": "Steven Taumoepeau",
+      "approved_at": "2026-11-16"
+    },
+    {
+      "mapping_id": "PAY-120",
+      "source": {
+        "id": "BBOA-FUNDING-CHECK-ASSESSMENT-METHOD",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTMETHOD",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "approved",
+      "confidence": 0.4,
+      "evidence": [
+        "data_model:PAY-DM-2026",
+        "deployment_design:PAY-DD-01",
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute assessment_method stores the BIAN attribute AssessmentMethod (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid",
+      "reviewer_id": "Steven Taumoepeau",
+      "approved_at": "2026-11-16"
+    },
+    {
+      "mapping_id": "PAY-121",
+      "source": {
+        "id": "BBOA-FUNDING-CHECK-ASSESSMENT-SCHEDULE",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTSCHEDULE",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "approved",
+      "confidence": 0.4,
+      "evidence": [
+        "data_model:PAY-DM-2026",
+        "deployment_design:PAY-DD-01",
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute assessment_schedule stores the BIAN attribute AssessmentSchedule (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid",
+      "reviewer_id": "Steven Taumoepeau",
+      "approved_at": "2026-11-16"
+    },
+    {
+      "mapping_id": "PAY-122",
+      "source": {
+        "id": "BBOA-FUNDING-CHECK-ASSESSMENT-DESCRIPTION",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTDESCRIPTION",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "approved",
+      "confidence": 0.4,
+      "evidence": [
+        "data_model:PAY-DM-2026",
+        "deployment_design:PAY-DD-01",
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute assessment_description stores the BIAN attribute AssessmentDescription (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid",
+      "reviewer_id": "Steven Taumoepeau",
+      "approved_at": "2026-11-16"
+    },
+    {
+      "mapping_id": "PAY-123",
+      "source": {
+        "id": "BBOA-FUNDING-CHECK-ASSESSMENT-MODEL",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTMODEL",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "approved",
+      "confidence": 0.4,
+      "evidence": [
+        "data_model:PAY-DM-2026",
+        "deployment_design:PAY-DD-01",
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute assessment_model stores the BIAN attribute AssessmentModel (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid",
+      "reviewer_id": "Steven Taumoepeau",
+      "approved_at": "2026-11-16"
+    },
+    {
+      "mapping_id": "PAY-124",
+      "source": {
+        "id": "BBOA-FUNDING-CHECK-ASSESSMENT-DATE-TIME",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTDATETIME",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "approved",
+      "confidence": 0.4,
+      "evidence": [
+        "data_model:PAY-DM-2026",
+        "deployment_design:PAY-DD-01",
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute assessment_date_time stores the BIAN attribute AssessmentDateTime (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid",
+      "reviewer_id": "Steven Taumoepeau",
+      "approved_at": "2026-11-16"
+    },
+    {
+      "mapping_id": "PAY-125",
+      "source": {
+        "id": "BBOA-FUNDING-CHECK-ASSESSMENT-RESULT",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTRESULT",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "approved",
+      "confidence": 0.4,
+      "evidence": [
+        "data_model:PAY-DM-2026",
+        "deployment_design:PAY-DD-01",
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute assessment_result stores the BIAN attribute AssessmentResult (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid",
+      "reviewer_id": "Steven Taumoepeau",
+      "approved_at": "2026-11-16"
+    },
+    {
+      "mapping_id": "PAY-126",
+      "source": {
+        "id": "BBOA-FUNDING-CHECK-ASSESSMENT-SUPPORTING-DOCUMENT",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTSUPPORTINGDOCUMENT",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "approved",
+      "confidence": 0.4,
+      "evidence": [
+        "data_model:PAY-DM-2026",
+        "deployment_design:PAY-DD-01",
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute assessment_supporting_document stores the BIAN attribute AssessmentSupportingDocument (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid",
+      "reviewer_id": "Steven Taumoepeau",
+      "approved_at": "2026-11-16"
+    },
+    {
+      "mapping_id": "PAY-127",
+      "source": {
+        "id": "BBOA-FUNDING-CHECK-ASSESSMENT-REPRESENTING-DOCUMENT",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTREPRESENTINGDOCUMENT",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "approved",
+      "confidence": 0.4,
+      "evidence": [
+        "data_model:PAY-DM-2026",
+        "deployment_design:PAY-DD-01",
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute assessment_representing_document stores the BIAN attribute AssessmentRepresentingDocument (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid",
+      "reviewer_id": "Steven Taumoepeau",
+      "approved_at": "2026-11-16"
+    },
+    {
+      "mapping_id": "PAY-128",
+      "source": {
+        "id": "BBOA-FUNDING-CHECK-ASSESSMENT-REQUIRED-ADJUSTMENT",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTREQUIREDADJUSTMENT",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "approved",
+      "confidence": 0.4,
+      "evidence": [
+        "data_model:PAY-DM-2026",
+        "deployment_design:PAY-DD-01",
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute assessment_required_adjustment stores the BIAN attribute AssessmentRequiredAdjustment (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid",
+      "reviewer_id": "Steven Taumoepeau",
+      "approved_at": "2026-11-16"
+    },
+    {
+      "mapping_id": "PAY-129",
+      "source": {
+        "id": "BBOA-FUNDING-CHECK-ASSESSMENT-REQUIREMENT",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTREQUIREMENT",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "approved",
+      "confidence": 0.4,
+      "evidence": [
+        "data_model:PAY-DM-2026",
+        "deployment_design:PAY-DD-01",
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute assessment_requirement stores the BIAN attribute AssessmentRequirement (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid",
+      "reviewer_id": "Steven Taumoepeau",
+      "approved_at": "2026-11-16"
+    },
+    {
+      "mapping_id": "PAY-130",
+      "source": {
+        "id": "BBOA-FUNDING-CHECK-ASSESSMENT-EXPIRY-DATE",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTEXPIRYDATE",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "approved",
+      "confidence": 0.4,
+      "evidence": [
+        "data_model:PAY-DM-2026",
+        "deployment_design:PAY-DD-01",
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute assessment_expiry_date stores the BIAN attribute AssessmentExpiryDate (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid",
+      "reviewer_id": "Steven Taumoepeau",
+      "approved_at": "2026-11-16"
+    },
+    {
+      "mapping_id": "PAY-131",
+      "source": {
+        "id": "BBOA-FUNDING-CHECK-ASSESSMENT-STATUS",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTSTATUS",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "approved",
+      "confidence": 0.4,
+      "evidence": [
+        "data_model:PAY-DM-2026",
+        "deployment_design:PAY-DD-01",
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute assessment_status stores the BIAN attribute AssessmentStatus (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid",
+      "reviewer_id": "Steven Taumoepeau",
+      "approved_at": "2026-11-16"
+    },
+    {
+      "mapping_id": "PAY-132",
+      "source": {
+        "id": "BBOA-FUNDING-CHECK-ASSESSMENT-IDENTIFICATION",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTIDENTIFICATION",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "approved",
+      "confidence": 0.4,
+      "evidence": [
+        "data_model:PAY-DM-2026",
+        "deployment_design:PAY-DD-01",
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute assessment_identification stores the BIAN attribute AssessmentIdentification (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid",
+      "reviewer_id": "Steven Taumoepeau",
+      "approved_at": "2026-11-16"
+    },
+    {
+      "mapping_id": "PAY-133",
+      "source": {
+        "id": "BBO-PAYEE",
+        "type": "A2.BusinessObject",
+        "version": "14.0.0",
+        "canonical_id": "BIAN-BO-PAYEE"
+      },
+      "relationship": "MAPPED_TO",
+      "target": {
+        "id": "AID-ENT-PAYEE",
+        "type": "A3.DataEntity",
+        "version": "1"
+      },
+      "status": "approved",
+      "confidence": 0.4,
+      "evidence": [
+        "data_model:PAY-DM-2026",
+        "deployment_design:PAY-DD-01",
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data entity stores the business object Payee (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid",
+      "reviewer_id": "Steven Taumoepeau",
+      "approved_at": "2026-11-16"
+    },
+    {
+      "mapping_id": "PAY-134",
+      "source": {
+        "id": "BBOA-PAYEE-PAYEE-IDENTIFIER",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-PAYEE-PAYEEIDENTIFIER",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "approved",
+      "confidence": 0.4,
+      "evidence": [
+        "data_model:PAY-DM-2026",
+        "deployment_design:PAY-DD-01",
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute payee_identifier stores the BIAN attribute PayeeIdentifier (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid",
+      "reviewer_id": "Steven Taumoepeau",
+      "approved_at": "2026-11-16"
+    },
+    {
+      "mapping_id": "PAY-135",
+      "source": {
+        "id": "BBOA-PAYEE-PAYMENT-INSTRUCTION-INVOLVEMENT-TYPE",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "AID-ENTF-PAYEE-PAYMENTINSTRUCTIONINVOLVEMENTTYPE",
+        "type": "A3.DataAttribute",
+        "version": "1"
+      },
+      "status": "approved",
+      "confidence": 0.4,
+      "evidence": [
+        "data_model:PAY-DM-2026",
+        "deployment_design:PAY-DD-01",
+        "engine_rationale:AID-001 AID-I03"
+      ],
+      "rationale": "Inferred by sdem aid: the data attribute payment_instruction_involvement_type stores the BIAN attribute PaymentInstructionInvolvementType (AID-I03) — approve with data_model evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid",
+      "reviewer_id": "Steven Taumoepeau",
+      "approved_at": "2026-11-16"
+    },
+    {
+      "mapping_id": "PAY-136",
+      "source": {
+        "id": "ENT-PAY-INSTR",
+        "type": "A3.DataEntity",
+        "version": "7.1"
+      },
+      "relationship": "STORED_IN",
+      "target": {
+        "id": "INF-PG-PAY-PROD",
+        "type": "A4.SystemSoftware",
+        "version": "16"
+      },
+      "status": "approved",
+      "confidence": 0.8,
+      "evidence": [
+        "data_model:PAY-DM-2026",
+        "deployment_design:PAY-DD-01",
+        "engine_rationale:AID-001 AID-A01"
+      ],
+      "rationale": "Inferred by sdem aid from an attribute: ENT-PAY-INSTR.stored_in names INF-PG-PAY-PROD (AID-A01) — approve with deployment_design evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid",
+      "reviewer_id": "Steven Taumoepeau",
+      "approved_at": "2026-11-16"
+    },
+    {
+      "mapping_id": "PAY-137",
+      "source": {
+        "id": "ENT-PAY-EVENT",
+        "type": "A3.DataEntity",
+        "version": "7.1"
+      },
+      "relationship": "STORED_IN",
+      "target": {
+        "id": "INF-PG-PAY-PROD",
+        "type": "A4.SystemSoftware",
+        "version": "16"
+      },
+      "status": "approved",
+      "confidence": 0.8,
+      "evidence": [
+        "data_model:PAY-DM-2026",
+        "deployment_design:PAY-DD-01",
+        "engine_rationale:AID-001 AID-A01"
+      ],
+      "rationale": "Inferred by sdem aid from an attribute: ENT-PAY-EVENT.stored_in names INF-PG-PAY-PROD (AID-A01) — approve with deployment_design evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid",
+      "reviewer_id": "Steven Taumoepeau",
+      "approved_at": "2026-11-16"
+    },
+    {
+      "mapping_id": "PAY-138",
+      "source": {
+        "id": "ENT-ACCOUNT-CACHE",
+        "type": "A3.DataEntity",
+        "version": "7.1"
+      },
+      "relationship": "STORED_IN",
+      "target": {
+        "id": "INF-PG-PAY-PROD",
+        "type": "A4.SystemSoftware",
+        "version": "16"
+      },
+      "status": "approved",
+      "confidence": 0.8,
+      "evidence": [
+        "data_model:PAY-DM-2026",
+        "deployment_design:PAY-DD-01",
+        "engine_rationale:AID-001 AID-A01"
+      ],
+      "rationale": "Inferred by sdem aid from an attribute: ENT-ACCOUNT-CACHE.stored_in names INF-PG-PAY-PROD (AID-A01) — approve with deployment_design evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid",
+      "reviewer_id": "Steven Taumoepeau",
+      "approved_at": "2026-11-16"
+    },
+    {
+      "mapping_id": "PAY-139",
+      "source": {
+        "id": "AFN-PAY-VALIDATE",
+        "type": "A3.ApplicationFunction",
+        "version": "1.0"
+      },
+      "relationship": "SERVED_BY",
+      "target": {
+        "id": "TS-SECRETS",
+        "type": "A4.TechnologyService",
+        "version": "1.0"
+      },
+      "status": "approved",
+      "confidence": 0.8,
+      "evidence": [
+        "data_model:PAY-DM-2026",
+        "deployment_design:PAY-DD-01",
+        "engine_rationale:AID-001 AID-A02"
+      ],
+      "rationale": "Inferred by sdem aid from an attribute: AFN-PAY-VALIDATE.consumes names TS-SECRETS (AID-A02) — approve with deployment_design evidence",
+      "baseline_id": "AID-001",
+      "created_by": "sdem aid",
+      "reviewer_id": "Steven Taumoepeau",
+      "approved_at": "2026-11-16"
+    },
+    {
+      "mapping_id": "PAY-140",
+      "source": {
+        "id": "BBO-PAYMENT-TRANSACTION",
+        "type": "A2.BusinessObject",
+        "version": "14.0.0",
+        "canonical_id": "BIAN-BO-PAYMENT-TRANSACTION"
+      },
+      "relationship": "MAPPED_TO",
+      "target": {
+        "id": "ENT-PAY-INSTR",
+        "type": "A3.DataEntity",
+        "version": "7.1"
+      },
+      "status": "approved",
+      "evidence": [
+        "data_model:PAY-DM-2026"
+      ],
+      "rationale": "Stated by Steven Taumoepeau (not proposed by the engine): BIAN's payment transaction is stored in the hub's payment_instruction table (made-up)",
+      "baseline_id": "PERSON-STATED",
+      "created_by": "sdem connect",
+      "reviewer_id": "Steven Taumoepeau",
+      "approved_at": "2026-11-16"
+    },
+    {
+      "mapping_id": "PAY-141",
+      "source": {
+        "id": "BBO-ACCOUNT",
+        "type": "A2.BusinessObject",
+        "version": "14.0.0",
+        "canonical_id": "BIAN-BO-ACCOUNT"
+      },
+      "relationship": "MAPPED_TO",
+      "target": {
+        "id": "ENT-ACCOUNT-CACHE",
+        "type": "A3.DataEntity",
+        "version": "7.1"
+      },
+      "status": "approved",
+      "evidence": [
+        "data_model:PAY-DM-2026"
+      ],
+      "rationale": "Stated by Steven Taumoepeau (not proposed by the engine): the hub keeps BIAN's account in its account cache (made-up)",
+      "baseline_id": "PERSON-STATED",
+      "created_by": "sdem connect",
+      "reviewer_id": "Steven Taumoepeau",
+      "approved_at": "2026-11-16"
+    },
+    {
+      "mapping_id": "PAY-142",
+      "source": {
+        "id": "BBOA-PAYMENT-TRANSACTION-MONEY-TRANSFER-INSTRUCTION-REFERENCE",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "F-PAY-INSTR-PAYMENT-INSTRUCTION-REFERENCE",
+        "type": "A3.DataAttribute",
+        "version": "1.0"
+      },
+      "status": "approved",
+      "evidence": [
+        "data_model:PAY-DM-2026"
+      ],
+      "rationale": "Stated by Steven Taumoepeau (not proposed by the engine): field mapping in the payments data model (made-up)",
+      "baseline_id": "PERSON-STATED",
+      "created_by": "sdem connect",
+      "reviewer_id": "Steven Taumoepeau",
+      "approved_at": "2026-11-16"
+    },
+    {
+      "mapping_id": "PAY-143",
+      "source": {
+        "id": "BBOA-PAYMENT-TRANSACTION-FINANCIAL-TRANSACTION-FROM-ACCOUNT",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "F-PAY-INSTR-DEBTOR-ACCOUNT-REFERENCE",
+        "type": "A3.DataAttribute",
+        "version": "1.0"
+      },
+      "status": "approved",
+      "evidence": [
+        "data_model:PAY-DM-2026"
+      ],
+      "rationale": "Stated by Steven Taumoepeau (not proposed by the engine): field mapping in the payments data model (made-up)",
+      "baseline_id": "PERSON-STATED",
+      "created_by": "sdem connect",
+      "reviewer_id": "Steven Taumoepeau",
+      "approved_at": "2026-11-16"
+    },
+    {
+      "mapping_id": "PAY-144",
+      "source": {
+        "id": "BBOA-PAYMENT-TRANSACTION-FINANCIAL-TRANSACTION-TARGET-ACCOUNT",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "F-PAY-INSTR-CREDITOR-ACCOUNT-REFERENCE",
+        "type": "A3.DataAttribute",
+        "version": "1.0"
+      },
+      "status": "approved",
+      "evidence": [
+        "data_model:PAY-DM-2026"
+      ],
+      "rationale": "Stated by Steven Taumoepeau (not proposed by the engine): field mapping in the payments data model (made-up)",
+      "baseline_id": "PERSON-STATED",
+      "created_by": "sdem connect",
+      "reviewer_id": "Steven Taumoepeau",
+      "approved_at": "2026-11-16"
+    },
+    {
+      "mapping_id": "PAY-145",
+      "source": {
+        "id": "BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-AMOUNT",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "F-PAY-INSTR-AMOUNT",
+        "type": "A3.DataAttribute",
+        "version": "1.0"
+      },
+      "status": "approved",
+      "evidence": [
+        "data_model:PAY-DM-2026"
+      ],
+      "rationale": "Stated by Steven Taumoepeau (not proposed by the engine): field mapping in the payments data model (made-up)",
+      "baseline_id": "PERSON-STATED",
+      "created_by": "sdem connect",
+      "reviewer_id": "Steven Taumoepeau",
+      "approved_at": "2026-11-16"
+    },
+    {
+      "mapping_id": "PAY-146",
+      "source": {
+        "id": "BBOA-PAYMENT-TRANSACTION-FINANCIAL-TRANSACTION-CURRENCY",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "F-PAY-INSTR-CURRENCY",
+        "type": "A3.DataAttribute",
+        "version": "1.0"
+      },
+      "status": "approved",
+      "evidence": [
+        "data_model:PAY-DM-2026"
+      ],
+      "rationale": "Stated by Steven Taumoepeau (not proposed by the engine): field mapping in the payments data model (made-up)",
+      "baseline_id": "PERSON-STATED",
+      "created_by": "sdem connect",
+      "reviewer_id": "Steven Taumoepeau",
+      "approved_at": "2026-11-16"
+    },
+    {
+      "mapping_id": "PAY-147",
+      "source": {
+        "id": "BBOA-PAYMENT-TRANSACTION-MONEY-TRANSFER-VALUE-DATE",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "F-PAY-INSTR-VALUE-DATE",
+        "type": "A3.DataAttribute",
+        "version": "1.0"
+      },
+      "status": "approved",
+      "evidence": [
+        "data_model:PAY-DM-2026"
+      ],
+      "rationale": "Stated by Steven Taumoepeau (not proposed by the engine): field mapping in the payments data model (made-up)",
+      "baseline_id": "PERSON-STATED",
+      "created_by": "sdem connect",
+      "reviewer_id": "Steven Taumoepeau",
+      "approved_at": "2026-11-16"
+    },
+    {
+      "mapping_id": "PAY-148",
+      "source": {
+        "id": "BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-STATUS",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "F-PAY-INSTR-PAYMENT-STATUS",
+        "type": "A3.DataAttribute",
+        "version": "1.0"
+      },
+      "status": "approved",
+      "evidence": [
+        "data_model:PAY-DM-2026"
+      ],
+      "rationale": "Stated by Steven Taumoepeau (not proposed by the engine): field mapping in the payments data model (made-up)",
+      "baseline_id": "PERSON-STATED",
+      "created_by": "sdem connect",
+      "reviewer_id": "Steven Taumoepeau",
+      "approved_at": "2026-11-16"
+    },
+    {
+      "mapping_id": "PAY-149",
+      "source": {
+        "id": "BBOA-PAYMENT-TRANSACTION-TRANSACTION-DESCRIPTION",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "F-PAY-INSTR-REMITTANCE-INFORMATION",
+        "type": "A3.DataAttribute",
+        "version": "1.0"
+      },
+      "status": "approved",
+      "evidence": [
+        "data_model:PAY-DM-2026"
+      ],
+      "rationale": "Stated by Steven Taumoepeau (not proposed by the engine): field mapping in the payments data model (made-up)",
+      "baseline_id": "PERSON-STATED",
+      "created_by": "sdem connect",
+      "reviewer_id": "Steven Taumoepeau",
+      "approved_at": "2026-11-16"
+    },
+    {
+      "mapping_id": "PAY-150",
+      "source": {
+        "id": "BBOA-ACCOUNT-ACCOUNT-IDENTIFICATION",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "F-ACCOUNT-CACHE-ACCOUNT-REFERENCE",
+        "type": "A3.DataAttribute",
+        "version": "1.0"
+      },
+      "status": "approved",
+      "evidence": [
+        "data_model:PAY-DM-2026"
+      ],
+      "rationale": "Stated by Steven Taumoepeau (not proposed by the engine): field mapping in the payments data model (made-up)",
+      "baseline_id": "PERSON-STATED",
+      "created_by": "sdem connect",
+      "reviewer_id": "Steven Taumoepeau",
+      "approved_at": "2026-11-16"
+    },
+    {
+      "mapping_id": "PAY-151",
+      "source": {
+        "id": "BBOA-ACCOUNT-ACCOUNT-CURRENCY",
+        "type": "A2.BusinessObjectAttribute",
+        "version": "14.0.0"
+      },
+      "relationship": "FIELD_MAPPED_TO",
+      "target": {
+        "id": "F-ACCOUNT-CACHE-CURRENCY",
+        "type": "A3.DataAttribute",
+        "version": "1.0"
+      },
+      "status": "approved",
+      "evidence": [
+        "data_model:PAY-DM-2026"
+      ],
+      "rationale": "Stated by Steven Taumoepeau (not proposed by the engine): field mapping in the payments data model (made-up)",
+      "baseline_id": "PERSON-STATED",
+      "created_by": "sdem connect",
+      "reviewer_id": "Steven Taumoepeau",
+      "approved_at": "2026-11-16"
+    },
+    {
+      "mapping_id": "PAY-152",
+      "source": {
+        "id": "BO-ACCOUNT",
+        "type": "A1.BusinessObject",
+        "version": "1.0"
+      },
+      "relationship": "ALIGNED_TO",
+      "target": {
+        "id": "BBO-ACCOUNT",
+        "type": "A2.BusinessObject",
+        "version": "14.0.0",
+        "canonical_id": "BIAN-BO-ACCOUNT"
+      },
+      "status": "approved",
+      "evidence": [
+        "business_glossary:PAY-GLOSSARY",
+        "object_alignment_review:PAY-OAR-01"
+      ],
+      "rationale": "Stated by Steven Taumoepeau (not proposed by the engine): the business account is BIAN's account (made-up)",
+      "baseline_id": "PERSON-STATED",
+      "created_by": "sdem connect",
+      "reviewer_id": "Steven Taumoepeau",
+      "approved_at": "2026-11-16",
+      "bian_release": "14.0.0"
+    },
+    {
+      "mapping_id": "PAY-153",
+      "source": {
+        "id": "PRC-PAY-01",
+        "type": "A1.BusinessProcess",
+        "version": "1.0"
+      },
+      "relationship": "SERVED_BY",
+      "target": {
+        "id": "SVC-PAY-INIT",
+        "type": "A3.ApplicationService",
+        "version": "2.0"
+      },
+      "status": "approved",
+      "evidence": [
+        "process_model:PAY-PM-01"
+      ],
+      "rationale": "Stated by Steven Taumoepeau (not proposed by the engine): capturing and validating uses the payment initiation service (made-up)",
+      "baseline_id": "PERSON-STATED",
+      "created_by": "sdem connect",
+      "reviewer_id": "Steven Taumoepeau",
+      "approved_at": "2026-11-16"
+    },
+    {
+      "mapping_id": "PAY-154",
+      "source": {
+        "id": "ACTOR-CUSTOMER",
+        "type": "A1.BusinessActor",
+        "version": "1.0"
+      },
+      "relationship": "SERVED_BY",
+      "target": {
+        "id": "SVC-PAY-INIT",
+        "type": "A3.ApplicationService",
+        "version": "2.0"
+      },
+      "status": "approved",
+      "evidence": [
+        "process_model:PAY-PM-01"
+      ],
+      "rationale": "Stated by Steven Taumoepeau (not proposed by the engine): the customer uses it through the app and API (made-up)",
+      "baseline_id": "PERSON-STATED",
+      "created_by": "sdem connect",
+      "reviewer_id": "Steven Taumoepeau",
+      "approved_at": "2026-11-16"
+    },
+    {
+      "mapping_id": "PAY-155",
+      "source": {
+        "id": "ROLE-PAY-OFFICER",
+        "type": "A1.BusinessRole",
+        "version": "1.0"
+      },
+      "relationship": "SERVED_BY",
+      "target": {
+        "id": "SVC-PAY-INIT",
+        "type": "A3.ApplicationService",
+        "version": "2.0"
+      },
+      "status": "approved",
+      "evidence": [
+        "process_model:PAY-PM-01"
+      ],
+      "rationale": "Stated by Steven Taumoepeau (not proposed by the engine): the officer uses it to handle exceptions (made-up)",
+      "baseline_id": "PERSON-STATED",
+      "created_by": "sdem connect",
+      "reviewer_id": "Steven Taumoepeau",
+      "approved_at": "2026-11-16"
+    },
+    {
+      "mapping_id": "PAY-156",
+      "source": {
+        "id": "PRC-PAY-01",
+        "type": "A1.BusinessProcess",
+        "version": "1.0"
+      },
+      "relationship": "AUTOMATED_BY",
+      "target": {
+        "id": "AFN-PAY-VALIDATE",
+        "type": "A3.ApplicationFunction",
+        "version": "1.0"
+      },
+      "status": "approved",
+      "evidence": [
+        "process_model:PAY-PM-01"
+      ],
+      "rationale": "Stated by Steven Taumoepeau (not proposed by the engine): validation is automated (made-up)",
+      "baseline_id": "PERSON-STATED",
+      "created_by": "sdem connect",
+      "reviewer_id": "Steven Taumoepeau",
+      "approved_at": "2026-11-16"
+    },
+    {
+      "mapping_id": "PAY-157",
+      "source": {
+        "id": "BSV-MAKE-PAYMENT",
+        "type": "A1.BusinessService",
+        "version": "1.0"
+      },
+      "relationship": "REALIZED_BY",
+      "target": {
+        "id": "SVC-PAY-INIT",
+        "type": "A3.ApplicationService",
+        "version": "2.0"
+      },
+      "status": "approved",
+      "evidence": [
+        "application_architecture_document:PAY-AAD-01"
+      ],
+      "rationale": "Stated by Steven Taumoepeau (not proposed by the engine): the business service is delivered by the payment initiation service (made-up)",
+      "baseline_id": "PERSON-STATED",
+      "created_by": "sdem connect",
+      "reviewer_id": "Steven Taumoepeau",
+      "approved_at": "2026-11-16"
+    },
+    {
+      "mapping_id": "PAY-158",
+      "source": {
+        "id": "BO-PAYEE",
+        "type": "A1.BusinessObject",
+        "version": "1.0"
+      },
+      "relationship": "MAPPED_TO",
+      "target": {
+        "id": "AID-ENT-PAYEE",
+        "type": "A3.DataEntity",
+        "version": "1"
+      },
+      "status": "approved",
+      "evidence": [
+        "data_model:PAY-DM-2026"
+      ],
+      "rationale": "Stated by Steven Taumoepeau (not proposed by the engine): saved payees are kept in the payee table (no BIAN step needed) (made-up)",
+      "baseline_id": "PERSON-STATED",
+      "created_by": "sdem connect",
+      "reviewer_id": "Steven Taumoepeau",
+      "approved_at": "2026-11-16"
+    },
+    {
+      "mapping_id": "PAY-159",
+      "source": {
+        "id": "BEV-PAY-EXECUTED",
+        "type": "A1.BusinessEvent",
+        "version": "1.0"
+      },
+      "relationship": "REALIZED_BY",
+      "target": {
+        "id": "EVT-PAY-STATUS",
+        "type": "A3.Event",
+        "version": "2.0"
+      },
+      "status": "approved",
+      "evidence": [
+        "event_design:PAY-ED-01"
+      ],
+      "rationale": "Stated by Steven Taumoepeau (not proposed by the engine): the hub raises PaymentStatusChanged when a payment is executed (made-up)",
+      "baseline_id": "PERSON-STATED",
+      "created_by": "sdem connect",
+      "reviewer_id": "Steven Taumoepeau",
+      "approved_at": "2026-11-16"
+    },
+    {
+      "mapping_id": "PAY-160",
+      "source": {
+        "id": "CHN-OBAPI",
+        "type": "A1.BusinessInterface",
+        "version": "1.0"
+      },
+      "relationship": "REALIZED_BY",
+      "target": {
+        "id": "IFC-PAY-API",
+        "type": "A3.ApplicationInterface",
+        "version": "2.0"
+      },
+      "status": "approved",
+      "evidence": [
+        "application_architecture_document:PAY-AAD-01"
+      ],
+      "rationale": "Stated by Steven Taumoepeau (not proposed by the engine): the open banking channel is the Payments API (made-up)",
+      "baseline_id": "PERSON-STATED",
+      "created_by": "sdem connect",
+      "reviewer_id": "Steven Taumoepeau",
+      "approved_at": "2026-11-16"
+    },
+    {
+      "mapping_id": "PAY-161",
+      "source": {
+        "id": "APP-PAY-HUB",
+        "type": "A3.ApplicationComponent",
+        "version": "7.1"
+      },
+      "relationship": "SERVED_BY",
+      "target": {
+        "id": "TS-MQ",
+        "type": "A4.TechnologyService",
+        "version": "1.0"
+      },
+      "status": "approved",
+      "evidence": [
+        "deployment_design:PAY-DD-01"
+      ],
+      "rationale": "Stated by Steven Taumoepeau (not proposed by the engine): the hub publishes events through the messaging service (made-up)",
+      "baseline_id": "PERSON-STATED",
+      "created_by": "sdem connect",
+      "reviewer_id": "Steven Taumoepeau",
+      "approved_at": "2026-11-16"
+    },
+    {
+      "mapping_id": "PAY-162",
+      "source": {
+        "id": "AID-ENT-PAYEE",
+        "type": "A3.DataEntity",
+        "version": "1"
+      },
+      "relationship": "STORED_IN",
+      "target": {
+        "id": "INF-PG-PAY-PROD",
+        "type": "A4.SystemSoftware",
+        "version": "16"
+      },
+      "status": "approved",
+      "evidence": [
+        "deployment_design:PAY-DD-01"
+      ],
+      "rationale": "Stated by Steven Taumoepeau (not proposed by the engine): kept in the payments PostgreSQL (made-up)",
+      "baseline_id": "PERSON-STATED",
+      "created_by": "sdem connect",
+      "reviewer_id": "Steven Taumoepeau",
+      "approved_at": "2026-11-16"
+    },
+    {
+      "mapping_id": "PAY-163",
+      "source": {
+        "id": "AID-ENT-FUNDING-CHECK",
+        "type": "A3.DataEntity",
+        "version": "1"
+      },
+      "relationship": "STORED_IN",
+      "target": {
+        "id": "INF-PG-PAY-PROD",
+        "type": "A4.SystemSoftware",
+        "version": "16"
+      },
+      "status": "approved",
+      "evidence": [
+        "deployment_design:PAY-DD-01"
+      ],
+      "rationale": "Stated by Steven Taumoepeau (not proposed by the engine): kept in the payments PostgreSQL (made-up)",
+      "baseline_id": "PERSON-STATED",
+      "created_by": "sdem connect",
+      "reviewer_id": "Steven Taumoepeau",
+      "approved_at": "2026-11-16"
+    },
+    {
+      "mapping_id": "PAY-164",
+      "source": {
+        "id": "AID-ENT-COMPLIANCE-CHECK",
+        "type": "A3.DataEntity",
+        "version": "1"
+      },
+      "relationship": "STORED_IN",
+      "target": {
+        "id": "INF-PG-PAY-PROD",
+        "type": "A4.SystemSoftware",
+        "version": "16"
+      },
+      "status": "approved",
+      "evidence": [
+        "deployment_design:PAY-DD-01"
+      ],
+      "rationale": "Stated by Steven Taumoepeau (not proposed by the engine): kept in the payments PostgreSQL (made-up)",
+      "baseline_id": "PERSON-STATED",
+      "created_by": "sdem connect",
+      "reviewer_id": "Steven Taumoepeau",
+      "approved_at": "2026-11-16"
+    }
+  ]
+}

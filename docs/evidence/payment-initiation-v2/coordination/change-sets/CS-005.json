@@ -1,0 +1,3169 @@
+{
+  "id": "CS-005",
+  "layer": "A3",
+  "reason": "sdem aid AID-001: inferred records and links, each marked inferred (AID-W02) — confirm or reject them with sdem aid confirm|reject",
+  "changes": [
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENT-ACCOUNT",
+        "type": "A3.DataEntity",
+        "version": "1",
+        "name": "account (inferred)",
+        "lifecycle_status": "planned",
+        "description": "Inferred: the data entity that stores the business object Account (BBO-ACCOUNT).",
+        "attributes": {
+          "attributes": [
+            "account_status",
+            "account_identification",
+            "account_date",
+            "account_type",
+            "account_purpose",
+            "account_balance",
+            "account_currency",
+            "account_description",
+            "account_name",
+            "log_type",
+            "log_period",
+            "log_date",
+            "log_identification"
+          ],
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "one data entity per business object with typed fields — Account has 13",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBO-ACCOUNT"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENTF-ACCOUNT-ACCOUNTSTATUS",
+        "type": "A3.DataAttribute",
+        "version": "1",
+        "name": "account_status",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "physical_type": "varchar(35)",
+          "required": false,
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "the field AccountStatus (reference) as varchar(35)",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBOA-ACCOUNT-ACCOUNT-STATUS"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENTF-ACCOUNT-ACCOUNTIDENTIFICATION",
+        "type": "A3.DataAttribute",
+        "version": "1",
+        "name": "account_identification",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "physical_type": "varchar(35)",
+          "required": false,
+          "primary_key": true,
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "the field AccountIdentification (reference) as varchar(35), the primary key",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBOA-ACCOUNT-ACCOUNT-IDENTIFICATION"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENTF-ACCOUNT-ACCOUNTDATE",
+        "type": "A3.DataAttribute",
+        "version": "1",
+        "name": "account_date",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "physical_type": "varchar(35)",
+          "required": false,
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "the field AccountDate (reference) as varchar(35)",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBOA-ACCOUNT-ACCOUNT-DATE"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENTF-ACCOUNT-ACCOUNTTYPE",
+        "type": "A3.DataAttribute",
+        "version": "1",
+        "name": "account_type",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "physical_type": "varchar(35)",
+          "required": false,
+          "allowed_values": [
+            "DebitAccount",
+            "CreditAccount",
+            "VostroAcount",
+            "NostroAccount",
+            "PaymentAccount",
+            "SettlementAccount",
+            "SavingAccount",
+            "CurrentAccount",
+            "CashAccount",
+            "LoanAccount",
+            "IndividualAccount",
+            "JointAccount",
+            "LiquidationAccount",
+            "ProvisionAccount",
+            "PartnershipAccount",
+            "InvestmentAccount"
+          ],
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "the field AccountType (enum) as varchar(35)",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBOA-ACCOUNT-ACCOUNT-TYPE"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENTF-ACCOUNT-ACCOUNTPURPOSE",
+        "type": "A3.DataAttribute",
+        "version": "1",
+        "name": "account_purpose",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "physical_type": "varchar(140)",
+          "required": false,
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "the field AccountPurpose (string) as varchar(140)",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBOA-ACCOUNT-ACCOUNT-PURPOSE"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENTF-ACCOUNT-ACCOUNTBALANCE",
+        "type": "A3.DataAttribute",
+        "version": "1",
+        "name": "account_balance",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "physical_type": "varchar(35)",
+          "required": false,
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "the field AccountBalance (reference) as varchar(35)",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBOA-ACCOUNT-ACCOUNT-BALANCE"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENTF-ACCOUNT-ACCOUNTCURRENCY",
+        "type": "A3.DataAttribute",
+        "version": "1",
+        "name": "account_currency",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "physical_type": "varchar(35)",
+          "required": false,
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "the field AccountCurrency (reference) as varchar(35)",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBOA-ACCOUNT-ACCOUNT-CURRENCY"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENTF-ACCOUNT-ACCOUNTDESCRIPTION",
+        "type": "A3.DataAttribute",
+        "version": "1",
+        "name": "account_description",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "physical_type": "varchar(140)",
+          "required": false,
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "the field AccountDescription (string) as varchar(140)",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBOA-ACCOUNT-ACCOUNT-DESCRIPTION"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENTF-ACCOUNT-ACCOUNTNAME",
+        "type": "A3.DataAttribute",
+        "version": "1",
+        "name": "account_name",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "physical_type": "varchar(140)",
+          "required": false,
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "the field AccountName (string) as varchar(140)",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBOA-ACCOUNT-ACCOUNT-NAME"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENTF-ACCOUNT-LOGTYPE",
+        "type": "A3.DataAttribute",
+        "version": "1",
+        "name": "log_type",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "physical_type": "varchar(140)",
+          "required": false,
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "the field LogType (string) as varchar(140)",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBOA-ACCOUNT-LOG-TYPE"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENTF-ACCOUNT-LOGPERIOD",
+        "type": "A3.DataAttribute",
+        "version": "1",
+        "name": "log_period",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "physical_type": "varchar(35)",
+          "required": false,
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "the field LogPeriod (reference) as varchar(35)",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBOA-ACCOUNT-LOG-PERIOD"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENTF-ACCOUNT-LOGDATE",
+        "type": "A3.DataAttribute",
+        "version": "1",
+        "name": "log_date",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "physical_type": "timestamp",
+          "required": false,
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "the field LogDate (datetime) as timestamp",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBOA-ACCOUNT-LOG-DATE"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENTF-ACCOUNT-LOGIDENTIFICATION",
+        "type": "A3.DataAttribute",
+        "version": "1",
+        "name": "log_identification",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "physical_type": "varchar(35)",
+          "required": false,
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "the field LogIdentification (identifier) as varchar(35)",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBOA-ACCOUNT-LOG-IDENTIFICATION"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENT-COMPLIANCE-CHECK",
+        "type": "A3.DataEntity",
+        "version": "1",
+        "name": "compliance_check (inferred)",
+        "lifecycle_status": "planned",
+        "description": "Inferred: the data entity that stores the business object Compliance Check (BBO-COMPLIANCE-CHECK).",
+        "attributes": {
+          "attributes": [
+            "compliance_check_type"
+          ],
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "one data entity per business object with typed fields — Compliance Check has 1",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBO-COMPLIANCE-CHECK"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENTF-COMPLIANCE-CHECK-COMPLIANCECHECKTYPE",
+        "type": "A3.DataAttribute",
+        "version": "1",
+        "name": "compliance_check_type",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "physical_type": "varchar(140)",
+          "required": false,
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "the field ComplianceCheckType (string) as varchar(140)",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBOA-COMPLIANCE-CHECK-COMPLIANCE-CHECK-TYPE"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENT-FUNDING-CHECK",
+        "type": "A3.DataEntity",
+        "version": "1",
+        "name": "funding_check (inferred)",
+        "lifecycle_status": "planned",
+        "description": "Inferred: the data entity that stores the business object Funding Check (BBO-FUNDING-CHECK).",
+        "attributes": {
+          "attributes": [
+            "assessment_type",
+            "assessment_method",
+            "assessment_schedule",
+            "assessment_description",
+            "assessment_model",
+            "assessment_date_time",
+            "assessment_result",
+            "assessment_supporting_document",
+            "assessment_representing_document",
+            "assessment_required_adjustment",
+            "assessment_requirement",
+            "assessment_expiry_date",
+            "assessment_status",
+            "assessment_identification"
+          ],
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "one data entity per business object with typed fields — Funding Check has 14",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBO-FUNDING-CHECK"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTTYPE",
+        "type": "A3.DataAttribute",
+        "version": "1",
+        "name": "assessment_type",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "physical_type": "varchar(35)",
+          "required": false,
+          "allowed_values": [
+            "Valuation",
+            "Matching",
+            "Authorization",
+            "Authentication",
+            "QualityAssurance",
+            "Audit",
+            "ComplianceCheck",
+            "FundingCheck",
+            "SuitabilityCheck",
+            "PerformanceCheck",
+            "ImpactAssessment",
+            "RiskAssessment",
+            "Rating",
+            "UnderwritingAssessment",
+            "Qualification",
+            "Verification",
+            "KYCAssessment",
+            "PEPAssessment",
+            "AMLAssessment",
+            "EligibilityCheck",
+            "ExternalAgencyCheck",
+            "EntitlementCheck"
+          ],
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "the field AssessmentType (enum) as varchar(35)",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBOA-FUNDING-CHECK-ASSESSMENT-TYPE"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTMETHOD",
+        "type": "A3.DataAttribute",
+        "version": "1",
+        "name": "assessment_method",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "physical_type": "varchar(140)",
+          "required": false,
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "the field AssessmentMethod (string) as varchar(140)",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBOA-FUNDING-CHECK-ASSESSMENT-METHOD"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTSCHEDULE",
+        "type": "A3.DataAttribute",
+        "version": "1",
+        "name": "assessment_schedule",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "physical_type": "varchar(35)",
+          "required": false,
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "the field AssessmentSchedule (reference) as varchar(35)",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBOA-FUNDING-CHECK-ASSESSMENT-SCHEDULE"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTDESCRIPTION",
+        "type": "A3.DataAttribute",
+        "version": "1",
+        "name": "assessment_description",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "physical_type": "varchar(140)",
+          "required": false,
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "the field AssessmentDescription (string) as varchar(140)",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBOA-FUNDING-CHECK-ASSESSMENT-DESCRIPTION"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTMODEL",
+        "type": "A3.DataAttribute",
+        "version": "1",
+        "name": "assessment_model",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "physical_type": "varchar(35)",
+          "required": false,
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "the field AssessmentModel (reference) as varchar(35)",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBOA-FUNDING-CHECK-ASSESSMENT-MODEL"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTDATETIME",
+        "type": "A3.DataAttribute",
+        "version": "1",
+        "name": "assessment_date_time",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "physical_type": "timestamp",
+          "required": false,
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "the field AssessmentDateTime (datetime) as timestamp",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBOA-FUNDING-CHECK-ASSESSMENT-DATE-TIME"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTRESULT",
+        "type": "A3.DataAttribute",
+        "version": "1",
+        "name": "assessment_result",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "physical_type": "varchar(140)",
+          "required": false,
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "the field AssessmentResult (string) as varchar(140)",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBOA-FUNDING-CHECK-ASSESSMENT-RESULT"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTSUPPORTINGDOCUMENT",
+        "type": "A3.DataAttribute",
+        "version": "1",
+        "name": "assessment_supporting_document",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "physical_type": "varchar(35)",
+          "required": false,
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "the field AssessmentSupportingDocument (reference) as varchar(35)",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBOA-FUNDING-CHECK-ASSESSMENT-SUPPORTING-DOCUMENT"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTREPRESENTINGDOCUMENT",
+        "type": "A3.DataAttribute",
+        "version": "1",
+        "name": "assessment_representing_document",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "physical_type": "varchar(35)",
+          "required": false,
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "the field AssessmentRepresentingDocument (reference) as varchar(35)",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBOA-FUNDING-CHECK-ASSESSMENT-REPRESENTING-DOCUMENT"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTREQUIREDADJUSTMENT",
+        "type": "A3.DataAttribute",
+        "version": "1",
+        "name": "assessment_required_adjustment",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "physical_type": "varchar(140)",
+          "required": false,
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "the field AssessmentRequiredAdjustment (string) as varchar(140)",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBOA-FUNDING-CHECK-ASSESSMENT-REQUIRED-ADJUSTMENT"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTREQUIREMENT",
+        "type": "A3.DataAttribute",
+        "version": "1",
+        "name": "assessment_requirement",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "physical_type": "varchar(35)",
+          "required": false,
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "the field AssessmentRequirement (reference) as varchar(35)",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBOA-FUNDING-CHECK-ASSESSMENT-REQUIREMENT"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTEXPIRYDATE",
+        "type": "A3.DataAttribute",
+        "version": "1",
+        "name": "assessment_expiry_date",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "physical_type": "date",
+          "required": false,
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "the field AssessmentExpiryDate (date) as date",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBOA-FUNDING-CHECK-ASSESSMENT-EXPIRY-DATE"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTSTATUS",
+        "type": "A3.DataAttribute",
+        "version": "1",
+        "name": "assessment_status",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "physical_type": "varchar(35)",
+          "required": false,
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "the field AssessmentStatus (reference) as varchar(35)",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBOA-FUNDING-CHECK-ASSESSMENT-STATUS"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTIDENTIFICATION",
+        "type": "A3.DataAttribute",
+        "version": "1",
+        "name": "assessment_identification",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "physical_type": "varchar(35)",
+          "required": false,
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "the field AssessmentIdentification (identifier) as varchar(35)",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBOA-FUNDING-CHECK-ASSESSMENT-IDENTIFICATION"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENT-PARTY",
+        "type": "A3.DataEntity",
+        "version": "1",
+        "name": "party (inferred)",
+        "lifecycle_status": "planned",
+        "description": "Inferred: the data entity that stores the business object Party (BBO-PARTY).",
+        "attributes": {
+          "attributes": [
+            "party_reference",
+            "party_name",
+            "party_type",
+            "party_date_time",
+            "party_identification",
+            "party_legal_structure_type",
+            "party_activity_indicator"
+          ],
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "one data entity per business object with typed fields — Party has 7",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBO-PARTY"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENTF-PARTY-PARTY-REFERENCE",
+        "type": "A3.DataAttribute",
+        "version": "1",
+        "name": "party_reference",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "physical_type": "varchar(140)",
+          "required": false,
+          "personal_information": false,
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "the field party reference (string) as varchar(140)",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBOA-PARTY-REF"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENTF-PARTY-PARTYNAME",
+        "type": "A3.DataAttribute",
+        "version": "1",
+        "name": "party_name",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "physical_type": "varchar(140)",
+          "required": false,
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "the field PartyName (string) as varchar(140)",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBOA-PARTY-PARTY-NAME"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENTF-PARTY-PARTYTYPE",
+        "type": "A3.DataAttribute",
+        "version": "1",
+        "name": "party_type",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "physical_type": "varchar(35)",
+          "required": false,
+          "allowed_values": [
+            "Person",
+            "Organisation"
+          ],
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "the field PartyType (enum) as varchar(35)",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBOA-PARTY-PARTY-TYPE"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENTF-PARTY-PARTYDATETIME",
+        "type": "A3.DataAttribute",
+        "version": "1",
+        "name": "party_date_time",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "physical_type": "timestamp",
+          "required": false,
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "the field PartyDateTime (datetime) as timestamp",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBOA-PARTY-PARTY-DATE-TIME"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENTF-PARTY-PARTYIDENTIFICATION",
+        "type": "A3.DataAttribute",
+        "version": "1",
+        "name": "party_identification",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "physical_type": "varchar(35)",
+          "required": false,
+          "primary_key": true,
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "the field PartyIdentification (reference) as varchar(35), the primary key",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBOA-PARTY-PARTY-IDENTIFICATION"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENTF-PARTY-PARTYLEGALSTRUCTURETYPE",
+        "type": "A3.DataAttribute",
+        "version": "1",
+        "name": "party_legal_structure_type",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "physical_type": "varchar(35)",
+          "required": false,
+          "allowed_values": [
+            "Individual",
+            "CommunityInterestCompany",
+            "CharitableIncorporatedOrganisation",
+            "Co-Operative",
+            "Charity",
+            "GeneralPartnership",
+            "LimitedLiabilityPartnership",
+            "ScottishLimitedPartnership",
+            "LimitedPartnership",
+            "PrivateLimitedCompany",
+            "PublicLimitedCompany",
+            "Sole(SoleTrader)"
+          ],
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "the field PartyLegalStructureType (enum) as varchar(35)",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBOA-PARTY-PARTY-LEGAL-STRUCTURE-TYPE"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENTF-PARTY-PARTYACTIVITYINDICATOR",
+        "type": "A3.DataAttribute",
+        "version": "1",
+        "name": "party_activity_indicator",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "physical_type": "varchar(35)",
+          "required": false,
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "the field PartyActivityIndicator (reference) as varchar(35)",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBOA-PARTY-PARTY-ACTIVITY-INDICATOR"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENT-PAYEE",
+        "type": "A3.DataEntity",
+        "version": "1",
+        "name": "payee (inferred)",
+        "lifecycle_status": "planned",
+        "description": "Inferred: the data entity that stores the business object Payee (BBO-PAYEE).",
+        "attributes": {
+          "attributes": [
+            "payee_identifier",
+            "payment_instruction_involvement_type"
+          ],
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "one data entity per business object with typed fields — Payee has 2",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBO-PAYEE"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENTF-PAYEE-PAYEEIDENTIFIER",
+        "type": "A3.DataAttribute",
+        "version": "1",
+        "name": "payee_identifier",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "physical_type": "varchar(140)",
+          "required": false,
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "the field PayeeIdentifier (string) as varchar(140)",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBOA-PAYEE-PAYEE-IDENTIFIER"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENTF-PAYEE-PAYMENTINSTRUCTIONINVOLVEMENTTYPE",
+        "type": "A3.DataAttribute",
+        "version": "1",
+        "name": "payment_instruction_involvement_type",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "physical_type": "varchar(35)",
+          "required": false,
+          "allowed_values": [
+            "PayerOrDebtor",
+            "PayeeBankOrCreditorAgent",
+            "PayeeOrCreditor",
+            "PayerBankOrDebtorAgent",
+            "Initiator",
+            "PSU",
+            "PSP",
+            "UltimateDebtor",
+            "UltimateCreditor"
+          ],
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "the field PaymentInstructionInvolvementType (enum) as varchar(35)",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBOA-PAYEE-PAYMENT-INSTRUCTION-INVOLVEMENT-TYPE"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENT-PAYEE-BANK",
+        "type": "A3.DataEntity",
+        "version": "1",
+        "name": "payee_bank (inferred)",
+        "lifecycle_status": "planned",
+        "description": "Inferred: the data entity that stores the business object Payee Bank (BBO-PAYEE-BANK).",
+        "attributes": {
+          "attributes": [
+            "payee_bank_identifier",
+            "payment_instruction_involvement_type",
+            "party_role_type",
+            "party_role_name",
+            "party_role_validity_period",
+            "party_involvement_type"
+          ],
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "one data entity per business object with typed fields — Payee Bank has 6",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBO-PAYEE-BANK"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENTF-PAYEE-BANK-PAYEEBANKIDENTIFIER",
+        "type": "A3.DataAttribute",
+        "version": "1",
+        "name": "payee_bank_identifier",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "physical_type": "varchar(140)",
+          "required": false,
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "the field PayeeBankIdentifier (string) as varchar(140)",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBOA-PAYEE-BANK-PAYEE-BANK-IDENTIFIER"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENTF-PAYEE-BANK-PAYMENTINSTRUCTIONINVOLVEMENTTYPE",
+        "type": "A3.DataAttribute",
+        "version": "1",
+        "name": "payment_instruction_involvement_type",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "physical_type": "varchar(35)",
+          "required": false,
+          "allowed_values": [
+            "PayerOrDebtor",
+            "PayeeBankOrCreditorAgent",
+            "PayeeOrCreditor",
+            "PayerBankOrDebtorAgent",
+            "Initiator",
+            "PSU",
+            "PSP",
+            "UltimateDebtor",
+            "UltimateCreditor"
+          ],
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "the field PaymentInstructionInvolvementType (enum) as varchar(35)",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBOA-PAYEE-BANK-PAYMENT-INSTRUCTION-INVOLVEMENT-TYPE"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENTF-PAYEE-BANK-PARTYROLETYPE",
+        "type": "A3.DataAttribute",
+        "version": "1",
+        "name": "party_role_type",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "physical_type": "varchar(140)",
+          "required": false,
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "the field PartyRoleType (string) as varchar(140)",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBOA-PAYEE-BANK-PARTY-ROLE-TYPE"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENTF-PAYEE-BANK-PARTYROLENAME",
+        "type": "A3.DataAttribute",
+        "version": "1",
+        "name": "party_role_name",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "physical_type": "varchar(140)",
+          "required": false,
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "the field PartyRoleName (string) as varchar(140)",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBOA-PAYEE-BANK-PARTY-ROLE-NAME"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENTF-PAYEE-BANK-PARTYROLEVALIDITYPERIOD",
+        "type": "A3.DataAttribute",
+        "version": "1",
+        "name": "party_role_validity_period",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "physical_type": "varchar(35)",
+          "required": false,
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "the field PartyRoleValidityPeriod (reference) as varchar(35)",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBOA-PAYEE-BANK-PARTY-ROLE-VALIDITY-PERIOD"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENTF-PAYEE-BANK-PARTYINVOLVEMENTTYPE",
+        "type": "A3.DataAttribute",
+        "version": "1",
+        "name": "party_involvement_type",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "physical_type": "varchar(35)",
+          "required": false,
+          "allowed_values": [
+            "AgreementInvolvement",
+            "PartyInvolvement",
+            "ArrangementInvolvement",
+            "DesignSpecificationInvolvement",
+            "RelationshipInvolvement",
+            "LocationInvolvement",
+            "BankGuaranteeInvolvement"
+          ],
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "the field PartyInvolvementType (enum) as varchar(35)",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBOA-PAYEE-BANK-PARTY-INVOLVEMENT-TYPE"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENT-PAYER",
+        "type": "A3.DataEntity",
+        "version": "1",
+        "name": "payer (inferred)",
+        "lifecycle_status": "planned",
+        "description": "Inferred: the data entity that stores the business object Payer (BBO-PAYER).",
+        "attributes": {
+          "attributes": [
+            "payer_identifier",
+            "payment_instruction_involvement_type"
+          ],
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "one data entity per business object with typed fields — Payer has 2",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBO-PAYER"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENTF-PAYER-PAYERIDENTIFIER",
+        "type": "A3.DataAttribute",
+        "version": "1",
+        "name": "payer_identifier",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "physical_type": "varchar(140)",
+          "required": false,
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "the field PayerIdentifier (string) as varchar(140)",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBOA-PAYER-PAYER-IDENTIFIER"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENTF-PAYER-PAYMENTINSTRUCTIONINVOLVEMENTTYPE",
+        "type": "A3.DataAttribute",
+        "version": "1",
+        "name": "payment_instruction_involvement_type",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "physical_type": "varchar(35)",
+          "required": false,
+          "allowed_values": [
+            "PayerOrDebtor",
+            "PayeeBankOrCreditorAgent",
+            "PayeeOrCreditor",
+            "PayerBankOrDebtorAgent",
+            "Initiator",
+            "PSU",
+            "PSP",
+            "UltimateDebtor",
+            "UltimateCreditor"
+          ],
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "the field PaymentInstructionInvolvementType (enum) as varchar(35)",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBOA-PAYER-PAYMENT-INSTRUCTION-INVOLVEMENT-TYPE"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENT-PAYER-BANK",
+        "type": "A3.DataEntity",
+        "version": "1",
+        "name": "payer_bank (inferred)",
+        "lifecycle_status": "planned",
+        "description": "Inferred: the data entity that stores the business object Payer Bank (BBO-PAYER-BANK).",
+        "attributes": {
+          "attributes": [
+            "payer_bank_identifier",
+            "payment_instruction_involvement_type"
+          ],
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "one data entity per business object with typed fields — Payer Bank has 2",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBO-PAYER-BANK"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENTF-PAYER-BANK-PAYERBANKIDENTIFIER",
+        "type": "A3.DataAttribute",
+        "version": "1",
+        "name": "payer_bank_identifier",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "physical_type": "varchar(140)",
+          "required": false,
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "the field PayerBankIdentifier (string) as varchar(140)",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBOA-PAYER-BANK-PAYER-BANK-IDENTIFIER"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENTF-PAYER-BANK-PAYMENTINSTRUCTIONINVOLVEMENTTYPE",
+        "type": "A3.DataAttribute",
+        "version": "1",
+        "name": "payment_instruction_involvement_type",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "physical_type": "varchar(35)",
+          "required": false,
+          "allowed_values": [
+            "PayerOrDebtor",
+            "PayeeBankOrCreditorAgent",
+            "PayeeOrCreditor",
+            "PayerBankOrDebtorAgent",
+            "Initiator",
+            "PSU",
+            "PSP",
+            "UltimateDebtor",
+            "UltimateCreditor"
+          ],
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "the field PaymentInstructionInvolvementType (enum) as varchar(35)",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBOA-PAYER-BANK-PAYMENT-INSTRUCTION-INVOLVEMENT-TYPE"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENT-PAYMENT-TRANSACTION",
+        "type": "A3.DataEntity",
+        "version": "1",
+        "name": "payment_transaction (inferred)",
+        "lifecycle_status": "planned",
+        "description": "Inferred: the data entity that stores the business object Payment Transaction (BBO-PAYMENT-TRANSACTION).",
+        "attributes": {
+          "attributes": [
+            "payment_transaction_type",
+            "payment_transaction_amount",
+            "payment_transaction_identification",
+            "payment_transaction_used_mechanism",
+            "payment_transaction_datetime",
+            "payment_transaction_purpose",
+            "payment_transaction_status",
+            "payment_transaction_applied_fee_amount",
+            "payment_transaction_currency",
+            "payment_transaction_credit_debit_indicator",
+            "transaction_identification",
+            "transaction_date",
+            "transaction_type",
+            "transaction_description",
+            "transaction_status",
+            "transaction_name",
+            "undertaking_transaction_type",
+            "money_transfer_transaction_amount",
+            "money_transfer_transaction_currency",
+            "money_transfer_transaction_source_account",
+            "money_transfer_transaction_target_account",
+            "money_transfer_instruction_reference",
+            "money_transfer_used_method",
+            "money_transfer_value_date",
+            "financial_transaction_type",
+            "financial_transaction_currency",
+            "financial_transaction_amount",
+            "financial_transaction_from_account",
+            "financial_transaction_target_account",
+            "financial_transaction_date_time"
+          ],
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "one data entity per business object with typed fields — Payment Transaction has 30",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBO-PAYMENT-TRANSACTION"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONTYPE",
+        "type": "A3.DataAttribute",
+        "version": "1",
+        "name": "payment_transaction_type",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "physical_type": "varchar(35)",
+          "required": false,
+          "allowed_values": [
+            "Cashtransaction",
+            "Domesticpayment",
+            "Domestichighvaluepayment",
+            "Domesticprioritypayment",
+            "Crossborderpayment",
+            "Crossborderprioritypayment",
+            "Crossborderhighvaluepayment",
+            "Thirdcurrencypayment",
+            "Thirdcurrencyhighvaluepayment",
+            "Thirdcurrencyprioritypayment",
+            "Tradesettlementpayment",
+            "Foreignexchange",
+            "Equivalentamount",
+            "Loan",
+            "Loanrepayment",
+            "Securities",
+            "Lockbox",
+            "Dividend",
+            "Crossedcheque",
+            "Opencheque",
+            "Ordercheque",
+            "Circularcheque",
+            "Travellerscheques",
+            "Bankdraft",
+            "Documentarycredit",
+            "Billofexchange",
+            "Collection",
+            "Cashmanagementtransfer",
+            "Topaccount",
+            "Zerobalanceaccount",
+            "Standingfacilities",
+            "Standardservicelevelcredit",
+            "Liquiditytransfer",
+            "Advancepayment",
+            "Valuedateadjustment",
+            "Dvpgross",
+            "Dvpnet",
+            "Netting",
+            "Limitpayment",
+            "Backup",
+            "Expresspayment",
+            "Centralbankoperation",
+            "Clspayment",
+            "Eurodomesticpayment",
+            "Agriculturaltransfer",
+            "Alimonypayment",
+            "Balanceretail",
+            "Bonuspayment.",
+            "Brokeragefee",
+            "Capitalbuilding",
+            "Charitypayment",
+            "Childbenefit",
+            "Commercialcredit",
+            "Commission",
+            "Commoditytransfer",
+            "Costs",
+            "Copyright",
+            "Governmentpayment",
+            "Instalmenthirepurchaseagreement",
+            "Insurancepremium",
+            "Intracompanypayment",
+            "Interest",
+            "Licensefee",
+            "Metals",
+            "Pensionpayment",
+            "Purchasesaleofgoods",
+            "Refund",
+            "Rent",
+            "Royalties",
+            "Purchasesaleofservices",
+            "Salarypayment",
+            "Socialsecuritybenefit",
+            "Standingorder",
+            "Subscription",
+            "Treasurystatepayment",
+            "Unemploymentdisabilitybenefit",
+            "Valueaddedtaxpayment",
+            "Taxpayment",
+            "Overnightdeposit",
+            "Marginallending",
+            "Other",
+            "Upfront",
+            "Unwind",
+            "Principalexchange"
+          ],
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "the field PaymentTransactionType (enum) as varchar(35)",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-TYPE"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONAMOUNT",
+        "type": "A3.DataAttribute",
+        "version": "1",
+        "name": "payment_transaction_amount",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "physical_type": "numeric(18,2)",
+          "required": false,
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "the field PaymentTransactionAmount (amount) as numeric(18,2)",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-AMOUNT"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONIDENTIFICATION",
+        "type": "A3.DataAttribute",
+        "version": "1",
+        "name": "payment_transaction_identification",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "physical_type": "varchar(35)",
+          "required": false,
+          "primary_key": true,
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "the field PaymentTransactionIdentification (reference) as varchar(35), the primary key",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-IDENTIFICATION"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONUSEDMECHANISM",
+        "type": "A3.DataAttribute",
+        "version": "1",
+        "name": "payment_transaction_used_mechanism",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "physical_type": "varchar(140)",
+          "required": false,
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "the field PaymentTransactionUsedMechanism (string) as varchar(140)",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-USED-MECHANISM"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONDATETIME",
+        "type": "A3.DataAttribute",
+        "version": "1",
+        "name": "payment_transaction_datetime",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "physical_type": "timestamp",
+          "required": false,
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "the field PaymentTransactionDatetime (datetime) as timestamp",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-DATETIME"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONPURPOSE",
+        "type": "A3.DataAttribute",
+        "version": "1",
+        "name": "payment_transaction_purpose",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "physical_type": "varchar(35)",
+          "required": false,
+          "allowed_values": [
+            "Salarypayment",
+            "Treasurypayment",
+            "Advancepayment",
+            "Agriculturaltransfer",
+            "Alimonypayment",
+            "Childbenefit",
+            "Unemploymentdisabilitybenefit",
+            "Bonuspayment.",
+            "Cashmanagementtransfer",
+            "Capitalbuilding",
+            "Charitypayment",
+            "Collectionpayment",
+            "Commoditytransfer",
+            "Commercialpayment",
+            "Commission",
+            "Costs",
+            "Copyright",
+            "Dividend",
+            "Foreignexchange",
+            "Purchasesaleofgoods",
+            "Governmentpayment",
+            "Instalmenthirepurchaseagreement",
+            "Intracompanypayment",
+            "Insurancepremium",
+            "Interest",
+            "Licensefee",
+            "Loan",
+            "Loanrepayment",
+            "Netting",
+            "Payroll",
+            "Pensionpayment",
+            "Refund",
+            "Rent",
+            "Royalties",
+            "Purchasesaleofservices",
+            "Securities",
+            "Socialsecuritybenefit",
+            "Subscription",
+            "Taxpayment",
+            "Valueaddedtaxpayment",
+            "Consumerthirdpartyconsolidatedpayment",
+            "Debitcollectionpayment",
+            "Supplierpayment",
+            "Hedging",
+            "Multipleservicetypes",
+            "Nototherwisespecified",
+            "Cardpayment",
+            "Creditcardbill",
+            "Ferry",
+            "Air",
+            "Bus",
+            "Railway",
+            "Convalescentcarefacility",
+            "Dentalservices",
+            "Anesthesiaservices",
+            "Homehealthcare",
+            "Hospitalcare",
+            "Intermediatecarefacility",
+            "Longtermcarefacility",
+            "Medicalservices",
+            "Visioncare",
+            "Durablemedicaleequipment",
+            "Cabletvbill",
+            "Electricitybill",
+            "Gasbill",
+            "Telephonebill",
+            "Othertelecomrelatedbill",
+            "Waterbill",
+            "Study",
+            "Pricepayment",
+            "Installment",
+            "Recurringinstallmentpayment",
+            "Openingfee",
+            "Cancellationfee",
+            "Governmentinsurance",
+            "Insurancepremiumcar",
+            "Laborinsurance",
+            "Lifeinsurance",
+            "Propertyinsurance",
+            "Healthinsurance",
+            "Carloanprincipalrepayment",
+            "Housingloanrepayment",
+            "Companysocialloanpaymenttobank",
+            "Estatetax",
+            "Housingtax",
+            "Incometax",
+            "Netincometax",
+            "Businessexpenses",
+            "Trustfund",
+            "Networkcharge",
+            "Networkcommunication",
+            "Receiptpayment",
+            "Paymentterms",
+            "Other",
+            "Withholding"
+          ],
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "the field PaymentTransactionPurpose (enum) as varchar(35)",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-PURPOSE"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONSTATUS",
+        "type": "A3.DataAttribute",
+        "version": "1",
+        "name": "payment_transaction_status",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "physical_type": "varchar(35)",
+          "required": false,
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "the field PaymentTransactionStatus (reference) as varchar(35)",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-STATUS"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONAPPLIEDFEEAMOUNT",
+        "type": "A3.DataAttribute",
+        "version": "1",
+        "name": "payment_transaction_applied_fee_amount",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "physical_type": "numeric(18,2)",
+          "required": false,
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "the field PaymentTransactionAppliedFeeAmount (amount) as numeric(18,2)",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-APPLIED-FEE-AMOUNT"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONCURRENCY",
+        "type": "A3.DataAttribute",
+        "version": "1",
+        "name": "payment_transaction_currency",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "physical_type": "varchar(35)",
+          "required": false,
+          "allowed_values": [
+            "BaseCurrency",
+            "ReportingCurrency",
+            "SecondaryCurrency",
+            "TransferCurrency",
+            "SettlementCurrency"
+          ],
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "the field PaymentTransactionCurrency (enum) as varchar(35)",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-CURRENCY"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONCREDITDEBITINDICATOR",
+        "type": "A3.DataAttribute",
+        "version": "1",
+        "name": "payment_transaction_credit_debit_indicator",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "physical_type": "varchar(35)",
+          "required": false,
+          "allowed_values": [
+            "Debit",
+            "Credit"
+          ],
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "the field PaymentTransactionCreditDebitIndicator (enum) as varchar(35)",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-CREDIT-DEBIT-INDICATOR"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-TRANSACTIONIDENTIFICATION",
+        "type": "A3.DataAttribute",
+        "version": "1",
+        "name": "transaction_identification",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "physical_type": "varchar(35)",
+          "required": false,
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "the field TransactionIdentification (identifier) as varchar(35)",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBOA-PAYMENT-TRANSACTION-TRANSACTION-IDENTIFICATION"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-TRANSACTIONDATE",
+        "type": "A3.DataAttribute",
+        "version": "1",
+        "name": "transaction_date",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "physical_type": "varchar(35)",
+          "required": false,
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "the field TransactionDate (reference) as varchar(35)",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBOA-PAYMENT-TRANSACTION-TRANSACTION-DATE"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-TRANSACTIONTYPE",
+        "type": "A3.DataAttribute",
+        "version": "1",
+        "name": "transaction_type",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "physical_type": "varchar(35)",
+          "required": false,
+          "allowed_values": [
+            "FinancialTransaction",
+            "BusinessTransaction",
+            "BankingTransaction",
+            "AccountingTransaction",
+            "BookingTransaction",
+            "AllocationTransaction",
+            "DeliveryTransaction",
+            "ProductionTransaction"
+          ],
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "the field TransactionType (enum) as varchar(35)",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBOA-PAYMENT-TRANSACTION-TRANSACTION-TYPE"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-TRANSACTIONDESCRIPTION",
+        "type": "A3.DataAttribute",
+        "version": "1",
+        "name": "transaction_description",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "physical_type": "varchar(140)",
+          "required": false,
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "the field TransactionDescription (string) as varchar(140)",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBOA-PAYMENT-TRANSACTION-TRANSACTION-DESCRIPTION"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-TRANSACTIONSTATUS",
+        "type": "A3.DataAttribute",
+        "version": "1",
+        "name": "transaction_status",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "physical_type": "varchar(35)",
+          "required": false,
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "the field TransactionStatus (reference) as varchar(35)",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBOA-PAYMENT-TRANSACTION-TRANSACTION-STATUS"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-TRANSACTIONNAME",
+        "type": "A3.DataAttribute",
+        "version": "1",
+        "name": "transaction_name",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "physical_type": "varchar(140)",
+          "required": false,
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "the field TransactionName (string) as varchar(140)",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBOA-PAYMENT-TRANSACTION-TRANSACTION-NAME"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-UNDERTAKINGTRANSACTIONTYPE",
+        "type": "A3.DataAttribute",
+        "version": "1",
+        "name": "undertaking_transaction_type",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "physical_type": "varchar(35)",
+          "required": false,
+          "allowed_values": [
+            "PaymentTransaction",
+            "IssuingTransaction",
+            "BookingTransaction",
+            "CollateralAllocationTransaction",
+            "TerminationTransaction",
+            "AmendmentTransaction"
+          ],
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "the field UndertakingTransactionType (enum) as varchar(35)",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBOA-PAYMENT-TRANSACTION-UNDERTAKING-TRANSACTION-TYPE"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-MONEYTRANSFERTRANSACTIONAMOUNT",
+        "type": "A3.DataAttribute",
+        "version": "1",
+        "name": "money_transfer_transaction_amount",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "physical_type": "numeric(18,2)",
+          "required": false,
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "the field MoneyTransferTransactionAmount (amount) as numeric(18,2)",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBOA-PAYMENT-TRANSACTION-MONEY-TRANSFER-TRANSACTION-AMOUNT"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-MONEYTRANSFERTRANSACTIONCURRENCY",
+        "type": "A3.DataAttribute",
+        "version": "1",
+        "name": "money_transfer_transaction_currency",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "physical_type": "varchar(140)",
+          "required": false,
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "the field MoneyTransferTransactionCurrency (string) as varchar(140)",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBOA-PAYMENT-TRANSACTION-MONEY-TRANSFER-TRANSACTION-CURRENCY"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-MONEYTRANSFERTRANSACTIONSOURCEACCOUNT",
+        "type": "A3.DataAttribute",
+        "version": "1",
+        "name": "money_transfer_transaction_source_account",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "physical_type": "varchar(140)",
+          "required": false,
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "the field MoneyTransferTransactionSourceAccount (string) as varchar(140)",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBOA-PAYMENT-TRANSACTION-MONEY-TRANSFER-TRANSACTION-SOURCE-ACCOUNT"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-MONEYTRANSFERTRANSACTIONTARGETACCOUNT",
+        "type": "A3.DataAttribute",
+        "version": "1",
+        "name": "money_transfer_transaction_target_account",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "physical_type": "varchar(140)",
+          "required": false,
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "the field MoneyTransferTransactionTargetAccount (string) as varchar(140)",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBOA-PAYMENT-TRANSACTION-MONEY-TRANSFER-TRANSACTION-TARGET-ACCOUNT"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-MONEYTRANSFERINSTRUCTIONREFERENCE",
+        "type": "A3.DataAttribute",
+        "version": "1",
+        "name": "money_transfer_instruction_reference",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "physical_type": "varchar(140)",
+          "required": false,
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "the field MoneyTransferInstructionReference (string) as varchar(140)",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBOA-PAYMENT-TRANSACTION-MONEY-TRANSFER-INSTRUCTION-REFERENCE"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-MONEYTRANSFERUSEDMETHOD",
+        "type": "A3.DataAttribute",
+        "version": "1",
+        "name": "money_transfer_used_method",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "physical_type": "varchar(140)",
+          "required": false,
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "the field MoneyTransferUsedMethod (string) as varchar(140)",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBOA-PAYMENT-TRANSACTION-MONEY-TRANSFER-USED-METHOD"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-MONEYTRANSFERVALUEDATE",
+        "type": "A3.DataAttribute",
+        "version": "1",
+        "name": "money_transfer_value_date",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "physical_type": "varchar(140)",
+          "required": false,
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "the field MoneyTransferValueDate (string) as varchar(140)",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBOA-PAYMENT-TRANSACTION-MONEY-TRANSFER-VALUE-DATE"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-FINANCIALTRANSACTIONTYPE",
+        "type": "A3.DataAttribute",
+        "version": "1",
+        "name": "financial_transaction_type",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "physical_type": "varchar(35)",
+          "required": false,
+          "allowed_values": [
+            "PricingTransaction",
+            "FeeTransaction",
+            "WithdrawalTransaction",
+            "DepositTransaction",
+            "PaymentTransaction",
+            "ClearingTransaction",
+            "SettlementTransaction",
+            "Reconciliationtransaction",
+            "Updatetransaction",
+            "Securitiestransaction",
+            "RepaymentTransaction"
+          ],
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "the field FinancialTransactionType (enum) as varchar(35)",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBOA-PAYMENT-TRANSACTION-FINANCIAL-TRANSACTION-TYPE"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-FINANCIALTRANSACTIONCURRENCY",
+        "type": "A3.DataAttribute",
+        "version": "1",
+        "name": "financial_transaction_currency",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "physical_type": "char(3)",
+          "required": false,
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "the field FinancialTransactionCurrency (currency_code) as char(3)",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBOA-PAYMENT-TRANSACTION-FINANCIAL-TRANSACTION-CURRENCY"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-FINANCIALTRANSACTIONAMOUNT",
+        "type": "A3.DataAttribute",
+        "version": "1",
+        "name": "financial_transaction_amount",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "physical_type": "numeric(18,2)",
+          "required": false,
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "the field FinancialTransactionAmount (amount) as numeric(18,2)",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBOA-PAYMENT-TRANSACTION-FINANCIAL-TRANSACTION-AMOUNT"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-FINANCIALTRANSACTIONFROMACCOUNT",
+        "type": "A3.DataAttribute",
+        "version": "1",
+        "name": "financial_transaction_from_account",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "physical_type": "varchar(35)",
+          "required": false,
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "the field FinancialTransactionFromAccount (reference) as varchar(35)",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBOA-PAYMENT-TRANSACTION-FINANCIAL-TRANSACTION-FROM-ACCOUNT"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-FINANCIALTRANSACTIONTARGETACCOUNT",
+        "type": "A3.DataAttribute",
+        "version": "1",
+        "name": "financial_transaction_target_account",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "physical_type": "varchar(35)",
+          "required": false,
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "the field FinancialTransactionTargetAccount (reference) as varchar(35)",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBOA-PAYMENT-TRANSACTION-FINANCIAL-TRANSACTION-TARGET-ACCOUNT"
+          }
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-FINANCIALTRANSACTIONDATETIME",
+        "type": "A3.DataAttribute",
+        "version": "1",
+        "name": "financial_transaction_date_time",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "physical_type": "timestamp",
+          "required": false,
+          "inferred": {
+            "by": "sdem aid",
+            "run": "AID-001",
+            "at": "2026-11-15T18:58:36+00:00",
+            "requested_by": "a tester",
+            "step": "information",
+            "rule": "AID-I01",
+            "source": "docs/design/sdem-full-design-metamodel-design.md IM-10",
+            "reasoning": "the field FinancialTransactionDateTime (datetime) as timestamp",
+            "confidence": "low",
+            "evidence_class": "attribute_join",
+            "from": "BBOA-PAYMENT-TRANSACTION-FINANCIAL-TRANSACTION-DATE-TIME"
+          }
+        }
+      }
+    }
+  ],
+  "relationships": {
+    "add": [
+      {
+        "source": "AID-ENT-ACCOUNT",
+        "kind": "composition",
+        "target": "AID-ENTF-ACCOUNT-ACCOUNTSTATUS"
+      },
+      {
+        "source": "AID-ENT-ACCOUNT",
+        "kind": "composition",
+        "target": "AID-ENTF-ACCOUNT-ACCOUNTIDENTIFICATION"
+      },
+      {
+        "source": "AID-ENT-ACCOUNT",
+        "kind": "composition",
+        "target": "AID-ENTF-ACCOUNT-ACCOUNTDATE"
+      },
+      {
+        "source": "AID-ENT-ACCOUNT",
+        "kind": "composition",
+        "target": "AID-ENTF-ACCOUNT-ACCOUNTTYPE"
+      },
+      {
+        "source": "AID-ENT-ACCOUNT",
+        "kind": "composition",
+        "target": "AID-ENTF-ACCOUNT-ACCOUNTPURPOSE"
+      },
+      {
+        "source": "AID-ENT-ACCOUNT",
+        "kind": "composition",
+        "target": "AID-ENTF-ACCOUNT-ACCOUNTBALANCE"
+      },
+      {
+        "source": "AID-ENT-ACCOUNT",
+        "kind": "composition",
+        "target": "AID-ENTF-ACCOUNT-ACCOUNTCURRENCY"
+      },
+      {
+        "source": "AID-ENT-ACCOUNT",
+        "kind": "composition",
+        "target": "AID-ENTF-ACCOUNT-ACCOUNTDESCRIPTION"
+      },
+      {
+        "source": "AID-ENT-ACCOUNT",
+        "kind": "composition",
+        "target": "AID-ENTF-ACCOUNT-ACCOUNTNAME"
+      },
+      {
+        "source": "AID-ENT-ACCOUNT",
+        "kind": "composition",
+        "target": "AID-ENTF-ACCOUNT-LOGTYPE"
+      },
+      {
+        "source": "AID-ENT-ACCOUNT",
+        "kind": "composition",
+        "target": "AID-ENTF-ACCOUNT-LOGPERIOD"
+      },
+      {
+        "source": "AID-ENT-ACCOUNT",
+        "kind": "composition",
+        "target": "AID-ENTF-ACCOUNT-LOGDATE"
+      },
+      {
+        "source": "AID-ENT-ACCOUNT",
+        "kind": "composition",
+        "target": "AID-ENTF-ACCOUNT-LOGIDENTIFICATION"
+      },
+      {
+        "source": "AID-ENT-COMPLIANCE-CHECK",
+        "kind": "composition",
+        "target": "AID-ENTF-COMPLIANCE-CHECK-COMPLIANCECHECKTYPE"
+      },
+      {
+        "source": "AID-ENT-FUNDING-CHECK",
+        "kind": "composition",
+        "target": "AID-ENTF-FUNDING-CHECK-ASSESSMENTTYPE"
+      },
+      {
+        "source": "AID-ENT-FUNDING-CHECK",
+        "kind": "composition",
+        "target": "AID-ENTF-FUNDING-CHECK-ASSESSMENTMETHOD"
+      },
+      {
+        "source": "AID-ENT-FUNDING-CHECK",
+        "kind": "composition",
+        "target": "AID-ENTF-FUNDING-CHECK-ASSESSMENTSCHEDULE"
+      },
+      {
+        "source": "AID-ENT-FUNDING-CHECK",
+        "kind": "composition",
+        "target": "AID-ENTF-FUNDING-CHECK-ASSESSMENTDESCRIPTION"
+      },
+      {
+        "source": "AID-ENT-FUNDING-CHECK",
+        "kind": "composition",
+        "target": "AID-ENTF-FUNDING-CHECK-ASSESSMENTMODEL"
+      },
+      {
+        "source": "AID-ENT-FUNDING-CHECK",
+        "kind": "composition",
+        "target": "AID-ENTF-FUNDING-CHECK-ASSESSMENTDATETIME"
+      },
+      {
+        "source": "AID-ENT-FUNDING-CHECK",
+        "kind": "composition",
+        "target": "AID-ENTF-FUNDING-CHECK-ASSESSMENTRESULT"
+      },
+      {
+        "source": "AID-ENT-FUNDING-CHECK",
+        "kind": "composition",
+        "target": "AID-ENTF-FUNDING-CHECK-ASSESSMENTSUPPORTINGDOCUMENT"
+      },
+      {
+        "source": "AID-ENT-FUNDING-CHECK",
+        "kind": "composition",
+        "target": "AID-ENTF-FUNDING-CHECK-ASSESSMENTREPRESENTINGDOCUMENT"
+      },
+      {
+        "source": "AID-ENT-FUNDING-CHECK",
+        "kind": "composition",
+        "target": "AID-ENTF-FUNDING-CHECK-ASSESSMENTREQUIREDADJUSTMENT"
+      },
+      {
+        "source": "AID-ENT-FUNDING-CHECK",
+        "kind": "composition",
+        "target": "AID-ENTF-FUNDING-CHECK-ASSESSMENTREQUIREMENT"
+      },
+      {
+        "source": "AID-ENT-FUNDING-CHECK",
+        "kind": "composition",
+        "target": "AID-ENTF-FUNDING-CHECK-ASSESSMENTEXPIRYDATE"
+      },
+      {
+        "source": "AID-ENT-FUNDING-CHECK",
+        "kind": "composition",
+        "target": "AID-ENTF-FUNDING-CHECK-ASSESSMENTSTATUS"
+      },
+      {
+        "source": "AID-ENT-FUNDING-CHECK",
+        "kind": "composition",
+        "target": "AID-ENTF-FUNDING-CHECK-ASSESSMENTIDENTIFICATION"
+      },
+      {
+        "source": "AID-ENT-PARTY",
+        "kind": "composition",
+        "target": "AID-ENTF-PARTY-PARTY-REFERENCE"
+      },
+      {
+        "source": "AID-ENT-PARTY",
+        "kind": "composition",
+        "target": "AID-ENTF-PARTY-PARTYNAME"
+      },
+      {
+        "source": "AID-ENT-PARTY",
+        "kind": "composition",
+        "target": "AID-ENTF-PARTY-PARTYTYPE"
+      },
+      {
+        "source": "AID-ENT-PARTY",
+        "kind": "composition",
+        "target": "AID-ENTF-PARTY-PARTYDATETIME"
+      },
+      {
+        "source": "AID-ENT-PARTY",
+        "kind": "composition",
+        "target": "AID-ENTF-PARTY-PARTYIDENTIFICATION"
+      },
+      {
+        "source": "AID-ENT-PARTY",
+        "kind": "composition",
+        "target": "AID-ENTF-PARTY-PARTYLEGALSTRUCTURETYPE"
+      },
+      {
+        "source": "AID-ENT-PARTY",
+        "kind": "composition",
+        "target": "AID-ENTF-PARTY-PARTYACTIVITYINDICATOR"
+      },
+      {
+        "source": "AID-ENT-PAYEE",
+        "kind": "composition",
+        "target": "AID-ENTF-PAYEE-PAYEEIDENTIFIER"
+      },
+      {
+        "source": "AID-ENT-PAYEE",
+        "kind": "composition",
+        "target": "AID-ENTF-PAYEE-PAYMENTINSTRUCTIONINVOLVEMENTTYPE"
+      },
+      {
+        "source": "AID-ENT-PAYEE-BANK",
+        "kind": "composition",
+        "target": "AID-ENTF-PAYEE-BANK-PAYEEBANKIDENTIFIER"
+      },
+      {
+        "source": "AID-ENT-PAYEE-BANK",
+        "kind": "composition",
+        "target": "AID-ENTF-PAYEE-BANK-PAYMENTINSTRUCTIONINVOLVEMENTTYPE"
+      },
+      {
+        "source": "AID-ENT-PAYEE-BANK",
+        "kind": "composition",
+        "target": "AID-ENTF-PAYEE-BANK-PARTYROLETYPE"
+      },
+      {
+        "source": "AID-ENT-PAYEE-BANK",
+        "kind": "composition",
+        "target": "AID-ENTF-PAYEE-BANK-PARTYROLENAME"
+      },
+      {
+        "source": "AID-ENT-PAYEE-BANK",
+        "kind": "composition",
+        "target": "AID-ENTF-PAYEE-BANK-PARTYROLEVALIDITYPERIOD"
+      },
+      {
+        "source": "AID-ENT-PAYEE-BANK",
+        "kind": "composition",
+        "target": "AID-ENTF-PAYEE-BANK-PARTYINVOLVEMENTTYPE"
+      },
+      {
+        "source": "AID-ENT-PAYER",
+        "kind": "composition",
+        "target": "AID-ENTF-PAYER-PAYERIDENTIFIER"
+      },
+      {
+        "source": "AID-ENT-PAYER",
+        "kind": "composition",
+        "target": "AID-ENTF-PAYER-PAYMENTINSTRUCTIONINVOLVEMENTTYPE"
+      },
+      {
+        "source": "AID-ENT-PAYER-BANK",
+        "kind": "composition",
+        "target": "AID-ENTF-PAYER-BANK-PAYERBANKIDENTIFIER"
+      },
+      {
+        "source": "AID-ENT-PAYER-BANK",
+        "kind": "composition",
+        "target": "AID-ENTF-PAYER-BANK-PAYMENTINSTRUCTIONINVOLVEMENTTYPE"
+      },
+      {
+        "source": "AID-ENT-PAYMENT-TRANSACTION",
+        "kind": "composition",
+        "target": "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONTYPE"
+      },
+      {
+        "source": "AID-ENT-PAYMENT-TRANSACTION",
+        "kind": "composition",
+        "target": "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONAMOUNT"
+      },
+      {
+        "source": "AID-ENT-PAYMENT-TRANSACTION",
+        "kind": "composition",
+        "target": "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONIDENTIFICATION"
+      },
+      {
+        "source": "AID-ENT-PAYMENT-TRANSACTION",
+        "kind": "composition",
+        "target": "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONUSEDMECHANISM"
+      },
+      {
+        "source": "AID-ENT-PAYMENT-TRANSACTION",
+        "kind": "composition",
+        "target": "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONDATETIME"
+      },
+      {
+        "source": "AID-ENT-PAYMENT-TRANSACTION",
+        "kind": "composition",
+        "target": "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONPURPOSE"
+      },
+      {
+        "source": "AID-ENT-PAYMENT-TRANSACTION",
+        "kind": "composition",
+        "target": "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONSTATUS"
+      },
+      {
+        "source": "AID-ENT-PAYMENT-TRANSACTION",
+        "kind": "composition",
+        "target": "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONAPPLIEDFEEAMOUNT"
+      },
+      {
+        "source": "AID-ENT-PAYMENT-TRANSACTION",
+        "kind": "composition",
+        "target": "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONCURRENCY"
+      },
+      {
+        "source": "AID-ENT-PAYMENT-TRANSACTION",
+        "kind": "composition",
+        "target": "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONCREDITDEBITINDICATOR"
+      },
+      {
+        "source": "AID-ENT-PAYMENT-TRANSACTION",
+        "kind": "composition",
+        "target": "AID-ENTF-PAYMENT-TRANSACTION-TRANSACTIONIDENTIFICATION"
+      },
+      {
+        "source": "AID-ENT-PAYMENT-TRANSACTION",
+        "kind": "composition",
+        "target": "AID-ENTF-PAYMENT-TRANSACTION-TRANSACTIONDATE"
+      },
+      {
+        "source": "AID-ENT-PAYMENT-TRANSACTION",
+        "kind": "composition",
+        "target": "AID-ENTF-PAYMENT-TRANSACTION-TRANSACTIONTYPE"
+      },
+      {
+        "source": "AID-ENT-PAYMENT-TRANSACTION",
+        "kind": "composition",
+        "target": "AID-ENTF-PAYMENT-TRANSACTION-TRANSACTIONDESCRIPTION"
+      },
+      {
+        "source": "AID-ENT-PAYMENT-TRANSACTION",
+        "kind": "composition",
+        "target": "AID-ENTF-PAYMENT-TRANSACTION-TRANSACTIONSTATUS"
+      },
+      {
+        "source": "AID-ENT-PAYMENT-TRANSACTION",
+        "kind": "composition",
+        "target": "AID-ENTF-PAYMENT-TRANSACTION-TRANSACTIONNAME"
+      },
+      {
+        "source": "AID-ENT-PAYMENT-TRANSACTION",
+        "kind": "composition",
+        "target": "AID-ENTF-PAYMENT-TRANSACTION-UNDERTAKINGTRANSACTIONTYPE"
+      },
+      {
+        "source": "AID-ENT-PAYMENT-TRANSACTION",
+        "kind": "composition",
+        "target": "AID-ENTF-PAYMENT-TRANSACTION-MONEYTRANSFERTRANSACTIONAMOUNT"
+      },
+      {
+        "source": "AID-ENT-PAYMENT-TRANSACTION",
+        "kind": "composition",
+        "target": "AID-ENTF-PAYMENT-TRANSACTION-MONEYTRANSFERTRANSACTIONCURRENCY"
+      },
+      {
+        "source": "AID-ENT-PAYMENT-TRANSACTION",
+        "kind": "composition",
+        "target": "AID-ENTF-PAYMENT-TRANSACTION-MONEYTRANSFERTRANSACTIONSOURCEACCOUNT"
+      },
+      {
+        "source": "AID-ENT-PAYMENT-TRANSACTION",
+        "kind": "composition",
+        "target": "AID-ENTF-PAYMENT-TRANSACTION-MONEYTRANSFERTRANSACTIONTARGETACCOUNT"
+      },
+      {
+        "source": "AID-ENT-PAYMENT-TRANSACTION",
+        "kind": "composition",
+        "target": "AID-ENTF-PAYMENT-TRANSACTION-MONEYTRANSFERINSTRUCTIONREFERENCE"
+      },
+      {
+        "source": "AID-ENT-PAYMENT-TRANSACTION",
+        "kind": "composition",
+        "target": "AID-ENTF-PAYMENT-TRANSACTION-MONEYTRANSFERUSEDMETHOD"
+      },
+      {
+        "source": "AID-ENT-PAYMENT-TRANSACTION",
+        "kind": "composition",
+        "target": "AID-ENTF-PAYMENT-TRANSACTION-MONEYTRANSFERVALUEDATE"
+      },
+      {
+        "source": "AID-ENT-PAYMENT-TRANSACTION",
+        "kind": "composition",
+        "target": "AID-ENTF-PAYMENT-TRANSACTION-FINANCIALTRANSACTIONTYPE"
+      },
+      {
+        "source": "AID-ENT-PAYMENT-TRANSACTION",
+        "kind": "composition",
+        "target": "AID-ENTF-PAYMENT-TRANSACTION-FINANCIALTRANSACTIONCURRENCY"
+      },
+      {
+        "source": "AID-ENT-PAYMENT-TRANSACTION",
+        "kind": "composition",
+        "target": "AID-ENTF-PAYMENT-TRANSACTION-FINANCIALTRANSACTIONAMOUNT"
+      },
+      {
+        "source": "AID-ENT-PAYMENT-TRANSACTION",
+        "kind": "composition",
+        "target": "AID-ENTF-PAYMENT-TRANSACTION-FINANCIALTRANSACTIONFROMACCOUNT"
+      },
+      {
+        "source": "AID-ENTF-PAYMENT-TRANSACTION-FINANCIALTRANSACTIONFROMACCOUNT",
+        "kind": "association",
+        "target": "AID-ENT-ACCOUNT"
+      },
+      {
+        "source": "AID-ENT-PAYMENT-TRANSACTION",
+        "kind": "composition",
+        "target": "AID-ENTF-PAYMENT-TRANSACTION-FINANCIALTRANSACTIONTARGETACCOUNT"
+      },
+      {
+        "source": "AID-ENTF-PAYMENT-TRANSACTION-FINANCIALTRANSACTIONTARGETACCOUNT",
+        "kind": "association",
+        "target": "AID-ENT-ACCOUNT"
+      },
+      {
+        "source": "AID-ENT-PAYMENT-TRANSACTION",
+        "kind": "composition",
+        "target": "AID-ENTF-PAYMENT-TRANSACTION-FINANCIALTRANSACTIONDATETIME"
+      }
+    ],
+    "remove": []
+  },
+  "adopted": true,
+  "agent": "architect",
+  "person": "a tester",
+  "created_at": "2026-11-15T18:58:53+00:00",
+  "work_items": [],
+  "event": "CE-005",
+  "branch": "main",
+  "dataset": {
+    "file": "a3-application.json",
+    "before_sha256": "d1920a275d3e2259b8607f947b5bde7c97f34db0bd28ea93ea86311ffddd00cd",
+    "after_sha256": "20f181fd880485d7a501e6d994c753e0cfc3e68831ed8ceba83a311b801fc0cc"
+  }
+}

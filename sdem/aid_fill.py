@@ -209,13 +209,7 @@ def fill(workspace, person, dry_run=False, now=None):
         b = Batch()
         for lvl in added: b.json(ws / DATASETS[lvl], after[lvl])
         b.json(runs / f'{run}-proposals.json', {'mappings': proposals}); b.json(runs / f'{run}.json', record); b.commit()
-        from .agents import Estate   # AID-W10 (found building Payment Initiation v2): in a workspace that keeps change sets, what AID wrote is recorded
-        est = Estate(ws)             # as one, adopted by the person who ran it — so the chain of change sets stays whole (CTL-20)
-        if any(est._last_change_set(l) for l in DATASETS):
-            from .agents import CoordinationError
-            for lvl in sorted(added):
-                try: est.adopt(lvl, person.strip(), f'sdem aid {run}: inferred records and links, each marked inferred (AID-W02) — confirm or reject them with sdem aid confirm|reject')
-                except CoordinationError: pass   # nothing new in that layer's file (only proposals were written)
+        _adopt(ws, added, person, f'sdem aid {run}: inferred records and links, each marked inferred (AID-W02) - confirm or reject them with sdem aid confirm|reject')   # AID-W10
     return record
 
 
@@ -287,7 +281,19 @@ def decide(workspace, ids, person, action, reason='', all_=False, now=None):
     for lvl in changed: b.json(ws / DATASETS[lvl], docs[lvl])
     if action == 'reject': b.json(ws / FOLDER / 'rejected.json', rej)
     b.commit()
+    _adopt(ws, changed, person, f'sdem aid {action}: {len(chosen) + len(plc)} inferred record(s) or link(s)' + (f' - {reason}' if reason else ''))   # AID-W10
     return chosen + plc
+
+
+def _adopt(ws, layers, person, reason):
+    """AID-W10: in a workspace that keeps change sets, what sdem aid (fill, confirm, reject) wrote is recorded as a change set adopted by
+    the person, so the chain of change sets stays whole (CTL-20)."""
+    from .agents import Estate, CoordinationError
+    est = Estate(ws)
+    if not any(est._last_change_set(l) for l in DATASETS): return
+    for lvl in sorted(layers):
+        try: est.adopt(lvl, person.strip(), reason)
+        except CoordinationError: pass   # nothing new in that layer's file
 
 
 def main(argv):

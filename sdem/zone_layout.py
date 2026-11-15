@@ -172,7 +172,7 @@ def layout(doc, mm=None, environment='production'):
         dropped |= gone
         doc = {**doc, 'instances': [i for i in doc['instances'] if i['id'] not in gone],
                'relationships': [r for r in doc.get('relationships', []) if r['source'] not in gone and r['target'] not in gone]}
-    recs = doc.get('instances', []); rels = doc.get('relationships', [])
+    recs = [r for r in doc.get('instances', []) if r['type'] != 'A4.Location']; rels = doc.get('relationships', [])   # a location is a place, not a shape (0.17.0)
     if not any(r['type'] == 'A4.NetworkZone' for r in recs):
         raise LayoutError('no network zones recorded — place each shape in a zone first (RA4-38, LC-16; sdem aid proposes them)')
     pos, regions, implied, inner_zone, name, at = _place(recs, rels)

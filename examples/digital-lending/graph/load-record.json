@@ -1192,6 +1192,64 @@
           "edges": 8
         }
       ]
+    },
+    {
+      "build": 22,
+      "at": "2026-11-15T20:17:00+00:00",
+      "inputs": [
+        {
+          "path": "examples/digital-lending//a1-business.json",
+          "kind": "export",
+          "level": "A1",
+          "model_id": "synthetic-bank-lending-a1",
+          "model_version": "2026.10",
+          "sha256": "4642f1cce351925fcd8171fbe4a6e7469c124eb2fe7cd770b0af8fa40a40e994"
+        },
+        {
+          "path": "examples/digital-lending//a2-service-domain.json",
+          "kind": "export",
+          "level": "A2",
+          "model_id": "synthetic-bank-lending-a2",
+          "model_version": "2026.10",
+          "sha256": "fd43a875ae040e2e5286416d3d4eb676fd324072741a7e9c0bf3c2bf83a92822"
+        },
+        {
+          "path": "examples/digital-lending//mappings.json",
+          "kind": "registry",
+          "registry_version": "0.4.0",
+          "sha256": "a2a743b0a7d329dfca3790a6a91a43f08d7f626f90ccc344530a36b4002a5f71"
+        }
+      ],
+      "metamodel_version": "0.17.0",
+      "errors": [],
+      "warnings": [
+        "level A2 (synthetic-bank-lending-a2): instance BD-LEND: 0 composition links with A2.BusinessArea, RA2-01 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-bank-lending-a2): instance BBO-LOAN-APP: 0 composition links with A2.BusinessObjectAttribute, RA2-10 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-bank-lending-a2): instance BBO-CREDIT-ASSESS: 0 composition links with A2.BusinessObjectAttribute, RA2-10 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-bank-lending-a2): instance BBO-LOAN-APP: is thin — its 7 field(s) are names only; give each as a record (BusinessObjectAttribute, composed of BBO-LOAN-APP) — sdem bian import --objects or sdem aid fills them (LC-23)",
+        "level A2 (synthetic-bank-lending-a2): instance BBO-CREDIT-ASSESS: is thin — its 6 field(s) are names only; give each as a record (BusinessObjectAttribute, composed of BBO-CREDIT-ASSESS) — sdem bian import --objects or sdem aid fills them (LC-23)"
+      ],
+      "result": "accepted",
+      "outputs": [
+        {
+          "file": "a1-business.graph.json",
+          "sha256": "27915ce00f201e3b6e7a53e1cf81248f71df04a7fa28c9c6313e6a7ecb0423ec",
+          "nodes": 15,
+          "edges": 13
+        },
+        {
+          "file": "a2-service-domain.graph.json",
+          "sha256": "e6f7559fac3b3a1663792c925b50d423242ec3a02f6a9065671dd3a30ed731c5",
+          "nodes": 24,
+          "edges": 35
+        },
+        {
+          "file": "federated.graph.json",
+          "sha256": "a477dfa7329620054920e225323963718e2dbda7810f15d656fa3308da6df9bf",
+          "nodes": 13,
+          "edges": 8
+        }
+      ]
     }
   ]
 }

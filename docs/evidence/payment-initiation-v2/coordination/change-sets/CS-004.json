@@ -1,0 +1,329 @@
+{
+  "id": "CS-004",
+  "layer": "A4",
+  "reason": "Payment Initiation v2: locations, the payments HSM and its signing service, the API gateway's HTTPS interface, and the path from the core ledger host to the HSM (metamodel 0.17.0)",
+  "changes": [
+    {
+      "op": "add",
+      "record": {
+        "id": "LOC-XA",
+        "type": "A4.Location",
+        "version": "1.0",
+        "name": "Country XA",
+        "lifecycle_status": "active",
+        "description": "A made-up country (made-up)",
+        "attributes": {
+          "location_kind": "country",
+          "country": "XA"
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "LOC-XA-REGION-A",
+        "type": "A4.Location",
+        "version": "1.0",
+        "name": "Cloud region A",
+        "lifecycle_status": "active",
+        "description": "The cloud provider's region in country XA (made-up)",
+        "attributes": {
+          "location_kind": "cloud_region",
+          "country": "XA"
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "LOC-XA-DC1",
+        "type": "A4.Location",
+        "version": "1.0",
+        "name": "Data centre DC-1",
+        "lifecycle_status": "active",
+        "description": "The bank's own data centre (made-up)",
+        "attributes": {
+          "location_kind": "site",
+          "country": "XA"
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "DEV-PAY-HSM",
+        "type": "A4.Device",
+        "version": "1.0",
+        "name": "Payments HSM",
+        "lifecycle_status": "active",
+        "description": "Hardware security module that signs payment messages (made-up)",
+        "attributes": {
+          "site": "DC-1 (made up)",
+          "location": "LOC-XA-DC1",
+          "end_of_support": "2029-06-30"
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "TS-HSM-SIGN",
+        "type": "A4.TechnologyService",
+        "version": "1.0",
+        "name": "Payment message signing",
+        "lifecycle_status": "active",
+        "description": "Signs outgoing payment messages with the bank's keys (made-up)",
+        "attributes": {
+          "location": "LOC-XA-DC1"
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "TS-APIGW",
+        "type": "A4.TechnologyService",
+        "version": "1.0",
+        "name": "API gateway service",
+        "lifecycle_status": "active",
+        "description": "Publishes the bank's APIs to the internet (made-up)",
+        "attributes": {
+          "internet_facing": true,
+          "cloud_service_model": "PaaS",
+          "location": "LOC-XA-REGION-A"
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "TIF-APIGW-HTTPS",
+        "type": "A4.TechnologyInterface",
+        "version": "1.0",
+        "name": "API gateway — HTTPS",
+        "lifecycle_status": "active",
+        "description": "The gateway's public HTTPS endpoint (made-up)",
+        "attributes": {
+          "internet_facing": true,
+          "of_service": "TS-APIGW",
+          "exposes": [
+            "IFC-PAY-API"
+          ],
+          "protocol": "https",
+          "port": 443,
+          "location": "LOC-XA-REGION-A"
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "PATH-PAY-CORE-HSM",
+        "type": "A4.Path",
+        "version": "1.0",
+        "name": "Core ledger host to HSM",
+        "lifecycle_status": "active",
+        "description": "The private route over which payments are signed (made-up)",
+        "attributes": {
+          "from": "INF-CORE-LEDGER-HOST",
+          "to": "DEV-PAY-HSM",
+          "protocol": "tls",
+          "encrypted": true,
+          "carries_data": [
+            "ENT-PAY-INSTR"
+          ],
+          "location": "LOC-XA-DC1"
+        }
+      }
+    },
+    {
+      "op": "update",
+      "record": {
+        "id": "INF-K8S-PAY-PROD",
+        "type": "A4.SystemSoftware",
+        "version": "1.29",
+        "name": "Managed Kubernetes — payments (production)",
+        "lifecycle_status": "active",
+        "description": "Production container platform for the payments estate.",
+        "attributes": {
+          "hosts": [
+            "APP-PAY-HUB",
+            "CMP-PAY-EXEC"
+          ],
+          "product_version": "1.30",
+          "license": "Apache-2.0",
+          "end_of_support": "2027-06-30",
+          "region": "region-a",
+          "location": "LOC-XA-REGION-A"
+        }
+      }
+    },
+    {
+      "op": "update",
+      "record": {
+        "id": "INF-K8S-PAY-UAT",
+        "type": "A4.SystemSoftware",
+        "version": "1.29",
+        "name": "Managed Kubernetes — payments (UAT)",
+        "lifecycle_status": "active",
+        "description": "UAT container platform.",
+        "attributes": {
+          "hosts": [
+            "APP-PAY-HUB"
+          ],
+          "region": "region-a",
+          "location": "LOC-XA-REGION-A"
+        }
+      }
+    },
+    {
+      "op": "update",
+      "record": {
+        "id": "INF-PG-PAY-PROD",
+        "type": "A4.SystemSoftware",
+        "version": "16",
+        "name": "Managed PostgreSQL — payments",
+        "lifecycle_status": "active",
+        "description": "Production relational store for the hub.",
+        "attributes": {
+          "product_version": "16.4",
+          "license": "PostgreSQL",
+          "region": "region-a",
+          "location": "LOC-XA-REGION-A"
+        }
+      }
+    },
+    {
+      "op": "update",
+      "record": {
+        "id": "INF-APIGW-PAY",
+        "type": "A4.SystemSoftware",
+        "version": "2.4",
+        "name": "Managed API gateway — payments",
+        "lifecycle_status": "active",
+        "description": "The payments API's entry point from the internet (made up).",
+        "attributes": {
+          "internet_facing": true,
+          "region": "region-a",
+          "location": "LOC-XA-REGION-A"
+        }
+      }
+    },
+    {
+      "op": "update",
+      "record": {
+        "id": "INF-CORE-LEDGER-HOST",
+        "type": "A4.Node",
+        "version": "1.0",
+        "name": "Core banking ledger host",
+        "lifecycle_status": "active",
+        "description": "The on-premises host of the core banking ledger the Execution Gateway posts payments to (made up).",
+        "attributes": {
+          "site": "DC-1 (made up)",
+          "location": "LOC-XA-DC1"
+        }
+      }
+    }
+  ],
+  "relationships": {
+    "add": [
+      {
+        "source": "LOC-XA",
+        "kind": "composition",
+        "target": "LOC-XA-REGION-A"
+      },
+      {
+        "source": "LOC-XA",
+        "kind": "composition",
+        "target": "LOC-XA-DC1"
+      },
+      {
+        "source": "LOC-XA-DC1",
+        "kind": "aggregation",
+        "target": "INF-CORE-LEDGER-HOST"
+      },
+      {
+        "source": "LOC-XA-DC1",
+        "kind": "aggregation",
+        "target": "DEV-PAY-HSM"
+      },
+      {
+        "source": "LOC-XA-REGION-A",
+        "kind": "aggregation",
+        "target": "INF-K8S-PAY-PROD"
+      },
+      {
+        "source": "LOC-XA-REGION-A",
+        "kind": "aggregation",
+        "target": "INF-PG-PAY-PROD"
+      },
+      {
+        "source": "LOC-XA-REGION-A",
+        "kind": "aggregation",
+        "target": "INF-APIGW-PAY"
+      },
+      {
+        "source": "DEV-PAY-HSM",
+        "kind": "realization",
+        "target": "TS-HSM-SIGN"
+      },
+      {
+        "source": "TS-HSM-SIGN",
+        "kind": "serving",
+        "target": "INF-K8S-PAY-PROD"
+      },
+      {
+        "source": "INF-APIGW-PAY",
+        "kind": "realization",
+        "target": "TS-APIGW"
+      },
+      {
+        "source": "INF-APIGW-PAY",
+        "kind": "composition",
+        "target": "TIF-APIGW-HTTPS"
+      },
+      {
+        "source": "TIF-APIGW-HTTPS",
+        "kind": "assignment",
+        "target": "TS-APIGW"
+      },
+      {
+        "source": "ZONE-PAY-ONPREM-INTERNAL",
+        "kind": "aggregation",
+        "target": "DEV-PAY-HSM"
+      },
+      {
+        "source": "ZONE-PAY-ONPREM-INTERNAL",
+        "kind": "aggregation",
+        "target": "TS-HSM-SIGN"
+      },
+      {
+        "source": "ZONE-PAY-ONPREM-INTERNAL",
+        "kind": "aggregation",
+        "target": "PATH-PAY-CORE-HSM"
+      },
+      {
+        "source": "ZONE-PAY-DMZ",
+        "kind": "aggregation",
+        "target": "TS-APIGW"
+      },
+      {
+        "source": "ZONE-PAY-DMZ",
+        "kind": "aggregation",
+        "target": "TIF-APIGW-HTTPS"
+      }
+    ]
+  },
+  "agent": "architect",
+  "person": "a tester",
+  "created_at": "2026-11-15T18:58:36+00:00",
+  "work_items": [],
+  "event": "CE-004",
+  "branch": "main",
+  "trigger": "initial",
+  "dataset": {
+    "file": "a4-technology.json",
+    "before_sha256": "cbd69a81600abf2be880386d70be586d28715bd824242a3c9f5a99eded28c590",
+    "after_sha256": "e82a8e442abbe8329f66384fc490bda4db7b1228bdd7f37dd1f879d944f666ec"
+  }
+}

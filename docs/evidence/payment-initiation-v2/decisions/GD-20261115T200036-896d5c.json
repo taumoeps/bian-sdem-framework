@@ -1,0 +1,17 @@
+{
+  "id": "GD-20261115T200036-896d5c",
+  "kind": "state_link",
+  "subject": "PAY-144",
+  "named_person": "Steven Taumoepeau",
+  "at": "2026-11-15T20:00:36+00:00",
+  "recorded_by": {
+    "os_user": "taumoeps",
+    "git_user": "Steven Taumoepeau",
+    "git_email": "steven.taumoepeau@gmail.com"
+  },
+  "level": "attributed",
+  "note": "a typed name — attribution, not authentication; verified only by a signed commit from the approver (sdem governance verify)",
+  "details": {
+    "link": "BBOA-PAYMENT-TRANSACTION-FINANCIAL-TRANSACTION-TARGET-ACCOUNT FIELD_MAPPED_TO F-PAY-INSTR-CREDITOR-ACCOUNT-REFERENCE"
+  }
+}

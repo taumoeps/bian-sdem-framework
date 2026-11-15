@@ -1,0 +1,102 @@
+{
+  "id": "CS-008",
+  "layer": "A4",
+  "reason": "sdem aid confirm and reject — the owner's review of AID-001 (accepted the recommendations in review-v2.sh)",
+  "changes": [],
+  "relationships": {
+    "add": [
+      {
+        "source": "PATH-PAY-CORE-HSM",
+        "kind": "association",
+        "target": "INF-CORE-LEDGER-HOST",
+        "inferred": {
+          "by": "sdem aid",
+          "run": "AID-001",
+          "at": "2026-11-15T18:58:36+00:00",
+          "requested_by": "a tester",
+          "step": "attributes",
+          "rule": "AID-A03",
+          "source": "docs/design/sdem-full-design-metamodel-design.md AT-01",
+          "reasoning": "PATH-PAY-CORE-HSM.from names INF-CORE-LEDGER-HOST",
+          "confidence": "high",
+          "evidence_class": "attribute_join",
+          "from": "PATH-PAY-CORE-HSM",
+          "status": "confirmed",
+          "confirmed_by": "Steven Taumoepeau",
+          "confirmed_at": "2026-11-15T20:00:35+00:00"
+        }
+      },
+      {
+        "source": "PATH-PAY-CORE-HSM",
+        "kind": "association",
+        "target": "DEV-PAY-HSM",
+        "inferred": {
+          "by": "sdem aid",
+          "run": "AID-001",
+          "at": "2026-11-15T18:58:36+00:00",
+          "requested_by": "a tester",
+          "step": "attributes",
+          "rule": "AID-A03",
+          "source": "docs/design/sdem-full-design-metamodel-design.md AT-01",
+          "reasoning": "PATH-PAY-CORE-HSM.to names DEV-PAY-HSM",
+          "confidence": "high",
+          "evidence_class": "attribute_join",
+          "from": "PATH-PAY-CORE-HSM",
+          "status": "confirmed",
+          "confirmed_by": "Steven Taumoepeau",
+          "confirmed_at": "2026-11-15T20:00:35+00:00"
+        }
+      }
+    ],
+    "remove": [
+      {
+        "source": "PATH-PAY-CORE-HSM",
+        "kind": "association",
+        "target": "INF-CORE-LEDGER-HOST",
+        "inferred": {
+          "by": "sdem aid",
+          "run": "AID-001",
+          "at": "2026-11-15T18:58:36+00:00",
+          "requested_by": "a tester",
+          "step": "attributes",
+          "rule": "AID-A03",
+          "source": "docs/design/sdem-full-design-metamodel-design.md AT-01",
+          "reasoning": "PATH-PAY-CORE-HSM.from names INF-CORE-LEDGER-HOST",
+          "confidence": "high",
+          "evidence_class": "attribute_join",
+          "from": "PATH-PAY-CORE-HSM"
+        }
+      },
+      {
+        "source": "PATH-PAY-CORE-HSM",
+        "kind": "association",
+        "target": "DEV-PAY-HSM",
+        "inferred": {
+          "by": "sdem aid",
+          "run": "AID-001",
+          "at": "2026-11-15T18:58:36+00:00",
+          "requested_by": "a tester",
+          "step": "attributes",
+          "rule": "AID-A03",
+          "source": "docs/design/sdem-full-design-metamodel-design.md AT-01",
+          "reasoning": "PATH-PAY-CORE-HSM.to names DEV-PAY-HSM",
+          "confidence": "high",
+          "evidence_class": "attribute_join",
+          "from": "PATH-PAY-CORE-HSM"
+        }
+      }
+    ]
+  },
+  "adopted": true,
+  "agent": "architect",
+  "person": "Steven Taumoepeau",
+  "created_at": "2026-11-15T20:00:56+00:00",
+  "work_items": [],
+  "event": "CE-008",
+  "branch": "main",
+  "dataset": {
+    "file": "a4-technology.json",
+    "before_sha256": "8a55d009214c2576a0e4eb577960a3fce4376f857bcde68f3bbe4c9346dfc02e",
+    "after_sha256": "cc9051d823d90d9f0908694e1b54f66866121c3fc6f095a2d63935be2f45362c"
+  }
+}

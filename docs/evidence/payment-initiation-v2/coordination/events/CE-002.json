@@ -1,0 +1,715 @@
+{
+  "id": "CE-002",
+  "change_set": "CS-002",
+  "layer": "A1",
+  "round": 1,
+  "at": "2026-11-15T18:58:36+00:00",
+  "agent": "architect",
+  "person": "a tester",
+  "impact": {
+    "records": [
+      {
+        "id": "ACT-PAY-01a",
+        "name": "Capture instruction",
+        "level": "A1",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "modify of ACT-PAY-01a",
+        "rule": "modify/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "ACT-PAY-01b",
+        "name": "Validate instruction",
+        "level": "A1",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "modify of ACT-PAY-01b",
+        "rule": "modify/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "ACT-PAY-02a",
+        "name": "Execute payment",
+        "level": "A1",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "modify of ACT-PAY-02a",
+        "rule": "modify/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "ACT-PAY-02b",
+        "name": "Retrieve status",
+        "level": "A1",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "modify of ACT-PAY-02b",
+        "rule": "modify/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "ACTOR-CUSTOMER",
+        "level": "A1",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "ACTOR-CUSTOMER added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BEV-PAY-CUTOFF",
+        "level": "A1",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BEV-PAY-CUTOFF added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BEV-PAY-EXECUTED",
+        "level": "A1",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BEV-PAY-EXECUTED added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BEV-PAY-RECEIVED",
+        "level": "A1",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BEV-PAY-RECEIVED added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BO-ACCOUNT",
+        "level": "A1",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BO-ACCOUNT added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "BSV-MAKE-PAYMENT",
+        "level": "A1",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "BSV-MAKE-PAYMENT added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "CHN-MOBILE",
+        "level": "A1",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "CHN-MOBILE added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "CHN-OBAPI",
+        "level": "A1",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "CHN-OBAPI added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "PRC-PAY-01",
+        "name": "Capture and validate payment instruction",
+        "level": "A1",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "modify of PRC-PAY-01",
+        "rule": "modify/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "PRC-PAY-02",
+        "name": "Execute and confirm payment",
+        "level": "A1",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "modify of PRC-PAY-02",
+        "rule": "modify/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "PRD-DOM-PAY",
+        "level": "A1",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "PRD-DOM-PAY added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "REQ-PAY-INSTANT",
+        "level": "A1",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "REQ-PAY-INSTANT added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "VSS-P3",
+        "name": "Execute transfer",
+        "level": "A1",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "modify of VSS-P3",
+        "rule": "modify/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "VSS-P4",
+        "name": "Confirm to customer",
+        "level": "A1",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "modify of VSS-P4",
+        "rule": "modify/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "SD-PI",
+        "name": "Payment Initiation (synthetic selection)",
+        "level": "A2",
+        "classification": "review_required",
+        "via": [
+          "PAY-003"
+        ],
+        "cause": "modify of PRC-PAY-01",
+        "rule": "modify/down1 → review_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "APP-PAY-HUB",
+        "name": "Payments Hub",
+        "level": "A3",
+        "classification": "no_impact",
+        "via": [
+          "PAY-003",
+          "PAY-106"
+        ],
+        "cause": "modify of PRC-PAY-01",
+        "rule": "modify/down2+ → no_impact (impact rules 0.5.0)"
+      },
+      {
+        "id": "ART-PAYHUB-IMG",
+        "name": "payments-hub:7.1",
+        "level": "A4",
+        "classification": "no_impact",
+        "via": [
+          "PAY-003",
+          "PAY-106",
+          "PAY-115"
+        ],
+        "cause": "modify of PRC-PAY-01",
+        "rule": "modify/down2+ → no_impact (impact rules 0.5.0)"
+      },
+      {
+        "id": "DEP-PAYHUB-PROD",
+        "name": "Payments Hub — production",
+        "level": "A4",
+        "classification": "no_impact",
+        "via": [
+          "PAY-003",
+          "PAY-106",
+          "PAY-109"
+        ],
+        "cause": "modify of PRC-PAY-01",
+        "rule": "modify/down2+ → no_impact (impact rules 0.5.0)"
+      },
+      {
+        "id": "DEP-PAYHUB-UAT",
+        "name": "Payments Hub — UAT",
+        "level": "A4",
+        "classification": "no_impact",
+        "via": [
+          "PAY-003",
+          "PAY-106",
+          "PAY-110"
+        ],
+        "cause": "modify of PRC-PAY-01",
+        "rule": "modify/down2+ → no_impact (impact rules 0.5.0)"
+      },
+      {
+        "id": "INF-K8S-PAY-PROD",
+        "name": "Managed Kubernetes — payments (production)",
+        "level": "A4",
+        "classification": "no_impact",
+        "via": [
+          "PAY-003",
+          "PAY-106",
+          "PAY-108"
+        ],
+        "cause": "modify of PRC-PAY-01",
+        "rule": "modify/down2+ → no_impact (impact rules 0.5.0)"
+      },
+      {
+        "id": "INF-K8S-PAY-UAT",
+        "name": "Managed Kubernetes — payments (UAT)",
+        "level": "A4",
+        "classification": "no_impact",
+        "via": [
+          "PAY-003",
+          "PAY-106",
+          "PAY-113"
+        ],
+        "cause": "modify of PRC-PAY-01",
+        "rule": "modify/down2+ → no_impact (impact rules 0.5.0)"
+      },
+      {
+        "id": "NET-PAY-PRIVATE",
+        "name": "Payments private network",
+        "level": "A4",
+        "classification": "no_impact",
+        "via": [
+          "PAY-003",
+          "PAY-106",
+          "PAY-108",
+          "RA4-37"
+        ],
+        "cause": "modify of PRC-PAY-01",
+        "rule": "modify/down2+ → no_impact (impact rules 0.5.0)"
+      },
+      {
+        "id": "ZONE-PAY-CLOUD",
+        "name": "Cloud — payments",
+        "level": "A4",
+        "classification": "no_impact",
+        "via": [
+          "PAY-003",
+          "PAY-106",
+          "PAY-108",
+          "RA4-38",
+          "RA4-39",
+          "RA4-39"
+        ],
+        "cause": "modify of PRC-PAY-01",
+        "rule": "modify/down2+ → no_impact (impact rules 0.5.0)"
+      },
+      {
+        "id": "ZONE-PAY-INTERNAL",
+        "name": "Internal network — payments",
+        "level": "A4",
+        "classification": "no_impact",
+        "via": [
+          "PAY-003",
+          "PAY-106",
+          "PAY-108",
+          "RA4-38",
+          "RA4-39"
+        ],
+        "cause": "modify of PRC-PAY-01",
+        "rule": "modify/down2+ → no_impact (impact rules 0.5.0)"
+      },
+      {
+        "id": "ZONE-PAY-PRIVATE",
+        "name": "Payments private network zone",
+        "level": "A4",
+        "classification": "no_impact",
+        "via": [
+          "PAY-003",
+          "PAY-106",
+          "PAY-108",
+          "RA4-38"
+        ],
+        "cause": "modify of PRC-PAY-01",
+        "rule": "modify/down2+ → no_impact (impact rules 0.5.0)"
+      }
+    ],
+    "mappings_to_supersede": [],
+    "changed": [
+      "BEV-PAY-RECEIVED",
+      "BEV-PAY-CUTOFF",
+      "BEV-PAY-EXECUTED",
+      "ACTOR-CUSTOMER",
+      "BSV-MAKE-PAYMENT",
+      "PRD-DOM-PAY",
+      "CHN-MOBILE",
+      "CHN-OBAPI",
+      "BO-ACCOUNT",
+      "REQ-PAY-INSTANT",
+      "PRC-PAY-01",
+      "PRC-PAY-02",
+      "ACT-PAY-01a",
+      "ACT-PAY-01b",
+      "ACT-PAY-02a",
+      "ACT-PAY-02b",
+      "VSS-P3",
+      "VSS-P4"
+    ],
+    "coverage": {
+      "A1": {
+        "present": true,
+        "reached": true,
+        "result": "impact_detected",
+        "classification": "design_change_required",
+        "related_within_layer": [
+          "BO-PAY-INSTR",
+          "BO-PAYEE",
+          "CAP-PAY-010",
+          "ROLE-PAY-OFFICER",
+          "VS-MAKE-PAYMENT"
+        ],
+        "records": [
+          {
+            "id": "ACT-PAY-01a",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "modify/self → design_change_required (impact rules 0.5.0)"
+          },
+          {
+            "id": "ACT-PAY-01b",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "modify/self → design_change_required (impact rules 0.5.0)"
+          },
+          {
+            "id": "ACT-PAY-02a",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "modify/self → design_change_required (impact rules 0.5.0)"
+          },
+          {
+            "id": "ACT-PAY-02b",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "modify/self → design_change_required (impact rules 0.5.0)"
+          },
+          {
+            "id": "ACTOR-CUSTOMER",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BEV-PAY-CUTOFF",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BEV-PAY-EXECUTED",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BEV-PAY-RECEIVED",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BO-ACCOUNT",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "BSV-MAKE-PAYMENT",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "CHN-MOBILE",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "CHN-OBAPI",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "PRC-PAY-01",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "modify/self → design_change_required (impact rules 0.5.0)"
+          },
+          {
+            "id": "PRC-PAY-02",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "modify/self → design_change_required (impact rules 0.5.0)"
+          },
+          {
+            "id": "PRD-DOM-PAY",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "REQ-PAY-INSTANT",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "VSS-P3",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "modify/self → design_change_required (impact rules 0.5.0)"
+          },
+          {
+            "id": "VSS-P4",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "modify/self → design_change_required (impact rules 0.5.0)"
+          }
+        ],
+        "paths": [],
+        "unapproved_links": [],
+        "unmapped_records": [
+          "ACT-PAY-01a",
+          "ACT-PAY-01b",
+          "ACT-PAY-02a",
+          "ACT-PAY-02b",
+          "ACTOR-CUSTOMER",
+          "BEV-PAY-CUTOFF",
+          "BEV-PAY-EXECUTED",
+          "BEV-PAY-RECEIVED",
+          "BO-ACCOUNT",
+          "BO-PAYEE",
+          "BSV-MAKE-PAYMENT",
+          "CAP-PAY-000",
+          "CHN-MOBILE",
+          "CHN-OBAPI",
+          "ROLE-PAY-OFFICER",
+          "VSS-P1",
+          "VSS-P2",
+          "VSS-P3",
+          "VSS-P4"
+        ],
+        "unmapped_count": 19,
+        "evidence": "incomplete",
+        "confirmed": false,
+        "reason": "18 record(s) reached through approved links; the strongest rule gives design_change_required; evidence incomplete: 0 link(s) not approved, 19 record(s) with no approved link where one is expected; 5 record(s) linked inside the layer to the changed record(s) are not followed by the impact rules: BO-PAY-INSTR, BO-PAYEE, CAP-PAY-010, ROLE-PAY-OFFICER, VS-MAKE-PAYMENT"
+      },
+      "A2": {
+        "present": true,
+        "reached": true,
+        "result": "impact_detected",
+        "classification": "review_required",
+        "related_within_layer": [],
+        "records": [
+          {
+            "id": "SD-PI",
+            "classification": "review_required",
+            "via": [
+              "PAY-003"
+            ],
+            "rule": "modify/down1 → review_required (impact rules 0.5.0)"
+          }
+        ],
+        "paths": [
+          "PAY-003"
+        ],
+        "unapproved_links": [],
+        "unmapped_records": [
+          "BBO-ACCOUNT",
+          "BBO-COMPLIANCE-CHECK",
+          "BBO-FUNDING-CHECK",
+          "BBO-PARTY",
+          "BBO-PAYEE",
+          "BBO-PAYEE-BANK",
+          "BBO-PAYER",
+          "BBO-PAYER-BANK",
+          "BBO-PAYMENT-TRANSACTION",
+          "BBOA-ACCOUNT-ACCOUNT-BALANCE",
+          "BBOA-ACCOUNT-ACCOUNT-CURRENCY",
+          "BBOA-ACCOUNT-ACCOUNT-DATE",
+          "BBOA-ACCOUNT-ACCOUNT-DESCRIPTION",
+          "BBOA-ACCOUNT-ACCOUNT-IDENTIFICATION",
+          "BBOA-ACCOUNT-ACCOUNT-NAME",
+          "BBOA-ACCOUNT-ACCOUNT-PURPOSE",
+          "BBOA-ACCOUNT-ACCOUNT-STATUS",
+          "BBOA-ACCOUNT-ACCOUNT-TYPE",
+          "BBOA-ACCOUNT-LOG-DATE",
+          "BBOA-ACCOUNT-LOG-IDENTIFICATION",
+          "BBOA-ACCOUNT-LOG-PERIOD",
+          "BBOA-ACCOUNT-LOG-TYPE",
+          "BBOA-AMOUNT",
+          "BBOA-COMPLIANCE-CHECK-COMPLIANCE-CHECK-TYPE",
+          "BBOA-FUNDING-CHECK-ASSESSMENT-DATE-TIME"
+        ],
+        "unmapped_count": 100,
+        "evidence": "incomplete",
+        "confirmed": false,
+        "reason": "1 record(s) reached through approved links; the strongest rule gives review_required; evidence incomplete: 0 link(s) not approved, 100 record(s) with no approved link where one is expected"
+      },
+      "A3": {
+        "present": true,
+        "reached": true,
+        "result": "no_impact_by_rule",
+        "classification": "no_impact",
+        "related_within_layer": [],
+        "records": [
+          {
+            "id": "APP-PAY-HUB",
+            "classification": "no_impact",
+            "via": [
+              "PAY-003",
+              "PAY-106"
+            ],
+            "rule": "modify/down2+ → no_impact (impact rules 0.5.0)"
+          }
+        ],
+        "paths": [
+          "PAY-003",
+          "PAY-106"
+        ],
+        "unapproved_links": [],
+        "unmapped_records": [
+          "API-PI-06",
+          "CMP-PAY-CAPTURE",
+          "CMP-PAY-VALIDATE",
+          "ENT-ACCOUNT-CACHE",
+          "ENT-PAY-EVENT",
+          "EVT-PAY-STATUS",
+          "SVC-PAY-INIT"
+        ],
+        "unmapped_count": 7,
+        "evidence": "incomplete",
+        "confirmed": false,
+        "reason": "1 record(s) reached through approved links; the impact rules give no_impact for this kind of change; evidence incomplete: 0 link(s) not approved, 7 record(s) with no approved link where one is expected"
+      },
+      "A4": {
+        "present": true,
+        "reached": true,
+        "result": "no_impact_by_rule",
+        "classification": "no_impact",
+        "related_within_layer": [],
+        "records": [
+          {
+            "id": "ART-PAYHUB-IMG",
+            "classification": "no_impact",
+            "via": [
+              "PAY-003",
+              "PAY-106",
+              "PAY-115"
+            ],
+            "rule": "modify/down2+ → no_impact (impact rules 0.5.0)"
+          },
+          {
+            "id": "DEP-PAYHUB-PROD",
+            "classification": "no_impact",
+            "via": [
+              "PAY-003",
+              "PAY-106",
+              "PAY-109"
+            ],
+            "rule": "modify/down2+ → no_impact (impact rules 0.5.0)"
+          },
+          {
+            "id": "DEP-PAYHUB-UAT",
+            "classification": "no_impact",
+            "via": [
+              "PAY-003",
+              "PAY-106",
+              "PAY-110"
+            ],
+            "rule": "modify/down2+ → no_impact (impact rules 0.5.0)"
+          },
+          {
+            "id": "INF-K8S-PAY-PROD",
+            "classification": "no_impact",
+            "via": [
+              "PAY-003",
+              "PAY-106",
+              "PAY-108"
+            ],
+            "rule": "modify/down2+ → no_impact (impact rules 0.5.0)"
+          },
+          {
+            "id": "INF-K8S-PAY-UAT",
+            "classification": "no_impact",
+            "via": [
+              "PAY-003",
+              "PAY-106",
+              "PAY-113"
+            ],
+            "rule": "modify/down2+ → no_impact (impact rules 0.5.0)"
+          },
+          {
+            "id": "NET-PAY-PRIVATE",
+            "classification": "no_impact",
+            "via": [
+              "PAY-003",
+              "PAY-106",
+              "PAY-108",
+              "RA4-37"
+            ],
+            "rule": "modify/down2+ → no_impact (impact rules 0.5.0)"
+          },
+          {
+            "id": "ZONE-PAY-CLOUD",
+            "classification": "no_impact",
+            "via": [
+              "PAY-003",
+              "PAY-106",
+              "PAY-108",
+              "RA4-38",
+              "RA4-39",
+              "RA4-39"
+            ],
+            "rule": "modify/down2+ → no_impact (impact rules 0.5.0)"
+          },
+          {
+            "id": "ZONE-PAY-INTERNAL",
+            "classification": "no_impact",
+            "via": [
+              "PAY-003",
+              "PAY-106",
+              "PAY-108",
+              "RA4-38",
+              "RA4-39"
+            ],
+            "rule": "modify/down2+ → no_impact (impact rules 0.5.0)"
+          },
+          {
+            "id": "ZONE-PAY-PRIVATE",
+            "classification": "no_impact",
+            "via": [
+              "PAY-003",
+              "PAY-106",
+              "PAY-108",
+              "RA4-38"
+            ],
+            "rule": "modify/down2+ → no_impact (impact rules 0.5.0)"
+          }
+        ],
+        "paths": [
+          "PAY-003",
+          "PAY-106",
+          "PAY-108",
+          "PAY-109",
+          "PAY-110",
+          "PAY-113",
+          "PAY-115",
+          "RA4-37",
+          "RA4-38",
+          "RA4-39"
+        ],
+        "unapproved_links": [],
+        "unmapped_records": [
+          "INF-CORE-LEDGER-HOST",
+          "INF-PG-PAY-PROD",
+          "TS-MQ",
+          "TS-SECRETS"
+        ],
+        "unmapped_count": 4,
+        "evidence": "incomplete",
+        "confirmed": false,
+        "reason": "9 record(s) reached through approved links; the impact rules give no_impact for this kind of change; evidence incomplete: 0 link(s) not approved, 4 record(s) with no approved link where one is expected"
+      }
+    },
+    "basis": {
+      "rules_version": "0.5.0",
+      "files": {
+        "a1-business.json": "531ab8f05d36398c1ccbfc613b1b2cb9d074f5610e61ccd89abc7df239902f2a",
+        "a2-service-domain.json": "4a98036138e2bd58cd3b937ee4611a320e3c90c9b90139374055956ff97a9ea5",
+        "a3-application.json": "7a786bc632a216e8038b91a2fb1c1a8e0c7519321ceafdef74d084902ae3a1fb",
+        "a4-technology.json": "cbd69a81600abf2be880386d70be586d28715bd824242a3c9f5a99eded28c590",
+        "mappings.json": "71499d610d500e9e4c1c0786aa726d3b7aff384541a658a0391ee61982cc12fe",
+        "requirements.json": "508c4cd476074239e9788464171776f0ff0b83f078c899952a22b2671ee3f430"
+      },
+      "approved_links": 20,
+      "approved_links_sha256": "cc8151e22fdb71b0aca6692c139eb344481f41315731b7c58854d4f0d7795fb7"
+    }
+  }
+}

@@ -1,0 +1,414 @@
+{
+  "level": "A4",
+  "model_id": "synthetic-bank-payments-a4",
+  "model_version": "2026.10",
+  "metamodel_version": "0.17.0",
+  "source_system": "SYNTHETIC-CMDB",
+  "instances": [
+    {
+      "id": "INF-K8S-PAY-PROD",
+      "type": "A4.SystemSoftware",
+      "version": "1.29",
+      "name": "Managed Kubernetes — payments (production)",
+      "lifecycle_status": "active",
+      "description": "Production container platform for the payments estate.",
+      "attributes": {
+        "hosts": [
+          "APP-PAY-HUB",
+          "CMP-PAY-EXEC"
+        ],
+        "product_version": "1.30",
+        "license": "Apache-2.0",
+        "end_of_support": "2027-06-30",
+        "region": "region-a"
+      }
+    },
+    {
+      "id": "INF-K8S-PAY-UAT",
+      "type": "A4.SystemSoftware",
+      "version": "1.29",
+      "name": "Managed Kubernetes — payments (UAT)",
+      "lifecycle_status": "active",
+      "description": "UAT container platform.",
+      "attributes": {
+        "hosts": [
+          "APP-PAY-HUB"
+        ],
+        "region": "region-a"
+      }
+    },
+    {
+      "id": "INF-PG-PAY-PROD",
+      "type": "A4.SystemSoftware",
+      "version": "16",
+      "name": "Managed PostgreSQL — payments",
+      "lifecycle_status": "active",
+      "description": "Production relational store for the hub.",
+      "attributes": {
+        "product_version": "16.4",
+        "license": "PostgreSQL",
+        "region": "region-a"
+      }
+    },
+    {
+      "id": "TS-MQ",
+      "type": "A4.TechnologyService",
+      "version": "1.0",
+      "name": "Messaging service",
+      "lifecycle_status": "active",
+      "description": "Managed message broker used for status events.",
+      "attributes": {
+        "cloud_service_model": "PaaS"
+      }
+    },
+    {
+      "id": "TS-SECRETS",
+      "type": "A4.TechnologyService",
+      "version": "1.0",
+      "name": "Secrets management",
+      "lifecycle_status": "active",
+      "description": "Platform secrets service.",
+      "attributes": {
+        "cloud_service_model": "PaaS"
+      }
+    },
+    {
+      "id": "ENV-PAY-PROD",
+      "type": "A4.DeploymentEnvironment",
+      "version": "1.0",
+      "name": "Production",
+      "lifecycle_status": "active",
+      "description": "Production runtime environment.",
+      "attributes": {
+        "environment_kind": "production",
+        "country": "XA",
+        "cloud_deployment_model": "public"
+      }
+    },
+    {
+      "id": "ENV-PAY-UAT",
+      "type": "A4.DeploymentEnvironment",
+      "version": "1.0",
+      "name": "UAT",
+      "lifecycle_status": "active",
+      "description": "User-acceptance environment.",
+      "attributes": {
+        "environment_kind": "test",
+        "country": "XA",
+        "cloud_deployment_model": "public"
+      }
+    },
+    {
+      "id": "DEP-PAYHUB-PROD",
+      "type": "A4.Deployment",
+      "version": "1.0",
+      "name": "Payments Hub — production",
+      "lifecycle_status": "active",
+      "description": "Hub 7.1 on the production cluster.",
+      "attributes": {
+        "component_id": "APP-PAY-HUB",
+        "environment_id": "ENV-PAY-PROD",
+        "platform_id": "INF-K8S-PAY-PROD"
+      }
+    },
+    {
+      "id": "DEP-PAYHUB-UAT",
+      "type": "A4.Deployment",
+      "version": "1.0",
+      "name": "Payments Hub — UAT",
+      "lifecycle_status": "active",
+      "description": "Hub 7.1 on the UAT cluster.",
+      "attributes": {
+        "component_id": "APP-PAY-HUB",
+        "environment_id": "ENV-PAY-UAT",
+        "platform_id": "INF-K8S-PAY-UAT"
+      }
+    },
+    {
+      "id": "DEP-PAYEXEC-PROD",
+      "type": "A4.Deployment",
+      "version": "1.0",
+      "name": "Execution Gateway — production",
+      "lifecycle_status": "active",
+      "description": "Gateway 3.4 on the production cluster.",
+      "attributes": {
+        "component_id": "CMP-PAY-EXEC",
+        "environment_id": "ENV-PAY-PROD",
+        "platform_id": "INF-K8S-PAY-PROD"
+      }
+    },
+    {
+      "id": "ZONE-PAY-CLOUD",
+      "type": "A4.NetworkZone",
+      "version": "1.0",
+      "name": "Cloud — payments",
+      "lifecycle_status": "active",
+      "description": "The payments solution's cloud deployment (made up), in region A.",
+      "attributes": {
+        "zone_level": 0,
+        "zone_kind": "cloud"
+      }
+    },
+    {
+      "id": "ZONE-PAY-INTERNAL",
+      "type": "A4.NetworkZone",
+      "version": "1.0",
+      "name": "Internal network — payments",
+      "lifecycle_status": "active",
+      "description": "The internal network inside the cloud deployment; nothing in it is reached from the internet.",
+      "attributes": {
+        "zone_level": 1,
+        "zone_kind": "internal"
+      }
+    },
+    {
+      "id": "ZONE-PAY-DMZ",
+      "type": "A4.NetworkZone",
+      "version": "1.0",
+      "name": "Security zone (DMZ) — payments",
+      "lifecycle_status": "active",
+      "description": "The internet-facing zone; firewalls form its boundary.",
+      "attributes": {
+        "zone_level": 1,
+        "zone_kind": "dmz"
+      }
+    },
+    {
+      "id": "ZONE-PAY-PRIVATE",
+      "type": "A4.NetworkZone",
+      "version": "1.0",
+      "name": "Payments private network zone",
+      "lifecycle_status": "active",
+      "description": "The private zone inside the internal network where the payment platforms run (made up).",
+      "attributes": {
+        "zone_level": 2,
+        "zone_kind": "private"
+      }
+    },
+    {
+      "id": "NET-PAY-PRIVATE",
+      "type": "A4.CommunicationNetwork",
+      "version": "1.0",
+      "name": "Payments private network",
+      "lifecycle_status": "active",
+      "description": "Private network segment for payment services.",
+      "attributes": {
+        "address_range": [
+          "10.20.0.0/16"
+        ]
+      }
+    },
+    {
+      "id": "ZONE-PAY-ONPREM",
+      "type": "A4.NetworkZone",
+      "version": "1.0",
+      "name": "On premises — core banking",
+      "lifecycle_status": "active",
+      "description": "The bank's own data centre (made up), where the core banking ledger runs.",
+      "attributes": {
+        "zone_level": 0,
+        "zone_kind": "on_premises"
+      }
+    },
+    {
+      "id": "ZONE-PAY-ONPREM-INTERNAL",
+      "type": "A4.NetworkZone",
+      "version": "1.0",
+      "name": "Internal network — on premises (core banking)",
+      "lifecycle_status": "active",
+      "description": "The internal network of the on-premises data centre.",
+      "attributes": {
+        "zone_level": 1,
+        "zone_kind": "internal"
+      }
+    },
+    {
+      "id": "ART-PAYHUB-IMG",
+      "type": "A4.Artifact",
+      "version": "7.1",
+      "name": "payments-hub:7.1",
+      "lifecycle_status": "active",
+      "description": "Container image of the hub.",
+      "attributes": {
+        "artifact_kind": "container image",
+        "digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+        "purl": "pkg:docker/example/payments-hub@7.1"
+      }
+    },
+    {
+      "id": "INF-APIGW-PAY",
+      "type": "A4.SystemSoftware",
+      "version": "2.4",
+      "name": "Managed API gateway — payments",
+      "lifecycle_status": "active",
+      "description": "The payments API's entry point from the internet (made up).",
+      "attributes": {
+        "internet_facing": true,
+        "region": "region-a"
+      }
+    },
+    {
+      "id": "INF-CORE-LEDGER-HOST",
+      "type": "A4.Node",
+      "version": "1.0",
+      "name": "Core banking ledger host",
+      "lifecycle_status": "active",
+      "description": "The on-premises host of the core banking ledger the Execution Gateway posts payments to (made up).",
+      "attributes": {
+        "site": "DC-1 (made up)"
+      }
+    }
+  ],
+  "relationships": [
+    {
+      "source": "ENV-PAY-PROD",
+      "kind": "aggregation",
+      "target": "DEP-PAYHUB-PROD"
+    },
+    {
+      "source": "ENV-PAY-PROD",
+      "kind": "aggregation",
+      "target": "DEP-PAYEXEC-PROD"
+    },
+    {
+      "source": "ENV-PAY-UAT",
+      "kind": "aggregation",
+      "target": "DEP-PAYHUB-UAT"
+    },
+    {
+      "source": "INF-K8S-PAY-PROD",
+      "kind": "assignment",
+      "target": "ART-PAYHUB-IMG"
+    },
+    {
+      "source": "ENV-PAY-PROD",
+      "kind": "aggregation",
+      "target": "INF-PG-PAY-PROD"
+    },
+    {
+      "source": "ENV-PAY-UAT",
+      "kind": "aggregation",
+      "target": "INF-K8S-PAY-UAT"
+    },
+    {
+      "source": "INF-K8S-PAY-UAT",
+      "kind": "assignment",
+      "target": "DEP-PAYHUB-UAT"
+    },
+    {
+      "source": "INF-K8S-PAY-PROD",
+      "kind": "assignment",
+      "target": "DEP-PAYHUB-PROD"
+    },
+    {
+      "source": "INF-K8S-PAY-PROD",
+      "kind": "assignment",
+      "target": "DEP-PAYEXEC-PROD"
+    },
+    {
+      "source": "TS-MQ",
+      "kind": "serving",
+      "target": "INF-K8S-PAY-PROD"
+    },
+    {
+      "source": "TS-SECRETS",
+      "kind": "serving",
+      "target": "INF-K8S-PAY-PROD"
+    },
+    {
+      "source": "TS-SECRETS",
+      "kind": "serving",
+      "target": "INF-K8S-PAY-UAT"
+    },
+    {
+      "source": "ZONE-PAY-CLOUD",
+      "kind": "composition",
+      "target": "ZONE-PAY-INTERNAL"
+    },
+    {
+      "source": "ZONE-PAY-CLOUD",
+      "kind": "composition",
+      "target": "ZONE-PAY-DMZ"
+    },
+    {
+      "source": "ZONE-PAY-INTERNAL",
+      "kind": "composition",
+      "target": "ZONE-PAY-PRIVATE"
+    },
+    {
+      "source": "ZONE-PAY-PRIVATE",
+      "kind": "aggregation",
+      "target": "INF-K8S-PAY-PROD"
+    },
+    {
+      "source": "ZONE-PAY-PRIVATE",
+      "kind": "aggregation",
+      "target": "INF-K8S-PAY-UAT"
+    },
+    {
+      "source": "ZONE-PAY-PRIVATE",
+      "kind": "aggregation",
+      "target": "INF-PG-PAY-PROD"
+    },
+    {
+      "source": "ZONE-PAY-INTERNAL",
+      "kind": "aggregation",
+      "target": "TS-MQ"
+    },
+    {
+      "source": "ZONE-PAY-INTERNAL",
+      "kind": "aggregation",
+      "target": "TS-SECRETS"
+    },
+    {
+      "source": "ZONE-PAY-DMZ",
+      "kind": "aggregation",
+      "target": "INF-APIGW-PAY"
+    },
+    {
+      "source": "ZONE-PAY-ONPREM",
+      "kind": "composition",
+      "target": "ZONE-PAY-ONPREM-INTERNAL"
+    },
+    {
+      "source": "ZONE-PAY-ONPREM-INTERNAL",
+      "kind": "aggregation",
+      "target": "INF-CORE-LEDGER-HOST"
+    },
+    {
+      "source": "DEP-PAYEXEC-PROD",
+      "kind": "association",
+      "target": "INF-CORE-LEDGER-HOST"
+    },
+    {
+      "source": "INF-APIGW-PAY",
+      "kind": "association",
+      "target": "DEP-PAYHUB-PROD"
+    },
+    {
+      "source": "INF-K8S-PAY-PROD",
+      "kind": "association",
+      "target": "NET-PAY-PRIVATE"
+    },
+    {
+      "source": "INF-K8S-PAY-UAT",
+      "kind": "association",
+      "target": "NET-PAY-PRIVATE"
+    },
+    {
+      "source": "INF-PG-PAY-PROD",
+      "kind": "association",
+      "target": "NET-PAY-PRIVATE"
+    },
+    {
+      "source": "INF-K8S-PAY-PROD",
+      "kind": "association",
+      "target": "INF-PG-PAY-PROD"
+    },
+    {
+      "source": "DEP-PAYHUB-PROD",
+      "kind": "aggregation",
+      "target": "ART-PAYHUB-IMG"
+    }
+  ]
+}

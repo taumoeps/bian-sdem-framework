@@ -1,0 +1,444 @@
+{
+  "id": "CS-002",
+  "layer": "A1",
+  "reason": "Payment Initiation v2: events, the customer, the payment service, its product and channels, the account, and the instant-confirmation requirement (metamodel 0.17.0)",
+  "changes": [
+    {
+      "op": "add",
+      "record": {
+        "id": "BEV-PAY-RECEIVED",
+        "type": "A1.BusinessEvent",
+        "version": "1.0",
+        "name": "Payment instruction received",
+        "lifecycle_status": "active",
+        "description": "A customer submits a payment instruction (made-up)",
+        "attributes": {
+          "event_kind": "external"
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "BEV-PAY-CUTOFF",
+        "type": "A1.BusinessEvent",
+        "version": "1.0",
+        "name": "Payment cut-off reached",
+        "lifecycle_status": "active",
+        "description": "The daily cut-off for same-day domestic payments (made-up)",
+        "attributes": {
+          "event_kind": "time",
+          "schedule": "weekdays 16:00 local"
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "BEV-PAY-EXECUTED",
+        "type": "A1.BusinessEvent",
+        "version": "1.0",
+        "name": "Payment executed",
+        "lifecycle_status": "active",
+        "description": "The payment has left the bank (made-up)",
+        "attributes": {
+          "event_kind": "internal"
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "ACTOR-CUSTOMER",
+        "type": "A1.BusinessActor",
+        "version": "1.0",
+        "name": "Retail customer",
+        "lifecycle_status": "active",
+        "description": "A person who pays from their account (made-up)",
+        "attributes": {
+          "actor_kind": "person",
+          "external": true,
+          "classification": "customer",
+          "purpose": "pays people and bills"
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "BSV-MAKE-PAYMENT",
+        "type": "A1.BusinessService",
+        "version": "1.0",
+        "name": "Make a payment",
+        "lifecycle_status": "active",
+        "description": "Pay someone from an account, confirmed at once (made-up)",
+        "attributes": {
+          "inputs": [
+            "BO-PAY-INSTR"
+          ],
+          "outputs": [
+            "BO-PAY-INSTR"
+          ],
+          "consumers": [
+            "ACTOR-CUSTOMER"
+          ],
+          "customer_facing": true,
+          "channels": [
+            "CHN-MOBILE",
+            "CHN-OBAPI"
+          ],
+          "service_level": "confirmed within 10 seconds, 99.9% of the time"
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "PRD-DOM-PAY",
+        "type": "A1.Product",
+        "version": "1.0",
+        "name": "Domestic payment",
+        "lifecycle_status": "active",
+        "description": "Paying someone in the same country from a current account (made-up)",
+        "attributes": {
+          "product_kind": "payment",
+          "segment": "retail",
+          "regulated": true
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "CHN-MOBILE",
+        "type": "A1.BusinessInterface",
+        "version": "1.0",
+        "name": "Mobile banking app",
+        "lifecycle_status": "active",
+        "description": "The bank's app for customers (made-up)",
+        "attributes": {
+          "channel_kind": "mobile",
+          "customer_facing": true,
+          "availability": "24x7"
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "CHN-OBAPI",
+        "type": "A1.BusinessInterface",
+        "version": "1.0",
+        "name": "Open banking payments API",
+        "lifecycle_status": "active",
+        "description": "Third parties initiate payments for customers (made-up)",
+        "attributes": {
+          "channel_kind": "api",
+          "customer_facing": true,
+          "availability": "24x7"
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "BO-ACCOUNT",
+        "type": "A1.BusinessObject",
+        "version": "1.0",
+        "name": "Account",
+        "lifecycle_status": "active",
+        "description": "A customer's account money is paid from or into (made-up)",
+        "attributes": {
+          "attributes": [
+            "account_identification",
+            "currency",
+            "holder"
+          ],
+          "personal_information": true
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "REQ-PAY-INSTANT",
+        "type": "A1.BusinessRequirement",
+        "version": "1.0",
+        "name": "Instant confirmation",
+        "lifecycle_status": "active",
+        "description": "A customer sees the payment confirmed within 10 seconds (made-up)",
+        "attributes": {
+          "applies_to": [
+            "PRC-PAY-01"
+          ],
+          "requirement_kind": "requirement",
+          "priority": "must",
+          "derived_from": [
+            "product promise: domestic payment (made-up)"
+          ]
+        }
+      }
+    },
+    {
+      "op": "update",
+      "record": {
+        "id": "PRC-PAY-01",
+        "type": "A1.BusinessProcess",
+        "version": "1.0",
+        "name": "Capture and validate payment instruction",
+        "lifecycle_status": "active",
+        "description": "Capture the instruction from the channel, validate it against account and scheme rules, obtain authorisation.",
+        "attributes": {
+          "invokes": [
+            "SO-PI-01",
+            "SO-PI-02"
+          ],
+          "level": 2,
+          "triggered_by": "BEV-PAY-RECEIVED",
+          "outcome": "authorised payment instruction",
+          "criticality": "high",
+          "frequency": "continuous",
+          "automation_level": "automated",
+          "owner": "ROLE-PAY-OFFICER",
+          "modified": "2026-09-30"
+        }
+      }
+    },
+    {
+      "op": "update",
+      "record": {
+        "id": "PRC-PAY-02",
+        "type": "A1.BusinessProcess",
+        "version": "1.0",
+        "name": "Execute and confirm payment",
+        "lifecycle_status": "active",
+        "description": "Execute the authorised instruction and report its status to the customer.",
+        "attributes": {
+          "invokes": [
+            "SO-PI-03",
+            "SO-PI-04"
+          ],
+          "level": 2,
+          "triggered_by": "BEV-PAY-CUTOFF",
+          "outcome": "payment executed and confirmed",
+          "criticality": "high",
+          "frequency": "continuous",
+          "automation_level": "automated",
+          "owner": "ROLE-PAY-OFFICER",
+          "modified": "2026-09-30"
+        }
+      }
+    },
+    {
+      "op": "update",
+      "record": {
+        "id": "ACT-PAY-01a",
+        "type": "A1.BusinessActivity",
+        "version": "1.0",
+        "name": "Capture instruction",
+        "lifecycle_status": "active",
+        "description": "Record the payee, amount, currency and value date.",
+        "attributes": {
+          "invokes": [
+            "SO-PI-01"
+          ],
+          "sequence": 1,
+          "level": 3,
+          "outcome": "instruction captured",
+          "criticality": "high",
+          "frequency": "continuous",
+          "automation_level": "automated"
+        }
+      }
+    },
+    {
+      "op": "update",
+      "record": {
+        "id": "ACT-PAY-01b",
+        "type": "A1.BusinessActivity",
+        "version": "1.0",
+        "name": "Validate instruction",
+        "lifecycle_status": "active",
+        "description": "Evaluate the instruction for completeness, limits and sanctions.",
+        "attributes": {
+          "invokes": [
+            "SO-PI-02"
+          ],
+          "sequence": 2,
+          "level": 3,
+          "outcome": "instruction valid or refused",
+          "criticality": "high",
+          "frequency": "continuous",
+          "automation_level": "automated"
+        }
+      }
+    },
+    {
+      "op": "update",
+      "record": {
+        "id": "ACT-PAY-02a",
+        "type": "A1.BusinessActivity",
+        "version": "1.0",
+        "name": "Execute payment",
+        "lifecycle_status": "active",
+        "description": "Submit the instruction for execution.",
+        "attributes": {
+          "invokes": [
+            "SO-PI-03"
+          ],
+          "sequence": 1,
+          "level": 3,
+          "outcome": "payment sent",
+          "criticality": "high",
+          "frequency": "continuous",
+          "automation_level": "automated"
+        }
+      }
+    },
+    {
+      "op": "update",
+      "record": {
+        "id": "ACT-PAY-02b",
+        "type": "A1.BusinessActivity",
+        "version": "1.0",
+        "name": "Retrieve status",
+        "lifecycle_status": "active",
+        "description": "Obtain the current status of the instruction.",
+        "attributes": {
+          "invokes": [
+            "SO-PI-04"
+          ],
+          "sequence": 2,
+          "level": 3,
+          "outcome": "status known",
+          "criticality": "medium",
+          "frequency": "ad hoc",
+          "automation_level": "automated"
+        }
+      }
+    },
+    {
+      "op": "update",
+      "record": {
+        "id": "VSS-P3",
+        "type": "A1.ValueStreamStage",
+        "version": "1.0",
+        "name": "Execute transfer",
+        "lifecycle_status": "active",
+        "description": "The bank executes the transfer.",
+        "attributes": {
+          "value_item": "money on its way",
+          "entrance_criteria": "instruction authorised",
+          "exit_criteria": "payment executed"
+        }
+      }
+    },
+    {
+      "op": "update",
+      "record": {
+        "id": "VSS-P4",
+        "type": "A1.ValueStreamStage",
+        "version": "1.0",
+        "name": "Confirm to customer",
+        "lifecycle_status": "active",
+        "description": "The customer sees the payment status.",
+        "attributes": {
+          "value_item": "the customer knows it is done",
+          "entrance_criteria": "payment executed",
+          "exit_criteria": "customer notified"
+        }
+      }
+    }
+  ],
+  "relationships": {
+    "add": [
+      {
+        "source": "BEV-PAY-RECEIVED",
+        "kind": "triggering",
+        "target": "PRC-PAY-01"
+      },
+      {
+        "source": "BEV-PAY-CUTOFF",
+        "kind": "triggering",
+        "target": "PRC-PAY-02"
+      },
+      {
+        "source": "PRC-PAY-02",
+        "kind": "triggering",
+        "target": "BEV-PAY-EXECUTED"
+      },
+      {
+        "source": "BEV-PAY-RECEIVED",
+        "kind": "access",
+        "target": "BO-PAY-INSTR"
+      },
+      {
+        "source": "ACTOR-CUSTOMER",
+        "kind": "assignment",
+        "target": "PRC-PAY-01"
+      },
+      {
+        "source": "PRC-PAY-01",
+        "kind": "realization",
+        "target": "BSV-MAKE-PAYMENT"
+      },
+      {
+        "source": "PRC-PAY-01",
+        "kind": "realization",
+        "target": "REQ-PAY-INSTANT"
+      },
+      {
+        "source": "BSV-MAKE-PAYMENT",
+        "kind": "access",
+        "target": "BO-PAY-INSTR"
+      },
+      {
+        "source": "BSV-MAKE-PAYMENT",
+        "kind": "serving",
+        "target": "ACTOR-CUSTOMER"
+      },
+      {
+        "source": "PRD-DOM-PAY",
+        "kind": "aggregation",
+        "target": "BSV-MAKE-PAYMENT"
+      },
+      {
+        "source": "PRD-DOM-PAY",
+        "kind": "aggregation",
+        "target": "BO-PAY-INSTR"
+      },
+      {
+        "source": "CHN-MOBILE",
+        "kind": "serving",
+        "target": "ACTOR-CUSTOMER"
+      },
+      {
+        "source": "CHN-MOBILE",
+        "kind": "association",
+        "target": "BSV-MAKE-PAYMENT"
+      },
+      {
+        "source": "CHN-OBAPI",
+        "kind": "association",
+        "target": "BSV-MAKE-PAYMENT"
+      },
+      {
+        "source": "BO-PAY-INSTR",
+        "kind": "association",
+        "target": "BO-ACCOUNT"
+      }
+    ]
+  },
+  "agent": "architect",
+  "person": "a tester",
+  "created_at": "2026-11-15T18:58:36+00:00",
+  "work_items": [],
+  "event": "CE-002",
+  "branch": "main",
+  "trigger": "initial",
+  "dataset": {
+    "file": "a1-business.json",
+    "before_sha256": "d84a9383bca1de80f1df1b193cc28ed55da23933dd73ff9eb0f2989b9802be4d",
+    "after_sha256": "531ab8f05d36398c1ccbfc613b1b2cb9d074f5610e61ccd89abc7df239902f2a"
+  }
+}

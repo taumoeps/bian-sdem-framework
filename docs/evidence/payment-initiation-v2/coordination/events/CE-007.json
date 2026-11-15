@@ -1,0 +1,1669 @@
+{
+  "id": "CE-007",
+  "change_set": "CS-007",
+  "layer": "A3",
+  "round": 1,
+  "at": "2026-11-15T20:00:55+00:00",
+  "agent": "architect",
+  "person": "Steven Taumoepeau",
+  "impact": {
+    "records": [
+      {
+        "id": "BO-PAYEE",
+        "name": "Payee",
+        "level": "A1",
+        "classification": "review_required",
+        "via": [
+          "PAY-158"
+        ],
+        "cause": "modify of AID-ENT-PAYEE",
+        "rule": "modify/up1 → review_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "BBO-COMPLIANCE-CHECK",
+        "name": "Compliance Check",
+        "level": "A2",
+        "classification": "review_required",
+        "via": [
+          "PAY-116"
+        ],
+        "cause": "modify of AID-ENT-COMPLIANCE-CHECK",
+        "rule": "modify/up1 → review_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "BBO-FUNDING-CHECK",
+        "name": "Funding Check",
+        "level": "A2",
+        "classification": "review_required",
+        "via": [
+          "PAY-118"
+        ],
+        "cause": "modify of AID-ENT-FUNDING-CHECK",
+        "rule": "modify/up1 → review_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "BBO-PAYEE",
+        "name": "Payee",
+        "level": "A2",
+        "classification": "review_required",
+        "via": [
+          "PAY-133"
+        ],
+        "cause": "modify of AID-ENT-PAYEE",
+        "rule": "modify/up1 → review_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "BBOA-COMPLIANCE-CHECK-COMPLIANCE-CHECK-TYPE",
+        "name": "ComplianceCheckType",
+        "level": "A2",
+        "classification": "review_required",
+        "via": [
+          "PAY-117"
+        ],
+        "cause": "modify of AID-ENTF-COMPLIANCE-CHECK-COMPLIANCECHECKTYPE",
+        "rule": "modify/up1 → review_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "BBOA-FUNDING-CHECK-ASSESSMENT-DATE-TIME",
+        "name": "AssessmentDateTime",
+        "level": "A2",
+        "classification": "review_required",
+        "via": [
+          "PAY-124"
+        ],
+        "cause": "modify of AID-ENTF-FUNDING-CHECK-ASSESSMENTDATETIME",
+        "rule": "modify/up1 → review_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "BBOA-FUNDING-CHECK-ASSESSMENT-DESCRIPTION",
+        "name": "AssessmentDescription",
+        "level": "A2",
+        "classification": "review_required",
+        "via": [
+          "PAY-122"
+        ],
+        "cause": "modify of AID-ENTF-FUNDING-CHECK-ASSESSMENTDESCRIPTION",
+        "rule": "modify/up1 → review_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "BBOA-FUNDING-CHECK-ASSESSMENT-EXPIRY-DATE",
+        "name": "AssessmentExpiryDate",
+        "level": "A2",
+        "classification": "review_required",
+        "via": [
+          "PAY-130"
+        ],
+        "cause": "modify of AID-ENTF-FUNDING-CHECK-ASSESSMENTEXPIRYDATE",
+        "rule": "modify/up1 → review_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "BBOA-FUNDING-CHECK-ASSESSMENT-IDENTIFICATION",
+        "name": "AssessmentIdentification",
+        "level": "A2",
+        "classification": "review_required",
+        "via": [
+          "PAY-132"
+        ],
+        "cause": "modify of AID-ENTF-FUNDING-CHECK-ASSESSMENTIDENTIFICATION",
+        "rule": "modify/up1 → review_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "BBOA-FUNDING-CHECK-ASSESSMENT-METHOD",
+        "name": "AssessmentMethod",
+        "level": "A2",
+        "classification": "review_required",
+        "via": [
+          "PAY-120"
+        ],
+        "cause": "modify of AID-ENTF-FUNDING-CHECK-ASSESSMENTMETHOD",
+        "rule": "modify/up1 → review_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "BBOA-FUNDING-CHECK-ASSESSMENT-MODEL",
+        "name": "AssessmentModel",
+        "level": "A2",
+        "classification": "review_required",
+        "via": [
+          "PAY-123"
+        ],
+        "cause": "modify of AID-ENTF-FUNDING-CHECK-ASSESSMENTMODEL",
+        "rule": "modify/up1 → review_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "BBOA-FUNDING-CHECK-ASSESSMENT-REPRESENTING-DOCUMENT",
+        "name": "AssessmentRepresentingDocument",
+        "level": "A2",
+        "classification": "review_required",
+        "via": [
+          "PAY-127"
+        ],
+        "cause": "modify of AID-ENTF-FUNDING-CHECK-ASSESSMENTREPRESENTINGDOCUMENT",
+        "rule": "modify/up1 → review_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "BBOA-FUNDING-CHECK-ASSESSMENT-REQUIRED-ADJUSTMENT",
+        "name": "AssessmentRequiredAdjustment",
+        "level": "A2",
+        "classification": "review_required",
+        "via": [
+          "PAY-128"
+        ],
+        "cause": "modify of AID-ENTF-FUNDING-CHECK-ASSESSMENTREQUIREDADJUSTMENT",
+        "rule": "modify/up1 → review_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "BBOA-FUNDING-CHECK-ASSESSMENT-REQUIREMENT",
+        "name": "AssessmentRequirement",
+        "level": "A2",
+        "classification": "review_required",
+        "via": [
+          "PAY-129"
+        ],
+        "cause": "modify of AID-ENTF-FUNDING-CHECK-ASSESSMENTREQUIREMENT",
+        "rule": "modify/up1 → review_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "BBOA-FUNDING-CHECK-ASSESSMENT-RESULT",
+        "name": "AssessmentResult",
+        "level": "A2",
+        "classification": "review_required",
+        "via": [
+          "PAY-125"
+        ],
+        "cause": "modify of AID-ENTF-FUNDING-CHECK-ASSESSMENTRESULT",
+        "rule": "modify/up1 → review_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "BBOA-FUNDING-CHECK-ASSESSMENT-SCHEDULE",
+        "name": "AssessmentSchedule",
+        "level": "A2",
+        "classification": "review_required",
+        "via": [
+          "PAY-121"
+        ],
+        "cause": "modify of AID-ENTF-FUNDING-CHECK-ASSESSMENTSCHEDULE",
+        "rule": "modify/up1 → review_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "BBOA-FUNDING-CHECK-ASSESSMENT-STATUS",
+        "name": "AssessmentStatus",
+        "level": "A2",
+        "classification": "review_required",
+        "via": [
+          "PAY-131"
+        ],
+        "cause": "modify of AID-ENTF-FUNDING-CHECK-ASSESSMENTSTATUS",
+        "rule": "modify/up1 → review_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "BBOA-FUNDING-CHECK-ASSESSMENT-SUPPORTING-DOCUMENT",
+        "name": "AssessmentSupportingDocument",
+        "level": "A2",
+        "classification": "review_required",
+        "via": [
+          "PAY-126"
+        ],
+        "cause": "modify of AID-ENTF-FUNDING-CHECK-ASSESSMENTSUPPORTINGDOCUMENT",
+        "rule": "modify/up1 → review_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "BBOA-FUNDING-CHECK-ASSESSMENT-TYPE",
+        "name": "AssessmentType",
+        "level": "A2",
+        "classification": "review_required",
+        "via": [
+          "PAY-119"
+        ],
+        "cause": "modify of AID-ENTF-FUNDING-CHECK-ASSESSMENTTYPE",
+        "rule": "modify/up1 → review_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "BBOA-PAYEE-PAYEE-IDENTIFIER",
+        "name": "PayeeIdentifier",
+        "level": "A2",
+        "classification": "review_required",
+        "via": [
+          "PAY-134"
+        ],
+        "cause": "modify of AID-ENTF-PAYEE-PAYEEIDENTIFIER",
+        "rule": "modify/up1 → review_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "BBOA-PAYEE-PAYMENT-INSTRUCTION-INVOLVEMENT-TYPE",
+        "name": "PaymentInstructionInvolvementType",
+        "level": "A2",
+        "classification": "review_required",
+        "via": [
+          "PAY-135"
+        ],
+        "cause": "modify of AID-ENTF-PAYEE-PAYMENTINSTRUCTIONINVOLVEMENTTYPE",
+        "rule": "modify/up1 → review_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENT-ACCOUNT",
+        "name": "account (inferred)",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "retire of AID-ENT-ACCOUNT",
+        "rule": "retire/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENT-COMPLIANCE-CHECK",
+        "name": "compliance_check (inferred)",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "modify of AID-ENT-COMPLIANCE-CHECK",
+        "rule": "modify/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENT-FUNDING-CHECK",
+        "name": "funding_check (inferred)",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "modify of AID-ENT-FUNDING-CHECK",
+        "rule": "modify/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENT-PARTY",
+        "name": "party (inferred)",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "retire of AID-ENT-PARTY",
+        "rule": "retire/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENT-PAYEE",
+        "name": "payee (inferred)",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "modify of AID-ENT-PAYEE",
+        "rule": "modify/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENT-PAYEE-BANK",
+        "name": "payee_bank (inferred)",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "retire of AID-ENT-PAYEE-BANK",
+        "rule": "retire/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENT-PAYER",
+        "name": "payer (inferred)",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "retire of AID-ENT-PAYER",
+        "rule": "retire/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENT-PAYER-BANK",
+        "name": "payer_bank (inferred)",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "retire of AID-ENT-PAYER-BANK",
+        "rule": "retire/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENT-PAYMENT-TRANSACTION",
+        "name": "payment_transaction (inferred)",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "retire of AID-ENT-PAYMENT-TRANSACTION",
+        "rule": "retire/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENTF-ACCOUNT-ACCOUNTBALANCE",
+        "name": "account_balance",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "retire of AID-ENTF-ACCOUNT-ACCOUNTBALANCE",
+        "rule": "retire/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENTF-ACCOUNT-ACCOUNTCURRENCY",
+        "name": "account_currency",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "retire of AID-ENTF-ACCOUNT-ACCOUNTCURRENCY",
+        "rule": "retire/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENTF-ACCOUNT-ACCOUNTDATE",
+        "name": "account_date",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "retire of AID-ENTF-ACCOUNT-ACCOUNTDATE",
+        "rule": "retire/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENTF-ACCOUNT-ACCOUNTDESCRIPTION",
+        "name": "account_description",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "retire of AID-ENTF-ACCOUNT-ACCOUNTDESCRIPTION",
+        "rule": "retire/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENTF-ACCOUNT-ACCOUNTIDENTIFICATION",
+        "name": "account_identification",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "retire of AID-ENTF-ACCOUNT-ACCOUNTIDENTIFICATION",
+        "rule": "retire/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENTF-ACCOUNT-ACCOUNTNAME",
+        "name": "account_name",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "retire of AID-ENTF-ACCOUNT-ACCOUNTNAME",
+        "rule": "retire/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENTF-ACCOUNT-ACCOUNTPURPOSE",
+        "name": "account_purpose",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "retire of AID-ENTF-ACCOUNT-ACCOUNTPURPOSE",
+        "rule": "retire/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENTF-ACCOUNT-ACCOUNTSTATUS",
+        "name": "account_status",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "retire of AID-ENTF-ACCOUNT-ACCOUNTSTATUS",
+        "rule": "retire/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENTF-ACCOUNT-ACCOUNTTYPE",
+        "name": "account_type",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "retire of AID-ENTF-ACCOUNT-ACCOUNTTYPE",
+        "rule": "retire/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENTF-ACCOUNT-LOGDATE",
+        "name": "log_date",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "retire of AID-ENTF-ACCOUNT-LOGDATE",
+        "rule": "retire/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENTF-ACCOUNT-LOGIDENTIFICATION",
+        "name": "log_identification",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "retire of AID-ENTF-ACCOUNT-LOGIDENTIFICATION",
+        "rule": "retire/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENTF-ACCOUNT-LOGPERIOD",
+        "name": "log_period",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "retire of AID-ENTF-ACCOUNT-LOGPERIOD",
+        "rule": "retire/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENTF-ACCOUNT-LOGTYPE",
+        "name": "log_type",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "retire of AID-ENTF-ACCOUNT-LOGTYPE",
+        "rule": "retire/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENTF-COMPLIANCE-CHECK-COMPLIANCECHECKTYPE",
+        "name": "compliance_check_type",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "modify of AID-ENTF-COMPLIANCE-CHECK-COMPLIANCECHECKTYPE",
+        "rule": "modify/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTDATETIME",
+        "name": "assessment_date_time",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "modify of AID-ENTF-FUNDING-CHECK-ASSESSMENTDATETIME",
+        "rule": "modify/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTDESCRIPTION",
+        "name": "assessment_description",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "modify of AID-ENTF-FUNDING-CHECK-ASSESSMENTDESCRIPTION",
+        "rule": "modify/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTEXPIRYDATE",
+        "name": "assessment_expiry_date",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "modify of AID-ENTF-FUNDING-CHECK-ASSESSMENTEXPIRYDATE",
+        "rule": "modify/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTIDENTIFICATION",
+        "name": "assessment_identification",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "modify of AID-ENTF-FUNDING-CHECK-ASSESSMENTIDENTIFICATION",
+        "rule": "modify/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTMETHOD",
+        "name": "assessment_method",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "modify of AID-ENTF-FUNDING-CHECK-ASSESSMENTMETHOD",
+        "rule": "modify/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTMODEL",
+        "name": "assessment_model",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "modify of AID-ENTF-FUNDING-CHECK-ASSESSMENTMODEL",
+        "rule": "modify/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTREPRESENTINGDOCUMENT",
+        "name": "assessment_representing_document",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "modify of AID-ENTF-FUNDING-CHECK-ASSESSMENTREPRESENTINGDOCUMENT",
+        "rule": "modify/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTREQUIREDADJUSTMENT",
+        "name": "assessment_required_adjustment",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "modify of AID-ENTF-FUNDING-CHECK-ASSESSMENTREQUIREDADJUSTMENT",
+        "rule": "modify/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTREQUIREMENT",
+        "name": "assessment_requirement",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "modify of AID-ENTF-FUNDING-CHECK-ASSESSMENTREQUIREMENT",
+        "rule": "modify/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTRESULT",
+        "name": "assessment_result",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "modify of AID-ENTF-FUNDING-CHECK-ASSESSMENTRESULT",
+        "rule": "modify/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTSCHEDULE",
+        "name": "assessment_schedule",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "modify of AID-ENTF-FUNDING-CHECK-ASSESSMENTSCHEDULE",
+        "rule": "modify/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTSTATUS",
+        "name": "assessment_status",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "modify of AID-ENTF-FUNDING-CHECK-ASSESSMENTSTATUS",
+        "rule": "modify/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTSUPPORTINGDOCUMENT",
+        "name": "assessment_supporting_document",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "modify of AID-ENTF-FUNDING-CHECK-ASSESSMENTSUPPORTINGDOCUMENT",
+        "rule": "modify/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTTYPE",
+        "name": "assessment_type",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "modify of AID-ENTF-FUNDING-CHECK-ASSESSMENTTYPE",
+        "rule": "modify/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENTF-PARTY-PARTY-REFERENCE",
+        "name": "party_reference",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "retire of AID-ENTF-PARTY-PARTY-REFERENCE",
+        "rule": "retire/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENTF-PARTY-PARTYACTIVITYINDICATOR",
+        "name": "party_activity_indicator",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "retire of AID-ENTF-PARTY-PARTYACTIVITYINDICATOR",
+        "rule": "retire/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENTF-PARTY-PARTYDATETIME",
+        "name": "party_date_time",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "retire of AID-ENTF-PARTY-PARTYDATETIME",
+        "rule": "retire/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENTF-PARTY-PARTYIDENTIFICATION",
+        "name": "party_identification",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "retire of AID-ENTF-PARTY-PARTYIDENTIFICATION",
+        "rule": "retire/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENTF-PARTY-PARTYLEGALSTRUCTURETYPE",
+        "name": "party_legal_structure_type",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "retire of AID-ENTF-PARTY-PARTYLEGALSTRUCTURETYPE",
+        "rule": "retire/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENTF-PARTY-PARTYNAME",
+        "name": "party_name",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "retire of AID-ENTF-PARTY-PARTYNAME",
+        "rule": "retire/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENTF-PARTY-PARTYTYPE",
+        "name": "party_type",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "retire of AID-ENTF-PARTY-PARTYTYPE",
+        "rule": "retire/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENTF-PAYEE-BANK-PARTYINVOLVEMENTTYPE",
+        "name": "party_involvement_type",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "retire of AID-ENTF-PAYEE-BANK-PARTYINVOLVEMENTTYPE",
+        "rule": "retire/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENTF-PAYEE-BANK-PARTYROLENAME",
+        "name": "party_role_name",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "retire of AID-ENTF-PAYEE-BANK-PARTYROLENAME",
+        "rule": "retire/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENTF-PAYEE-BANK-PARTYROLETYPE",
+        "name": "party_role_type",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "retire of AID-ENTF-PAYEE-BANK-PARTYROLETYPE",
+        "rule": "retire/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENTF-PAYEE-BANK-PARTYROLEVALIDITYPERIOD",
+        "name": "party_role_validity_period",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "retire of AID-ENTF-PAYEE-BANK-PARTYROLEVALIDITYPERIOD",
+        "rule": "retire/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENTF-PAYEE-BANK-PAYEEBANKIDENTIFIER",
+        "name": "payee_bank_identifier",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "retire of AID-ENTF-PAYEE-BANK-PAYEEBANKIDENTIFIER",
+        "rule": "retire/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENTF-PAYEE-BANK-PAYMENTINSTRUCTIONINVOLVEMENTTYPE",
+        "name": "payment_instruction_involvement_type",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "retire of AID-ENTF-PAYEE-BANK-PAYMENTINSTRUCTIONINVOLVEMENTTYPE",
+        "rule": "retire/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENTF-PAYEE-PAYEEIDENTIFIER",
+        "name": "payee_identifier",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "modify of AID-ENTF-PAYEE-PAYEEIDENTIFIER",
+        "rule": "modify/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENTF-PAYEE-PAYMENTINSTRUCTIONINVOLVEMENTTYPE",
+        "name": "payment_instruction_involvement_type",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "modify of AID-ENTF-PAYEE-PAYMENTINSTRUCTIONINVOLVEMENTTYPE",
+        "rule": "modify/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENTF-PAYER-BANK-PAYERBANKIDENTIFIER",
+        "name": "payer_bank_identifier",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "retire of AID-ENTF-PAYER-BANK-PAYERBANKIDENTIFIER",
+        "rule": "retire/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENTF-PAYER-BANK-PAYMENTINSTRUCTIONINVOLVEMENTTYPE",
+        "name": "payment_instruction_involvement_type",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "retire of AID-ENTF-PAYER-BANK-PAYMENTINSTRUCTIONINVOLVEMENTTYPE",
+        "rule": "retire/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENTF-PAYER-PAYERIDENTIFIER",
+        "name": "payer_identifier",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "retire of AID-ENTF-PAYER-PAYERIDENTIFIER",
+        "rule": "retire/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENTF-PAYER-PAYMENTINSTRUCTIONINVOLVEMENTTYPE",
+        "name": "payment_instruction_involvement_type",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "retire of AID-ENTF-PAYER-PAYMENTINSTRUCTIONINVOLVEMENTTYPE",
+        "rule": "retire/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-FINANCIALTRANSACTIONAMOUNT",
+        "name": "financial_transaction_amount",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "retire of AID-ENTF-PAYMENT-TRANSACTION-FINANCIALTRANSACTIONAMOUNT",
+        "rule": "retire/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-FINANCIALTRANSACTIONCURRENCY",
+        "name": "financial_transaction_currency",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "retire of AID-ENTF-PAYMENT-TRANSACTION-FINANCIALTRANSACTIONCURRENCY",
+        "rule": "retire/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-FINANCIALTRANSACTIONDATETIME",
+        "name": "financial_transaction_date_time",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "retire of AID-ENTF-PAYMENT-TRANSACTION-FINANCIALTRANSACTIONDATETIME",
+        "rule": "retire/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-FINANCIALTRANSACTIONFROMACCOUNT",
+        "name": "financial_transaction_from_account",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "retire of AID-ENTF-PAYMENT-TRANSACTION-FINANCIALTRANSACTIONFROMACCOUNT",
+        "rule": "retire/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-FINANCIALTRANSACTIONTARGETACCOUNT",
+        "name": "financial_transaction_target_account",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "retire of AID-ENTF-PAYMENT-TRANSACTION-FINANCIALTRANSACTIONTARGETACCOUNT",
+        "rule": "retire/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-FINANCIALTRANSACTIONTYPE",
+        "name": "financial_transaction_type",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "retire of AID-ENTF-PAYMENT-TRANSACTION-FINANCIALTRANSACTIONTYPE",
+        "rule": "retire/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-MONEYTRANSFERINSTRUCTIONREFERENCE",
+        "name": "money_transfer_instruction_reference",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "retire of AID-ENTF-PAYMENT-TRANSACTION-MONEYTRANSFERINSTRUCTIONREFERENCE",
+        "rule": "retire/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-MONEYTRANSFERTRANSACTIONAMOUNT",
+        "name": "money_transfer_transaction_amount",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "retire of AID-ENTF-PAYMENT-TRANSACTION-MONEYTRANSFERTRANSACTIONAMOUNT",
+        "rule": "retire/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-MONEYTRANSFERTRANSACTIONCURRENCY",
+        "name": "money_transfer_transaction_currency",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "retire of AID-ENTF-PAYMENT-TRANSACTION-MONEYTRANSFERTRANSACTIONCURRENCY",
+        "rule": "retire/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-MONEYTRANSFERTRANSACTIONSOURCEACCOUNT",
+        "name": "money_transfer_transaction_source_account",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "retire of AID-ENTF-PAYMENT-TRANSACTION-MONEYTRANSFERTRANSACTIONSOURCEACCOUNT",
+        "rule": "retire/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-MONEYTRANSFERTRANSACTIONTARGETACCOUNT",
+        "name": "money_transfer_transaction_target_account",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "retire of AID-ENTF-PAYMENT-TRANSACTION-MONEYTRANSFERTRANSACTIONTARGETACCOUNT",
+        "rule": "retire/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-MONEYTRANSFERUSEDMETHOD",
+        "name": "money_transfer_used_method",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "retire of AID-ENTF-PAYMENT-TRANSACTION-MONEYTRANSFERUSEDMETHOD",
+        "rule": "retire/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-MONEYTRANSFERVALUEDATE",
+        "name": "money_transfer_value_date",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "retire of AID-ENTF-PAYMENT-TRANSACTION-MONEYTRANSFERVALUEDATE",
+        "rule": "retire/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONAMOUNT",
+        "name": "payment_transaction_amount",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "retire of AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONAMOUNT",
+        "rule": "retire/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONAPPLIEDFEEAMOUNT",
+        "name": "payment_transaction_applied_fee_amount",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "retire of AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONAPPLIEDFEEAMOUNT",
+        "rule": "retire/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONCREDITDEBITINDICATOR",
+        "name": "payment_transaction_credit_debit_indicator",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "retire of AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONCREDITDEBITINDICATOR",
+        "rule": "retire/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONCURRENCY",
+        "name": "payment_transaction_currency",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "retire of AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONCURRENCY",
+        "rule": "retire/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONDATETIME",
+        "name": "payment_transaction_datetime",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "retire of AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONDATETIME",
+        "rule": "retire/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONIDENTIFICATION",
+        "name": "payment_transaction_identification",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "retire of AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONIDENTIFICATION",
+        "rule": "retire/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONPURPOSE",
+        "name": "payment_transaction_purpose",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "retire of AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONPURPOSE",
+        "rule": "retire/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONSTATUS",
+        "name": "payment_transaction_status",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "retire of AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONSTATUS",
+        "rule": "retire/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONTYPE",
+        "name": "payment_transaction_type",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "retire of AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONTYPE",
+        "rule": "retire/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONUSEDMECHANISM",
+        "name": "payment_transaction_used_mechanism",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "retire of AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONUSEDMECHANISM",
+        "rule": "retire/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-TRANSACTIONDATE",
+        "name": "transaction_date",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "retire of AID-ENTF-PAYMENT-TRANSACTION-TRANSACTIONDATE",
+        "rule": "retire/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-TRANSACTIONDESCRIPTION",
+        "name": "transaction_description",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "retire of AID-ENTF-PAYMENT-TRANSACTION-TRANSACTIONDESCRIPTION",
+        "rule": "retire/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-TRANSACTIONIDENTIFICATION",
+        "name": "transaction_identification",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "retire of AID-ENTF-PAYMENT-TRANSACTION-TRANSACTIONIDENTIFICATION",
+        "rule": "retire/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-TRANSACTIONNAME",
+        "name": "transaction_name",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "retire of AID-ENTF-PAYMENT-TRANSACTION-TRANSACTIONNAME",
+        "rule": "retire/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-TRANSACTIONSTATUS",
+        "name": "transaction_status",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "retire of AID-ENTF-PAYMENT-TRANSACTION-TRANSACTIONSTATUS",
+        "rule": "retire/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-TRANSACTIONTYPE",
+        "name": "transaction_type",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "retire of AID-ENTF-PAYMENT-TRANSACTION-TRANSACTIONTYPE",
+        "rule": "retire/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AID-ENTF-PAYMENT-TRANSACTION-UNDERTAKINGTRANSACTIONTYPE",
+        "name": "undertaking_transaction_type",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "retire of AID-ENTF-PAYMENT-TRANSACTION-UNDERTAKINGTRANSACTIONTYPE",
+        "rule": "retire/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "INF-PG-PAY-PROD",
+        "name": "Managed PostgreSQL — payments",
+        "level": "A4",
+        "classification": "review_required",
+        "via": [
+          "PAY-164"
+        ],
+        "cause": "modify of AID-ENT-COMPLIANCE-CHECK",
+        "rule": "modify/down1 → review_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "NET-PAY-PRIVATE",
+        "name": "Payments private network",
+        "level": "A4",
+        "classification": "no_impact",
+        "via": [
+          "PAY-164",
+          "RA4-37"
+        ],
+        "cause": "modify of AID-ENT-COMPLIANCE-CHECK",
+        "rule": "modify/down2+ → no_impact (impact rules 0.5.0)"
+      },
+      {
+        "id": "ZONE-PAY-CLOUD",
+        "name": "Cloud — payments",
+        "level": "A4",
+        "classification": "no_impact",
+        "via": [
+          "PAY-164",
+          "RA4-38",
+          "RA4-39",
+          "RA4-39"
+        ],
+        "cause": "modify of AID-ENT-COMPLIANCE-CHECK",
+        "rule": "modify/down2+ → no_impact (impact rules 0.5.0)"
+      },
+      {
+        "id": "ZONE-PAY-INTERNAL",
+        "name": "Internal network — payments",
+        "level": "A4",
+        "classification": "no_impact",
+        "via": [
+          "PAY-164",
+          "RA4-38",
+          "RA4-39"
+        ],
+        "cause": "modify of AID-ENT-COMPLIANCE-CHECK",
+        "rule": "modify/down2+ → no_impact (impact rules 0.5.0)"
+      },
+      {
+        "id": "ZONE-PAY-PRIVATE",
+        "name": "Payments private network zone",
+        "level": "A4",
+        "classification": "no_impact",
+        "via": [
+          "PAY-164",
+          "RA4-38"
+        ],
+        "cause": "modify of AID-ENT-COMPLIANCE-CHECK",
+        "rule": "modify/down2+ → no_impact (impact rules 0.5.0)"
+      }
+    ],
+    "mappings_to_supersede": [],
+    "changed": [
+      "AID-ENT-COMPLIANCE-CHECK",
+      "AID-ENTF-COMPLIANCE-CHECK-COMPLIANCECHECKTYPE",
+      "AID-ENT-FUNDING-CHECK",
+      "AID-ENTF-FUNDING-CHECK-ASSESSMENTTYPE",
+      "AID-ENTF-FUNDING-CHECK-ASSESSMENTMETHOD",
+      "AID-ENTF-FUNDING-CHECK-ASSESSMENTSCHEDULE",
+      "AID-ENTF-FUNDING-CHECK-ASSESSMENTDESCRIPTION",
+      "AID-ENTF-FUNDING-CHECK-ASSESSMENTMODEL",
+      "AID-ENTF-FUNDING-CHECK-ASSESSMENTDATETIME",
+      "AID-ENTF-FUNDING-CHECK-ASSESSMENTRESULT",
+      "AID-ENTF-FUNDING-CHECK-ASSESSMENTSUPPORTINGDOCUMENT",
+      "AID-ENTF-FUNDING-CHECK-ASSESSMENTREPRESENTINGDOCUMENT",
+      "AID-ENTF-FUNDING-CHECK-ASSESSMENTREQUIREDADJUSTMENT",
+      "AID-ENTF-FUNDING-CHECK-ASSESSMENTREQUIREMENT",
+      "AID-ENTF-FUNDING-CHECK-ASSESSMENTEXPIRYDATE",
+      "AID-ENTF-FUNDING-CHECK-ASSESSMENTSTATUS",
+      "AID-ENTF-FUNDING-CHECK-ASSESSMENTIDENTIFICATION",
+      "AID-ENT-PAYEE",
+      "AID-ENTF-PAYEE-PAYEEIDENTIFIER",
+      "AID-ENTF-PAYEE-PAYMENTINSTRUCTIONINVOLVEMENTTYPE",
+      "AID-ENT-ACCOUNT",
+      "AID-ENTF-ACCOUNT-ACCOUNTSTATUS",
+      "AID-ENTF-ACCOUNT-ACCOUNTIDENTIFICATION",
+      "AID-ENTF-ACCOUNT-ACCOUNTDATE",
+      "AID-ENTF-ACCOUNT-ACCOUNTTYPE",
+      "AID-ENTF-ACCOUNT-ACCOUNTPURPOSE",
+      "AID-ENTF-ACCOUNT-ACCOUNTBALANCE",
+      "AID-ENTF-ACCOUNT-ACCOUNTCURRENCY",
+      "AID-ENTF-ACCOUNT-ACCOUNTDESCRIPTION",
+      "AID-ENTF-ACCOUNT-ACCOUNTNAME",
+      "AID-ENTF-ACCOUNT-LOGTYPE",
+      "AID-ENTF-ACCOUNT-LOGPERIOD",
+      "AID-ENTF-ACCOUNT-LOGDATE",
+      "AID-ENTF-ACCOUNT-LOGIDENTIFICATION",
+      "AID-ENT-PARTY",
+      "AID-ENTF-PARTY-PARTY-REFERENCE",
+      "AID-ENTF-PARTY-PARTYNAME",
+      "AID-ENTF-PARTY-PARTYTYPE",
+      "AID-ENTF-PARTY-PARTYDATETIME",
+      "AID-ENTF-PARTY-PARTYIDENTIFICATION",
+      "AID-ENTF-PARTY-PARTYLEGALSTRUCTURETYPE",
+      "AID-ENTF-PARTY-PARTYACTIVITYINDICATOR",
+      "AID-ENT-PAYEE-BANK",
+      "AID-ENTF-PAYEE-BANK-PAYEEBANKIDENTIFIER",
+      "AID-ENTF-PAYEE-BANK-PAYMENTINSTRUCTIONINVOLVEMENTTYPE",
+      "AID-ENTF-PAYEE-BANK-PARTYROLETYPE",
+      "AID-ENTF-PAYEE-BANK-PARTYROLENAME",
+      "AID-ENTF-PAYEE-BANK-PARTYROLEVALIDITYPERIOD",
+      "AID-ENTF-PAYEE-BANK-PARTYINVOLVEMENTTYPE",
+      "AID-ENT-PAYER",
+      "AID-ENTF-PAYER-PAYERIDENTIFIER",
+      "AID-ENTF-PAYER-PAYMENTINSTRUCTIONINVOLVEMENTTYPE",
+      "AID-ENT-PAYER-BANK",
+      "AID-ENTF-PAYER-BANK-PAYERBANKIDENTIFIER",
+      "AID-ENTF-PAYER-BANK-PAYMENTINSTRUCTIONINVOLVEMENTTYPE",
+      "AID-ENT-PAYMENT-TRANSACTION",
+      "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONTYPE",
+      "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONAMOUNT",
+      "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONIDENTIFICATION",
+      "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONUSEDMECHANISM",
+      "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONDATETIME",
+      "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONPURPOSE",
+      "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONSTATUS",
+      "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONAPPLIEDFEEAMOUNT",
+      "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONCURRENCY",
+      "AID-ENTF-PAYMENT-TRANSACTION-PAYMENTTRANSACTIONCREDITDEBITINDICATOR",
+      "AID-ENTF-PAYMENT-TRANSACTION-TRANSACTIONIDENTIFICATION",
+      "AID-ENTF-PAYMENT-TRANSACTION-TRANSACTIONDATE",
+      "AID-ENTF-PAYMENT-TRANSACTION-TRANSACTIONTYPE",
+      "AID-ENTF-PAYMENT-TRANSACTION-TRANSACTIONDESCRIPTION",
+      "AID-ENTF-PAYMENT-TRANSACTION-TRANSACTIONSTATUS",
+      "AID-ENTF-PAYMENT-TRANSACTION-TRANSACTIONNAME",
+      "AID-ENTF-PAYMENT-TRANSACTION-UNDERTAKINGTRANSACTIONTYPE",
+      "AID-ENTF-PAYMENT-TRANSACTION-MONEYTRANSFERTRANSACTIONAMOUNT",
+      "AID-ENTF-PAYMENT-TRANSACTION-MONEYTRANSFERTRANSACTIONCURRENCY",
+      "AID-ENTF-PAYMENT-TRANSACTION-MONEYTRANSFERTRANSACTIONSOURCEACCOUNT",
+      "AID-ENTF-PAYMENT-TRANSACTION-MONEYTRANSFERTRANSACTIONTARGETACCOUNT",
+      "AID-ENTF-PAYMENT-TRANSACTION-MONEYTRANSFERINSTRUCTIONREFERENCE",
+      "AID-ENTF-PAYMENT-TRANSACTION-MONEYTRANSFERUSEDMETHOD",
+      "AID-ENTF-PAYMENT-TRANSACTION-MONEYTRANSFERVALUEDATE",
+      "AID-ENTF-PAYMENT-TRANSACTION-FINANCIALTRANSACTIONTYPE",
+      "AID-ENTF-PAYMENT-TRANSACTION-FINANCIALTRANSACTIONCURRENCY",
+      "AID-ENTF-PAYMENT-TRANSACTION-FINANCIALTRANSACTIONAMOUNT",
+      "AID-ENTF-PAYMENT-TRANSACTION-FINANCIALTRANSACTIONFROMACCOUNT",
+      "AID-ENTF-PAYMENT-TRANSACTION-FINANCIALTRANSACTIONTARGETACCOUNT",
+      "AID-ENTF-PAYMENT-TRANSACTION-FINANCIALTRANSACTIONDATETIME"
+    ],
+    "coverage": {
+      "A1": {
+        "present": true,
+        "reached": true,
+        "result": "impact_detected",
+        "classification": "review_required",
+        "related_within_layer": [],
+        "records": [
+          {
+            "id": "BO-PAYEE",
+            "classification": "review_required",
+            "via": [
+              "PAY-158"
+            ],
+            "rule": "modify/up1 → review_required (impact rules 0.5.0)"
+          }
+        ],
+        "paths": [
+          "PAY-158"
+        ],
+        "unapproved_links": [],
+        "unmapped_records": [
+          "ACT-PAY-01a",
+          "ACT-PAY-01b",
+          "ACT-PAY-02a",
+          "ACT-PAY-02b",
+          "BEV-PAY-CUTOFF",
+          "BEV-PAY-RECEIVED",
+          "CAP-PAY-000",
+          "CHN-MOBILE",
+          "VSS-P1",
+          "VSS-P2",
+          "VSS-P3",
+          "VSS-P4"
+        ],
+        "unmapped_count": 12,
+        "evidence": "incomplete",
+        "confirmed": false,
+        "reason": "1 record(s) reached through approved links; the strongest rule gives review_required; evidence incomplete: 0 link(s) not approved, 12 record(s) with no approved link where one is expected"
+      },
+      "A2": {
+        "present": true,
+        "reached": true,
+        "result": "impact_detected",
+        "classification": "review_required",
+        "related_within_layer": [],
+        "records": [
+          {
+            "id": "BBO-COMPLIANCE-CHECK",
+            "classification": "review_required",
+            "via": [
+              "PAY-116"
+            ],
+            "rule": "modify/up1 → review_required (impact rules 0.5.0)"
+          },
+          {
+            "id": "BBO-FUNDING-CHECK",
+            "classification": "review_required",
+            "via": [
+              "PAY-118"
+            ],
+            "rule": "modify/up1 → review_required (impact rules 0.5.0)"
+          },
+          {
+            "id": "BBO-PAYEE",
+            "classification": "review_required",
+            "via": [
+              "PAY-133"
+            ],
+            "rule": "modify/up1 → review_required (impact rules 0.5.0)"
+          },
+          {
+            "id": "BBOA-COMPLIANCE-CHECK-COMPLIANCE-CHECK-TYPE",
+            "classification": "review_required",
+            "via": [
+              "PAY-117"
+            ],
+            "rule": "modify/up1 → review_required (impact rules 0.5.0)"
+          },
+          {
+            "id": "BBOA-FUNDING-CHECK-ASSESSMENT-DATE-TIME",
+            "classification": "review_required",
+            "via": [
+              "PAY-124"
+            ],
+            "rule": "modify/up1 → review_required (impact rules 0.5.0)"
+          },
+          {
+            "id": "BBOA-FUNDING-CHECK-ASSESSMENT-DESCRIPTION",
+            "classification": "review_required",
+            "via": [
+              "PAY-122"
+            ],
+            "rule": "modify/up1 → review_required (impact rules 0.5.0)"
+          },
+          {
+            "id": "BBOA-FUNDING-CHECK-ASSESSMENT-EXPIRY-DATE",
+            "classification": "review_required",
+            "via": [
+              "PAY-130"
+            ],
+            "rule": "modify/up1 → review_required (impact rules 0.5.0)"
+          },
+          {
+            "id": "BBOA-FUNDING-CHECK-ASSESSMENT-IDENTIFICATION",
+            "classification": "review_required",
+            "via": [
+              "PAY-132"
+            ],
+            "rule": "modify/up1 → review_required (impact rules 0.5.0)"
+          },
+          {
+            "id": "BBOA-FUNDING-CHECK-ASSESSMENT-METHOD",
+            "classification": "review_required",
+            "via": [
+              "PAY-120"
+            ],
+            "rule": "modify/up1 → review_required (impact rules 0.5.0)"
+          },
+          {
+            "id": "BBOA-FUNDING-CHECK-ASSESSMENT-MODEL",
+            "classification": "review_required",
+            "via": [
+              "PAY-123"
+            ],
+            "rule": "modify/up1 → review_required (impact rules 0.5.0)"
+          },
+          {
+            "id": "BBOA-FUNDING-CHECK-ASSESSMENT-REPRESENTING-DOCUMENT",
+            "classification": "review_required",
+            "via": [
+              "PAY-127"
+            ],
+            "rule": "modify/up1 → review_required (impact rules 0.5.0)"
+          },
+          {
+            "id": "BBOA-FUNDING-CHECK-ASSESSMENT-REQUIRED-ADJUSTMENT",
+            "classification": "review_required",
+            "via": [
+              "PAY-128"
+            ],
+            "rule": "modify/up1 → review_required (impact rules 0.5.0)"
+          },
+          {
+            "id": "BBOA-FUNDING-CHECK-ASSESSMENT-REQUIREMENT",
+            "classification": "review_required",
+            "via": [
+              "PAY-129"
+            ],
+            "rule": "modify/up1 → review_required (impact rules 0.5.0)"
+          },
+          {
+            "id": "BBOA-FUNDING-CHECK-ASSESSMENT-RESULT",
+            "classification": "review_required",
+            "via": [
+              "PAY-125"
+            ],
+            "rule": "modify/up1 → review_required (impact rules 0.5.0)"
+          },
+          {
+            "id": "BBOA-FUNDING-CHECK-ASSESSMENT-SCHEDULE",
+            "classification": "review_required",
+            "via": [
+              "PAY-121"
+            ],
+            "rule": "modify/up1 → review_required (impact rules 0.5.0)"
+          },
+          {
+            "id": "BBOA-FUNDING-CHECK-ASSESSMENT-STATUS",
+            "classification": "review_required",
+            "via": [
+              "PAY-131"
+            ],
+            "rule": "modify/up1 → review_required (impact rules 0.5.0)"
+          },
+          {
+            "id": "BBOA-FUNDING-CHECK-ASSESSMENT-SUPPORTING-DOCUMENT",
+            "classification": "review_required",
+            "via": [
+              "PAY-126"
+            ],
+            "rule": "modify/up1 → review_required (impact rules 0.5.0)"
+          },
+          {
+            "id": "BBOA-FUNDING-CHECK-ASSESSMENT-TYPE",
+            "classification": "review_required",
+            "via": [
+              "PAY-119"
+            ],
+            "rule": "modify/up1 → review_required (impact rules 0.5.0)"
+          },
+          {
+            "id": "BBOA-PAYEE-PAYEE-IDENTIFIER",
+            "classification": "review_required",
+            "via": [
+              "PAY-134"
+            ],
+            "rule": "modify/up1 → review_required (impact rules 0.5.0)"
+          },
+          {
+            "id": "BBOA-PAYEE-PAYMENT-INSTRUCTION-INVOLVEMENT-TYPE",
+            "classification": "review_required",
+            "via": [
+              "PAY-135"
+            ],
+            "rule": "modify/up1 → review_required (impact rules 0.5.0)"
+          }
+        ],
+        "paths": [
+          "PAY-116",
+          "PAY-117",
+          "PAY-118",
+          "PAY-119",
+          "PAY-120",
+          "PAY-121",
+          "PAY-122",
+          "PAY-123",
+          "PAY-124",
+          "PAY-125",
+          "PAY-126",
+          "PAY-127",
+          "PAY-128",
+          "PAY-129",
+          "PAY-130",
+          "PAY-131",
+          "PAY-132",
+          "PAY-133",
+          "PAY-134",
+          "PAY-135"
+        ],
+        "unapproved_links": [],
+        "unmapped_records": [
+          "BBO-PARTY",
+          "BBO-PAYEE-BANK",
+          "BBO-PAYER",
+          "BBO-PAYER-BANK",
+          "BBOA-ACCOUNT-ACCOUNT-BALANCE",
+          "BBOA-ACCOUNT-ACCOUNT-DATE",
+          "BBOA-ACCOUNT-ACCOUNT-DESCRIPTION",
+          "BBOA-ACCOUNT-ACCOUNT-NAME",
+          "BBOA-ACCOUNT-ACCOUNT-PURPOSE",
+          "BBOA-ACCOUNT-ACCOUNT-STATUS",
+          "BBOA-ACCOUNT-ACCOUNT-TYPE",
+          "BBOA-ACCOUNT-LOG-DATE",
+          "BBOA-ACCOUNT-LOG-IDENTIFICATION",
+          "BBOA-ACCOUNT-LOG-PERIOD",
+          "BBOA-ACCOUNT-LOG-TYPE",
+          "BBOA-AMOUNT",
+          "BBOA-PARTY-PARTY-ACTIVITY-INDICATOR",
+          "BBOA-PARTY-PARTY-DATE-TIME",
+          "BBOA-PARTY-PARTY-IDENTIFICATION",
+          "BBOA-PARTY-PARTY-LEGAL-STRUCTURE-TYPE",
+          "BBOA-PARTY-PARTY-NAME",
+          "BBOA-PARTY-PARTY-TYPE",
+          "BBOA-PARTY-REF",
+          "BBOA-PAYEE-BANK-PARTY-INVOLVEMENT-TYPE",
+          "BBOA-PAYEE-BANK-PARTY-ROLE-NAME"
+        ],
+        "unmapped_count": 68,
+        "evidence": "incomplete",
+        "confirmed": false,
+        "reason": "20 record(s) reached through approved links; the strongest rule gives review_required; evidence incomplete: 0 link(s) not approved, 68 record(s) with no approved link where one is expected"
+      },
+      "A3": {
+        "present": true,
+        "reached": true,
+        "result": "impact_detected",
+        "classification": "design_change_required",
+        "related_within_layer": [],
+        "records": [
+          {
+            "id": "AID-ENT-COMPLIANCE-CHECK",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "modify/self → design_change_required (impact rules 0.5.0)"
+          },
+          {
+            "id": "AID-ENT-FUNDING-CHECK",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "modify/self → design_change_required (impact rules 0.5.0)"
+          },
+          {
+            "id": "AID-ENT-PAYEE",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "modify/self → design_change_required (impact rules 0.5.0)"
+          },
+          {
+            "id": "AID-ENTF-COMPLIANCE-CHECK-COMPLIANCECHECKTYPE",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "modify/self → design_change_required (impact rules 0.5.0)"
+          },
+          {
+            "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTDATETIME",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "modify/self → design_change_required (impact rules 0.5.0)"
+          },
+          {
+            "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTDESCRIPTION",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "modify/self → design_change_required (impact rules 0.5.0)"
+          },
+          {
+            "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTEXPIRYDATE",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "modify/self → design_change_required (impact rules 0.5.0)"
+          },
+          {
+            "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTIDENTIFICATION",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "modify/self → design_change_required (impact rules 0.5.0)"
+          },
+          {
+            "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTMETHOD",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "modify/self → design_change_required (impact rules 0.5.0)"
+          },
+          {
+            "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTMODEL",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "modify/self → design_change_required (impact rules 0.5.0)"
+          },
+          {
+            "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTREPRESENTINGDOCUMENT",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "modify/self → design_change_required (impact rules 0.5.0)"
+          },
+          {
+            "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTREQUIREDADJUSTMENT",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "modify/self → design_change_required (impact rules 0.5.0)"
+          },
+          {
+            "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTREQUIREMENT",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "modify/self → design_change_required (impact rules 0.5.0)"
+          },
+          {
+            "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTRESULT",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "modify/self → design_change_required (impact rules 0.5.0)"
+          },
+          {
+            "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTSCHEDULE",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "modify/self → design_change_required (impact rules 0.5.0)"
+          },
+          {
+            "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTSTATUS",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "modify/self → design_change_required (impact rules 0.5.0)"
+          },
+          {
+            "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTSUPPORTINGDOCUMENT",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "modify/self → design_change_required (impact rules 0.5.0)"
+          },
+          {
+            "id": "AID-ENTF-FUNDING-CHECK-ASSESSMENTTYPE",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "modify/self → design_change_required (impact rules 0.5.0)"
+          },
+          {
+            "id": "AID-ENTF-PAYEE-PAYEEIDENTIFIER",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "modify/self → design_change_required (impact rules 0.5.0)"
+          },
+          {
+            "id": "AID-ENTF-PAYEE-PAYMENTINSTRUCTIONINVOLVEMENTTYPE",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "modify/self → design_change_required (impact rules 0.5.0)"
+          }
+        ],
+        "paths": [],
+        "unapproved_links": [],
+        "unmapped_records": [
+          "API-PI-06",
+          "CMP-PAY-CAPTURE",
+          "CMP-PAY-VALIDATE",
+          "F-ACCOUNT-CACHE-CACHED-AT",
+          "F-ACCOUNT-CACHE-HOLDER-REFERENCE",
+          "F-ACCOUNT-CACHE-IBAN",
+          "F-PAY-EVENT-EVENT-ID",
+          "F-PAY-EVENT-EVENT-TYPE",
+          "F-PAY-EVENT-OCCURRED-AT",
+          "F-PAY-EVENT-PAYMENT-INSTRUCTION-REFERENCE",
+          "F-PAY-INSTR-AUTHORISATION-STATUS",
+          "F-PAY-INSTR-CHANNEL-ID",
+          "F-PAY-INSTR-EXECUTION-REFERENCE"
+        ],
+        "unmapped_count": 13,
+        "evidence": "incomplete",
+        "confirmed": false,
+        "reason": "20 record(s) reached through approved links; the strongest rule gives design_change_required; evidence incomplete: 0 link(s) not approved, 13 record(s) with no approved link where one is expected"
+      },
+      "A4": {
+        "present": true,
+        "reached": true,
+        "result": "impact_detected",
+        "classification": "review_required",
+        "related_within_layer": [],
+        "records": [
+          {
+            "id": "INF-PG-PAY-PROD",
+            "classification": "review_required",
+            "via": [
+              "PAY-164"
+            ],
+            "rule": "modify/down1 → review_required (impact rules 0.5.0)"
+          },
+          {
+            "id": "NET-PAY-PRIVATE",
+            "classification": "no_impact",
+            "via": [
+              "PAY-164",
+              "RA4-37"
+            ],
+            "rule": "modify/down2+ → no_impact (impact rules 0.5.0)"
+          },
+          {
+            "id": "ZONE-PAY-CLOUD",
+            "classification": "no_impact",
+            "via": [
+              "PAY-164",
+              "RA4-38",
+              "RA4-39",
+              "RA4-39"
+            ],
+            "rule": "modify/down2+ → no_impact (impact rules 0.5.0)"
+          },
+          {
+            "id": "ZONE-PAY-INTERNAL",
+            "classification": "no_impact",
+            "via": [
+              "PAY-164",
+              "RA4-38",
+              "RA4-39"
+            ],
+            "rule": "modify/down2+ → no_impact (impact rules 0.5.0)"
+          },
+          {
+            "id": "ZONE-PAY-PRIVATE",
+            "classification": "no_impact",
+            "via": [
+              "PAY-164",
+              "RA4-38"
+            ],
+            "rule": "modify/down2+ → no_impact (impact rules 0.5.0)"
+          }
+        ],
+        "paths": [
+          "PAY-164",
+          "RA4-37",
+          "RA4-38",
+          "RA4-39"
+        ],
+        "unapproved_links": [],
+        "unmapped_records": [
+          "DEV-PAY-HSM",
+          "INF-CORE-LEDGER-HOST",
+          "TS-APIGW",
+          "TS-HSM-SIGN"
+        ],
+        "unmapped_count": 4,
+        "evidence": "incomplete",
+        "confirmed": false,
+        "reason": "5 record(s) reached through approved links; the strongest rule gives review_required; evidence incomplete: 0 link(s) not approved, 4 record(s) with no approved link where one is expected"
+      }
+    },
+    "basis": {
+      "rules_version": "0.5.0",
+      "files": {
+        "a1-business.json": "531ab8f05d36398c1ccbfc613b1b2cb9d074f5610e61ccd89abc7df239902f2a",
+        "a2-service-domain.json": "4a98036138e2bd58cd3b937ee4611a320e3c90c9b90139374055956ff97a9ea5",
+        "a3-application.json": "ef6176961231b1bcc02aca10ebeb4a552ef3fea5cfd6dcdee1458d990908aedd",
+        "a4-technology.json": "cc9051d823d90d9f0908694e1b54f66866121c3fc6f095a2d63935be2f45362c",
+        "mappings.json": "aee49f4e05c2d9ae2c51fb209668d6704b2a7f094237d92edba2fadab59fc13a",
+        "requirements.json": "508c4cd476074239e9788464171776f0ff0b83f078c899952a22b2671ee3f430"
+      },
+      "approved_links": 69,
+      "approved_links_sha256": "3656bae2270baae7e561a6ee1abb9a1c242ab87c44ffda62c75c4f1adc908294"
+    }
+  }
+}

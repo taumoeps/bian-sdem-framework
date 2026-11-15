@@ -1,0 +1,59 @@
+{
+  "id": "CS-006",
+  "layer": "A4",
+  "reason": "sdem aid AID-001: inferred records and links, each marked inferred (AID-W02) — confirm or reject them with sdem aid confirm|reject",
+  "changes": [],
+  "relationships": {
+    "add": [
+      {
+        "source": "PATH-PAY-CORE-HSM",
+        "kind": "association",
+        "target": "INF-CORE-LEDGER-HOST",
+        "inferred": {
+          "by": "sdem aid",
+          "run": "AID-001",
+          "at": "2026-11-15T18:58:36+00:00",
+          "requested_by": "a tester",
+          "step": "attributes",
+          "rule": "AID-A03",
+          "source": "docs/design/sdem-full-design-metamodel-design.md AT-01",
+          "reasoning": "PATH-PAY-CORE-HSM.from names INF-CORE-LEDGER-HOST",
+          "confidence": "high",
+          "evidence_class": "attribute_join",
+          "from": "PATH-PAY-CORE-HSM"
+        }
+      },
+      {
+        "source": "PATH-PAY-CORE-HSM",
+        "kind": "association",
+        "target": "DEV-PAY-HSM",
+        "inferred": {
+          "by": "sdem aid",
+          "run": "AID-001",
+          "at": "2026-11-15T18:58:36+00:00",
+          "requested_by": "a tester",
+          "step": "attributes",
+          "rule": "AID-A03",
+          "source": "docs/design/sdem-full-design-metamodel-design.md AT-01",
+          "reasoning": "PATH-PAY-CORE-HSM.to names DEV-PAY-HSM",
+          "confidence": "high",
+          "evidence_class": "attribute_join",
+          "from": "PATH-PAY-CORE-HSM"
+        }
+      }
+    ],
+    "remove": []
+  },
+  "adopted": true,
+  "agent": "architect",
+  "person": "a tester",
+  "created_at": "2026-11-15T18:58:53+00:00",
+  "work_items": [],
+  "event": "CE-006",
+  "branch": "main",
+  "dataset": {
+    "file": "a4-technology.json",
+    "before_sha256": "e82a8e442abbe8329f66384fc490bda4db7b1228bdd7f37dd1f879d944f666ec",
+    "after_sha256": "8a55d009214c2576a0e4eb577960a3fce4376f857bcde68f3bbe4c9346dfc02e"
+  }
+}

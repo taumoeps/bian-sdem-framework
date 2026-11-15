@@ -1917,6 +1917,102 @@
           "edges": 28
         }
       ]
+    },
+    {
+      "build": 22,
+      "at": "2026-11-15T20:17:00+00:00",
+      "inputs": [
+        {
+          "path": "examples/legacy-core-ledger//a1-business.json",
+          "kind": "export",
+          "level": "A1",
+          "model_id": "synthetic-bank-ledger-a1-draft",
+          "model_version": "2026.10",
+          "sha256": "50b4b041ad8be825027397f7c06633f9f019c787a805ff2b222619fe13ed4c55"
+        },
+        {
+          "path": "examples/legacy-core-ledger//a2-service-domain.json",
+          "kind": "export",
+          "level": "A2",
+          "model_id": "synthetic-bank-ledger-a2",
+          "model_version": "2026.10",
+          "sha256": "7d12f58c7d7b682929ab9e9d7833f9b915937541be94e5f0753b7286cdc3c630"
+        },
+        {
+          "path": "examples/legacy-core-ledger//a3-application.json",
+          "kind": "export",
+          "level": "A3",
+          "model_id": "synthetic-bank-ledger-a3",
+          "model_version": "2026.10",
+          "sha256": "816f5108bd1b3bdb6ea2c3e09425c2bab588d8f909613114f0a55b8d6568585c"
+        },
+        {
+          "path": "examples/legacy-core-ledger//a4-technology.json",
+          "kind": "export",
+          "level": "A4",
+          "model_id": "synthetic-bank-ledger-a4",
+          "model_version": "2026.10",
+          "sha256": "a7649baaff646be7197120b408a59639bd893ccbbfaef41fbc72d28c4ee040f3"
+        },
+        {
+          "path": "examples/legacy-core-ledger//mappings.json",
+          "kind": "registry",
+          "registry_version": "0.4.0",
+          "sha256": "4dd22d1c6658b47e58857afeb38308f94c6b72156c85baaa250b4d10260cc2ab"
+        }
+      ],
+      "metamodel_version": "0.17.0",
+      "errors": [],
+      "warnings": [
+        "level A2 (synthetic-bank-ledger-a2): instance BD-OPS: 0 composition links with A2.BusinessArea, RA2-01 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-bank-ledger-a2): instance BD-REF: 0 composition links with A2.BusinessArea, RA2-01 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-bank-ledger-a2): instance BBO-ACCOUNT: 0 composition links with A2.BusinessObjectAttribute, RA2-10 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-bank-ledger-a2): instance BBO-POSTING: 0 composition links with A2.BusinessObjectAttribute, RA2-10 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-bank-ledger-a2): instance BBO-PAYMENT-TXN: 0 composition links with A2.BusinessObjectAttribute, RA2-10 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-bank-ledger-a2): instance BBO-PARTY: 0 composition links with A2.BusinessObjectAttribute, RA2-10 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-bank-ledger-a2): instance BBO-ACCOUNT: is thin — its 8 field(s) are names only; give each as a record (BusinessObjectAttribute, composed of BBO-ACCOUNT) — sdem bian import --objects or sdem aid fills them (LC-23)",
+        "level A2 (synthetic-bank-ledger-a2): instance BBO-POSTING: is thin — its 7 field(s) are names only; give each as a record (BusinessObjectAttribute, composed of BBO-POSTING) — sdem bian import --objects or sdem aid fills them (LC-23)",
+        "level A2 (synthetic-bank-ledger-a2): instance BBO-PAYMENT-TXN: is thin — its 8 field(s) are names only; give each as a record (BusinessObjectAttribute, composed of BBO-PAYMENT-TXN) — sdem bian import --objects or sdem aid fills them (LC-23)",
+        "level A2 (synthetic-bank-ledger-a2): instance BBO-PARTY: is thin — its 6 field(s) are names only; give each as a record (BusinessObjectAttribute, composed of BBO-PARTY) — sdem bian import --objects or sdem aid fills them (LC-23)",
+        "level A3 (synthetic-bank-ledger-a3): instance ENT-ACCOUNT: is thin — its 9 field(s) are names only; give each as a record (DataAttribute, composed of ENT-ACCOUNT) — sdem bian import --objects or sdem aid fills them (LC-23)",
+        "level A3 (synthetic-bank-ledger-a3): instance ENT-POSTING: is thin — its 8 field(s) are names only; give each as a record (DataAttribute, composed of ENT-POSTING) — sdem bian import --objects or sdem aid fills them (LC-23)",
+        "level A3 (synthetic-bank-ledger-a3): instance ENT-PAYMENT: is thin — its 8 field(s) are names only; give each as a record (DataAttribute, composed of ENT-PAYMENT) — sdem bian import --objects or sdem aid fills them (LC-23)",
+        "level A3 (synthetic-bank-ledger-a3): instance ENT-PARTY: is thin — its 7 field(s) are names only; give each as a record (DataAttribute, composed of ENT-PARTY) — sdem bian import --objects or sdem aid fills them (LC-23)",
+        "level A3 (synthetic-bank-ledger-a3): instance ENT-AUDIT: is thin — its 4 field(s) are names only; give each as a record (DataAttribute, composed of ENT-AUDIT) — sdem bian import --objects or sdem aid fills them (LC-23)"
+      ],
+      "result": "accepted",
+      "outputs": [
+        {
+          "file": "a1-business.graph.json",
+          "sha256": "83cf41ab02a0067a3e8e74025eb342f938cbcbea46376f2bdca3a42d6699ebc7",
+          "nodes": 6,
+          "edges": 0
+        },
+        {
+          "file": "a2-service-domain.graph.json",
+          "sha256": "4c9fe10269995b6c13130cd0da79691efc3f3d8a2d4d27961210fcb418748bbf",
+          "nodes": 42,
+          "edges": 57
+        },
+        {
+          "file": "a3-application.graph.json",
+          "sha256": "c211dd618c9723820a8997108d32989ad9b6ca0ba8fcab29c10304cf70172998",
+          "nodes": 32,
+          "edges": 32
+        },
+        {
+          "file": "a4-technology.graph.json",
+          "sha256": "9a45ed460c46c068019595a6719ae0699a397594249e151fa038a4dcf2b9231f",
+          "nodes": 8,
+          "edges": 7
+        },
+        {
+          "file": "federated.graph.json",
+          "sha256": "231ee1c47dfe068aa81357f21cf6ba786eb2a165d9d7d5901b526cfe223276a2",
+          "nodes": 51,
+          "edges": 28
+        }
+      ]
     }
   ]
 }

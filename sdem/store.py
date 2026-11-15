@@ -62,6 +62,7 @@ def local_graph(doc, mm, export_sha):
         e = {'id': base if seen[base] == 1 else f'{base}#{seen[base]}', 'source': key(lvl, s['id'], s['version']), 'target': key(lvl, t['id'], t['version']),
              'relation': r['kind'], 'metadata': {'scope': 'within-level', 'row': _row(mm, lvl, s['type'], r['kind'], t['type'])}}
         if r.get('name'): e['label'] = r['name']
+        if r.get('inferred'): e['metadata']['inferred'] = r['inferred']   # a link sdem aid inferred keeps its mark (AID-Z, AID-C, AID-A03)
         edges.append(e)
     meta = {'sdem_store_version': STORE_VERSION, 'export_sha256': export_sha}
     meta.update({k: doc[k] for k in EXPORT_HEADER if k in doc})
@@ -105,6 +106,7 @@ def _export_doc(g):
     for e in g['edges']:
         r = {'source': by_key[e['source']], 'kind': e['relation'], 'target': by_key[e['target']]}
         if 'label' in e: r['name'] = e['label']
+        if (e.get('metadata') or {}).get('inferred'): r['inferred'] = e['metadata']['inferred']
         rels.append(r)
     doc['instances'] = inst; doc['relationships'] = rels
     return doc

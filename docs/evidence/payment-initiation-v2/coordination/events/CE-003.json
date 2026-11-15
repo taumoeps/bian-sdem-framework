@@ -1,0 +1,783 @@
+{
+  "id": "CE-003",
+  "change_set": "CS-003",
+  "layer": "A3",
+  "round": 1,
+  "at": "2026-11-15T18:58:36+00:00",
+  "agent": "architect",
+  "person": "a tester",
+  "impact": {
+    "records": [
+      {
+        "id": "BO-PAY-INSTR",
+        "name": "Payment Instruction",
+        "level": "A1",
+        "classification": "no_impact",
+        "via": [
+          "PAY-107",
+          "PAY-005"
+        ],
+        "cause": "modify of ENT-PAY-INSTR",
+        "rule": "modify/up2+ → no_impact (impact rules 0.5.0)"
+      },
+      {
+        "id": "BBO-PAY-INSTR",
+        "name": "Payment Instruction",
+        "level": "A2",
+        "classification": "review_required",
+        "via": [
+          "PAY-107"
+        ],
+        "cause": "modify of ENT-PAY-INSTR",
+        "rule": "modify/up1 → review_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "SO-PI-01",
+        "name": "Initiate Payment Instruction",
+        "level": "A2",
+        "classification": "review_required",
+        "via": [
+          "PAY-101"
+        ],
+        "cause": "modify of API-PI-01",
+        "rule": "modify/up1 → review_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "SO-PI-02",
+        "name": "Evaluate Payment Instruction Validation",
+        "level": "A2",
+        "classification": "review_required",
+        "via": [
+          "PAY-102"
+        ],
+        "cause": "modify of API-PI-02",
+        "rule": "modify/up1 → review_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "SO-PI-03",
+        "name": "Execute Payment Instruction Execution",
+        "level": "A2",
+        "classification": "review_required",
+        "via": [
+          "PAY-103"
+        ],
+        "cause": "modify of API-PI-03",
+        "rule": "modify/up1 → review_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "SO-PI-04",
+        "name": "Retrieve Payment Instruction",
+        "level": "A2",
+        "classification": "review_required",
+        "via": [
+          "PAY-104"
+        ],
+        "cause": "modify of API-PI-04",
+        "rule": "modify/up1 → review_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "SO-PI-05",
+        "name": "Update Payment Instruction",
+        "level": "A2",
+        "classification": "review_required",
+        "via": [
+          "PAY-105"
+        ],
+        "cause": "modify of API-PI-05",
+        "rule": "modify/up1 → review_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "AFN-PAY-VALIDATE",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "AFN-PAY-VALIDATE added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "API-PI-01",
+        "name": "Create payment instruction",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "modify of API-PI-01",
+        "rule": "modify/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "API-PI-02",
+        "name": "Validate payment instruction",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "modify of API-PI-02",
+        "rule": "modify/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "API-PI-03",
+        "name": "Execute payment instruction",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "modify of API-PI-03",
+        "rule": "modify/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "API-PI-04",
+        "name": "Get payment instruction",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "modify of API-PI-04",
+        "rule": "modify/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "API-PI-05",
+        "name": "Amend payment instruction",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "modify of API-PI-05",
+        "rule": "modify/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "API-PI-06",
+        "name": "List payment instruction events",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "modify of API-PI-06",
+        "rule": "modify/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "ENT-PAY-INSTR",
+        "name": "payment_instruction",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "modify of ENT-PAY-INSTR",
+        "rule": "modify/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "EVT-PAY-STATUS",
+        "name": "PaymentStatusChanged",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "modify of EVT-PAY-STATUS",
+        "rule": "modify/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "F-ACCOUNT-CACHE-ACCOUNT-REFERENCE",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "F-ACCOUNT-CACHE-ACCOUNT-REFERENCE added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "F-ACCOUNT-CACHE-CACHED-AT",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "F-ACCOUNT-CACHE-CACHED-AT added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "F-ACCOUNT-CACHE-CURRENCY",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "F-ACCOUNT-CACHE-CURRENCY added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "F-ACCOUNT-CACHE-HOLDER-REFERENCE",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "F-ACCOUNT-CACHE-HOLDER-REFERENCE added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "F-ACCOUNT-CACHE-IBAN",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "F-ACCOUNT-CACHE-IBAN added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "F-PAY-EVENT-EVENT-ID",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "F-PAY-EVENT-EVENT-ID added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "F-PAY-EVENT-EVENT-TYPE",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "F-PAY-EVENT-EVENT-TYPE added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "F-PAY-EVENT-OCCURRED-AT",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "F-PAY-EVENT-OCCURRED-AT added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "F-PAY-EVENT-PAYMENT-INSTRUCTION-REFERENCE",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "F-PAY-EVENT-PAYMENT-INSTRUCTION-REFERENCE added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "F-PAY-INSTR-AMOUNT",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "F-PAY-INSTR-AMOUNT added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "F-PAY-INSTR-AUTHORISATION-STATUS",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "F-PAY-INSTR-AUTHORISATION-STATUS added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "F-PAY-INSTR-CHANNEL-ID",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "F-PAY-INSTR-CHANNEL-ID added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "F-PAY-INSTR-CREDITOR-ACCOUNT-REFERENCE",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "F-PAY-INSTR-CREDITOR-ACCOUNT-REFERENCE added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "F-PAY-INSTR-CURRENCY",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "F-PAY-INSTR-CURRENCY added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "F-PAY-INSTR-DEBTOR-ACCOUNT-REFERENCE",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "F-PAY-INSTR-DEBTOR-ACCOUNT-REFERENCE added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "F-PAY-INSTR-EXECUTION-REFERENCE",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "F-PAY-INSTR-EXECUTION-REFERENCE added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "F-PAY-INSTR-PAYMENT-INSTRUCTION-REFERENCE",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "F-PAY-INSTR-PAYMENT-INSTRUCTION-REFERENCE added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "F-PAY-INSTR-PAYMENT-STATUS",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "F-PAY-INSTR-PAYMENT-STATUS added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "F-PAY-INSTR-REMITTANCE-INFORMATION",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "F-PAY-INSTR-REMITTANCE-INFORMATION added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "F-PAY-INSTR-VALUE-DATE",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "F-PAY-INSTR-VALUE-DATE added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "SBB-PAYMENTS",
+        "level": "A3",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "SBB-PAYMENTS added",
+        "rule": "add → design_change_required"
+      }
+    ],
+    "mappings_to_supersede": [],
+    "changed": [
+      "F-PAY-INSTR-PAYMENT-INSTRUCTION-REFERENCE",
+      "F-PAY-INSTR-DEBTOR-ACCOUNT-REFERENCE",
+      "F-PAY-INSTR-CREDITOR-ACCOUNT-REFERENCE",
+      "F-PAY-INSTR-AMOUNT",
+      "F-PAY-INSTR-CURRENCY",
+      "F-PAY-INSTR-VALUE-DATE",
+      "F-PAY-INSTR-PAYMENT-STATUS",
+      "F-PAY-INSTR-AUTHORISATION-STATUS",
+      "F-PAY-INSTR-EXECUTION-REFERENCE",
+      "F-PAY-INSTR-REMITTANCE-INFORMATION",
+      "F-PAY-INSTR-CHANNEL-ID",
+      "F-PAY-EVENT-EVENT-ID",
+      "F-PAY-EVENT-PAYMENT-INSTRUCTION-REFERENCE",
+      "F-PAY-EVENT-EVENT-TYPE",
+      "F-PAY-EVENT-OCCURRED-AT",
+      "F-ACCOUNT-CACHE-ACCOUNT-REFERENCE",
+      "F-ACCOUNT-CACHE-IBAN",
+      "F-ACCOUNT-CACHE-CURRENCY",
+      "F-ACCOUNT-CACHE-HOLDER-REFERENCE",
+      "F-ACCOUNT-CACHE-CACHED-AT",
+      "ENT-PAY-INSTR",
+      "EVT-PAY-STATUS",
+      "API-PI-01",
+      "API-PI-02",
+      "API-PI-03",
+      "API-PI-04",
+      "API-PI-05",
+      "API-PI-06",
+      "AFN-PAY-VALIDATE",
+      "SBB-PAYMENTS"
+    ],
+    "coverage": {
+      "A1": {
+        "present": true,
+        "reached": true,
+        "result": "no_impact_by_rule",
+        "classification": "no_impact",
+        "related_within_layer": [],
+        "records": [
+          {
+            "id": "BO-PAY-INSTR",
+            "classification": "no_impact",
+            "via": [
+              "PAY-107",
+              "PAY-005"
+            ],
+            "rule": "modify/up2+ → no_impact (impact rules 0.5.0)"
+          }
+        ],
+        "paths": [
+          "PAY-005",
+          "PAY-107"
+        ],
+        "unapproved_links": [],
+        "unmapped_records": [
+          "ACT-PAY-01a",
+          "ACT-PAY-01b",
+          "ACT-PAY-02a",
+          "ACT-PAY-02b",
+          "ACTOR-CUSTOMER",
+          "BEV-PAY-CUTOFF",
+          "BEV-PAY-EXECUTED",
+          "BEV-PAY-RECEIVED",
+          "BO-ACCOUNT",
+          "BO-PAYEE",
+          "BSV-MAKE-PAYMENT",
+          "CAP-PAY-000",
+          "CHN-MOBILE",
+          "CHN-OBAPI",
+          "ROLE-PAY-OFFICER",
+          "VSS-P1",
+          "VSS-P2",
+          "VSS-P3",
+          "VSS-P4"
+        ],
+        "unmapped_count": 19,
+        "evidence": "incomplete",
+        "confirmed": false,
+        "reason": "1 record(s) reached through approved links; the impact rules give no_impact for this kind of change; evidence incomplete: 0 link(s) not approved, 19 record(s) with no approved link where one is expected"
+      },
+      "A2": {
+        "present": true,
+        "reached": true,
+        "result": "impact_detected",
+        "classification": "review_required",
+        "related_within_layer": [],
+        "records": [
+          {
+            "id": "BBO-PAY-INSTR",
+            "classification": "review_required",
+            "via": [
+              "PAY-107"
+            ],
+            "rule": "modify/up1 → review_required (impact rules 0.5.0)"
+          },
+          {
+            "id": "SO-PI-01",
+            "classification": "review_required",
+            "via": [
+              "PAY-101"
+            ],
+            "rule": "modify/up1 → review_required (impact rules 0.5.0)"
+          },
+          {
+            "id": "SO-PI-02",
+            "classification": "review_required",
+            "via": [
+              "PAY-102"
+            ],
+            "rule": "modify/up1 → review_required (impact rules 0.5.0)"
+          },
+          {
+            "id": "SO-PI-03",
+            "classification": "review_required",
+            "via": [
+              "PAY-103"
+            ],
+            "rule": "modify/up1 → review_required (impact rules 0.5.0)"
+          },
+          {
+            "id": "SO-PI-04",
+            "classification": "review_required",
+            "via": [
+              "PAY-104"
+            ],
+            "rule": "modify/up1 → review_required (impact rules 0.5.0)"
+          },
+          {
+            "id": "SO-PI-05",
+            "classification": "review_required",
+            "via": [
+              "PAY-105"
+            ],
+            "rule": "modify/up1 → review_required (impact rules 0.5.0)"
+          }
+        ],
+        "paths": [
+          "PAY-101",
+          "PAY-102",
+          "PAY-103",
+          "PAY-104",
+          "PAY-105",
+          "PAY-107"
+        ],
+        "unapproved_links": [],
+        "unmapped_records": [
+          "BBO-ACCOUNT",
+          "BBO-COMPLIANCE-CHECK",
+          "BBO-FUNDING-CHECK",
+          "BBO-PARTY",
+          "BBO-PAYEE",
+          "BBO-PAYEE-BANK",
+          "BBO-PAYER",
+          "BBO-PAYER-BANK",
+          "BBO-PAYMENT-TRANSACTION",
+          "BBOA-ACCOUNT-ACCOUNT-BALANCE",
+          "BBOA-ACCOUNT-ACCOUNT-CURRENCY",
+          "BBOA-ACCOUNT-ACCOUNT-DATE",
+          "BBOA-ACCOUNT-ACCOUNT-DESCRIPTION",
+          "BBOA-ACCOUNT-ACCOUNT-IDENTIFICATION",
+          "BBOA-ACCOUNT-ACCOUNT-NAME",
+          "BBOA-ACCOUNT-ACCOUNT-PURPOSE",
+          "BBOA-ACCOUNT-ACCOUNT-STATUS",
+          "BBOA-ACCOUNT-ACCOUNT-TYPE",
+          "BBOA-ACCOUNT-LOG-DATE",
+          "BBOA-ACCOUNT-LOG-IDENTIFICATION",
+          "BBOA-ACCOUNT-LOG-PERIOD",
+          "BBOA-ACCOUNT-LOG-TYPE",
+          "BBOA-AMOUNT",
+          "BBOA-COMPLIANCE-CHECK-COMPLIANCE-CHECK-TYPE",
+          "BBOA-FUNDING-CHECK-ASSESSMENT-DATE-TIME"
+        ],
+        "unmapped_count": 100,
+        "evidence": "incomplete",
+        "confirmed": false,
+        "reason": "6 record(s) reached through approved links; the strongest rule gives review_required; evidence incomplete: 0 link(s) not approved, 100 record(s) with no approved link where one is expected"
+      },
+      "A3": {
+        "present": true,
+        "reached": true,
+        "result": "impact_detected",
+        "classification": "design_change_required",
+        "related_within_layer": [
+          "APP-PAY-HUB",
+          "CMP-PAY-CAPTURE",
+          "CMP-PAY-EXEC",
+          "CMP-PAY-VALIDATE",
+          "ENT-ACCOUNT-CACHE",
+          "ENT-PAY-EVENT",
+          "IFC-PAY-API",
+          "SVC-PAY-INIT"
+        ],
+        "records": [
+          {
+            "id": "AFN-PAY-VALIDATE",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "API-PI-01",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "modify/self → design_change_required (impact rules 0.5.0)"
+          },
+          {
+            "id": "API-PI-02",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "modify/self → design_change_required (impact rules 0.5.0)"
+          },
+          {
+            "id": "API-PI-03",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "modify/self → design_change_required (impact rules 0.5.0)"
+          },
+          {
+            "id": "API-PI-04",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "modify/self → design_change_required (impact rules 0.5.0)"
+          },
+          {
+            "id": "API-PI-05",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "modify/self → design_change_required (impact rules 0.5.0)"
+          },
+          {
+            "id": "API-PI-06",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "modify/self → design_change_required (impact rules 0.5.0)"
+          },
+          {
+            "id": "ENT-PAY-INSTR",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "modify/self → design_change_required (impact rules 0.5.0)"
+          },
+          {
+            "id": "EVT-PAY-STATUS",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "modify/self → design_change_required (impact rules 0.5.0)"
+          },
+          {
+            "id": "F-ACCOUNT-CACHE-ACCOUNT-REFERENCE",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "F-ACCOUNT-CACHE-CACHED-AT",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "F-ACCOUNT-CACHE-CURRENCY",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "F-ACCOUNT-CACHE-HOLDER-REFERENCE",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "F-ACCOUNT-CACHE-IBAN",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "F-PAY-EVENT-EVENT-ID",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "F-PAY-EVENT-EVENT-TYPE",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "F-PAY-EVENT-OCCURRED-AT",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "F-PAY-EVENT-PAYMENT-INSTRUCTION-REFERENCE",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "F-PAY-INSTR-AMOUNT",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "F-PAY-INSTR-AUTHORISATION-STATUS",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "F-PAY-INSTR-CHANNEL-ID",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "F-PAY-INSTR-CREDITOR-ACCOUNT-REFERENCE",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "F-PAY-INSTR-CURRENCY",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "F-PAY-INSTR-DEBTOR-ACCOUNT-REFERENCE",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "F-PAY-INSTR-EXECUTION-REFERENCE",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "F-PAY-INSTR-PAYMENT-INSTRUCTION-REFERENCE",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "F-PAY-INSTR-PAYMENT-STATUS",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "F-PAY-INSTR-REMITTANCE-INFORMATION",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "F-PAY-INSTR-VALUE-DATE",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "SBB-PAYMENTS",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          }
+        ],
+        "paths": [],
+        "unapproved_links": [],
+        "unmapped_records": [
+          "AFN-PAY-VALIDATE",
+          "API-PI-06",
+          "CMP-PAY-CAPTURE",
+          "CMP-PAY-VALIDATE",
+          "ENT-ACCOUNT-CACHE",
+          "ENT-PAY-EVENT",
+          "EVT-PAY-STATUS",
+          "F-ACCOUNT-CACHE-ACCOUNT-REFERENCE",
+          "F-ACCOUNT-CACHE-CACHED-AT",
+          "F-ACCOUNT-CACHE-CURRENCY",
+          "F-ACCOUNT-CACHE-HOLDER-REFERENCE",
+          "F-ACCOUNT-CACHE-IBAN",
+          "F-PAY-EVENT-EVENT-ID",
+          "F-PAY-EVENT-EVENT-TYPE",
+          "F-PAY-EVENT-OCCURRED-AT",
+          "F-PAY-EVENT-PAYMENT-INSTRUCTION-REFERENCE",
+          "F-PAY-INSTR-AMOUNT",
+          "F-PAY-INSTR-AUTHORISATION-STATUS",
+          "F-PAY-INSTR-CHANNEL-ID",
+          "F-PAY-INSTR-CREDITOR-ACCOUNT-REFERENCE",
+          "F-PAY-INSTR-CURRENCY",
+          "F-PAY-INSTR-DEBTOR-ACCOUNT-REFERENCE",
+          "F-PAY-INSTR-EXECUTION-REFERENCE",
+          "F-PAY-INSTR-PAYMENT-INSTRUCTION-REFERENCE",
+          "F-PAY-INSTR-PAYMENT-STATUS"
+        ],
+        "unmapped_count": 28,
+        "evidence": "incomplete",
+        "confirmed": false,
+        "reason": "30 record(s) reached through approved links; the strongest rule gives design_change_required; evidence incomplete: 0 link(s) not approved, 28 record(s) with no approved link where one is expected; 8 record(s) linked inside the layer to the changed record(s) are not followed by the impact rules: APP-PAY-HUB, CMP-PAY-CAPTURE, CMP-PAY-EXEC, CMP-PAY-VALIDATE, ENT-ACCOUNT-CACHE, ENT-PAY-EVENT"
+      },
+      "A4": {
+        "present": true,
+        "reached": false,
+        "result": "evidence_incomplete",
+        "classification": "no_impact",
+        "related_within_layer": [],
+        "records": [],
+        "paths": [],
+        "unapproved_links": [],
+        "unmapped_records": [
+          "INF-CORE-LEDGER-HOST",
+          "INF-PG-PAY-PROD",
+          "TS-MQ",
+          "TS-SECRETS"
+        ],
+        "unmapped_count": 4,
+        "evidence": "incomplete",
+        "confirmed": false,
+        "reason": "no approved path reaches this layer, and its links are incomplete — impact through the missing links cannot be seen"
+      }
+    },
+    "basis": {
+      "rules_version": "0.5.0",
+      "files": {
+        "a1-business.json": "531ab8f05d36398c1ccbfc613b1b2cb9d074f5610e61ccd89abc7df239902f2a",
+        "a2-service-domain.json": "4a98036138e2bd58cd3b937ee4611a320e3c90c9b90139374055956ff97a9ea5",
+        "a3-application.json": "d1920a275d3e2259b8607f947b5bde7c97f34db0bd28ea93ea86311ffddd00cd",
+        "a4-technology.json": "cbd69a81600abf2be880386d70be586d28715bd824242a3c9f5a99eded28c590",
+        "mappings.json": "71499d610d500e9e4c1c0786aa726d3b7aff384541a658a0391ee61982cc12fe",
+        "requirements.json": "508c4cd476074239e9788464171776f0ff0b83f078c899952a22b2671ee3f430"
+      },
+      "approved_links": 20,
+      "approved_links_sha256": "cc8151e22fdb71b0aca6692c139eb344481f41315731b7c58854d4f0d7795fb7"
+    }
+  }
+}
