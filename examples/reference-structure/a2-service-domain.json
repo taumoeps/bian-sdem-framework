@@ -2,7 +2,7 @@
   "level": "A2",
   "model_id": "reference-structure-a2",
   "model_version": "2026.10",
-  "metamodel_version": "0.14.0",
+  "metamodel_version": "0.15.0",
   "source_system": "SDEM-GENERATED-FROM-RECORD",
   "instances": [
     {
@@ -338,6 +338,42 @@
       "kind": "flow",
       "target": "RS-ServiceDomain-2",
       "name": "RA2-14"
+    },
+    {
+      "source": "RS-BusinessObject-1",
+      "kind": "composition",
+      "target": "RS-BusinessObject-2",
+      "name": "RA2-18"
+    },
+    {
+      "source": "RS-BusinessObject-1",
+      "kind": "aggregation",
+      "target": "RS-BusinessObject-2",
+      "name": "RA2-19"
+    },
+    {
+      "source": "RS-BusinessObject-1",
+      "kind": "specialization",
+      "target": "RS-BusinessObject-2",
+      "name": "RA2-20"
+    },
+    {
+      "source": "RS-BusinessObject-1",
+      "kind": "association",
+      "target": "RS-BusinessObject-2",
+      "name": "RA2-21"
+    },
+    {
+      "source": "RS-BusinessObjectAttribute-1",
+      "kind": "association",
+      "target": "RS-BusinessObject-1",
+      "name": "RA2-22"
+    },
+    {
+      "source": "RS-ServiceOperation-1",
+      "kind": "access",
+      "target": "RS-BusinessObject-1",
+      "name": "RA2-23"
     }
   ]
 }

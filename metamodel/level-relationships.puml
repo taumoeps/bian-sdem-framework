@@ -22,7 +22,7 @@ package "A1 Business Architecture" as A1 {
   rectangle "A1.BusinessRole" as a1_businessrole
   rectangle "A1.BusinessObject" as a1_businessobject
   rectangle "A1.BusinessRequirement" as a1_businessrequirement
-  ' constraints from ArchiMate 3.2 ch. 6–8 (48)
+  ' constraints from ArchiMate 3.2 ch. 6–8 (49)
   a1_businesscapability -[#1565C0]-> a1_businesscapability : RA1-01 composition
   a1_businesscapability -[#1565C0,dashed]-> a1_businesscapability : RA1-02 aggregation
   a1_businesscapability -[#EF6C00]-> a1_valuestream : RA1-03 serving
@@ -71,6 +71,7 @@ package "A1 Business Architecture" as A1 {
   a1_businessobject -[#424242]-> a1_businessobject : RA1-46 specialization
   a1_businessrequirement -[#1565C0]-> a1_businessrequirement : RA1-47 composition
   a1_businessrequirement -[#424242]-> a1_businessrequirement : RA1-48 specialization
+  a1_businessobject -[#9E9E9E,dotted]-> a1_businessobject : RA1-49 association
   ' catalogue inheritance — entity extends parent (is-a; ArchiMate specialization) (2)
   a1_valuestreamstage -[#424242]-|> a1_valuestream : extends
   a1_businessactivity -[#424242]-|> a1_businessprocess : extends
@@ -92,7 +93,7 @@ package "A2 Service Domain Architecture" as A2 {
   rectangle "A2.BOMModel\n(artefact)" as a2_bommodel
   rectangle "A2.Wireframe\n(artefact)" as a2_wireframe
   rectangle "A2.SemanticAPI\n(artefact)" as a2_semanticapi
-  ' constraints from BIAN Service Landscape metamodel (17)
+  ' constraints from BIAN Service Landscape metamodel (23)
   a2_businessarea -[#1565C0]-> a2_businessdomain : RA2-01 composition
   a2_businessdomain -[#1565C0]-> a2_servicedomain : RA2-02 composition
   a2_servicedomain -[#1565C0]-> a2_servicegroup : RA2-03 composition
@@ -110,6 +111,12 @@ package "A2 Service Domain Architecture" as A2 {
   a2_wireframe -[#9E9E9E,dotted]-> a2_servicedomain : RA2-15 association
   a2_semanticapi -[#2E7D32,dashed]-> a2_servicedomain : RA2-16 realization
   a2_bommodel -[#1565C0,dashed]-> a2_businessobject : RA2-17 aggregation
+  a2_businessobject -[#1565C0]-> a2_businessobject : RA2-18 composition
+  a2_businessobject -[#1565C0,dashed]-> a2_businessobject : RA2-19 aggregation
+  a2_businessobject -[#424242]-> a2_businessobject : RA2-20 specialization
+  a2_businessobject -[#9E9E9E,dotted]-> a2_businessobject : RA2-21 association
+  a2_businessobjectattribute -[#9E9E9E,dotted]-> a2_businessobject : RA2-22 association
+  a2_serviceoperation -[#616161,dotted]-> a2_businessobject : RA2-23 access
 }
 
 package "A3 Application Architecture" as A3 {
@@ -121,7 +128,8 @@ package "A3 Application Architecture" as A3 {
   rectangle "A3.DataEntity" as a3_dataentity
   rectangle "A3.Event" as a3_event
   rectangle "A3.SolutionBuildingBlock" as a3_solutionbuildingblock
-  ' constraints from ArchiMate 3.2 ch. 9; TOGAF (SBB) (31)
+  rectangle "A3.DataAttribute" as a3_dataattribute
+  ' constraints from ArchiMate 3.2 ch. 9; TOGAF (SBB) (34)
   a3_applicationcomponent -[#1565C0]-> a3_applicationcomponent : RA3-01 composition
   a3_applicationcomponent -[#1565C0,dashed]-> a3_applicationcomponent : RA3-02 aggregation
   a3_applicationcomponent -[#1565C0]-> a3_applicationinterface : RA3-03 composition
@@ -153,6 +161,9 @@ package "A3 Application Architecture" as A3 {
   a3_apioperation -[#616161,dotted]-> a3_dataentity : RA3-29 access
   a3_solutionbuildingblock -[#1565C0,dashed]-> a3_applicationcomponent : RA3-30 aggregation
   a3_solutionbuildingblock -[#1565C0]-> a3_solutionbuildingblock : RA3-31 composition
+  a3_dataentity -[#9E9E9E,dotted]-> a3_dataentity : RA3-32 association
+  a3_dataentity -[#1565C0]-> a3_dataattribute : RA3-33 composition
+  a3_dataattribute -[#9E9E9E,dotted]-> a3_dataentity : RA3-34 association
 }
 
 package "A4 Technology Architecture" as A4 {

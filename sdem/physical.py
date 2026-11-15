@@ -26,11 +26,11 @@ def _j(p): return json.loads(Path(p).read_text(encoding='utf-8'))
 def _prop(a, group):
     t = a['type']
     if a['name'] == 'behavior_qualifier': p = {}  # string or null (an operation may have no qualifier); the validator has no type unions
-    elif t == 'list<string>': p = {'type': 'array', 'items': {'type': 'string', **({'enum': a['values']} if a.get('values') else {})}}
+    elif t == 'list<string>': p = {'type': 'array', 'items': {'type': 'string', **({'enum': a['values']} if a.get('values') and a.get('enforcement') != 'warning' else {})}}
     elif t == 'map<string,string>': p = {'type': 'object'}
     elif t == 'date': p = {'type': 'string', 'format': 'date', 'pattern': DATE_PATTERN}
     elif t in ('integer', 'boolean'): p = {'type': t}
-    else: p = {'type': 'string', **({'enum': a['values']} if a.get('values') else {})}
+    else: p = {'type': 'string', **({'enum': a['values']} if a.get('values') and a.get('enforcement') != 'warning' else {})}   # FD-P2: a softened list is reported by sdem check, not enforced by the schema
     for k in ('minimum', 'maximum'):
         if k in a: p[k] = a[k]
     p['description'] = a['description']

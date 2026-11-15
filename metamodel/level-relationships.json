@@ -1,5 +1,5 @@
 {
-  "metamodel_version": "0.14.0",
+  "metamodel_version": "0.15.0",
   "note": "Within-level relationships are held by each level model, never by SDEM mapping documents. 0.5.15: A1, A3 and A4 constraint sets added from each level's reference architecture (previously any catalogued kind was accepted and the diagram showed what the examples happened to use). 0.5.14: artefact rows (B14, B15, BOM → objects). 0.5.17: artefact rows flagged enforceable=false; device composition added (relationships test findings 1, 2). 0.5.20: Phase 2 — 113 rows verified_against_archi (112 direct, RA4-31 via its stated alternative); RA3-30/31 (TOGAF) remain unverified_togaf.",
   "kinds": [
     {
@@ -3830,6 +3830,242 @@
         "reasoning": "ArchiMate 3.2: Grouping → Grouping lists 'c' (composition) (the owner's decision (option 1), 2026-11-14 — ArchiMate 3.2 relationship tables as implemented by Archi (relationships.xml, version 3.2, read 2026-11-14)).",
         "confidence": "high",
         "test": "Archi relationship matrix: Grouping → Grouping must list 'c'"
+      }
+    },
+    {
+      "level": "A1",
+      "source_type": "A1.BusinessObject",
+      "kind": "association",
+      "target_type": "A1.BusinessObject",
+      "id": "RA1-49",
+      "description": "One business object refers to another (a payment refers to an account).",
+      "reasoning": "IM-01: a reference, not a part.",
+      "basis": "[ARCHI] Archi's implementation of the ArchiMate 3.2 relationship tables (relationships.xml, version 3.2, read 2026-11-16): BusinessObject → BusinessObject allows 'o'",
+      "reference_source": "[ARCHI]",
+      "confidence": "high",
+      "verification": "verified_against_archi",
+      "inference": {
+        "archimate_source": "BusinessObject",
+        "archimate_target": "BusinessObject",
+        "pattern": "same-concept association",
+        "reasoning": "ArchiMate permits association between these concepts.",
+        "confidence": "high",
+        "test": "Archi relationship matrix: BusinessObject → BusinessObject must list 'o'",
+        "oracle_verdict": "confirmed"
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "ArchiMate association semantics",
+        "reasoning": "a reference: any number either way"
+      }
+    },
+    {
+      "level": "A2",
+      "source_type": "A2.BusinessObject",
+      "kind": "composition",
+      "target_type": "A2.BusinessObject",
+      "id": "RA2-18",
+      "description": "BIAN business objects related by composition (from BIAN’s schema references, IM-03).",
+      "reasoning": "IM-03: the logical model’s relationships between objects.",
+      "basis": "[ARCHI] Archi's implementation of the ArchiMate 3.2 relationship tables (relationships.xml, version 3.2, read 2026-11-16): BusinessObject → BusinessObject allows 'c'",
+      "reference_source": "[ARCHI]",
+      "confidence": "high",
+      "verification": "verified_against_archi",
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..1",
+        "target_per_source": "0..*",
+        "basis": "ArchiMate composition semantics",
+        "reasoning": "a part has at most one whole"
+      }
+    },
+    {
+      "level": "A2",
+      "source_type": "A2.BusinessObject",
+      "kind": "aggregation",
+      "target_type": "A2.BusinessObject",
+      "id": "RA2-19",
+      "description": "BIAN business objects related by aggregation (from BIAN’s schema references, IM-03).",
+      "reasoning": "IM-03: the logical model’s relationships between objects.",
+      "basis": "[ARCHI] Archi's implementation of the ArchiMate 3.2 relationship tables (relationships.xml, version 3.2, read 2026-11-16): BusinessObject → BusinessObject allows 'g'",
+      "reference_source": "[ARCHI]",
+      "confidence": "high",
+      "verification": "verified_against_archi",
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "ArchiMate aggregation semantics",
+        "reasoning": "a part may be grouped by many wholes"
+      }
+    },
+    {
+      "level": "A2",
+      "source_type": "A2.BusinessObject",
+      "kind": "specialization",
+      "target_type": "A2.BusinessObject",
+      "id": "RA2-20",
+      "description": "BIAN business objects related by specialization (from BIAN’s schema references, IM-03).",
+      "reasoning": "IM-03: the logical model’s relationships between objects.",
+      "basis": "[ARCHI] Archi's implementation of the ArchiMate 3.2 relationship tables (relationships.xml, version 3.2, read 2026-11-16): BusinessObject → BusinessObject allows 's'",
+      "reference_source": "[ARCHI]",
+      "confidence": "high",
+      "verification": "verified_against_archi",
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..1",
+        "target_per_source": "0..*",
+        "basis": "ArchiMate specialization semantics",
+        "reasoning": "a specific object specialises one general one"
+      }
+    },
+    {
+      "level": "A2",
+      "source_type": "A2.BusinessObject",
+      "kind": "association",
+      "target_type": "A2.BusinessObject",
+      "id": "RA2-21",
+      "description": "BIAN business objects related by association (from BIAN’s schema references, IM-03).",
+      "reasoning": "IM-03: the logical model’s relationships between objects.",
+      "basis": "[ARCHI] Archi's implementation of the ArchiMate 3.2 relationship tables (relationships.xml, version 3.2, read 2026-11-16): BusinessObject → BusinessObject allows 'o'",
+      "reference_source": "[ARCHI]",
+      "confidence": "high",
+      "verification": "verified_against_archi",
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "ArchiMate association semantics",
+        "reasoning": "a reference: any number either way"
+      }
+    },
+    {
+      "level": "A2",
+      "source_type": "A2.BusinessObjectAttribute",
+      "kind": "association",
+      "target_type": "A2.BusinessObject",
+      "id": "RA2-22",
+      "description": "An attribute of data_type reference refers to the business object it names.",
+      "reasoning": "IM-03: OpenAPI $ref between BIAN schemas.",
+      "basis": "OpenAPI $ref (BIAN Semantic API schemas); SDEM",
+      "reference_source": "SDEM",
+      "confidence": "medium",
+      "verification": "sdem_definition",
+      "confidence_basis": "follows from an SDEM extension entity built on a standard concept",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..1",
+        "basis": "SDEM",
+        "reasoning": "an attribute refers to at most one object"
+      }
+    },
+    {
+      "level": "A2",
+      "source_type": "A2.ServiceOperation",
+      "kind": "access",
+      "target_type": "A2.BusinessObject",
+      "id": "RA2-23",
+      "description": "An operation reads or writes a business object.",
+      "reasoning": "CT-02: an operation’s information is the objects’ typed fields.",
+      "basis": "BIAN Semantic API Practitioner Guide (operations act on the control record and business objects); SDEM",
+      "reference_source": "SDEM",
+      "confidence": "medium",
+      "verification": "sdem_definition",
+      "confidence_basis": "follows from an SDEM extension entity built on a standard concept",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "an operation touches several objects; an object is touched by many operations"
+      }
+    },
+    {
+      "level": "A3",
+      "source_type": "A3.DataEntity",
+      "kind": "association",
+      "target_type": "A3.DataEntity",
+      "id": "RA3-32",
+      "description": "One data entity refers to another (a foreign key).",
+      "reasoning": "IM-05.",
+      "basis": "[ARCHI] Archi's implementation of the ArchiMate 3.2 relationship tables (relationships.xml, version 3.2, read 2026-11-16): DataObject → DataObject allows 'o'",
+      "reference_source": "[ARCHI]",
+      "confidence": "high",
+      "verification": "verified_against_archi",
+      "inference": {
+        "archimate_source": "DataObject",
+        "archimate_target": "DataObject",
+        "pattern": "same-concept association",
+        "reasoning": "ArchiMate permits association between these concepts.",
+        "confidence": "high",
+        "test": "Archi relationship matrix: DataObject → DataObject must list 'o'",
+        "oracle_verdict": "confirmed"
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "ArchiMate association semantics",
+        "reasoning": "a reference: any number either way"
+      }
+    },
+    {
+      "level": "A3",
+      "source_type": "A3.DataEntity",
+      "kind": "composition",
+      "target_type": "A3.DataAttribute",
+      "id": "RA3-33",
+      "description": "A data entity is composed of its fields.",
+      "reasoning": "IM-04: a field belongs to exactly one entity.",
+      "basis": "SDEM (docs/design/sdem-full-design-metamodel-design.md)",
+      "reference_source": "SDEM",
+      "confidence": "medium",
+      "verification": "sdem_definition",
+      "confidence_basis": "follows from an SDEM extension entity built on a standard concept",
+      "cardinality": {
+        "source_per_target": "1..1",
+        "target_per_source": "0..*",
+        "basis": "SDEM",
+        "reasoning": "a field belongs to one entity"
+      },
+      "inference": {
+        "archimate_source": "Data Object",
+        "archimate_target": "— (an SDEM field record; ArchiMate has no attribute element)",
+        "pattern": "SDEM: A data entity is composed of its fields.",
+        "reasoning": "SDEM's own rule for field records (IM-04, IM-05; the owner's decision D2, 2026-11-16).",
+        "confidence": "medium",
+        "test": "none — an SDEM definition, not an ArchiMate relationship",
+        "oracle_verdict": "not tested"
+      }
+    },
+    {
+      "level": "A3",
+      "source_type": "A3.DataAttribute",
+      "kind": "association",
+      "target_type": "A3.DataEntity",
+      "id": "RA3-34",
+      "description": "A foreign-key field refers to the entity it points at.",
+      "reasoning": "IM-05.",
+      "basis": "SDEM (docs/design/sdem-full-design-metamodel-design.md)",
+      "reference_source": "SDEM",
+      "confidence": "medium",
+      "verification": "sdem_definition",
+      "confidence_basis": "follows from an SDEM extension entity built on a standard concept",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..1",
+        "basis": "SDEM",
+        "reasoning": "a field refers to at most one entity"
+      },
+      "inference": {
+        "archimate_source": "Data Object",
+        "archimate_target": "— (an SDEM field record; ArchiMate has no attribute element)",
+        "pattern": "SDEM: A foreign-key field refers to the entity it points at.",
+        "reasoning": "SDEM's own rule for field records (IM-04, IM-05; the owner's decision D2, 2026-11-16).",
+        "confidence": "medium",
+        "test": "none — an SDEM definition, not an ArchiMate relationship",
+        "oracle_verdict": "not tested"
       }
     }
   ],

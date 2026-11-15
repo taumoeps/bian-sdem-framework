@@ -338,6 +338,26 @@
       "confidence": "high",
       "confidence_basis": "SDEM's own definition, grounded in an ArchiMate 3.2 pattern checked against the relationship tables",
       "reasoning": "An image or package realises the application it is built from (ArchiMate: Artifact realizes Application Component); BUILT_AS names that from the application's side, as DEPLOYED_ON does for hosting. With it, trace and impact reach from an image — a vulnerable base image, a rebuilt package — to the application, its service domain and the business. sdem aid proposes it (AID-X02); a person approves it with build_pipeline evidence."
+    },
+    {
+      "mapping_type_id": "BIAN_ATTRIBUTE_FIELD_MAPPED_TO_DATA_ATTRIBUTE",
+      "source_type": "A2.BusinessObjectAttribute",
+      "relationship": "FIELD_MAPPED_TO",
+      "target_type": "A3.DataAttribute",
+      "cardinality": "many_to_many",
+      "perspective": "information",
+      "authority": "enterprise_rule",
+      "direction_semantics": "The data attribute stores the BIAN attribute — field-level lineage; a transformation is recorded on the link.",
+      "required_evidence": [
+        "data_model"
+      ],
+      "rule_version": "1.0",
+      "owner": "data-architecture",
+      "source_reference": "SDEM; the owner's decision, 2026-11-16 (IM-07, metamodel 0.15.0). The field-level refinement of MAPPED_TO (BIAN SAPG §3.2.7 relates business objects to implementation data).",
+      "verification": "sdem_definition",
+      "confidence": "low",
+      "confidence_basis": "no standard basis; not validated",
+      "reasoning": "With fields as records, a BIAN attribute is mapped to the column that stores it, so impact reaches a field and lineage is checked, not matched by name."
     }
   ],
   "deprecated_relationships": []

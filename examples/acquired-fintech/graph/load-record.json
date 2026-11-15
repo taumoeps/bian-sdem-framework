@@ -1093,6 +1093,106 @@
           "edges": 41
         }
       ]
+    },
+    {
+      "build": 15,
+      "at": "2026-11-15T17:06:27+00:00",
+      "inputs": [
+        {
+          "path": "examples/acquired-fintech//a2-service-domain.json",
+          "kind": "export",
+          "level": "A2",
+          "model_id": "synthetic-fintech-a2",
+          "model_version": "2026.10",
+          "sha256": "681faac32e79c5d0404c657b5c245f8a1bd55c37c2d2922b74c2bb00d539c426"
+        },
+        {
+          "path": "examples/acquired-fintech//a3-application.json",
+          "kind": "export",
+          "level": "A3",
+          "model_id": "synthetic-fintech-a3",
+          "model_version": "2026.10",
+          "sha256": "feaec8a7da24fa93c0724071be9da5d1cf78c9c34358757de2612d7a604fe6f3"
+        },
+        {
+          "path": "examples/acquired-fintech//a4-technology.json",
+          "kind": "export",
+          "level": "A4",
+          "model_id": "synthetic-fintech-a4",
+          "model_version": "2026.10",
+          "sha256": "7c2a36f0710d37c97a119abfad450258de626b2353b1a5bd8f00be62b310d29a"
+        },
+        {
+          "path": "examples/acquired-fintech//mappings.json",
+          "kind": "registry",
+          "registry_version": "0.4.0",
+          "sha256": "fb8d81507068a846452d573699ab93f05006f204d186997e36978ef02dacdb09"
+        }
+      ],
+      "metamodel_version": "0.15.0",
+      "errors": [],
+      "warnings": [
+        "level A2 (synthetic-fintech-a2): instance BD-PAY: 0 composition links with A2.BusinessArea, RA2-01 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-fintech-a2): instance BD-ACCT: 0 composition links with A2.BusinessArea, RA2-01 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-fintech-a2): instance BD-REF: 0 composition links with A2.BusinessArea, RA2-01 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-fintech-a2): instance BD-RISK: 0 composition links with A2.BusinessArea, RA2-01 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-fintech-a2): instance BBO-PAY-INSTR: 0 composition links with A2.BusinessObjectAttribute, RA2-10 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-fintech-a2): instance BBO-PAYMENT-TXN: 0 composition links with A2.BusinessObjectAttribute, RA2-10 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-fintech-a2): instance BBO-ACCOUNT: 0 composition links with A2.BusinessObjectAttribute, RA2-10 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-fintech-a2): instance BBO-PARTY: 0 composition links with A2.BusinessObjectAttribute, RA2-10 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-fintech-a2): instance BBO-SAVINGS: 0 composition links with A2.BusinessObjectAttribute, RA2-10 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-fintech-a2): instance BBO-FRAUD-CASE: 0 composition links with A2.BusinessObjectAttribute, RA2-10 expects at least 1 (LC-10m)",
+        "level A3 (synthetic-fintech-a3): instance EP-01: attribute 'payload_fields' is deprecated (LC-13)",
+        "level A3 (synthetic-fintech-a3): instance EP-02: attribute 'payload_fields' is deprecated (LC-13)",
+        "level A3 (synthetic-fintech-a3): instance EP-03: attribute 'payload_fields' is deprecated (LC-13)",
+        "level A3 (synthetic-fintech-a3): instance EP-04: attribute 'payload_fields' is deprecated (LC-13)",
+        "level A3 (synthetic-fintech-a3): instance EP-05: attribute 'payload_fields' is deprecated (LC-13)",
+        "level A3 (synthetic-fintech-a3): instance EP-06: attribute 'payload_fields' is deprecated (LC-13)",
+        "level A3 (synthetic-fintech-a3): instance EP-07: attribute 'payload_fields' is deprecated (LC-13)",
+        "level A3 (synthetic-fintech-a3): instance EP-08: attribute 'payload_fields' is deprecated (LC-13)",
+        "level A3 (synthetic-fintech-a3): instance EP-09: attribute 'payload_fields' is deprecated (LC-13)",
+        "level A3 (synthetic-fintech-a3): instance EP-10: attribute 'payload_fields' is deprecated (LC-13)",
+        "level A3 (synthetic-fintech-a3): instance EP-11: attribute 'payload_fields' is deprecated (LC-13)",
+        "level A3 (synthetic-fintech-a3): instance EP-12: attribute 'payload_fields' is deprecated (LC-13)",
+        "level A3 (synthetic-fintech-a3): instance EP-13: attribute 'payload_fields' is deprecated (LC-13)",
+        "level A3 (synthetic-fintech-a3): instance EP-14: attribute 'payload_fields' is deprecated (LC-13)",
+        "level A3 (synthetic-fintech-a3): instance EP-15: attribute 'payload_fields' is deprecated (LC-13)",
+        "level A3 (synthetic-fintech-a3): instance EP-16: attribute 'payload_fields' is deprecated (LC-13)",
+        "level A3 (synthetic-fintech-a3): instance EP-17: attribute 'payload_fields' is deprecated (LC-13)",
+        "level A3 (synthetic-fintech-a3): instance EP-18: attribute 'payload_fields' is deprecated (LC-13)",
+        "level A3 (synthetic-fintech-a3): instance EP-19: attribute 'payload_fields' is deprecated (LC-13)",
+        "level A3 (synthetic-fintech-a3): instance EP-20: attribute 'payload_fields' is deprecated (LC-13)",
+        "level A3 (synthetic-fintech-a3): instance EP-21: attribute 'payload_fields' is deprecated (LC-13)",
+        "level A3 (synthetic-fintech-a3): instance EP-22: attribute 'payload_fields' is deprecated (LC-13)",
+        "level A3 (synthetic-fintech-a3): instance EP-23: attribute 'payload_fields' is deprecated (LC-13)"
+      ],
+      "result": "accepted",
+      "outputs": [
+        {
+          "file": "a2-service-domain.graph.json",
+          "sha256": "1bb9f617b9f5c3ce11fe7ea0b599c564b40c11d9ad20394d24cca74946f256f9",
+          "nodes": 59,
+          "edges": 79
+        },
+        {
+          "file": "a3-application.graph.json",
+          "sha256": "da74d7230a5a817a045d4473a8c6f17d17af56280da4bd0895fa44317320fadd",
+          "nodes": 45,
+          "edges": 39
+        },
+        {
+          "file": "a4-technology.graph.json",
+          "sha256": "756dc83b6ef38d8ee7b3d3972c82bf640d1d09b63b69bc1b7f4e4834dc61e431",
+          "nodes": 14,
+          "edges": 22
+        },
+        {
+          "file": "federated.graph.json",
+          "sha256": "536f806cfd0db83649beba6bd0400994c06d3ff98df5a7a118ebbf3032f5221a",
+          "nodes": 64,
+          "edges": 41
+        }
+      ]
     }
   ]
 }

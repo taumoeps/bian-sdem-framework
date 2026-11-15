@@ -1250,6 +1250,90 @@
           "edges": 7
         }
       ]
+    },
+    {
+      "build": 16,
+      "at": "2026-11-15T17:06:27+00:00",
+      "inputs": [
+        {
+          "path": "examples/card-fraud-alerts//a1-business.json",
+          "kind": "export",
+          "level": "A1",
+          "model_id": "synthetic-bank-a1",
+          "model_version": "2026.10",
+          "sha256": "2d5b508fc342df58adfcf2bb06cda32248d2d876c549a435fd453fce1745ce08"
+        },
+        {
+          "path": "examples/card-fraud-alerts//a2-service-domain.json",
+          "kind": "export",
+          "level": "A2",
+          "model_id": "synthetic-bank-a2",
+          "model_version": "2026.10",
+          "sha256": "56538fa83cf46b6d19d12a70df087c37102f7e2b8871b271d7ad6ef000e3fffd"
+        },
+        {
+          "path": "examples/card-fraud-alerts//a3-application.json",
+          "kind": "export",
+          "level": "A3",
+          "model_id": "synthetic-bank-a3",
+          "model_version": "2026.10",
+          "sha256": "0948f125f04ac15c4e0f781c6c786fbe887b5657bf6455782aeff77b95138907"
+        },
+        {
+          "path": "examples/card-fraud-alerts//a4-technology.json",
+          "kind": "export",
+          "level": "A4",
+          "model_id": "synthetic-bank-a4",
+          "model_version": "2026.10",
+          "sha256": "5cde4191b529fecc758e70da9dacd121f86057fdd037f43c30f0f7ba1794d32b"
+        },
+        {
+          "path": "examples/card-fraud-alerts//mappings.json",
+          "kind": "registry",
+          "registry_version": "0.4.0",
+          "sha256": "ac541110f8a451dbec3824411d9127177eb08dd58657260b86bd53a9b81137df"
+        }
+      ],
+      "metamodel_version": "0.15.0",
+      "errors": [],
+      "warnings": [
+        "level A2 (synthetic-bank-a2): instance BD-FRAUD: 0 composition links with A2.BusinessArea, RA2-01 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-bank-a2): instance SO-044-07: 0 access links with A2.ControlRecord, RA2-13 expects at least 1 (LC-10m)",
+        "level A3 (synthetic-bank-a3): instance POST /fraud/alerts: attribute 'payload_fields' is deprecated (LC-13)"
+      ],
+      "result": "accepted",
+      "outputs": [
+        {
+          "file": "a1-business.graph.json",
+          "sha256": "55fedf5417a68cb6c6e93dd87b2ab8383f506228a87758c6832bd6a7ce5de56f",
+          "nodes": 9,
+          "edges": 7
+        },
+        {
+          "file": "a2-service-domain.graph.json",
+          "sha256": "e59cfa9eb8ab5b0bede3ad47c4a3aebcdd53dd18734d8fa7e2db5200e914c28a",
+          "nodes": 8,
+          "edges": 7
+        },
+        {
+          "file": "a3-application.graph.json",
+          "sha256": "109614bfeed25a1b114a93345ea3ca010502f165139c6ad61ef2efc0a920b64a",
+          "nodes": 4,
+          "edges": 3
+        },
+        {
+          "file": "a4-technology.graph.json",
+          "sha256": "1e97781f4ade459461065c682d1e2a4615c19c1b3f90e94bb9cbf4d090e97e0a",
+          "nodes": 9,
+          "edges": 9
+        },
+        {
+          "file": "federated.graph.json",
+          "sha256": "401b8d12f710d1a656f61cd6a4e7635f543940d11f8f10f154d5d8c77aaa2dc5",
+          "nodes": 10,
+          "edges": 7
+        }
+      ]
     }
   ]
 }

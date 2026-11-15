@@ -88,8 +88,8 @@ erDiagram
     }
     A1_BusinessService {
         string id PK
-        list inputs
-        list outputs
+        list inputs FK
+        list outputs FK
         list consumers FK
         boolean customer_facing
         list channels
@@ -170,6 +170,7 @@ erDiagram
     A1_BusinessObject }o--o{ A1_BusinessObject : "specialization"
     A1_BusinessRequirement |o--o{ A1_BusinessRequirement : "composition"
     A1_BusinessRequirement }o--o{ A1_BusinessRequirement : "specialization"
+    A1_BusinessObject }o--o{ A1_BusinessObject : "association"
 ```
 
 ### `A1.BusinessCapability`
@@ -336,8 +337,8 @@ Business behaviour exposed to consumers
 
 | Field | Type | Required | Meaning | Refers to |
 |---|---|---|---|---|
-| `inputs` | list | no | attribute names the service takes | — |
-| `outputs` | list | no | attribute names the service returns | — |
+| `inputs` | list | no | the business objects the service takes | `A1.BusinessObject` |
+| `outputs` | list | no | the business objects the service returns | `A1.BusinessObject` |
 | `consumers` | list | no | the actors or roles the service serves | `A1.BusinessActor`, `A1.BusinessRole` |
 | `customer_facing` | boolean | no | whether customers use it directly | — |
 | `channels` | list | no | channels it is offered through | one of: branch, online, mobile, contact centre, partner, API |
@@ -439,6 +440,7 @@ A business-level information concept
 | composition (with itself) | `BusinessObject` | any number |
 | aggregation (with itself) | `BusinessObject` | any number |
 | specialization (with itself) | `BusinessObject` | any number |
+| association (with itself) | `BusinessObject` | any number |
 
 ### `A1.BusinessRequirement`
 
@@ -535,6 +537,10 @@ erDiagram
         string data_type
         string iso20022_ref
         boolean personal_information
+        boolean required
+        list allowed_values
+        boolean identifier
+        string multiplicity
     }
     A2_BOMModel {
         string id PK
@@ -563,6 +569,12 @@ erDiagram
     A2_Wireframe }o--|| A2_ServiceDomain : "association"
     A2_SemanticAPI }o--|| A2_ServiceDomain : "realization"
     A2_BOMModel }o--|{ A2_BusinessObject : "aggregation"
+    A2_BusinessObject |o--o{ A2_BusinessObject : "composition"
+    A2_BusinessObject }o--o{ A2_BusinessObject : "aggregation"
+    A2_BusinessObject |o--o{ A2_BusinessObject : "specialization"
+    A2_BusinessObject }o--o{ A2_BusinessObject : "association"
+    A2_BusinessObjectAttribute }o--o| A2_BusinessObject : "association"
+    A2_ServiceOperation }o--o{ A2_BusinessObject : "access"
 ```
 
 ### `A2.BusinessArea`
@@ -738,6 +750,7 @@ An operation a Service Domain exposes
 | association → | `BehaviorQualifier` | at most one |
 | ← aggregation | `BusinessScenario` | any number |
 | access → | `ControlRecord` | exactly one |
+| access → | `BusinessObject` | any number |
 
 ### `A2.BehaviorQualifier`
 
@@ -805,6 +818,12 @@ A canonical business information concept
 | composition → | `BusinessObjectAttribute` | one or more |
 | ← association | `ControlRecord` | any number |
 | ← aggregation | `BOMModel` | any number |
+| composition (with itself) | `BusinessObject` | any number |
+| aggregation (with itself) | `BusinessObject` | any number |
+| specialization (with itself) | `BusinessObject` | any number |
+| association (with itself) | `BusinessObject` | any number |
+| ← association | `BusinessObjectAttribute` | any number |
+| ← access | `ServiceOperation` | any number |
 
 ### `A2.BusinessObjectAttribute`
 
@@ -818,15 +837,20 @@ A property of a Business Object
 
 | Field | Type | Required | Meaning | Refers to |
 |---|---|---|---|---|
-| `data_type` | text | no | the attribute's data type in the Business Object Model | — |
+| `data_type` | text | no | the attribute's data type in the Business Object Model | one of: string, text, integer, decimal, amount, currency_code, date, datetime, boolean, identifier, enum, reference |
 | `iso20022_ref` | text | no | the matching ISO 20022 business element | — |
 | `personal_information` | boolean | no | whether the attribute is personal information | — |
+| `required` | boolean | no | whether every business object of this kind has a value for this attribute | — |
+| `allowed_values` | list | no | the values the attribute may take, when it is an enumeration | — |
+| `identifier` | boolean | no | whether the attribute identifies the business object | — |
+| `multiplicity` | text | no | how many values one business object holds for the attribute | one of: 1, 0..1, 0..n, 1..n |
 
 **Links**
 
 | Link | With | How many |
 |---|---|---|
 | ← composition | `BusinessObject` | exactly one |
+| association → | `BusinessObject` | at most one |
 
 ### `A2.BOMModel`
 
@@ -876,7 +900,7 @@ A Semantic API definition artefact
 
 ## 3. A3 Application Architecture
 
-8 entities. The diagram shows the entities, their key fields and references, and the links between them.
+9 entities. The diagram shows the entities, their key fields and references, and the links between them.
 
 ```mermaid
 erDiagram
@@ -921,6 +945,10 @@ erDiagram
         list payload_fields
         string operation_id
         boolean deprecated
+        list request_fields FK
+        list response_fields FK
+        list responses
+        list parameters
     }
     A3_DataEntity {
         string id PK
@@ -942,6 +970,17 @@ erDiagram
     A3_SolutionBuildingBlock {
         string id PK
         list components FK
+    }
+    A3_DataAttribute {
+        string id PK
+        string physical_type
+        boolean required
+        boolean primary_key
+        boolean unique
+        list allowed_values
+        string default
+        boolean personal_information
+        string classification
     }
     A3_ApplicationComponent |o--o{ A3_ApplicationComponent : "composition"
     A3_ApplicationComponent }o--o{ A3_ApplicationComponent : "aggregation"
@@ -974,6 +1013,9 @@ erDiagram
     A3_APIOperation }o--o{ A3_DataEntity : "access"
     A3_SolutionBuildingBlock }o--o{ A3_ApplicationComponent : "aggregation"
     A3_SolutionBuildingBlock |o--o{ A3_SolutionBuildingBlock : "composition"
+    A3_DataEntity }o--o{ A3_DataEntity : "association"
+    A3_DataEntity ||--o{ A3_DataAttribute : "composition"
+    A3_DataAttribute }o--o| A3_DataEntity : "association"
 ```
 
 ### `A3.ApplicationComponent`
@@ -1119,6 +1161,10 @@ A callable operation of an API contract
 | `payload_fields` | list | yes | request and response field names | — |
 | `operation_id` | text | no | the operation's unique id in its API contract | — |
 | `deprecated` | boolean | no | whether the operation is deprecated in its contract | — |
+| `request_fields` | list | no | the data attributes the operation takes | `A3.DataAttribute` |
+| `response_fields` | list | no | the data attributes the operation returns | `A3.DataAttribute` |
+| `responses` | list | no | the response status codes the operation defines, e.g. 201, 400, 404 | — |
+| `parameters` | list | no | the path and query parameters the operation takes | — |
 
 **Links**
 
@@ -1160,6 +1206,9 @@ A logical data entity held by an application
 | specialization (with itself) | `DataEntity` | any number |
 | ← access | `Event` | any number |
 | ← access | `APIOperation` | any number |
+| association (with itself) | `DataEntity` | any number |
+| composition → | `DataAttribute` | any number |
+| ← association | `DataAttribute` | any number |
 
 ### `A3.Event`
 
@@ -1208,6 +1257,34 @@ An organisation-defined reusable solution grouping
 |---|---|---|
 | aggregation → | `ApplicationComponent` | any number |
 | composition (with itself) | `SolutionBuildingBlock` | any number |
+
+### `A3.DataAttribute`
+
+*entity*
+
+A field of a data entity: its physical type, whether it is required, and whether it is a key
+
+**Identified by:** `name` — a field's name is unique within the entity that is composed of it
+
+**Fields**
+
+| Field | Type | Required | Meaning | Refers to |
+|---|---|---|---|---|
+| `physical_type` | text | no | the field’s type in the store, e.g. varchar(35), numeric(18,2), timestamp | — |
+| `required` | boolean | no | whether the field must have a value (not null) | — |
+| `primary_key` | boolean | no | whether the field is (part of) the entity’s primary key | — |
+| `unique` | boolean | no | whether no two records share a value | — |
+| `allowed_values` | list | no | the values the field may take | — |
+| `default` | text | no | the value a new record gets when none is given | — |
+| `personal_information` | boolean | no | whether the field holds personal information | — |
+| `classification` | text | no | the field’s information classification | one of: public, internal, confidential, restricted |
+
+**Links**
+
+| Link | With | How many |
+|---|---|---|
+| ← composition | `DataEntity` | exactly one |
+| association → | `DataEntity` | at most one |
 
 ## 4. A4 Technology Architecture
 
@@ -1282,6 +1359,7 @@ erDiagram
         list carries FK
         string protocol
         boolean encrypted
+        list carries_data FK
     }
     A4_Artifact {
         string id PK
@@ -1615,6 +1693,7 @@ A route between nodes
 | `carries` | list | no | ids of A3 components whose traffic uses the path | `A3.ApplicationComponent` *(join key)* |
 | `protocol` | text | no | the service name of the protocol on the path (IANA) | — |
 | `encrypted` | boolean | no | whether traffic on the path is encrypted in transit | — |
+| `carries_data` | list | no | the data entities whose records travel over the path | `A3.DataEntity` *(join key)* |
 
 **Links**
 
@@ -1671,6 +1750,7 @@ The model above covers each architecture on its own. Links **between** architect
 | `EXPOSED_THROUGH` | `A3.ApplicationInterface` → `A4.Device` | many to many |
 | `EXPOSED_THROUGH` | `A3.ApplicationInterface` → `A4.SystemSoftware` | many to many |
 | `BUILT_AS` | `A3.ApplicationComponent` → `A4.Artifact` | many to many |
+| `FIELD_MAPPED_TO` | `A2.BusinessObjectAttribute` → `A3.DataAttribute` | many to many |
 
 ---
 
@@ -1703,21 +1783,26 @@ The rules the data must satisfy, and which the checker enforces today.
 | LC-20 | Placement agrees with the evidence | a shape is not in a zone that a high-confidence hosting signal contradicts (a mainframe in a cloud zone — metamodel/hosting-signals.json; metamodel 0.11.0) | **enforced** |
 | LC-21 | Every A4 shape connected | an A4 shape (not a network, zone, path or environment, and not retired or deprecated) has a link inside A4 to another shape — not only to its zone, environment, network or a path, and not only to another layer: A4 is the physical deployment; an internet-facing one fronts nothing without one; sdem aid proposes connections (AID-C01…C06) (the owner, 2026-11-14) | **enforced** |
 | LC-22 | Every internet-facing interface exposed | an A3 interface marked internet facing has an EXPOSED_THROUGH connection (any status) to an internet-facing edge platform — checked over the whole workspace (the owner, X1–X6, 2026-11-14) | **enforced** |
+| LC-23 | Fields as records | a BIAN business object or a data entity with field names has a record for each field (A2.BusinessObjectAttribute, A3.DataAttribute) — names only is reported thin (metamodel 0.15.0, IM-08) | **enforced** |
+| LC-24 | Names and records agree | where a business object or data entity has both a list of field names and field records, they name the same fields (metamodel 0.15.0) | **enforced** |
+| LC-25 | A system of record has a key | a data entity marked system of record, with field records, has a primary-key field (metamodel 0.15.0) | **enforced** |
+| LC-26 | A foreign key points at a key | a data attribute associated with a data entity (a foreign key) points at an entity that has a primary-key field (metamodel 0.15.0) | **enforced** |
+| LC-27 | Field mappings agree on type | a FIELD_MAPPED_TO links a BIAN attribute to a data attribute whose physical type can hold its logical type (a date in a date or timestamp; an amount in a numeric) (metamodel 0.15.0) | **enforced** |
 
 ## Appendix B. How the example data measures up
 
-The 8 example workspaces (881 instances) (the generated reference-structure workspace excluded) checked by `sdem check` against the enforced rules. No errors; 30 completeness warning(s), where an example architecture datasets part of BIAN's structure (a business domain without its area, a business object without attribute instances, a stub Service Domain without its groups or control record).
+The 8 example workspaces (883 instances) (the generated reference-structure workspace excluded) checked by `sdem check` against the enforced rules. No errors; 29 completeness warning(s), where an example architecture datasets part of BIAN's structure (a business domain without its area, a business object without attribute instances, a stub Service Domain without its groups or control record).
 
 | Rule | Values checked | Failures |
 |---|---|---|
 | LC-04 | 1254 | 0 |
-| LC-05 | 2829 | 0 |
-| LC-06 | 1540 | 0 |
-| LC-07 | 169 | 0 |
+| LC-05 | 2837 | 0 |
+| LC-06 | 1546 | 0 |
+| LC-07 | 180 | 0 |
 | LC-08 (warning) | 183 | 0 |
-| LC-09 | 818 | 0 |
-| LC-10 | 2438 | 0 |
-| LC-10m (warning) | 2438 | 30 |
+| LC-09 | 820 | 0 |
+| LC-10 | 2755 | 0 |
+| LC-10m (warning) | 2755 | 29 |
 | LC-13 deprecated field in use | — | 0 |
 | fields not in the model | — | 0 |
 
@@ -1727,12 +1812,15 @@ Each entity's, field's and link's source, reasoning and confidence are in [`arch
 
 | Decision | Count | Basis |
 |---|---|---|
-| Link counts — SDEM default | 94 | no standard sets a number; left open |
-| Link counts — ArchiMate composition semantics | 25 | a part belongs to at most one whole (ArchiMate) |
+| Link counts — SDEM default | 95 | no standard sets a number; left open |
+| Link counts — ArchiMate composition semantics | 26 | a part belongs to at most one whole (ArchiMate) |
 | Link counts — BIAN | 14 | stated by BIAN |
+| Link counts — SDEM | 4 | a part belongs to at most one whole (ArchiMate) |
+| Link counts — ArchiMate association semantics | 3 | a part belongs to at most one whole (ArchiMate) |
 | Link counts — SDEM reading | 1 | SDEM's reading of a BIAN page |
-| Link counts — SDEM | 1 | a part belongs to at most one whole (ArchiMate) |
-| Identifiers — SDEM | 35 | SDEM recommendation: a unique name |
+| Link counts — ArchiMate aggregation semantics | 1 | a part belongs to at most one whole (ArchiMate) |
+| Link counts — ArchiMate specialization semantics | 1 | a part belongs to at most one whole (ArchiMate) |
+| Identifiers — SDEM | 36 | SDEM recommendation: a unique name |
 | Identifiers — BIAN | 5 | BIAN concept ids and operation naming |
 | Identifiers — OpenAPI | 1 | path and method unique per API |
 
@@ -1741,6 +1829,6 @@ Each entity's, field's and link's source, reasoning and confidence are in [`arch
 | Layer | Content | Status |
 |---|---|---|
 | Conceptual | which entities exist and which links are allowed | complete |
-| **Logical (this document)** | identifiers, typed fields, allowed values, references, link counts, rules | designed; 23 of 23 rules enforced |
+| **Logical (this document)** | identifiers, typed fields, allowed values, references, link counts, rules | designed; 28 of 28 rules enforced |
 | Physical | one architecture dataset JSON Schema per entity type ([physical-data-model.md](physical-data-model.md)); a graph store schema | entity schemas generated (`sdem model regenerate (physical)`); graph store schema not designed yet |
 

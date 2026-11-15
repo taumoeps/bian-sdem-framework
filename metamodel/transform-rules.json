@@ -1,5 +1,5 @@
 {
-  "metamodel_version": "0.14.0",
+  "metamodel_version": "0.15.0",
   "note": "Rules for `sdem transform`: how a Confluence HTML export of past designs becomes candidate architecture records. Rules only — no AI, no network. Copy this file, change the words to match your pages, and pass it with --rules. Matching ignores case, punctuation and extra spaces. Design: docs/sdem-transform-design.md; spec: docs/sdem-transform-spec.md. Any folder layout: pages are found anywhere (HTML, Markdown, text, CSV), folder names act as section headings, diagrams are linked to the page that refers to them, files in the root are kept as provenance.",
   "id_prefix": "HIS-",
   "skip_folders": [
@@ -156,7 +156,13 @@
         "lifecycle"
       ],
       "attributes": {
-        "internet_facing": ["internet facing", "internet-facing", "public", "exposure", "exposed to internet"]
+        "internet_facing": [
+          "internet facing",
+          "internet-facing",
+          "public",
+          "exposure",
+          "exposed to internet"
+        ]
       }
     },
     {
@@ -185,10 +191,27 @@
         "lifecycle"
       ],
       "attributes": {
-        "site": ["site", "hosting site", "data centre", "data center"],
-        "cloud_provider": ["cloud provider", "cloud"],
-        "region": ["region", "cloud region"],
-        "internet_facing": ["internet facing", "internet-facing", "public", "exposure", "exposed to internet"]
+        "site": [
+          "site",
+          "hosting site",
+          "data centre",
+          "data center"
+        ],
+        "cloud_provider": [
+          "cloud provider",
+          "cloud"
+        ],
+        "region": [
+          "region",
+          "cloud region"
+        ],
+        "internet_facing": [
+          "internet facing",
+          "internet-facing",
+          "public",
+          "exposure",
+          "exposed to internet"
+        ]
       }
     },
     {
@@ -213,10 +236,27 @@
         "lifecycle"
       ],
       "attributes": {
-        "site": ["site", "hosting site", "data centre", "data center"],
-        "cloud_provider": ["cloud provider", "cloud"],
-        "region": ["region", "cloud region"],
-        "internet_facing": ["internet facing", "internet-facing", "public", "exposure", "exposed to internet"]
+        "site": [
+          "site",
+          "hosting site",
+          "data centre",
+          "data center"
+        ],
+        "cloud_provider": [
+          "cloud provider",
+          "cloud"
+        ],
+        "region": [
+          "region",
+          "cloud region"
+        ],
+        "internet_facing": [
+          "internet facing",
+          "internet-facing",
+          "public",
+          "exposure",
+          "exposed to internet"
+        ]
       }
     },
     {
@@ -236,10 +276,27 @@
         "lifecycle"
       ],
       "attributes": {
-        "site": ["site", "hosting site", "data centre", "data center"],
-        "cloud_provider": ["cloud provider", "cloud"],
-        "region": ["region", "cloud region"],
-        "internet_facing": ["internet facing", "internet-facing", "public", "exposure", "exposed to internet"]
+        "site": [
+          "site",
+          "hosting site",
+          "data centre",
+          "data center"
+        ],
+        "cloud_provider": [
+          "cloud provider",
+          "cloud"
+        ],
+        "region": [
+          "region",
+          "cloud region"
+        ],
+        "internet_facing": [
+          "internet facing",
+          "internet-facing",
+          "public",
+          "exposure",
+          "exposed to internet"
+        ]
       }
     },
     {
@@ -319,7 +376,29 @@
     "action item",
     "open question"
   ],
-  "boolean_values": {"note": "a yes/no column read into a boolean attribute (internet_facing): these words only; any other value stays with the entity as unmapped, never guessed", "true": ["yes", "y", "true", "public", "external", "internet", "internet facing", "internet-facing", "exposed"], "false": ["no", "n", "false", "internal", "private", "not exposed", "none"]},
+  "boolean_values": {
+    "note": "a yes/no column read into a boolean attribute (internet_facing): these words only; any other value stays with the entity as unmapped, never guessed",
+    "true": [
+      "yes",
+      "y",
+      "true",
+      "public",
+      "external",
+      "internet",
+      "internet facing",
+      "internet-facing",
+      "exposed"
+    ],
+    "false": [
+      "no",
+      "n",
+      "false",
+      "internal",
+      "private",
+      "not exposed",
+      "none"
+    ]
+  },
   "link_tables": [
     {
       "id": "HL-01",
@@ -355,9 +434,27 @@
     },
     {
       "id": "HL-02",
-      "source": ["application", "application name", "app", "app name", "component", "system", "system name"],
-      "target": ["runs on", "hosted on", "deployed on", "deployed to", "installed on"],
-      "label": ["environment", "description", "notes"],
+      "source": [
+        "application",
+        "application name",
+        "app",
+        "app name",
+        "component",
+        "system",
+        "system name"
+      ],
+      "target": [
+        "runs on",
+        "hosted on",
+        "deployed on",
+        "deployed to",
+        "installed on"
+      ],
+      "label": [
+        "environment",
+        "description",
+        "notes"
+      ],
       "endpoint_type": "A3.ApplicationComponent",
       "target_type": "A4.Node",
       "kind": "deployed_on",

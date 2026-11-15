@@ -138,6 +138,24 @@ def fill(workspace, person, dry_run=False, now=None):
                           'confidence': link.get('confidence'), 'evidence': [f"engine_rationale:{run} {pj.get('rule', '')}".strip()],
                           'rationale': re.sub(r'^PROJECTED DESIGN, not a mapping:\s*', 'Inferred by sdem aid: ', link.get('rationale', '')),
                           'baseline_id': run, 'created_by': 'sdem aid'})
+    if after.get('A2'):   # AID-I01…I04 (metamodel 0.15.0, IM-10): a data entity with its fields for each typed business object — inferred, proposed
+        from .aid_info import propose_information
+        mark = lambda rule, why, frm: {'by': 'sdem aid', 'run': run, 'at': now, 'requested_by': person.strip(), 'step': 'information', 'rule': rule,
+                                       'source': 'docs/design/sdem-full-design-metamodel-design.md IM-10', 'reasoning': why, 'confidence': 'low',
+                                       'evidence_class': 'attribute_join', 'from': frm}
+        a3doc = after.setdefault('A3', {'level': 'A3', 'model_id': f'{stem}-A3', 'model_version': now[:10], 'metamodel_version': after['A2'].get('metamodel_version'),
+                                         'source_system': 'SDEM-AID', 'instances': [], 'relationships': []})
+        iinst, irels, ilinks = propose_information(after['A2'], a3doc, registry.get('mappings', []) + proposals, mark, rejected, lambda r: is_inferred(r, confirmed=False))
+        for rec in iinst:
+            if rec['id'] in present: continue
+            a3doc['instances'].append(rec); present.add(rec['id']); by_id[rec['id']] = rec; added.setdefault('A3', []).append(rec['id'])
+        a3doc.setdefault('relationships', []).extend(r for r in irels if r['source'] in present and r['target'] in present)
+        for src, rel, tgt, why in ilinks:
+            if src not in by_id or tgt not in by_id or (src, rel, tgt) in approved: continue
+            proposals.append({'mapping_id': f'{run}-P{len(proposals) + 1:03d}', 'source': end({'id': src, 'type': by_id[src]['type'], 'version': by_id[src]['version']}),
+                              'relationship': rel, 'target': {'id': tgt, 'type': by_id[tgt]['type'], 'version': by_id[tgt]['version']}, 'status': 'proposed',
+                              'confidence': 'low', 'evidence': [f'engine_rationale:{run} AID-I03'], 'rationale': f'Inferred by sdem aid: {why} — approve with data_model evidence',
+                              'baseline_id': run, 'created_by': 'sdem aid'})
     if after.get('A3') and after.get('A4'):   # AID-X01: an internet-facing interface EXPOSED_THROUGH the one edge platform — for a person to approve
         from .a4_connect import propose_exposure
         from .metamodel import Metamodel as _MM

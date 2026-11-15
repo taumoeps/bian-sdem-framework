@@ -484,6 +484,26 @@
           },
           "x-sdem-reasoning": "Answers: Which connections carry unencrypted traffic? A standard security question; no open standard defines the field.",
           "x-sdem-confidence": "low"
+        },
+        "carries_data": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "the data entities whose records travel over the path",
+          "x-sdem-id": "AT-A4-40",
+          "x-sdem-group": "specific",
+          "x-sdem-kind": "reference",
+          "x-sdem-references": [
+            "A3.DataEntity"
+          ],
+          "x-sdem-source": {
+            "standard": "SDEM",
+            "locator": "docs/design/sdem-full-design-metamodel-design.md",
+            "uri": "docs/design/sdem-full-design-metamodel-design.md"
+          },
+          "x-sdem-reasoning": "So \"this path carries personal data\" follows from the entities’ fields (CT-04).",
+          "x-sdem-confidence": "low"
         }
       },
       "additionalProperties": true,

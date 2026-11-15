@@ -1045,6 +1045,110 @@
           "edges": 28
         }
       ]
+    },
+    {
+      "build": 13,
+      "at": "2026-11-15T17:06:27+00:00",
+      "inputs": [
+        {
+          "path": "examples/legacy-core-ledger//a1-business.json",
+          "kind": "export",
+          "level": "A1",
+          "model_id": "synthetic-bank-ledger-a1-draft",
+          "model_version": "2026.10",
+          "sha256": "8089f4a7de1dc918d3141725fdeeb3b8d86e438897bef118563f44e39e7d0fb7"
+        },
+        {
+          "path": "examples/legacy-core-ledger//a2-service-domain.json",
+          "kind": "export",
+          "level": "A2",
+          "model_id": "synthetic-bank-ledger-a2",
+          "model_version": "2026.10",
+          "sha256": "c8e7fb3f094b85f1a1ecf14a18a31f8d0db5ffafe3847f0784716cf89b14a997"
+        },
+        {
+          "path": "examples/legacy-core-ledger//a3-application.json",
+          "kind": "export",
+          "level": "A3",
+          "model_id": "synthetic-bank-ledger-a3",
+          "model_version": "2026.10",
+          "sha256": "c895bca2b0dcbdb250c1897d6a1cc6af11e25ba92a06a8570cd867587a372f2b"
+        },
+        {
+          "path": "examples/legacy-core-ledger//a4-technology.json",
+          "kind": "export",
+          "level": "A4",
+          "model_id": "synthetic-bank-ledger-a4",
+          "model_version": "2026.10",
+          "sha256": "b020b627e2714204755890c73a27deb8ff5d6fc019d630c052700bcd85a0e0ed"
+        },
+        {
+          "path": "examples/legacy-core-ledger//mappings.json",
+          "kind": "registry",
+          "registry_version": "0.4.0",
+          "sha256": "388d5baee773b57dc7938d2880ff85cc0ceb28892fb06060cecb4875f3394206"
+        }
+      ],
+      "metamodel_version": "0.15.0",
+      "errors": [],
+      "warnings": [
+        "level A2 (synthetic-bank-ledger-a2): instance BD-OPS: 0 composition links with A2.BusinessArea, RA2-01 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-bank-ledger-a2): instance BD-REF: 0 composition links with A2.BusinessArea, RA2-01 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-bank-ledger-a2): instance BBO-ACCOUNT: 0 composition links with A2.BusinessObjectAttribute, RA2-10 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-bank-ledger-a2): instance BBO-POSTING: 0 composition links with A2.BusinessObjectAttribute, RA2-10 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-bank-ledger-a2): instance BBO-PAYMENT-TXN: 0 composition links with A2.BusinessObjectAttribute, RA2-10 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-bank-ledger-a2): instance BBO-PARTY: 0 composition links with A2.BusinessObjectAttribute, RA2-10 expects at least 1 (LC-10m)",
+        "level A3 (synthetic-bank-ledger-a3): instance OP-OpenAccount: attribute 'payload_fields' is deprecated (LC-13)",
+        "level A3 (synthetic-bank-ledger-a3): instance OP-GetAccount: attribute 'payload_fields' is deprecated (LC-13)",
+        "level A3 (synthetic-bank-ledger-a3): instance OP-BlockAccount: attribute 'payload_fields' is deprecated (LC-13)",
+        "level A3 (synthetic-bank-ledger-a3): instance OP-AmendOverdraft: attribute 'payload_fields' is deprecated (LC-13)",
+        "level A3 (synthetic-bank-ledger-a3): instance OP-CloseAccount: attribute 'payload_fields' is deprecated (LC-13)",
+        "level A3 (synthetic-bank-ledger-a3): instance OP-PostEntry: attribute 'payload_fields' is deprecated (LC-13)",
+        "level A3 (synthetic-bank-ledger-a3): instance OP-GetBalance: attribute 'payload_fields' is deprecated (LC-13)",
+        "level A3 (synthetic-bank-ledger-a3): instance OP-ReverseEntry: attribute 'payload_fields' is deprecated (LC-13)",
+        "level A3 (synthetic-bank-ledger-a3): instance OP-SubmitPayment: attribute 'payload_fields' is deprecated (LC-13)",
+        "level A3 (synthetic-bank-ledger-a3): instance OP-PaymentStatus: attribute 'payload_fields' is deprecated (LC-13)",
+        "level A3 (synthetic-bank-ledger-a3): instance OP-CancelPayment: attribute 'payload_fields' is deprecated (LC-13)",
+        "level A3 (synthetic-bank-ledger-a3): instance OP-CreateCustomer: attribute 'payload_fields' is deprecated (LC-13)",
+        "level A3 (synthetic-bank-ledger-a3): instance OP-GetCustomer: attribute 'payload_fields' is deprecated (LC-13)",
+        "level A3 (synthetic-bank-ledger-a3): instance OP-UpdateCustomer: attribute 'payload_fields' is deprecated (LC-13)",
+        "level A3 (synthetic-bank-ledger-a3): instance JOB-EOD: attribute 'payload_fields' is deprecated (LC-13)",
+        "level A3 (synthetic-bank-ledger-a3): instance JOB-INTEREST: attribute 'payload_fields' is deprecated (LC-13)",
+        "level A3 (synthetic-bank-ledger-a3): instance JOB-AUDIT: attribute 'payload_fields' is deprecated (LC-13)"
+      ],
+      "result": "accepted",
+      "outputs": [
+        {
+          "file": "a1-business.graph.json",
+          "sha256": "8fa001daa0b1557807e1747882d6ea78b6f9507ac31935db14a0c335b9f7bd14",
+          "nodes": 6,
+          "edges": 0
+        },
+        {
+          "file": "a2-service-domain.graph.json",
+          "sha256": "a8411228f2c66f548bf55eef718878570c4dc421d7133c1abb57ce23f6759cd8",
+          "nodes": 42,
+          "edges": 57
+        },
+        {
+          "file": "a3-application.graph.json",
+          "sha256": "02a6e59e276fce29b44d1669f97fe124fe65f8b60dbbbdab5c51ff2bb5781baf",
+          "nodes": 32,
+          "edges": 32
+        },
+        {
+          "file": "a4-technology.graph.json",
+          "sha256": "06d0f4904f1daf298b10c0e5eaf9aec52e07671022c9e901e2326f56441471f9",
+          "nodes": 8,
+          "edges": 7
+        },
+        {
+          "file": "federated.graph.json",
+          "sha256": "104422a0bf90be9d5270a2f6b5f373476bdb6201191a7500e9c1d8b725a3faa6",
+          "nodes": 51,
+          "edges": 28
+        }
+      ]
     }
   ]
 }

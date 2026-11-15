@@ -333,10 +333,13 @@
           "items": {
             "type": "string"
           },
-          "description": "attribute names the service takes",
+          "description": "the business objects the service takes",
           "x-sdem-id": "AT-A1-04",
           "x-sdem-group": "specific",
-          "x-sdem-kind": "value",
+          "x-sdem-kind": "reference",
+          "x-sdem-references": [
+            "A1.BusinessObject"
+          ],
           "x-sdem-source": {
             "standard": "SDEM",
             "locator": "SDEM rule S09 (business service ↔ operation by inputs and outputs); validated in use case C1 — docs/relationship-rules-spec.md",
@@ -350,10 +353,13 @@
           "items": {
             "type": "string"
           },
-          "description": "attribute names the service returns",
+          "description": "the business objects the service returns",
           "x-sdem-id": "AT-A1-05",
           "x-sdem-group": "specific",
-          "x-sdem-kind": "value",
+          "x-sdem-kind": "reference",
+          "x-sdem-references": [
+            "A1.BusinessObject"
+          ],
           "x-sdem-source": {
             "standard": "SDEM",
             "locator": "SDEM rule S09; validated in use case C1 — docs/relationship-rules-spec.md",

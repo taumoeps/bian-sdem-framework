@@ -6,11 +6,11 @@
     "directed": true,
     "metadata": {
       "sdem_store_version": "1.0",
-      "export_sha256": "0b77e8fedd24cbe2d346eaeaa0dde8753a78830c7a4004d9f8a9503a4f96bf51",
+      "export_sha256": "d2185ee1d1ebf7a41a0e0b456186c3f9d169911a2b2c7b2aa96d03b97c282024",
       "level": "A3",
       "model_id": "synthetic-bank-onboarding-a3",
       "model_version": "2026.10",
-      "metamodel_version": "0.14.0",
+      "metamodel_version": "0.15.0",
       "source_system": "SYNTHETIC-APM"
     },
     "nodes": {
@@ -115,6 +115,23 @@
             ]
           }
         }
+      },
+      "A3:ENT-001-F01@1.0": {
+        "label": "customer_reference",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.DataAttribute",
+          "id": "ENT-001-F01",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "The customer identity table's key (made-up).",
+          "attributes": {
+            "physical_type": "varchar(35)",
+            "required": true,
+            "primary_key": true,
+            "unique": true
+          }
+        }
       }
     },
     "edges": [
@@ -156,6 +173,16 @@
         "metadata": {
           "scope": "within-level",
           "row": "RA3-16"
+        }
+      },
+      {
+        "id": "A3:ENT-001-composition-ENT-001-F01",
+        "source": "A3:ENT-001@1.0",
+        "target": "A3:ENT-001-F01@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-33"
         }
       }
     ]

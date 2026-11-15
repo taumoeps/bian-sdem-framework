@@ -9,7 +9,7 @@ skinparam package {
   BorderColor #9E9E9E
 }
 skinparam ArrowFontSize 9
-title Merged view — 135 within-level links (thin, kind only) and 50 cross-level mappings (plan ID, coloured by decision)
+title Merged view — 145 within-level links (thin, kind only) and 50 cross-level mappings (plan ID, coloured by decision)
 
 package "A1 Business Architecture" as A1 {
   rectangle "A1.BusinessCapability" as a1_businesscapability
@@ -22,7 +22,7 @@ package "A1 Business Architecture" as A1 {
   rectangle "A1.BusinessRole" as a1_businessrole #EEEEEE
   rectangle "A1.BusinessObject" as a1_businessobject
   rectangle "A1.BusinessRequirement" as a1_businessrequirement
-  ' within A1 — constraint rows (48)
+  ' within A1 — constraint rows (49)
   a1_businesscapability -[#B0BEC5]-> a1_businesscapability : <size:8>RA1-01 composition</size>
   a1_businesscapability -[#B0BEC5]-> a1_businesscapability : <size:8>RA1-02 aggregation</size>
   a1_businesscapability -[#B0BEC5]-> a1_valuestream : <size:8>RA1-03 serving</size>
@@ -71,6 +71,7 @@ package "A1 Business Architecture" as A1 {
   a1_businessobject -[#B0BEC5]-> a1_businessobject : <size:8>RA1-46 specialization</size>
   a1_businessrequirement -[#B0BEC5]-> a1_businessrequirement : <size:8>RA1-47 composition</size>
   a1_businessrequirement -[#B0BEC5]-> a1_businessrequirement : <size:8>RA1-48 specialization</size>
+  a1_businessobject -[#B0BEC5]-> a1_businessobject : <size:8>RA1-49 association</size>
 }
 
 package "A2 Service Domain Architecture" as A2 {
@@ -89,7 +90,7 @@ package "A2 Service Domain Architecture" as A2 {
   rectangle "A2.BOMModel\n(artefact)" as a2_bommodel #EEEEEE
   rectangle "A2.Wireframe\n(artefact)" as a2_wireframe #EEEEEE
   rectangle "A2.SemanticAPI\n(artefact)" as a2_semanticapi #EEEEEE
-  ' within A2 — constraint rows (17)
+  ' within A2 — constraint rows (23)
   a2_businessarea -[#B0BEC5]-> a2_businessdomain : <size:8>RA2-01 composition</size>
   a2_businessdomain -[#B0BEC5]-> a2_servicedomain : <size:8>RA2-02 composition</size>
   a2_servicedomain -[#B0BEC5]-> a2_servicegroup : <size:8>RA2-03 composition</size>
@@ -107,6 +108,12 @@ package "A2 Service Domain Architecture" as A2 {
   a2_wireframe -[#B0BEC5]-> a2_servicedomain : <size:8>RA2-15 association</size>
   a2_semanticapi -[#B0BEC5]-> a2_servicedomain : <size:8>RA2-16 realization</size>
   a2_bommodel -[#B0BEC5]-> a2_businessobject : <size:8>RA2-17 aggregation</size>
+  a2_businessobject -[#B0BEC5]-> a2_businessobject : <size:8>RA2-18 composition</size>
+  a2_businessobject -[#B0BEC5]-> a2_businessobject : <size:8>RA2-19 aggregation</size>
+  a2_businessobject -[#B0BEC5]-> a2_businessobject : <size:8>RA2-20 specialization</size>
+  a2_businessobject -[#B0BEC5]-> a2_businessobject : <size:8>RA2-21 association</size>
+  a2_businessobjectattribute -[#B0BEC5]-> a2_businessobject : <size:8>RA2-22 association</size>
+  a2_serviceoperation -[#B0BEC5]-> a2_businessobject : <size:8>RA2-23 access</size>
 }
 
 package "A3 Application Architecture" as A3 {
@@ -118,7 +125,8 @@ package "A3 Application Architecture" as A3 {
   rectangle "A3.DataEntity" as a3_dataentity
   rectangle "A3.Event" as a3_event
   rectangle "A3.SolutionBuildingBlock" as a3_solutionbuildingblock
-  ' within A3 — constraint rows (31)
+  rectangle "A3.DataAttribute" as a3_dataattribute #EEEEEE
+  ' within A3 — constraint rows (34)
   a3_applicationcomponent -[#B0BEC5]-> a3_applicationcomponent : <size:8>RA3-01 composition</size>
   a3_applicationcomponent -[#B0BEC5]-> a3_applicationcomponent : <size:8>RA3-02 aggregation</size>
   a3_applicationcomponent -[#B0BEC5]-> a3_applicationinterface : <size:8>RA3-03 composition</size>
@@ -150,6 +158,9 @@ package "A3 Application Architecture" as A3 {
   a3_apioperation -[#B0BEC5]-> a3_dataentity : <size:8>RA3-29 access</size>
   a3_solutionbuildingblock -[#B0BEC5]-> a3_applicationcomponent : <size:8>RA3-30 aggregation</size>
   a3_solutionbuildingblock -[#B0BEC5]-> a3_solutionbuildingblock : <size:8>RA3-31 composition</size>
+  a3_dataentity -[#B0BEC5]-> a3_dataentity : <size:8>RA3-32 association</size>
+  a3_dataentity -[#B0BEC5]-> a3_dataattribute : <size:8>RA3-33 composition</size>
+  a3_dataattribute -[#B0BEC5]-> a3_dataentity : <size:8>RA3-34 association</size>
 }
 
 package "A4 Technology Architecture" as A4 {

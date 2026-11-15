@@ -2,7 +2,7 @@
   "level": "A2",
   "model_id": "synthetic-bank-onboarding-a2",
   "model_version": "2026.10",
-  "metamodel_version": "0.14.0",
+  "metamodel_version": "0.15.0",
   "source_system": "SYNTHETIC-BIAN-WORKBENCH",
   "instances": [
     {
@@ -144,6 +144,20 @@
         ]
       },
       "canonical_id": "DEMO-BIAN-BO-CUSTOMER-IDENTITY"
+    },
+    {
+      "id": "BBOA-001-01",
+      "type": "A2.BusinessObjectAttribute",
+      "version": "1.0",
+      "name": "customer_reference",
+      "lifecycle_status": "active",
+      "description": "The reference that identifies the customer (made-up).",
+      "attributes": {
+        "data_type": "identifier",
+        "required": true,
+        "identifier": true,
+        "multiplicity": "1"
+      }
     }
   ],
   "relationships": [
@@ -201,6 +215,11 @@
       "source": "BS-001",
       "kind": "aggregation",
       "target": "SO-002"
+    },
+    {
+      "source": "BBO-001",
+      "kind": "composition",
+      "target": "BBOA-001-01"
     }
   ]
 }

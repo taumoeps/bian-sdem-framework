@@ -1,5 +1,5 @@
 {
-  "metamodel_version": "0.14.0",
+  "metamodel_version": "0.15.0",
   "note": "Attribute definitions of the Architecture Metamodel: the fields every instance carries (core_fields) and each entity type's own attributes. Source, reasoning, verification and confidence per attribute. Enforced by sdem-graph check (sdem/conformance.py, logical rules LC-04…LC-13) and published as per-entity JSON Schemas (sdem/physical.py); export-conventions.json keys must all appear here (test). Common attributes (common_attributes) apply to every entity type in every architecture; approved in the A1 data-model review 2026-10-24.",
   "confidence_rule": "high   — defined by a public standard and checked (BIAN public material, OpenAPI, or a standard concept or\n           relationship confirmed by the open-source Archi oracle); or an SDEM data-contract field, which SDEM defines\n           authoritatively.\n  medium — built on a standard concept or relationship as SDEM chose to model it; or BIAN intent / target only;\n           or an SDEM definition, a login-gated source, or a cited-but-unverified source that was validated against\n           sealed answers; or institution data under an SDEM convention.\n  low    — no standard basis and not validated against sealed answers; or deprecated.",
   "placeholders": {
@@ -241,7 +241,7 @@
       "name": "inputs",
       "type": "list<string>",
       "required": false,
-      "description": "attribute names the service takes",
+      "description": "the business objects the service takes",
       "status": "active",
       "source": "SDEM",
       "reference": {
@@ -254,7 +254,13 @@
       "confidence": "medium",
       "read_by": "S09",
       "confidence_basis": "SDEM field with no standard concept; validated against sealed answers",
-      "kind": "value"
+      "kind": "reference",
+      "references": [
+        "A1.BusinessObject"
+      ],
+      "reference_scope": "within-level — the business objects the service takes or returns (CT-01)",
+      "enforcement": "warning",
+      "enforcement_reasoning": "Stricter from metamodel 0.15.0: a value written before it (a free-text type, a name rather than a record's id) is reported, never refused (FD-P2)."
     },
     {
       "id": "AT-A1-05",
@@ -262,7 +268,7 @@
       "name": "outputs",
       "type": "list<string>",
       "required": false,
-      "description": "attribute names the service returns",
+      "description": "the business objects the service returns",
       "status": "active",
       "source": "SDEM",
       "reference": {
@@ -275,7 +281,13 @@
       "confidence": "medium",
       "read_by": "S09",
       "confidence_basis": "SDEM field with no standard concept; validated against sealed answers",
-      "kind": "value"
+      "kind": "reference",
+      "references": [
+        "A1.BusinessObject"
+      ],
+      "reference_scope": "within-level — the business objects the service takes or returns (CT-01)",
+      "enforcement": "warning",
+      "enforcement_reasoning": "Stricter from metamodel 0.15.0: a value written before it (a free-text type, a name rather than a record's id) is reported, never refused (FD-P2)."
     },
     {
       "id": "AT-A1-06",
@@ -717,7 +729,7 @@
         "uri": "https://spec.openapis.org/oas/v3.1.0"
       },
       "verification": "public specification",
-      "reasoning": "OpenAPI describes payloads as schemas; SDEM flattens them to field names, which is enough to match against BIAN attributes but loses structure.",
+      "reasoning": "OpenAPI describes payloads as schemas; SDEM flattens them to field names, which is enough to match against BIAN attributes but loses structure. From 0.15.0, request_fields and response_fields (CT-03) name the data attribute records beside it; it stays active, so no existing design is warned (FD-P2).",
       "confidence": "medium",
       "read_by": "step 2 check 4",
       "confidence_basis": "OpenAPI defines payload schemas; SDEM flattens them to field names",
@@ -2754,8 +2766,26 @@
         "date": "2026-10-24",
         "draft_id": "DA2-11"
       },
-      "kind": "value",
-      "confidence_basis": "built on a BIAN concept; the field itself not checked against a public page"
+      "kind": "enumeration",
+      "confidence_basis": "built on a BIAN concept; the field itself not checked against a public page",
+      "values": [
+        "string",
+        "text",
+        "integer",
+        "decimal",
+        "amount",
+        "currency_code",
+        "date",
+        "datetime",
+        "boolean",
+        "identifier",
+        "enum",
+        "reference"
+      ],
+      "values_source": "SDEM — a logical type list; BIAN publishes OpenAPI types and formats, mapped onto it by sdem bian import (IM-09)",
+      "values_approved": "2026-11-16",
+      "enforcement": "warning",
+      "enforcement_reasoning": "Stricter from metamodel 0.15.0: a value written before it (a free-text type, a name rather than a record's id) is reported, never refused (FD-P2)."
     },
     {
       "id": "AT-A2-23",
@@ -4102,6 +4132,491 @@
       "read_by": "the hosting signals (metamodel/hosting-signals.json) — sdem aid proposes a zone (AID-Z01); LC-20",
       "kind": "value",
       "confidence_basis": "SDEM field with no standard concept; not validated"
+    },
+    {
+      "id": "AT-A2-28",
+      "entity": "A2.BusinessObjectAttribute",
+      "name": "required",
+      "type": "boolean",
+      "required": false,
+      "description": "whether every business object of this kind has a value for this attribute",
+      "status": "active",
+      "source": "OpenAPI",
+      "reference": {
+        "standard": "OpenAPI Specification 3.1",
+        "locator": "Schema Object (type, format, required, enum)",
+        "uri": "https://spec.openapis.org/oas/v3.1.0"
+      },
+      "verification": "SDEM definition (the owner's decision, 2026-11-16)",
+      "reasoning": "BIAN publishes, per schema, which properties are required (OpenAPI `required`); read by sdem bian import (IM-09).",
+      "confidence": "high",
+      "read_by": "sdem check (IM-08), trace and impact, documents",
+      "question": "Whether every business object of this kind has a value for this attribute?",
+      "approved": {
+        "review": "metamodel 0.15.0 — a full design",
+        "date": "2026-11-16",
+        "draft_id": "FD-required"
+      },
+      "kind": "value",
+      "confidence_basis": "defined by a public standard (OpenAPI) and checked"
+    },
+    {
+      "id": "AT-A2-29",
+      "entity": "A2.BusinessObjectAttribute",
+      "name": "allowed_values",
+      "type": "list<string>",
+      "required": false,
+      "description": "the values the attribute may take, when it is an enumeration",
+      "status": "active",
+      "source": "OpenAPI",
+      "reference": {
+        "standard": "OpenAPI Specification 3.1",
+        "locator": "Schema Object (type, format, required, enum)",
+        "uri": "https://spec.openapis.org/oas/v3.1.0"
+      },
+      "verification": "SDEM definition (the owner's decision, 2026-11-16)",
+      "reasoning": "BIAN publishes enumerations as …TypeValues schemas (OpenAPI `enum`); read by sdem bian import (IM-09).",
+      "confidence": "high",
+      "read_by": "sdem check (IM-08), trace and impact, documents",
+      "question": "The values the attribute may take, when it is an enumeration?",
+      "approved": {
+        "review": "metamodel 0.15.0 — a full design",
+        "date": "2026-11-16",
+        "draft_id": "FD-allowed_values"
+      },
+      "kind": "value",
+      "confidence_basis": "defined by a public standard (OpenAPI) and checked"
+    },
+    {
+      "id": "AT-A2-30",
+      "entity": "A2.BusinessObjectAttribute",
+      "name": "identifier",
+      "type": "boolean",
+      "required": false,
+      "description": "whether the attribute identifies the business object",
+      "status": "active",
+      "source": "SDEM",
+      "reference": {
+        "standard": "SDEM",
+        "locator": "docs/design/sdem-full-design-metamodel-design.md",
+        "uri": "docs/design/sdem-full-design-metamodel-design.md"
+      },
+      "verification": "SDEM definition (the owner's decision, 2026-11-16)",
+      "reasoning": "The logical key; AID makes it the primary key of the data entity it infers (IM-10).",
+      "confidence": "low",
+      "read_by": "sdem check (IM-08), trace and impact, documents",
+      "question": "Whether the attribute identifies the business object?",
+      "approved": {
+        "review": "metamodel 0.15.0 — a full design",
+        "date": "2026-11-16",
+        "draft_id": "FD-identifier"
+      },
+      "kind": "value",
+      "confidence_basis": "SDEM field with no standard concept; not validated"
+    },
+    {
+      "id": "AT-A2-31",
+      "entity": "A2.BusinessObjectAttribute",
+      "name": "multiplicity",
+      "type": "string",
+      "required": false,
+      "description": "how many values one business object holds for the attribute",
+      "status": "active",
+      "source": "SDEM",
+      "reference": {
+        "standard": "SDEM",
+        "locator": "docs/design/sdem-full-design-metamodel-design.md",
+        "uri": "docs/design/sdem-full-design-metamodel-design.md"
+      },
+      "verification": "SDEM definition (the owner's decision, 2026-11-16)",
+      "reasoning": "A list-valued property (OpenAPI `type: array`) holds many; with `required`, the multiplicity of the logical model.",
+      "confidence": "low",
+      "read_by": "sdem check (IM-08), trace and impact, documents",
+      "question": "How many values one business object holds for the attribute?",
+      "approved": {
+        "review": "metamodel 0.15.0 — a full design",
+        "date": "2026-11-16",
+        "draft_id": "FD-multiplicity"
+      },
+      "kind": "enumeration",
+      "confidence_basis": "SDEM field with no standard concept; not validated",
+      "values": [
+        "1",
+        "0..1",
+        "0..n",
+        "1..n"
+      ],
+      "values_source": "SDEM"
+    },
+    {
+      "id": "AT-A3-40",
+      "entity": "A3.DataAttribute",
+      "name": "physical_type",
+      "type": "string",
+      "required": false,
+      "description": "the field’s type in the store, e.g. varchar(35), numeric(18,2), timestamp",
+      "status": "active",
+      "source": "SDEM",
+      "reference": {
+        "standard": "SDEM",
+        "locator": "docs/design/sdem-full-design-metamodel-design.md",
+        "uri": "docs/design/sdem-full-design-metamodel-design.md"
+      },
+      "verification": "SDEM definition (the owner's decision, 2026-11-16)",
+      "reasoning": "The physical type as the database or schema declares it.",
+      "confidence": "low",
+      "read_by": "sdem check (IM-08), trace and impact, documents",
+      "question": "The field’s type in the store, e.g. varchar(35), numeric(18,2), timestamp?",
+      "approved": {
+        "review": "metamodel 0.15.0 — a full design",
+        "date": "2026-11-16",
+        "draft_id": "FD-physical_type"
+      },
+      "kind": "value",
+      "confidence_basis": "SDEM field with no standard concept; not validated"
+    },
+    {
+      "id": "AT-A3-41",
+      "entity": "A3.DataAttribute",
+      "name": "required",
+      "type": "boolean",
+      "required": false,
+      "description": "whether the field must have a value (not null)",
+      "status": "active",
+      "source": "SDEM",
+      "reference": {
+        "standard": "SDEM",
+        "locator": "docs/design/sdem-full-design-metamodel-design.md",
+        "uri": "docs/design/sdem-full-design-metamodel-design.md"
+      },
+      "verification": "SDEM definition (the owner's decision, 2026-11-16)",
+      "reasoning": "NOT NULL in SQL; `required` in a JSON schema.",
+      "confidence": "low",
+      "read_by": "sdem check (IM-08), trace and impact, documents",
+      "question": "Whether the field must have a value (not null)?",
+      "approved": {
+        "review": "metamodel 0.15.0 — a full design",
+        "date": "2026-11-16",
+        "draft_id": "FD-required"
+      },
+      "kind": "value",
+      "confidence_basis": "SDEM field with no standard concept; not validated"
+    },
+    {
+      "id": "AT-A3-42",
+      "entity": "A3.DataAttribute",
+      "name": "primary_key",
+      "type": "boolean",
+      "required": false,
+      "description": "whether the field is (part of) the entity’s primary key",
+      "status": "active",
+      "source": "SDEM",
+      "reference": {
+        "standard": "SDEM",
+        "locator": "docs/design/sdem-full-design-metamodel-design.md",
+        "uri": "docs/design/sdem-full-design-metamodel-design.md"
+      },
+      "verification": "SDEM definition (the owner's decision, 2026-11-16)",
+      "reasoning": "A system-of-record entity has one (IM-08).",
+      "confidence": "low",
+      "read_by": "sdem check (IM-08), trace and impact, documents",
+      "question": "Whether the field is (part of) the entity’s primary key?",
+      "approved": {
+        "review": "metamodel 0.15.0 — a full design",
+        "date": "2026-11-16",
+        "draft_id": "FD-primary_key"
+      },
+      "kind": "value",
+      "confidence_basis": "SDEM field with no standard concept; not validated"
+    },
+    {
+      "id": "AT-A3-43",
+      "entity": "A3.DataAttribute",
+      "name": "unique",
+      "type": "boolean",
+      "required": false,
+      "description": "whether no two records share a value",
+      "status": "active",
+      "source": "SDEM",
+      "reference": {
+        "standard": "SDEM",
+        "locator": "docs/design/sdem-full-design-metamodel-design.md",
+        "uri": "docs/design/sdem-full-design-metamodel-design.md"
+      },
+      "verification": "SDEM definition (the owner's decision, 2026-11-16)",
+      "reasoning": "A unique constraint.",
+      "confidence": "low",
+      "read_by": "sdem check (IM-08), trace and impact, documents",
+      "question": "Whether no two records share a value?",
+      "approved": {
+        "review": "metamodel 0.15.0 — a full design",
+        "date": "2026-11-16",
+        "draft_id": "FD-unique"
+      },
+      "kind": "value",
+      "confidence_basis": "SDEM field with no standard concept; not validated"
+    },
+    {
+      "id": "AT-A3-44",
+      "entity": "A3.DataAttribute",
+      "name": "allowed_values",
+      "type": "list<string>",
+      "required": false,
+      "description": "the values the field may take",
+      "status": "active",
+      "source": "SDEM",
+      "reference": {
+        "standard": "SDEM",
+        "locator": "docs/design/sdem-full-design-metamodel-design.md",
+        "uri": "docs/design/sdem-full-design-metamodel-design.md"
+      },
+      "verification": "SDEM definition (the owner's decision, 2026-11-16)",
+      "reasoning": "A check constraint or enumeration.",
+      "confidence": "low",
+      "read_by": "sdem check (IM-08), trace and impact, documents",
+      "question": "The values the field may take?",
+      "approved": {
+        "review": "metamodel 0.15.0 — a full design",
+        "date": "2026-11-16",
+        "draft_id": "FD-allowed_values"
+      },
+      "kind": "value",
+      "confidence_basis": "SDEM field with no standard concept; not validated"
+    },
+    {
+      "id": "AT-A3-45",
+      "entity": "A3.DataAttribute",
+      "name": "default",
+      "type": "string",
+      "required": false,
+      "description": "the value a new record gets when none is given",
+      "status": "active",
+      "source": "SDEM",
+      "reference": {
+        "standard": "SDEM",
+        "locator": "docs/design/sdem-full-design-metamodel-design.md",
+        "uri": "docs/design/sdem-full-design-metamodel-design.md"
+      },
+      "verification": "SDEM definition (the owner's decision, 2026-11-16)",
+      "reasoning": "A column default.",
+      "confidence": "low",
+      "read_by": "sdem check (IM-08), trace and impact, documents",
+      "question": "The value a new record gets when none is given?",
+      "approved": {
+        "review": "metamodel 0.15.0 — a full design",
+        "date": "2026-11-16",
+        "draft_id": "FD-default"
+      },
+      "kind": "value",
+      "confidence_basis": "SDEM field with no standard concept; not validated"
+    },
+    {
+      "id": "AT-A3-46",
+      "entity": "A3.DataAttribute",
+      "name": "personal_information",
+      "type": "boolean",
+      "required": false,
+      "description": "whether the field holds personal information",
+      "status": "active",
+      "source": "SDEM",
+      "reference": {
+        "standard": "SDEM",
+        "locator": "docs/design/sdem-full-design-metamodel-design.md",
+        "uri": "docs/design/sdem-full-design-metamodel-design.md"
+      },
+      "verification": "SDEM definition (the owner's decision, 2026-11-16)",
+      "reasoning": "Field-level: a path or API carrying it carries personal data (CT-04).",
+      "confidence": "low",
+      "read_by": "sdem check (IM-08), trace and impact, documents",
+      "question": "Whether the field holds personal information?",
+      "approved": {
+        "review": "metamodel 0.15.0 — a full design",
+        "date": "2026-11-16",
+        "draft_id": "FD-personal_information"
+      },
+      "kind": "value",
+      "confidence_basis": "SDEM field with no standard concept; not validated"
+    },
+    {
+      "id": "AT-A3-47",
+      "entity": "A3.DataAttribute",
+      "name": "classification",
+      "type": "string",
+      "required": false,
+      "description": "the field’s information classification",
+      "status": "active",
+      "source": "SDEM",
+      "reference": {
+        "standard": "SDEM",
+        "locator": "docs/design/sdem-full-design-metamodel-design.md",
+        "uri": "docs/design/sdem-full-design-metamodel-design.md"
+      },
+      "verification": "SDEM definition (the owner's decision, 2026-11-16)",
+      "reasoning": "The organisation’s classification scheme; SDEM’s default four levels.",
+      "confidence": "low",
+      "read_by": "sdem check (IM-08), trace and impact, documents",
+      "question": "The field’s information classification?",
+      "approved": {
+        "review": "metamodel 0.15.0 — a full design",
+        "date": "2026-11-16",
+        "draft_id": "FD-classification"
+      },
+      "kind": "enumeration",
+      "confidence_basis": "SDEM field with no standard concept; not validated",
+      "values": [
+        "public",
+        "internal",
+        "confidential",
+        "restricted"
+      ],
+      "values_source": "SDEM"
+    },
+    {
+      "id": "AT-A3-48",
+      "entity": "A3.APIOperation",
+      "name": "request_fields",
+      "type": "list<string>",
+      "required": false,
+      "description": "the data attributes the operation takes",
+      "status": "active",
+      "source": "OpenAPI",
+      "reference": {
+        "standard": "OpenAPI Specification 3.1",
+        "locator": "Schema Object (type, format, required, enum)",
+        "uri": "https://spec.openapis.org/oas/v3.1.0"
+      },
+      "verification": "SDEM definition (the owner's decision, 2026-11-16)",
+      "reasoning": "An API’s request and response bodies point at the fields of the information model, not names (CT-03); payload_fields (names) stays, deprecated.",
+      "confidence": "high",
+      "read_by": "sdem check (IM-08), trace and impact, documents",
+      "question": "The data attributes the operation takes?",
+      "approved": {
+        "review": "metamodel 0.15.0 — a full design",
+        "date": "2026-11-16",
+        "draft_id": "FD-request_fields"
+      },
+      "kind": "reference",
+      "confidence_basis": "defined by a public standard (OpenAPI) and checked",
+      "references": [
+        "A3.DataAttribute"
+      ],
+      "reference_scope": "within-level — the record it names"
+    },
+    {
+      "id": "AT-A3-49",
+      "entity": "A3.APIOperation",
+      "name": "response_fields",
+      "type": "list<string>",
+      "required": false,
+      "description": "the data attributes the operation returns",
+      "status": "active",
+      "source": "OpenAPI",
+      "reference": {
+        "standard": "OpenAPI Specification 3.1",
+        "locator": "Schema Object (type, format, required, enum)",
+        "uri": "https://spec.openapis.org/oas/v3.1.0"
+      },
+      "verification": "SDEM definition (the owner's decision, 2026-11-16)",
+      "reasoning": "An API’s request and response bodies point at the fields of the information model, not names (CT-03); payload_fields (names) stays, deprecated.",
+      "confidence": "high",
+      "read_by": "sdem check (IM-08), trace and impact, documents",
+      "question": "The data attributes the operation returns?",
+      "approved": {
+        "review": "metamodel 0.15.0 — a full design",
+        "date": "2026-11-16",
+        "draft_id": "FD-response_fields"
+      },
+      "kind": "reference",
+      "confidence_basis": "defined by a public standard (OpenAPI) and checked",
+      "references": [
+        "A3.DataAttribute"
+      ],
+      "reference_scope": "within-level — the record it names"
+    },
+    {
+      "id": "AT-A3-50",
+      "entity": "A3.APIOperation",
+      "name": "responses",
+      "type": "list<string>",
+      "required": false,
+      "description": "the response status codes the operation defines, e.g. 201, 400, 404",
+      "status": "active",
+      "source": "OpenAPI",
+      "reference": {
+        "standard": "OpenAPI Specification 3.1",
+        "locator": "Responses Object",
+        "uri": "https://spec.openapis.org/oas/v3.1.0"
+      },
+      "verification": "SDEM definition (the owner's decision, 2026-11-16)",
+      "reasoning": "CT-03.",
+      "confidence": "high",
+      "read_by": "sdem check (IM-08), trace and impact, documents",
+      "question": "The response status codes the operation defines, e.g. 201, 400, 404?",
+      "approved": {
+        "review": "metamodel 0.15.0 — a full design",
+        "date": "2026-11-16",
+        "draft_id": "FD-responses"
+      },
+      "kind": "value",
+      "confidence_basis": "defined by a public standard (OpenAPI) and checked"
+    },
+    {
+      "id": "AT-A3-51",
+      "entity": "A3.APIOperation",
+      "name": "parameters",
+      "type": "list<string>",
+      "required": false,
+      "description": "the path and query parameters the operation takes",
+      "status": "active",
+      "source": "OpenAPI",
+      "reference": {
+        "standard": "OpenAPI Specification 3.1",
+        "locator": "Parameter Object",
+        "uri": "https://spec.openapis.org/oas/v3.1.0"
+      },
+      "verification": "SDEM definition (the owner's decision, 2026-11-16)",
+      "reasoning": "CT-03.",
+      "confidence": "high",
+      "read_by": "sdem check (IM-08), trace and impact, documents",
+      "question": "The path and query parameters the operation takes?",
+      "approved": {
+        "review": "metamodel 0.15.0 — a full design",
+        "date": "2026-11-16",
+        "draft_id": "FD-parameters"
+      },
+      "kind": "value",
+      "confidence_basis": "defined by a public standard (OpenAPI) and checked"
+    },
+    {
+      "id": "AT-A4-40",
+      "entity": "A4.Path",
+      "name": "carries_data",
+      "type": "list<string>",
+      "required": false,
+      "description": "the data entities whose records travel over the path",
+      "status": "active",
+      "source": "SDEM",
+      "reference": {
+        "standard": "SDEM",
+        "locator": "docs/design/sdem-full-design-metamodel-design.md",
+        "uri": "docs/design/sdem-full-design-metamodel-design.md"
+      },
+      "verification": "SDEM definition (the owner's decision, 2026-11-16)",
+      "reasoning": "So \"this path carries personal data\" follows from the entities’ fields (CT-04).",
+      "confidence": "low",
+      "read_by": "sdem check (IM-08), trace and impact, documents",
+      "question": "The data entities whose records travel over the path?",
+      "approved": {
+        "review": "metamodel 0.15.0 — a full design",
+        "date": "2026-11-16",
+        "draft_id": "FD-carries_data"
+      },
+      "kind": "reference",
+      "confidence_basis": "SDEM field with no standard concept; not validated",
+      "references": [
+        "A3.DataEntity"
+      ],
+      "reference_scope": "cross-level — a join key; never a federated edge itself"
     }
   ],
   "common_attributes": [

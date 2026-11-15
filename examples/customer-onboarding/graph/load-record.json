@@ -1254,6 +1254,175 @@
           "edges": 10
         }
       ]
+    },
+    {
+      "build": 16,
+      "at": "2026-11-15T17:06:27+00:00",
+      "inputs": [
+        {
+          "path": "examples/customer-onboarding//a1-business.json",
+          "kind": "export",
+          "level": "A1",
+          "model_id": "synthetic-bank-onboarding-a1",
+          "model_version": "2026.10",
+          "sha256": "987981a76aac516538fd5447b8ddabf97192ea21dd51f43429f715c70e5654c7"
+        },
+        {
+          "path": "examples/customer-onboarding//a2-service-domain.json",
+          "kind": "export",
+          "level": "A2",
+          "model_id": "synthetic-bank-onboarding-a2",
+          "model_version": "2026.10",
+          "sha256": "7715765e85f7bf2d831b1d0efc820c657ce60a9b667178ec625e982c6c235e4f"
+        },
+        {
+          "path": "examples/customer-onboarding//a3-application.json",
+          "kind": "export",
+          "level": "A3",
+          "model_id": "synthetic-bank-onboarding-a3",
+          "model_version": "2026.10",
+          "sha256": "37de7d97c59f386861296ca4bea2cd9caa45acc480c3aecb36e4166a91218436"
+        },
+        {
+          "path": "examples/customer-onboarding//a4-technology.json",
+          "kind": "export",
+          "level": "A4",
+          "model_id": "synthetic-bank-onboarding-a4",
+          "model_version": "2026.10",
+          "sha256": "fc16804be045b382aacf8e161f453174fb66e649cae6bc425b40ad37d71fba00"
+        },
+        {
+          "path": "examples/customer-onboarding//mappings.json",
+          "kind": "registry",
+          "registry_version": "0.4.0",
+          "sha256": "ad81ab6d445e21fd0a9532ed44e4661130cf98e3494dd6ffa5d3801c8ab8c477"
+        }
+      ],
+      "metamodel_version": "0.15.0",
+      "errors": [],
+      "warnings": [
+        "level A2 (synthetic-bank-onboarding-a2): instance SD-001: 0 composition links with A2.BusinessDomain, RA2-02 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-bank-onboarding-a2): instance BBO-001: 0 composition links with A2.BusinessObjectAttribute, RA2-10 expects at least 1 (LC-10m)",
+        "level A3 (synthetic-bank-onboarding-a3): instance API-001: attribute 'payload_fields' is deprecated (LC-13)",
+        "level A3 (synthetic-bank-onboarding-a3): instance API-002: attribute 'payload_fields' is deprecated (LC-13)"
+      ],
+      "result": "accepted",
+      "outputs": [
+        {
+          "file": "a1-business.graph.json",
+          "sha256": "d136ec884fc2febfc12f52d0de5a9118b44285a9714f7689e506995636073e65",
+          "nodes": 7,
+          "edges": 6
+        },
+        {
+          "file": "a2-service-domain.graph.json",
+          "sha256": "7780e132be9b8dad77d10599d83c3b89364b02f899045a02fe17a7770064c87c",
+          "nodes": 9,
+          "edges": 11
+        },
+        {
+          "file": "a3-application.graph.json",
+          "sha256": "00c076725a59d71591999e0da0661d789b669f1f431bcbd1fcfd367ab048934a",
+          "nodes": 5,
+          "edges": 4
+        },
+        {
+          "file": "a4-technology.graph.json",
+          "sha256": "63b5e076986cb1d5830aac5ff57849473b00640fee9bf8cc588cdbbaffb6582c",
+          "nodes": 10,
+          "edges": 11
+        },
+        {
+          "file": "federated.graph.json",
+          "sha256": "74b54dc7dc4ea29e86c0ad1c73487bb73df0c999c4869580cf29ca45f06b1e09",
+          "nodes": 14,
+          "edges": 10
+        }
+      ]
+    },
+    {
+      "build": 17,
+      "at": "2026-11-15T17:48:20+00:00",
+      "inputs": [
+        {
+          "path": "examples/customer-onboarding/a1-business.json",
+          "kind": "export",
+          "level": "A1",
+          "model_id": "synthetic-bank-onboarding-a1",
+          "model_version": "2026.10",
+          "sha256": "987981a76aac516538fd5447b8ddabf97192ea21dd51f43429f715c70e5654c7"
+        },
+        {
+          "path": "examples/customer-onboarding/a2-service-domain.json",
+          "kind": "export",
+          "level": "A2",
+          "model_id": "synthetic-bank-onboarding-a2",
+          "model_version": "2026.10",
+          "sha256": "71bc213f52a2586f7bab7bdb25509ad426c3ad07d38e0a4987d468a5d7117145"
+        },
+        {
+          "path": "examples/customer-onboarding/a3-application.json",
+          "kind": "export",
+          "level": "A3",
+          "model_id": "synthetic-bank-onboarding-a3",
+          "model_version": "2026.10",
+          "sha256": "d2185ee1d1ebf7a41a0e0b456186c3f9d169911a2b2c7b2aa96d03b97c282024"
+        },
+        {
+          "path": "examples/customer-onboarding/a4-technology.json",
+          "kind": "export",
+          "level": "A4",
+          "model_id": "synthetic-bank-onboarding-a4",
+          "model_version": "2026.10",
+          "sha256": "fc16804be045b382aacf8e161f453174fb66e649cae6bc425b40ad37d71fba00"
+        },
+        {
+          "path": "examples/customer-onboarding/mappings.json",
+          "kind": "registry",
+          "registry_version": "0.4.0",
+          "sha256": "c545094adc98ee9174b72e74881fc7e0be89a7d88d79769bcf581ca4e6733b8b"
+        }
+      ],
+      "metamodel_version": "0.15.0",
+      "errors": [],
+      "warnings": [
+        "level A2 (synthetic-bank-onboarding-a2): instance SD-001: 0 composition links with A2.BusinessDomain, RA2-02 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-bank-onboarding-a2): instance BBO-001: its field names and its field records disagree — no record for address, date_of_birth, legal_name, national_id, verification_status (LC-24)",
+        "level A3 (synthetic-bank-onboarding-a3): instance ENT-001: its field names and its field records disagree — no record for address, captured_at, date_of_birth, legal_name, national_id, verification_status (LC-24)"
+      ],
+      "result": "accepted",
+      "outputs": [
+        {
+          "file": "a1-business.graph.json",
+          "sha256": "d136ec884fc2febfc12f52d0de5a9118b44285a9714f7689e506995636073e65",
+          "nodes": 7,
+          "edges": 6
+        },
+        {
+          "file": "a2-service-domain.graph.json",
+          "sha256": "f318a799605f54a559f7f2a144d5bb7e4ed869dbf6151b1994930b7c37d605c5",
+          "nodes": 10,
+          "edges": 12
+        },
+        {
+          "file": "a3-application.graph.json",
+          "sha256": "d4782cc56f5b491c25f244913e6a32feefe9054006c41c059fd5f7da78726d0f",
+          "nodes": 6,
+          "edges": 5
+        },
+        {
+          "file": "a4-technology.graph.json",
+          "sha256": "63b5e076986cb1d5830aac5ff57849473b00640fee9bf8cc588cdbbaffb6582c",
+          "nodes": 10,
+          "edges": 11
+        },
+        {
+          "file": "federated.graph.json",
+          "sha256": "a60b32af0a72e5a72e6b633d09819e25f3e138d69edee2cfd6d496fd06e70f83",
+          "nodes": 16,
+          "edges": 11
+        }
+      ]
     }
   ]
 }

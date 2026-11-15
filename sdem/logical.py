@@ -42,6 +42,11 @@ CONSTRAINTS = [
  ('LC-20', 'Placement agrees with the evidence', 'a shape is not in a zone that a high-confidence hosting signal contradicts (a mainframe in a cloud zone — metamodel/hosting-signals.json; metamodel 0.11.0)', 'enforced', '`sdem check` (warning)'),
  ('LC-21', 'Every A4 shape connected', 'an A4 shape (not a network, zone, path or environment, and not retired or deprecated) has a link inside A4 to another shape — not only to its zone, environment, network or a path, and not only to another layer: A4 is the physical deployment; an internet-facing one fronts nothing without one; sdem aid proposes connections (AID-C01…C06) (the owner, 2026-11-14)', 'enforced', '`sdem check` (warning)'),
  ('LC-22', 'Every internet-facing interface exposed', 'an A3 interface marked internet facing has an EXPOSED_THROUGH connection (any status) to an internet-facing edge platform — checked over the whole workspace (the owner, X1–X6, 2026-11-14)', 'enforced', '`sdem check` (warning)'),
+ ('LC-23', 'Fields as records', 'a BIAN business object or a data entity with field names has a record for each field (A2.BusinessObjectAttribute, A3.DataAttribute) — names only is reported thin (metamodel 0.15.0, IM-08)', 'enforced', '`sdem check` (warning)'),
+ ('LC-24', 'Names and records agree', 'where a business object or data entity has both a list of field names and field records, they name the same fields (metamodel 0.15.0)', 'enforced', '`sdem check` (warning)'),
+ ('LC-25', 'A system of record has a key', 'a data entity marked system of record, with field records, has a primary-key field (metamodel 0.15.0)', 'enforced', '`sdem check` (warning)'),
+ ('LC-26', 'A foreign key points at a key', 'a data attribute associated with a data entity (a foreign key) points at an entity that has a primary-key field (metamodel 0.15.0)', 'enforced', '`sdem check` (warning)'),
+ ('LC-27', 'Field mappings agree on type', 'a FIELD_MAPPED_TO links a BIAN attribute to a data attribute whose physical type can hold its logical type (a date in a date or timestamp; an amount in a numeric) (metamodel 0.15.0)', 'enforced', '`sdem check` (warning)'),
 ]
 
 

@@ -1,0 +1,100 @@
+openapi: 3.0.1
+info:
+  title: Sample Payment Order
+  description: "A made-up service domain in the shape of a BIAN Semantic API file, with typed schemas — not BIAN text."
+  version: 14.0.0
+paths:
+  /SamplePaymentOrder/Initiate:
+    post:
+      tags:
+      - CR - PaymentOrderProcedure
+      operationId: InitiatePaymentOrderProcedure
+      requestBody:
+        $ref: '#/components/requestBodies/PaymentOrderProcedure'
+      responses:
+        "201":
+          $ref: '#/components/responses/PaymentOrderProcedure'
+  /SamplePaymentOrder/{id}/Retrieve:
+    get:
+      tags:
+      - CR - PaymentOrderProcedure
+      operationId: RetrievePaymentOrderProcedure
+      responses:
+        "200":
+          $ref: '#/components/responses/PaymentOrderProcedure'
+components:
+  schemas:
+    HTTPError:
+      type: object
+      properties:
+        status:
+          type: string
+    PaymentOrderProcedure:
+      type: object
+      properties:
+        PaymentOrderReference:
+          type: string
+        PaymentTransaction:
+          $ref: '#/components/schemas/PaymentTransaction'
+    PaymentTransaction:
+      type: object
+      required:
+      - PaymentTransactionIdentification
+      - PaymentTransactionAmount
+      properties:
+        PaymentTransactionIdentification:
+          type: string
+        PaymentTransactionAmount:
+          $ref: '#/components/schemas/CurrencyAmount'
+        PaymentTransactionValueDate:
+          type: string
+          format: date
+        PaymentTransactionStatus:
+          $ref: '#/components/schemas/PaymentStatusTypeValues'
+        PaymentTransactionPayer:
+          $ref: '#/components/schemas/Party'
+        PaymentTransactionCharges:
+          type: array
+          items:
+            $ref: '#/components/schemas/CurrencyAmount'
+        PaymentTransactionUrgent:
+          type: boolean
+        PaymentTransactionCreated:
+          type: string
+          format: date-time
+    CurrencyAmount:
+      type: object
+      properties:
+        Amount:
+          type: number
+        Currency:
+          $ref: '#/components/schemas/CurrencyCode'
+    CurrencyCode:
+      type: string
+    Party:
+      type: object
+      properties:
+        PartyIdentification:
+          type: string
+        PartyName:
+          type: string
+    PaymentStatusTypeValues:
+      type: string
+      enum:
+      - Pending
+      - Accepted
+      - Rejected
+      - Settled
+  responses:
+    PaymentOrderProcedure:
+      description: PaymentOrderProcedure
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PaymentOrderProcedure'
+  requestBodies:
+    PaymentOrderProcedure:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PaymentOrderProcedure'

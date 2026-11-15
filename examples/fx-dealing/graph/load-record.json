@@ -908,6 +908,120 @@
           "edges": 0
         }
       ]
+    },
+    {
+      "build": 11,
+      "at": "2026-11-15T17:06:27+00:00",
+      "inputs": [
+        {
+          "path": "examples/fx-dealing//a1-business.json",
+          "kind": "export",
+          "level": "A1",
+          "model_id": "harbourline-fx-a1",
+          "model_version": "2026.11",
+          "sha256": "66ca974e343a31e1de87707c224df8ba5fe06e4cf2ba3e05a71521349ab2332d"
+        },
+        {
+          "path": "examples/fx-dealing//a2-service-domain.json",
+          "kind": "export",
+          "level": "A2",
+          "model_id": "harbourline-fx-a2",
+          "model_version": "2026.11",
+          "sha256": "26c162b8f57dc3a928d9cfb209956966d682aa1968005a72588904c8c5a416b2"
+        },
+        {
+          "path": "examples/fx-dealing//a3-application.json",
+          "kind": "export",
+          "level": "A3",
+          "model_id": "harbourline-fx-a3",
+          "model_version": "2026.11",
+          "sha256": "a67a55883eff10babb90f664d44d50d3787330fc7e421179bde927fba37ee056"
+        },
+        {
+          "path": "examples/fx-dealing//a4-technology.json",
+          "kind": "export",
+          "level": "A4",
+          "model_id": "harbourline-fx-a4",
+          "model_version": "2026.11",
+          "sha256": "60036bfd27a698470ee54bb6cf8426bffe3f8073f6097b613b6026c90b43655e"
+        },
+        {
+          "path": "examples/fx-dealing//mappings.json",
+          "kind": "registry",
+          "registry_version": "0.4.0",
+          "sha256": "6738899a953588d10cde5793249ee82b2407ffc54936e7340b6ec2ad20b0ad77"
+        }
+      ],
+      "metamodel_version": "0.15.0",
+      "errors": [],
+      "warnings": [
+        "level A2 (harbourline-fx-a2): instance SD-DEALER-DESK: 0 composition links with A2.BusinessDomain, RA2-02 expects at least 1 (LC-10m)",
+        "level A2 (harbourline-fx-a2): instance SD-CURRENCY-EXCHANGE: 0 composition links with A2.BusinessDomain, RA2-02 expects at least 1 (LC-10m)",
+        "level A2 (harbourline-fx-a2): instance SD-TRADE-CONFIRMATION-MATCHING: 0 composition links with A2.BusinessDomain, RA2-02 expects at least 1 (LC-10m)",
+        "level A2 (harbourline-fx-a2): instance SD-TRADE-SETTLEMENT: 0 composition links with A2.BusinessDomain, RA2-02 expects at least 1 (LC-10m)",
+        "level A2 (harbourline-fx-a2): instance SD-TRADER-POSITION-OPERATIONS: 0 composition links with A2.BusinessDomain, RA2-02 expects at least 1 (LC-10m)",
+        "level A2 (harbourline-fx-a2): instance SD-COUNTERPARTY-ADMINISTRATION: 0 composition links with A2.BusinessDomain, RA2-02 expects at least 1 (LC-10m)",
+        "level A2 (harbourline-fx-a2): instance SD-MARKET-DATA-SWITCH-OPERATION: 0 composition links with A2.BusinessDomain, RA2-02 expects at least 1 (LC-10m)",
+        "level A3 (harbourline-fx-a3): instance API-AUR-01: attribute 'payload_fields' is deprecated (LC-13)",
+        "level A3 (harbourline-fx-a3): instance API-AUR-02: attribute 'payload_fields' is deprecated (LC-13)",
+        "level A3 (harbourline-fx-a3): instance API-AUR-03: attribute 'payload_fields' is deprecated (LC-13)",
+        "level A3 (harbourline-fx-a3): instance API-FXB-01: attribute 'payload_fields' is deprecated (LC-13)",
+        "level A3 (harbourline-fx-a3): instance API-FXB-02: attribute 'payload_fields' is deprecated (LC-13)",
+        "level A3 (harbourline-fx-a3): instance API-FXB-03: attribute 'payload_fields' is deprecated (LC-13)",
+        "level A3 (harbourline-fx-a3): instance API-FXB-04: attribute 'payload_fields' is deprecated (LC-13)",
+        "level A3 (harbourline-fx-a3): instance API-FXB-05: attribute 'payload_fields' is deprecated (LC-13)",
+        "level A3 (harbourline-fx-a3): instance API-FXB-06: attribute 'payload_fields' is deprecated (LC-13)",
+        "level A3 (harbourline-fx-a3): instance API-FXB-07: attribute 'payload_fields' is deprecated (LC-13)",
+        "level A3 (harbourline-fx-a3): instance API-CNF-01: attribute 'payload_fields' is deprecated (LC-13)",
+        "level A3 (harbourline-fx-a3): instance API-CNF-02: attribute 'payload_fields' is deprecated (LC-13)",
+        "level A3 (harbourline-fx-a3): instance API-CNF-03: attribute 'payload_fields' is deprecated (LC-13)",
+        "level A3 (harbourline-fx-a3): instance API-CNF-04: attribute 'payload_fields' is deprecated (LC-13)",
+        "level A3 (harbourline-fx-a3): instance API-CNF-05: attribute 'payload_fields' is deprecated (LC-13)",
+        "level A3 (harbourline-fx-a3): instance API-STL-01: attribute 'payload_fields' is deprecated (LC-13)",
+        "level A3 (harbourline-fx-a3): instance API-STL-02: attribute 'payload_fields' is deprecated (LC-13)",
+        "level A3 (harbourline-fx-a3): instance API-STL-03: attribute 'payload_fields' is deprecated (LC-13)",
+        "level A3 (harbourline-fx-a3): instance API-STL-04: attribute 'payload_fields' is deprecated (LC-13)",
+        "level A3 (harbourline-fx-a3): instance API-STL-05: attribute 'payload_fields' is deprecated (LC-13)",
+        "level A3 (harbourline-fx-a3): instance API-CRD-01: attribute 'payload_fields' is deprecated (LC-13)",
+        "level A3 (harbourline-fx-a3): instance API-CRD-02: attribute 'payload_fields' is deprecated (LC-13)",
+        "level A3 (harbourline-fx-a3): instance API-CRD-03: attribute 'payload_fields' is deprecated (LC-13)",
+        "level A3 (harbourline-fx-a3): instance API-CRD-04: attribute 'payload_fields' is deprecated (LC-13)",
+        "level A3 (harbourline-fx-a3): instance API-RGW-01: attribute 'payload_fields' is deprecated (LC-13)",
+        "level A3 (harbourline-fx-a3): instance API-RGW-02: attribute 'payload_fields' is deprecated (LC-13)"
+      ],
+      "result": "accepted",
+      "outputs": [
+        {
+          "file": "a1-business.graph.json",
+          "sha256": "e5e2571d732025252044718a4368bf35c81f51c6f69e85f378083f2acc62e915",
+          "nodes": 42,
+          "edges": 55
+        },
+        {
+          "file": "a2-service-domain.graph.json",
+          "sha256": "e4380cae3dfb157affb383eba0209cf76d6a5454f66c3dd5b4b14c7d757ecc2f",
+          "nodes": 261,
+          "edges": 575
+        },
+        {
+          "file": "a3-application.graph.json",
+          "sha256": "5650e09f813880b2dc3956ad9b5a84e014a1ee4999b58265ba3e725d0641da36",
+          "nodes": 54,
+          "edges": 59
+        },
+        {
+          "file": "a4-technology.graph.json",
+          "sha256": "985a9cf326c100be2b3a5109b340daa66d8392e1ee25e0d8402245c28c827aef",
+          "nodes": 28,
+          "edges": 48
+        },
+        {
+          "file": "federated.graph.json",
+          "sha256": "341af889609d0979a6622bd8efd719100b95535e6404c8e16ee66854e9c917b1",
+          "nodes": 0,
+          "edges": 0
+        }
+      ]
     }
   ]
 }

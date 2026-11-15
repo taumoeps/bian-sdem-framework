@@ -1907,6 +1907,94 @@
           "edges": 20
         }
       ]
+    },
+    {
+      "build": 23,
+      "at": "2026-11-15T17:06:28+00:00",
+      "inputs": [
+        {
+          "path": "examples/payment-initiation//a1-business.json",
+          "kind": "export",
+          "level": "A1",
+          "model_id": "synthetic-bank-payments-a1",
+          "model_version": "2026.10",
+          "sha256": "0d0b2d31234354af99f89a68690684f7553df2997f6f348c088af222bc3d1c19"
+        },
+        {
+          "path": "examples/payment-initiation//a2-service-domain.json",
+          "kind": "export",
+          "level": "A2",
+          "model_id": "synthetic-bank-payments-a2",
+          "model_version": "2026.10",
+          "sha256": "21c324d99ef10e8d32cf2c941134235853b99f19029ecd380d8b34ba4b4a323a"
+        },
+        {
+          "path": "examples/payment-initiation//a3-application.json",
+          "kind": "export",
+          "level": "A3",
+          "model_id": "synthetic-bank-payments-a3",
+          "model_version": "2026.10",
+          "sha256": "19c570f698d17593af9c197004965b7eed802566ab1d133294e4869670a177ab"
+        },
+        {
+          "path": "examples/payment-initiation//a4-technology.json",
+          "kind": "export",
+          "level": "A4",
+          "model_id": "synthetic-bank-payments-a4",
+          "model_version": "2026.10",
+          "sha256": "fb3dbd74a823ff0d4bf1bfc1ed07e456b665e23380cdc807e6dabcf45337ee9d"
+        },
+        {
+          "path": "examples/payment-initiation//mappings.json",
+          "kind": "registry",
+          "registry_version": "0.4.0",
+          "sha256": "5d301d96127057581251895c2ca3d9e65ef108613be117e20702bc18371c9344"
+        }
+      ],
+      "metamodel_version": "0.15.0",
+      "errors": [],
+      "warnings": [
+        "level A2 (synthetic-bank-payments-a2): instance BBOA-AMOUNT: attribute 'data_type' value 'Amount' is not one of ['string', 'text', 'integer', 'decimal', 'amount', 'currency_code', 'date', 'datetime', 'boolean', 'identifier', 'enum', 'reference'] (LC-06)",
+        "level A3 (synthetic-bank-payments-a3): instance API-PI-01: attribute 'payload_fields' is deprecated (LC-13)",
+        "level A3 (synthetic-bank-payments-a3): instance API-PI-02: attribute 'payload_fields' is deprecated (LC-13)",
+        "level A3 (synthetic-bank-payments-a3): instance API-PI-03: attribute 'payload_fields' is deprecated (LC-13)",
+        "level A3 (synthetic-bank-payments-a3): instance API-PI-04: attribute 'payload_fields' is deprecated (LC-13)",
+        "level A3 (synthetic-bank-payments-a3): instance API-PI-05: attribute 'payload_fields' is deprecated (LC-13)",
+        "level A3 (synthetic-bank-payments-a3): instance API-PI-06: attribute 'payload_fields' is deprecated (LC-13)"
+      ],
+      "result": "accepted",
+      "outputs": [
+        {
+          "file": "a1-business.graph.json",
+          "sha256": "9747bcfdd10f1e7ccb28728a95f32c24a6eb958737f135f4beab5fce5306548c",
+          "nodes": 16,
+          "edges": 16
+        },
+        {
+          "file": "a2-service-domain.graph.json",
+          "sha256": "1725ce5382ad59dced4836f052e3121ac9c5682c86c894c3126249b4dc6f4e3e",
+          "nodes": 48,
+          "edges": 68
+        },
+        {
+          "file": "a3-application.graph.json",
+          "sha256": "17c7668984262e0ee1c0cd089faf8adbae593d763ffa4ac9eefdb234bba738b7",
+          "nodes": 16,
+          "edges": 19
+        },
+        {
+          "file": "a4-technology.graph.json",
+          "sha256": "fbeea6005c19ec00451a820be11707944f9ad42ba98b195f1528f10068fdc0b6",
+          "nodes": 20,
+          "edges": 30
+        },
+        {
+          "file": "federated.graph.json",
+          "sha256": "f4c867e0a1c9c371b8fd69d4f7a9d67c81285948fb64260b19e31a1cf6943652",
+          "nodes": 29,
+          "edges": 20
+        }
+      ]
     }
   ]
 }

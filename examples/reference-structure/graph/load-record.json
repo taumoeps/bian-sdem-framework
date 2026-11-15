@@ -1737,6 +1737,238 @@
           "edges": 0
         }
       ]
+    },
+    {
+      "build": 18,
+      "at": "2026-11-15T17:06:28+00:00",
+      "inputs": [
+        {
+          "path": "examples/reference-structure//a1-business.json",
+          "kind": "export",
+          "level": "A1",
+          "model_id": "reference-structure-a1",
+          "model_version": "2026.10",
+          "sha256": "8deb8cc7f4e7d04683401ddd787429f86818a4c6a301f35201600654bcd763a5"
+        },
+        {
+          "path": "examples/reference-structure//a2-service-domain.json",
+          "kind": "export",
+          "level": "A2",
+          "model_id": "reference-structure-a2",
+          "model_version": "2026.10",
+          "sha256": "ad5892b5569e9c281b1f1540c33798777e114562d0ee23f029f823594b6138da"
+        },
+        {
+          "path": "examples/reference-structure//a3-application.json",
+          "kind": "export",
+          "level": "A3",
+          "model_id": "reference-structure-a3",
+          "model_version": "2026.10",
+          "sha256": "e0e68c8cb3ffb86bbd95c687847f298cee44191014cbfea89dea38ba0f4036db"
+        },
+        {
+          "path": "examples/reference-structure//a4-technology.json",
+          "kind": "export",
+          "level": "A4",
+          "model_id": "reference-structure-a4",
+          "model_version": "2026.10",
+          "sha256": "6dd2f4bced6f3e73073591a28fae45afe99a94f7a9ad5ae1f20d199bfef30a2c"
+        },
+        {
+          "path": "examples/reference-structure//mappings.json",
+          "kind": "registry",
+          "registry_version": "0.4.0",
+          "sha256": "6738899a953588d10cde5793249ee82b2407ffc54936e7340b6ec2ad20b0ad77"
+        }
+      ],
+      "metamodel_version": "0.15.0",
+      "errors": [],
+      "warnings": [
+        "level A2 (reference-structure-a2): instance RS-BusinessDomain-2: 0 composition links with A2.BusinessArea, RA2-01 expects at least 1 (LC-10m)",
+        "level A2 (reference-structure-a2): instance RS-BusinessArea-2: 0 composition links with A2.BusinessDomain, RA2-01 expects at least 1 (LC-10m)",
+        "level A2 (reference-structure-a2): instance RS-ServiceDomain-2: 0 composition links with A2.BusinessDomain, RA2-02 expects at least 1 (LC-10m)",
+        "level A2 (reference-structure-a2): instance RS-BusinessDomain-2: 0 composition links with A2.ServiceDomain, RA2-02 expects at least 1 (LC-10m)",
+        "level A2 (reference-structure-a2): instance RS-ServiceGroup-2: 0 composition links with A2.ServiceDomain, RA2-03 expects at least 1 (LC-10m)",
+        "level A2 (reference-structure-a2): instance RS-ServiceDomain-2: 0 composition links with A2.ServiceGroup, RA2-03 expects at least 1 (LC-10m)",
+        "level A2 (reference-structure-a2): instance RS-ServiceOperation-2: 0 composition links with A2.ServiceGroup, RA2-04 expects at least 1 (LC-10m)",
+        "level A2 (reference-structure-a2): instance RS-ServiceGroup-2: 0 composition links with A2.ServiceOperation, RA2-04 expects at least 1 (LC-10m)",
+        "level A2 (reference-structure-a2): instance RS-ControlRecord-2: 0 aggregation links with A2.ServiceDomain, RA2-05 expects at least 1 (LC-10m)",
+        "level A2 (reference-structure-a2): instance RS-ServiceDomain-2: 0 aggregation links with A2.ControlRecord, RA2-05 expects at least 1 (LC-10m)",
+        "level A2 (reference-structure-a2): instance RS-ServiceDomain-2: 0 association links with A2.FunctionalPattern, RA2-06 expects at least 1 (LC-10m)",
+        "level A2 (reference-structure-a2): instance RS-ServiceDomain-2: 0 association links with A2.AssetType, RA2-07 expects at least 1 (LC-10m)",
+        "level A2 (reference-structure-a2): instance RS-BusinessScenario-2: 0 aggregation links with A2.ServiceOperation, RA2-09 expects at least 1 (LC-10m)",
+        "level A2 (reference-structure-a2): instance RS-BusinessObjectAttribute-2: 0 composition links with A2.BusinessObject, RA2-10 expects at least 1 (LC-10m)",
+        "level A2 (reference-structure-a2): instance RS-BusinessObject-2: 0 composition links with A2.BusinessObjectAttribute, RA2-10 expects at least 1 (LC-10m)",
+        "level A2 (reference-structure-a2): instance RS-BehaviorQualifier-2: 0 composition links with A2.ControlRecord, RA2-11 expects at least 1 (LC-10m)",
+        "level A2 (reference-structure-a2): instance RS-ServiceOperation-2: 0 access links with A2.ControlRecord, RA2-13 expects at least 1 (LC-10m)",
+        "level A3 (reference-structure-a3): instance RS-DataAttribute-2: 0 composition links with A3.DataEntity, RA3-33 expects at least 1 (LC-10m)",
+        "level A4 (reference-structure-a4): instance RS-Device-1: hosts RS-SystemSoftware-1 but is on no communication network — connect it, or the node it runs on (RA4-37, LC-15)",
+        "level A4 (reference-structure-a4): instance RS-Node-1: hosts RS-SystemSoftware-1 but is on no communication network — connect it, or the node it runs on (RA4-37, LC-15)",
+        "level A4 (reference-structure-a4): instance RS-SystemSoftware-1: hosts RS-SystemSoftware-2 but is on no communication network — connect it, or the node it runs on (RA4-37, LC-15)",
+        "level A4 (reference-structure-a4): instance RS-Artifact-1: is in level-0 zone RS-NetworkZone-1 — place it in its internal or DMZ zone, or a private zone inside one (LC-16)",
+        "level A4 (reference-structure-a4): instance RS-Artifact-2: is in level-0 zone RS-NetworkZone-1 — place it in its internal or DMZ zone, or a private zone inside one (LC-16)",
+        "level A4 (reference-structure-a4): instance RS-Deployment-1: is in no network zone — place it, or what it runs on, in an internal, DMZ or private zone (RA4-38, LC-16)",
+        "level A4 (reference-structure-a4): instance RS-Deployment-2: is in no network zone — place it, or what it runs on, in an internal, DMZ or private zone (RA4-38, LC-16)",
+        "level A4 (reference-structure-a4): instance RS-Device-1: is in no network zone — place it, or what it runs on, in an internal, DMZ or private zone (RA4-38, LC-16)",
+        "level A4 (reference-structure-a4): instance RS-Device-2: is in no network zone — place it, or what it runs on, in an internal, DMZ or private zone (RA4-38, LC-16)",
+        "level A4 (reference-structure-a4): instance RS-Node-1: is in no network zone — place it, or what it runs on, in an internal, DMZ or private zone (RA4-38, LC-16)",
+        "level A4 (reference-structure-a4): instance RS-Node-2: is in no network zone — place it, or what it runs on, in an internal, DMZ or private zone (RA4-38, LC-16)",
+        "level A4 (reference-structure-a4): instance RS-SystemSoftware-1: is in no network zone — place it, or what it runs on, in an internal, DMZ or private zone (RA4-38, LC-16)",
+        "level A4 (reference-structure-a4): instance RS-SystemSoftware-2: is in no network zone — place it, or what it runs on, in an internal, DMZ or private zone (RA4-38, LC-16)",
+        "level A4 (reference-structure-a4): instance RS-TechnologyInterface-1: is in no network zone — place it, or what it runs on, in an internal, DMZ or private zone (RA4-38, LC-16)",
+        "level A4 (reference-structure-a4): instance RS-TechnologyInterface-2: is in no network zone — place it, or what it runs on, in an internal, DMZ or private zone (RA4-38, LC-16)",
+        "level A4 (reference-structure-a4): instance RS-TechnologyService-1: is in no network zone — place it, or what it runs on, in an internal, DMZ or private zone (RA4-38, LC-16)",
+        "level A4 (reference-structure-a4): instance RS-TechnologyService-2: is in no network zone — place it, or what it runs on, in an internal, DMZ or private zone (RA4-38, LC-16)"
+      ],
+      "result": "accepted",
+      "outputs": [
+        {
+          "file": "a1-business.graph.json",
+          "sha256": "e3ec31495877b81f9082975260dde632ea418b1417d9ed2f038a5efe730a9e69",
+          "nodes": 20,
+          "edges": 49
+        },
+        {
+          "file": "a2-service-domain.graph.json",
+          "sha256": "00177608d49860819780cdd5c0ee5ca018a373b6a1852ebc076f0e81caac8941",
+          "nodes": 24,
+          "edges": 20
+        },
+        {
+          "file": "a3-application.graph.json",
+          "sha256": "f65bce811b11503e2053aa1cdaaa0479c5e55091f7b630b5dfb3ec684e539e2d",
+          "nodes": 18,
+          "edges": 34
+        },
+        {
+          "file": "a4-technology.graph.json",
+          "sha256": "5b31902a9d78f57deba02878e8b8240407e0a69a3fd4cb95159773173469b875",
+          "nodes": 22,
+          "edges": 41
+        },
+        {
+          "file": "federated.graph.json",
+          "sha256": "2b302c195217e096bc1f34544fbdafebb119a10c1ebd631aad9f36ad549072e7",
+          "nodes": 0,
+          "edges": 0
+        }
+      ]
+    },
+    {
+      "build": 19,
+      "at": "2026-11-15T17:36:05+00:00",
+      "inputs": [
+        {
+          "path": "examples/reference-structure/a1-business.json",
+          "kind": "export",
+          "level": "A1",
+          "model_id": "reference-structure-a1",
+          "model_version": "2026.10",
+          "sha256": "8deb8cc7f4e7d04683401ddd787429f86818a4c6a301f35201600654bcd763a5"
+        },
+        {
+          "path": "examples/reference-structure/a2-service-domain.json",
+          "kind": "export",
+          "level": "A2",
+          "model_id": "reference-structure-a2",
+          "model_version": "2026.10",
+          "sha256": "ad5892b5569e9c281b1f1540c33798777e114562d0ee23f029f823594b6138da"
+        },
+        {
+          "path": "examples/reference-structure/a3-application.json",
+          "kind": "export",
+          "level": "A3",
+          "model_id": "reference-structure-a3",
+          "model_version": "2026.10",
+          "sha256": "e0e68c8cb3ffb86bbd95c687847f298cee44191014cbfea89dea38ba0f4036db"
+        },
+        {
+          "path": "examples/reference-structure/a4-technology.json",
+          "kind": "export",
+          "level": "A4",
+          "model_id": "reference-structure-a4",
+          "model_version": "2026.10",
+          "sha256": "6dd2f4bced6f3e73073591a28fae45afe99a94f7a9ad5ae1f20d199bfef30a2c"
+        },
+        {
+          "path": "examples/reference-structure/mappings.json",
+          "kind": "registry",
+          "registry_version": "0.4.0",
+          "sha256": "6738899a953588d10cde5793249ee82b2407ffc54936e7340b6ec2ad20b0ad77"
+        }
+      ],
+      "metamodel_version": "0.15.0",
+      "errors": [],
+      "warnings": [
+        "level A2 (reference-structure-a2): instance RS-BusinessDomain-2: 0 composition links with A2.BusinessArea, RA2-01 expects at least 1 (LC-10m)",
+        "level A2 (reference-structure-a2): instance RS-BusinessArea-2: 0 composition links with A2.BusinessDomain, RA2-01 expects at least 1 (LC-10m)",
+        "level A2 (reference-structure-a2): instance RS-ServiceDomain-2: 0 composition links with A2.BusinessDomain, RA2-02 expects at least 1 (LC-10m)",
+        "level A2 (reference-structure-a2): instance RS-BusinessDomain-2: 0 composition links with A2.ServiceDomain, RA2-02 expects at least 1 (LC-10m)",
+        "level A2 (reference-structure-a2): instance RS-ServiceGroup-2: 0 composition links with A2.ServiceDomain, RA2-03 expects at least 1 (LC-10m)",
+        "level A2 (reference-structure-a2): instance RS-ServiceDomain-2: 0 composition links with A2.ServiceGroup, RA2-03 expects at least 1 (LC-10m)",
+        "level A2 (reference-structure-a2): instance RS-ServiceOperation-2: 0 composition links with A2.ServiceGroup, RA2-04 expects at least 1 (LC-10m)",
+        "level A2 (reference-structure-a2): instance RS-ServiceGroup-2: 0 composition links with A2.ServiceOperation, RA2-04 expects at least 1 (LC-10m)",
+        "level A2 (reference-structure-a2): instance RS-ControlRecord-2: 0 aggregation links with A2.ServiceDomain, RA2-05 expects at least 1 (LC-10m)",
+        "level A2 (reference-structure-a2): instance RS-ServiceDomain-2: 0 aggregation links with A2.ControlRecord, RA2-05 expects at least 1 (LC-10m)",
+        "level A2 (reference-structure-a2): instance RS-ServiceDomain-2: 0 association links with A2.FunctionalPattern, RA2-06 expects at least 1 (LC-10m)",
+        "level A2 (reference-structure-a2): instance RS-ServiceDomain-2: 0 association links with A2.AssetType, RA2-07 expects at least 1 (LC-10m)",
+        "level A2 (reference-structure-a2): instance RS-BusinessScenario-2: 0 aggregation links with A2.ServiceOperation, RA2-09 expects at least 1 (LC-10m)",
+        "level A2 (reference-structure-a2): instance RS-BusinessObjectAttribute-2: 0 composition links with A2.BusinessObject, RA2-10 expects at least 1 (LC-10m)",
+        "level A2 (reference-structure-a2): instance RS-BusinessObject-2: 0 composition links with A2.BusinessObjectAttribute, RA2-10 expects at least 1 (LC-10m)",
+        "level A2 (reference-structure-a2): instance RS-BehaviorQualifier-2: 0 composition links with A2.ControlRecord, RA2-11 expects at least 1 (LC-10m)",
+        "level A2 (reference-structure-a2): instance RS-ServiceOperation-2: 0 access links with A2.ControlRecord, RA2-13 expects at least 1 (LC-10m)",
+        "level A3 (reference-structure-a3): instance RS-DataAttribute-2: 0 composition links with A3.DataEntity, RA3-33 expects at least 1 (LC-10m)",
+        "level A4 (reference-structure-a4): instance RS-Device-1: hosts RS-SystemSoftware-1 but is on no communication network — connect it, or the node it runs on (RA4-37, LC-15)",
+        "level A4 (reference-structure-a4): instance RS-Node-1: hosts RS-SystemSoftware-1 but is on no communication network — connect it, or the node it runs on (RA4-37, LC-15)",
+        "level A4 (reference-structure-a4): instance RS-SystemSoftware-1: hosts RS-SystemSoftware-2 but is on no communication network — connect it, or the node it runs on (RA4-37, LC-15)",
+        "level A4 (reference-structure-a4): instance RS-Artifact-1: is in level-0 zone RS-NetworkZone-1 — place it in its internal or DMZ zone, or a private zone inside one (LC-16)",
+        "level A4 (reference-structure-a4): instance RS-Artifact-2: is in level-0 zone RS-NetworkZone-1 — place it in its internal or DMZ zone, or a private zone inside one (LC-16)",
+        "level A4 (reference-structure-a4): instance RS-Deployment-1: is in no network zone — place it, or what it runs on, in an internal, DMZ or private zone (RA4-38, LC-16)",
+        "level A4 (reference-structure-a4): instance RS-Deployment-2: is in no network zone — place it, or what it runs on, in an internal, DMZ or private zone (RA4-38, LC-16)",
+        "level A4 (reference-structure-a4): instance RS-Device-1: is in no network zone — place it, or what it runs on, in an internal, DMZ or private zone (RA4-38, LC-16)",
+        "level A4 (reference-structure-a4): instance RS-Device-2: is in no network zone — place it, or what it runs on, in an internal, DMZ or private zone (RA4-38, LC-16)",
+        "level A4 (reference-structure-a4): instance RS-Node-1: is in no network zone — place it, or what it runs on, in an internal, DMZ or private zone (RA4-38, LC-16)",
+        "level A4 (reference-structure-a4): instance RS-Node-2: is in no network zone — place it, or what it runs on, in an internal, DMZ or private zone (RA4-38, LC-16)",
+        "level A4 (reference-structure-a4): instance RS-SystemSoftware-1: is in no network zone — place it, or what it runs on, in an internal, DMZ or private zone (RA4-38, LC-16)",
+        "level A4 (reference-structure-a4): instance RS-SystemSoftware-2: is in no network zone — place it, or what it runs on, in an internal, DMZ or private zone (RA4-38, LC-16)",
+        "level A4 (reference-structure-a4): instance RS-TechnologyInterface-1: is in no network zone — place it, or what it runs on, in an internal, DMZ or private zone (RA4-38, LC-16)",
+        "level A4 (reference-structure-a4): instance RS-TechnologyInterface-2: is in no network zone — place it, or what it runs on, in an internal, DMZ or private zone (RA4-38, LC-16)",
+        "level A4 (reference-structure-a4): instance RS-TechnologyService-1: is in no network zone — place it, or what it runs on, in an internal, DMZ or private zone (RA4-38, LC-16)",
+        "level A4 (reference-structure-a4): instance RS-TechnologyService-2: is in no network zone — place it, or what it runs on, in an internal, DMZ or private zone (RA4-38, LC-16)"
+      ],
+      "result": "accepted",
+      "outputs": [
+        {
+          "file": "a1-business.graph.json",
+          "sha256": "e3ec31495877b81f9082975260dde632ea418b1417d9ed2f038a5efe730a9e69",
+          "nodes": 20,
+          "edges": 49
+        },
+        {
+          "file": "a2-service-domain.graph.json",
+          "sha256": "00177608d49860819780cdd5c0ee5ca018a373b6a1852ebc076f0e81caac8941",
+          "nodes": 24,
+          "edges": 20
+        },
+        {
+          "file": "a3-application.graph.json",
+          "sha256": "f65bce811b11503e2053aa1cdaaa0479c5e55091f7b630b5dfb3ec684e539e2d",
+          "nodes": 18,
+          "edges": 34
+        },
+        {
+          "file": "a4-technology.graph.json",
+          "sha256": "5b31902a9d78f57deba02878e8b8240407e0a69a3fd4cb95159773173469b875",
+          "nodes": 22,
+          "edges": 41
+        },
+        {
+          "file": "federated.graph.json",
+          "sha256": "2b302c195217e096bc1f34544fbdafebb119a10c1ebd631aad9f36ad549072e7",
+          "nodes": 0,
+          "edges": 0
+        }
+      ]
     }
   ]
 }

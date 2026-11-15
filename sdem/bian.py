@@ -151,6 +151,46 @@ def _props(doc, schema_name):
     return list((s.get('properties') or {}).keys())
 
 
+AMOUNT_SCHEMAS = ('CurrencyAmount', 'Amount', 'AmountType')   # BIAN's amount-with-currency shapes: a logical amount, not an object
+
+
+def _primitive(spec, name=''):
+    """IM-09: an OpenAPI property's logical type (metamodel 0.15.0's data_type list)."""
+    fmt, t = spec.get('format'), spec.get('type')
+    if fmt == 'date': return 'date'
+    if fmt in ('date-time', 'datetime'): return 'datetime'
+    if t == 'integer': return 'integer'
+    if t == 'number': return 'decimal'
+    if t == 'boolean': return 'boolean'
+    if name.endswith('CurrencyCode'): return 'currency_code'
+    return 'string'
+
+
+def _fields(doc, name):
+    """IM-09 (metamodel 0.15.0): each property of a schema as a typed field — its type and format, whether it is required, whether it
+    holds many, the schema it refers to ($ref, followed through arrays) and an enumeration's values (BIAN's …TypeValues schemas)."""
+    schemas = ((doc.get('components') or {}).get('schemas')) or {}
+    s = schemas.get(name) or {}
+    req = set(s.get('required') or [])
+    out = []
+    for p, spec in (s.get('properties') or {}).items():
+        spec = spec if isinstance(spec, dict) else {}
+        many = spec.get('type') == 'array'
+        t = (spec.get('items') if many else spec) or {}
+        f = {'name': p, 'required': p in req, 'many': many, 'refers_to': None, 'allowed_values': None}
+        if '$ref' in t:
+            rn, target = _ref(doc, t['$ref'], ('schemas',)); target = target if isinstance(target, dict) else {}
+            if target.get('enum'): f.update(data_type='enum', allowed_values=[str(v) for v in target['enum']])
+            elif rn in AMOUNT_SCHEMAS: f['data_type'] = 'amount'
+            elif target.get('properties'): f.update(data_type='reference', refers_to=rn)
+            else: f['data_type'] = _primitive(target, rn or '')
+        elif t.get('enum'): f.update(data_type='enum', allowed_values=[str(v) for v in t['enum']])
+        else: f['data_type'] = _primitive(t, p)
+        f['identifier'] = p in (f'{name}Identification', f'{name}Reference', f'{name}Id')
+        out.append(f)
+    return out
+
+
 def _words(camel):
     return re.sub(r'(?<=[a-z0-9])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])', ' ', camel).strip()
 
@@ -192,7 +232,9 @@ def read_domain(path):
             'description': info.get('description'), 'operations': ops, 'control_record': cr, 'qualifiers': bqs,
             'control_record_fields': _props(doc, cr) if cr else [],
             'objects': {n: list((s.get('properties') or {}).keys()) for n, s in schemas.items()
-                        if isinstance(s, dict) and s.get('properties') and n != 'HTTPError'}}
+                        if isinstance(s, dict) and s.get('properties') and n != 'HTTPError'},
+            'object_fields': {n: _fields(doc, n) for n, s in schemas.items()   # IM-09: typed fields; never packed into the base (BB-D2)
+                              if isinstance(s, dict) and s.get('properties') and n != 'HTTPError'}}
 
 
 def read_release(folder):
@@ -326,9 +368,20 @@ def build(domains, metamodel_version, descriptions=False, objects=False, pattern
             if op['qualifier']: rels.append({'source': so, 'kind': 'association', 'target': bq_ids[op['qualifier']]})
         if objects:
             for name, fields in d['objects'].items():
-                if name == d['control_record'] or name.lower().endswith('typevalues'): continue
+                if name == d['control_record'] or name.lower().endswith('typevalues') or name in AMOUNT_SCHEMAS: continue   # an amount is a type (IM-09)
                 bo = add(rec(f'BBO-{_key(name)}', 'A2.BusinessObject', _words(name), ver, attrs={'attributes': fields},
                              canonical=f'BIAN-BO-{_key(name)}', source=src))
+                for f in (d.get('object_fields') or {}).get(name, []):   # IM-09: each field a typed record; references become links (IM-03)
+                    a = {'data_type': f['data_type'], 'required': f['required'],
+                         'multiplicity': ('1..n' if f['required'] else '0..n') if f['many'] else ('1' if f['required'] else '0..1')}
+                    if f['allowed_values']: a['allowed_values'] = f['allowed_values']
+                    if f['identifier']: a['identifier'] = True
+                    boa = add(rec(f'BBOA-{_key(name)}-{_key(f["name"])}', 'A2.BusinessObjectAttribute', f['name'], ver, attrs=a, source=src))
+                    rels.append({'source': bo, 'kind': 'composition', 'target': boa})
+                    ref = f['refers_to']
+                    if ref and ref != d['control_record'] and ref in d['objects'] and not ref.lower().endswith('typevalues'):
+                        rels.append({'source': boa, 'kind': 'association', 'target': f'BBO-{_key(ref)}'})
+                        if f'BBO-{_key(ref)}' != bo: rels.append({'source': bo, 'kind': 'association', 'target': f'BBO-{_key(ref)}'})
                 if cr and name in set(d['control_record_fields']) | set(_words(f).replace(' ', '') for f in d['control_record_fields']):
                     rels.append({'source': cr, 'kind': 'association', 'target': bo})
     report['shared_control_records'] = sorted((n, ds) for n, ds in cr_names.items() if len(ds) > 1)

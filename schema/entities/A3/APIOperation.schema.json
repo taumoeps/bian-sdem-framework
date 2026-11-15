@@ -388,7 +388,7 @@
             "locator": "request body and response schemas",
             "uri": "https://spec.openapis.org/oas/v3.1.0"
           },
-          "x-sdem-reasoning": "OpenAPI describes payloads as schemas; SDEM flattens them to field names, which is enough to match against BIAN attributes but loses structure.",
+          "x-sdem-reasoning": "OpenAPI describes payloads as schemas; SDEM flattens them to field names, which is enough to match against BIAN attributes but loses structure. From 0.15.0, request_fields and response_fields (CT-03) name the data attribute records beside it; it stays active, so no existing design is warned (FD-P2).",
           "x-sdem-confidence": "medium"
         },
         "operation_id": {
@@ -417,6 +417,80 @@
             "uri": "https://spec.openapis.org/oas/v3.1.0.html"
           },
           "x-sdem-reasoning": "Answers: Which API operations are being phased out? OpenAPI field; checked 2026-10-24.",
+          "x-sdem-confidence": "high"
+        },
+        "request_fields": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "the data attributes the operation takes",
+          "x-sdem-id": "AT-A3-48",
+          "x-sdem-group": "specific",
+          "x-sdem-kind": "reference",
+          "x-sdem-references": [
+            "A3.DataAttribute"
+          ],
+          "x-sdem-source": {
+            "standard": "OpenAPI Specification 3.1",
+            "locator": "Schema Object (type, format, required, enum)",
+            "uri": "https://spec.openapis.org/oas/v3.1.0"
+          },
+          "x-sdem-reasoning": "An API’s request and response bodies point at the fields of the information model, not names (CT-03); payload_fields (names) stays, deprecated.",
+          "x-sdem-confidence": "high"
+        },
+        "response_fields": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "the data attributes the operation returns",
+          "x-sdem-id": "AT-A3-49",
+          "x-sdem-group": "specific",
+          "x-sdem-kind": "reference",
+          "x-sdem-references": [
+            "A3.DataAttribute"
+          ],
+          "x-sdem-source": {
+            "standard": "OpenAPI Specification 3.1",
+            "locator": "Schema Object (type, format, required, enum)",
+            "uri": "https://spec.openapis.org/oas/v3.1.0"
+          },
+          "x-sdem-reasoning": "An API’s request and response bodies point at the fields of the information model, not names (CT-03); payload_fields (names) stays, deprecated.",
+          "x-sdem-confidence": "high"
+        },
+        "responses": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "the response status codes the operation defines, e.g. 201, 400, 404",
+          "x-sdem-id": "AT-A3-50",
+          "x-sdem-group": "specific",
+          "x-sdem-kind": "value",
+          "x-sdem-source": {
+            "standard": "OpenAPI Specification 3.1",
+            "locator": "Responses Object",
+            "uri": "https://spec.openapis.org/oas/v3.1.0"
+          },
+          "x-sdem-reasoning": "CT-03.",
+          "x-sdem-confidence": "high"
+        },
+        "parameters": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "the path and query parameters the operation takes",
+          "x-sdem-id": "AT-A3-51",
+          "x-sdem-group": "specific",
+          "x-sdem-kind": "value",
+          "x-sdem-source": {
+            "standard": "OpenAPI Specification 3.1",
+            "locator": "Parameter Object",
+            "uri": "https://spec.openapis.org/oas/v3.1.0"
+          },
+          "x-sdem-reasoning": "CT-03.",
           "x-sdem-confidence": "high"
         }
       },

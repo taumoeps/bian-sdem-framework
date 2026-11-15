@@ -6,7 +6,7 @@
     "directed": true,
     "metadata": {
       "sdem_store_version": "1.0",
-      "metamodel_version": "0.14.0",
+      "metamodel_version": "0.15.0",
       "levels": {
         "A1": "2026.10",
         "A2": "2026.10",
@@ -16,9 +16,9 @@
       "registries": [
         {
           "file": "mappings.json",
-          "sha256": "43ae6539a2eeb865039adbeb02563808dc628ab5e1f42305c6bb5f035c564d7c",
+          "sha256": "c545094adc98ee9174b72e74881fc7e0be89a7d88d79769bcf581ca4e6733b8b",
           "registry_version": "0.4.0",
-          "metamodel_version": "0.14.0"
+          "metamodel_version": "0.15.0"
         }
       ],
       "statuses": [
@@ -178,6 +178,28 @@
           "version": "1.0",
           "stub": true,
           "graph": "a4-technology.graph.json"
+        }
+      },
+      "A2:BBOA-001-01@1.0": {
+        "label": "customer_reference",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-001-01",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a2-service-domain.graph.json"
+        }
+      },
+      "A3:ENT-001-F01@1.0": {
+        "label": "customer_reference",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.DataAttribute",
+          "id": "ENT-001-F01",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a3-application.graph.json"
         }
       }
     },
@@ -480,6 +502,35 @@
           "baseline_id": "DEMO-BASE-002",
           "reviewer_id": "DEMO-ARCHITECT",
           "approved_at": "2026-11-14"
+        }
+      },
+      {
+        "id": "MAP-014",
+        "source": "A2:BBOA-001-01@1.0",
+        "target": "A3:ENT-001-F01@1.0",
+        "relation": "FIELD_MAPPED_TO",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "BBOA-001-01",
+            "type": "A2.BusinessObjectAttribute",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "ENT-001-F01",
+            "type": "A3.DataAttribute",
+            "version": "1.0"
+          },
+          "perspective": "information",
+          "status": "approved",
+          "evidence": [
+            "data_model:SYNTHETIC-DM-001"
+          ],
+          "rationale": "The customer identity table stores BIAN's customer reference in its key column (made-up example of field-level lineage, metamodel 0.15.0).",
+          "baseline_id": "DEMO-BASE-001",
+          "reviewer_id": "DEMO-ARCHITECT",
+          "approved_at": "2026-01-15"
         }
       }
     ]

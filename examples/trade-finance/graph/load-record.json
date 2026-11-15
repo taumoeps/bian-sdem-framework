@@ -1386,6 +1386,287 @@
           "edges": 24
         }
       ]
+    },
+    {
+      "build": 18,
+      "at": "2026-11-15T17:06:28+00:00",
+      "inputs": [
+        {
+          "path": "examples/trade-finance//a1-business.json",
+          "kind": "export",
+          "level": "A1",
+          "model_id": "synthetic-bank-trade-a1",
+          "model_version": "2026.10",
+          "sha256": "9da8b8be4e09af695e24fcd91a7ef146c119d59e79438fa0c6374b0db3535b23"
+        },
+        {
+          "path": "examples/trade-finance//a2-service-domain.json",
+          "kind": "export",
+          "level": "A2",
+          "model_id": "synthetic-bank-trade-a2",
+          "model_version": "2026.10",
+          "sha256": "1390b024bfda7b666754e5f0aab633797d33b812f9d46ba1361813c2399e914e"
+        },
+        {
+          "path": "examples/trade-finance//a3-application.json",
+          "kind": "export",
+          "level": "A3",
+          "model_id": "synthetic-bank-trade-a3",
+          "model_version": "2026.10",
+          "sha256": "d808e3f6efff850f25744f2db50c18b5d008241fcc863b36218c63a328bd89ab"
+        },
+        {
+          "path": "examples/trade-finance//a4-technology.json",
+          "kind": "export",
+          "level": "A4",
+          "model_id": "synthetic-bank-trade-a4",
+          "model_version": "2026.10",
+          "sha256": "21c20e00b729299135285d710cfa44e7b291247ccf0ee1b4c7e9a82531ad46a5"
+        },
+        {
+          "path": "examples/trade-finance//mappings.json",
+          "kind": "registry",
+          "registry_version": "0.4.0",
+          "sha256": "2aacf9930723290e972c931eec16f64713f2c9dad727abaad2b33bb4f20b0f38"
+        }
+      ],
+      "metamodel_version": "0.15.0",
+      "errors": [],
+      "warnings": [
+        "level A1 (synthetic-bank-trade-a1): instance BSV-LC-APP: attribute 'inputs' refers to 'applicant_reference', which is not a A1.BusinessObject in this architecture dataset (LC-07)",
+        "level A1 (synthetic-bank-trade-a1): instance BSV-LC-APP: attribute 'inputs' refers to 'beneficiary_reference', which is not a A1.BusinessObject in this architecture dataset (LC-07)",
+        "level A1 (synthetic-bank-trade-a1): instance BSV-LC-APP: attribute 'inputs' refers to 'credit_amount', which is not a A1.BusinessObject in this architecture dataset (LC-07)",
+        "level A1 (synthetic-bank-trade-a1): instance BSV-LC-APP: attribute 'inputs' refers to 'currency', which is not a A1.BusinessObject in this architecture dataset (LC-07)",
+        "level A1 (synthetic-bank-trade-a1): instance BSV-LC-APP: attribute 'inputs' refers to 'expiry_date', which is not a A1.BusinessObject in this architecture dataset (LC-07)",
+        "level A1 (synthetic-bank-trade-a1): instance BSV-LC-APP: attribute 'outputs' refers to 'letter_of_credit_reference', which is not a A1.BusinessObject in this architecture dataset (LC-07)",
+        "level A1 (synthetic-bank-trade-a1): instance BSV-LC-APP: attribute 'outputs' refers to 'application_status', which is not a A1.BusinessObject in this architecture dataset (LC-07)",
+        "level A1 (synthetic-bank-trade-a1): instance BSV-DOC-CHECK: attribute 'inputs' refers to 'document_set_reference', which is not a A1.BusinessObject in this architecture dataset (LC-07)",
+        "level A1 (synthetic-bank-trade-a1): instance BSV-DOC-CHECK: attribute 'inputs' refers to 'letter_of_credit_reference', which is not a A1.BusinessObject in this architecture dataset (LC-07)",
+        "level A1 (synthetic-bank-trade-a1): instance BSV-DOC-CHECK: attribute 'outputs' refers to 'compliance_outcome', which is not a A1.BusinessObject in this architecture dataset (LC-07)",
+        "level A1 (synthetic-bank-trade-a1): instance BSV-DOC-CHECK: attribute 'outputs' refers to 'discrepancies', which is not a A1.BusinessObject in this architecture dataset (LC-07)",
+        "level A3 (synthetic-bank-trade-a3): instance API-LC-01: attribute 'payload_fields' is deprecated (LC-13)",
+        "level A3 (synthetic-bank-trade-a3): instance API-LC-02: attribute 'payload_fields' is deprecated (LC-13)",
+        "level A3 (synthetic-bank-trade-a3): instance API-LC-03: attribute 'payload_fields' is deprecated (LC-13)",
+        "level A3 (synthetic-bank-trade-a3): instance API-LC-04: attribute 'payload_fields' is deprecated (LC-13)",
+        "level A3 (synthetic-bank-trade-a3): instance API-DC-01: attribute 'payload_fields' is deprecated (LC-13)",
+        "level A3 (synthetic-bank-trade-a3): instance API-DC-02: attribute 'payload_fields' is deprecated (LC-13)"
+      ],
+      "result": "accepted",
+      "outputs": [
+        {
+          "file": "a1-business.graph.json",
+          "sha256": "1a32234d3ea80491d79f01deb1a41daf00c5f15cfcfbbdf57fedc36e37c80174",
+          "nodes": 20,
+          "edges": 19
+        },
+        {
+          "file": "a2-service-domain.graph.json",
+          "sha256": "20e2d0680fb9414b357723bdcd1a1c464ca62062dcf6df898fa699fc147ffee8",
+          "nodes": 27,
+          "edges": 35
+        },
+        {
+          "file": "a3-application.graph.json",
+          "sha256": "16ed862e29f5be554fdfdbf6888b8f850ddf65ef6b6fe3865ef889f035699820",
+          "nodes": 20,
+          "edges": 25
+        },
+        {
+          "file": "a4-technology.graph.json",
+          "sha256": "e23758eeb7190862847306941bc27678dbdf4510b2a931805dcdb63735c81d21",
+          "nodes": 23,
+          "edges": 28
+        },
+        {
+          "file": "federated.graph.json",
+          "sha256": "dc705e196b20463f9f8aae0f71d3249183435a3d671a25ee42601ef47ac053c7",
+          "nodes": 32,
+          "edges": 24
+        }
+      ]
+    },
+    {
+      "build": 19,
+      "at": "2026-11-15T17:49:19+00:00",
+      "inputs": [
+        {
+          "path": "examples/trade-finance/a1-business.json",
+          "kind": "export",
+          "level": "A1",
+          "model_id": "synthetic-bank-trade-a1",
+          "model_version": "2026.10",
+          "sha256": "d1a109dbb3c16c42edcd9d3e83cc82aa7a538d25cff4b890b0e22fdecf05ee7c"
+        },
+        {
+          "path": "examples/trade-finance/a2-service-domain.json",
+          "kind": "export",
+          "level": "A2",
+          "model_id": "synthetic-bank-trade-a2",
+          "model_version": "2026.10",
+          "sha256": "1390b024bfda7b666754e5f0aab633797d33b812f9d46ba1361813c2399e914e"
+        },
+        {
+          "path": "examples/trade-finance/a3-application.json",
+          "kind": "export",
+          "level": "A3",
+          "model_id": "synthetic-bank-trade-a3",
+          "model_version": "2026.10",
+          "sha256": "d808e3f6efff850f25744f2db50c18b5d008241fcc863b36218c63a328bd89ab"
+        },
+        {
+          "path": "examples/trade-finance/a4-technology.json",
+          "kind": "export",
+          "level": "A4",
+          "model_id": "synthetic-bank-trade-a4",
+          "model_version": "2026.10",
+          "sha256": "21c20e00b729299135285d710cfa44e7b291247ccf0ee1b4c7e9a82531ad46a5"
+        },
+        {
+          "path": "examples/trade-finance/mappings.json",
+          "kind": "registry",
+          "registry_version": "0.4.0",
+          "sha256": "2aacf9930723290e972c931eec16f64713f2c9dad727abaad2b33bb4f20b0f38"
+        }
+      ],
+      "metamodel_version": "0.15.0",
+      "errors": [],
+      "warnings": [
+        "level A2 (synthetic-bank-trade-a2): instance BBO-LC: its field names and its field records disagree — no record for applicant_reference, application_status, beneficiary_reference, currency, issuance_reference, letter_of_credit_reference (LC-24)",
+        "level A2 (synthetic-bank-trade-a2): instance BBO-DOCSET: its field names and its field records disagree — no record for checked_at, document_set_reference, letter_of_credit_reference (LC-24)",
+        "level A3 (synthetic-bank-trade-a3): instance ENT-LC: is thin — its 9 field(s) are names only; give each as a record (DataAttribute, composed of ENT-LC) — sdem bian import --objects or sdem aid fills them (LC-23)",
+        "level A3 (synthetic-bank-trade-a3): instance ENT-LC-AMEND: is thin — its 5 field(s) are names only; give each as a record (DataAttribute, composed of ENT-LC-AMEND) — sdem bian import --objects or sdem aid fills them (LC-23)",
+        "level A3 (synthetic-bank-trade-a3): instance ENT-DOCSET: is thin — its 6 field(s) are names only; give each as a record (DataAttribute, composed of ENT-DOCSET) — sdem bian import --objects or sdem aid fills them (LC-23)"
+      ],
+      "result": "accepted",
+      "outputs": [
+        {
+          "file": "a1-business.graph.json",
+          "sha256": "d8d750b0d3e7678a8497f78e6d43be91d51444398aefec836d47d1e86b3054a4",
+          "nodes": 20,
+          "edges": 19
+        },
+        {
+          "file": "a2-service-domain.graph.json",
+          "sha256": "20e2d0680fb9414b357723bdcd1a1c464ca62062dcf6df898fa699fc147ffee8",
+          "nodes": 27,
+          "edges": 35
+        },
+        {
+          "file": "a3-application.graph.json",
+          "sha256": "16ed862e29f5be554fdfdbf6888b8f850ddf65ef6b6fe3865ef889f035699820",
+          "nodes": 20,
+          "edges": 25
+        },
+        {
+          "file": "a4-technology.graph.json",
+          "sha256": "e23758eeb7190862847306941bc27678dbdf4510b2a931805dcdb63735c81d21",
+          "nodes": 23,
+          "edges": 28
+        },
+        {
+          "file": "federated.graph.json",
+          "sha256": "dc705e196b20463f9f8aae0f71d3249183435a3d671a25ee42601ef47ac053c7",
+          "nodes": 32,
+          "edges": 24
+        }
+      ]
+    },
+    {
+      "build": 20,
+      "at": "2026-11-15T17:56:13+00:00",
+      "inputs": [
+        {
+          "path": "examples/trade-finance/a1-business.json",
+          "kind": "export",
+          "level": "A1",
+          "model_id": "synthetic-bank-trade-a1",
+          "model_version": "2026.10",
+          "sha256": "9da8b8be4e09af695e24fcd91a7ef146c119d59e79438fa0c6374b0db3535b23"
+        },
+        {
+          "path": "examples/trade-finance/a2-service-domain.json",
+          "kind": "export",
+          "level": "A2",
+          "model_id": "synthetic-bank-trade-a2",
+          "model_version": "2026.10",
+          "sha256": "1390b024bfda7b666754e5f0aab633797d33b812f9d46ba1361813c2399e914e"
+        },
+        {
+          "path": "examples/trade-finance/a3-application.json",
+          "kind": "export",
+          "level": "A3",
+          "model_id": "synthetic-bank-trade-a3",
+          "model_version": "2026.10",
+          "sha256": "d808e3f6efff850f25744f2db50c18b5d008241fcc863b36218c63a328bd89ab"
+        },
+        {
+          "path": "examples/trade-finance/a4-technology.json",
+          "kind": "export",
+          "level": "A4",
+          "model_id": "synthetic-bank-trade-a4",
+          "model_version": "2026.10",
+          "sha256": "21c20e00b729299135285d710cfa44e7b291247ccf0ee1b4c7e9a82531ad46a5"
+        },
+        {
+          "path": "examples/trade-finance/mappings.json",
+          "kind": "registry",
+          "registry_version": "0.4.0",
+          "sha256": "2aacf9930723290e972c931eec16f64713f2c9dad727abaad2b33bb4f20b0f38"
+        }
+      ],
+      "metamodel_version": "0.15.0",
+      "errors": [],
+      "warnings": [
+        "level A1 (synthetic-bank-trade-a1): instance BSV-LC-APP: attribute 'inputs' refers to 'applicant_reference', which is not a A1.BusinessObject in this architecture dataset (LC-07)",
+        "level A1 (synthetic-bank-trade-a1): instance BSV-LC-APP: attribute 'inputs' refers to 'beneficiary_reference', which is not a A1.BusinessObject in this architecture dataset (LC-07)",
+        "level A1 (synthetic-bank-trade-a1): instance BSV-LC-APP: attribute 'inputs' refers to 'credit_amount', which is not a A1.BusinessObject in this architecture dataset (LC-07)",
+        "level A1 (synthetic-bank-trade-a1): instance BSV-LC-APP: attribute 'inputs' refers to 'currency', which is not a A1.BusinessObject in this architecture dataset (LC-07)",
+        "level A1 (synthetic-bank-trade-a1): instance BSV-LC-APP: attribute 'inputs' refers to 'expiry_date', which is not a A1.BusinessObject in this architecture dataset (LC-07)",
+        "level A1 (synthetic-bank-trade-a1): instance BSV-LC-APP: attribute 'outputs' refers to 'letter_of_credit_reference', which is not a A1.BusinessObject in this architecture dataset (LC-07)",
+        "level A1 (synthetic-bank-trade-a1): instance BSV-LC-APP: attribute 'outputs' refers to 'application_status', which is not a A1.BusinessObject in this architecture dataset (LC-07)",
+        "level A1 (synthetic-bank-trade-a1): instance BSV-DOC-CHECK: attribute 'inputs' refers to 'document_set_reference', which is not a A1.BusinessObject in this architecture dataset (LC-07)",
+        "level A1 (synthetic-bank-trade-a1): instance BSV-DOC-CHECK: attribute 'inputs' refers to 'letter_of_credit_reference', which is not a A1.BusinessObject in this architecture dataset (LC-07)",
+        "level A1 (synthetic-bank-trade-a1): instance BSV-DOC-CHECK: attribute 'outputs' refers to 'compliance_outcome', which is not a A1.BusinessObject in this architecture dataset (LC-07)",
+        "level A1 (synthetic-bank-trade-a1): instance BSV-DOC-CHECK: attribute 'outputs' refers to 'discrepancies', which is not a A1.BusinessObject in this architecture dataset (LC-07)",
+        "level A2 (synthetic-bank-trade-a2): instance BBO-LC: its field names and its field records disagree — no record for applicant_reference, application_status, beneficiary_reference, currency, issuance_reference, letter_of_credit_reference (LC-24)",
+        "level A2 (synthetic-bank-trade-a2): instance BBO-DOCSET: its field names and its field records disagree — no record for checked_at, document_set_reference, letter_of_credit_reference (LC-24)",
+        "level A3 (synthetic-bank-trade-a3): instance ENT-LC: is thin — its 9 field(s) are names only; give each as a record (DataAttribute, composed of ENT-LC) — sdem bian import --objects or sdem aid fills them (LC-23)",
+        "level A3 (synthetic-bank-trade-a3): instance ENT-LC-AMEND: is thin — its 5 field(s) are names only; give each as a record (DataAttribute, composed of ENT-LC-AMEND) — sdem bian import --objects or sdem aid fills them (LC-23)",
+        "level A3 (synthetic-bank-trade-a3): instance ENT-DOCSET: is thin — its 6 field(s) are names only; give each as a record (DataAttribute, composed of ENT-DOCSET) — sdem bian import --objects or sdem aid fills them (LC-23)"
+      ],
+      "result": "accepted",
+      "outputs": [
+        {
+          "file": "a1-business.graph.json",
+          "sha256": "1a32234d3ea80491d79f01deb1a41daf00c5f15cfcfbbdf57fedc36e37c80174",
+          "nodes": 20,
+          "edges": 19
+        },
+        {
+          "file": "a2-service-domain.graph.json",
+          "sha256": "20e2d0680fb9414b357723bdcd1a1c464ca62062dcf6df898fa699fc147ffee8",
+          "nodes": 27,
+          "edges": 35
+        },
+        {
+          "file": "a3-application.graph.json",
+          "sha256": "16ed862e29f5be554fdfdbf6888b8f850ddf65ef6b6fe3865ef889f035699820",
+          "nodes": 20,
+          "edges": 25
+        },
+        {
+          "file": "a4-technology.graph.json",
+          "sha256": "e23758eeb7190862847306941bc27678dbdf4510b2a931805dcdb63735c81d21",
+          "nodes": 23,
+          "edges": 28
+        },
+        {
+          "file": "federated.graph.json",
+          "sha256": "dc705e196b20463f9f8aae0f71d3249183435a3d671a25ee42601ef47ac053c7",
+          "nodes": 32,
+          "edges": 24
+        }
+      ]
     }
   ]
 }

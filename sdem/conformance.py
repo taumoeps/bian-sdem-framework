@@ -12,7 +12,9 @@ Warnings (the architecture dataset is usable but incomplete or dated):
   · LC-18 an internet-facing shape outside a DMZ, or a DMZ shape that is not internet facing · LC-17 a level-0 zone with no internal zone yet.
   · LC-19 an inferred zone placement not yet confirmed or rejected · LC-20 a shape placed against strong hosting evidence
   · LC-21 an A4 shape connected to nothing inside A4 (another layer does not count) · LC-22 an internet-facing A3 interface exposed through nothing
-  (both checked over the whole workspace: sdem/graph.py FederatedGraph.unconnected, unexposed).
+  · LC-23 a business object or data entity whose fields are names only (thin) · LC-24 field names and field records disagree
+  · LC-25 a system of record with no primary key · LC-26 a foreign key to an entity with no key · LC-27 a field mapping between incompatible types
+  (all checked over the whole workspace: sdem/graph.py FederatedGraph.unconnected, unexposed, information_model).
   Error: LC-17 the zone structure contradicts itself (a kind wrong for its level, a zone in the wrong parent, two internal zones, two cloud zones).
 LC-01…LC-03 and LC-11 are checked by the graph loader and the registry validator; LC-12 by sdem-diff.
 """
@@ -168,10 +170,12 @@ def check_level(doc, mm, estate_index=None):
             if a['type'] in TYPES:
                 n['LC-05 checked'] += 1
                 if not type_ok(a, v, k): n['LC-05 failed'] += 1; errors.append(f"{who}: attribute {k!r} should be {a['type']}, got {v!r} (LC-05)"); continue
+            soft = a.get('enforcement') == 'warning'   # FD-P2: an attribute that became stricter in a later metamodel reports old data, never refuses it
             if a.get('values'):
                 for x in (v if isinstance(v, list) else [v]):
                     n['LC-06 checked'] += 1
-                    if x not in a['values']: n['LC-06 failed'] += 1; errors.append(f"{who}: attribute {k!r} value {x!r} is not one of {a['values']} (LC-06)")
+                    if x not in a['values']:
+                        n['LC-06 reported' if soft else 'LC-06 failed'] += 1; (warnings if soft else errors).append(f"{who}: attribute {k!r} value {x!r} is not one of {a['values']} (LC-06)")
             if a.get('kind') == 'reference':
                 targets = [i['type'] if t == 'same entity type' else t for t in a['references']]
                 same = all(mm.level(t) == doc['level'] for t in targets)
@@ -179,7 +183,7 @@ def check_level(doc, mm, estate_index=None):
                     if same:
                         n['LC-07 checked'] += 1; t = local.get(x)
                         if not (t and any(mm.is_a(t, r) for r in targets)):
-                            n['LC-07 failed'] += 1; errors.append(f"{who}: attribute {k!r} refers to {x!r}, which is not a {' or '.join(targets)} in this architecture dataset (LC-07)")
+                            n['LC-07 reported' if soft else 'LC-07 failed'] += 1; (warnings if soft else errors).append(f"{who}: attribute {k!r} refers to {x!r}, which is not a {' or '.join(targets)} in this architecture dataset (LC-07)")
                     elif estate_index is not None:
                         lvls = {mm.level(t) for t in targets}
                         if not any(l in estate_index['levels'] for l in lvls): continue  # target level not loaded: nothing to check against

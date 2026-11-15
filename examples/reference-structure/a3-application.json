@@ -2,7 +2,7 @@
   "level": "A3",
   "model_id": "reference-structure-a3",
   "model_version": "2026.10",
-  "metamodel_version": "0.14.0",
+  "metamodel_version": "0.15.0",
   "source_system": "SDEM-GENERATED-FROM-RECORD",
   "instances": [
     {
@@ -156,6 +156,22 @@
       "name": "SolutionBuildingBlock 2 (structure conformance)",
       "lifecycle_status": "active",
       "description": "Synthetic instance of A3.SolutionBuildingBlock carrying one relationship per constraint row of A3; no business meaning."
+    },
+    {
+      "id": "RS-DataAttribute-1",
+      "type": "A3.DataAttribute",
+      "version": "1.0",
+      "name": "DataAttribute 1 (structure conformance)",
+      "lifecycle_status": "active",
+      "description": "Synthetic instance of A3.DataAttribute carrying one relationship per constraint row of A3; no business meaning."
+    },
+    {
+      "id": "RS-DataAttribute-2",
+      "type": "A3.DataAttribute",
+      "version": "1.0",
+      "name": "DataAttribute 2 (structure conformance)",
+      "lifecycle_status": "active",
+      "description": "Synthetic instance of A3.DataAttribute carrying one relationship per constraint row of A3; no business meaning."
     }
   ],
   "relationships": [
@@ -344,6 +360,24 @@
       "kind": "composition",
       "target": "RS-SolutionBuildingBlock-2",
       "name": "RA3-31"
+    },
+    {
+      "source": "RS-DataEntity-1",
+      "kind": "association",
+      "target": "RS-DataEntity-2",
+      "name": "RA3-32"
+    },
+    {
+      "source": "RS-DataEntity-1",
+      "kind": "composition",
+      "target": "RS-DataAttribute-1",
+      "name": "RA3-33"
+    },
+    {
+      "source": "RS-DataAttribute-1",
+      "kind": "association",
+      "target": "RS-DataEntity-1",
+      "name": "RA3-34"
     }
   ]
 }

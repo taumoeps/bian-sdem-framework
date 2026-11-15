@@ -1,5 +1,5 @@
 {
-  "metamodel_version": "0.14.0",
+  "metamodel_version": "0.15.0",
   "level": "A3",
   "entities": [
     {
@@ -227,6 +227,34 @@
         ],
         "basis": "SDEM",
         "reasoning": "no standard key; SDEM recommends a unique name within the architecture dataset so duplicates can be detected"
+      }
+    },
+    {
+      "type": "A3.DataAttribute",
+      "level": "A3",
+      "abstract": false,
+      "extends": null,
+      "artefact": false,
+      "definition": "A field of a data entity: its physical type, whether it is required, and whether it is a key",
+      "definition_source": "sdem_extension",
+      "alignment_kind": "related",
+      "reference": {
+        "standard": "SDEM",
+        "release": "0.15.0",
+        "concept": "Data attribute (a field of a Data Object)",
+        "uri": "docs/design/sdem-full-design-metamodel-design.md",
+        "locator": "IM-04"
+      },
+      "evidence_status": "sdem_extension",
+      "reasoning": "ArchiMate 3.2 has no attribute element (as for A2.BusinessObjectAttribute, a property of a BIAN business object). SDEM makes a data entity's fields records of their own — the owner's decision D2, 2026-11-16 — so a field can be typed and keyed, referred to by an API's request and response (CT-03), mapped from a BIAN attribute (FIELD_MAPPED_TO, IM-07), and traced.",
+      "confidence": "medium",
+      "confidence_basis": "built on a standard concept as SDEM chose to model it",
+      "identifier": {
+        "key": [
+          "name"
+        ],
+        "basis": "SDEM",
+        "reasoning": "a field's name is unique within the entity that is composed of it"
       }
     }
   ]

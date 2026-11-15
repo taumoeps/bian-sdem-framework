@@ -6,11 +6,11 @@
     "directed": true,
     "metadata": {
       "sdem_store_version": "1.0",
-      "export_sha256": "034745550c759a73bbae6ae448b9a8bf0beb45f57904f3b16e4c1e67de4a6e7f",
+      "export_sha256": "ad5892b5569e9c281b1f1540c33798777e114562d0ee23f029f823594b6138da",
       "level": "A2",
       "model_id": "reference-structure-a2",
       "model_version": "2026.10",
-      "metamodel_version": "0.14.0",
+      "metamodel_version": "0.15.0",
       "source_system": "SDEM-GENERATED-FROM-RECORD"
     },
     "nodes": {
@@ -489,6 +489,72 @@
           "row": "RA2-14"
         },
         "label": "RA2-14"
+      },
+      {
+        "id": "A2:RS-BusinessObject-1-composition-RS-BusinessObject-2",
+        "source": "A2:RS-BusinessObject-1@1.0",
+        "target": "A2:RS-BusinessObject-2@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-18"
+        },
+        "label": "RA2-18"
+      },
+      {
+        "id": "A2:RS-BusinessObject-1-aggregation-RS-BusinessObject-2",
+        "source": "A2:RS-BusinessObject-1@1.0",
+        "target": "A2:RS-BusinessObject-2@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-19"
+        },
+        "label": "RA2-19"
+      },
+      {
+        "id": "A2:RS-BusinessObject-1-specialization-RS-BusinessObject-2",
+        "source": "A2:RS-BusinessObject-1@1.0",
+        "target": "A2:RS-BusinessObject-2@1.0",
+        "relation": "specialization",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-20"
+        },
+        "label": "RA2-20"
+      },
+      {
+        "id": "A2:RS-BusinessObject-1-association-RS-BusinessObject-2",
+        "source": "A2:RS-BusinessObject-1@1.0",
+        "target": "A2:RS-BusinessObject-2@1.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-21"
+        },
+        "label": "RA2-21"
+      },
+      {
+        "id": "A2:RS-BusinessObjectAttribute-1-association-RS-BusinessObject-1",
+        "source": "A2:RS-BusinessObjectAttribute-1@1.0",
+        "target": "A2:RS-BusinessObject-1@1.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-22"
+        },
+        "label": "RA2-22"
+      },
+      {
+        "id": "A2:RS-ServiceOperation-1-access-RS-BusinessObject-1",
+        "source": "A2:RS-ServiceOperation-1@1.0",
+        "target": "A2:RS-BusinessObject-1@1.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-23"
+        },
+        "label": "RA2-23"
       }
     ]
   }

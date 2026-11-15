@@ -2,7 +2,7 @@
   "level": "A3",
   "model_id": "synthetic-bank-onboarding-a3",
   "model_version": "2026.10",
-  "metamodel_version": "0.14.0",
+  "metamodel_version": "0.15.0",
   "source_system": "SYNTHETIC-APM",
   "instances": [
     {
@@ -91,6 +91,20 @@
           "INF-002"
         ]
       }
+    },
+    {
+      "id": "ENT-001-F01",
+      "type": "A3.DataAttribute",
+      "version": "1.0",
+      "name": "customer_reference",
+      "lifecycle_status": "active",
+      "description": "The customer identity table's key (made-up).",
+      "attributes": {
+        "physical_type": "varchar(35)",
+        "required": true,
+        "primary_key": true,
+        "unique": true
+      }
     }
   ],
   "relationships": [
@@ -113,6 +127,11 @@
       "source": "APP-001",
       "kind": "access",
       "target": "ENT-001"
+    },
+    {
+      "source": "ENT-001",
+      "kind": "composition",
+      "target": "ENT-001-F01"
     }
   ]
 }

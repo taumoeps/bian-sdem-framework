@@ -12,11 +12,11 @@ Generated from `metamodel/level-relationships.json` by `python -m sdem.relations
 
 | Level | Reference source | Rows | high | medium | low |
 |---|---|---|---|---|---|
-| A1 Business Architecture | ArchiMate 3.2 chapters 6 (Motivation), 7 (Strategy) and 8 (Business) | 48 | 48 | 0 | 0 |
-| A2 Service Domain Architecture | BIAN Service Landscape 14 metamodel, Control Record Model, Business Object Model and the Semantic API Practitioner Guide | 17 | 16 | 0 | 1 |
-| A3 Application Architecture | ArchiMate 3.2 chapter 9 (Application) and TOGAF 10 (Solution Building Block); SDEM extension rows for API operations | 31 | 29 | 2 | 0 |
+| A1 Business Architecture | ArchiMate 3.2 chapters 6 (Motivation), 7 (Strategy) and 8 (Business) | 49 | 49 | 0 | 0 |
+| A2 Service Domain Architecture | BIAN Service Landscape 14 metamodel, Control Record Model, Business Object Model and the Semantic API Practitioner Guide | 23 | 20 | 2 | 1 |
+| A3 Application Architecture | ArchiMate 3.2 chapter 9 (Application) and TOGAF 10 (Solution Building Block); SDEM extension rows for API operations | 34 | 30 | 4 | 0 |
 | A4 Technology Architecture | ArchiMate 3.2 chapter 10 (Technology); SDEM extension rows for Deployment and Deployment Environment | 39 | 37 | 0 | 2 |
-| **Total** | | **135** | 130 | 2 | 3 |
+| **Total** | | **145** | 136 | 6 | 3 |
 
 ## A1 Business Architecture
 
@@ -72,6 +72,7 @@ Reference: ArchiMate 3.2 chapters 6 (Motivation), 7 (Strategy) and 8 (Business).
 | RA1-46 | A1.BusinessObject | specialization | A1.BusinessObject | Login-gated, unverified ch. 8 Business — business object structure. | Business Object → Business Object | specialisation within a concept | A Business Object may specialise another Business Object. | high | Archi relationship matrix: Business Object → Business Object must list 's' (specialization) | verified_against_archi |
 | RA1-47 | A1.BusinessRequirement | composition | A1.BusinessRequirement | Login-gated, unverified ch. 6 Motivation — requirement decomposition. | Requirement → Requirement | same-concept composition | ArchiMate permits composition and aggregation between elements of the same concept (Requirement). | high | Archi relationship matrix: Requirement → Requirement must list 'c' (composition) | verified_against_archi |
 | RA1-48 | A1.BusinessRequirement | specialization | A1.BusinessRequirement | Login-gated, unverified ch. 6 Motivation — requirement decomposition. | Requirement → Requirement | specialisation within a concept | A Requirement may specialise another Requirement. | high | Archi relationship matrix: Requirement → Requirement must list 's' (specialization) | verified_against_archi |
+| RA1-49 | A1.BusinessObject | association | A1.BusinessObject | One business object refers to another (a payment refers to an account). | BusinessObject → BusinessObject | same-concept association | ArchiMate permits association between these concepts. | high | Archi relationship matrix: BusinessObject → BusinessObject must list 'o' | verified_against_archi |
 
 ## A2 Service Domain Architecture
 
@@ -96,6 +97,12 @@ Reference: BIAN Service Landscape 14 metamodel, Control Record Model, Business O
 | RA2-15 | B14 | A2.Wireframe | association | A2.ServiceDomain | A wireframe depicts a Service Domain. | [SL14] Wireframes Overview; [SAPG] §3.4 | Wireframes are published per domain as an illustrative artefact. Not enforceable: artefact entities are never instantiated in an architecture dataset (LevelGraph rejects them), so the row records provenance only. | high | verified |
 | RA2-16 | B15 | A2.SemanticAPI | realization | A2.ServiceDomain | A Semantic API is derived from a Service Domain. | [APIP]; [SAPG] §3.5 | The reference API is the domain's operations in REST form. Not enforceable: artefact entities are never instantiated in an architecture dataset (LevelGraph rejects them), so the row records provenance only. | high | verified |
 | RA2-17 | — | A2.BOMModel | aggregation | A2.BusinessObject | The versioned Business Object Model artefact aggregates the business objects. | [SL14] BOM Overview (public portal); SDEM reading | The BOM release is the container of the objects that type control records; SDEM reading of the BOM overview, not a published BIAN relationship. Not enforceable: artefact entities are never instantiated in an architecture dataset (LevelGraph rejects them), so the row records provenance only. | low | sdem_reading |
+| RA2-18 | — | A2.BusinessObject | composition | A2.BusinessObject | BIAN business objects related by composition (from BIAN’s schema references, IM-03). | [ARCHI] | IM-03: the logical model’s relationships between objects. | high | verified_against_archi |
+| RA2-19 | — | A2.BusinessObject | aggregation | A2.BusinessObject | BIAN business objects related by aggregation (from BIAN’s schema references, IM-03). | [ARCHI] | IM-03: the logical model’s relationships between objects. | high | verified_against_archi |
+| RA2-20 | — | A2.BusinessObject | specialization | A2.BusinessObject | BIAN business objects related by specialization (from BIAN’s schema references, IM-03). | [ARCHI] | IM-03: the logical model’s relationships between objects. | high | verified_against_archi |
+| RA2-21 | — | A2.BusinessObject | association | A2.BusinessObject | BIAN business objects related by association (from BIAN’s schema references, IM-03). | [ARCHI] | IM-03: the logical model’s relationships between objects. | high | verified_against_archi |
+| RA2-22 | — | A2.BusinessObjectAttribute | association | A2.BusinessObject | An attribute of data_type reference refers to the business object it names. | SDEM | IM-03: OpenAPI $ref between BIAN schemas. | medium | sdem_definition |
+| RA2-23 | — | A2.ServiceOperation | access | A2.BusinessObject | An operation reads or writes a business object. | SDEM | CT-02: an operation’s information is the objects’ typed fields. | medium | sdem_definition |
 
 ## A3 Application Architecture
 
@@ -134,6 +141,9 @@ Reference: ArchiMate 3.2 chapter 9 (Application) and TOGAF 10 (Solution Building
 | RA3-29 | A3.APIOperation | access | A3.DataEntity | An operation accesses a data object. | Application Interface → Data Object | active structure accesses passive structure (derived) | A Application Interface accesses a Data Object through its behaviour; ArchiMate lists this as derived. One end is an SDEM extension, tested through the ArchiMate concept it extends. | medium | Archi relationship matrix: Application Interface → Data Object must list 'a' (access) | verified_against_archi |
 | RA3-30 | A3.SolutionBuildingBlock | aggregation | A3.ApplicationComponent | Login-gated, unverified — a solution building block aggregates components. | — (TOGAF Solution Building Block) → Application Component | TOGAF: a solution building block is a grouping of solution components | TOGAF's content metamodel defines solution building blocks as implementation-level groupings of components; aggregation (components exist independently) is the natural ArchiMate rendering. No ArchiMate concept exists for the block itself. | medium | Not testable against the ArchiMate matrix; check the public TOGAF content-metamodel summary (building blocks aggregate components) and report. | unverified_togaf |
 | RA3-31 | A3.SolutionBuildingBlock | composition | A3.SolutionBuildingBlock | Login-gated, unverified — building-block decomposition. | — (TOGAF Solution Building Block) → — (TOGAF Solution Building Block) | TOGAF: a solution building block is a grouping of solution components | TOGAF's content metamodel defines solution building blocks as implementation-level groupings of components; aggregation (components exist independently) is the natural ArchiMate rendering. No ArchiMate concept exists for the block itself. | medium | Not testable against the ArchiMate matrix; check the public TOGAF content-metamodel summary (building blocks aggregate components) and report. | unverified_togaf |
+| RA3-32 | A3.DataEntity | association | A3.DataEntity | One data entity refers to another (a foreign key). | DataObject → DataObject | same-concept association | ArchiMate permits association between these concepts. | high | Archi relationship matrix: DataObject → DataObject must list 'o' | verified_against_archi |
+| RA3-33 | A3.DataEntity | composition | A3.DataAttribute | A data entity is composed of its fields. | Data Object → — (an SDEM field record; ArchiMate has no attribute element) | SDEM: A data entity is composed of its fields. | SDEM's own rule for field records (IM-04, IM-05; the owner's decision D2, 2026-11-16). | medium | none — an SDEM definition, not an ArchiMate relationship | sdem_definition |
+| RA3-34 | A3.DataAttribute | association | A3.DataEntity | A foreign-key field refers to the entity it points at. | Data Object → — (an SDEM field record; ArchiMate has no attribute element) | SDEM: A foreign-key field refers to the entity it points at. | SDEM's own rule for field records (IM-04, IM-05; the owner's decision D2, 2026-11-16). | medium | none — an SDEM definition, not an ArchiMate relationship | sdem_definition |
 
 ## A4 Technology Architecture
 
@@ -206,8 +216,9 @@ How far each row has been checked, and against what. `verified_against_archi` is
 
 | Status | Rows | Meaning |
 |---|---|---|
-| verified_against_archi | 114 | concept pair and kind listed by the open-source Archi relationship matrix — an implementation of the ArchiMate 3.2 relationship tables, cited by commit below |
+| verified_against_archi | 120 | concept pair and kind listed by the open-source Archi relationship matrix — an implementation of the ArchiMate 3.2 relationship tables, cited by commit below |
 | verified | 16 | checked against BIAN's public pages (A2) |
+| sdem_definition | 4 | follows from an SDEM extension entity's definition |
 | unverified_togaf | 2 | paraphrased from TOGAF; no public oracle |
 | sdem_definition_grounded | 2 |  |
 | sdem_reading | 1 | SDEM's reading of a public BIAN page that states no explicit relationship |
@@ -218,8 +229,8 @@ How far each row has been checked, and against what. `verified_against_archi` is
 
 | Inference confidence | Rows | Oracle verdict |
 |---|---|---|
-| high | 69 | confirmed: 67, not tested: 2 |
-| medium | 44 | confirmed: 42, not tested: 2 |
+| high | 71 | confirmed: 69, not tested: 2 |
+| medium | 46 | confirmed: 42, not tested: 4 |
 | low | 5 | confirmed: 4, confirmed, alternative accepted: 1 |
 
 ## Test history
@@ -229,5 +240,5 @@ The test plan is `docs/evidence/relationships-testing.md`; its results sections 
 | Phase | What was tested | Result |
 |---|---|---|
 | 1 (2026-10-23) | provenance, grounding, consistency, enforcement probes, coverage, rule dependencies — all 131 rows and 12 inheritance links | 0 fail; 3 artefact rows not enforceable; 6 findings applied in v0.5.17 |
-| 2 (2026-10-23) | every A1 / A3 / A4 inference against the Archi relationship matrix | 113 confirmed, 1 confirmed via stated alternative, 0 contradicted, 2 not testable (TOGAF); applied in v0.5.20 |
+| 2 (2026-10-23) | every A1 / A3 / A4 inference against the Archi relationship matrix | 115 confirmed, 1 confirmed via stated alternative, 0 contradicted, 2 not testable (TOGAF); applied in v0.5.20 |
 

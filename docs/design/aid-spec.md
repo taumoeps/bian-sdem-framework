@@ -121,6 +121,10 @@ The accuracy reached is **reported, not assumed**: each run states its precision
 | AID-Z02 | Level 1: a shape with `internet_facing: true` is proposed in the DMZ; any other in the internal zone. | `test_aid_proposes_a_zone_from_the_evidence` |
 | AID-Z03 | A private (level-2) zone is never proposed — it is a design decision. | same |
 | AID-Z04 | Only what is not hosted is proposed: a deployment, an artifact or software on a node is in its host's zone (RA4-38). `sdem aid confirm|reject <shape>` decides a placement; a rejected one is not proposed again. | `test_a_person_decides_each_placement` |
+| AID-I01 | **The information model, inferred** (metamodel 0.15.0, IM-10): for each A2 business object with typed field records and no data entity mapped to it, an A3 data entity marked inferred, with one A3 data attribute per field — physical type from SDEM's default table (`sdem/aid_info.py` TYPES), required as the field is, the identifier as the primary key. | `test_aid_infers_entities_fields_keys_and_proposes_the_links` |
+| AID-I02 | A field that refers to another business object becomes a foreign key (an association) to that object's data entity — inferred in the same run, or already mapped. | same |
+| AID-I03 | `MAPPED_TO` (business object → data entity) and `FIELD_MAPPED_TO` (each BIAN attribute → its data attribute) are proposed, confidence low, for a person to approve with `data_model` evidence. | same |
+| AID-I04 | As AID-W08: only records a person wrote or confirmed are read; a rejected entity or field is never inferred again. | same |
 
 ## 10. Commands
 

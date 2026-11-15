@@ -333,7 +333,7 @@
           "description": "the attribute's data type in the Business Object Model",
           "x-sdem-id": "AT-A2-22",
           "x-sdem-group": "specific",
-          "x-sdem-kind": "value",
+          "x-sdem-kind": "enumeration",
           "x-sdem-source": {
             "standard": "BIAN concept (Business Object Model)",
             "locator": "BOM attribute type",
@@ -369,6 +369,71 @@
           },
           "x-sdem-reasoning": "Answers: Which attributes are personal information (for privacy impact)? Privacy is decided per attribute (a name is personal, a currency code is not); public law.",
           "x-sdem-confidence": "high"
+        },
+        "required": {
+          "type": "boolean",
+          "description": "whether every business object of this kind has a value for this attribute",
+          "x-sdem-id": "AT-A2-28",
+          "x-sdem-group": "specific",
+          "x-sdem-kind": "value",
+          "x-sdem-source": {
+            "standard": "OpenAPI Specification 3.1",
+            "locator": "Schema Object (type, format, required, enum)",
+            "uri": "https://spec.openapis.org/oas/v3.1.0"
+          },
+          "x-sdem-reasoning": "BIAN publishes, per schema, which properties are required (OpenAPI `required`); read by sdem bian import (IM-09).",
+          "x-sdem-confidence": "high"
+        },
+        "allowed_values": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "the values the attribute may take, when it is an enumeration",
+          "x-sdem-id": "AT-A2-29",
+          "x-sdem-group": "specific",
+          "x-sdem-kind": "value",
+          "x-sdem-source": {
+            "standard": "OpenAPI Specification 3.1",
+            "locator": "Schema Object (type, format, required, enum)",
+            "uri": "https://spec.openapis.org/oas/v3.1.0"
+          },
+          "x-sdem-reasoning": "BIAN publishes enumerations as …TypeValues schemas (OpenAPI `enum`); read by sdem bian import (IM-09).",
+          "x-sdem-confidence": "high"
+        },
+        "identifier": {
+          "type": "boolean",
+          "description": "whether the attribute identifies the business object",
+          "x-sdem-id": "AT-A2-30",
+          "x-sdem-group": "specific",
+          "x-sdem-kind": "value",
+          "x-sdem-source": {
+            "standard": "SDEM",
+            "locator": "docs/design/sdem-full-design-metamodel-design.md",
+            "uri": "docs/design/sdem-full-design-metamodel-design.md"
+          },
+          "x-sdem-reasoning": "The logical key; AID makes it the primary key of the data entity it infers (IM-10).",
+          "x-sdem-confidence": "low"
+        },
+        "multiplicity": {
+          "type": "string",
+          "enum": [
+            "1",
+            "0..1",
+            "0..n",
+            "1..n"
+          ],
+          "description": "how many values one business object holds for the attribute",
+          "x-sdem-id": "AT-A2-31",
+          "x-sdem-group": "specific",
+          "x-sdem-kind": "enumeration",
+          "x-sdem-source": {
+            "standard": "SDEM",
+            "locator": "docs/design/sdem-full-design-metamodel-design.md",
+            "uri": "docs/design/sdem-full-design-metamodel-design.md"
+          },
+          "x-sdem-reasoning": "A list-valued property (OpenAPI `type: array`) holds many; with `required`, the multiplicity of the logical model.",
+          "x-sdem-confidence": "low"
         }
       },
       "additionalProperties": true,

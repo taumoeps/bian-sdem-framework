@@ -82,6 +82,7 @@ From the relationship type catalogue (Architecture Metamodel).
 | `EXPOSED_THROUGH` (INTERFACE_EXPOSED_THROUGH_DEVICE) | A3.ApplicationInterface → A4.Device | enterprise_rule | network_design |
 | `EXPOSED_THROUGH` (INTERFACE_EXPOSED_THROUGH_SYSTEM_SOFTWARE) | A3.ApplicationInterface → A4.SystemSoftware | enterprise_rule | network_design |
 | `BUILT_AS` (COMPONENT_BUILT_AS_ARTIFACT) | A3.ApplicationComponent → A4.Artifact | enterprise_rule | build_pipeline |
+| `FIELD_MAPPED_TO` (BIAN_ATTRIBUTE_FIELD_MAPPED_TO_DATA_ATTRIBUTE) | A2.BusinessObjectAttribute → A3.DataAttribute | enterprise_rule | data_model |
 
 ## 6. Validation
 

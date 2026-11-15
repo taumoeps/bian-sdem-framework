@@ -149,6 +149,8 @@ class FederatedGraph:
         if lone: self.warnings.setdefault(f"level A4 ({self.levels['A4'].doc['model_id']})", []).extend(lone)
         unexposed = self.unexposed()   # LC-22: an internet-facing interface exposed through nothing
         if unexposed: self.warnings.setdefault(f"level A3 ({self.levels['A3'].doc['model_id']})", []).extend(unexposed)
+        for lvl, found in self.information_model().items():   # LC-23 … LC-27: the information model (metamodel 0.15.0, IM-08)
+            if found: self.warnings.setdefault(f"level {lvl} ({self.levels[lvl].doc['model_id']})", []).extend(found)
         from . import profile as _p
         across =[r for r in _p.rules() if r.get('across')]
         if across:   # PR-16: the organisation's rules across layers, over APPROVED links only (sdem/comply.py evaluates; check enforces)
@@ -236,6 +238,56 @@ class FederatedGraph:
         return [f"instance {i['id']}: is internet facing but exposed through nothing — propose EXPOSED_THROUGH an edge platform in a DMZ (sdem aid, AID-X01) (LC-22)"
                 for i in g.doc.get('instances', []) if self.mm.is_a(i['type'], 'A3.ApplicationInterface')
                 and (i.get('attributes') or {}).get('internet_facing') is True and i['id'] not in through]
+
+    def information_model(self):
+        """IM-08 (warnings; metamodel 0.15.0): the information model's fields as records.
+        LC-23 a BIAN business object or data entity with field names but no field records (thin) · LC-24 its names and its records
+        disagree · LC-25 a system-of-record entity with field records but no primary key · LC-26 a foreign key to an entity with no
+        primary key · LC-27 a FIELD_MAPPED_TO between incompatible types. Old data is reported, never refused (FD-P2)."""
+        out = {}
+        FIELD = {'A2': ('A2.BusinessObject', 'A2.BusinessObjectAttribute'), 'A3': ('A3.DataEntity', 'A3.DataAttribute')}
+        recs = {}
+        for lvl, (whole, part) in FIELD.items():
+            g = self.levels.get(lvl)
+            if not g: continue
+            inst = {i['id']: i for i in g.doc.get('instances', [])}; recs.update(inst)
+            fields = {}
+            for r in g.doc.get('relationships', []):
+                if r.get('kind') == 'composition' and r['source'] in inst and r['target'] in inst and self.mm.is_a(inst[r['target']]['type'], part):
+                    fields.setdefault(r['source'], []).append(inst[r['target']])
+            found = []
+            for i in inst.values():
+                if not self.mm.is_a(i['type'], whole) or i.get('lifecycle_status') == 'retired': continue
+                names = [x for x in ((i.get('attributes') or {}).get('attributes') or []) if isinstance(x, str)]
+                have = fields.get(i['id'], [])
+                if names and not have:
+                    found.append(f"instance {i['id']}: is thin — its {len(names)} field(s) are names only; give each as a record ({part.split('.')[1]}, composed of {i['id']}) — sdem bian import --objects or sdem aid fills them (LC-23)")
+                elif have:
+                    rn = {f.get('name') for f in have}
+                    if names and set(names) != rn:
+                        miss, extra = sorted(set(names) - rn), sorted(rn - set(names))
+                        found.append(f"instance {i['id']}: its field names and its field records disagree" + (f" — no record for {', '.join(miss)}" if miss else '') + (f" — not in its list: {', '.join(extra)}" if extra else '') + ' (LC-24)')
+                    if lvl == 'A3' and (i.get('attributes') or {}).get('system_of_record') is True and not any((f.get('attributes') or {}).get('primary_key') is True for f in have):
+                        found.append(f"instance {i['id']}: is a system of record but none of its fields is a primary key (LC-25)")
+            if lvl == 'A3':
+                pk = {e for e, fs in fields.items() if any((f.get('attributes') or {}).get('primary_key') is True for f in fs)}
+                for r in g.doc.get('relationships', []):
+                    if r.get('kind') == 'association' and r['source'] in inst and r['target'] in inst and self.mm.is_a(inst[r['source']]['type'], 'A3.DataAttribute') \
+                            and self.mm.is_a(inst[r['target']]['type'], 'A3.DataEntity') and r['target'] not in pk:
+                        found.append(f"instance {r['source']}: is a foreign key to {r['target']}, which has no primary key (LC-26)")
+            out[lvl] = found
+        COMPAT = {'integer': ('int', 'integer', 'smallint', 'bigint', 'number', 'numeric'), 'decimal': ('numeric', 'decimal', 'number', 'float', 'double', 'real', 'money'),
+                  'amount': ('numeric', 'decimal', 'number', 'money'), 'date': ('date', 'timestamp', 'datetime'), 'datetime': ('timestamp', 'datetime', 'date'),
+                  'boolean': ('bool', 'boolean', 'bit')}
+        for d in self.mapping_docs:
+            for m in d.get('mappings', []):
+                if m.get('relationship') != 'FIELD_MAPPED_TO' or m.get('status') == 'rejected': continue
+                s_, t_ = recs.get((m.get('source') or {}).get('id')), recs.get((m.get('target') or {}).get('id'))
+                if not (s_ and t_): continue
+                lt = str((s_.get('attributes') or {}).get('data_type') or '').lower(); pt = str((t_.get('attributes') or {}).get('physical_type') or '').lower()
+                if lt in COMPAT and pt and not pt.startswith(COMPAT[lt]):
+                    out.setdefault('A3', []).append(f"instance {t_['id']}: holds {s_['id']} ({lt}) as {pt} — the types do not match (LC-27)")
+        return {k: v for k, v in out.items() if v and k in self.levels}
 
     def network_edges(self):
         """KG-Q-08 (metamodel 0.9.0): a platform depends on the communication network it is connected to (RA4-37) — its own, or that

@@ -633,7 +633,10 @@ class Run:
                     self.report('S06', act, o, 4, f"verb and noun match: '{act['name']}' ~ '{o['name']}' (covers {cover:.0%} of the asset type)", [f"{act['id']}.name", f"{o['id']}.action_term", 'asset type'])
         # S09 (business service -> operation): inputs/outputs vs operation attributes, >= 50 % and >= 2, unique best per service
         for bs in self.of('A1.BusinessService'):
-            have = _list(self.attr(bs, 'inputs')) + _list(self.attr(bs, 'outputs'))
+            have = []
+            for x in _list(self.attr(bs, 'inputs')) + _list(self.attr(bs, 'outputs')):   # CT-01 (metamodel 0.15.0): a business object's id stands for its fields
+                bo = self.get(x, 'A1.BusinessObject') if isinstance(x, str) else None
+                have += _list(self.attr(bo, 'attributes')) if bo else [x]
             if not have: continue
             sc = []
             for o in self.of('A2.ServiceOperation'):
