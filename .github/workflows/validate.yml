@@ -40,7 +40,9 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - name: Validate (warnings are errors)
-        run: python -m sdem.validate --strict examples/*/mappings.json
+        run: |   # payment-initiation-v2 extends payment-initiation and keeps its ids: validated on its own
+          python -m sdem.validate --strict $(ls examples/*/mappings.json | grep -v '/payment-initiation-v2/')
+          python -m sdem.validate --strict examples/payment-initiation-v2/mappings.json
       - name: Validate against entity catalogue
         run: python -m sdem.validate --strict --catalogue examples/card-fraud-alerts/entities.json examples/card-fraud-alerts/mappings.json
       - name: Lifecycle and immutability against previous commit
