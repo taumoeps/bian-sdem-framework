@@ -408,7 +408,7 @@
           "items": {
             "type": "string"
           },
-          "description": "channels it is offered through",
+          "description": "the channels the service is offered through",
           "x-sdem-id": "AT-A1-27",
           "x-sdem-group": "specific",
           "x-sdem-kind": "reference",

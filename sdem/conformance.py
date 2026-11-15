@@ -64,7 +64,8 @@ def natural(v):
     return ' '.join(re.sub(r'[^0-9a-z]+', ' ', v.casefold()).split()) if isinstance(v, str) else v
 
 
-OWNERS = {'owning interface': 'A3.ApplicationInterface', 'owning service domain': 'A2.ServiceDomain'}   # identifier keys held as a whole-part link, not an attribute
+OWNERS = {'owning interface': 'A3.ApplicationInterface', 'owning service domain': 'A2.ServiceDomain',
+          'owning business object': 'A2.BusinessObject', 'owning data entity': 'A3.DataEntity'}   # a field is named within its object or entity (0.17.0)   # identifier keys held as a whole-part link, not an attribute
 
 
 def owner_of(iid, want, mm, local, parents, depth=4):
@@ -246,7 +247,7 @@ def check_level(doc, mm, estate_index=None):
 
 PLATFORM, NETWORK, ZONE = 'A4.InfrastructureComponent', 'A4.CommunicationNetwork', 'A4.NetworkZone'
 ZONE_KINDS = {0: ('on_premises', 'cloud'), 1: ('internal', 'dmz'), 2: ('private',)}
-UNPLACED = ('A4.CommunicationNetwork', 'A4.NetworkZone', 'A4.DeploymentEnvironment', 'A4.Path')   # networks, zones, environments (they group deployments: Z2) and paths are not placed
+UNPLACED = ('A4.CommunicationNetwork', 'A4.NetworkZone', 'A4.DeploymentEnvironment', 'A4.Path', 'A4.Location')   # networks, zones, environments (they group deployments: Z2) and paths are not placed
 
 
 def zones_of(doc, mm, local=None):
@@ -262,7 +263,7 @@ def zones_of(doc, mm, local=None):
             if k == 'aggregation' and not mm.is_a(local[b], NETWORK): direct.setdefault(b, []).append(a)
             elif k == 'composition' and mm.is_a(local[b], ZONE): parent[b] = a
             continue
-        if mm.is_a(local[a], NETWORK) or mm.is_a(local[b], NETWORK) or mm.is_a(local[b], ZONE) or mm.is_a(local[a], 'A4.DeploymentEnvironment'): continue
+        if mm.is_a(local[a], NETWORK) or mm.is_a(local[b], NETWORK) or mm.is_a(local[b], ZONE) or mm.is_a(local[a], 'A4.DeploymentEnvironment') or mm.is_a(local[a], 'A4.Location') or mm.is_a(local[b], 'A4.Location'): continue   # a location holds things; it does not host them (0.17.0)
         if k in ('assignment', 'composition', 'aggregation', 'realization'): hosts.setdefault(b, []).append(a)   # b runs on, or is part of, a
     def find(x, seen):
         if direct.get(x): return direct[x]

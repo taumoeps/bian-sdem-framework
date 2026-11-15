@@ -352,7 +352,7 @@ Level-skipping traceability is a query over approved edges with provenance (`sde
 | `mapping_id` | string | yes | the record's permanent ID (legacy name) |
 | `source` | entity reference (§4) | yes | the entity the relationship starts from (§4) |
 | `target` | entity reference (§4) | yes | the entity it points to (§4) |
-| `relationship` | string | yes | one of the nine catalogued types (§6.2); adjacent levels only |
+| `relationship` | string | yes | one of the catalogued types (§6.2); adjacent levels only, except the direct A1→A3 types the owner named (D9) |
 | `perspective` | `process`, `information`, `architecture` | no | architecture, process or information |
 | `status` | `proposed`, `validated`, `needs_review`, `approved`, `rejected`, `superseded` | yes | lifecycle state (lifecycle below) |
 | `evidence` | array | yes | `kind:reference` items; the kinds must include the type's required evidence (§6.2) |

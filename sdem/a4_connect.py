@@ -9,7 +9,7 @@
 import re
 
 PLATFORMS = ('A4.Node', 'A4.Device', 'A4.SystemSoftware')
-NOT_SHAPES = ('A4.CommunicationNetwork', 'A4.NetworkZone', 'A4.DeploymentEnvironment', 'A4.Path')
+NOT_SHAPES = ('A4.CommunicationNetwork', 'A4.NetworkZone', 'A4.DeploymentEnvironment', 'A4.Path', 'A4.Location')   # a location is a place (0.17.0)
 DATABASE = re.compile(r'postgres|mysql|oracle|sql server|database|\bdb2?\b|redis|mongo|cassandra', re.I)
 
 

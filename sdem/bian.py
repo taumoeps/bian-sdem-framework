@@ -151,7 +151,11 @@ def _props(doc, schema_name):
     return list((s.get('properties') or {}).keys())
 
 
-AMOUNT_SCHEMAS = ('CurrencyAmount', 'Amount', 'AmountType')   # BIAN's amount-with-currency shapes: a logical amount, not an object
+DATATYPES = {   # IM-09: BIAN's data types — small wrapper schemas (BIAN 14.0.0), read as logical types, never as business objects
+    'CurrencyAmount': 'amount', 'Amount': 'amount', 'AmountType': 'amount', 'Paymentamountandcurrency': 'amount', 'Currencycode': 'currency_code',
+    'CurrencyCode': 'currency_code', 'Datetime': 'datetime', 'DateTime': 'datetime', 'Paymentdatetime': 'datetime', 'Date': 'date',
+    'Identifier': 'identifier', 'Name': 'string', 'Text': 'text', 'Rate': 'decimal', 'Value': 'decimal', 'Duration': 'string', 'Frequency': 'string'}
+AMOUNT_SCHEMAS = tuple(k for k, v in DATATYPES.items() if v == 'amount')
 
 
 def _primitive(spec, name=''):
@@ -181,7 +185,7 @@ def _fields(doc, name):
         if '$ref' in t:
             rn, target = _ref(doc, t['$ref'], ('schemas',)); target = target if isinstance(target, dict) else {}
             if target.get('enum'): f.update(data_type='enum', allowed_values=[str(v) for v in target['enum']])
-            elif rn in AMOUNT_SCHEMAS: f['data_type'] = 'amount'
+            elif rn in DATATYPES: f['data_type'] = DATATYPES[rn]
             elif target.get('properties'): f.update(data_type='reference', refers_to=rn)
             else: f['data_type'] = _primitive(target, rn or '')
         elif t.get('enum'): f.update(data_type='enum', allowed_values=[str(v) for v in t['enum']])
@@ -367,8 +371,10 @@ def build(domains, metamodel_version, descriptions=False, objects=False, pattern
             if cr: rels.append({'source': so, 'kind': 'access', 'target': cr})
             if op['qualifier']: rels.append({'source': so, 'kind': 'association', 'target': bq_ids[op['qualifier']]})
         if objects:
+            wanted = {str(x).replace(' ', '').lower() for x in objects} if isinstance(objects, (set, list, tuple)) else None   # --object: only these (by BIAN's name or its words)
             for name, fields in d['objects'].items():
-                if name == d['control_record'] or name.lower().endswith('typevalues') or name in AMOUNT_SCHEMAS: continue   # an amount is a type (IM-09)
+                if wanted is not None and name.lower() not in wanted: continue
+                if name == d['control_record'] or name.lower().endswith('typevalues') or name in DATATYPES: continue   # a BIAN data type is a type, not an object (IM-09)
                 bo = add(rec(f'BBO-{_key(name)}', 'A2.BusinessObject', _words(name), ver, attrs={'attributes': fields},
                              canonical=f'BIAN-BO-{_key(name)}', source=src))
                 for f in (d.get('object_fields') or {}).get(name, []):   # IM-09: each field a typed record; references become links (IM-03)
@@ -379,7 +385,7 @@ def build(domains, metamodel_version, descriptions=False, objects=False, pattern
                     boa = add(rec(f'BBOA-{_key(name)}-{_key(f["name"])}', 'A2.BusinessObjectAttribute', f['name'], ver, attrs=a, source=src))
                     rels.append({'source': bo, 'kind': 'composition', 'target': boa})
                     ref = f['refers_to']
-                    if ref and ref != d['control_record'] and ref in d['objects'] and not ref.lower().endswith('typevalues'):
+                    if ref and ref != d['control_record'] and ref in d['objects'] and not ref.lower().endswith('typevalues') and (wanted is None or ref.lower() in wanted):
                         rels.append({'source': boa, 'kind': 'association', 'target': f'BBO-{_key(ref)}'})
                         if f'BBO-{_key(ref)}' != bo: rels.append({'source': bo, 'kind': 'association', 'target': f'BBO-{_key(ref)}'})
                 if cr and name in set(d['control_record_fields']) | set(_words(f).replace(' ', '') for f in d['control_record_fields']):
@@ -673,6 +679,7 @@ def main(argv=None):
     im.add_argument('--no-inferences', action='store_true', help="do not apply SDEM's accepted inferences (bian/inferences-<release>.json)")
     im.add_argument('--descriptions', action='store_true', help="include BIAN's descriptions (left out by default)")
     im.add_argument('--objects', action='store_true', help='also write BIAN business objects (many)')
+    im.add_argument('--object', action='append', metavar='NAME', help="only this business object (repeat; BIAN's name or its words) — implies --objects")
     im.add_argument('--previous', metavar='FILE', help='a previous A2 dataset: report what was added, dropped or renamed')
     im.add_argument('--json', action='store_true')
     sub.add_parser('inference', help="SDEM's record of inferred asset types and functional patterns — list, show, accept, challenge, change, reject")
@@ -680,6 +687,8 @@ def main(argv=None):
         p.add_argument('--workspace', dest='estate', required=True, metavar='DIR')
         p.add_argument('--patterns', metavar='CSV'); p.add_argument('--inferences', metavar='FILE'); p.add_argument('--no-inferences', action='store_true')
         p.add_argument('--person', required=True, help='your name — a person'); p.add_argument('--dry-run', action='store_true'); p.add_argument('--json', action='store_true')
+        p.add_argument('--objects', action='store_true', help="also the domains' business objects, typed (metamodel 0.15.0, IM-09) — from a downloaded BIAN release (--folder); the base leaves them out")
+        p.add_argument('--object', action='append', metavar='NAME', help="only this business object (repeat; BIAN's name, e.g. PaymentTransaction or \"Payment Transaction\") — implies --objects")
     ad = sub.add_parser('add', help="add BIAN service domains to one workspace, beside what it holds — checked; what AID inferred keeps its mark")
     ad.add_argument('names', nargs='+', metavar='NAME', help='service domains by name, e.g. "Financial Accounting" — find them with sdem bian search')
     ad.add_argument('--base', nargs='?', const='', metavar='FILE', help='choose from the base BIAN that ships with SDEM (default) — or, with FILE, your own packed BIAN')
@@ -718,6 +727,9 @@ def main(argv=None):
     if a.cmd in ('add', 'select', 'custom'):   # WS-04: one workspace's own selection
         ws = Path(a.estate)
         if not (ws / 'mappings.json').exists(): raise BianError(f'{ws}: no workspace here — start one with sdem new')
+        if getattr(a, 'object', None): a.objects = set(a.object)   # --object NAME …: only these
+        if getattr(a, 'objects', False) and not a.folder:   # BB-D2: the shipped base leaves business objects out
+            raise BianError('--objects needs BIAN\'s own files: --folder <a downloaded BIAN release> (the base that ships with SDEM leaves business objects out)')
         if a.base is None and not a.folder: a.base = ''
         source = Path(a.base) if a.base else base_file()
         domains = read_pack(source) if a.base is not None else read_release(a.folder)[0]
@@ -733,7 +745,7 @@ def main(argv=None):
             from .inferences import installed_file, read as read_inferences, accepted
             f = Path(a.inferences) if a.inferences else installed_file(max((d['release'] for d in chosen), default=''))
             if f: infer = accepted(read_inferences(f))
-        dataset, _ = build(chosen, Metamodel.load().version, False, False, patterns, infer)
+        dataset, _ = build(chosen, Metamodel.load().version, False, getattr(a, 'objects', False), patterns, infer)
         if a.add:   # WS-04: added beside what the workspace holds (what AID inferred keeps its mark)
             own = json.loads((ws / 'a2-service-domain.json').read_text(encoding='utf-8')) if (ws / 'a2-service-domain.json').exists() else {**dataset, 'instances': [], 'relationships': []}
             dataset = merge_layers(own, dataset)
@@ -860,7 +872,7 @@ def main(argv=None):
         from .inferences import installed_file, read as read_inferences, accepted
         f = Path(a.inferences) if a.inferences else installed_file(max((d['release'] for d in chosen), default=''))
         if f: infer = accepted(read_inferences(f))
-    dataset, rep = build(chosen, Metamodel.load().version, a.descriptions, a.objects, patterns, infer)
+    dataset, rep = build(chosen, Metamodel.load().version, a.descriptions, set(a.object) if a.object else a.objects, patterns, infer)
     unknown = rep['unknown']; template = Path(a.out).with_name(Path(a.out).stem + '.needs-patterns.csv') if unknown else None
     if unknown: rep['template'] = template.name
     errors, warnings = check(dataset)

@@ -136,5 +136,34 @@ class AidTests(unittest.TestCase):   # IM-10: AID-I01 … I04
         self.assertTrue(all(x['status'] == 'proposed' for x in props))                      # AID-I03: never approved by SDEM
 
 
+class RealBianShapesTests(unittest.TestCase):   # found importing BIAN 14.0.0's payment files (2026-11-16)
+    def test_a_field_is_named_within_its_object_and_bian_data_types_are_types(self):
+        from sdem.bian import _fields, DATATYPES
+        doc = {'components': {'schemas': {
+            'Payment': {'type': 'object', 'properties': {'PaymentIdentification': {'$ref': '#/components/schemas/Identifier'}, 'Booked': {'$ref': '#/components/schemas/Datetime'}}},
+            'Refund': {'type': 'object', 'properties': {'PaymentIdentification': {'$ref': '#/components/schemas/Identifier'}}},
+            'Identifier': {'type': 'object', 'properties': {'IdentifierValue': {'type': 'string'}}}, 'Datetime': {'type': 'object', 'properties': {'DateTimeContent': {'type': 'string'}}}}}}
+        self.assertEqual([f['data_type'] for f in _fields(doc, 'Payment')], ['identifier', 'datetime'])
+        self.assertIn('Identifier', DATATYPES)
+        mm = Metamodel.load()
+        self.assertEqual(mm.entities['A2.BusinessObjectAttribute']['identifier']['key'], ['owning business object', 'name'])
+        self.assertEqual(mm.entities['A3.DataAttribute']['identifier']['key'], ['owning data entity', 'name'])
+        from sdem.conformance import check_level
+        two = level('A2', [rec('BO-1', 'A2.BusinessObject', 'Payment', attributes=['PaymentIdentification']), rec('BO-2', 'A2.BusinessObject', 'Refund', attributes=['PaymentIdentification']),
+                           rec('F-1', 'A2.BusinessObjectAttribute', 'PaymentIdentification', data_type='identifier'), rec('F-2', 'A2.BusinessObjectAttribute', 'PaymentIdentification', data_type='identifier')],
+                    [{'source': 'BO-1', 'kind': 'composition', 'target': 'F-1'}, {'source': 'BO-2', 'kind': 'composition', 'target': 'F-2'}])
+        errors, _, _ = check_level(two, mm)
+        self.assertEqual([e for e in errors if 'LC-09' in e], [])   # the same field name in two objects is two fields
+
+    def test_bian_add_objects_needs_bian_files(self):
+        import io, contextlib
+        from sdem.bian import main, BianError
+        ws = Path(tempfile.mkdtemp())
+        (ws / 'mappings.json').write_text('{"mappings": []}')
+        with self.assertRaises(BianError) as e, contextlib.redirect_stdout(io.StringIO()):
+            main(['add', 'Payment Order', '--workspace', str(ws), '--person', 'a tester', '--objects'])
+        self.assertIn('--folder', str(e.exception))
+
+
 if __name__ == '__main__':
     unittest.main()

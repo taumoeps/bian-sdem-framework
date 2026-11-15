@@ -1,8 +1,7 @@
 """`sdem connect` — a person states a connection between layers that the engine did not propose
 (docs/design/sdem-bian-update-and-connect-design.md, SC-*).
 
-The record goes through the same approval as `sdem approve` (a person, the evidence its type requires, one of the nine
-connection types, the BIAN release where needed); both ends must exist in the workspace and the whole workspace must pass
+The record goes through the same approval as `sdem approve` (a person, the evidence its type requires, one of the connection types in the registry, the BIAN release where needed); both ends must exist in the workspace and the whole workspace must pass
 before anything is written. The record says it was stated by a person (`created_by: sdem connect`).
 
   sdem connect SD-PAYMENT-ORDER-INITIATION REALIZED_BY HIS-A3-PAYMENTS-HUB --workspace workspaces/payments \\
@@ -60,14 +59,14 @@ def connect(estate, source, relationship, target, reviewer, evidence, rationale,
 def main(argv=None):
     ap = argparse.ArgumentParser(prog='sdem connect', formatter_class=argparse.RawDescriptionHelpFormatter,
                                  description='A person states a connection between layers that the engine did not propose — with the same checks as '
-                                             '`sdem approve`: a person, the evidence its type requires, one of the nine connection types, both ends in the workspace. '
+                                             '`sdem approve`: a person, the evidence its type requires, one of the connection types, both ends in the workspace. '
                                              'Final when its pull request is merged. Agents never run this.',
                                  epilog='Example:\n  sdem connect SD-PAYMENT-ORDER-INITIATION REALIZED_BY HIS-A3-PAYMENTS-HUB --workspace workspaces/payments \\\n'
                                         '       --reviewer jane.architect --evidence application_architecture_document:PAYHUB-HLD#s2 \\\n'
                                         '       --rationale "The Payments Hub design names it as the payment-order initiation service"\n\n'
-                                        'The nine connection types and the evidence each needs: the metamodel guide (docs/sdem-metamodel-guide.md).')
+                                        'The connection types and the evidence each needs: the metamodel guide (docs/sdem-metamodel-guide.md).')
     ap.add_argument('source', help='the record the connection starts from, e.g. a BIAN service domain id')
-    ap.add_argument('relationship', help='one of the nine connection types, e.g. REALIZED_BY, SUPPORTED_BY, DEPLOYED_ON')
+    ap.add_argument('relationship', help='one of the connection types, e.g. REALIZED_BY, SUPPORTED_BY, DEPLOYED_ON')
     ap.add_argument('target', help='the record it goes to')
     ap.add_argument('--workspace', dest='estate', required=True, metavar='DIR')
     ap.add_argument('--reviewer', '--person', dest='reviewer', required=True, help='your name — a person (CTL-21)')

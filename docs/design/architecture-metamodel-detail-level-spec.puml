@@ -80,7 +80,7 @@ a4_communicationnetwork -[#9E9E9E,dashed]-|> a4_infrastructurecomponent
 a4_path -[#9E9E9E,dashed]-|> a4_infrastructurecomponent
 a4_artifact -[#9E9E9E,dashed]-|> a4_infrastructurecomponent
 
-' the nine cross-level relationship types (detail §6.2, aligned to high-level §6.2)
+' the cross-level relationship types (detail §6.2, aligned to high-level §6.2)
 a1_businesscapability -[#1565C0,bold]-> a2_servicedomain : **SUPPORTED_BY**\nbian_alignment_guidance
 a1_valuestream -[#1565C0,bold]-> a2_businessscenario : **ALIGNED_TO**\nenterprise_rule
 a1_businessprocess -[#1565C0,bold]-> a2_servicedomain : **USES_DOMAIN**\nenterprise_rule

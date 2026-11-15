@@ -251,10 +251,11 @@
       "confidence_basis": "built on a standard concept as SDEM chose to model it",
       "identifier": {
         "key": [
+          "owning data entity",
           "name"
         ],
         "basis": "SDEM",
-        "reasoning": "a field's name is unique within the entity that is composed of it"
+        "reasoning": "a field is named within the data entity that is composed of it — the same name in two of them is two fields (found importing BIAN 14.0.0, where PaymentIdentification is a field of several objects)"
       }
     }
   ]

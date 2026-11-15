@@ -371,7 +371,7 @@ Business behaviour exposed to consumers
 | `outputs` | list | no | the business objects the service returns | `A1.BusinessObject` |
 | `consumers` | list | no | the actors or roles the service serves | `A1.BusinessActor`, `A1.BusinessRole` |
 | `customer_facing` | boolean | no | whether customers use it directly | — |
-| `channels` | list | no | channels it is offered through | `A1.BusinessInterface` |
+| `channels` | list | no | the channels the service is offered through | `A1.BusinessInterface` |
 | `service_level` | text | no | the committed service level (e.g. "same day") | — |
 
 **Links**
@@ -942,7 +942,7 @@ A canonical business information concept
 
 A property of a Business Object
 
-**Identified by:** `name` — no standard key; SDEM recommends a unique name within the architecture dataset so duplicates can be detected
+**Identified by:** `owning business object`, `name` — a field is named within the business object that is composed of it — the same name in two of them is two fields (found importing BIAN 14.0.0, where PaymentIdentification is a field of several objects)
 
 **Fields**
 
@@ -1375,7 +1375,7 @@ An organisation-defined reusable solution grouping
 
 A field of a data entity: its physical type, whether it is required, and whether it is a key
 
-**Identified by:** `name` — a field's name is unique within the entity that is composed of it
+**Identified by:** `owning data entity`, `name` — a field is named within the data entity that is composed of it — the same name in two of them is two fields (found importing BIAN 14.0.0, where PaymentIdentification is a field of several objects)
 
 **Fields**
 
@@ -1886,7 +1886,7 @@ A place where things are — a country, a region, a site or a cloud region
 
 ## 5. Links between architectures
 
-The model above covers each architecture on its own. Links **between** architectures are the nine relationship types below; actual links are records in the Architecture Relationship Registry, proposed by the inference engine and approved by architects.
+The model above covers each architecture on its own. Links **between** architectures are the relationship types of the registryhip types below; actual links are records in the Architecture Relationship Registry, proposed by the inference engine and approved by architects.
 
 | Relationship | From → to | How many |
 |---|---|---|
@@ -1968,7 +1968,7 @@ The 8 example workspaces (892 instances) (the generated reference-structure work
 |---|---|---|
 | LC-04 | 1254 | 0 |
 | LC-05 | 2851 | 0 |
-| LC-06 | 1561 | 0 |
+| LC-06 | 1560 | 0 |
 | LC-07 | 193 | 0 |
 | LC-08 (warning) | 183 | 0 |
 | LC-09 | 829 | 0 |

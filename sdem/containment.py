@@ -33,6 +33,7 @@ HIERARCHY = {
                    ('Asset types and patterns', ['A2.AssetType', 'A2.FunctionalPattern']),
                    ('Semantic APIs', ['A2.SemanticAPI'])],
         'not_in': 'Not in the service landscape',
+        'skip': ['A2.BusinessObjectAttribute'],   # metamodel 0.15.0 (TL-03): a business object's fields are not shapes — BIAN 14.0.0 gives hundreds
     },
     'A1': {   # the capability map (ArchiMate Capability Map viewpoint; TOGAF, BIZBOK)
         'nest': [('A1.BusinessCapability', 'composition', 'A1.BusinessCapability'), ('A1.BusinessCapability', 'aggregation', 'A1.BusinessCapability'),

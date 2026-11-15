@@ -277,7 +277,7 @@ def render_diagram():
     out.append('')
     for _, e in ents:
         if e.get('extends'): out.append(f"{a(e['type'])} -[#9E9E9E,dashed]-|> {a(e['extends'])}")
-    out += ['', "' the nine cross-level relationship types (detail §6.2, aligned to high-level §6.2)"]
+    out += ['', "' the cross-level relationship types (detail §6.2, aligned to high-level §6.2)"]
     for x in rt:
         out.append(f"{a(x['source_type'])} -[#1565C0,bold]-> {a(x['target_type'])} : **{x['relationship']}**\\n{x['authority']}")
     conf = sum(1 for _, e in ents if e['evidence_status'] == 'confirmed_in_official_source')

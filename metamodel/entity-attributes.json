@@ -2013,7 +2013,7 @@
       "name": "channels",
       "type": "list<string>",
       "required": false,
-      "description": "channels it is offered through",
+      "description": "the channels the service is offered through",
       "status": "active",
       "source": "SDEM",
       "reference": {
@@ -2032,15 +2032,6 @@
         "draft_id": "DA1-30"
       },
       "kind": "reference",
-      "values": [
-        "branch",
-        "online",
-        "mobile",
-        "contact centre",
-        "partner",
-        "API"
-      ],
-      "values_source": "SDEM",
       "confidence_basis": "SDEM field with no standard concept; not validated",
       "references": [
         "A1.BusinessInterface"

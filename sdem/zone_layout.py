@@ -19,7 +19,7 @@ Coordinates are fractions of the plate: x left → right, y far → near, both 0
 """
 import json
 
-UNPLACED = ('A4.CommunicationNetwork', 'A4.NetworkZone', 'A4.DeploymentEnvironment', 'A4.Path')
+UNPLACED = ('A4.CommunicationNetwork', 'A4.NetworkZone', 'A4.DeploymentEnvironment', 'A4.Path', 'A4.Location')   # a location is a place, not a shape (0.17.0)
 _X0, _X1, _Z0, _Z1 = -2.8, 2.8, -2.7, 2.7   # the working plate; the constants below are tuned to it
 
 

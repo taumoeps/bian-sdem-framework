@@ -444,6 +444,7 @@
     "level": "A2",
     "extends": null,
     "identifier": [
+      "owning business object",
       "name"
     ],
     "source": {

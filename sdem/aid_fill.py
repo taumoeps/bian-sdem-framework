@@ -192,6 +192,9 @@ def fill(workspace, person, dry_run=False, now=None):
                               'target': {'id': plat, 'type': t_['type'], 'version': t_['version']}, 'status': 'proposed', 'confidence': 'medium',
                               'evidence': [f'engine_rationale:{run} AID-X01'], 'rationale': f'Inferred by sdem aid (AID-X01): {iface} is internet facing and {plat} is the one internet-facing edge platform — approve with network_design evidence',
                               'baseline_id': run, 'created_by': 'sdem aid'})
+    BAND = {'low': 0.4, 'medium': 0.6, 'high': 0.8}   # the registry holds confidence as a number, as the engine writes it (found building Payment Initiation v2)
+    for pr in proposals:
+        if isinstance(pr.get('confidence'), str): pr['confidence'] = BAND.get(pr['confidence'], 0.4)
     errors = estate_errors({DATASETS[l]: d for l, d in after.items()}, registry)
     if errors: raise AidError('the workspace would not pass its checks with the inferred records — nothing written:\n  ' + '\n  '.join(errors[:10]))
     record = {'id': run, 'at': now, 'requested_by': person.strip(), 'added': added, 'proposals': f'{FOLDER}/{run}-proposals.json',
@@ -206,6 +209,13 @@ def fill(workspace, person, dry_run=False, now=None):
         b = Batch()
         for lvl in added: b.json(ws / DATASETS[lvl], after[lvl])
         b.json(runs / f'{run}-proposals.json', {'mappings': proposals}); b.json(runs / f'{run}.json', record); b.commit()
+        from .agents import Estate   # AID-W10 (found building Payment Initiation v2): in a workspace that keeps change sets, what AID wrote is recorded
+        est = Estate(ws)             # as one, adopted by the person who ran it — so the chain of change sets stays whole (CTL-20)
+        if any(est._last_change_set(l) for l in DATASETS):
+            from .agents import CoordinationError
+            for lvl in sorted(added):
+                try: est.adopt(lvl, person.strip(), f'sdem aid {run}: inferred records and links, each marked inferred (AID-W02) — confirm or reject them with sdem aid confirm|reject')
+                except CoordinationError: pass   # nothing new in that layer's file (only proposals were written)
     return record
 
 

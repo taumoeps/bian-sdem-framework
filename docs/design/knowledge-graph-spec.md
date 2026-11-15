@@ -118,7 +118,7 @@ Every allowed edge is a row in `metamodel/level-relationships.json`, listed with
 
 ## 3. Federated knowledge graph
 
-### 3.1 Edge types — the nine catalogued relationship types
+### 3.1 Edge types — the catalogued relationship types
 
 | Relationship | Source node type → target node type | Cardinality | Perspective | Authority |
 |---|---|---|---|---|
@@ -196,7 +196,7 @@ Each end (`source`, `target`) is a reference, not a copy: `id`, `type`, `version
 |---|---|---|
 | KG-F-01 | Load an edge only from a record with `status: approved`; keep the other statuses in the relationship registry for history but never in answers unless a query asks for them explicitly. | built (`--status`) |
 | KG-F-02 | Resolve every edge end into its local knowledge graph by level prefix, id, version and is-a; report unresolved ends and exclude those edges. | built (`sdem check`) |
-| KG-F-03 | Store only adjacent-level edges of the nine catalogued relationship types; derive level-skipping answers as paths with the mapping id of every hop. | built |
+| KG-F-03 | Store only adjacent-level edges of the catalogued relationship types — and the direct A1→A3 types the owner named (D9, 2026-11-16, `skips_level`); derive every other level-skipping answer as a path with the mapping id of every hop. | built |
 | KG-F-04 | Collapse duplicate edges between the same two nodes with the same relationship into one answer hop listing every mapping id. | built |
 
 ## 4. Identity
@@ -303,7 +303,7 @@ flowchart LR
 | ID | Component | Does | Reads | Writes | Depends on | Lives in | Status |
 |---|---|---|---|---|---|---|---|
 | C-01 | Architecture Metamodel | the entity types (`a1…a4-*.json`), the within-level rows (`level-relationships.json`) and the relationship type catalogue — the nine cross-level relationship types (`relationship-types.json`) — with `impact-rules.json` | SDEM model owner's edits | the rules every other component applies | — | `metamodel/`, `schema/` | built |
-| C-01b | Architecture Relationship Rules Model | the rules the inference engine applies to establish relationships of the nine catalogued types: the plan rows with their steps, thresholds, evidence and confidence, and the join keys and alias conventions — **designed and managed by architects** | architects' edits | the rules C-08 applies | C-01 | `relationship-rules.json`, `export-conventions.json` | built (as records; an editing interface is not built) |
+| C-01b | Architecture Relationship Rules Model | the rules the inference engine applies to establish relationships of the catalogued types: the plan rows with their steps, thresholds, evidence and confidence, and the join keys and alias conventions — **designed and managed by architects** | architects' edits | the rules C-08 applies | C-01 | `relationship-rules.json`, `export-conventions.json` | built (as records; an editing interface is not built) |
 | C-02 | Source tool | the institution's system of record for one level | its users | its own records | — | institution | external |
 | C-03 | Adapter | extract, translate to SDEM entities and keys, write the architecture dataset | C-02; C-01 (catalogue and conventions) | one architecture dataset | C-01, C-02 | institution's private repository | not built (examples hand-written; `sdem/structure.py` is the one generator) |
 | C-04 | Architecture dataset | the file a local knowledge graph is built from | C-03 | — | C-03 | `examples/*/a[1-4]-*.json` (stand-ins) | built (format); schema `level-model.schema.json` |
@@ -722,7 +722,7 @@ One subsection per service the graphs depend on. Each gives the purpose, interfa
 | KG-L-04 | Answer within-level queries on its own: neighbours by kind, part-whole closure (composition, aggregation), and nodes by type and lifecycle status. | `LevelGraph` | partly built (closure in trace); `sdem query --neighbours/--type/--where` (graph store, GS-Q-02/03) |
 | KG-F-01 | Load an edge only from a record with `status: approved`; keep the other statuses in the relationship registry for history but never in answers unless a query asks for them explicitly. | relationship-registry.schema.json status | built (`--status`) |
 | KG-F-02 | Resolve every edge end into its local knowledge graph by level prefix, id, version and is-a; report unresolved ends and exclude those edges. | §3.3 | built (`sdem check`) |
-| KG-F-03 | Store only adjacent-level edges of the nine catalogued relationship types; derive level-skipping answers as paths with the mapping id of every hop. | relationship-types.json | built |
+| KG-F-03 | Store only adjacent-level edges of the catalogued relationship types — and the direct A1→A3 types the owner named (D9, 2026-11-16, `skips_level`); derive every other level-skipping answer as a path with the mapping id of every hop. | relationship-types.json | built |
 | KG-F-04 | Collapse duplicate edges between the same two nodes with the same relationship into one answer hop listing every mapping id. | `walk` via['also'] | built |
 | KG-I-01 | A node id is unique within its level and stable for the life of the thing it names; it is never reused for a different thing, even after retirement. | new requirement | not enforced (uniqueness within an architecture dataset is checked; stability across versions is not) |
 | KG-I-02 | A rename changes `name`, never `id`. A genuine re-keying in a source tool is handled as retire-and-add: the old node is retired, the new one added, and the mappings to the old one are superseded by mappings to the new one. | new requirement; supersession | not built (needs architecture dataset diff) |

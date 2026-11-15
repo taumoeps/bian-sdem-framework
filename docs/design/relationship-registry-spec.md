@@ -19,7 +19,7 @@ The **Architecture Relationship Registry** holds the actual relationships betwee
 | `mapping_id` | string | yes | the record's permanent ID (legacy name) |
 | `source` | entity | yes | the entity the relationship starts from (§3) |
 | `target` | entity | yes | the entity it points to (§3) |
-| `relationship` | string | yes | one of the nine catalogued types (§5); adjacent levels only |
+| `relationship` | string | yes | one of the catalogued types (§5); adjacent levels only, except the direct A1→A3 types the owner named (D9) |
 | `perspective` | process, information, architecture | no | architecture, process or information |
 | `status` | proposed, validated, needs_review, approved, rejected, superseded | yes | lifecycle state (§4) |
 | `evidence` | array | yes | `kind:reference` items; the kinds must include the type's required evidence (§5) |

@@ -458,7 +458,7 @@ Subcommands: [`sdem bian add`](#cmd-bian-add) · [`sdem bian custom`](#cmd-bian-
 add BIAN service domains to one workspace, beside what it holds — checked; what AID inferred keeps its mark
 
 ```
-sdem bian add <names> [--base BASE] [--folder FOLDER] --workspace WORKSPACE [--patterns PATTERNS] [--inferences INFERENCES] [--no-inferences] --person PERSON [--dry-run]
+sdem bian add <names> [--base BASE] [--folder FOLDER] --workspace WORKSPACE [--patterns PATTERNS] [--inferences INFERENCES] [--no-inferences] --person PERSON [--dry-run] [--objects] [--object OBJECT]
 ```
 
 *JSON: native · dry run: native · 👤 a person's own name*
@@ -475,6 +475,8 @@ sdem bian add <names> [--base BASE] [--folder FOLDER] --workspace WORKSPACE [--p
 | `--person` | yes | your name — a person |
 | `--dry-run` |  | nothing written; what would be written is listed under "would_write" |
 | `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
+| `--objects` |  | also the domains' business objects, typed (metamodel 0.15.0, IM-09) — from a downloaded BIAN release (--folder); the base leaves them out |
+| `--object` |  | only this business object (repeat; BIAN's name, e.g. PaymentTransaction or "Payment Transaction") — implies --objects |
 
 ### sdem bian custom
 
@@ -483,7 +485,7 @@ sdem bian add <names> [--base BASE] [--folder FOLDER] --workspace WORKSPACE [--p
 the old name for `sdem bian add` (--add) and `sdem bian select` (--only, --from, --all) — still works
 
 ```
-sdem bian custom [<folder>] [--base BASE] [--add ADD …] [--only ONLY …] [--from FROM] [--all] --workspace WORKSPACE [--patterns PATTERNS] [--inferences INFERENCES] [--no-inferences] --person PERSON [--dry-run]
+sdem bian custom [<folder>] [--base BASE] [--add ADD …] [--only ONLY …] [--from FROM] [--all] --workspace WORKSPACE [--patterns PATTERNS] [--inferences INFERENCES] [--no-inferences] --person PERSON [--dry-run] [--objects] [--object OBJECT]
 ```
 
 *JSON: native · dry run: native · 👤 a person's own name*
@@ -503,6 +505,8 @@ sdem bian custom [<folder>] [--base BASE] [--add ADD …] [--only ONLY …] [--f
 | `--person` | yes | your name — a person |
 | `--dry-run` |  | nothing written; what would be written is listed under "would_write" |
 | `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
+| `--objects` |  | also the domains' business objects, typed (metamodel 0.15.0, IM-09) — from a downloaded BIAN release (--folder); the base leaves them out |
+| `--object` |  | only this business object (repeat; BIAN's name, e.g. PaymentTransaction or "Payment Transaction") — implies --objects |
 
 ### sdem bian impact
 
@@ -530,7 +534,7 @@ sdem bian impact [--workspace WORKSPACE] [--root ROOT] --a2 A2
 write an A2 dataset for the service domains you choose — checked first
 
 ```
-sdem bian import [<folder>] [--base BASE] -o O [--only ONLY …] [--from FROM] [--all] [--patterns PATTERNS] [--inferences INFERENCES] [--no-inferences] [--descriptions] [--objects] [--previous PREVIOUS]
+sdem bian import [<folder>] [--base BASE] -o O [--only ONLY …] [--from FROM] [--all] [--patterns PATTERNS] [--inferences INFERENCES] [--no-inferences] [--descriptions] [--objects] [--object OBJECT] [--previous PREVIOUS]
 ```
 
 *JSON: native · dry run: sandbox*
@@ -548,6 +552,7 @@ sdem bian import [<folder>] [--base BASE] -o O [--only ONLY …] [--from FROM] [
 | `--no-inferences` |  | do not apply SDEM's accepted inferences (bian/inferences-<release>.json) |
 | `--descriptions` |  | include BIAN's descriptions (left out by default) |
 | `--objects` |  | also write BIAN business objects (many) |
+| `--object` |  | only this business object (repeat; BIAN's name or its words) — implies --objects |
 | `--previous` |  | a previous A2 dataset: report what was added, dropped or renamed |
 | `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
 
@@ -747,7 +752,7 @@ sdem bian search <words> [--base BASE] [--folder FOLDER] [--top TOP] [--all-oper
 set exactly which BIAN service domains one workspace holds — checked; never strands an approved connection
 
 ```
-sdem bian select [<folder>] [--base BASE] [--only ONLY …] [--from FROM] [--all] --workspace WORKSPACE [--patterns PATTERNS] [--inferences INFERENCES] [--no-inferences] --person PERSON [--dry-run]
+sdem bian select [<folder>] [--base BASE] [--only ONLY …] [--from FROM] [--all] --workspace WORKSPACE [--patterns PATTERNS] [--inferences INFERENCES] [--no-inferences] --person PERSON [--dry-run] [--objects] [--object OBJECT]
 ```
 
 *JSON: native · dry run: native · 👤 a person's own name*
@@ -766,6 +771,8 @@ sdem bian select [<folder>] [--base BASE] [--only ONLY …] [--from FROM] [--all
 | `--person` | yes | your name — a person |
 | `--dry-run` |  | nothing written; what would be written is listed under "would_write" |
 | `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
+| `--objects` |  | also the domains' business objects, typed (metamodel 0.15.0, IM-09) — from a downloaded BIAN release (--folder); the base leaves them out |
+| `--object` |  | only this business object (repeat; BIAN's name, e.g. PaymentTransaction or "Payment Transaction") — implies --objects |
 
 ### sdem bian update
 
@@ -989,7 +996,7 @@ sdem connect <source> <relationship> <target> --workspace WORKSPACE --reviewer R
 | Argument | Required | What it is |
 |---|---|---|
 | `<source>` | yes | the record the connection starts from, e.g. a BIAN service domain id |
-| `<relationship>` | yes | one of the nine connection types, e.g. REALIZED_BY, SUPPORTED_BY, DEPLOYED_ON |
+| `<relationship>` | yes | one of the connection types, e.g. REALIZED_BY, SUPPORTED_BY, DEPLOYED_ON |
 | `<target>` | yes | the record it goes to |
 | `--workspace` | yes | the workspace folder — found from the current folder when you are inside one (WS-11) |
 | `--reviewer`, `--person` | yes | your name — a person (CTL-21) |

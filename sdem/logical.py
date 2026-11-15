@@ -136,7 +136,7 @@ def render():
                 out.append('')
     n += 1
     out += [f'## {n}. Links between architectures', '',
-            'The model above covers each architecture on its own. Links **between** architectures are the nine relationship types below; actual links are records in the Architecture Relationship Registry, proposed by the inference engine and approved by architects.', '',
+            'The model above covers each architecture on its own. Links **between** architectures are the relationship types of the registryhip types below; actual links are records in the Architecture Relationship Registry, proposed by the inference engine and approved by architects.', '',
             '| Relationship | From → to | How many |', '|---|---|---|']
     out += [f"| `{x['relationship']}` | `{x['source_type']}` → `{x['target_type']}` | {x['cardinality'].replace('_to_', ' to ')} |" for x in reg]
     est, inst, res = conformance(mm, attrs, common)

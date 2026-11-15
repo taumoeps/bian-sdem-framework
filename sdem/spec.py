@@ -103,12 +103,12 @@ def render():
     req('S', 'Treat the three A2 artefact rows as provenance only: Wireframe, Semantic API and BOM artefacts are never instantiated and never mapping endpoints.', 'RA2-15, RA2-16, RA2-17 (enforceable=false)', 'relationships test T4 (not testable by construction)')
 
     # ---- 4 cross-level model
-    out += ['## 4. Cross-level relationships', '', '### 4.1 The relationship type catalogue — the nine relationship types (Architecture Metamodel)', '',
+    out += ['## 4. Cross-level relationships', '', '### 4.1 The relationship type catalogue — the relationship types (Architecture Metamodel)', '',
             '| Mapping type | Source → target | Relationship | Perspective | Authority | Required evidence | Meaning | Source reference | Verification | Confidence |', '|---|---|---|---|---|---|---|---|---|---|']
     for r in reg['relationships']:
         out.append(f"| {r['mapping_type_id']} | {r['source_type']} → {r['target_type']} | `{r['relationship']}` | {r['perspective']} | {r['authority']} | {', '.join(r['required_evidence'])} | {r['direction_semantics']} | {r.get('source_reference', '—')} | {r.get('verification', '—')} | {r.get('confidence', '—')}: {r.get('confidence_basis', '')} |")
-    out += ['', 'Only these nine may appear in the mapping set (form: `schema/relationship-registry.schema.json`); adjacency is A(n) → A(n+1) only; BIAN authorities require `bian_release` and a `canonical_id` on the A2 endpoint before approval. Everything else the model knows is a **candidate report**, never a registry proposal.', '']
-    req('M', 'Emit registry proposals only for the nine relationship types, with the record fields the schema requires, at status `proposed`, with `confidence` as the plan\'s band and `evidence` typed against `required_evidence`.', 'schema/relationship-types.json; schema/relationship-registry.schema.json', 'every run: `sdem validate --strict` on each proposal file')
+    out += ['', 'Only these may appear in the mapping set (form: `schema/relationship-registry.schema.json`); adjacency is A(n) → A(n+1) only, except the direct A1→A3 types the owner named (D9, `skips_level`); BIAN authorities require `bian_release` and a `canonical_id` on the A2 endpoint before approval. Everything else the model knows is a **candidate report**, never a registry proposal.', '']
+    req('M', 'Emit registry proposals only for the relationship types of the registry, with the record fields the schema requires, at status `proposed`, with `confidence` as the plan\'s band and `evidence` typed against `required_evidence`.', 'schema/relationship-types.json; schema/relationship-registry.schema.json', 'every run: `sdem validate --strict` on each proposal file')
     dec = Counter(m['rule_decision'] for m in nm)
     out += ['### 4.2 Plan rows — the 69 rules by decision', '', 'Every cross-level pair the mapping model considers (`metamodel/relationship-rules.json`; reasoning per row in `docs/design/mapping-logic-planning.md` §5.3). The decision says what the engine does with the row: only **registry rules** produce links in the mapping set; the others are reported as candidates or not used.', '',
             '| Decision | Rows | Engine behaviour |', '|---|---|---|',
@@ -232,7 +232,7 @@ REGISTRY_DOC = ROOT / 'docs' / 'design' / 'relationship-registry-spec.md'
 
 
 REGISTRY_FIELD_MEANING = {'mapping_id': 'the record\'s permanent ID (legacy name)', 'source': 'the entity the relationship starts from (§3)', 'target': 'the entity it points to (§3)',
-    'relationship': 'one of the nine catalogued types (§5); adjacent levels only', 'perspective': 'architecture, process or information', 'status': 'lifecycle state (§4)',
+    'relationship': 'one of the catalogued types (§5); adjacent levels only, except the direct A1→A3 types the owner named (D9)', 'perspective': 'architecture, process or information', 'status': 'lifecycle state (§4)',
     'evidence': '`kind:reference` items; the kinds must include the type\'s required evidence (§5)', 'rationale': 'why the relationship holds: the working', 'baseline_id': 'the release the record belongs to',
     'confidence': '0–1, the rule\'s band', 'bian_release': 'required on BIAN-authority types before approval (a proposed or needs_review link may wait for it — F-1)', 'reviewer_id': 'the approving architect', 'created_by': 'who or what proposed it (engine, rule, architect)',
     'approved_at': 'approval date', 'valid_from': 'start of validity', 'valid_to': 'end of validity; set on supersession', 'previous_mapping_id': 'the record this one supersedes (legacy name)'}

@@ -67,5 +67,37 @@ class AttributesAsEvidenceTests(unittest.TestCase):   # AT-01: AID-A01…A03, LC
         self.assertIn('ENT-001: stored_in names INF-001 but its approved STORED_IN links are to INF-002', w)
 
 
+class FoundBuildingV2Tests(unittest.TestCase):   # Payment Initiation v2 (2026-11-16)
+    def test_aid_records_its_writes_as_change_sets(self):   # AID-W10, CTL-20
+        import subprocess, sys
+        from sdem.aid_fill import fill
+        from sdem.agents import Estate
+        ws = ws_copy()
+        cs = {'layer': 'A1', 'reason': 'a test change', 'changes': [{'op': 'add', 'record': {'id': 'BEV-T', 'type': 'A1.BusinessEvent', 'version': '1.0', 'name': 'Test event', 'lifecycle_status': 'active'}}]}
+        f = ws / 'cs.json'; f.write_text(json.dumps(cs))
+        r = subprocess.run([sys.executable, '-m', 'sdem', 'change', 'propose', str(f), '--workspace', str(ws), '--agent', 'architect', '--person', 'a tester'],
+                           capture_output=True, text=True, cwd=ROOT, env={**__import__('os').environ, 'PYTHONPATH': str(ROOT)})
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        a2 = json.loads((ws / 'a2-service-domain.json').read_text(encoding='utf-8'))   # a typed business object with no data entity yet: AID infers one into A3
+        a2['instances'].append({'id': 'BBO-T', 'type': 'A2.BusinessObject', 'version': '1.0', 'name': 'Test Thing', 'lifecycle_status': 'active', 'attributes': {'attributes': ['ThingId']}})
+        a2['instances'].append({'id': 'BBOA-T-1', 'type': 'A2.BusinessObjectAttribute', 'version': '1.0', 'name': 'ThingId', 'lifecycle_status': 'active', 'attributes': {'data_type': 'identifier', 'identifier': True}})
+        a2['relationships'].append({'source': 'BBO-T', 'kind': 'composition', 'target': 'BBOA-T-1'})
+        (ws / 'a2-service-domain.json').write_text(json.dumps(a2))
+        subprocess.run([sys.executable, '-m', 'sdem', 'change', 'adopt', '--workspace', str(ws), '--layer', 'A2', '--person', 'a tester', '--reason', 'test'],
+                       capture_output=True, text=True, cwd=ROOT, env={**__import__('os').environ, 'PYTHONPATH': str(ROOT)})
+        run = fill(ws, 'a tester', now='2026-11-16T00:00:00+00:00')
+        self.assertIn('A3', run['added'])
+        r = subprocess.run([sys.executable, '-m', 'sdem', 'check', '--workspace', str(ws)], capture_output=True, text=True, cwd=ROOT, env={**__import__('os').environ, 'PYTHONPATH': str(ROOT)})
+        self.assertNotIn('CTL-20', r.stdout + r.stderr)
+
+    def test_a_location_is_never_placed_in_a_zone(self):
+        from sdem.conformance import zones_of
+        mm = Metamodel.load()
+        doc = {'level': 'A4', 'instances': [{'id': 'LOC-1', 'type': 'A4.Location'}, {'id': 'N-1', 'type': 'A4.Node'}, {'id': 'Z-1', 'type': 'A4.NetworkZone'}],
+               'relationships': [{'source': 'LOC-1', 'kind': 'aggregation', 'target': 'N-1'}, {'source': 'Z-1', 'kind': 'aggregation', 'target': 'N-1'}]}
+        shapes, _, _ = zones_of(doc, mm)
+        self.assertNotIn('LOC-1', shapes); self.assertEqual(shapes['N-1'], ['Z-1'])
+
+
 if __name__ == '__main__':
     unittest.main()

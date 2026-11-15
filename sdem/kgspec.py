@@ -89,7 +89,7 @@ def render():
     out += ['### 2.4 Local graph requirements'] + inline('L')
 
     # ---- 3 federated
-    out += ['## 3. Federated graph', '', '### 3.1 Edge types — the nine registry relationships', '', '| Relationship | Source node type → target node type | Cardinality | Perspective | Authority |', '|---|---|---|---|---|']
+    out += ['## 3. Federated graph', '', '### 3.1 Edge types — the registry relationships', '', '| Relationship | Source node type → target node type | Cardinality | Perspective | Authority |', '|---|---|---|---|---|']
     for r in reg['relationships']:
         out.append(f"| `{r['relationship']}` ({r['mapping_type_id']}) | {r['source_type']} → {r['target_type']} | {r['cardinality'].replace('_', ' ')} | {r['perspective']} | {r['authority']} |")
     out += ['', 'Adjacent levels only (A1→A2, A2→A3, A3→A4). A level-skipping answer is a path, never a stored edge. The 41 candidate and derived rows of the plan are never federated edges.', '',
@@ -100,7 +100,7 @@ def render():
             '### 3.3 Resolving an edge\'s ends', '', '1. The end\'s `type` prefix names the level, and therefore the local graph.', '2. The local graph must contain a node with that `id` and `version`.', '3. The node\'s concrete type must be the end\'s `type` or a descendant of it (is-a) — so a `DEPLOYED_ON` edge to `A4.InfrastructureComponent` resolves to a node, system software or device.', '4. An end that does not resolve makes the edge unresolved: reported, not used.', '']
     req('F', 'Load an edge only from a record with `status: approved`; keep the other statuses in the mapping set for history but never in answers unless a query asks for them explicitly.', 'relationship-registry.schema.json status', 'built (`--status`)')
     req('F', 'Resolve every edge end into its local graph by level prefix, id, version and is-a; report unresolved ends and exclude those edges.', '§3.3', 'built (`sdem check`)')
-    req('F', 'Store only adjacent-level edges of the nine registry relationships; derive level-skipping answers as paths with the mapping id of every hop.', 'relationship-types.json', 'built')
+    req('F', 'Store only adjacent-level edges of the registry relationships — and the direct A1→A3 types the owner named (D9, 2026-11-16, `skips_level`); derive every other level-skipping answer as a path with the mapping id of every hop.', 'relationship-types.json', 'built')
     req('F', 'Collapse duplicate edges between the same two nodes with the same relationship into one answer hop listing every mapping id.', '`walk` via[\'also\']', 'built')
     out += ['### 3.4 Federated graph requirements'] + inline('F')
 
@@ -156,7 +156,7 @@ def render():
             '    MODEL --> ADP', '    MODEL --> CHK', '    RULES[Relationship rules model<br/>plan rows · conventions]', '    MODEL --> RULES', '    RULES --> ENG', '    TOOL --> ADP --> EXP --> CHK --> LDR --> LG', '    TRG --> ADP', '    EXP --> DIFF --> ENG', '    LG --> ENG', '    FED --> ENG', '    ENG --> PROP --> VAL --> ARCH --> MS', '    MS --> HIST', '    MS --> LDR', '    LDR --> FED', '    LG --> FED', '    FED --> QRY --> AG', '    AG -.->|runs| ENG', '```', '']
     C = [
      ('C-01', 'Architecture Metamodel', 'the entity types (`a1…a4-*.json`), the within-level rows (`level-relationships.json`) and the relationship type catalogue — the nine cross-level relationship types (`relationship-types.json`) — with `impact-rules.json`', 'SDEM model owner\'s edits', 'the rules every other component applies', '—', '`metamodel/`, `schema/`', 'built'),
-     ('C-01b', 'Architecture Relationship Rules Model', 'the rules the inference engine applies to establish relationships of the nine catalogued types: the plan rows with their steps, thresholds, evidence and confidence, and the join keys and alias conventions — **designed and managed by architects**', 'architects\' edits', 'the rules C-08 applies', 'C-01', '`relationship-rules.json`, `export-conventions.json`', 'built (as records; an editing interface is not built)'),
+     ('C-01b', 'Architecture Relationship Rules Model', 'the rules the inference engine applies to establish relationships of the catalogued types: the plan rows with their steps, thresholds, evidence and confidence, and the join keys and alias conventions — **designed and managed by architects**', 'architects\' edits', 'the rules C-08 applies', 'C-01', '`relationship-rules.json`, `export-conventions.json`', 'built (as records; an editing interface is not built)'),
      ('C-02', 'Source tool', 'the institution\'s system of record for one level', 'its users', 'its own records', '—', 'institution', 'external'),
      ('C-03', 'Adapter', 'extract, translate to SDEM entities and keys, write the architecture dataset', 'C-02; C-01 (catalogue and conventions)', 'one architecture dataset', 'C-01, C-02', 'institution\'s private repository', 'not built (examples hand-written; `sdem/structure.py` is the one generator)'),
      ('C-04', 'Architecture dataset', 'the file a local graph is built from', 'C-03', '—', 'C-03', '`examples/*/a[1-4]-*.json` (stand-ins)', 'built (format); schema `level-model.schema.json`'),
