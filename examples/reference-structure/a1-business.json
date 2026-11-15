@@ -2,7 +2,7 @@
   "level": "A1",
   "model_id": "reference-structure-a1",
   "model_version": "2026.10",
-  "metamodel_version": "0.16.0",
+  "metamodel_version": "0.17.0",
   "source_system": "SDEM-GENERATED-FROM-RECORD",
   "instances": [
     {
@@ -164,6 +164,54 @@
       "name": "BusinessRequirement 2 (structure conformance)",
       "lifecycle_status": "active",
       "description": "Synthetic instance of A1.BusinessRequirement carrying one relationship per constraint row of A1; no business meaning."
+    },
+    {
+      "id": "RS-BusinessEvent-1",
+      "type": "A1.BusinessEvent",
+      "version": "1.0",
+      "name": "BusinessEvent 1 (structure conformance)",
+      "lifecycle_status": "active",
+      "description": "Synthetic instance of A1.BusinessEvent carrying one relationship per constraint row of A1; no business meaning."
+    },
+    {
+      "id": "RS-BusinessEvent-2",
+      "type": "A1.BusinessEvent",
+      "version": "1.0",
+      "name": "BusinessEvent 2 (structure conformance)",
+      "lifecycle_status": "active",
+      "description": "Synthetic instance of A1.BusinessEvent carrying one relationship per constraint row of A1; no business meaning."
+    },
+    {
+      "id": "RS-Product-1",
+      "type": "A1.Product",
+      "version": "1.0",
+      "name": "Product 1 (structure conformance)",
+      "lifecycle_status": "active",
+      "description": "Synthetic instance of A1.Product carrying one relationship per constraint row of A1; no business meaning."
+    },
+    {
+      "id": "RS-Product-2",
+      "type": "A1.Product",
+      "version": "1.0",
+      "name": "Product 2 (structure conformance)",
+      "lifecycle_status": "active",
+      "description": "Synthetic instance of A1.Product carrying one relationship per constraint row of A1; no business meaning."
+    },
+    {
+      "id": "RS-BusinessInterface-1",
+      "type": "A1.BusinessInterface",
+      "version": "1.0",
+      "name": "BusinessInterface 1 (structure conformance)",
+      "lifecycle_status": "active",
+      "description": "Synthetic instance of A1.BusinessInterface carrying one relationship per constraint row of A1; no business meaning."
+    },
+    {
+      "id": "RS-BusinessInterface-2",
+      "type": "A1.BusinessInterface",
+      "version": "1.0",
+      "name": "BusinessInterface 2 (structure conformance)",
+      "lifecycle_status": "active",
+      "description": "Synthetic instance of A1.BusinessInterface carrying one relationship per constraint row of A1; no business meaning."
     }
   ],
   "relationships": [
@@ -460,6 +508,72 @@
       "kind": "association",
       "target": "RS-BusinessObject-2",
       "name": "RA1-49"
+    },
+    {
+      "source": "RS-BusinessEvent-1",
+      "kind": "triggering",
+      "target": "RS-BusinessProcess-1",
+      "name": "RA1-50"
+    },
+    {
+      "source": "RS-BusinessProcess-1",
+      "kind": "triggering",
+      "target": "RS-BusinessEvent-1",
+      "name": "RA1-51"
+    },
+    {
+      "source": "RS-BusinessEvent-1",
+      "kind": "access",
+      "target": "RS-BusinessObject-1",
+      "name": "RA1-52"
+    },
+    {
+      "source": "RS-BusinessActor-1",
+      "kind": "composition",
+      "target": "RS-BusinessInterface-1",
+      "name": "RA1-53"
+    },
+    {
+      "source": "RS-BusinessRole-1",
+      "kind": "composition",
+      "target": "RS-BusinessInterface-1",
+      "name": "RA1-54"
+    },
+    {
+      "source": "RS-BusinessInterface-1",
+      "kind": "serving",
+      "target": "RS-BusinessActor-1",
+      "name": "RA1-55"
+    },
+    {
+      "source": "RS-BusinessInterface-1",
+      "kind": "serving",
+      "target": "RS-BusinessRole-1",
+      "name": "RA1-56"
+    },
+    {
+      "source": "RS-BusinessInterface-1",
+      "kind": "association",
+      "target": "RS-BusinessService-1",
+      "name": "RA1-57"
+    },
+    {
+      "source": "RS-Product-1",
+      "kind": "aggregation",
+      "target": "RS-BusinessService-1",
+      "name": "RA1-58"
+    },
+    {
+      "source": "RS-Product-1",
+      "kind": "aggregation",
+      "target": "RS-BusinessObject-1",
+      "name": "RA1-59"
+    },
+    {
+      "source": "RS-Product-1",
+      "kind": "composition",
+      "target": "RS-Product-2",
+      "name": "RA1-60"
     }
   ]
 }

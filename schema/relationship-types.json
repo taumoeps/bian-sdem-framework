@@ -612,6 +612,71 @@
       "confidence": "high",
       "confidence_basis": "SDEM's own definition, grounded in an ArchiMate 3.2 pattern checked against the relationship tables",
       "reasoning": "Where data rests: ArchiMate lets an artifact realise a data object. Was the attribute stored_in; now a link, proposed from it (AT-01), so trace and impact reach data at rest."
+    },
+    {
+      "mapping_type_id": "BUSINESS_EVENT_REALIZED_BY_EVENT",
+      "source_type": "A1.BusinessEvent",
+      "relationship": "REALIZED_BY",
+      "target_type": "A3.Event",
+      "cardinality": "many_to_many",
+      "perspective": "architecture",
+      "authority": "enterprise_rule",
+      "direction_semantics": "The application event realises the business event (XL-08).",
+      "required_evidence": [
+        "event_design"
+      ],
+      "rule_version": "1.0",
+      "owner": "business-architecture",
+      "source_reference": "Archi's implementation of the ArchiMate 3.2 relationship tables (relationships.xml, version 3.2, read 2026-11-16): ApplicationEvent → BusinessEvent allows 'r' (realization). The owner's decision, 2026-11-16 (metamodel 0.17.0, docs/design/sdem-full-design-metamodel-design.md).",
+      "verification": "sdem_definition_grounded",
+      "confidence": "high",
+      "confidence_basis": "SDEM's own definition, grounded in an ArchiMate 3.2 pattern checked against the relationship tables",
+      "reasoning": "The software’s event is how the business event happens in the system — a payment received, a cut-off reached. Skips A2 (D9).",
+      "skips_level": true,
+      "skips_level_reasoning": "The owner's decision D9 (2026-11-16, option 1): links stay between adjacent layers (KG-F-03), except a named list of direct A1↔A3 types ArchiMate defines and BIAN has no counterpart for."
+    },
+    {
+      "mapping_type_id": "CHANNEL_REALIZED_BY_APPLICATION_INTERFACE",
+      "source_type": "A1.BusinessInterface",
+      "relationship": "REALIZED_BY",
+      "target_type": "A3.ApplicationInterface",
+      "cardinality": "many_to_many",
+      "perspective": "architecture",
+      "authority": "enterprise_rule",
+      "direction_semantics": "The application interface realises the channel (XL-10).",
+      "required_evidence": [
+        "application_architecture_document"
+      ],
+      "rule_version": "1.0",
+      "owner": "business-architecture",
+      "source_reference": "Archi's implementation of the ArchiMate 3.2 relationship tables (relationships.xml, version 3.2, read 2026-11-16): ApplicationInterface → BusinessInterface allows 'r' (realization). The owner's decision, 2026-11-16 (metamodel 0.17.0, docs/design/sdem-full-design-metamodel-design.md).",
+      "verification": "sdem_definition_grounded",
+      "confidence": "high",
+      "confidence_basis": "SDEM's own definition, grounded in an ArchiMate 3.2 pattern checked against the relationship tables",
+      "reasoning": "A mobile app, an API or a file exchange is the software side of a channel. Skips A2 (D9).",
+      "skips_level": true,
+      "skips_level_reasoning": "The owner's decision D9 (2026-11-16, option 1): links stay between adjacent layers (KG-F-03), except a named list of direct A1↔A3 types ArchiMate defines and BIAN has no counterpart for."
+    },
+    {
+      "mapping_type_id": "VALUE_STREAM_STAGE_ALIGNED_TO_SCENARIO",
+      "source_type": "A1.ValueStreamStage",
+      "relationship": "ALIGNED_TO",
+      "target_type": "A2.BusinessScenario",
+      "cardinality": "many_to_many",
+      "perspective": "process",
+      "authority": "enterprise_rule",
+      "direction_semantics": "The value stream's stages are realised by the interactions described in the Business Scenario.",
+      "required_evidence": [
+        "process_model",
+        "scenario_suitability_review"
+      ],
+      "rule_version": "1.0",
+      "owner": "business-architecture",
+      "source_reference": "plan row S02 — SDEM mapping only; no official equivalent. BIAN v14.0.0 Release Notes v1.0 (read 2026-11-02) §3: BIAN's work on value streams is 'not yet modelled'. B1 review, owner's decision 2026-11-02: authority corrected from bian_alignment_guidance to enterprise_rule.",
+      "verification": "sdem_definition",
+      "confidence": "medium",
+      "confidence_basis": "SDEM definition; validated against sealed answers",
+      "reasoning": "No standard aligns a value stream to a BIAN Business Scenario, and BIAN states its value-stream work is not yet modelled (Release Notes 14.0 §3); SDEM defines the link so a business journey can be checked against BIAN's operation sequence (S02). It is SDEM's own rule, not BIAN guidance. Stated for a value-stream stage on its own from metamodel 0.17.0, when a stage stopped extending a value stream (CN-01) — it held before by inheritance."
     }
   ],
   "deprecated_relationships": []

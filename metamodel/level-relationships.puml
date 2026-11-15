@@ -22,7 +22,10 @@ package "A1 Business Architecture" as A1 {
   rectangle "A1.BusinessRole" as a1_businessrole
   rectangle "A1.BusinessObject" as a1_businessobject
   rectangle "A1.BusinessRequirement" as a1_businessrequirement
-  ' constraints from ArchiMate 3.2 ch. 6–8 (49)
+  rectangle "A1.BusinessEvent" as a1_businessevent
+  rectangle "A1.Product" as a1_product
+  rectangle "A1.BusinessInterface" as a1_businessinterface
+  ' constraints from ArchiMate 3.2 ch. 6–8 (60)
   a1_businesscapability -[#1565C0]-> a1_businesscapability : RA1-01 composition
   a1_businesscapability -[#1565C0,dashed]-> a1_businesscapability : RA1-02 aggregation
   a1_businesscapability -[#EF6C00]-> a1_valuestream : RA1-03 serving
@@ -72,8 +75,18 @@ package "A1 Business Architecture" as A1 {
   a1_businessrequirement -[#1565C0]-> a1_businessrequirement : RA1-47 composition
   a1_businessrequirement -[#424242]-> a1_businessrequirement : RA1-48 specialization
   a1_businessobject -[#9E9E9E,dotted]-> a1_businessobject : RA1-49 association
-  ' catalogue inheritance — entity extends parent (is-a; ArchiMate specialization) (2)
-  a1_valuestreamstage -[#424242]-|> a1_valuestream : extends
+  a1_businessevent -[#EF6C00,dotted]-> a1_businessprocess : RA1-50 triggering
+  a1_businessprocess -[#EF6C00,dotted]-> a1_businessevent : RA1-51 triggering
+  a1_businessevent -[#616161,dotted]-> a1_businessobject : RA1-52 access
+  a1_businessactor -[#1565C0]-> a1_businessinterface : RA1-53 composition
+  a1_businessrole -[#1565C0]-> a1_businessinterface : RA1-54 composition
+  a1_businessinterface -[#EF6C00]-> a1_businessactor : RA1-55 serving
+  a1_businessinterface -[#EF6C00]-> a1_businessrole : RA1-56 serving
+  a1_businessinterface -[#9E9E9E,dotted]-> a1_businessservice : RA1-57 association
+  a1_product -[#1565C0,dashed]-> a1_businessservice : RA1-58 aggregation
+  a1_product -[#1565C0,dashed]-> a1_businessobject : RA1-59 aggregation
+  a1_product -[#1565C0]-> a1_product : RA1-60 composition
+  ' catalogue inheritance — entity extends parent (is-a; ArchiMate specialization) (1)
   a1_businessactivity -[#424242]-|> a1_businessprocess : extends
 }
 
@@ -179,7 +192,8 @@ package "A4 Technology Architecture" as A4 {
   rectangle "A4.NetworkZone" as a4_networkzone
   rectangle "A4.Path" as a4_path
   rectangle "A4.Artifact" as a4_artifact
-  ' constraints from ArchiMate 3.2 ch. 10 (41)
+  rectangle "A4.Location" as a4_location
+  ' constraints from ArchiMate 3.2 ch. 10 (45)
   a4_node -[#1565C0]-> a4_node : RA4-01 composition
   a4_node -[#1565C0,dashed]-> a4_node : RA4-02 aggregation
   a4_node -[#1565C0,dashed]-> a4_device : RA4-03 aggregation
@@ -221,6 +235,10 @@ package "A4 Technology Architecture" as A4 {
   a4_networkzone -[#1565C0]-> a4_networkzone : RA4-39 composition
   a4_path -[#9E9E9E,dotted]-> a4_node : RA4-40 association
   a4_path -[#9E9E9E,dotted]-> a4_device : RA4-41 association
+  a4_location -[#1565C0]-> a4_location : RA4-42 composition
+  a4_location -[#1565C0,dashed]-> a4_node : RA4-43 aggregation
+  a4_location -[#1565C0,dashed]-> a4_device : RA4-44 aggregation
+  a4_location -[#1565C0,dashed]-> a4_systemsoftware : RA4-45 aggregation
   ' catalogue inheritance — entity extends parent (is-a; ArchiMate specialization) (10)
   a4_deployment -[#424242]-|> a4_infrastructurecomponent : extends
   a4_deploymentenvironment -[#424242]-|> a4_infrastructurecomponent : extends

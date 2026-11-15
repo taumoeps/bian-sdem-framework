@@ -6,11 +6,11 @@
     "directed": true,
     "metadata": {
       "sdem_store_version": "1.0",
-      "export_sha256": "9d297541c86be29599baba02f948f3f4f114a37f3ea49cb296127c04b6c42fbd",
+      "export_sha256": "43c279368c3a2cb370c95fbd103c6ecccf9fe40d9b5c45f23da9670e059430e0",
       "level": "A1",
       "model_id": "synthetic-bank-onboarding-a1",
       "model_version": "2026.10",
-      "metamodel_version": "0.16.0",
+      "metamodel_version": "0.17.0",
       "source_system": "SYNTHETIC-EA-TOOL"
     },
     "nodes": {
@@ -159,7 +159,40 @@
             "outputs": [
               "BO-001"
             ],
-            "customer_facing": true
+            "customer_facing": true,
+            "channels": [
+              "CHN-001"
+            ]
+          }
+        }
+      },
+      "A1:BEV-001@1.0": {
+        "label": "Customer onboarded",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessEvent",
+          "id": "BEV-001",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "A new customer relationship is open (made-up)",
+          "attributes": {
+            "event_kind": "internal"
+          }
+        }
+      },
+      "A1:CHN-001@1.0": {
+        "label": "Onboarding web channel",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessInterface",
+          "id": "CHN-001",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Customers apply online (made-up)",
+          "attributes": {
+            "channel_kind": "web",
+            "customer_facing": true,
+            "availability": "24x7"
           }
         }
       }
@@ -253,6 +286,36 @@
         "metadata": {
           "scope": "within-level",
           "row": "RA1-11"
+        }
+      },
+      {
+        "id": "A1:PRC-001-triggering-BEV-001",
+        "source": "A1:PRC-001@1.0",
+        "target": "A1:BEV-001@1.0",
+        "relation": "triggering",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-51"
+        }
+      },
+      {
+        "id": "A1:CHN-001-serving-ACT-001",
+        "source": "A1:CHN-001@1.0",
+        "target": "A1:ACT-001@1.0",
+        "relation": "serving",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-55"
+        }
+      },
+      {
+        "id": "A1:CHN-001-association-BSV-001",
+        "source": "A1:CHN-001@1.0",
+        "target": "A1:BSV-001@1.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-57"
         }
       }
     ]

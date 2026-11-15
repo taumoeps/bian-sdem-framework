@@ -368,7 +368,10 @@
           "description": "the business event that starts it",
           "x-sdem-id": "AT-A1-19",
           "x-sdem-group": "inherited",
-          "x-sdem-kind": "value",
+          "x-sdem-kind": "reference",
+          "x-sdem-references": [
+            "A1.BusinessEvent"
+          ],
           "x-sdem-source": {
             "standard": "ArchiMate 3.2 concept (confirmed via the Archi oracle; specification text login-gated)",
             "locator": "Business Event triggering a process",

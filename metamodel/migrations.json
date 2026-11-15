@@ -1,5 +1,5 @@
 {
-  "metamodel_version": "0.16.0",
+  "metamodel_version": "0.17.0",
   "note": "How a workspace moves from one metamodel (metamodel) version to the next — `sdem migrate --workspace DIR`. Every change to the metamodel that affects data bumps metamodel_version in every metamodel file and adds one entry here, from the old version to the new: its steps are applied to the workspace's datasets and registry, then the workspace is checked; an entry with no steps only moves the version (an additive change — new optional attributes or types). Step kinds: rename_type {from, to}; rename_attribute {type (optional), from, to}; drop_attribute {type (optional), name}; set_attribute {type, name, value} (only where missing); rename_kind {from, to} (a within-architecture link kind); rename_relationship {from, to} (a link type between architectures, in the registry). Policy: docs/sdem-metamodel-versioning.md.",
   "migrations": [
     {
@@ -134,6 +134,14 @@
       "date": "2026-11-16",
       "approved_by": "the SDEM owner",
       "note": "A full design, slice 2 — links (the owner's decisions D1–D9, 2026-11-16; docs/design/sdem-full-design-metamodel-design.md). Between layers: SERVED_BY (an A1 process, actor or role served by an A3 application service; an A3 component or function served by an A4 technology service), AUTOMATED_BY (an A1 process automated by an A3 application function), REALIZED_BY (an A1 business service realised by an A3 application service or component), MAPPED_TO (an A1 business object stored by an A3 data entity, without BIAN in between), IMPLEMENTED_BY (a BIAN Notify operation implemented by an A3 event), STORED_IN (an A3 data entity stored in an A4 artifact or system software). The A1↔A3 types skip a layer by the owner's decision D9 (skips_level). Inside A4: a path associated with its two ends. network_zone names an A4 network zone; event_source names an A3 component. Additive — no steps; sdem aid proposes the links the attributes imply.",
+      "steps": []
+    },
+    {
+      "from": "0.16.0",
+      "to": "0.17.0",
+      "date": "2026-11-16",
+      "approved_by": "the SDEM owner",
+      "note": "A full design, slice 3 — new kinds (the owner's decisions D1–D9, 2026-11-16; docs/design/sdem-full-design-metamodel-design.md): A1.BusinessEvent (what triggers a process), A1.Product, A1.BusinessInterface (a channel), A4.Location (a country, region, site or cloud region — referred to from A1 and from every A4 shape's new location attribute; the free-text site stays). A business event REALIZED_BY an A3 event and a channel REALIZED_BY an A3 interface (direct A1→A3, D9). triggered_by names a business event, channels names channels, an actor's location names a location (old text reported, never refused). A value stream stage no longer extends a value stream (CN-01). Additive — no steps.",
       "steps": []
     }
   ]

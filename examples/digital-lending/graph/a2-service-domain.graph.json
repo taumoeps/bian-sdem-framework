@@ -6,11 +6,11 @@
     "directed": true,
     "metadata": {
       "sdem_store_version": "1.0",
-      "export_sha256": "3145119ec0908cfe83266aec5a4ca88c53209e368f6a38af9f7efea2349b8f4b",
+      "export_sha256": "fd43a875ae040e2e5286416d3d4eb676fd324072741a7e9c0bf3c2bf83a92822",
       "level": "A2",
       "model_id": "synthetic-bank-lending-a2",
       "model_version": "2026.10",
-      "metamodel_version": "0.16.0",
+      "metamodel_version": "0.17.0",
       "source_system": "SYNTHETIC-BIAN-WORKBENCH"
     },
     "nodes": {

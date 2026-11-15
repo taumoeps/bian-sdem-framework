@@ -406,20 +406,15 @@
         "channels": {
           "type": "array",
           "items": {
-            "type": "string",
-            "enum": [
-              "branch",
-              "online",
-              "mobile",
-              "contact centre",
-              "partner",
-              "API"
-            ]
+            "type": "string"
           },
           "description": "channels it is offered through",
           "x-sdem-id": "AT-A1-27",
           "x-sdem-group": "specific",
-          "x-sdem-kind": "enumeration",
+          "x-sdem-kind": "reference",
+          "x-sdem-references": [
+            "A1.BusinessInterface"
+          ],
           "x-sdem-source": {
             "standard": "SDEM-defined (no open standard)",
             "locator": "SDEM decision DA1-30 (A1 data-model review, 2026-10-24)",

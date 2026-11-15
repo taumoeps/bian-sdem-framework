@@ -384,6 +384,23 @@
           "x-sdem-reasoning": "Answers: Which region is it in? Explicit evidence that a shape is in the cloud.",
           "x-sdem-confidence": "low"
         },
+        "location": {
+          "type": "string",
+          "description": "the location record where the shape is — a site, a region or a cloud region",
+          "x-sdem-id": "AT-A4-43",
+          "x-sdem-group": "inherited",
+          "x-sdem-kind": "reference",
+          "x-sdem-references": [
+            "A4.Location"
+          ],
+          "x-sdem-source": {
+            "standard": "SDEM",
+            "locator": "docs/design/sdem-full-design-metamodel-design.md",
+            "uri": "docs/design/sdem-full-design-metamodel-design.md"
+          },
+          "x-sdem-reasoning": "Beside the free-text site (kept, so no existing design is warned — FD-P2): a record that residency checks can compare (SC-04, AT-02).",
+          "x-sdem-confidence": "low"
+        },
         "cloud_service_model": {
           "type": "string",
           "enum": [

@@ -12,11 +12,11 @@ Generated from `metamodel/level-relationships.json` by `python -m sdem.relations
 
 | Level | Reference source | Rows | high | medium | low |
 |---|---|---|---|---|---|
-| A1 Business Architecture | ArchiMate 3.2 chapters 6 (Motivation), 7 (Strategy) and 8 (Business) | 49 | 49 | 0 | 0 |
+| A1 Business Architecture | ArchiMate 3.2 chapters 6 (Motivation), 7 (Strategy) and 8 (Business) | 60 | 60 | 0 | 0 |
 | A2 Service Domain Architecture | BIAN Service Landscape 14 metamodel, Control Record Model, Business Object Model and the Semantic API Practitioner Guide | 23 | 20 | 2 | 1 |
 | A3 Application Architecture | ArchiMate 3.2 chapter 9 (Application) and TOGAF 10 (Solution Building Block); SDEM extension rows for API operations | 34 | 30 | 4 | 0 |
-| A4 Technology Architecture | ArchiMate 3.2 chapter 10 (Technology); SDEM extension rows for Deployment and Deployment Environment | 41 | 39 | 0 | 2 |
-| **Total** | | **147** | 138 | 6 | 3 |
+| A4 Technology Architecture | ArchiMate 3.2 chapter 10 (Technology); SDEM extension rows for Deployment and Deployment Environment | 45 | 43 | 0 | 2 |
+| **Total** | | **162** | 153 | 6 | 3 |
 
 ## A1 Business Architecture
 
@@ -73,6 +73,17 @@ Reference: ArchiMate 3.2 chapters 6 (Motivation), 7 (Strategy) and 8 (Business).
 | RA1-47 | A1.BusinessRequirement | composition | A1.BusinessRequirement | Login-gated, unverified ch. 6 Motivation — requirement decomposition. | Requirement → Requirement | same-concept composition | ArchiMate permits composition and aggregation between elements of the same concept (Requirement). | high | Archi relationship matrix: Requirement → Requirement must list 'c' (composition) | verified_against_archi |
 | RA1-48 | A1.BusinessRequirement | specialization | A1.BusinessRequirement | Login-gated, unverified ch. 6 Motivation — requirement decomposition. | Requirement → Requirement | specialisation within a concept | A Requirement may specialise another Requirement. | high | Archi relationship matrix: Requirement → Requirement must list 's' (specialization) | verified_against_archi |
 | RA1-49 | A1.BusinessObject | association | A1.BusinessObject | One business object refers to another (a payment refers to an account). | BusinessObject → BusinessObject | same-concept association | ArchiMate permits association between these concepts. | high | Archi relationship matrix: BusinessObject → BusinessObject must list 'o' | verified_against_archi |
+| RA1-50 | A1.BusinessEvent | triggering | A1.BusinessProcess | The event starts the process (or activity). | BusinessEvent → BusinessProcess | triggering | ArchiMate permits triggering from BusinessEvent to BusinessProcess. | high | Archi relationship matrix: BusinessEvent → BusinessProcess must list 't' | verified_against_archi |
+| RA1-51 | A1.BusinessProcess | triggering | A1.BusinessEvent | The process ends in (raises) the event. | BusinessProcess → BusinessEvent | triggering | ArchiMate permits triggering from BusinessProcess to BusinessEvent. | high | Archi relationship matrix: BusinessProcess → BusinessEvent must list 't' | verified_against_archi |
+| RA1-52 | A1.BusinessEvent | access | A1.BusinessObject | The event carries the business object (an instruction received). | BusinessEvent → BusinessObject | access | ArchiMate permits access from BusinessEvent to BusinessObject. | high | Archi relationship matrix: BusinessEvent → BusinessObject must list 'a' | verified_against_archi |
+| RA1-53 | A1.BusinessActor | composition | A1.BusinessInterface | The actor has the channel (its own interface). | BusinessActor → BusinessInterface | composition | ArchiMate permits composition from BusinessActor to BusinessInterface. | high | Archi relationship matrix: BusinessActor → BusinessInterface must list 'c' | verified_against_archi |
+| RA1-54 | A1.BusinessRole | composition | A1.BusinessInterface | The role has the channel. | BusinessRole → BusinessInterface | composition | ArchiMate permits composition from BusinessRole to BusinessInterface. | high | Archi relationship matrix: BusinessRole → BusinessInterface must list 'c' | verified_against_archi |
+| RA1-55 | A1.BusinessInterface | serving | A1.BusinessActor | The channel serves the actor (a customer uses the mobile app). | BusinessInterface → BusinessActor | serving | ArchiMate permits serving from BusinessInterface to BusinessActor. | high | Archi relationship matrix: BusinessInterface → BusinessActor must list 'v' | verified_against_archi |
+| RA1-56 | A1.BusinessInterface | serving | A1.BusinessRole | The channel serves the role. | BusinessInterface → BusinessRole | serving | ArchiMate permits serving from BusinessInterface to BusinessRole. | high | Archi relationship matrix: BusinessInterface → BusinessRole must list 'v' | verified_against_archi |
+| RA1-57 | A1.BusinessInterface | association | A1.BusinessService | The service is offered through the channel (the ArchiMate 3.2 tables have no assignment between them; association). | BusinessInterface → BusinessService | association | ArchiMate permits association from BusinessInterface to BusinessService. | high | Archi relationship matrix: BusinessInterface → BusinessService must list 'o' | verified_against_archi |
+| RA1-58 | A1.Product | aggregation | A1.BusinessService | The product brings the service together with others. | Product → BusinessService | aggregation | ArchiMate permits aggregation from Product to BusinessService. | high | Archi relationship matrix: Product → BusinessService must list 'g' | verified_against_archi |
+| RA1-59 | A1.Product | aggregation | A1.BusinessObject | The product brings the information (terms, an account record) together. | Product → BusinessObject | aggregation | ArchiMate permits aggregation from Product to BusinessObject. | high | Archi relationship matrix: Product → BusinessObject must list 'g' | verified_against_archi |
+| RA1-60 | A1.Product | composition | A1.Product | A product is made of smaller products (a bundle). | Product → Product | composition | ArchiMate permits composition from Product to Product. | high | Archi relationship matrix: Product → Product must list 'c' | verified_against_archi |
 
 ## A2 Service Domain Architecture
 
@@ -192,6 +203,10 @@ Reference: ArchiMate 3.2 chapter 10 (Technology); SDEM extension rows for Deploy
 | RA4-39 | A4.NetworkZone | composition | A4.NetworkZone | A network zone is composed of the zones inside it: a level-0 zone of its level-1 zones, a level-1 zone of its level-2 zones. | Grouping → Grouping | a grouping is composed of groupings | ArchiMate 3.2: Grouping → Grouping lists 'c' (composition) (the owner's decision (option 1), 2026-11-14 — ArchiMate 3.2 relationship tables as implemented by Archi (relationships.xml, version 3.2, read 2026-11-14)). | high | Archi relationship matrix: Grouping → Grouping must list 'c' | sdem_definition_grounded |
 | RA4-40 | A4.Path | association | A4.Node | A path connects a node — one of its two ends (WL-04). | Path → Node | path to its end | ArchiMate permits association from a path to the node it connects. | high | Archi relationship matrix: Path → Node must list 'o' | verified_against_archi |
 | RA4-41 | A4.Path | association | A4.Device | A path connects a device — one of its two ends (WL-04). | Path → Device | path to its end | ArchiMate permits association from a path to the device it connects. | high | Archi relationship matrix: Path → Device must list 'o' | verified_against_archi |
+| RA4-42 | A4.Location | composition | A4.Location | A location is inside a larger one (a site in a region in a country). | Location → Location | composition | ArchiMate permits composition from Location to Location. | high | Archi relationship matrix: Location → Location must list 'c' | verified_against_archi |
+| RA4-43 | A4.Location | aggregation | A4.Node | The Node is at the location. | Location → Node | aggregation | ArchiMate permits aggregation from Location to Node. | high | Archi relationship matrix: Location → Node must list 'g' | verified_against_archi |
+| RA4-44 | A4.Location | aggregation | A4.Device | The Device is at the location. | Location → Device | aggregation | ArchiMate permits aggregation from Location to Device. | high | Archi relationship matrix: Location → Device must list 'g' | verified_against_archi |
+| RA4-45 | A4.Location | aggregation | A4.SystemSoftware | The SystemSoftware is at the location. | Location → SystemSoftware | aggregation | ArchiMate permits aggregation from Location to SystemSoftware. | high | Archi relationship matrix: Location → SystemSoftware must list 'g' | verified_against_archi |
 
 ## Catalogue inheritance (is-a)
 
@@ -199,7 +214,6 @@ Not relationships in an architecture dataset: the catalogue's `extends` links, t
 
 | ID | Entity | extends | Description | Reference source | Reasoning | Confidence | Verification |
 |---|---|---|---|---|---|---|---|
-| XA1-01 | A1.ValueStreamStage | A1.ValueStream | A1.ValueStreamStage is-a A1.ValueStream. | SDEM catalogue (metamodel/a*-*.json); ArchiMate specialization | Catalogue inheritance: an SDEM extension or compatibility supertype; the graph resolves a mapping's abstract or parent type to the architecture dataset's concrete instance through it. | high | sdem_definition |
 | XA1-02 | A1.BusinessActivity | A1.BusinessProcess | A1.BusinessActivity is-a A1.BusinessProcess. | SDEM catalogue (metamodel/a*-*.json); ArchiMate specialization | Catalogue inheritance: an SDEM extension or compatibility supertype; the graph resolves a mapping's abstract or parent type to the architecture dataset's concrete instance through it. | high | sdem_definition |
 | XA4-01 | A4.Deployment | A4.InfrastructureComponent | A4.Deployment is-a A4.InfrastructureComponent. | SDEM catalogue (metamodel/a*-*.json); ArchiMate specialization | Catalogue inheritance: an SDEM extension or compatibility supertype; the graph resolves a mapping's abstract or parent type to the architecture dataset's concrete instance through it. | high | sdem_definition |
 | XA4-02 | A4.DeploymentEnvironment | A4.InfrastructureComponent | A4.DeploymentEnvironment is-a A4.InfrastructureComponent. | SDEM catalogue (metamodel/a*-*.json); ArchiMate specialization | Catalogue inheritance: an SDEM extension or compatibility supertype; the graph resolves a mapping's abstract or parent type to the architecture dataset's concrete instance through it. | high | sdem_definition |
@@ -218,7 +232,7 @@ How far each row has been checked, and against what. `verified_against_archi` is
 
 | Status | Rows | Meaning |
 |---|---|---|
-| verified_against_archi | 122 | concept pair and kind listed by the open-source Archi relationship matrix — an implementation of the ArchiMate 3.2 relationship tables, cited by commit below |
+| verified_against_archi | 137 | concept pair and kind listed by the open-source Archi relationship matrix — an implementation of the ArchiMate 3.2 relationship tables, cited by commit below |
 | verified | 16 | checked against BIAN's public pages (A2) |
 | sdem_definition | 4 | follows from an SDEM extension entity's definition |
 | unverified_togaf | 2 | paraphrased from TOGAF; no public oracle |
@@ -231,7 +245,7 @@ How far each row has been checked, and against what. `verified_against_archi` is
 
 | Inference confidence | Rows | Oracle verdict |
 |---|---|---|
-| high | 73 | confirmed: 71, not tested: 2 |
+| high | 88 | confirmed: 86, not tested: 2 |
 | medium | 46 | confirmed: 42, not tested: 4 |
 | low | 5 | confirmed: 4, confirmed, alternative accepted: 1 |
 
@@ -242,5 +256,5 @@ The test plan is `docs/evidence/relationships-testing.md`; its results sections 
 | Phase | What was tested | Result |
 |---|---|---|
 | 1 (2026-10-23) | provenance, grounding, consistency, enforcement probes, coverage, rule dependencies — all 131 rows and 12 inheritance links | 0 fail; 3 artefact rows not enforceable; 6 findings applied in v0.5.17 |
-| 2 (2026-10-23) | every A1 / A3 / A4 inference against the Archi relationship matrix | 117 confirmed, 1 confirmed via stated alternative, 0 contradicted, 2 not testable (TOGAF); applied in v0.5.20 |
+| 2 (2026-10-23) | every A1 / A3 / A4 inference against the Archi relationship matrix | 132 confirmed, 1 confirmed via stated alternative, 0 contradicted, 2 not testable (TOGAF); applied in v0.5.20 |
 

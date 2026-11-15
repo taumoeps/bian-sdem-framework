@@ -18,13 +18,13 @@ Generated from the records by `python -m sdem.spec`; the test suite checks it is
 
 ## 2. Vocabulary — the entity catalogue
 
-46 entities across four levels (`metamodel/a1…a4-*.json`), each with public provenance (README › *Reference architecture provenance*). By standard: ArchiMate 22, BIAN 17, SDEM extension 6, TOGAF 1. **The entity ID is its type string** (e.g. `A3.ApplicationComponent`); every mapping, relationship row and architecture dataset instance refers to it by that string.
+50 entities across four levels (`metamodel/a1…a4-*.json`), each with public provenance (README › *Reference architecture provenance*). By standard: ArchiMate 26, BIAN 17, SDEM extension 6, TOGAF 1. **The entity ID is its type string** (e.g. `A3.ApplicationComponent`); every mapping, relationship row and architecture dataset instance refers to it by that string.
 
 | ID | Level | Kind | Extends | Reference concept |
 |---|---|---|---|---|
 | `A1.BusinessCapability` | A1 | concrete | — | BIAN BCM: Business Capability |
 | `A1.ValueStream` | A1 | concrete | — | ArchiMate 3.2: Value Stream |
-| `A1.ValueStreamStage` | A1 | concrete | A1.ValueStream | SDEM: Value Stream Stage |
+| `A1.ValueStreamStage` | A1 | concrete | — | SDEM: Value Stream Stage |
 | `A1.BusinessProcess` | A1 | concrete | — | ArchiMate 3.2: Business Process |
 | `A1.BusinessActivity` | A1 | concrete | A1.BusinessProcess | SDEM: Business Activity |
 | `A1.BusinessService` | A1 | concrete | — | ArchiMate 3.2: Business Service |
@@ -32,6 +32,9 @@ Generated from the records by `python -m sdem.spec`; the test suite checks it is
 | `A1.BusinessRole` | A1 | concrete | — | ArchiMate 3.2: Business Role |
 | `A1.BusinessObject` | A1 | concrete | — | ArchiMate 3.2: Business Object |
 | `A1.BusinessRequirement` | A1 | concrete | — | ArchiMate 3.2: Requirement |
+| `A1.BusinessEvent` | A1 | concrete | — | ArchiMate 3.2: Business Event |
+| `A1.Product` | A1 | concrete | — | ArchiMate 3.2: Product |
+| `A1.BusinessInterface` | A1 | concrete | — | ArchiMate 3.2: Business Interface |
 | `A2.BusinessArea` | A2 | concrete | — | BIAN Service Landscape: Business Area |
 | `A2.BusinessDomain` | A2 | concrete | — | BIAN Service Landscape: Business Domain |
 | `A2.ServiceDomain` | A2 | concrete | — | BIAN Service Landscape: Service Domain |
@@ -68,17 +71,18 @@ Generated from the records by `python -m sdem.spec`; the test suite checks it is
 | `A4.NetworkZone` | A4 | concrete | — | ArchiMate 3.2: Grouping |
 | `A4.Path` | A4 | concrete | A4.InfrastructureComponent | ArchiMate 3.2: Path |
 | `A4.Artifact` | A4 | concrete | A4.InfrastructureComponent | ArchiMate 3.2: Artifact |
+| `A4.Location` | A4 | concrete | — | ArchiMate 3.2: Location |
 
 ## 3. Within-level structure — what an architecture dataset may contain
 
-147 constraint rows (`metamodel/level-relationships.json`, documented row by row in `docs/reference/relationships-planning.md`): A1 Business Architecture 49, A2 Service Domain Architecture 23, A3 Application Architecture 34, A4 Technology Architecture 41. Verification: verified_against_archi 122, verified 16, sdem_definition 4, unverified_togaf 2, sdem_definition_grounded 2, sdem_reading 1. Association is permitted between any two entities of one level. The 12 catalogue inheritance links are listed there as `X` rows.
+162 constraint rows (`metamodel/level-relationships.json`, documented row by row in `docs/reference/relationships-planning.md`): A1 Business Architecture 60, A2 Service Domain Architecture 23, A3 Application Architecture 34, A4 Technology Architecture 45. Verification: verified_against_archi 137, verified 16, sdem_definition 4, unverified_togaf 2, sdem_definition_grounded 2, sdem_reading 1. Association is permitted between any two entities of one level. The 12 catalogue inheritance links are listed there as `X` rows.
 
 | Level | Derived from | Rows | The structure in one line |
 |---|---|---|---|
-| A1 | ArchiMate 3.2 ch. 6–8 | 49 | capabilities serve value streams; processes (and activities, is-a process) realise capabilities, value streams, services and requirements, access objects, compose activities; actors assigned to roles assigned to processes |
+| A1 | ArchiMate 3.2 ch. 6–8 | 60 | capabilities serve value streams; processes (and activities, is-a process) realise capabilities, value streams, services and requirements, access objects, compose activities; actors assigned to roles assigned to processes |
 | A2 | BIAN Service Landscape metamodel (B02–B15) | 23 | area ⊃ domain ⊃ Service Domain; a domain has an asset type, a functional pattern, a control record and service groups of operations; operations act on the control record and may be qualified; scenarios sequence operations; objects type the control record |
 | A3 | ArchiMate 3.2 ch. 9; TOGAF (SBB) | 34 | a component composes interfaces (which compose API operations) and sub-components, is assigned to functions, realises services; interfaces are assigned to services; behaviour accesses data entities and triggers events; a solution building block aggregates components |
-| A4 | ArchiMate 3.2 ch. 10; SDEM deployment extensions | 41 | nodes compose nodes and interfaces, aggregate devices, are assigned system software, artifacts and deployments, realise technology services; interfaces are assigned to services; networks realise paths; environments aggregate deployments and platform elements |
+| A4 | ArchiMate 3.2 ch. 10; SDEM deployment extensions | 45 | nodes compose nodes and interfaces, aggregate devices, are assigned system software, artifacts and deployments, realise technology services; interfaces are assigned to services; networks realise paths; environments aggregate deployments and platform elements |
 
 ### 3.1 All within-level rows
 
@@ -233,10 +237,24 @@ Full description, source, reasoning, inference and confidence per row: `docs/ref
 | RA3-34 | — | A3.DataAttribute | association | A3.DataEntity | sdem_definition |
 | RA4-40 | — | A4.Path | association | A4.Node | verified_against_archi |
 | RA4-41 | — | A4.Path | association | A4.Device | verified_against_archi |
+| RA1-50 | — | A1.BusinessEvent | triggering | A1.BusinessProcess | verified_against_archi |
+| RA1-51 | — | A1.BusinessProcess | triggering | A1.BusinessEvent | verified_against_archi |
+| RA1-52 | — | A1.BusinessEvent | access | A1.BusinessObject | verified_against_archi |
+| RA1-53 | — | A1.BusinessActor | composition | A1.BusinessInterface | verified_against_archi |
+| RA1-54 | — | A1.BusinessRole | composition | A1.BusinessInterface | verified_against_archi |
+| RA1-55 | — | A1.BusinessInterface | serving | A1.BusinessActor | verified_against_archi |
+| RA1-56 | — | A1.BusinessInterface | serving | A1.BusinessRole | verified_against_archi |
+| RA1-57 | — | A1.BusinessInterface | association | A1.BusinessService | verified_against_archi |
+| RA1-58 | — | A1.Product | aggregation | A1.BusinessService | verified_against_archi |
+| RA1-59 | — | A1.Product | aggregation | A1.BusinessObject | verified_against_archi |
+| RA1-60 | — | A1.Product | composition | A1.Product | verified_against_archi |
+| RA4-42 | — | A4.Location | composition | A4.Location | verified_against_archi |
+| RA4-43 | — | A4.Location | aggregation | A4.Node | verified_against_archi |
+| RA4-44 | — | A4.Location | aggregation | A4.Device | verified_against_archi |
+| RA4-45 | — | A4.Location | aggregation | A4.SystemSoftware | verified_against_archi |
 
 | ID | Entity | extends |
 |---|---|---|
-| XA1-01 | A1.ValueStreamStage | A1.ValueStream |
 | XA1-02 | A1.BusinessActivity | A1.BusinessProcess |
 | XA4-01 | A4.Deployment | A4.InfrastructureComponent |
 | XA4-02 | A4.DeploymentEnvironment | A4.InfrastructureComponent |
@@ -283,6 +301,9 @@ Full description, source, reasoning, inference and confidence per row: `docs/ref
 | FUNCTION_SERVED_BY_TECHNOLOGY_SERVICE | A3.ApplicationFunction → A4.TechnologyService | `SERVED_BY` | architecture | enterprise_rule | deployment_design | The technology service serves the application function — a platform service it uses (XL-06). | Archi's implementation of the ArchiMate 3.2 relationship tables (relationships.xml, version 3.2, read 2026-11-16): TechnologyService → ApplicationFunction allows 'v' (serving). The owner's decision, 2026-11-16 (metamodel 0.16.0, docs/design/sdem-full-design-metamodel-design.md). | sdem_definition_grounded | high: SDEM's own definition, grounded in an ArchiMate 3.2 pattern checked against the relationship tables |
 | DATA_ENTITY_STORED_IN_ARTIFACT | A3.DataEntity → A4.Artifact | `STORED_IN` | information | enterprise_rule | deployment_design | The data entity is stored in the artifact (a database, a file) (XL-07). | Archi's implementation of the ArchiMate 3.2 relationship tables (relationships.xml, version 3.2, read 2026-11-16): Artifact → DataObject allows 'r' (realization). The owner's decision, 2026-11-16 (metamodel 0.16.0, docs/design/sdem-full-design-metamodel-design.md). | sdem_definition_grounded | high: SDEM's own definition, grounded in an ArchiMate 3.2 pattern checked against the relationship tables |
 | DATA_ENTITY_STORED_IN_SYSTEM_SOFTWARE | A3.DataEntity → A4.SystemSoftware | `STORED_IN` | information | enterprise_rule | deployment_design | The data entity is stored in the system software (a database server) (XL-07). | Archi's implementation of the ArchiMate 3.2 relationship tables (relationships.xml, version 3.2, read 2026-11-16): SystemSoftware → Artifact allows 'n' (assignment) and an artifact realizes a data object. The owner's decision, 2026-11-16 (metamodel 0.16.0, docs/design/sdem-full-design-metamodel-design.md). | sdem_definition_grounded | high: SDEM's own definition, grounded in an ArchiMate 3.2 pattern checked against the relationship tables |
+| BUSINESS_EVENT_REALIZED_BY_EVENT | A1.BusinessEvent → A3.Event | `REALIZED_BY` | architecture | enterprise_rule | event_design | The application event realises the business event (XL-08). | Archi's implementation of the ArchiMate 3.2 relationship tables (relationships.xml, version 3.2, read 2026-11-16): ApplicationEvent → BusinessEvent allows 'r' (realization). The owner's decision, 2026-11-16 (metamodel 0.17.0, docs/design/sdem-full-design-metamodel-design.md). | sdem_definition_grounded | high: SDEM's own definition, grounded in an ArchiMate 3.2 pattern checked against the relationship tables |
+| CHANNEL_REALIZED_BY_APPLICATION_INTERFACE | A1.BusinessInterface → A3.ApplicationInterface | `REALIZED_BY` | architecture | enterprise_rule | application_architecture_document | The application interface realises the channel (XL-10). | Archi's implementation of the ArchiMate 3.2 relationship tables (relationships.xml, version 3.2, read 2026-11-16): ApplicationInterface → BusinessInterface allows 'r' (realization). The owner's decision, 2026-11-16 (metamodel 0.17.0, docs/design/sdem-full-design-metamodel-design.md). | sdem_definition_grounded | high: SDEM's own definition, grounded in an ArchiMate 3.2 pattern checked against the relationship tables |
+| VALUE_STREAM_STAGE_ALIGNED_TO_SCENARIO | A1.ValueStreamStage → A2.BusinessScenario | `ALIGNED_TO` | process | enterprise_rule | process_model, scenario_suitability_review | The value stream's stages are realised by the interactions described in the Business Scenario. | plan row S02 — SDEM mapping only; no official equivalent. BIAN v14.0.0 Release Notes v1.0 (read 2026-11-02) §3: BIAN's work on value streams is 'not yet modelled'. B1 review, owner's decision 2026-11-02: authority corrected from bian_alignment_guidance to enterprise_rule. | sdem_definition | medium: SDEM definition; validated against sealed answers |
 
 Only these nine may appear in the relationship registry (form: `schema/relationship-registry.schema.json`); adjacency is A(n) → A(n+1) only; BIAN authorities require `bian_release` and a `canonical_id` on the A2 endpoint before approval. Everything else the model knows is a **candidate report**, never a registry proposal.
 
@@ -457,7 +478,7 @@ The executed runs are the acceptance test (DEC-E-01): the engine, given the curr
 | ACC-06 | M2 | digital-lending (greenfield, no A3/A4) | 12 design arrows | 12 of 12; boundary stated |
 | ACC-07 | C1, C2, C3 | trade-finance (85; one workspace, three level pairs) | 19 registry + 100 candidate | 19 of 19; 100 of 101 (one fixed by rule) |
 
-Plan coverage after the suite: 45 rows validated clean, 5 validated with findings fixed, 19 n/a by decision, 0 not exercised. Within-level structure: 147 rows, 144 enforced (the rest are A2 artefact rows, documentation only), 113 verified against the Archi oracle, 0 contradicted.
+Plan coverage after the suite: 45 rows validated clean, 5 validated with findings fixed, 19 n/a by decision, 0 not exercised. Within-level structure: 162 rows, 159 enforced (the rest are A2 artefact rows, documentation only), 113 verified against the Archi oracle, 0 contradicted.
 
 **Result (2026-10-25, v0.10).** `sdem model accept` runs the rule-based engine (`sdem/rules_engine.py`) on each scored case from a graph store built from the architecture datasets and the case's given registry only: **all 8 pass at precision and recall 1.00** (catalogue-typed proposals, and candidate reports for C1–C3); M0 and C3 score above the hand-executed runs, whose one error each came from rules since fixed. Every proposal validates. `tests/test_acceptance.py` enforces it. Caveat: OPEN-05.
 

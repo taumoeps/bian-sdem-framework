@@ -2,7 +2,7 @@
   "level": "A1",
   "model_id": "synthetic-bank-onboarding-a1",
   "model_version": "2026.10",
-  "metamodel_version": "0.16.0",
+  "metamodel_version": "0.17.0",
   "source_system": "SYNTHETIC-EA-TOOL",
   "instances": [
     {
@@ -121,7 +121,34 @@
         "outputs": [
           "BO-001"
         ],
-        "customer_facing": true
+        "customer_facing": true,
+        "channels": [
+          "CHN-001"
+        ]
+      }
+    },
+    {
+      "id": "BEV-001",
+      "type": "A1.BusinessEvent",
+      "version": "1.0",
+      "name": "Customer onboarded",
+      "lifecycle_status": "active",
+      "description": "A new customer relationship is open (made-up)",
+      "attributes": {
+        "event_kind": "internal"
+      }
+    },
+    {
+      "id": "CHN-001",
+      "type": "A1.BusinessInterface",
+      "version": "1.0",
+      "name": "Onboarding web channel",
+      "lifecycle_status": "active",
+      "description": "Customers apply online (made-up)",
+      "attributes": {
+        "channel_kind": "web",
+        "customer_facing": true,
+        "availability": "24x7"
       }
     }
   ],
@@ -169,6 +196,21 @@
     {
       "source": "PRC-001",
       "kind": "realization",
+      "target": "BSV-001"
+    },
+    {
+      "source": "PRC-001",
+      "kind": "triggering",
+      "target": "BEV-001"
+    },
+    {
+      "source": "CHN-001",
+      "kind": "serving",
+      "target": "ACT-001"
+    },
+    {
+      "source": "CHN-001",
+      "kind": "association",
       "target": "BSV-001"
     }
   ]

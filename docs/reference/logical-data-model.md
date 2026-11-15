@@ -48,7 +48,7 @@ and these common attributes (approved 2026-10-24; optional):
 
 ## 1. A1 Business Architecture
 
-10 entities. The diagram shows the entities, their key fields and references, and the links between them.
+13 entities. The diagram shows the entities, their key fields and references, and the links between them.
 
 ```mermaid
 erDiagram
@@ -75,7 +75,7 @@ erDiagram
         string id PK
         list invokes FK
         integer level
-        string triggered_by
+        string triggered_by FK
         string outcome
         string criticality
         string frequency
@@ -92,7 +92,7 @@ erDiagram
         list outputs FK
         list consumers FK
         boolean customer_facing
-        list channels
+        list channels FK
         string service_level
     }
     A1_BusinessActor {
@@ -101,7 +101,7 @@ erDiagram
         boolean external
         string classification
         string purpose
-        string location
+        string location FK
     }
     A1_BusinessRole {
         string id PK
@@ -121,6 +121,23 @@ erDiagram
         string requirement_kind
         list derived_from
         string priority
+    }
+    A1_BusinessEvent {
+        string id PK
+        string event_kind
+        string schedule
+    }
+    A1_Product {
+        string id PK
+        string product_kind
+        string segment
+        boolean regulated
+    }
+    A1_BusinessInterface {
+        string id PK
+        string channel_kind
+        boolean customer_facing
+        string availability
     }
     A1_BusinessCapability |o--o{ A1_BusinessCapability : "composition"
     A1_BusinessCapability }o--o{ A1_BusinessCapability : "aggregation"
@@ -171,6 +188,17 @@ erDiagram
     A1_BusinessRequirement |o--o{ A1_BusinessRequirement : "composition"
     A1_BusinessRequirement }o--o{ A1_BusinessRequirement : "specialization"
     A1_BusinessObject }o--o{ A1_BusinessObject : "association"
+    A1_BusinessEvent }o--o{ A1_BusinessProcess : "triggering"
+    A1_BusinessProcess }o--o{ A1_BusinessEvent : "triggering"
+    A1_BusinessEvent }o--o{ A1_BusinessObject : "access"
+    A1_BusinessActor |o--o{ A1_BusinessInterface : "composition"
+    A1_BusinessRole |o--o{ A1_BusinessInterface : "composition"
+    A1_BusinessInterface }o--o{ A1_BusinessActor : "serving"
+    A1_BusinessInterface }o--o{ A1_BusinessRole : "serving"
+    A1_BusinessInterface }o--o{ A1_BusinessService : "association"
+    A1_Product }o--o{ A1_BusinessService : "aggregation"
+    A1_Product }o--o{ A1_BusinessObject : "aggregation"
+    A1_Product |o--o{ A1_Product : "composition"
 ```
 
 ### `A1.BusinessCapability`
@@ -229,7 +257,7 @@ The stages by which stakeholders receive value
 
 ### `A1.ValueStreamStage`
 
-*entity* · a kind of `A1.ValueStream` and inherits its fields
+*entity*
 
 One named segment of a value stream
 
@@ -268,7 +296,7 @@ Coordinated business behaviour
 |---|---|---|---|---|
 | `invokes` | list | no | A2 operations the process steps call | `A2.ServiceOperation` *(join key)* |
 | `level` | integer | no | depth in the process hierarchy (1 = top) | — |
-| `triggered_by` | text | no | the business event that starts it | — |
+| `triggered_by` | text | no | the business event that starts it | `A1.BusinessEvent` |
 | `outcome` | text | no | the result it produces | — |
 | `criticality` | text | no | how critical the process is to the bank | one of: high, medium, low |
 | `frequency` | text | no | how often it runs | one of: continuous, daily, weekly, monthly, ad hoc |
@@ -291,6 +319,8 @@ Coordinated business behaviour
 | ← serving | `BusinessService` | any number |
 | ← assignment | `BusinessRole` | any number |
 | ← assignment | `BusinessActor` | any number |
+| ← triggering | `BusinessEvent` | any number |
+| triggering → | `BusinessEvent` | any number |
 
 ### `A1.BusinessActivity`
 
@@ -341,7 +371,7 @@ Business behaviour exposed to consumers
 | `outputs` | list | no | the business objects the service returns | `A1.BusinessObject` |
 | `consumers` | list | no | the actors or roles the service serves | `A1.BusinessActor`, `A1.BusinessRole` |
 | `customer_facing` | boolean | no | whether customers use it directly | — |
-| `channels` | list | no | channels it is offered through | one of: branch, online, mobile, contact centre, partner, API |
+| `channels` | list | no | channels it is offered through | `A1.BusinessInterface` |
 | `service_level` | text | no | the committed service level (e.g. "same day") | — |
 
 **Links**
@@ -357,6 +387,8 @@ Business behaviour exposed to consumers
 | composition (with itself) | `BusinessService` | any number |
 | access → | `BusinessObject` | any number |
 | realization → | `BusinessRequirement` | any number |
+| ← association | `BusinessInterface` | any number |
+| ← aggregation | `Product` | any number |
 
 ### `A1.BusinessActor`
 
@@ -374,7 +406,7 @@ An individual or organisation capable of business behaviour
 | `external` | boolean | no | whether it is outside the bank | — |
 | `classification` | text | no | its category (e.g. regulator, partner, business line) | — |
 | `purpose` | text | no | why the unit or organisation exists | — |
-| `location` | text | no | the site where it is based | — |
+| `location` | text | no | the site where it is based | `A4.Location` *(join key)* |
 
 **Links**
 
@@ -386,6 +418,8 @@ An individual or organisation capable of business behaviour
 | assignment → | `BusinessActivity` | any number |
 | composition (with itself) | `BusinessActor` | any number |
 | aggregation (with itself) | `BusinessActor` | any number |
+| composition → | `BusinessInterface` | any number |
+| ← serving | `BusinessInterface` | any number |
 
 ### `A1.BusinessRole`
 
@@ -412,6 +446,8 @@ Responsibility for a class of business behaviour
 | assignment → | `BusinessActivity` | any number |
 | composition (with itself) | `BusinessRole` | any number |
 | aggregation (with itself) | `BusinessRole` | any number |
+| composition → | `BusinessInterface` | any number |
+| ← serving | `BusinessInterface` | any number |
 
 ### `A1.BusinessObject`
 
@@ -441,6 +477,8 @@ A business-level information concept
 | aggregation (with itself) | `BusinessObject` | any number |
 | specialization (with itself) | `BusinessObject` | any number |
 | association (with itself) | `BusinessObject` | any number |
+| ← access | `BusinessEvent` | any number |
+| ← aggregation | `Product` | any number |
 
 ### `A1.BusinessRequirement`
 
@@ -469,6 +507,79 @@ An expressed architectural requirement
 | ← realization | `BusinessCapability` | any number |
 | composition (with itself) | `BusinessRequirement` | any number |
 | specialization (with itself) | `BusinessRequirement` | any number |
+
+### `A1.BusinessEvent`
+
+*entity*
+
+Something that happens and triggers business behaviour — an instruction received, a cut-off reached
+
+**Identified by:** `name` — no standard key; SDEM recommends a unique name within the architecture dataset so duplicates can be detected
+
+**Fields**
+
+| Field | Type | Required | Meaning | Refers to |
+|---|---|---|---|---|
+| `event_kind` | text | no | whether the event comes from outside, from inside, or from time | one of: external, internal, time |
+| `schedule` | text | no | when a time event happens, e.g. "weekdays 16:00 local" or a cron expression | — |
+
+**Links**
+
+| Link | With | How many |
+|---|---|---|
+| triggering → | `BusinessProcess` | any number |
+| ← triggering | `BusinessProcess` | any number |
+| access → | `BusinessObject` | any number |
+
+### `A1.Product`
+
+*entity*
+
+A coherent offering to customers — an account, a card, a payment service — and the services and information it brings together
+
+**Identified by:** `name` — no standard key; SDEM recommends a unique name within the architecture dataset so duplicates can be detected
+
+**Fields**
+
+| Field | Type | Required | Meaning | Refers to |
+|---|---|---|---|---|
+| `product_kind` | text | no | the kind of product, e.g. account, card, payment, loan | — |
+| `segment` | text | no | the customer segment the product is for, e.g. retail, business, corporate | — |
+| `regulated` | boolean | no | whether the product is subject to specific regulation | — |
+
+**Links**
+
+| Link | With | How many |
+|---|---|---|
+| aggregation → | `BusinessService` | any number |
+| aggregation → | `BusinessObject` | any number |
+| composition (with itself) | `Product` | any number |
+
+### `A1.BusinessInterface`
+
+*entity*
+
+A channel through which the business offers its services — a branch, a mobile app, an open-banking API, a file
+
+**Identified by:** `name` — no standard key; SDEM recommends a unique name within the architecture dataset so duplicates can be detected
+
+**Fields**
+
+| Field | Type | Required | Meaning | Refers to |
+|---|---|---|---|---|
+| `channel_kind` | text | no | the kind of channel | one of: branch, contact_centre, web, mobile, api, file, partner |
+| `customer_facing` | boolean | no | whether customers use the channel directly | — |
+| `availability` | text | no | when the channel is open, e.g. "24x7" or "business hours" | — |
+
+**Links**
+
+| Link | With | How many |
+|---|---|---|
+| ← composition | `BusinessActor` | at most one |
+| ← composition | `BusinessRole` | at most one |
+| serving → | `BusinessActor` | any number |
+| serving → | `BusinessRole` | any number |
+| association → | `BusinessService` | any number |
 
 ## 2. A2 Service Domain Architecture
 
@@ -1288,7 +1399,7 @@ A field of a data entity: its physical type, whether it is required, and whether
 
 ## 4. A4 Technology Architecture
 
-12 entities. The diagram shows the entities, their key fields and references, and the links between them.
+13 entities. The diagram shows the entities, their key fields and references, and the links between them.
 
 ```mermaid
 erDiagram
@@ -1298,6 +1409,7 @@ erDiagram
         string site
         string cloud_provider
         string region
+        string location FK
     }
     A4_Deployment {
         string id PK
@@ -1368,6 +1480,11 @@ erDiagram
         string purl
         string artifact_kind
     }
+    A4_Location {
+        string id PK
+        string location_kind
+        string country
+    }
     A4_Node |o--o{ A4_Node : "composition"
     A4_Node }o--o{ A4_Node : "aggregation"
     A4_Node }o--o{ A4_Device : "aggregation"
@@ -1409,6 +1526,10 @@ erDiagram
     A4_NetworkZone |o--o{ A4_NetworkZone : "composition"
     A4_Path }o--o{ A4_Node : "association"
     A4_Path }o--o{ A4_Device : "association"
+    A4_Location |o--o{ A4_Location : "composition"
+    A4_Location |o--o{ A4_Node : "aggregation"
+    A4_Location |o--o{ A4_Device : "aggregation"
+    A4_Location |o--o{ A4_SystemSoftware : "aggregation"
 ```
 
 ### `A4.InfrastructureComponent`
@@ -1425,6 +1546,7 @@ Abstract supertype of every Technology Architecture entity; retained for compati
 | `site` | text | no | the data centre or site the organisation runs it in — it is on premises (HS-01) | — |
 | `cloud_provider` | text | no | the cloud provider it runs on, by name — it is in the cloud (HS-06) | — |
 | `region` | text | no | the cloud region it runs in (e.g. region-a) — it is in the cloud (HS-06) | — |
+| `location` | text | no | the location record where the shape is — a site, a region or a cloud region | `A4.Location` |
 
 **Links**
 
@@ -1516,6 +1638,7 @@ A computational host, physical or virtual
 | triggering (with itself) | `Node` | any number |
 | ← aggregation | `DeploymentEnvironment` | any number |
 | ← association | `Path` | any number |
+| ← aggregation | `Location` | at most one |
 
 ### `A4.Device`
 
@@ -1548,6 +1671,7 @@ Physical computing hardware
 | ← aggregation | `DeploymentEnvironment` | any number |
 | composition (with itself) | `Device` | any number |
 | ← association | `Path` | any number |
+| ← aggregation | `Location` | at most one |
 
 ### `A4.SystemSoftware`
 
@@ -1580,6 +1704,7 @@ Platform or runtime software
 | ← serving | `TechnologyService` | any number |
 | assignment → | `Deployment` | any number |
 | ← aggregation | `DeploymentEnvironment` | any number |
+| ← aggregation | `Location` | at most one |
 
 ### `A4.TechnologyService`
 
@@ -1735,6 +1860,30 @@ A deployable technology-level artefact
 | aggregation (with itself) | `Artifact` | any number |
 | ← aggregation | `Deployment` | any number |
 
+### `A4.Location`
+
+*entity*
+
+A place where things are — a country, a region, a site or a cloud region
+
+**Identified by:** `name` — no standard key; SDEM recommends a unique name within the architecture dataset so duplicates can be detected
+
+**Fields**
+
+| Field | Type | Required | Meaning | Refers to |
+|---|---|---|---|---|
+| `location_kind` | text | no | what kind of place it is | one of: country, region, site, cloud_region |
+| `country` | text | no | the country it is in, as an ISO 3166-1 alpha-2 code | — |
+
+**Links**
+
+| Link | With | How many |
+|---|---|---|
+| composition (with itself) | `Location` | any number |
+| aggregation → | `Node` | any number |
+| aggregation → | `Device` | any number |
+| aggregation → | `SystemSoftware` | any number |
+
 ## 5. Links between architectures
 
 The model above covers each architecture on its own. Links **between** architectures are the nine relationship types below; actual links are records in the Architecture Relationship Registry, proposed by the inference engine and approved by architects.
@@ -1769,6 +1918,9 @@ The model above covers each architecture on its own. Links **between** architect
 | `SERVED_BY` | `A3.ApplicationFunction` → `A4.TechnologyService` | many to many |
 | `STORED_IN` | `A3.DataEntity` → `A4.Artifact` | many to many |
 | `STORED_IN` | `A3.DataEntity` → `A4.SystemSoftware` | many to many |
+| `REALIZED_BY` | `A1.BusinessEvent` → `A3.Event` | many to many |
+| `REALIZED_BY` | `A1.BusinessInterface` → `A3.ApplicationInterface` | many to many |
+| `ALIGNED_TO` | `A1.ValueStreamStage` → `A2.BusinessScenario` | many to many |
 
 ---
 
@@ -1810,18 +1962,18 @@ The rules the data must satisfy, and which the checker enforces today.
 
 ## Appendix B. How the example data measures up
 
-The 8 example workspaces (890 instances) (the generated reference-structure workspace excluded) checked by `sdem check` against the enforced rules. No errors; 29 completeness warning(s), where an example architecture datasets part of BIAN's structure (a business domain without its area, a business object without attribute instances, a stub Service Domain without its groups or control record).
+The 8 example workspaces (892 instances) (the generated reference-structure workspace excluded) checked by `sdem check` against the enforced rules. No errors; 29 completeness warning(s), where an example architecture datasets part of BIAN's structure (a business domain without its area, a business object without attribute instances, a stub Service Domain without its groups or control record).
 
 | Rule | Values checked | Failures |
 |---|---|---|
 | LC-04 | 1254 | 0 |
-| LC-05 | 2846 | 0 |
-| LC-06 | 1556 | 0 |
-| LC-07 | 186 | 0 |
+| LC-05 | 2851 | 0 |
+| LC-06 | 1561 | 0 |
+| LC-07 | 193 | 0 |
 | LC-08 (warning) | 183 | 0 |
-| LC-09 | 827 | 0 |
-| LC-10 | 2777 | 0 |
-| LC-10m (warning) | 2777 | 29 |
+| LC-09 | 829 | 0 |
+| LC-10 | 2755 | 0 |
+| LC-10m (warning) | 2755 | 29 |
 | LC-13 deprecated field in use | — | 0 |
 | fields not in the model | — | 0 |
 
@@ -1831,7 +1983,7 @@ Each entity's, field's and link's source, reasoning and confidence are in [`arch
 
 | Decision | Count | Basis |
 |---|---|---|
-| Link counts — SDEM default | 95 | no standard sets a number; left open |
+| Link counts — SDEM default | 110 | no standard sets a number; left open |
 | Link counts — ArchiMate composition semantics | 26 | a part belongs to at most one whole (ArchiMate) |
 | Link counts — BIAN | 14 | stated by BIAN |
 | Link counts — SDEM | 6 | a part belongs to at most one whole (ArchiMate) |
@@ -1839,7 +1991,7 @@ Each entity's, field's and link's source, reasoning and confidence are in [`arch
 | Link counts — SDEM reading | 1 | SDEM's reading of a BIAN page |
 | Link counts — ArchiMate aggregation semantics | 1 | a part belongs to at most one whole (ArchiMate) |
 | Link counts — ArchiMate specialization semantics | 1 | a part belongs to at most one whole (ArchiMate) |
-| Identifiers — SDEM | 36 | SDEM recommendation: a unique name |
+| Identifiers — SDEM | 40 | SDEM recommendation: a unique name |
 | Identifiers — BIAN | 5 | BIAN concept ids and operation naming |
 | Identifiers — OpenAPI | 1 | path and method unique per API |
 

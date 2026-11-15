@@ -1,5 +1,5 @@
 {
-  "metamodel_version": "0.16.0",
+  "metamodel_version": "0.17.0",
   "level": "A1",
   "entities": [
     {
@@ -62,7 +62,7 @@
       "type": "A1.ValueStreamStage",
       "level": "A1",
       "abstract": false,
-      "extends": "A1.ValueStream",
+      "extends": null,
       "artefact": false,
       "definition": "One named segment of a value stream",
       "definition_source": "sdem_extension",
@@ -75,7 +75,7 @@
         "locator": "extension of A1.ValueStream"
       },
       "evidence_status": "proposed_extension",
-      "reasoning": "SDEM extension: ArchiMate describes a value stream as a sequence of stages but models a stage as a value stream composed into another, not as its own element; SDEM makes the stage explicit so stages can be matched to BIAN scenario steps.",
+      "reasoning": "SDEM extension: ArchiMate describes a value stream as a sequence of stages but models a stage as a value stream composed into another, not as its own element; SDEM makes the stage explicit so stages can be matched to BIAN scenario steps. From 0.17.0 it no longer extends A1.ValueStream (CN-01): a stage does not carry the whole stream’s stages, stakeholder and value proposition.",
       "confidence": "medium",
       "confidence_basis": "built on a standard concept as SDEM chose to model it",
       "identifier": {
@@ -272,6 +272,90 @@
       },
       "evidence_status": "interpreted_from_official_source",
       "reasoning": "ArchiMate 3.2 Requirement (motivation elements), ch. 6 — concept present in the open-source Archi implementation of the ArchiMate 3.2 relationship tables (commit 9e6a014), which the relationships test looked up; specification text is login-gated. SDEM places it in A1 because requirements are stated against business behaviour.",
+      "confidence": "high",
+      "confidence_basis": "concept defined by a public standard and checked (BIAN public portal / Archi oracle)",
+      "identifier": {
+        "key": [
+          "name"
+        ],
+        "basis": "SDEM",
+        "reasoning": "no standard key; SDEM recommends a unique name within the architecture dataset so duplicates can be detected"
+      }
+    },
+    {
+      "type": "A1.BusinessEvent",
+      "level": "A1",
+      "abstract": false,
+      "extends": null,
+      "artefact": false,
+      "definition": "Something that happens and triggers business behaviour — an instruction received, a cut-off reached",
+      "definition_source": "archimate_native",
+      "alignment_kind": "exact",
+      "reference": {
+        "standard": "ArchiMate 3.2",
+        "release": "3.2",
+        "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
+        "concept": "Business Event",
+        "locator": "chapter 8"
+      },
+      "evidence_status": "interpreted_from_official_source",
+      "reasoning": "ArchiMate 3.2 Business Event, chapter 8 — concept present in Archi's implementation of the ArchiMate 3.2 relationship tables (relationships.xml, version 3.2, read 2026-11-16); specification text is login-gated. What starts a process (SC-01); was the text triggered_by. The owner's decision D5, 2026-11-16 (metamodel 0.17.0).",
+      "confidence": "high",
+      "confidence_basis": "concept defined by a public standard and checked (BIAN public portal / Archi oracle)",
+      "identifier": {
+        "key": [
+          "name"
+        ],
+        "basis": "SDEM",
+        "reasoning": "no standard key; SDEM recommends a unique name within the architecture dataset so duplicates can be detected"
+      }
+    },
+    {
+      "type": "A1.Product",
+      "level": "A1",
+      "abstract": false,
+      "extends": null,
+      "artefact": false,
+      "definition": "A coherent offering to customers — an account, a card, a payment service — and the services and information it brings together",
+      "definition_source": "archimate_native",
+      "alignment_kind": "exact",
+      "reference": {
+        "standard": "ArchiMate 3.2",
+        "release": "3.2",
+        "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
+        "concept": "Product",
+        "locator": "chapter 8"
+      },
+      "evidence_status": "interpreted_from_official_source",
+      "reasoning": "ArchiMate 3.2 Product, chapter 8 — concept present in Archi's implementation of the ArchiMate 3.2 relationship tables (relationships.xml, version 3.2, read 2026-11-16); specification text is login-gated. Banks design around products (SC-02). The owner's decision D5, 2026-11-16 (metamodel 0.17.0).",
+      "confidence": "high",
+      "confidence_basis": "concept defined by a public standard and checked (BIAN public portal / Archi oracle)",
+      "identifier": {
+        "key": [
+          "name"
+        ],
+        "basis": "SDEM",
+        "reasoning": "no standard key; SDEM recommends a unique name within the architecture dataset so duplicates can be detected"
+      }
+    },
+    {
+      "type": "A1.BusinessInterface",
+      "level": "A1",
+      "abstract": false,
+      "extends": null,
+      "artefact": false,
+      "definition": "A channel through which the business offers its services — a branch, a mobile app, an open-banking API, a file",
+      "definition_source": "archimate_native",
+      "alignment_kind": "exact",
+      "reference": {
+        "standard": "ArchiMate 3.2",
+        "release": "3.2",
+        "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
+        "concept": "Business Interface",
+        "locator": "chapter 8"
+      },
+      "evidence_status": "interpreted_from_official_source",
+      "reasoning": "ArchiMate 3.2 Business Interface, chapter 8 — concept present in Archi's implementation of the ArchiMate 3.2 relationship tables (relationships.xml, version 3.2, read 2026-11-16); specification text is login-gated. Channels are a core bank concept (SC-03); was the text channels. The owner's decision D5, 2026-11-16 (metamodel 0.17.0).",
       "confidence": "high",
       "confidence_basis": "concept defined by a public standard and checked (BIAN public portal / Archi oracle)",
       "identifier": {

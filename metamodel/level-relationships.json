@@ -1,5 +1,5 @@
 {
-  "metamodel_version": "0.16.0",
+  "metamodel_version": "0.17.0",
   "note": "Within-level relationships are held by each level model, never by SDEM mapping documents. 0.5.15: A1, A3 and A4 constraint sets added from each level's reference architecture (previously any catalogued kind was accepted and the diagram showed what the examples happened to use). 0.5.14: artefact rows (B14, B15, BOM → objects). 0.5.17: artefact rows flagged enforceable=false; device composition added (relationships test findings 1, 2). 0.5.20: Phase 2 — 113 rows verified_against_archi (112 direct, RA4-31 via its stated alternative); RA3-30/31 (TOGAF) remain unverified_togaf.",
   "kinds": [
     {
@@ -4125,21 +4125,445 @@
         "basis": "SDEM",
         "reasoning": "a path has two ends; a node is the end of many paths"
       }
+    },
+    {
+      "level": "A1",
+      "source_type": "A1.BusinessEvent",
+      "kind": "triggering",
+      "target_type": "A1.BusinessProcess",
+      "id": "RA1-50",
+      "description": "The event starts the process (or activity).",
+      "reasoning": "ArchiMate's standard relationship between these concepts (the owner's decision D5, 2026-11-16).",
+      "basis": "[ARCHI] Archi's implementation of the ArchiMate 3.2 relationship tables (relationships.xml, version 3.2, read 2026-11-16): BusinessEvent → BusinessProcess allows 't'",
+      "reference_source": "[ARCHI]",
+      "confidence": "high",
+      "verification": "verified_against_archi",
+      "inference": {
+        "archimate_source": "BusinessEvent",
+        "archimate_target": "BusinessProcess",
+        "pattern": "triggering",
+        "reasoning": "ArchiMate permits triggering from BusinessEvent to BusinessProcess.",
+        "confidence": "high",
+        "test": "Archi relationship matrix: BusinessEvent → BusinessProcess must list 't'",
+        "oracle_verdict": "confirmed"
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "any number either way"
+      }
+    },
+    {
+      "level": "A1",
+      "source_type": "A1.BusinessProcess",
+      "kind": "triggering",
+      "target_type": "A1.BusinessEvent",
+      "id": "RA1-51",
+      "description": "The process ends in (raises) the event.",
+      "reasoning": "ArchiMate's standard relationship between these concepts (the owner's decision D5, 2026-11-16).",
+      "basis": "[ARCHI] Archi's implementation of the ArchiMate 3.2 relationship tables (relationships.xml, version 3.2, read 2026-11-16): BusinessProcess → BusinessEvent allows 't'",
+      "reference_source": "[ARCHI]",
+      "confidence": "high",
+      "verification": "verified_against_archi",
+      "inference": {
+        "archimate_source": "BusinessProcess",
+        "archimate_target": "BusinessEvent",
+        "pattern": "triggering",
+        "reasoning": "ArchiMate permits triggering from BusinessProcess to BusinessEvent.",
+        "confidence": "high",
+        "test": "Archi relationship matrix: BusinessProcess → BusinessEvent must list 't'",
+        "oracle_verdict": "confirmed"
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "any number either way"
+      }
+    },
+    {
+      "level": "A1",
+      "source_type": "A1.BusinessEvent",
+      "kind": "access",
+      "target_type": "A1.BusinessObject",
+      "id": "RA1-52",
+      "description": "The event carries the business object (an instruction received).",
+      "reasoning": "ArchiMate's standard relationship between these concepts (the owner's decision D5, 2026-11-16).",
+      "basis": "[ARCHI] Archi's implementation of the ArchiMate 3.2 relationship tables (relationships.xml, version 3.2, read 2026-11-16): BusinessEvent → BusinessObject allows 'a'",
+      "reference_source": "[ARCHI]",
+      "confidence": "high",
+      "verification": "verified_against_archi",
+      "inference": {
+        "archimate_source": "BusinessEvent",
+        "archimate_target": "BusinessObject",
+        "pattern": "access",
+        "reasoning": "ArchiMate permits access from BusinessEvent to BusinessObject.",
+        "confidence": "high",
+        "test": "Archi relationship matrix: BusinessEvent → BusinessObject must list 'a'",
+        "oracle_verdict": "confirmed"
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "any number either way"
+      }
+    },
+    {
+      "level": "A1",
+      "source_type": "A1.BusinessActor",
+      "kind": "composition",
+      "target_type": "A1.BusinessInterface",
+      "id": "RA1-53",
+      "description": "The actor has the channel (its own interface).",
+      "reasoning": "ArchiMate's standard relationship between these concepts (the owner's decision D5, 2026-11-16).",
+      "basis": "[ARCHI] Archi's implementation of the ArchiMate 3.2 relationship tables (relationships.xml, version 3.2, read 2026-11-16): BusinessActor → BusinessInterface allows 'c'",
+      "reference_source": "[ARCHI]",
+      "confidence": "high",
+      "verification": "verified_against_archi",
+      "inference": {
+        "archimate_source": "BusinessActor",
+        "archimate_target": "BusinessInterface",
+        "pattern": "composition",
+        "reasoning": "ArchiMate permits composition from BusinessActor to BusinessInterface.",
+        "confidence": "high",
+        "test": "Archi relationship matrix: BusinessActor → BusinessInterface must list 'c'",
+        "oracle_verdict": "confirmed"
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..1",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "a channel belongs to one actor or role"
+      }
+    },
+    {
+      "level": "A1",
+      "source_type": "A1.BusinessRole",
+      "kind": "composition",
+      "target_type": "A1.BusinessInterface",
+      "id": "RA1-54",
+      "description": "The role has the channel.",
+      "reasoning": "ArchiMate's standard relationship between these concepts (the owner's decision D5, 2026-11-16).",
+      "basis": "[ARCHI] Archi's implementation of the ArchiMate 3.2 relationship tables (relationships.xml, version 3.2, read 2026-11-16): BusinessRole → BusinessInterface allows 'c'",
+      "reference_source": "[ARCHI]",
+      "confidence": "high",
+      "verification": "verified_against_archi",
+      "inference": {
+        "archimate_source": "BusinessRole",
+        "archimate_target": "BusinessInterface",
+        "pattern": "composition",
+        "reasoning": "ArchiMate permits composition from BusinessRole to BusinessInterface.",
+        "confidence": "high",
+        "test": "Archi relationship matrix: BusinessRole → BusinessInterface must list 'c'",
+        "oracle_verdict": "confirmed"
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..1",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "a channel belongs to one actor or role"
+      }
+    },
+    {
+      "level": "A1",
+      "source_type": "A1.BusinessInterface",
+      "kind": "serving",
+      "target_type": "A1.BusinessActor",
+      "id": "RA1-55",
+      "description": "The channel serves the actor (a customer uses the mobile app).",
+      "reasoning": "ArchiMate's standard relationship between these concepts (the owner's decision D5, 2026-11-16).",
+      "basis": "[ARCHI] Archi's implementation of the ArchiMate 3.2 relationship tables (relationships.xml, version 3.2, read 2026-11-16): BusinessInterface → BusinessActor allows 'v'",
+      "reference_source": "[ARCHI]",
+      "confidence": "high",
+      "verification": "verified_against_archi",
+      "inference": {
+        "archimate_source": "BusinessInterface",
+        "archimate_target": "BusinessActor",
+        "pattern": "serving",
+        "reasoning": "ArchiMate permits serving from BusinessInterface to BusinessActor.",
+        "confidence": "high",
+        "test": "Archi relationship matrix: BusinessInterface → BusinessActor must list 'v'",
+        "oracle_verdict": "confirmed"
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "any number either way"
+      }
+    },
+    {
+      "level": "A1",
+      "source_type": "A1.BusinessInterface",
+      "kind": "serving",
+      "target_type": "A1.BusinessRole",
+      "id": "RA1-56",
+      "description": "The channel serves the role.",
+      "reasoning": "ArchiMate's standard relationship between these concepts (the owner's decision D5, 2026-11-16).",
+      "basis": "[ARCHI] Archi's implementation of the ArchiMate 3.2 relationship tables (relationships.xml, version 3.2, read 2026-11-16): BusinessInterface → BusinessRole allows 'v'",
+      "reference_source": "[ARCHI]",
+      "confidence": "high",
+      "verification": "verified_against_archi",
+      "inference": {
+        "archimate_source": "BusinessInterface",
+        "archimate_target": "BusinessRole",
+        "pattern": "serving",
+        "reasoning": "ArchiMate permits serving from BusinessInterface to BusinessRole.",
+        "confidence": "high",
+        "test": "Archi relationship matrix: BusinessInterface → BusinessRole must list 'v'",
+        "oracle_verdict": "confirmed"
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "any number either way"
+      }
+    },
+    {
+      "level": "A1",
+      "source_type": "A1.BusinessInterface",
+      "kind": "association",
+      "target_type": "A1.BusinessService",
+      "id": "RA1-57",
+      "description": "The service is offered through the channel (the ArchiMate 3.2 tables have no assignment between them; association).",
+      "reasoning": "ArchiMate's standard relationship between these concepts (the owner's decision D5, 2026-11-16).",
+      "basis": "[ARCHI] Archi's implementation of the ArchiMate 3.2 relationship tables (relationships.xml, version 3.2, read 2026-11-16): BusinessInterface → BusinessService allows 'o'",
+      "reference_source": "[ARCHI]",
+      "confidence": "high",
+      "verification": "verified_against_archi",
+      "inference": {
+        "archimate_source": "BusinessInterface",
+        "archimate_target": "BusinessService",
+        "pattern": "association",
+        "reasoning": "ArchiMate permits association from BusinessInterface to BusinessService.",
+        "confidence": "high",
+        "test": "Archi relationship matrix: BusinessInterface → BusinessService must list 'o'",
+        "oracle_verdict": "confirmed"
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "any number either way"
+      }
+    },
+    {
+      "level": "A1",
+      "source_type": "A1.Product",
+      "kind": "aggregation",
+      "target_type": "A1.BusinessService",
+      "id": "RA1-58",
+      "description": "The product brings the service together with others.",
+      "reasoning": "ArchiMate's standard relationship between these concepts (the owner's decision D5, 2026-11-16).",
+      "basis": "[ARCHI] Archi's implementation of the ArchiMate 3.2 relationship tables (relationships.xml, version 3.2, read 2026-11-16): Product → BusinessService allows 'g'",
+      "reference_source": "[ARCHI]",
+      "confidence": "high",
+      "verification": "verified_against_archi",
+      "inference": {
+        "archimate_source": "Product",
+        "archimate_target": "BusinessService",
+        "pattern": "aggregation",
+        "reasoning": "ArchiMate permits aggregation from Product to BusinessService.",
+        "confidence": "high",
+        "test": "Archi relationship matrix: Product → BusinessService must list 'g'",
+        "oracle_verdict": "confirmed"
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "any number either way"
+      }
+    },
+    {
+      "level": "A1",
+      "source_type": "A1.Product",
+      "kind": "aggregation",
+      "target_type": "A1.BusinessObject",
+      "id": "RA1-59",
+      "description": "The product brings the information (terms, an account record) together.",
+      "reasoning": "ArchiMate's standard relationship between these concepts (the owner's decision D5, 2026-11-16).",
+      "basis": "[ARCHI] Archi's implementation of the ArchiMate 3.2 relationship tables (relationships.xml, version 3.2, read 2026-11-16): Product → BusinessObject allows 'g'",
+      "reference_source": "[ARCHI]",
+      "confidence": "high",
+      "verification": "verified_against_archi",
+      "inference": {
+        "archimate_source": "Product",
+        "archimate_target": "BusinessObject",
+        "pattern": "aggregation",
+        "reasoning": "ArchiMate permits aggregation from Product to BusinessObject.",
+        "confidence": "high",
+        "test": "Archi relationship matrix: Product → BusinessObject must list 'g'",
+        "oracle_verdict": "confirmed"
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "any number either way"
+      }
+    },
+    {
+      "level": "A1",
+      "source_type": "A1.Product",
+      "kind": "composition",
+      "target_type": "A1.Product",
+      "id": "RA1-60",
+      "description": "A product is made of smaller products (a bundle).",
+      "reasoning": "ArchiMate's standard relationship between these concepts (the owner's decision D5, 2026-11-16).",
+      "basis": "[ARCHI] Archi's implementation of the ArchiMate 3.2 relationship tables (relationships.xml, version 3.2, read 2026-11-16): Product → Product allows 'c'",
+      "reference_source": "[ARCHI]",
+      "confidence": "high",
+      "verification": "verified_against_archi",
+      "inference": {
+        "archimate_source": "Product",
+        "archimate_target": "Product",
+        "pattern": "composition",
+        "reasoning": "ArchiMate permits composition from Product to Product.",
+        "confidence": "high",
+        "test": "Archi relationship matrix: Product → Product must list 'c'",
+        "oracle_verdict": "confirmed"
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..1",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "a part belongs to one bundle"
+      }
+    },
+    {
+      "level": "A4",
+      "source_type": "A4.Location",
+      "kind": "composition",
+      "target_type": "A4.Location",
+      "id": "RA4-42",
+      "description": "A location is inside a larger one (a site in a region in a country).",
+      "reasoning": "ArchiMate's standard relationship between these concepts (the owner's decision D5, 2026-11-16).",
+      "basis": "[ARCHI] Archi's implementation of the ArchiMate 3.2 relationship tables (relationships.xml, version 3.2, read 2026-11-16): Location → Location allows 'c'",
+      "reference_source": "[ARCHI]",
+      "confidence": "high",
+      "verification": "verified_against_archi",
+      "inference": {
+        "archimate_source": "Location",
+        "archimate_target": "Location",
+        "pattern": "composition",
+        "reasoning": "ArchiMate permits composition from Location to Location.",
+        "confidence": "high",
+        "test": "Archi relationship matrix: Location → Location must list 'c'",
+        "oracle_verdict": "confirmed"
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..1",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "a place is inside one larger place"
+      }
+    },
+    {
+      "level": "A4",
+      "source_type": "A4.Location",
+      "kind": "aggregation",
+      "target_type": "A4.Node",
+      "id": "RA4-43",
+      "description": "The Node is at the location.",
+      "reasoning": "ArchiMate's standard relationship between these concepts (the owner's decision D5, 2026-11-16).",
+      "basis": "[ARCHI] Archi's implementation of the ArchiMate 3.2 relationship tables (relationships.xml, version 3.2, read 2026-11-16): Location → Node allows 'g'",
+      "reference_source": "[ARCHI]",
+      "confidence": "high",
+      "verification": "verified_against_archi",
+      "inference": {
+        "archimate_source": "Location",
+        "archimate_target": "Node",
+        "pattern": "aggregation",
+        "reasoning": "ArchiMate permits aggregation from Location to Node.",
+        "confidence": "high",
+        "test": "Archi relationship matrix: Location → Node must list 'g'",
+        "oracle_verdict": "confirmed"
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..1",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "a thing is at one place at a time"
+      }
+    },
+    {
+      "level": "A4",
+      "source_type": "A4.Location",
+      "kind": "aggregation",
+      "target_type": "A4.Device",
+      "id": "RA4-44",
+      "description": "The Device is at the location.",
+      "reasoning": "ArchiMate's standard relationship between these concepts (the owner's decision D5, 2026-11-16).",
+      "basis": "[ARCHI] Archi's implementation of the ArchiMate 3.2 relationship tables (relationships.xml, version 3.2, read 2026-11-16): Location → Device allows 'g'",
+      "reference_source": "[ARCHI]",
+      "confidence": "high",
+      "verification": "verified_against_archi",
+      "inference": {
+        "archimate_source": "Location",
+        "archimate_target": "Device",
+        "pattern": "aggregation",
+        "reasoning": "ArchiMate permits aggregation from Location to Device.",
+        "confidence": "high",
+        "test": "Archi relationship matrix: Location → Device must list 'g'",
+        "oracle_verdict": "confirmed"
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..1",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "a thing is at one place at a time"
+      }
+    },
+    {
+      "level": "A4",
+      "source_type": "A4.Location",
+      "kind": "aggregation",
+      "target_type": "A4.SystemSoftware",
+      "id": "RA4-45",
+      "description": "The SystemSoftware is at the location.",
+      "reasoning": "ArchiMate's standard relationship between these concepts (the owner's decision D5, 2026-11-16).",
+      "basis": "[ARCHI] Archi's implementation of the ArchiMate 3.2 relationship tables (relationships.xml, version 3.2, read 2026-11-16): Location → SystemSoftware allows 'g'",
+      "reference_source": "[ARCHI]",
+      "confidence": "high",
+      "verification": "verified_against_archi",
+      "inference": {
+        "archimate_source": "Location",
+        "archimate_target": "SystemSoftware",
+        "pattern": "aggregation",
+        "reasoning": "ArchiMate permits aggregation from Location to SystemSoftware.",
+        "confidence": "high",
+        "test": "Archi relationship matrix: Location → SystemSoftware must list 'g'",
+        "oracle_verdict": "confirmed"
+      },
+      "confidence_basis": "standard relationship checked (BIAN public material / Archi oracle)",
+      "cardinality": {
+        "source_per_target": "0..1",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "a thing is at one place at a time"
+      }
     }
   ],
   "policy": "Every within-level relationship must match a constraint row for its level, or be an association (ArchiMate's generic relationship, permitted between any two entities of one level). A2 rows come from BIAN's Service Landscape metamodel; A1, A3 and A4 rows are derived from ArchiMate 3.2 (ch. 6–10) and TOGAF 10 for the concepts each SDEM entity derives from (see README › Reference architecture provenance). ArchiMate and TOGAF are login-gated: those rows are paraphrased from the public chapter structure and marked unverified, like the S-row citations.",
   "inheritance": [
-    {
-      "id": "XA1-01",
-      "level": "A1",
-      "entity": "A1.ValueStreamStage",
-      "extends": "A1.ValueStream",
-      "description": "A1.ValueStreamStage is-a A1.ValueStream.",
-      "reference_source": "SDEM catalogue (metamodel/a*-*.json); ArchiMate specialization",
-      "reasoning": "Catalogue inheritance: an SDEM extension or compatibility supertype; the graph resolves a mapping's abstract or parent type to the architecture dataset's concrete instance through it.",
-      "confidence": "high",
-      "verification": "sdem_definition"
-    },
     {
       "id": "XA1-02",
       "level": "A1",

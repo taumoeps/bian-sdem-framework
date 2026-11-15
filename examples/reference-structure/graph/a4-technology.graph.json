@@ -6,11 +6,11 @@
     "directed": true,
     "metadata": {
       "sdem_store_version": "1.0",
-      "export_sha256": "2c16f7207aa5c0fcf66e3d721b83ddc89e74429b860f2fb6da3daa7761034d21",
+      "export_sha256": "166525fc3e8649c86d5ddafdd04510ce16ad3049e5b70825253173306bb57be0",
       "level": "A4",
       "model_id": "reference-structure-a4",
       "model_version": "2026.10",
-      "metamodel_version": "0.16.0",
+      "metamodel_version": "0.17.0",
       "source_system": "SDEM-GENERATED-FROM-RECORD"
     },
     "nodes": {
@@ -272,6 +272,28 @@
           "version": "1.0",
           "lifecycle_status": "active",
           "description": "Synthetic instance of A4.Artifact carrying one relationship per constraint row of A4; no business meaning."
+        }
+      },
+      "A4:RS-Location-1@1.0": {
+        "label": "Location 1 (structure conformance)",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.Location",
+          "id": "RS-Location-1",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic instance of A4.Location carrying one relationship per constraint row of A4; no business meaning."
+        }
+      },
+      "A4:RS-Location-2@1.0": {
+        "label": "Location 2 (structure conformance)",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.Location",
+          "id": "RS-Location-2",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic instance of A4.Location carrying one relationship per constraint row of A4; no business meaning."
         }
       }
     },
@@ -726,6 +748,50 @@
           "row": "RA4-41"
         },
         "label": "RA4-41"
+      },
+      {
+        "id": "A4:RS-Location-1-composition-RS-Location-2",
+        "source": "A4:RS-Location-1@1.0",
+        "target": "A4:RS-Location-2@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-42"
+        },
+        "label": "RA4-42"
+      },
+      {
+        "id": "A4:RS-Location-1-aggregation-RS-Node-1",
+        "source": "A4:RS-Location-1@1.0",
+        "target": "A4:RS-Node-1@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-43"
+        },
+        "label": "RA4-43"
+      },
+      {
+        "id": "A4:RS-Location-1-aggregation-RS-Device-1",
+        "source": "A4:RS-Location-1@1.0",
+        "target": "A4:RS-Device-1@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-44"
+        },
+        "label": "RA4-44"
+      },
+      {
+        "id": "A4:RS-Location-1-aggregation-RS-SystemSoftware-1",
+        "source": "A4:RS-Location-1@1.0",
+        "target": "A4:RS-SystemSoftware-1@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-45"
+        },
+        "label": "RA4-45"
       },
       {
         "id": "A4:RS-Deployment-2-aggregation-RS-Artifact-1",

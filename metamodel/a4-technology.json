@@ -1,5 +1,5 @@
 {
-  "metamodel_version": "0.16.0",
+  "metamodel_version": "0.17.0",
   "level": "A4",
   "entities": [
     {
@@ -328,6 +328,34 @@
       },
       "evidence_status": "interpreted_from_official_source",
       "reasoning": "ArchiMate 3.2 Artifact, ch. 10 — concept present in the open-source Archi implementation of the ArchiMate 3.2 relationship tables (commit 9e6a014), which the relationships test looked up; specification text is login-gated.",
+      "confidence": "high",
+      "confidence_basis": "concept defined by a public standard and checked (BIAN public portal / Archi oracle)",
+      "identifier": {
+        "key": [
+          "name"
+        ],
+        "basis": "SDEM",
+        "reasoning": "no standard key; SDEM recommends a unique name within the architecture dataset so duplicates can be detected"
+      }
+    },
+    {
+      "type": "A4.Location",
+      "level": "A4",
+      "abstract": false,
+      "extends": null,
+      "artefact": false,
+      "definition": "A place where things are — a country, a region, a site or a cloud region",
+      "definition_source": "archimate_native",
+      "alignment_kind": "exact",
+      "reference": {
+        "standard": "ArchiMate 3.2",
+        "release": "3.2",
+        "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
+        "concept": "Location",
+        "locator": "chapter 4 (composite element)"
+      },
+      "evidence_status": "interpreted_from_official_source",
+      "reasoning": "ArchiMate 3.2 Location, chapter 4 (composite element) — concept present in Archi's implementation of the ArchiMate 3.2 relationship tables (relationships.xml, version 3.2, read 2026-11-16); specification text is login-gated. Data residency compares records, not text (SC-04); A4 by the owner’s decision D4, referred to from A1. The owner's decision D5, 2026-11-16 (metamodel 0.17.0).",
       "confidence": "high",
       "confidence_basis": "concept defined by a public standard and checked (BIAN public portal / Archi oracle)",
       "identifier": {

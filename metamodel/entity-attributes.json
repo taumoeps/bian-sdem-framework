@@ -1,5 +1,5 @@
 {
-  "metamodel_version": "0.16.0",
+  "metamodel_version": "0.17.0",
   "note": "Attribute definitions of the Architecture Metamodel: the fields every instance carries (core_fields) and each entity type's own attributes. Source, reasoning, verification and confidence per attribute. Enforced by sdem-graph check (sdem/conformance.py, logical rules LC-04…LC-13) and published as per-entity JSON Schemas (sdem/physical.py); export-conventions.json keys must all appear here (test). Common attributes (common_attributes) apply to every entity type in every architecture; approved in the A1 data-model review 2026-10-24.",
   "confidence_rule": "high   — defined by a public standard and checked (BIAN public material, OpenAPI, or a standard concept or\n           relationship confirmed by the open-source Archi oracle); or an SDEM data-contract field, which SDEM defines\n           authoritatively.\n  medium — built on a standard concept or relationship as SDEM chose to model it; or BIAN intent / target only;\n           or an SDEM definition, a login-gated source, or a cited-but-unverified source that was validated against\n           sealed answers; or institution data under an SDEM convention.\n  low    — no standard basis and not validated against sealed answers; or deprecated.",
   "placeholders": {
@@ -1783,8 +1783,14 @@
         "date": "2026-10-24",
         "draft_id": "DA1-22"
       },
-      "kind": "value",
-      "confidence_basis": "built on a standard concept (confirmed by the Archi oracle) as SDEM chose to model it"
+      "kind": "reference",
+      "confidence_basis": "built on a standard concept (confirmed by the Archi oracle) as SDEM chose to model it",
+      "references": [
+        "A1.BusinessEvent"
+      ],
+      "reference_scope": "within-level — the event that starts it",
+      "enforcement": "warning",
+      "enforcement_reasoning": "From 0.17.0 it names an A1.BusinessEvent (SC-01, AT-02); text written before is reported, never refused (FD-P2)."
     },
     {
       "id": "AT-A1-20",
@@ -2025,7 +2031,7 @@
         "date": "2026-10-24",
         "draft_id": "DA1-30"
       },
-      "kind": "enumeration",
+      "kind": "reference",
       "values": [
         "branch",
         "online",
@@ -2035,7 +2041,13 @@
         "API"
       ],
       "values_source": "SDEM",
-      "confidence_basis": "SDEM field with no standard concept; not validated"
+      "confidence_basis": "SDEM field with no standard concept; not validated",
+      "references": [
+        "A1.BusinessInterface"
+      ],
+      "reference_scope": "within-level — the channels the service is offered through",
+      "enforcement": "warning",
+      "enforcement_reasoning": "From 0.17.0 it names A1.BusinessInterface records (SC-03, AT-02); text written before is reported, never refused (FD-P2)."
     },
     {
       "id": "AT-A1-28",
@@ -2202,8 +2214,14 @@
         "date": "2026-10-24",
         "draft_id": "DA1-36"
       },
-      "kind": "value",
-      "confidence_basis": "defined by a public standard (W3C ORG) and checked"
+      "kind": "reference",
+      "confidence_basis": "defined by a public standard (W3C ORG) and checked",
+      "references": [
+        "A4.Location"
+      ],
+      "reference_scope": "cross-level — a join key to the A4 location record",
+      "enforcement": "warning",
+      "enforcement_reasoning": "From 0.17.0 it names an A4.Location record (SC-04, D4); text written before is reported, never refused (FD-P2)."
     },
     {
       "id": "AT-A1-34",
@@ -4625,6 +4643,330 @@
         "A3.DataEntity"
       ],
       "reference_scope": "cross-level — a join key; never a federated edge itself"
+    },
+    {
+      "id": "AT-A1-41",
+      "entity": "A1.BusinessEvent",
+      "name": "event_kind",
+      "type": "string",
+      "required": false,
+      "description": "whether the event comes from outside, from inside, or from time",
+      "status": "active",
+      "source": "ArchiMate attribute (SDEM)",
+      "reference": {
+        "standard": "SDEM",
+        "locator": "docs/design/sdem-full-design-metamodel-design.md",
+        "uri": "docs/design/sdem-full-design-metamodel-design.md"
+      },
+      "verification": "SDEM definition (the owner's decision, 2026-11-16)",
+      "reasoning": "ArchiMate distinguishes events by their source; time events drive cut-offs and batches.",
+      "confidence": "low",
+      "read_by": "sdem check, trace and impact, documents",
+      "question": "Whether the event comes from outside, from inside, or from time?",
+      "approved": {
+        "review": "metamodel 0.17.0 — a full design",
+        "date": "2026-11-16",
+        "draft_id": "FD-event_kind"
+      },
+      "kind": "enumeration",
+      "confidence_basis": "SDEM field with no standard concept; not validated",
+      "values": [
+        "external",
+        "internal",
+        "time"
+      ],
+      "values_source": "SDEM"
+    },
+    {
+      "id": "AT-A1-42",
+      "entity": "A1.BusinessEvent",
+      "name": "schedule",
+      "type": "string",
+      "required": false,
+      "description": "when a time event happens, e.g. \"weekdays 16:00 local\" or a cron expression",
+      "status": "active",
+      "source": "ArchiMate attribute (SDEM)",
+      "reference": {
+        "standard": "SDEM",
+        "locator": "docs/design/sdem-full-design-metamodel-design.md",
+        "uri": "docs/design/sdem-full-design-metamodel-design.md"
+      },
+      "verification": "SDEM definition (the owner's decision, 2026-11-16)",
+      "reasoning": "For time events: a payment cut-off, an end-of-day run.",
+      "confidence": "low",
+      "read_by": "sdem check, trace and impact, documents",
+      "question": "When a time event happens, e.g. \"weekdays 16:00 local\" or a cron expression?",
+      "approved": {
+        "review": "metamodel 0.17.0 — a full design",
+        "date": "2026-11-16",
+        "draft_id": "FD-schedule"
+      },
+      "kind": "value",
+      "confidence_basis": "SDEM field with no standard concept; not validated"
+    },
+    {
+      "id": "AT-A1-43",
+      "entity": "A1.Product",
+      "name": "product_kind",
+      "type": "string",
+      "required": false,
+      "description": "the kind of product, e.g. account, card, payment, loan",
+      "status": "active",
+      "source": "ArchiMate attribute (SDEM)",
+      "reference": {
+        "standard": "SDEM",
+        "locator": "docs/design/sdem-full-design-metamodel-design.md",
+        "uri": "docs/design/sdem-full-design-metamodel-design.md"
+      },
+      "verification": "SDEM definition (the owner's decision, 2026-11-16)",
+      "reasoning": "Groups products for portfolio views.",
+      "confidence": "low",
+      "read_by": "sdem check, trace and impact, documents",
+      "question": "The kind of product, e.g. account, card, payment, loan?",
+      "approved": {
+        "review": "metamodel 0.17.0 — a full design",
+        "date": "2026-11-16",
+        "draft_id": "FD-product_kind"
+      },
+      "kind": "value",
+      "confidence_basis": "SDEM field with no standard concept; not validated"
+    },
+    {
+      "id": "AT-A1-44",
+      "entity": "A1.Product",
+      "name": "segment",
+      "type": "string",
+      "required": false,
+      "description": "the customer segment the product is for, e.g. retail, business, corporate",
+      "status": "active",
+      "source": "ArchiMate attribute (SDEM)",
+      "reference": {
+        "standard": "SDEM",
+        "locator": "docs/design/sdem-full-design-metamodel-design.md",
+        "uri": "docs/design/sdem-full-design-metamodel-design.md"
+      },
+      "verification": "SDEM definition (the owner's decision, 2026-11-16)",
+      "reasoning": "Who the product is offered to.",
+      "confidence": "low",
+      "read_by": "sdem check, trace and impact, documents",
+      "question": "The customer segment the product is for, e.g. retail, business, corporate?",
+      "approved": {
+        "review": "metamodel 0.17.0 — a full design",
+        "date": "2026-11-16",
+        "draft_id": "FD-segment"
+      },
+      "kind": "value",
+      "confidence_basis": "SDEM field with no standard concept; not validated"
+    },
+    {
+      "id": "AT-A1-45",
+      "entity": "A1.Product",
+      "name": "regulated",
+      "type": "boolean",
+      "required": false,
+      "description": "whether the product is subject to specific regulation",
+      "status": "active",
+      "source": "ArchiMate attribute (SDEM)",
+      "reference": {
+        "standard": "SDEM",
+        "locator": "docs/design/sdem-full-design-metamodel-design.md",
+        "uri": "docs/design/sdem-full-design-metamodel-design.md"
+      },
+      "verification": "SDEM definition (the owner's decision, 2026-11-16)",
+      "reasoning": "Drives which requirements and controls apply.",
+      "confidence": "low",
+      "read_by": "sdem check, trace and impact, documents",
+      "question": "Whether the product is subject to specific regulation?",
+      "approved": {
+        "review": "metamodel 0.17.0 — a full design",
+        "date": "2026-11-16",
+        "draft_id": "FD-regulated"
+      },
+      "kind": "value",
+      "confidence_basis": "SDEM field with no standard concept; not validated"
+    },
+    {
+      "id": "AT-A1-46",
+      "entity": "A1.BusinessInterface",
+      "name": "channel_kind",
+      "type": "string",
+      "required": false,
+      "description": "the kind of channel",
+      "status": "active",
+      "source": "ArchiMate attribute (SDEM)",
+      "reference": {
+        "standard": "SDEM",
+        "locator": "docs/design/sdem-full-design-metamodel-design.md",
+        "uri": "docs/design/sdem-full-design-metamodel-design.md"
+      },
+      "verification": "SDEM definition (the owner's decision, 2026-11-16)",
+      "reasoning": "The common bank channels; an organisation adds its own through its profile.",
+      "confidence": "low",
+      "read_by": "sdem check, trace and impact, documents",
+      "question": "The kind of channel?",
+      "approved": {
+        "review": "metamodel 0.17.0 — a full design",
+        "date": "2026-11-16",
+        "draft_id": "FD-channel_kind"
+      },
+      "kind": "enumeration",
+      "confidence_basis": "SDEM field with no standard concept; not validated",
+      "values": [
+        "branch",
+        "contact_centre",
+        "web",
+        "mobile",
+        "api",
+        "file",
+        "partner"
+      ],
+      "values_source": "SDEM"
+    },
+    {
+      "id": "AT-A1-47",
+      "entity": "A1.BusinessInterface",
+      "name": "customer_facing",
+      "type": "boolean",
+      "required": false,
+      "description": "whether customers use the channel directly",
+      "status": "active",
+      "source": "ArchiMate attribute (SDEM)",
+      "reference": {
+        "standard": "SDEM",
+        "locator": "docs/design/sdem-full-design-metamodel-design.md",
+        "uri": "docs/design/sdem-full-design-metamodel-design.md"
+      },
+      "verification": "SDEM definition (the owner's decision, 2026-11-16)",
+      "reasoning": "Customer-facing channels carry customer requirements (availability, accessibility).",
+      "confidence": "low",
+      "read_by": "sdem check, trace and impact, documents",
+      "question": "Whether customers use the channel directly?",
+      "approved": {
+        "review": "metamodel 0.17.0 — a full design",
+        "date": "2026-11-16",
+        "draft_id": "FD-customer_facing"
+      },
+      "kind": "value",
+      "confidence_basis": "SDEM field with no standard concept; not validated"
+    },
+    {
+      "id": "AT-A1-48",
+      "entity": "A1.BusinessInterface",
+      "name": "availability",
+      "type": "string",
+      "required": false,
+      "description": "when the channel is open, e.g. \"24x7\" or \"business hours\"",
+      "status": "active",
+      "source": "ArchiMate attribute (SDEM)",
+      "reference": {
+        "standard": "SDEM",
+        "locator": "docs/design/sdem-full-design-metamodel-design.md",
+        "uri": "docs/design/sdem-full-design-metamodel-design.md"
+      },
+      "verification": "SDEM definition (the owner's decision, 2026-11-16)",
+      "reasoning": "Feeds availability requirements.",
+      "confidence": "low",
+      "read_by": "sdem check, trace and impact, documents",
+      "question": "When the channel is open, e.g. \"24x7\" or \"business hours\"?",
+      "approved": {
+        "review": "metamodel 0.17.0 — a full design",
+        "date": "2026-11-16",
+        "draft_id": "FD-availability"
+      },
+      "kind": "value",
+      "confidence_basis": "SDEM field with no standard concept; not validated"
+    },
+    {
+      "id": "AT-A4-41",
+      "entity": "A4.Location",
+      "name": "location_kind",
+      "type": "string",
+      "required": false,
+      "description": "what kind of place it is",
+      "status": "active",
+      "source": "ArchiMate attribute (SDEM)",
+      "reference": {
+        "standard": "SDEM",
+        "locator": "docs/design/sdem-full-design-metamodel-design.md",
+        "uri": "docs/design/sdem-full-design-metamodel-design.md"
+      },
+      "verification": "SDEM definition (the owner's decision, 2026-11-16)",
+      "reasoning": "A site sits in a region in a country (composition); a cloud region is a provider’s region.",
+      "confidence": "low",
+      "read_by": "sdem check, trace and impact, documents",
+      "question": "What kind of place it is?",
+      "approved": {
+        "review": "metamodel 0.17.0 — a full design",
+        "date": "2026-11-16",
+        "draft_id": "FD-location_kind"
+      },
+      "kind": "enumeration",
+      "confidence_basis": "SDEM field with no standard concept; not validated",
+      "values": [
+        "country",
+        "region",
+        "site",
+        "cloud_region"
+      ],
+      "values_source": "SDEM"
+    },
+    {
+      "id": "AT-A4-42",
+      "entity": "A4.Location",
+      "name": "country",
+      "type": "string",
+      "required": false,
+      "description": "the country it is in, as an ISO 3166-1 alpha-2 code",
+      "status": "active",
+      "source": "ISO 3166",
+      "reference": {
+        "standard": "ISO 3166-1 alpha-2",
+        "locator": "country codes",
+        "uri": "https://www.iso.org/iso-3166-country-codes.html"
+      },
+      "verification": "SDEM definition (the owner's decision, 2026-11-16)",
+      "reasoning": "Data residency rules compare country codes.",
+      "confidence": "high",
+      "read_by": "sdem check, trace and impact, documents",
+      "question": "The country it is in, as an ISO 3166-1 alpha-2 code?",
+      "approved": {
+        "review": "metamodel 0.17.0 — a full design",
+        "date": "2026-11-16",
+        "draft_id": "FD-country"
+      },
+      "kind": "value",
+      "confidence_basis": "defined by a public standard (ISO 3166) and checked"
+    },
+    {
+      "id": "AT-A4-43",
+      "entity": "A4.InfrastructureComponent",
+      "name": "location",
+      "type": "string",
+      "required": false,
+      "description": "the location record where the shape is — a site, a region or a cloud region",
+      "status": "active",
+      "source": "ArchiMate attribute (SDEM)",
+      "reference": {
+        "standard": "SDEM",
+        "locator": "docs/design/sdem-full-design-metamodel-design.md",
+        "uri": "docs/design/sdem-full-design-metamodel-design.md"
+      },
+      "verification": "SDEM definition (the owner's decision, 2026-11-16)",
+      "reasoning": "Beside the free-text site (kept, so no existing design is warned — FD-P2): a record that residency checks can compare (SC-04, AT-02).",
+      "confidence": "low",
+      "read_by": "sdem check, trace and impact, documents",
+      "question": "The location record where the shape is — a site, a region or a cloud region?",
+      "approved": {
+        "review": "metamodel 0.17.0 — a full design",
+        "date": "2026-11-16",
+        "draft_id": "FD-location"
+      },
+      "kind": "reference",
+      "confidence_basis": "SDEM field with no standard concept; not validated",
+      "references": [
+        "A4.Location"
+      ],
+      "reference_scope": "within-level — the record it names"
     }
   ],
   "common_attributes": [

@@ -328,54 +328,6 @@
           "x-sdem-reasoning": "A record's source_id says where the record came from; a design often gives one fact in another section, or a second document gives it. Recording the source per attribute lets a reviewer check each value against its evidence, in the same dataset — no second store — and with the same `kind:ref` convention as source_id and the registry's evidence.",
           "x-sdem-confidence": "low"
         },
-        "stages": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "description": "ordered ids of the stream's stages",
-          "x-sdem-id": "AT-A1-03",
-          "x-sdem-group": "inherited",
-          "x-sdem-kind": "reference",
-          "x-sdem-references": [
-            "A1.ValueStreamStage"
-          ],
-          "x-sdem-source": {
-            "standard": "ArchiMate 3.2 (relationship)",
-            "locator": "composition, ch. 7",
-            "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/"
-          },
-          "x-sdem-reasoning": "ArchiMate composes a value stream of stages; SDEM keeps them as an ordered list because stage order is what is matched to a BIAN scenario's operation sequence.",
-          "x-sdem-confidence": "medium"
-        },
-        "stakeholder": {
-          "type": "string",
-          "description": "who the value stream delivers value to",
-          "x-sdem-id": "AT-A1-13",
-          "x-sdem-group": "inherited",
-          "x-sdem-kind": "value",
-          "x-sdem-source": {
-            "standard": "ArchiMate 3.2 concept (confirmed via the Archi oracle; specification text login-gated)",
-            "locator": "Stakeholder (motivation)",
-            "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/"
-          },
-          "x-sdem-reasoning": "Answers: Who is this value stream for? The stakeholder the stream delivers value to; ArchiMate has a Stakeholder concept.",
-          "x-sdem-confidence": "medium"
-        },
-        "value_proposition": {
-          "type": "string",
-          "description": "the value the stream delivers",
-          "x-sdem-id": "AT-A1-14",
-          "x-sdem-group": "inherited",
-          "x-sdem-kind": "value",
-          "x-sdem-source": {
-            "standard": "ArchiMate 3.2 concept (confirmed via the Archi oracle; specification text login-gated)",
-            "locator": "Value (motivation)",
-            "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/"
-          },
-          "x-sdem-reasoning": "Answers: What value does it deliver? The value the stream produces; ArchiMate has a Value concept associated with value streams.",
-          "x-sdem-confidence": "medium"
-        },
         "entrance_criteria": {
           "type": "string",
           "description": "condition for entering the stage",
@@ -425,7 +377,7 @@
   },
   "x-sdem-entity": {
     "level": "A1",
-    "extends": "A1.ValueStream",
+    "extends": null,
     "identifier": [
       "name"
     ],
@@ -436,7 +388,7 @@
       "locator": "extension of A1.ValueStream",
       "uri": "https://github.com/taumoeps/bian-sdem-framework"
     },
-    "reasoning": "SDEM extension: ArchiMate describes a value stream as a sequence of stages but models a stage as a value stream composed into another, not as its own element; SDEM makes the stage explicit so stages can be matched to BIAN scenario steps.",
+    "reasoning": "SDEM extension: ArchiMate describes a value stream as a sequence of stages but models a stage as a value stream composed into another, not as its own element; SDEM makes the stage explicit so stages can be matched to BIAN scenario steps. From 0.17.0 it no longer extends A1.ValueStream (CN-01): a stage does not carry the whole stream’s stages, stakeholder and value proposition.",
     "confidence": "medium"
   },
   "x-sdem-generated-from": "metamodel/a1…a4-*.json, metamodel/entity-attributes.json (python -m sdem.physical)"

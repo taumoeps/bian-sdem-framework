@@ -6,7 +6,7 @@
     "directed": true,
     "metadata": {
       "sdem_store_version": "1.0",
-      "metamodel_version": "0.16.0",
+      "metamodel_version": "0.17.0",
       "levels": {
         "A1": "2026.10",
         "A2": "2026.10",
@@ -16,9 +16,9 @@
       "registries": [
         {
           "file": "mappings.json",
-          "sha256": "e4fd8ea750e8f3668d6cd1a2af8cd98841052849718607b5d9a0e9240690ce64",
+          "sha256": "b09de645170fb7fb4116cec085de7d5a894c30dbdb34b96af6944d330ef2827c",
           "registry_version": "0.4.0",
-          "metamodel_version": "0.16.0"
+          "metamodel_version": "0.17.0"
         }
       ],
       "statuses": [
@@ -277,6 +277,50 @@
           "version": "16",
           "stub": true,
           "graph": "a4-technology.graph.json"
+        }
+      },
+      "A1:BEV-001@1.0": {
+        "label": "Customer onboarded",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessEvent",
+          "id": "BEV-001",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a1-business.graph.json"
+        }
+      },
+      "A3:EVT-001@1.0": {
+        "label": "CustomerOnboarded",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.Event",
+          "id": "EVT-001",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a3-application.graph.json"
+        }
+      },
+      "A1:CHN-001@1.0": {
+        "label": "Onboarding web channel",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessInterface",
+          "id": "CHN-001",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a1-business.graph.json"
+        }
+      },
+      "A1:VSS-001@1.0": {
+        "label": "Apply and capture identity",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.ValueStreamStage",
+          "id": "VSS-001",
+          "version": "1.0",
+          "stub": true,
+          "graph": "a1-business.graph.json"
         }
       }
     },
@@ -866,6 +910,96 @@
             "deployment_design:SYNTHETIC-DD-001"
           ],
           "rationale": "The customer identity table is held by the channels PostgreSQL. (made-up, metamodel 0.16.0)",
+          "baseline_id": "DEMO-BASE-001",
+          "reviewer_id": "DEMO-ARCHITECT",
+          "approved_at": "2026-01-15"
+        }
+      },
+      {
+        "id": "MAP-024",
+        "source": "A1:BEV-001@1.0",
+        "target": "A3:EVT-001@1.0",
+        "relation": "REALIZED_BY",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "BEV-001",
+            "type": "A1.BusinessEvent",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "EVT-001",
+            "type": "A3.Event",
+            "version": "1.0"
+          },
+          "perspective": "architecture",
+          "status": "approved",
+          "evidence": [
+            "event_design:SYNTHETIC-ED-001"
+          ],
+          "rationale": "The portal raises CustomerOnboarded when the business event happens. (made-up, metamodel 0.17.0)",
+          "baseline_id": "DEMO-BASE-001",
+          "reviewer_id": "DEMO-ARCHITECT",
+          "approved_at": "2026-01-15"
+        }
+      },
+      {
+        "id": "MAP-025",
+        "source": "A1:CHN-001@1.0",
+        "target": "A3:IFC-001@2.3",
+        "relation": "REALIZED_BY",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "CHN-001",
+            "type": "A1.BusinessInterface",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "IFC-001",
+            "type": "A3.ApplicationInterface",
+            "version": "2.3"
+          },
+          "perspective": "architecture",
+          "status": "approved",
+          "evidence": [
+            "application_architecture_document:SYNTHETIC-AAD-001"
+          ],
+          "rationale": "The web channel is the portal's interface. (made-up, metamodel 0.17.0)",
+          "baseline_id": "DEMO-BASE-001",
+          "reviewer_id": "DEMO-ARCHITECT",
+          "approved_at": "2026-01-15"
+        }
+      },
+      {
+        "id": "MAP-026",
+        "source": "A1:VSS-001@1.0",
+        "target": "A2:BS-001@1.0",
+        "relation": "ALIGNED_TO",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "VSS-001",
+            "type": "A1.ValueStreamStage",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "BS-001",
+            "type": "A2.BusinessScenario",
+            "version": "1.0",
+            "canonical_id": "DEMO-BIAN-SCENARIO-ONBOARD"
+          },
+          "perspective": "process",
+          "status": "approved",
+          "evidence": [
+            "process_model:SYNTHETIC-PM-001",
+            "scenario_suitability_review:SYNTHETIC-SCENARIO-REVIEW-001"
+          ],
+          "rationale": "The stage Apply and capture identity is the part of the BIAN scenario it aligns to (made-up; a stage's own ALIGNED_TO, metamodel 0.17.0).",
+          "bian_release": "DEMO-RELEASE",
           "baseline_id": "DEMO-BASE-001",
           "reviewer_id": "DEMO-ARCHITECT",
           "approved_at": "2026-01-15"

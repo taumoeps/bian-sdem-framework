@@ -586,6 +586,9 @@ package "A1 Business Architecture" as A1 {
   rectangle "A1.BusinessRole" as a1_businessrole
   rectangle "A1.BusinessObject" as a1_businessobject
   rectangle "A1.BusinessRequirement" as a1_businessrequirement
+  rectangle "A1.BusinessEvent" as a1_businessevent
+  rectangle "A1.Product" as a1_product
+  rectangle "A1.BusinessInterface" as a1_businessinterface
 }
 
 package "A2 Service Domain Architecture" as A2 {
@@ -631,6 +634,7 @@ package "A4 Technology Architecture" as A4 {
   rectangle "A4.NetworkZone" as a4_networkzone
   rectangle "A4.Path" as a4_path
   rectangle "A4.Artifact" as a4_artifact
+  rectangle "A4.Location" as a4_location
 }
 
 ' --- B: BIAN's own relationships inside A2 (14)
@@ -887,6 +891,9 @@ package "A1 Business Architecture" as A1 {
   rectangle "A1.BusinessRole\n<size:9><i>no cross-level mapping: not a mapping: S11</i></size>" as a1_businessrole #EEEEEE
   rectangle "A1.BusinessObject" as a1_businessobject
   rectangle "A1.BusinessRequirement" as a1_businessrequirement
+  rectangle "A1.BusinessEvent\n<size:9><i>no cross-level mapping: no plan row</i></size>" as a1_businessevent #EEEEEE
+  rectangle "A1.Product\n<size:9><i>no cross-level mapping: no plan row</i></size>" as a1_product #EEEEEE
+  rectangle "A1.BusinessInterface\n<size:9><i>no cross-level mapping: no plan row</i></size>" as a1_businessinterface #EEEEEE
 }
 
 package "A2 Service Domain Architecture" as A2 {
@@ -932,6 +939,7 @@ package "A4 Technology Architecture" as A4 {
   rectangle "A4.NetworkZone\n<size:9><i>no cross-level mapping: no plan row</i></size>" as a4_networkzone #EEEEEE
   rectangle "A4.Path" as a4_path
   rectangle "A4.Artifact" as a4_artifact
+  rectangle "A4.Location\n<size:9><i>no cross-level mapping: no plan row</i></size>" as a4_location #EEEEEE
 }
 
 ' --- catalogue rule (SDEM relationship type) (9)

@@ -2,7 +2,7 @@
   "note": "The core of SDEM's metamodel at its last freeze (docs/design/sdem-metamodel-stability.md). Written by `sdem model freeze` after an approved, versioned change; CI fails if the core changes without one.",
   "frozen_by": "the SDEM owner",
   "frozen_at": "2026-11-16",
-  "metamodel_version": "0.16.0",
+  "metamodel_version": "0.17.0",
   "entity_types": {
     "A1.BusinessCapability": "active",
     "A1.ValueStream": "active",
@@ -14,6 +14,9 @@
     "A1.BusinessRole": "active",
     "A1.BusinessObject": "active",
     "A1.BusinessRequirement": "active",
+    "A1.BusinessEvent": "active",
+    "A1.Product": "active",
+    "A1.BusinessInterface": "active",
     "A2.BusinessArea": "active",
     "A2.BusinessDomain": "active",
     "A2.ServiceDomain": "active",
@@ -49,7 +52,8 @@
     "A4.CommunicationNetwork": "active",
     "A4.NetworkZone": "active",
     "A4.Path": "active",
-    "A4.Artifact": "active"
+    "A4.Artifact": "active",
+    "A4.Location": "active"
   },
   "link_types": {
     "CAPABILITY_SUPPORTED_BY_DOMAIN": "active",
@@ -79,7 +83,10 @@
     "COMPONENT_SERVED_BY_TECHNOLOGY_SERVICE": "active",
     "FUNCTION_SERVED_BY_TECHNOLOGY_SERVICE": "active",
     "DATA_ENTITY_STORED_IN_ARTIFACT": "active",
-    "DATA_ENTITY_STORED_IN_SYSTEM_SOFTWARE": "active"
+    "DATA_ENTITY_STORED_IN_SYSTEM_SOFTWARE": "active",
+    "BUSINESS_EVENT_REALIZED_BY_EVENT": "active",
+    "CHANNEL_REALIZED_BY_APPLICATION_INTERFACE": "active",
+    "VALUE_STREAM_STAGE_ALIGNED_TO_SCENARIO": "active"
   },
   "within_layer_rules": {
     "RA2-01": "active",
@@ -228,7 +235,22 @@
     "RA3-33": "active",
     "RA3-34": "active",
     "RA4-40": "active",
-    "RA4-41": "active"
+    "RA4-41": "active",
+    "RA1-50": "active",
+    "RA1-51": "active",
+    "RA1-52": "active",
+    "RA1-53": "active",
+    "RA1-54": "active",
+    "RA1-55": "active",
+    "RA1-56": "active",
+    "RA1-57": "active",
+    "RA1-58": "active",
+    "RA1-59": "active",
+    "RA1-60": "active",
+    "RA4-42": "active",
+    "RA4-43": "active",
+    "RA4-44": "active",
+    "RA4-45": "active"
   },
   "attributes": {
     "AT-A1-01": "active",
@@ -393,6 +415,17 @@
     "AT-A3-50": "active",
     "AT-A3-51": "active",
     "AT-A4-40": "active",
+    "AT-A1-41": "active",
+    "AT-A1-42": "active",
+    "AT-A1-43": "active",
+    "AT-A1-44": "active",
+    "AT-A1-45": "active",
+    "AT-A1-46": "active",
+    "AT-A1-47": "active",
+    "AT-A1-48": "active",
+    "AT-A4-41": "active",
+    "AT-A4-42": "active",
+    "AT-A4-43": "active",
     "CA-01": "active",
     "CA-02": "active",
     "CA-03": "active",

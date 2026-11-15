@@ -6,11 +6,11 @@
     "directed": true,
     "metadata": {
       "sdem_store_version": "1.0",
-      "export_sha256": "a79b3ce99f2e26d01118d86bd004242b2caa38f3a4b261d6802d1eef7b6ef61c",
+      "export_sha256": "fac5cfeaea188c962e83c395937ad1195c251541692c21937d3251d102dfb576",
       "level": "A1",
       "model_id": "reference-structure-a1",
       "model_version": "2026.10",
-      "metamodel_version": "0.16.0",
+      "metamodel_version": "0.17.0",
       "source_system": "SDEM-GENERATED-FROM-RECORD"
     },
     "nodes": {
@@ -233,6 +233,72 @@
           "lifecycle_status": "active",
           "description": "Synthetic instance of A1.BusinessRequirement carrying one relationship per constraint row of A1; no business meaning."
         }
+      },
+      "A1:RS-BusinessEvent-1@1.0": {
+        "label": "BusinessEvent 1 (structure conformance)",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessEvent",
+          "id": "RS-BusinessEvent-1",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic instance of A1.BusinessEvent carrying one relationship per constraint row of A1; no business meaning."
+        }
+      },
+      "A1:RS-BusinessEvent-2@1.0": {
+        "label": "BusinessEvent 2 (structure conformance)",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessEvent",
+          "id": "RS-BusinessEvent-2",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic instance of A1.BusinessEvent carrying one relationship per constraint row of A1; no business meaning."
+        }
+      },
+      "A1:RS-Product-1@1.0": {
+        "label": "Product 1 (structure conformance)",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.Product",
+          "id": "RS-Product-1",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic instance of A1.Product carrying one relationship per constraint row of A1; no business meaning."
+        }
+      },
+      "A1:RS-Product-2@1.0": {
+        "label": "Product 2 (structure conformance)",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.Product",
+          "id": "RS-Product-2",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic instance of A1.Product carrying one relationship per constraint row of A1; no business meaning."
+        }
+      },
+      "A1:RS-BusinessInterface-1@1.0": {
+        "label": "BusinessInterface 1 (structure conformance)",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessInterface",
+          "id": "RS-BusinessInterface-1",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic instance of A1.BusinessInterface carrying one relationship per constraint row of A1; no business meaning."
+        }
+      },
+      "A1:RS-BusinessInterface-2@1.0": {
+        "label": "BusinessInterface 2 (structure conformance)",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessInterface",
+          "id": "RS-BusinessInterface-2",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic instance of A1.BusinessInterface carrying one relationship per constraint row of A1; no business meaning."
+        }
       }
     },
     "edges": [
@@ -276,7 +342,7 @@
         "relation": "serving",
         "metadata": {
           "scope": "within-level",
-          "row": "RA1-03"
+          "row": "RA1-04"
         },
         "label": "RA1-04"
       },
@@ -342,7 +408,7 @@
         "relation": "realization",
         "metadata": {
           "scope": "within-level",
-          "row": "RA1-09"
+          "row": "RA1-10"
         },
         "label": "RA1-10"
       },
@@ -430,7 +496,7 @@
         "relation": "realization",
         "metadata": {
           "scope": "within-level",
-          "row": "RA1-09"
+          "row": "RA1-10"
         },
         "label": "RA1-18"
       },
@@ -774,6 +840,127 @@
           "row": "RA1-49"
         },
         "label": "RA1-49"
+      },
+      {
+        "id": "A1:RS-BusinessEvent-1-triggering-RS-BusinessProcess-1",
+        "source": "A1:RS-BusinessEvent-1@1.0",
+        "target": "A1:RS-BusinessProcess-1@1.0",
+        "relation": "triggering",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-50"
+        },
+        "label": "RA1-50"
+      },
+      {
+        "id": "A1:RS-BusinessProcess-1-triggering-RS-BusinessEvent-1",
+        "source": "A1:RS-BusinessProcess-1@1.0",
+        "target": "A1:RS-BusinessEvent-1@1.0",
+        "relation": "triggering",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-51"
+        },
+        "label": "RA1-51"
+      },
+      {
+        "id": "A1:RS-BusinessEvent-1-access-RS-BusinessObject-1",
+        "source": "A1:RS-BusinessEvent-1@1.0",
+        "target": "A1:RS-BusinessObject-1@1.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-52"
+        },
+        "label": "RA1-52"
+      },
+      {
+        "id": "A1:RS-BusinessActor-1-composition-RS-BusinessInterface-1",
+        "source": "A1:RS-BusinessActor-1@1.0",
+        "target": "A1:RS-BusinessInterface-1@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-53"
+        },
+        "label": "RA1-53"
+      },
+      {
+        "id": "A1:RS-BusinessRole-1-composition-RS-BusinessInterface-1",
+        "source": "A1:RS-BusinessRole-1@1.0",
+        "target": "A1:RS-BusinessInterface-1@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-54"
+        },
+        "label": "RA1-54"
+      },
+      {
+        "id": "A1:RS-BusinessInterface-1-serving-RS-BusinessActor-1",
+        "source": "A1:RS-BusinessInterface-1@1.0",
+        "target": "A1:RS-BusinessActor-1@1.0",
+        "relation": "serving",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-55"
+        },
+        "label": "RA1-55"
+      },
+      {
+        "id": "A1:RS-BusinessInterface-1-serving-RS-BusinessRole-1",
+        "source": "A1:RS-BusinessInterface-1@1.0",
+        "target": "A1:RS-BusinessRole-1@1.0",
+        "relation": "serving",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-56"
+        },
+        "label": "RA1-56"
+      },
+      {
+        "id": "A1:RS-BusinessInterface-1-association-RS-BusinessService-1",
+        "source": "A1:RS-BusinessInterface-1@1.0",
+        "target": "A1:RS-BusinessService-1@1.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-57"
+        },
+        "label": "RA1-57"
+      },
+      {
+        "id": "A1:RS-Product-1-aggregation-RS-BusinessService-1",
+        "source": "A1:RS-Product-1@1.0",
+        "target": "A1:RS-BusinessService-1@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-58"
+        },
+        "label": "RA1-58"
+      },
+      {
+        "id": "A1:RS-Product-1-aggregation-RS-BusinessObject-1",
+        "source": "A1:RS-Product-1@1.0",
+        "target": "A1:RS-BusinessObject-1@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-59"
+        },
+        "label": "RA1-59"
+      },
+      {
+        "id": "A1:RS-Product-1-composition-RS-Product-2",
+        "source": "A1:RS-Product-1@1.0",
+        "target": "A1:RS-Product-2@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA1-60"
+        },
+        "label": "RA1-60"
       }
     ]
   }

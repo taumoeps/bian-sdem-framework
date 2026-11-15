@@ -69,10 +69,11 @@ def layout(reader, pkg=None):
     keyof = {(n['lvl'], n['id']): n['k'] for n in nodes}
     edges = [{'s': keyof[(e['level'], e['source'])], 't': keyof[(e['level'], e['target'])], 'rel': e['kind'], 'scope': 'w'}
              for e in reader.edges('within-level') if (e['level'], e['source']) in keyof and (e['level'], e['target']) in keyof]
+    drawn = {n['k'] for n in nodes}
     for e in reader.edges('cross-level'):
         s = reader.node(reader.mm.level(e['source']['type']) or '', e['source']['id'], e['source']['version'])
         t = reader.node(reader.mm.level(e['target']['type']) or '', e['target']['id'], e['target']['version'])
-        if s and t: edges.append({'s': s['key'], 't': t['key'], 'rel': e['relationship'], 'scope': 'x', 'mid': e['mapping_id']})
+        if s and t and s['key'] in drawn and t['key'] in drawn: edges.append({'s': s['key'], 't': t['key'], 'rel': e['relationship'], 'scope': 'x', 'mid': e['mapping_id']})   # only between drawn records (a field is not drawn, TL-03)
     for l in (pkg or {}).get('links', {}).get('links', []):
         s, t = (keyof.get((reader.mm.level(x['type']) or '', x['id'])) for x in (l['source'], l['target']))
         if s and t: edges.append({'s': s, 't': t, 'rel': l['relationship'], 'scope': 'p', 'mid': f"PROJECTED {l['confidence']} · {l['mapping_id']}"})

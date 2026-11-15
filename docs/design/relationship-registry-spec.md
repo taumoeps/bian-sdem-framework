@@ -95,6 +95,9 @@ From the relationship type catalogue (Architecture Metamodel).
 | `SERVED_BY` (FUNCTION_SERVED_BY_TECHNOLOGY_SERVICE) | A3.ApplicationFunction → A4.TechnologyService | enterprise_rule | deployment_design |
 | `STORED_IN` (DATA_ENTITY_STORED_IN_ARTIFACT) | A3.DataEntity → A4.Artifact | enterprise_rule | deployment_design |
 | `STORED_IN` (DATA_ENTITY_STORED_IN_SYSTEM_SOFTWARE) | A3.DataEntity → A4.SystemSoftware | enterprise_rule | deployment_design |
+| `REALIZED_BY` (BUSINESS_EVENT_REALIZED_BY_EVENT) | A1.BusinessEvent → A3.Event | enterprise_rule | event_design |
+| `REALIZED_BY` (CHANNEL_REALIZED_BY_APPLICATION_INTERFACE) | A1.BusinessInterface → A3.ApplicationInterface | enterprise_rule | application_architecture_document |
+| `ALIGNED_TO` (VALUE_STREAM_STAGE_ALIGNED_TO_SCENARIO) | A1.ValueStreamStage → A2.BusinessScenario | enterprise_rule | process_model, scenario_suitability_review |
 
 ## 6. Validation
 

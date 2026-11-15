@@ -104,6 +104,19 @@ def document(ws, layer):
                         'mapping_id': m.get('mapping_id'), 'status': m.get('status'), 'evidence': m.get('evidence', [])})
         return out
 
+    byid = {r['id']: r for r in recs}
+    def fields(rid):   # TL-02 (metamodel 0.15.0): a business object's or data entity's fields, as records — type, key, required, what it refers to
+        out = []
+        for x in rels:
+            f = byid.get(x['target'])
+            if x['source'] != rid or x['kind'] != 'composition' or not f or not (mm.is_a(f['type'], 'A2.BusinessObjectAttribute') or mm.is_a(f['type'], 'A3.DataAttribute')): continue
+            a = f.get('attributes') or {}
+            ref = next((names.get(y['target'], y['target']) for y in rels if y['source'] == f['id'] and y['kind'] == 'association'), None)
+            out.append({'id': f['id'], 'name': f.get('name') or f['id'], 'type': a.get('physical_type') or a.get('data_type') or '—',
+                        'key': bool(a.get('primary_key') or a.get('identifier')), 'required': bool(a.get('required')), 'refers_to': ref,
+                        'allowed_values': a.get('allowed_values') or [], 'personal': a.get('personal_information') is True})
+        return out
+
     sections, gaps = [], {'unconfirmed': [], 'no_connection': [], 'placeholders': [], 'requirements_not_confirmed': []}
     for t in types:
         items = []
@@ -119,7 +132,7 @@ def document(ws, layer):
             if ph: gaps['placeholders'].append({'id': r['id'], 'fields': ph})
             items.append({'id': r['id'], 'name': r.get('name') or r['id'], 'type': t, 'version': r.get('version'),
                           'lifecycle_status': r.get('lifecycle_status'), 'description': r.get('description', ''), 'attributes': attrs,
-                          'links_out': o, 'links_in': i, 'connections': c, 'provenance': provenance(r),
+                          'links_out': o, 'links_in': i, 'connections': c, 'provenance': provenance(r), 'fields': fields(r['id']),
                           'attribute_sources': {k: v for k, v in ((r.get('attributes') or {}).get('sources') or {}).items() if isinstance(v, str)}})   # CA-13
         sections.append({'type': t, 'title': _label(t), 'definition': (mm.entities.get(t) or {}).get('definition', ''), 'records': items})
     layer_reqs = []
@@ -160,6 +173,10 @@ def markdown(doc):
             meta = [f"version {r['version']}" if r['version'] else None, r['lifecycle_status']]
             L += [f"- **Status:** {', '.join(x for x in meta if x) or '—'}", f"- **Source:** {r['provenance']}"]
             for k, v in r['attributes'].items(): L.append(f"- **{k.replace('_', ' ')}:** {_value(v)}" + (f" — from {r['attribute_sources'][k]}" if k in r.get('attribute_sources', {}) else ''))
+            if r.get('fields'):   # TL-02: the fields as a table
+                L += ['', '| Field | Type | Key | Required | Refers to | Allowed values | Personal |', '|---|---|---|---|---|---|---|']
+                L += [f"| {f['name']} ({f['id']}) | {f['type']} | {'yes' if f['key'] else ''} | {'yes' if f['required'] else ''} | {f['refers_to'] or ''} | {', '.join(f['allowed_values'])} | {'yes' if f['personal'] else ''} |" for f in r['fields']]
+                L.append('')
             if r['links_out'] or r['links_in']:
                 cite = lambda x: f" — from {x['source_id']}" if x.get('source_id') else ''   # where the link came from (D4)
                 L.append('- **Within the layer:** ' + '; '.join([f"{x['kind']} → {x['name']} ({x['id']}){cite(x)}" for x in r['links_out']] +

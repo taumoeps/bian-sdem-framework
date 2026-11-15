@@ -6,11 +6,11 @@
     "directed": true,
     "metadata": {
       "sdem_store_version": "1.0",
-      "export_sha256": "342ceb0b5b500442a285e8d0d7d5fcdf94cb98ff5f9c975b289c9457d676f796",
+      "export_sha256": "f49ced530b85dd35068889f1f6e75fdbca051ba0324b4453bb4b5b9cd63bb386",
       "level": "A1",
       "model_id": "harbourline-fx-a1",
       "model_version": "2026.11",
-      "metamodel_version": "0.16.0",
+      "metamodel_version": "0.17.0",
       "source_system": "SYNTHETIC-EA-TOOL"
     },
     "nodes": {
@@ -948,7 +948,7 @@
         "relation": "serving",
         "metadata": {
           "scope": "within-level",
-          "row": "RA1-03"
+          "row": "RA1-04"
         }
       },
       {
@@ -958,7 +958,7 @@
         "relation": "serving",
         "metadata": {
           "scope": "within-level",
-          "row": "RA1-03"
+          "row": "RA1-04"
         }
       },
       {
@@ -968,7 +968,7 @@
         "relation": "serving",
         "metadata": {
           "scope": "within-level",
-          "row": "RA1-03"
+          "row": "RA1-04"
         }
       },
       {
@@ -978,7 +978,7 @@
         "relation": "serving",
         "metadata": {
           "scope": "within-level",
-          "row": "RA1-03"
+          "row": "RA1-04"
         }
       },
       {
@@ -1198,7 +1198,7 @@
         "relation": "realization",
         "metadata": {
           "scope": "within-level",
-          "row": "RA1-09"
+          "row": "RA1-10"
         }
       },
       {
@@ -1208,7 +1208,7 @@
         "relation": "realization",
         "metadata": {
           "scope": "within-level",
-          "row": "RA1-09"
+          "row": "RA1-10"
         }
       },
       {
@@ -1218,7 +1218,7 @@
         "relation": "realization",
         "metadata": {
           "scope": "within-level",
-          "row": "RA1-09"
+          "row": "RA1-10"
         }
       },
       {
@@ -1228,7 +1228,7 @@
         "relation": "realization",
         "metadata": {
           "scope": "within-level",
-          "row": "RA1-09"
+          "row": "RA1-10"
         }
       },
       {

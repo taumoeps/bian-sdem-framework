@@ -148,9 +148,10 @@ class StoreTests(unittest.TestCase):
             data = json.loads(re.search(r'const D=(\{.*?\});const NS', page, re.S).group(1).replace('<\\/', '</'))
             r = GraphReader.from_store(self.tmp / e)
             zones = {n['id'] for n in r.nodes(level='A4') if r.mm.is_a(n['type'], 'A4.NetworkZone')} if data.get('zones') else set()   # drawn as regions, not boxes
-            self.assertEqual(len(data['nodes']), len(r.nodes()) - len(zones), e)
-            within = [x for x in r.edges('within-level') if not (x['level'] == 'A4' and {x['source'], x['target']} & zones)]   # a placement or nesting is shown by position
-            self.assertEqual(len(data['edges']), len(within) + len(r.edges('cross-level')), e)
+            fields = {n['id'] for n in r.nodes(level='A3') if r.mm.is_a(n['type'], 'A3.DataAttribute')}   # a data entity's fields are not drawn (TL-03, 0.17.0)
+            self.assertEqual(len(data['nodes']), len(r.nodes()) - len(zones) - len(fields), e)
+            within = [x for x in r.edges('within-level') if not (x['level'] == 'A4' and {x['source'], x['target']} & zones) and not {x['source'], x['target']} & fields]   # a placement or nesting is shown by position
+            self.assertEqual(len(data['edges']), len(within) + len([x for x in r.edges('cross-level') if not {(e_['id'] if isinstance(e_, dict) else e_) for e_ in (x['source'], x['target'])} & fields]), e)
             self.assertNotRegex(page, r'<(script|link)[^>]+(src|href)=', e)  # nothing loaded from elsewhere
 
     def test_cli(self):

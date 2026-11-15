@@ -2,7 +2,7 @@
   "level": "A4",
   "model_id": "reference-structure-a4",
   "model_version": "2026.10",
-  "metamodel_version": "0.16.0",
+  "metamodel_version": "0.17.0",
   "source_system": "SDEM-GENERATED-FROM-RECORD",
   "instances": [
     {
@@ -198,6 +198,22 @@
       "name": "Artifact 2 (structure conformance)",
       "lifecycle_status": "active",
       "description": "Synthetic instance of A4.Artifact carrying one relationship per constraint row of A4; no business meaning."
+    },
+    {
+      "id": "RS-Location-1",
+      "type": "A4.Location",
+      "version": "1.0",
+      "name": "Location 1 (structure conformance)",
+      "lifecycle_status": "active",
+      "description": "Synthetic instance of A4.Location carrying one relationship per constraint row of A4; no business meaning."
+    },
+    {
+      "id": "RS-Location-2",
+      "type": "A4.Location",
+      "version": "1.0",
+      "name": "Location 2 (structure conformance)",
+      "lifecycle_status": "active",
+      "description": "Synthetic instance of A4.Location carrying one relationship per constraint row of A4; no business meaning."
     }
   ],
   "relationships": [
@@ -446,6 +462,30 @@
       "kind": "association",
       "target": "RS-Device-1",
       "name": "RA4-41"
+    },
+    {
+      "source": "RS-Location-1",
+      "kind": "composition",
+      "target": "RS-Location-2",
+      "name": "RA4-42"
+    },
+    {
+      "source": "RS-Location-1",
+      "kind": "aggregation",
+      "target": "RS-Node-1",
+      "name": "RA4-43"
+    },
+    {
+      "source": "RS-Location-1",
+      "kind": "aggregation",
+      "target": "RS-Device-1",
+      "name": "RA4-44"
+    },
+    {
+      "source": "RS-Location-1",
+      "kind": "aggregation",
+      "target": "RS-SystemSoftware-1",
+      "name": "RA4-45"
     },
     {
       "source": "RS-Deployment-2",

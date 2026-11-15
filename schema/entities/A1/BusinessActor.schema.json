@@ -394,7 +394,10 @@
           "description": "the site where it is based",
           "x-sdem-id": "AT-A1-33",
           "x-sdem-group": "specific",
-          "x-sdem-kind": "value",
+          "x-sdem-kind": "reference",
+          "x-sdem-references": [
+            "A4.Location"
+          ],
           "x-sdem-source": {
             "standard": "W3C Organization Ontology (W3C Recommendation 2014-01-16)",
             "locator": "org:basedAt / org:Site",

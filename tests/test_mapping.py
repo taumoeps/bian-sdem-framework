@@ -378,7 +378,7 @@ class MetamodelTests(unittest.TestCase):
 
     def test_catalogue_self_check(self):
         self.assertEqual(self.mm.validate(), [])
-        self.assertEqual(len(self.mm.entities), 46)   # A4.NetworkZone (0.10.0); A3.DataAttribute (0.15.0)
+        self.assertEqual(len(self.mm.entities), 50)   # A4.NetworkZone (0.10.0); A3.DataAttribute (0.15.0); event, product, channel, location (0.17.0)
         self.assertEqual(sum(1 for e in self.mm.entities.values() if e['artefact']), 3)
 
     def test_all_bian_reference_entities_are_pending(self):
@@ -388,7 +388,7 @@ class MetamodelTests(unittest.TestCase):
 
     def test_every_concrete_a4_entity_extends_the_supertype(self):
         for t, e in self.mm.entities.items():
-            if e['level'] == 'A4' and not e['abstract'] and t != 'A4.NetworkZone':   # a zone is an ArchiMate Grouping, not a shape (0.13.0)
+            if e['level'] == 'A4' and not e['abstract'] and t not in ('A4.NetworkZone', 'A4.Location'):   # a zone is an ArchiMate Grouping, not a shape (0.13.0); a location is a place (0.17.0)
                 self.assertTrue(self.mm.is_a(t, 'A4.InfrastructureComponent'), t)
 
     def test_registry_endpoints_exist_and_taxonomies_agree(self):

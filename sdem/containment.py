@@ -43,10 +43,11 @@ HIERARCHY = {
                  ('A1.BusinessActor', 'composition', 'A1.BusinessActor'), ('A1.BusinessActor', 'aggregation', 'A1.BusinessActor'),
                  ('A1.BusinessRole', 'composition', 'A1.BusinessRole'), ('A1.BusinessRole', 'aggregation', 'A1.BusinessRole'),
                  ('A1.BusinessObject', 'composition', 'A1.BusinessObject'), ('A1.BusinessObject', 'aggregation', 'A1.BusinessObject'),
-                 ('A1.BusinessService', 'composition', 'A1.BusinessService'), ('A1.BusinessRequirement', 'composition', 'A1.BusinessRequirement')],
-        'containers': ['A1.BusinessCapability', 'A1.BusinessProcess', 'A1.ValueStream'],
-        'kinds': {'A1.BusinessCapability': 'Capability', 'A1.BusinessProcess': 'Process', 'A1.BusinessActivity': 'Activity', 'A1.ValueStream': 'Value stream'},
-        'groups': [('Value streams', ['A1.ValueStream', 'A1.ValueStreamStage']),
+                 ('A1.BusinessService', 'composition', 'A1.BusinessService'), ('A1.BusinessRequirement', 'composition', 'A1.BusinessRequirement'),
+                 ('A1.Product', 'composition', 'A1.Product'), ('A1.Product', 'aggregation', 'A1.BusinessService')],   # metamodel 0.17.0: a product holds its services
+        'containers': ['A1.BusinessCapability', 'A1.BusinessProcess', 'A1.ValueStream', 'A1.Product'],
+        'kinds': {'A1.BusinessCapability': 'Capability', 'A1.BusinessProcess': 'Process', 'A1.BusinessActivity': 'Activity', 'A1.ValueStream': 'Value stream', 'A1.Product': 'Product'},
+        'groups': [('Products', ['A1.Product']), ('Value streams', ['A1.ValueStream', 'A1.ValueStreamStage']), ('Events', ['A1.BusinessEvent']), ('Channels', ['A1.BusinessInterface']),
                    ('Actors and roles', ['A1.BusinessActor', 'A1.BusinessRole']),
                    ('Business objects', ['A1.BusinessObject']),
                    ('Business services', ['A1.BusinessService']),
@@ -69,6 +70,7 @@ HIERARCHY = {
                    ('Applications', ['A3.ApplicationComponent']), ('Services', ['A3.ApplicationService']), ('Interfaces', ['A3.ApplicationInterface']),
                    ('Functions', ['A3.ApplicationFunction'])],
         'not_in': 'Not in the application structure',
+        'skip': ['A3.DataAttribute'],   # metamodel 0.15.0 (TL-03): a data entity's fields are not shapes — documents and the workbench show them with their entity
     },
 }
 
@@ -86,7 +88,7 @@ def layout(doc, layer, mm=None):
         return zl(doc, mm)
     H = HIERARCHY.get(layer)
     if not H: raise ContainmentError(f'layer {layer}: no containment hierarchy for this layer')
-    recs = {i['id']: i for i in doc.get('instances', [])}
+    recs = {i['id']: i for i in doc.get('instances', []) if not any(mm.is_a(i['type'], t) for t in H.get('skip', ()))}
     typ = {x: r['type'] for x, r in recs.items()}
     is_ = lambda x, t: x in typ and mm.is_a(typ[x], t)
     # the primary parent of each record: the first nesting row (in order) that links a parent to it (C3)
