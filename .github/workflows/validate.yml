@@ -85,7 +85,10 @@ jobs:
         run: |
           python -m sdem.trace CAP-310 examples/card-fraud-alerts/mappings.json
           python -m sdem.trace INF-CLOUD-K8S-PROD --direction up --json examples/card-fraud-alerts/mappings.json > /dev/null
-      - run: python -m sdem.validate --json examples/*/mappings.json
+      - name: Validate as JSON (payment-initiation-v2 on its own — it keeps payment-initiation's ids)
+        run: |
+          python -m sdem.validate --json $(ls examples/*/mappings.json | grep -v '/payment-initiation-v2/')
+          python -m sdem.validate --json examples/payment-initiation-v2/mappings.json
       - name: Diagrams and the relationships document are generated from the JSON
         run: |
           python -m sdem.diagram --check
