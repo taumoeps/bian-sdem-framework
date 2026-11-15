@@ -149,6 +149,10 @@ class FederatedGraph:
         if lone: self.warnings.setdefault(f"level A4 ({self.levels['A4'].doc['model_id']})", []).extend(lone)
         unexposed = self.unexposed()   # LC-22: an internet-facing interface exposed through nothing
         if unexposed: self.warnings.setdefault(f"level A3 ({self.levels['A3'].doc['model_id']})", []).extend(unexposed)
+        if 'A3' in self.levels:   # LC-28: an attribute and the approved links of the same meaning disagree (metamodel 0.16.0, AT-01)
+            from .aid_attr import disagreements
+            dis = disagreements({l: g.doc for l, g in self.levels.items()}, [m for d in self.mapping_docs for m in d.get('mappings', [])], self.mm)
+            if dis: self.warnings.setdefault(f"level A3 ({self.levels['A3'].doc['model_id']})", []).extend(dis)
         for lvl, found in self.information_model().items():   # LC-23 … LC-27: the information model (metamodel 0.15.0, IM-08)
             if found: self.warnings.setdefault(f"level {lvl} ({self.levels[lvl].doc['model_id']})", []).extend(found)
         from . import profile as _p

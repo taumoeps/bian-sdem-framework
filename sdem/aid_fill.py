@@ -156,6 +156,25 @@ def fill(workspace, person, dry_run=False, now=None):
                               'relationship': rel, 'target': {'id': tgt, 'type': by_id[tgt]['type'], 'version': by_id[tgt]['version']}, 'status': 'proposed',
                               'confidence': 'low', 'evidence': [f'engine_rationale:{run} AID-I03'], 'rationale': f'Inferred by sdem aid: {why} — approve with data_model evidence',
                               'baseline_id': run, 'created_by': 'sdem aid'})
+    if after.get('A3') or after.get('A4'):   # AID-A01…A03 (metamodel 0.16.0, AT-01): the links attributes imply — proposed; a path's ends, inferred
+        from .aid_attr import propose_links, path_ends
+        from .metamodel import Metamodel as _MMa
+        _mm = _MMa.load()
+        amark = lambda rule, why, frm: {'by': 'sdem aid', 'run': run, 'at': now, 'requested_by': person.strip(), 'step': 'attributes', 'rule': rule,
+                                        'source': 'docs/design/sdem-full-design-metamodel-design.md AT-01', 'reasoning': why, 'confidence': 'high',
+                                        'evidence_class': 'attribute_join', 'from': frm}
+        for src, rel, tgt, why in propose_links(after, registry.get('mappings', []) + proposals, _mm):
+            if src not in by_id or tgt not in by_id or (src, rel, tgt) in approved: continue
+            s_, t_ = by_id[src], by_id[tgt]
+            proposals.append({'mapping_id': f'{run}-P{len(proposals) + 1:03d}', 'source': {'id': src, 'type': s_['type'], 'version': s_['version']}, 'relationship': rel,
+                              'target': {'id': tgt, 'type': t_['type'], 'version': t_['version']}, 'status': 'proposed', 'confidence': 'high',
+                              'evidence': [f'engine_rationale:{run} {why.split("(")[-1].rstrip(")")}'], 'rationale': f'Inferred by sdem aid from an attribute: {why} — approve with deployment_design evidence',
+                              'baseline_id': run, 'created_by': 'sdem aid'})
+        if after.get('A4'):
+            ends = path_ends(after['A4'], _mm, amark)
+            if ends:
+                after['A4'].setdefault('relationships', []).extend(ends); placements += len(ends); connections += len(ends)
+                if 'A4' not in added: added['A4'] = []
     if after.get('A3') and after.get('A4'):   # AID-X01: an internet-facing interface EXPOSED_THROUGH the one edge platform — for a person to approve
         from .a4_connect import propose_exposure
         from .metamodel import Metamodel as _MM

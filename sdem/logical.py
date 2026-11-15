@@ -47,6 +47,7 @@ CONSTRAINTS = [
  ('LC-25', 'A system of record has a key', 'a data entity marked system of record, with field records, has a primary-key field (metamodel 0.15.0)', 'enforced', '`sdem check` (warning)'),
  ('LC-26', 'A foreign key points at a key', 'a data attribute associated with a data entity (a foreign key) points at an entity that has a primary-key field (metamodel 0.15.0)', 'enforced', '`sdem check` (warning)'),
  ('LC-27', 'Field mappings agree on type', 'a FIELD_MAPPED_TO links a BIAN attribute to a data attribute whose physical type can hold its logical type (a date in a date or timestamp; an amount in a numeric) (metamodel 0.15.0)', 'enforced', '`sdem check` (warning)'),
+ ('LC-28', 'Attributes agree with approved links', 'where a record says in an attribute what an approved link says (stored_in and STORED_IN, consumes and SERVED_BY, deployed_on, deployed_as, built_as), both name the same records — the approved link is the fact (metamodel 0.16.0, AT-01)', 'enforced', '`sdem check` (warning)'),
 ]
 
 

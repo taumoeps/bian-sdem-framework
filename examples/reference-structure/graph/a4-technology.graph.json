@@ -6,7 +6,7 @@
     "directed": true,
     "metadata": {
       "sdem_store_version": "1.0",
-      "export_sha256": "a2264b6f6df7e44b042867cc2ba6c9e2010105a9d7d5eb01bca2075924cc6bec",
+      "export_sha256": "2c16f7207aa5c0fcf66e3d721b83ddc89e74429b860f2fb6da3daa7761034d21",
       "level": "A4",
       "model_id": "reference-structure-a4",
       "model_version": "2026.10",
@@ -704,6 +704,28 @@
           "row": "RA4-39"
         },
         "label": "RA4-39"
+      },
+      {
+        "id": "A4:RS-Path-1-association-RS-Node-1",
+        "source": "A4:RS-Path-1@1.0",
+        "target": "A4:RS-Node-1@1.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-40"
+        },
+        "label": "RA4-40"
+      },
+      {
+        "id": "A4:RS-Path-1-association-RS-Device-1",
+        "source": "A4:RS-Path-1@1.0",
+        "target": "A4:RS-Device-1@1.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-41"
+        },
+        "label": "RA4-41"
       },
       {
         "id": "A4:RS-Deployment-2-aggregation-RS-Artifact-1",

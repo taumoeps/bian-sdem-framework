@@ -1806,6 +1806,7 @@ The rules the data must satisfy, and which the checker enforces today.
 | LC-25 | A system of record has a key | a data entity marked system of record, with field records, has a primary-key field (metamodel 0.15.0) | **enforced** |
 | LC-26 | A foreign key points at a key | a data attribute associated with a data entity (a foreign key) points at an entity that has a primary-key field (metamodel 0.15.0) | **enforced** |
 | LC-27 | Field mappings agree on type | a FIELD_MAPPED_TO links a BIAN attribute to a data attribute whose physical type can hold its logical type (a date in a date or timestamp; an amount in a numeric) (metamodel 0.15.0) | **enforced** |
+| LC-28 | Attributes agree with approved links | where a record says in an attribute what an approved link says (stored_in and STORED_IN, consumes and SERVED_BY, deployed_on, deployed_as, built_as), both name the same records — the approved link is the fact (metamodel 0.16.0, AT-01) | **enforced** |
 
 ## Appendix B. How the example data measures up
 
@@ -1847,6 +1848,6 @@ Each entity's, field's and link's source, reasoning and confidence are in [`arch
 | Layer | Content | Status |
 |---|---|---|
 | Conceptual | which entities exist and which links are allowed | complete |
-| **Logical (this document)** | identifiers, typed fields, allowed values, references, link counts, rules | designed; 28 of 28 rules enforced |
+| **Logical (this document)** | identifiers, typed fields, allowed values, references, link counts, rules | designed; 29 of 29 rules enforced |
 | Physical | one architecture dataset JSON Schema per entity type ([physical-data-model.md](physical-data-model.md)); a graph store schema | entity schemas generated (`sdem model regenerate (physical)`); graph store schema not designed yet |
 

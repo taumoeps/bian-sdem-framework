@@ -16,6 +16,9 @@ AID projects the missing architecture layers from the architecture datasets an a
 | AID-I02 | Accept a **BIAN reference catalogue**: an A2 architecture dataset of BIAN service domains, operations, business objects, asset types and behaviour qualifiers, used as the only source of A2 elements. | built |
 | AID-I03 | Accept the approved links already known (a Relationship Registry), and use them before inferring anything. | built — used by F1 and R2 (the engine reads it) |
 | AID-I04 | Read the metamodel (entity types, allowed links, relationship types, mapping rules) exactly as the engine does. | built (engine) |
+| AID-A01 | **Attributes as evidence** (metamodel 0.16.0, AT-01): a data entity's `stored_in` → `STORED_IN` that artifact or system software, proposed. | `test_aid_proposes_what_attributes_say_and_links_a_path_to_its_ends` |
+| AID-A02 | An application function's `consumes` → `SERVED_BY` that technology service, proposed. | same file |
+| AID-A03 | A path's `from` and `to` → the path associated with each end, a link inside A4 marked inferred (confirm or reject by the path's id). | same |
 
 ## 3. Forward projection (downstream)
 
