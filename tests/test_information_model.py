@@ -104,6 +104,21 @@ class BianImportTests(unittest.TestCase):   # IM-09
 
 
 class AidTests(unittest.TestCase):   # IM-10: AID-I01 … I04
+    def test_no_table_is_inferred_for_an_object_whose_domain_nothing_here_realises(self):   # AID-I08 — the public twin's first run, F4 (2026-11-17)
+        from sdem.aid_info import propose_information
+        R = lambda i, t, **a: {'id': i, 'type': t, 'version': '1', 'name': i, 'attributes': a}
+        a2 = {'instances': [R('SD-1', 'A2.ServiceDomain'), R('CR-1', 'A2.ControlRecord'), R('BO-1', 'A2.BusinessObject'), R('BOA-1', 'A2.BusinessObjectAttribute', data_type='identifier', identifier=True)],
+              'relationships': [{'source': 'SD-1', 'kind': 'aggregation', 'target': 'CR-1'}, {'source': 'CR-1', 'kind': 'association', 'target': 'BO-1'}, {'source': 'BO-1', 'kind': 'composition', 'target': 'BOA-1'}]}
+        app = {'instances': [R('APP-1', 'A3.ApplicationComponent')], 'relationships': []}
+        mark = lambda rule, why, frm: {'rule': rule}
+        inst, rels, links, skipped = propose_information(a2, app, [], mark)
+        self.assertEqual((inst, links), ([], [])); self.assertEqual([s['id'] for s in skipped], ['BO-1'])   # applications exist, none realises SD-1: said, not inferred
+        realised = [{'source': {'id': 'SD-1', 'type': 'A2.ServiceDomain'}, 'relationship': 'REALIZED_BY', 'target': {'id': 'APP-1', 'type': 'A3.ApplicationComponent'}, 'status': 'proposed'}]
+        inst, rels, links, skipped = propose_information(a2, app, realised, mark)
+        self.assertEqual(([i['id'] for i in inst][0], skipped), ('AID-ENT-BO-1', []))
+        inst, rels, links, skipped = propose_information(a2, {'instances': [], 'relationships': []}, [], mark)   # no applications yet (AID builds the layer): as before
+        self.assertEqual(([i['id'] for i in inst][0], skipped), ('AID-ENT-BO-1', []))
+
     def test_aid_infers_entities_fields_keys_and_proposes_the_links(self):
         import shutil
         from sdem.aid_fill import fill

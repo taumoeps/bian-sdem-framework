@@ -8,6 +8,9 @@ AID-I02  A field that refers to another business object becomes a foreign key to
 AID-I03  The links between layers are proposed, never approved: MAPPED_TO (business object → data entity) and FIELD_MAPPED_TO (each
          BIAN attribute → its data attribute), confidence low — a person approves them with data_model evidence.
 AID-I04  Only what a person wrote or confirmed is read (AID-W08); a rejected record is never inferred again.
+AID-I08  Where the workspace has applications, a table is inferred for a BIAN object only when one of them realises (approved or proposed) the
+         service domain whose control record works on the object — otherwise nothing here would store it, and SDEM says so instead (found in the
+         public twin's first run, F4: a 27-field table for Party Authentication that the design never had).
 """
 import re
 
@@ -26,8 +29,8 @@ def _key(name):
 
 
 def propose_information(a2, a3, mappings, mark, rejected=frozenset(), is_inferred=lambda r: False):
-    """Returns (instances, relationships, links): new A3 records, A3 links, and (source, relationship, target, why) to propose.
-    `mark(rule, reasoning, frm)` gives the `inferred` block every new record carries."""
+    """Returns (instances, relationships, links, skipped): new A3 records, A3 links, (source, relationship, target, why) to propose, and the
+    objects left without a table by AID-I08 ([{id, name, domains}]). `mark(rule, reasoning, frm)` gives the `inferred` block every new record carries."""
     a2i = {i['id']: i for i in (a2 or {}).get('instances', []) if not is_inferred(i)}
     a3i = {i['id']: i for i in (a3 or {}).get('instances', [])}
     fields = {}
@@ -41,8 +44,19 @@ def propose_information(a2, a3, mappings, mark, rejected=frozenset(), is_inferre
         if m.get('relationship') == 'MAPPED_TO' and m.get('status') != 'rejected':
             mapped.setdefault(m['source']['id'], m['target']['id'])
     entity_of = dict(mapped)
+    # AID-I08: which service domains work on each object (domain aggregates control record; control record is associated with the object), and which are realised here
+    typ2 = {i: r.get('type') for i, r in a2i.items()}
+    sd_of = {r['target']: r['source'] for r in (a2 or {}).get('relationships', []) if r.get('kind') == 'aggregation' and typ2.get(r['source']) == 'A2.ServiceDomain'}
+    domains = {}
+    for r in (a2 or {}).get('relationships', []):
+        if r.get('kind') == 'association' and typ2.get(r['source']) == 'A2.ControlRecord' and r['source'] in sd_of: domains.setdefault(r['target'], set()).add(sd_of[r['source']])
+    realised = {m['source']['id'] for m in mappings if m.get('relationship') == 'REALIZED_BY' and m.get('status') != 'rejected'}
+    has_apps = any(i.get('type') == 'A3.ApplicationComponent' and not is_inferred(i) for i in a3i.values())
+    skipped = []
     for bo, fs in fields.items():   # AID-I01: the entities first, so a foreign key can point at one inferred in the same run
         if bo in mapped or a2i[bo].get('type') != 'A2.BusinessObject': continue
+        if has_apps and domains.get(bo) and not (domains[bo] & realised):
+            skipped.append({'id': bo, 'name': a2i[bo].get('name', bo), 'domains': sorted(domains[bo])}); continue
         eid = f"AID-ENT-{_key(a2i[bo]['name'])}"
         if eid not in rejected: entity_of[bo] = eid
     inst, rels, links = [], [], []
@@ -73,7 +87,7 @@ def propose_information(a2, a3, mappings, mark, rejected=frozenset(), is_inferre
                 links.append((f['id'], 'FIELD_MAPPED_TO', fid, f"the data attribute {_snake(f['name'])} stores the BIAN attribute {f['name']} (AID-I03)"))
                 rels_from.append(fid)
             links.insert(len(links) - len(rels_from), (bo, 'MAPPED_TO', eid, f"the data entity stores the business object {o['name']} (AID-I03)"))
-    return inst, rels, links
+    return inst, rels, links, sorted(skipped, key=lambda s: s['id'])
 
 
 def propose_access(docs, mappings, mm, mark):

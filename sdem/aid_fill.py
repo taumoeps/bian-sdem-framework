@@ -138,6 +138,7 @@ def fill(workspace, person, dry_run=False, now=None):
                           'confidence': link.get('confidence'), 'evidence': [f"engine_rationale:{run} {pj.get('rule', '')}".strip()],
                           'rationale': re.sub(r'^PROJECTED DESIGN, not a mapping:\s*', 'Inferred by sdem aid: ', link.get('rationale', '')),
                           'baseline_id': run, 'created_by': 'sdem aid'})
+    not_stored = []
     if after.get('A2'):   # AID-I01…I04 (metamodel 0.15.0, IM-10): a data entity with its fields for each typed business object — inferred, proposed
         from .aid_info import propose_information
         mark = lambda rule, why, frm: {'by': 'sdem aid', 'run': run, 'at': now, 'requested_by': person.strip(), 'step': 'information', 'rule': rule,
@@ -152,7 +153,7 @@ def fill(workspace, person, dry_run=False, now=None):
                 proposals.append({'mapping_id': f'{run}-P{len(proposals) + 1:03d}', 'source': end({'id': src, 'type': by_id[src]['type'], 'version': by_id[src]['version']}), 'relationship': rel,
                                   'target': {'id': tgt, 'type': by_id[tgt]['type'], 'version': by_id[tgt]['version']}, 'status': 'proposed', 'confidence': conf,
                                   'evidence': [f'engine_rationale:{run} {rule}'], 'rationale': f'Inferred by sdem aid ({rule}): {why}', 'baseline_id': run, 'created_by': 'sdem aid'})
-        iinst, irels, ilinks = propose_information(after['A2'], a3doc, registry.get('mappings', []) + proposals, mark, rejected, lambda r: is_inferred(r, confirmed=False))
+        iinst, irels, ilinks, not_stored = propose_information(after['A2'], a3doc, registry.get('mappings', []) + proposals, mark, rejected, lambda r: is_inferred(r, confirmed=False))
         for rec in iinst:
             if rec['id'] in present: continue
             a3doc['instances'].append(rec); present.add(rec['id']); by_id[rec['id']] = rec; added.setdefault('A3', []).append(rec['id'])
@@ -224,7 +225,7 @@ def fill(workspace, person, dry_run=False, now=None):
     record = {'id': run, 'at': now, 'requested_by': person.strip(), 'added': added, 'proposals': f'{FOLDER}/{run}-proposals.json',
               'proposed_connections': len(proposals), 'projection_ends': pkg['projection'].get('projection_ends', []),
               'zone_placements': placements - connections, 'zones_unresolved': zone_unresolved, 'a4_connections': connections, 'a4_unresolved': conn_unresolved,
-              'exposure_unresolved': exposure_unresolved,
+              'exposure_unresolved': exposure_unresolved, 'tables_not_inferred': not_stored,
               'skipped_rejected': sorted(rejected & {_rid(i['id']) for l in pkg['layers'].values() for i in l['instances']})}
     if dry_run:   # AF: a dry run says what it would write (AGENTS.md) — nothing is written
         record['would_write'] = sorted([(ws / DATASETS[lvl]).as_posix() for lvl in added] + ([(runs / f'{run}-proposals.json').as_posix(), (runs / f'{run}.json').as_posix()] if (added or proposals) else []))
@@ -360,6 +361,8 @@ def main(argv):
         print(f"{'would add' if a.dry_run else 'added (' + rec['id'] + ')'} to {a.estate}: {what}; "
               + f"{rec['proposed_connections']} connection(s) proposed in {a.estate}/{rec['proposals']} — checked")
     for e in rec['projection_ends']: print(f'NOTE: {e}')
+    for e in rec.get('tables_not_inferred') or []:
+        print(f"NOTE: no table inferred for the BIAN object {e['name']} ({e['id']}) — no application here realises {', '.join(e['domains'])} (AID-I08); if one stores it, link the domain to it (sdem connect … REALIZED_BY …) and run sdem aid again")
     if rec.get('zone_placements'):
         print(f"zones: {rec['zone_placements']} shape(s) {'would be placed' if a.dry_run else 'placed'} in a proposed zone (AID-Z01) — from the hosting signals and the organisation's default; "
               f"decide each: sdem aid confirm|reject <shape> --workspace {a.estate} --person <you>")
