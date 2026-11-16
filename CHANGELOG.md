@@ -27,6 +27,8 @@
 
 - **A second `sdem aid` pass no longer brings in a BIAN domain on a name alone (AID-M03; the public twin, F15).** A domain that only application names point to is held back as a note when the business side already names its domains — but "names" meant *proposes in this run*, so once a person had approved the business links the hold-back stopped, and the next-best name match was added as records. A link a person approved now counts.
 
+- **The public twin's run 2, independently audited** ([report](docs/evidence/payment-initiation-v3/report.md)). The reference's author re-marked SDEM's result against its own frozen files. Records agreed (148 of 152). Links, questions and planted mistakes are restated at the audit's stricter figures (103 links, 29 questions right, 7 of 16 mistakes). One new finding, confirmed: CTL-21 tells an agent from a person by the name alone — `--reviewer automated-agent` is accepted (F16).
+
 ## 0.19.0 — a full design: the information model, the links ArchiMate defines, events, products, channels and locations (2026-11-16)
 
 Upgrade: change the pin to `@v0.19.0`, `pip install -r requirements.txt`, `sdem agents install`; then `sdem migrate --workspace <dir> --person <you>` (metamodel 0.14.0 → 0.17.0, additive — nothing in your data changes; what is now thin is reported, never refused). Run `sdem aid` again to have it propose data tables, field matches and the new links.

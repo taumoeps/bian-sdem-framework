@@ -50,7 +50,7 @@ It was good enough to find the twelve things above, and not good enough to be a 
 
 | # | Problem | Evidence |
 |---|---|---|
-| R1 | **The hidden lists describe a bigger design than the design document.** 44 of 196 expected records appear nowhere in `design.md`: 8 application services, 7 functions, 4 interfaces, 3 events, 3 artifacts, 5 technology services, 5 business objects, 4 business events, 5 API-level items. 44 of the 212 expected links hang off them | `scoring.json` → records |
+| R1 | **The hidden lists describe a bigger design than the design document.** 44 of 196 expected records are not named as elements in `design.md` (four of them appear as phrases — see the independent audit): 8 application services, 7 functions, 4 interfaces, 3 events, 3 artifacts, 5 technology services, 5 business objects, 4 business events, 5 API-level items. 44 of the 212 expected links hang off them | `scoring.json` → records |
 | R2 | **`in_design` is unreliable.** Only 18 of 212 links are marked "stated"; a table's own columns (30 links, stated by the document's tables) are marked "implied"; 11 of the 18 "stated" have an end the document does not contain | `scoring.json` → links |
 | R3 | **Relationship names are loose** ("hosted by/connected to", "owns/uses"), so links were matched on their two ends only | — |
 | R4 | Questions and mistakes that need a record the document does not contain | Q-35 (SVC-STATUS); M-17 (BO-PAYMENT) |
@@ -124,6 +124,31 @@ and every API field the document names recorded.
 
 Still open after run 2: process ↔ application (F5 — the design names no application service); platform software with nothing to place it by (F6); API-level facts as records (F11);
 a lost key, a broken API path, a removed access link or path end (M-03, 12, 19, 21); F15.
+
+## Independent audit of run 2 (2026-11-17)
+
+The operator had loaded the design *and* marked the result. At the owner's request the reference's author (the second assistant) was given an export of what SDEM holds and the
+operator's scoring, and re-marked it against the frozen files. Its audit is the owner's, kept outside this repository. **Where it is stricter than the operator, its figure stands.**
+
+| Measure | Operator | Independent audit | Settled |
+|---|---|---|---|
+| Records held, of the 152 the document names | 148 | 148 — agreed (134 as records, 14 as names only) | **148** |
+| Links held or derivable, of 161 with both ends held | 108 | 98 — ten BIAN links "claimed but absent from the export" | **103, and 5 more in a different form.** The export had left out the BIAN layer's own links — the operator's omission. Checked in the workspace: 5 of the ten exist as the reference has them (domain aggregates control record ×3, control record associated with object ×2); the other 5 join the same two records the other way round — in SDEM an operation *accesses* its control record, where the reference has the control record *containing* the operation |
+| Links present as stored links only (strictest) | not scored | 71 of 212 | **71 + the 5 above = 76 of 212** |
+| Questions | 31 right, 5 by description, 3 partly, 11 not | 29 right, 5 by description, 4 partly, 12 not | **the audit's** — the statuses and the scheme name are held on a column or as a name, not as the standard's own API field (Q-43, 44, 46 partly); Q-49 not answered |
+| Planted mistakes | 8 of 19 | 8 of 16 applicable; 7 if M-16 must prove *who* approved | **7 of 16** — see F16 |
+
+Also taken from the audit: "44 expected records appear nowhere in the design document" was too strong — four of them (the consent, status and decision business objects, the *payment
+rejected* event) are mentioned as phrases, never named as elements; the handoff path lost the reference's *mutual* TLS (recorded as `tls`); the audit log's storage is not linked;
+`payload_fields` mixes request and response names.
+
+| # | Finding |
+|---|---|
+| F16 | **CTL-21 knows an agent only by its name.** M-16 was refused for missing evidence, not for who approved. Given evidence, `sdem approve --reviewer automated-agent` is accepted: a reviewer is "a person" unless the name starts `sdem-` or is one of nine words (*agent*, *copilot*, *ai* …). SDEM says as much of itself — "attribution, not authentication; verified only by a signed commit" — but the control is weaker than its name. The audit's point; confirmed by the operator |
+
+**What both markers agree on:** SDEM holds a design's records well (97% of those named), and is weak where it matters most to an architect — connecting them. Four of five impact
+questions went unanswered; a third of the expected links whose ends SDEM holds are missing. The audit's recommendation, which the operator shares: strengthen links, inference,
+trace and impact before adding to the metamodel.
 
 ## Files
 
