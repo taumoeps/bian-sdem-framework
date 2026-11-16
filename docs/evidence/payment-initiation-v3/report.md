@@ -96,6 +96,35 @@ Two more findings, from the second pass:
 | F13 | **AID-C02 linked the ingress node to the database.** An API operation *accesses* a table; the ingress component composes the API's interface; so the rule counts the ingress as a user of the data and proposes its node reaches the database — in a design whose point is that it does not. For a person to reject; the rule should not climb from an API operation to the component that only exposes it |
 | F14 | **A declined proposal is not remembered.** The owner left *BIAN Payment Transaction MAPPED_TO PaymentLedger* unapproved; there is no way to reject a proposed link. On the second pass SDEM, finding the object unmapped, inferred a new 30-field table for it instead. `sdem aid reject` remembers inferred *records*; proposed *links* need the same |
 
+## Run 2 (2026-11-17) — the same benchmark after the fixes
+
+Same frozen reference, same design document, same decisions by the owner (replayed, the two rejections now made with `sdem reject`). **Not a blind run:** the operator had seen
+the reference by then, so this measures what the fixes changed, not SDEM afresh — that needs a new reference (scenario 2). The operator's own mistakes of run 1 were corrected
+too: the zones recorded flat as the document has them; no deployment's platform guessed (four left out, as *planned*); the debtor-account operation, the permitted statuses
+and every API field the document names recorded.
+
+| Measure | Run 1 | Run 2 | Why |
+|---|---|---|---|
+| Records held, of the 152 the document names | 141 (93%) | **148 (97%)** | the operator's omissions recorded; the 4 left are kinds SDEM has no record type for |
+| SDEM records not in the reference | 3 | **1** | flat zones: no invented zones |
+| Links held, of those whose two ends SDEM holds | 107 of 153 (70%) | 108 of 161 (67%) | more ends held, so more links in scope; four *deployment on node* links are gone because their platform is no longer guessed |
+| Proposed between layers, first pass | 58: 23 expected or consistent, 35 not | **27: 19 expected or consistent, 8 not** | AID-I08: no invented table. Precision 40% → 70% |
+| Inferred inside A4, first pass | 24: 12 wrong | **8: none wrong** | AID-Z05, flat zones |
+| Forbidden links proposed | 0 | 0 | |
+| Questions right | 29 of 50 | **31 of 50** | +3 from what the operator now records; −1 where run 1's answer rested on a guessed platform — SDEM now says it does not know |
+| Planted mistakes caught, of 19 | 5 | **8** | LC-29: the amount as a date, the currency as a boolean, the identifier as money |
+| `sdem check` | 0 errors, 15 warnings | 0 errors, 29 warnings | the extra warnings are SDEM naming what is unknown: four platforms, eight shapes in no zone |
+| Second pass | a 30-field table invented (F14) | **no table** — "a person rejected its mapping (RJ-04)" | `sdem reject` |
+
+**One new finding from run 2's second pass:**
+
+| # | Finding |
+|---|---|
+| F15 | **Rejecting one link led SDEM to bring in another domain.** After the owner rejected *Payment Order Initiation REALIZED_BY the API ingress*, the second `sdem aid` pass added BIAN's **Corporate Payroll Services** (21 records, inferred) and proposed it REALIZED_BY the ingress — on the word *payment* in the API's paths. On the first pass the same match was only a note ("not added — only names point to it"). A rejection must not make a weaker match look stronger. Not fixed; the 21 records are unconfirmed and were left for the owner |
+
+Still open after run 2: process ↔ application (F5 — the design names no application service); platform software with nothing to place it by (F6); API-level facts as records (F11);
+a lost key, a broken API path, a removed access link or path end (M-03, 12, 19, 21); F15.
+
 ## Files
 
 Kept outside git (`work/payment-initiation-v3/`): the workspace, `ws-initial/` (before any decision), `initial-proposals.json` (+ sha256), `review-v3.sh`, `sdem-answers.json` and

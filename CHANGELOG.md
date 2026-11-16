@@ -23,6 +23,8 @@
 
 - **Flat network zones** ([design](docs/design/sdem-public-twin-follow-up-design.md), ZF-01…ZF-06; the owner's decisions D3, D4 of 2026-11-17; from the public twin, F1). A design that simply names its zones — edge, application, data — with no on-premises or cloud zone above them is now valid: where a workspace has no level-0 zone, a level-1 or level-2 zone may stand with no parent, and several may be internal. SDEM then works out no connection between zones (`sdem zones` says so — they are what the design's paths state) and `sdem aid` guesses no zone for an unplaced shape. A workspace that has a level-0 zone is checked exactly as before; no metamodel file changed.
 
+- **The public twin, run 2** ([report](docs/evidence/payment-initiation-v3/report.md)) — the same benchmark after the fixes, not blind. Between layers SDEM's first-pass proposals went from 58 (35 not expected) to 27 (8 not expected); wrong inferences inside A4 from 12 to none; planted mistakes caught from 5 to 8 of 19; records held from 93% to 97% of those the document names; the second pass invents no table. One new finding (F15): rejecting a link made the next pass bring in an unrelated BIAN domain on a shared word.
+
 ## 0.19.0 — a full design: the information model, the links ArchiMate defines, events, products, channels and locations (2026-11-16)
 
 Upgrade: change the pin to `@v0.19.0`, `pip install -r requirements.txt`, `sdem agents install`; then `sdem migrate --workspace <dir> --person <you>` (metamodel 0.14.0 → 0.17.0, additive — nothing in your data changes; what is now thin is reported, never refused). Run `sdem aid` again to have it propose data tables, field matches and the new links.
