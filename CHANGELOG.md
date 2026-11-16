@@ -2,6 +2,10 @@
 
 > Entries before 0.7.0 describe the project under its former name, **SDMM (BIAN Service Domain Mapping Model)**, and its former terms; they are kept as written.
 
+## Unreleased
+
+- **A plan to benchmark SDEM without any real organisation's designs** ([the public twin](docs/design/sdem-public-twin-benchmark-plan.md), PT-01…PT-39; the owner's decisions D1–D9, 2026-11-17). A made-up New Zealand retail bank — a third party initiating a single domestic payment under the NZ open banking standard (v2.3.3) — is designed and frozen outside SDEM by an independent author ([the brief](docs/design/sdem-public-twin-reference-brief.md)); SDEM is then given the design document only and scored against the hidden reference: what it holds, the links it proposes (before and after a person's approvals, stated and implied apart), its answers, and the planted mistakes it catches. A plan only — nothing is built yet, and no code changes.
+
 ## 0.19.0 — a full design: the information model, the links ArchiMate defines, events, products, channels and locations (2026-11-16)
 
 Upgrade: change the pin to `@v0.19.0`, `pip install -r requirements.txt`, `sdem agents install`; then `sdem migrate --workspace <dir> --person <you>` (metamodel 0.14.0 → 0.17.0, additive — nothing in your data changes; what is now thin is reported, never refused). Run `sdem aid` again to have it propose data tables, field matches and the new links.
