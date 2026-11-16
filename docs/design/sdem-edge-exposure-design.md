@@ -61,7 +61,7 @@ A4 is the physical deployment: every shape there is connected to something. For 
 | Rule | For a shape that is | It proposes | From | Confidence |
 |---|---|---|---|---|
 | AID-C01 | a deployment no platform runs (even one with a `DEPLOYED_AS` connection) | `assignment` from the platform its record names (`platform_id`) — else from the platform its component is `DEPLOYED_ON`, where the component is `DEPLOYED_AS` this deployment | the record; approved connections | high |
-| AID-C02 | a data platform (its name or product says a database) | `association` from each platform that runs a component using a data entity `stored_in` it — else from the platforms that run deployments in its zone | A3 data entities; zones | medium; low |
+| AID-C02 | a data platform (its name or product says a database) | `association` from each platform that runs a component using a data entity `stored_in` it (a component *accesses* the entity; an API operation's access is its contract, so the component that only exposes the API is not a user — the public twin, F13) — else from the platforms that run deployments in its zone | A3 data entities; zones | medium; low |
 | AID-C03 | a technology service | `serving` to each platform that runs deployments in its zone (or the zone it is in) | zones | low |
 | AID-C04 | an artifact | `assignment` from the platform that runs a deployment whose name shares a word with it | names | low |
 | AID-C05 | any other platform | `association` with the platforms that run deployments in its innermost zone | zones | low |

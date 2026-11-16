@@ -122,6 +122,21 @@ class DatabaseConnectionTests(Base):   # LC-21 counts only links to another shap
         self.assertEqual([(r['source'], r['target'], r['inferred']['rule'], r['inferred']['confidence']) for r in links],
                          [('INF-K8S-PAY-PROD', 'INF-PG-PAY-PROD', 'AID-C02', 'medium')])   # the production cluster — not the UAT one
 
+    def test_a_component_that_only_exposes_the_api_is_not_a_user_of_the_data(self):   # AID-C02 — the public twin's second pass, F13 (2026-11-17)
+        from sdem.a4_connect import propose_connections
+        from sdem.metamodel import Metamodel
+        R = lambda i, t, n, **a: {'id': i, 'type': t, 'version': '1', 'name': n, 'attributes': a}
+        a3 = {'instances': [R('APP-EDGE', 'A3.ApplicationComponent', 'API ingress'), R('APP-HUB', 'A3.ApplicationComponent', 'Payments hub'),
+                            R('IFC', 'A3.ApplicationInterface', 'API'), R('OP', 'A3.APIOperation', 'Create', method='POST', path='/x', payload_fields=['a']),
+                            R('ENT', 'A3.DataEntity', 't', attributes=['a'], stored_in=['SYS-DB'])],
+              'relationships': [{'source': 'APP-EDGE', 'kind': 'composition', 'target': 'IFC'}, {'source': 'IFC', 'kind': 'composition', 'target': 'OP'},
+                                {'source': 'OP', 'kind': 'access', 'target': 'ENT'}, {'source': 'APP-HUB', 'kind': 'access', 'target': 'ENT'}]}
+        a4 = {'model_id': 't', 'instances': [R('NODE-EDGE', 'A4.Node', 'ingress'), R('NODE-APP', 'A4.Node', 'compute'), R('SYS-DB', 'A4.SystemSoftware', 'Managed database')], 'relationships': []}
+        on = lambda c, n: {'source': {'id': c, 'type': 'A3.ApplicationComponent'}, 'relationship': 'DEPLOYED_ON', 'target': {'id': n, 'type': 'A4.Node'}, 'status': 'approved'}
+        links, _ = propose_connections(a3, a4, [on('APP-EDGE', 'NODE-EDGE'), on('APP-HUB', 'NODE-APP')], Metamodel.load(), 'AID-T', 'jane.architect', '2026-11-17')
+        self.assertEqual([(r['source'], r['target']) for r in links if r['target'] == 'SYS-DB'], [('NODE-APP', 'SYS-DB')])   # the hub's node reaches the database; the ingress's does not
+
+
 class BuiltAsTests(Base):   # metamodel 0.14.0: an application BUILT_AS its artifact (AID-X02)
     def test_the_payment_hub_is_built_as_its_image(self):
         m = next(x for x in self.j(EX / 'payment-initiation', 'mappings.json')['mappings'] if x['relationship'] == 'BUILT_AS')

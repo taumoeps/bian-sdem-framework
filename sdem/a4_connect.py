@@ -117,9 +117,10 @@ def propose_connections(a3, a4, maps, mm, run, person, now, rejected=()):
                 for d in (prod or deps): add(x, 'association', d, 'AID-C06', f"{', '.join(ifcs)} EXPOSED_THROUGH {x}; {', '.join(sorted(apps))} composes it and is DEPLOYED_AS {d} (approved)", 'high', 'an edge platform fronts the deployment of the application whose interface it exposes')
                 continue
         if any(mm.is_a(t, p) for p in PLATFORMS) and DATABASE.search(name):   # AID-C02
+            api_ops = {i['id'] for i in a3.get('instances', []) if mm.is_a(i['type'], 'A3.APIOperation')}
             held = lambda v: x in (v if isinstance(v, list) else [v])   # stored_in names one platform or several
             users = {c for e in [i for i in a3.get('instances', []) if held((i.get('attributes') or {}).get('stored_in'))]
-                     for c in [r['source'] for r in a3.get('relationships', []) if r['target'] == e['id'] and r['kind'] == 'access']}
+                     for c in [r['source'] for r in a3.get('relationships', []) if r['target'] == e['id'] and r['kind'] == 'access' and r['source'] not in api_ops]}   # an API operation's access is its contract, not a component using the data: the one that only exposes the API is not a user (F13)
             whole = {r['target']: r['source'] for r in a3.get('relationships', []) if r['kind'] == 'composition'}   # a component is part of an application
             def up(c):
                 out = [c]

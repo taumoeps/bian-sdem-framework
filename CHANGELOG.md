@@ -17,6 +17,8 @@
 
 - **The public twin's report corrected a second time: finding F2 withdrawn.** "Required fields force values a design does not give" was the operator's error — a *planned* record may leave a required field out (LC-04, a warning), as the design-from-document skill says. Two of the twelve findings about SDEM (F2, F9) have now been withdrawn or rewritten as the operator's own mistakes; the remaining ten are being re-verified against SDEM's existing behaviour before the benchmark is run again.
 
+- **`sdem aid` no longer links the API ingress to the database (AID-C02; the public twin, F13).** A component counted as a user of a table when the API it exposes had an operation that accesses the table, so its node was proposed a connection to the database. Only a component's own access counts now.
+
 ## 0.19.0 — a full design: the information model, the links ArchiMate defines, events, products, channels and locations (2026-11-16)
 
 Upgrade: change the pin to `@v0.19.0`, `pip install -r requirements.txt`, `sdem agents install`; then `sdem migrate --workspace <dir> --person <you>` (metamodel 0.14.0 → 0.17.0, additive — nothing in your data changes; what is now thin is reported, never refused). Run `sdem aid` again to have it propose data tables, field matches and the new links.
