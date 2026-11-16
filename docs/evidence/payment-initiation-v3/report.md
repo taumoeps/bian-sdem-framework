@@ -18,7 +18,7 @@ reference to score. The reference is the owner's and is not in this repository. 
 | **What SDEM inferred inside A4, first run** — 24 links | 8 expected (node runs deployment), 4 an equivalent form (path → node; the reference has path → zone), **12 wrong** (every deployment and database placed in the parent zone) |
 | **Recall between layers** — of 57 expected links | 15 proposed by SDEM, 5 more reachable by trace; 20 have an end SDEM does not hold; **17 missed with both ends held** |
 | **Answers** (PT-28) — 50 questions | **29 right** by a link or field SDEM holds; 5 right record but found by its description, not a link; 2 partly; 4 impact questions SDEM declined ("evidence incomplete"); 9 not held; 1 expects a record the document does not contain |
-| **Planted mistakes** (PT-29) — 19 that a tool should refuse or warn about | **4 caught**, **11 accepted silently**, 4 not applicable (SDEM does not hold what was mutated). No false alarm on the unmutated design |
+| **Planted mistakes** (PT-29) — 19 that a tool should refuse or warn about | **5 caught**, **10 accepted silently**, 4 not applicable (SDEM does not hold what was mutated). No false alarm on the unmutated design |
 | **Conformance** (PT-31) | `sdem check`: 0 errors, 15 warnings |
 | **Effort** (PT-27) | Operator: 126 records, 99 links, 5 requirements from the document; 9 interpretations (run log). Owner: 12 decisions, taken wholesale on the operator's recommendation and run by the operator as delegation; 0 links stated by hand |
 
@@ -36,8 +36,8 @@ reference to score. The reference is the owner's and is not in this repository. 
 | F6 | **No rule reaches platform software.** Database, key custody, events and audit stayed in no zone and linked to nothing; SDEM said so (LC-16, LC-21) but proposed nothing | 4 expected links SYS → NODE missed |
 | F7 | **Field types are not checked.** An amount typed as a date, a currency as a boolean, an identifier as money, a lost primary key — all accepted through a change set without a word | M-01, 02, 03, 05 |
 | F8 | **A broken contract is not noticed:** an API field re-pointed at the wrong column, an operation's path changed to another product, an access link or a path's end removed | M-08, 12, 19, 21 |
-| F9 | **The registry of approved links is unguarded by `sdem check`:** deleting an approved link, or adding one that contradicts the deployment's own `component_id`, passed | M-06, 07, 09 |
-| F10 | **What SDEM does guard, it guards well:** every direct edit of a layer file was refused (CTL-20, 14 of 14); an agent cannot approve (CTL-21); approval without evidence is refused; a duplicate table is refused; data moved into the DMZ is flagged | M-04, 10, 11, 16; Q-41 |
+| F9 | **A deleted approved link draws no warning about the design.** `sdem check` only notes that `mappings.json` changed outside `sdem` (AF-07 — an error with `--require-recorded`, which CI should use). A link added that contradicts the record's own attribute *is* caught (LC-28). *Corrected 2026-11-17: first reported as "the registry is unguarded" — the operator's harness had hidden the LC-28 warning* | M-06, 07; M-09 caught |
+| F10 | **What SDEM does guard, it guards well:** every direct edit of a layer file was refused (CTL-20, 14 of 14); an agent cannot approve (CTL-21); approval without evidence is refused; a duplicate table is refused; data moved into the DMZ is flagged; an approved link that contradicts its record is flagged | M-04, 09, 10, 11, 16; Q-41 |
 | F11 | **API-level facts have no home:** request and response fields as things in their own right, their logical types and lengths, headers, scopes, security flows, a resource's permitted statuses | 18 expected records; Q-37…40, 43, 44, 46, 47; M-14, 15 |
 | F12 | **SDEM never proposed a forbidden link**, and its attribute-join proposals (deployed as, deployed on, stored in, uses domain) were sound: 21 of 22 expected or consistent; the other — the status process uses Payment Order Initiation — is not in the reference but follows from the document | 0 of 18; 21 of 22 |
 
@@ -67,7 +67,7 @@ Nothing below is done. Each SDEM change is its own change with tests first (plan
 | N1 | Zone placement follows the platform's zone (F3) | code (AID-Z) |
 | N2 | AID infers a table for a BIAN object only when the design gives a reason to store it (F4) | code (AID-I01) |
 | N3 | `sdem check` warns on field types that contradict the field's name or role, a table with no key, and an API field alias that points at a column of another meaning (F7, F8) | code — new checks, rule ids |
-| N4 | `sdem check` covers the registry: an approved link removed outside `sdem`, or one that contradicts the records it joins (F9) | code |
+| N4 | ~~`sdem check` covers the registry~~ — **withdrawn 2026-11-17:** it already does (AF-07 with `--require-recorded`; LC-28). Use `--require-recorded` in CI where agents edit | none |
 | N5 | Propose process → application links from what the records already say (F5) — and say *evidence incomplete* everywhere SDEM now says nothing | code (AID-L) |
 | N6 | Rules for platform software: on the node of its kind, in that node's zone (F6) | code (hosting inference) |
 | N7 | Loosen the zone model so flat zones are valid (F1); make a deployment's platform and an operation's path optional on a *planned* record (F2) | **metamodel — owner's approval** |
