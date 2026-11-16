@@ -1,0 +1,5 @@
+{"layer": "A3", "reason": "Which components use the tables kept from AID: capture keeps saved payees; validation records the funding and compliance checks (found: the tables were used by nothing)",
+ "changes": [], "relationships": {"add": [
+  {"source": "CMP-PAY-CAPTURE", "kind": "access", "target": "AID-ENT-PAYEE"},
+  {"source": "CMP-PAY-VALIDATE", "kind": "access", "target": "AID-ENT-FUNDING-CHECK"},
+  {"source": "CMP-PAY-VALIDATE", "kind": "access", "target": "AID-ENT-COMPLIANCE-CHECK"}]}}

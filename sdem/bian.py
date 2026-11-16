@@ -390,6 +390,12 @@ def build(domains, metamodel_version, descriptions=False, objects=False, pattern
                         if f'BBO-{_key(ref)}' != bo: rels.append({'source': bo, 'kind': 'association', 'target': f'BBO-{_key(ref)}'})
                 if cr and name in set(d['control_record_fields']) | set(_words(f).replace(' ', '') for f in d['control_record_fields']):
                     rels.append({'source': cr, 'kind': 'association', 'target': bo})
+            if cr:   # IM-03 (found in v2): the control record's own fields that refer to business objects link it to them, as BIAN's schema does
+                for f in (d.get('object_fields') or {}).get(d['control_record'], []):
+                    ref = f.get('refers_to')
+                    if ref and ref in d['objects'] and ref != d['control_record'] and not ref.lower().endswith('typevalues') and ref not in DATATYPES \
+                            and (objects is True or not isinstance(objects, (set, list, tuple)) or ref.lower() in {str(x).replace(' ', '').lower() for x in objects}):
+                        rels.append({'source': cr, 'kind': 'association', 'target': f'BBO-{_key(ref)}'})
     report['shared_control_records'] = sorted((n, ds) for n, ds in cr_names.items() if len(ds) > 1)
     seen, uniq = set(), []
     for r in rels:

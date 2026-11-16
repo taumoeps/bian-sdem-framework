@@ -82,5 +82,40 @@ class TraceDisplayTests(unittest.TestCase):   # the two display issues the v2 re
         self.assertEqual(branch.count("ZONE-PAY-INTERNAL 'Internal network"), 1)   # once — not also as PART_OF
 
 
+class ConnectedAndPlacedTests(unittest.TestCase):   # the owner's screenshots of v2 (2026-11-16): unconnected shapes, A4 shapes stacked
+    def test_every_shape_of_v2_is_connected_inside_its_layer(self):
+        from sdem.containment import layout
+        from sdem.metamodel import Metamodel
+        mm = Metamodel.load()
+        for L, f in (('A1', 'a1-business.json'), ('A2', 'a2-service-domain.json'), ('A3', 'a3-application.json'), ('A4', 'a4-technology.json')):
+            d = json.loads((V2 / f).read_text(encoding='utf-8')); shapes = {s['id'] for s in layout(d, L, mm)['shapes']}
+            linked = {x for r in d['relationships'] if r['source'] in shapes and r['target'] in shapes for x in (r['source'], r['target'])}
+            self.assertEqual(shapes - linked, set(), L)
+
+    def test_a_narrow_zone_wraps_its_shapes_instead_of_stacking_them(self):
+        from sdem.containment import layout
+        from sdem.metamodel import Metamodel
+        for ex in ('payment-initiation-v2', 'payment-initiation', 'customer-onboarding'):
+            pts = [s['at'] for s in layout(json.loads((ROOT / 'examples' / ex / 'a4-technology.json').read_text(encoding='utf-8')), 'A4', Metamodel.load())['shapes']]
+            close = [(a, b) for i, a in enumerate(pts) for b in pts[i + 1:] if abs(a[0] - b[0]) < 0.07 and abs(a[1] - b[1]) < 0.05]
+            self.assertEqual(close, [], ex)
+
+    def test_the_import_links_a_control_record_to_the_objects_it_refers_to(self):
+        from sdem.bian import read_domain, build
+        from sdem.metamodel import Metamodel
+        d, _ = build([read_domain(ROOT / 'tests/fixtures/bian-release-typed/SamplePaymentOrder.yaml')], Metamodel.load().version, objects=True)
+        self.assertIn(('CR-SAMPLE-PAYMENT-ORDER', 'association', 'BBO-PAYMENT-TRANSACTION'), {(r['source'], r['kind'], r['target']) for r in d['relationships']})
+
+    def test_aid_has_a_table_nobody_uses_accessed_by_its_domains_component(self):   # AID-I07
+        from sdem.aid_info import propose_access
+        from sdem.metamodel import Metamodel
+        a2 = {'instances': [], 'relationships': [{'source': 'SD-1', 'kind': 'aggregation', 'target': 'CR-1'}, {'source': 'CR-1', 'kind': 'association', 'target': 'BO-1'}]}
+        a3 = {'instances': [{'id': 'ENT-1', 'type': 'A3.DataEntity', 'version': '1', 'name': 't'}], 'relationships': []}
+        maps = [{'source': {'id': 'BO-1', 'type': 'A2.BusinessObject'}, 'relationship': 'MAPPED_TO', 'target': {'id': 'ENT-1', 'type': 'A3.DataEntity'}, 'status': 'approved'},
+                {'source': {'id': 'SD-1', 'type': 'A2.ServiceDomain'}, 'relationship': 'REALIZED_BY', 'target': {'id': 'APP-1', 'type': 'A3.ApplicationComponent'}, 'status': 'approved'}]
+        got = propose_access({'A2': a2, 'A3': a3}, maps, Metamodel.load(), lambda r, w, f: {'rule': r})
+        self.assertEqual([(x['source'], x['kind'], x['target'], x['inferred']['rule']) for x in got], [('APP-1', 'access', 'ENT-1', 'AID-I07')])
+
+
 if __name__ == '__main__':
     unittest.main()

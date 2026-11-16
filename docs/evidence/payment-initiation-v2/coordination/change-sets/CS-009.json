@@ -1,0 +1,52 @@
+{
+  "id": "CS-009",
+  "layer": "A2",
+  "reason": "The payment initiation procedure works on BIAN's payer, payee, their banks and the funding and compliance checks — as BIAN's own control record refers to them (found: they were linked to nothing)",
+  "changes": [],
+  "relationships": {
+    "add": [
+      {
+        "source": "CR-PI",
+        "kind": "association",
+        "target": "BBO-PAYER"
+      },
+      {
+        "source": "CR-PI",
+        "kind": "association",
+        "target": "BBO-PAYEE"
+      },
+      {
+        "source": "CR-PI",
+        "kind": "association",
+        "target": "BBO-PAYER-BANK"
+      },
+      {
+        "source": "CR-PI",
+        "kind": "association",
+        "target": "BBO-PAYEE-BANK"
+      },
+      {
+        "source": "CR-PI",
+        "kind": "association",
+        "target": "BBO-FUNDING-CHECK"
+      },
+      {
+        "source": "CR-PI",
+        "kind": "association",
+        "target": "BBO-COMPLIANCE-CHECK"
+      }
+    ]
+  },
+  "agent": "architect",
+  "person": "Steven Taumoepeau",
+  "created_at": "2026-11-16T09:27:52+00:00",
+  "work_items": [],
+  "event": "CE-009",
+  "branch": "main",
+  "trigger": "initial",
+  "dataset": {
+    "file": "a2-service-domain.json",
+    "before_sha256": "4a98036138e2bd58cd3b937ee4611a320e3c90c9b90139374055956ff97a9ea5",
+    "after_sha256": "e86d531946dabc71d74229ea7eb5f9b2d6bbe2bc5743a80909aad5c476e7ed98"
+  }
+}

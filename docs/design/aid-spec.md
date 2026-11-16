@@ -27,6 +27,7 @@ AID projects the missing architecture layers from the architecture datasets an a
 | AID-L06 | A technology service an application service consumes → SERVED_BY to the one component that realises the service. | same |
 | AID-I05 | An A1 business object ALIGNED_TO the one BIAN business object of the same name. | same |
 | AID-I06 | A *confirmed* inferred data entity STORED_IN the one database every other table of the design is stored in. | same |
+| AID-I07 | A data entity no component accesses is accessed by the one component that realises the BIAN service domain whose control record is associated with the business object it stores — a link inside A3, marked inferred (found in Payment Initiation v2: kept tables nobody used). | `test_aid_has_a_table_nobody_uses_accessed_by_its_domains_component` |
 | AID-K02 | **Before inferring a table** (AID-I01): a BIAN object MAPPED_TO an existing table when at least two, and at least half, of its columns say what the object's fields say, the table named for the object counts, each object to its one best table, no close second (15 points). | same |
 | AID-K01 | **Field matches** (the owner's approval 2b): each column of a mapped table to the BIAN field that says the same (words with banking synonyms, a compatible type, the object's own fields before those BIAN repeats from parents — fix 3), at least 60%, one field per column, no close second — never a guess. | same |
 

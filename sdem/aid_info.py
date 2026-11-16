@@ -74,3 +74,32 @@ def propose_information(a2, a3, mappings, mark, rejected=frozenset(), is_inferre
                 rels_from.append(fid)
             links.insert(len(links) - len(rels_from), (bo, 'MAPPED_TO', eid, f"the data entity stores the business object {o['name']} (AID-I03)"))
     return inst, rels, links
+
+
+def propose_access(docs, mappings, mm, mark):
+    """AID-I07 (found in v2: inferred tables nobody used): a data entity no component accesses is accessed by the one component that realises
+    the BIAN service domain whose control record is associated with the business object the entity stores. A link inside A3, marked inferred."""
+    a2, a3 = docs.get('A2') or {}, docs.get('A3') or {}
+    i3 = {i['id']: i for i in a3.get('instances', [])}
+    accessed = {r['target'] for r in a3.get('relationships', []) if r.get('kind') == 'access'}
+    live = [m for m in mappings if m.get('status') in ('approved', 'proposed')]
+    stores = {}
+    for m in live:
+        if m['relationship'] == 'MAPPED_TO': stores.setdefault(m['target']['id'], set()).add(m['source']['id'])
+    realised = {}
+    for m in live:
+        if m['relationship'] == 'REALIZED_BY' and mm.is_a(m['source'].get('type') or '', 'A2.ServiceDomain'):
+            realised.setdefault(m['source']['id'], set()).add(m['target']['id'])
+    cr_of = {}
+    for r in a2.get('relationships', []):
+        if r.get('kind') == 'association': cr_of.setdefault(r['target'], set()).add(r['source'])
+    sd_of = {r['target']: r['source'] for r in a2.get('relationships', []) if r.get('kind') == 'aggregation'}
+    out = []
+    for e, rec in i3.items():
+        if not mm.is_a(rec['type'], 'A3.DataEntity') or e in accessed: continue
+        comps = {c for bo in stores.get(e, ()) for cr in cr_of.get(bo, ()) for c in realised.get(sd_of.get(cr), ())}
+        if len(comps) == 1:
+            c = next(iter(comps))
+            out.append({'source': c, 'kind': 'access', 'target': e,
+                        'inferred': mark('AID-I07', f'{e} stores a business object the control record of a domain {c} realises works on, and nothing accesses {e}', e)})
+    return out

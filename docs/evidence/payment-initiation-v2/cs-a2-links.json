@@ -1,0 +1,5 @@
+{"layer": "A2", "reason": "The payment initiation procedure works on BIAN's payer, payee, their banks and the funding and compliance checks — as BIAN's own control record refers to them (found: they were linked to nothing)",
+ "changes": [], "relationships": {"add": [
+  {"source": "CR-PI", "kind": "association", "target": "BBO-PAYER"}, {"source": "CR-PI", "kind": "association", "target": "BBO-PAYEE"},
+  {"source": "CR-PI", "kind": "association", "target": "BBO-PAYER-BANK"}, {"source": "CR-PI", "kind": "association", "target": "BBO-PAYEE-BANK"},
+  {"source": "CR-PI", "kind": "association", "target": "BBO-FUNDING-CHECK"}, {"source": "CR-PI", "kind": "association", "target": "BBO-COMPLIANCE-CHECK"}]}}

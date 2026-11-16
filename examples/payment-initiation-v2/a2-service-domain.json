@@ -3445,6 +3445,36 @@
       "source": "CR-PI",
       "kind": "association",
       "target": "BBO-PAYMENT-TRANSACTION"
+    },
+    {
+      "source": "CR-PI",
+      "kind": "association",
+      "target": "BBO-PAYER"
+    },
+    {
+      "source": "CR-PI",
+      "kind": "association",
+      "target": "BBO-PAYEE"
+    },
+    {
+      "source": "CR-PI",
+      "kind": "association",
+      "target": "BBO-PAYER-BANK"
+    },
+    {
+      "source": "CR-PI",
+      "kind": "association",
+      "target": "BBO-PAYEE-BANK"
+    },
+    {
+      "source": "CR-PI",
+      "kind": "association",
+      "target": "BBO-FUNDING-CHECK"
+    },
+    {
+      "source": "CR-PI",
+      "kind": "association",
+      "target": "BBO-COMPLIANCE-CHECK"
     }
   ]
 }

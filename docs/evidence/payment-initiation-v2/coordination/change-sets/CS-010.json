@@ -1,0 +1,37 @@
+{
+  "id": "CS-010",
+  "layer": "A3",
+  "reason": "Which components use the tables kept from AID: capture keeps saved payees; validation records the funding and compliance checks (found: the tables were used by nothing)",
+  "changes": [],
+  "relationships": {
+    "add": [
+      {
+        "source": "CMP-PAY-CAPTURE",
+        "kind": "access",
+        "target": "AID-ENT-PAYEE"
+      },
+      {
+        "source": "CMP-PAY-VALIDATE",
+        "kind": "access",
+        "target": "AID-ENT-FUNDING-CHECK"
+      },
+      {
+        "source": "CMP-PAY-VALIDATE",
+        "kind": "access",
+        "target": "AID-ENT-COMPLIANCE-CHECK"
+      }
+    ]
+  },
+  "agent": "architect",
+  "person": "Steven Taumoepeau",
+  "created_at": "2026-11-16T09:27:52+00:00",
+  "work_items": [],
+  "event": "CE-010",
+  "branch": "main",
+  "trigger": "initial",
+  "dataset": {
+    "file": "a3-application.json",
+    "before_sha256": "ef6176961231b1bcc02aca10ebeb4a552ef3fea5cfd6dcdee1458d990908aedd",
+    "after_sha256": "16f13d591ebca7003441dd7ddad47776e3eac07c4cf711a3992800cd42d473a0"
+  }
+}

@@ -1630,6 +1630,21 @@
       "source": "AID-ENT-PAYEE",
       "kind": "composition",
       "target": "AID-ENTF-PAYEE-PAYMENTINSTRUCTIONINVOLVEMENTTYPE"
+    },
+    {
+      "source": "CMP-PAY-CAPTURE",
+      "kind": "access",
+      "target": "AID-ENT-PAYEE"
+    },
+    {
+      "source": "CMP-PAY-VALIDATE",
+      "kind": "access",
+      "target": "AID-ENT-FUNDING-CHECK"
+    },
+    {
+      "source": "CMP-PAY-VALIDATE",
+      "kind": "access",
+      "target": "AID-ENT-COMPLIANCE-CHECK"
     }
   ]
 }

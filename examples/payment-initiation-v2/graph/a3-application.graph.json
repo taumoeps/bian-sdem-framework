@@ -6,7 +6,7 @@
     "directed": true,
     "metadata": {
       "sdem_store_version": "1.0",
-      "export_sha256": "5a64a1c218a704bf131ce175146a52cc38e6d96fa17edb7142d4cd3e5bd61b56",
+      "export_sha256": "768a125eaf2ca9c8e43568bd3bb0f3bb9479919d101068275f1ba56402d32ecc",
       "level": "A3",
       "model_id": "synthetic-bank-payments-v2-a3",
       "model_version": "2026.10",
@@ -2132,6 +2132,36 @@
         "metadata": {
           "scope": "within-level",
           "row": "RA3-33"
+        }
+      },
+      {
+        "id": "A3:CMP-PAY-CAPTURE-access-AID-ENT-PAYEE",
+        "source": "A3:CMP-PAY-CAPTURE@7.1",
+        "target": "A3:AID-ENT-PAYEE@1",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-16"
+        }
+      },
+      {
+        "id": "A3:CMP-PAY-VALIDATE-access-AID-ENT-FUNDING-CHECK",
+        "source": "A3:CMP-PAY-VALIDATE@7.1",
+        "target": "A3:AID-ENT-FUNDING-CHECK@1",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-16"
+        }
+      },
+      {
+        "id": "A3:CMP-PAY-VALIDATE-access-AID-ENT-COMPLIANCE-CHECK",
+        "source": "A3:CMP-PAY-VALIDATE@7.1",
+        "target": "A3:AID-ENT-COMPLIANCE-CHECK@1",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-16"
         }
       }
     ]

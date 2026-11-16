@@ -6,7 +6,7 @@
     "directed": true,
     "metadata": {
       "sdem_store_version": "1.0",
-      "export_sha256": "21671e086cd46ed403580a46ec584c506dc271a2942412da34c253dad31cb48e",
+      "export_sha256": "5e9b9a7d21de10b3e7d015809cc10bf0be3d5dba1945b14601f636a7b54df38a",
       "level": "A2",
       "model_id": "synthetic-bank-payments-v2-a2",
       "model_version": "2026.10",
@@ -4585,6 +4585,66 @@
         "id": "A2:CR-PI-association-BBO-PAYMENT-TRANSACTION",
         "source": "A2:CR-PI@1.0",
         "target": "A2:BBO-PAYMENT-TRANSACTION@14.0.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-12"
+        }
+      },
+      {
+        "id": "A2:CR-PI-association-BBO-PAYER",
+        "source": "A2:CR-PI@1.0",
+        "target": "A2:BBO-PAYER@14.0.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-12"
+        }
+      },
+      {
+        "id": "A2:CR-PI-association-BBO-PAYEE",
+        "source": "A2:CR-PI@1.0",
+        "target": "A2:BBO-PAYEE@14.0.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-12"
+        }
+      },
+      {
+        "id": "A2:CR-PI-association-BBO-PAYER-BANK",
+        "source": "A2:CR-PI@1.0",
+        "target": "A2:BBO-PAYER-BANK@14.0.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-12"
+        }
+      },
+      {
+        "id": "A2:CR-PI-association-BBO-PAYEE-BANK",
+        "source": "A2:CR-PI@1.0",
+        "target": "A2:BBO-PAYEE-BANK@14.0.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-12"
+        }
+      },
+      {
+        "id": "A2:CR-PI-association-BBO-FUNDING-CHECK",
+        "source": "A2:CR-PI@1.0",
+        "target": "A2:BBO-FUNDING-CHECK@14.0.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-12"
+        }
+      },
+      {
+        "id": "A2:CR-PI-association-BBO-COMPLIANCE-CHECK",
+        "source": "A2:CR-PI@1.0",
+        "target": "A2:BBO-COMPLIANCE-CHECK@14.0.0",
         "relation": "association",
         "metadata": {
           "scope": "within-level",

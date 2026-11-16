@@ -121,13 +121,17 @@ def _place(recs, rels, x0=_X0, x1=_X1, z0=_Z0, z1=_Z1):
             gz0, gz1 = za + 0.3 + MZ, za + own_h - MZ - 0.1
             if gz1 < gz0: gz1 = gz0
             n = len(groups)
+            cols = max(1, min(n, int((gx1 - gx0 + 2 * MX) / (2 * MX + 0.12))))   # a narrow zone wraps its shapes into rows instead of overlapping them
+            rows = -(-n // cols)
             for i, g in enumerate(groups):
-                cx = gx0 + (gx1 - gx0) * ((i + 0.5) / n) if n > 1 or gx1 > gx0 else (gx0 + gx1) / 2
-                L = len(g); step = min(ROW * 1.6, (gz1 - gz0) / max(L - 1, 1)) if L > 1 else 0
-                top = (gz0 + gz1) / 2 - step * (L - 1) / 2
+                c, rw = i % cols, i // cols
+                cx = gx0 + (gx1 - gx0) * ((c + 0.5) / cols) if cols > 1 or gx1 > gx0 else (gx0 + gx1) / 2
+                rz0 = gz0 + (gz1 - gz0) * rw / rows; rz1 = gz0 + (gz1 - gz0) * (rw + 1) / rows
+                L = len(g); step = min(ROW * 1.6, (rz1 - rz0) / max(L - 1, 1)) if L > 1 else 0
+                top = (rz0 + rz1) / 2 - step * (L - 1) / 2
                 for j, q in enumerate(g): pos[q] = (cx, top + j * step)
                 if L > 1:
-                    hw = min(0.45, (gx1 - gx0) / (2 * n) + MX - 0.05)
+                    hw = min(0.45, (gx1 - gx0) / (2 * cols) + MX - 0.05)
                     regions.append({'kind': 'runs_on', 'platform': g[0], 'holds': g[1:], 'rect': (cx - hw, top - MZ - 0.06, cx + hw, top + step * (L - 1) + MZ + 0.06)})
         y = za + own_h
         for i, (k, h) in enumerate(zip(ks, want[1:])):

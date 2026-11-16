@@ -157,6 +157,11 @@ def fill(workspace, person, dry_run=False, now=None):
             if rec['id'] in present: continue
             a3doc['instances'].append(rec); present.add(rec['id']); by_id[rec['id']] = rec; added.setdefault('A3', []).append(rec['id'])
         a3doc.setdefault('relationships', []).extend(r for r in irels if r['source'] in present and r['target'] in present)
+        from .aid_info import propose_access   # AID-I07: a table nobody accesses, accessed by the component realising its object's domain (inferred)
+        from .metamodel import Metamodel as _MMi
+        acc = propose_access(after, registry.get('mappings', []) + proposals, _MMi.load(), mark)
+        if acc:
+            a3doc['relationships'].extend(acc); added.setdefault('A3', [])
         for src, rel, tgt, why in ilinks:
             if src not in by_id or tgt not in by_id or (src, rel, tgt) in approved: continue
             proposals.append({'mapping_id': f'{run}-P{len(proposals) + 1:03d}', 'source': end({'id': src, 'type': by_id[src]['type'], 'version': by_id[src]['version']}),

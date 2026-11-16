@@ -2,6 +2,10 @@
 
 > Entries before 0.7.0 describe the project under its former name, **SDMM (BIAN Service Domain Mapping Model)**, and its former terms; they are kept as written.
 
+## Unreleased
+
+- **Every shape connected, nothing stacked (from the owner's screenshots of Payment Initiation v2 on DESNRE).** The A4 layout wraps the shapes of a narrow zone into rows instead of drawing them on top of each other. `sdem bian import --objects` links a control record to the business objects its own fields refer to, as BIAN's schema does. `sdem aid` gives a table nobody uses an "accesses" link from the component realising its object's domain (AID-I07, inferred). Payment Initiation v2: the payment initiation procedure works on BIAN's payer, payee, their banks and the funding and compliance checks (CS-009); capture uses the payee table, validation the funding and compliance check tables (CS-010) — every shape in every layer is now linked.
+
 ## 0.19.0 — a full design: the information model, the links ArchiMate defines, events, products, channels and locations (2026-11-16)
 
 Upgrade: change the pin to `@v0.19.0`, `pip install -r requirements.txt`, `sdem agents install`; then `sdem migrate --workspace <dir> --person <you>` (metamodel 0.14.0 → 0.17.0, additive — nothing in your data changes; what is now thin is reported, never refused). Run `sdem aid` again to have it propose data tables, field matches and the new links.
