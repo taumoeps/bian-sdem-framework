@@ -1,6 +1,6 @@
 # Ways of working with SDEM — CLI, AI agent, documents
 
-> **Status: current (v0.18.0).** What is available today, and what is planned but not built. SDEM is ready to evaluate on synthetic data; real designs follow a pilot ([what that needs](../README.md#using-sdem-on-real-designs)).
+> **Status: current (v0.19.0).** What is available today, and what is planned but not built. SDEM is ready to evaluate on synthetic data; real designs follow a pilot ([what that needs](../README.md#using-sdem-on-real-designs)).
 
 SDEM's metamodel, CLI and workspace are the same however you work. The workspace is the source of truth; every cross-layer connection needs a person's approval.
 
@@ -58,7 +58,7 @@ Documents would remain an input and presentation format; the workspace stays the
 ```mermaid
 flowchart TB
     ARCH["Solution architect"]
-    subgraph NOW["Available — v0.18.0"]
+    subgraph NOW["Available — v0.19.0"]
         DIRECT["Directly with the CLI<br/>JSON change sets · no AI"]
         AGENT["Optional AI agent<br/>plain words · Markdown / Word<br/>reads documents, fills templates"]
         CLI["SDEM CLI<br/>commands · JSON results<br/>Confluence onboarding · HTML views"]

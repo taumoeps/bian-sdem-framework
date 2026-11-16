@@ -5,7 +5,7 @@ description: Design onboarding — how past designs (a Confluence export, a fold
 
 # Onboarding past designs
 
-The whole journey (design onboarding): [`docs/sdem-onboarding-workflow.md`](https://github.com/taumoeps/bian-sdem-framework/blob/v0.18.0/docs/sdem-onboarding-workflow.md). In short:
+The whole journey (design onboarding): [`docs/sdem-onboarding-workflow.md`](https://github.com/taumoeps/bian-sdem-framework/blob/v0.19.0/docs/sdem-onboarding-workflow.md). In short:
 
 ```
 export (the architect) → sdem transform run → review (the architect, you help) → sdem load (the architect) → sdem link → sdem approve (a person) → sdem build
@@ -56,7 +56,7 @@ Then give the architect the load command to run themselves, e.g.:
 
 ## After loading — what to expect
 
-- What did not fit an entity is kept as **gap records** beside the workspace (`<workspace>/designs/design-records.json`): `sdem designs --workspace <workspace> --gaps` lists them by category; `sdem designs --entity <id>` shows an entity's pages and gaps. Help the architect work through the open ones — suggest, per gap, whether it is now in the data (`sdem designs resolve`) or stays as it is (`sdem designs accept`), with a note; **the architect runs those commands** (their name is recorded); a recurring *no entity type* is evidence for a metamodel decision by the owner — never change [`metamodel/`](https://github.com/taumoeps/bian-sdem-framework/tree/v0.18.0/metamodel).
+- What did not fit an entity is kept as **gap records** beside the workspace (`<workspace>/designs/design-records.json`): `sdem designs --workspace <workspace> --gaps` lists them by category; `sdem designs --entity <id>` shows an entity's pages and gaps. Help the architect work through the open ones — suggest, per gap, whether it is now in the data (`sdem designs resolve`) or stays as it is (`sdem designs accept`), with a note; **the architect runs those commands** (their name is recorded); a recurring *no entity type* is evidence for a metamodel decision by the owner — never change [`metamodel/`](https://github.com/taumoeps/bian-sdem-framework/tree/v0.19.0/metamodel).
 
 - Loaded records keep their `HIS-` ids and `attributes.source_id` = `confluence:<pages>`.
 - `sdem link` proposes links between architectures from them — **capped at low** when an end was read from a document (DEC-E-11); say so when you explain a proposal, and suggest checking it against the page (`design-index.json` gives the page).
@@ -64,7 +64,7 @@ Then give the architect the load command to run themselves, e.g.:
 
 ## Tuning the rules
 
-When `inspect` shows tables marked `no rule` or shapes `unclassified`: the architect copies [`metamodel/transform-rules.json`](https://github.com/taumoeps/bian-sdem-framework/blob/v0.18.0/metamodel/transform-rules.json), adds the words, and passes `--rules`. You may suggest the exact entries (e.g. add `"system name"` to rule HT-01's `name` list). Never edit [`metamodel/`](https://github.com/taumoeps/bian-sdem-framework/tree/v0.18.0/metamodel) itself.
+When `inspect` shows tables marked `no rule` or shapes `unclassified`: the architect copies [`metamodel/transform-rules.json`](https://github.com/taumoeps/bian-sdem-framework/blob/v0.19.0/metamodel/transform-rules.json), adds the words, and passes `--rules`. You may suggest the exact entries (e.g. add `"system name"` to rule HT-01's `name` list). Never edit [`metamodel/`](https://github.com/taumoeps/bian-sdem-framework/tree/v0.19.0/metamodel) itself.
 
 ## Confidentiality
 

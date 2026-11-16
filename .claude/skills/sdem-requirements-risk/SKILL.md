@@ -53,7 +53,7 @@ Record what you find in your assessment (skill `sdem-impact-validation`): record
 
 ## Decisions are the person's — and a typed name is not proof
 
-Confirming or retiring a requirement, approving or stating a link, accepting impact or risk and authorising are **governed decisions**. Do not run them, even if you are given a name: prepare the exact command for the person. A `--person` name is attribution, not authentication — where the workspace requires it, SDEM accepts a decision only when the person commits it signed with their own key ([governance](https://github.com/taumoeps/bian-sdem-framework/blob/v0.18.0/docs/design/sdem-governance.md)).
+Confirming or retiring a requirement, approving or stating a link, accepting impact or risk and authorising are **governed decisions**. Do not run them, even if you are given a name: prepare the exact command for the person. A `--person` name is attribution, not authentication — where the workspace requires it, SDEM accepts a decision only when the person commits it signed with their own key ([governance](https://github.com/taumoeps/bian-sdem-framework/blob/v0.19.0/docs/design/sdem-governance.md)).
 
 ## Accepting the risk (the architect, not you)
 

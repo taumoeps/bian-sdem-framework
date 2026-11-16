@@ -68,5 +68,19 @@ class FamilyAndOnboardingTests(unittest.TestCase):
         for t in ('A1.BusinessEvent', 'A1.Product', 'A1.BusinessInterface', 'A4.Location', 'A3.DataEntity'): self.assertIn(t, types)
 
 
+class TraceDisplayTests(unittest.TestCase):   # the two display issues the v2 report noted
+    def test_trace_lists_real_links_and_names_each_zone_once(self):
+        import io, contextlib, subprocess, sys, os
+        g = Path(tempfile.mkdtemp()) / 'graph'
+        subprocess.run([sys.executable, '-m', 'sdem.graph', 'build', *sorted(str(p) for p in V2.glob('a*.json')), str(V2 / 'mappings.json'), '--out', str(g)],
+                       check=True, capture_output=True, cwd=ROOT, env={**os.environ, 'PYTHONPATH': str(ROOT)})
+        out = subprocess.run([sys.executable, '-m', 'sdem', 'trace', 'BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-AMOUNT', '--graph', str(g), '--follow-composition'],
+                             capture_output=True, text=True, cwd=ROOT, env={**os.environ, 'PYTHONPATH': str(ROOT)}).stdout
+        self.assertNotIn('? -?-> ?', out)
+        self.assertIn('ALSO FOLLOWED, inside A4', out); self.assertIn('RA4-38 a shape in its network zone', out)
+        branch = out.split('UPSTREAM')[0].split('└─ -PART_OF-> BBO-PAYMENT-TRANSACTION')[0]
+        self.assertEqual(branch.count("ZONE-PAY-INTERNAL 'Internal network"), 1)   # once — not also as PART_OF
+
+
 if __name__ == '__main__':
     unittest.main()

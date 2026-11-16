@@ -1,6 +1,6 @@
 # SDEM pilot plan — one domain, ten weeks
 
-> **Status: current (v0.18.0)**. The domain is chosen by the criteria below when the preconditions are met. A small, real trial of SDEM before wider use: one domain, two or three architects, ten weeks, a go / adjust / stop decision at the end. **The plan works for any domain** — SDEM's metamodel covers the whole enterprise (A1–A4, every BIAN service domain), and each further domain repeats the same ten weeks with its own workspace. How SDEM is run: [`sdem-operating-model.md`](sdem-operating-model.md).
+> **Status: current (v0.19.0)**. The domain is chosen by the criteria below when the preconditions are met. A small, real trial of SDEM before wider use: one domain, two or three architects, ten weeks, a go / adjust / stop decision at the end. **The plan works for any domain** — SDEM's metamodel covers the whole enterprise (A1–A4, every BIAN service domain), and each further domain repeats the same ten weeks with its own workspace. How SDEM is run: [`sdem-operating-model.md`](sdem-operating-model.md).
 
 ## The question the pilot answers
 

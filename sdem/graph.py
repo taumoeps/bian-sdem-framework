@@ -324,6 +324,7 @@ class FederatedGraph:
         if follow_composition:
             # add virtual PART_OF / COMPOSES edges so a chain can pass from a part to its whole (and back)
             seen, frontier, virtual = set(), [start], []
+            joined = {frozenset((e['source']['id'], e['target']['id'])) for e in edges}   # a pair already joined (a zone in its parent zone) gets no second hop
             while frontier:
                 n = frontier.pop()
                 if n in seen: continue
@@ -332,6 +333,7 @@ class FederatedGraph:
                     a, b = (e['source'], e['target']) if direction == 'down' else (e['target'], e['source'])
                     if a['id'] == n: frontier.append(b['id'])
                 for whole in self.composition_hops(n, direction):
+                    if frozenset((n, whole)) in joined: frontier.append(whole); continue
                     inst = self.instance(whole) or {}
                     src, tgt = ({'id': n, 'type': (self.instance(n) or {}).get('type'), 'version': (self.instance(n) or {}).get('version')}, {'id': whole, 'type': inst.get('type'), 'version': inst.get('version')})
                     if direction == 'up': src, tgt = tgt, src
@@ -757,12 +759,16 @@ def main(argv=None):
             for t in trees.values(): walk(t)
             if used:
                 recs = {m.get('mapping_id'): m for doc in fg.mapping_docs for m in doc.get('mappings', [])}
-                print('CONNECTIONS FOLLOWED (each approved connection, by its id in mappings.json — the code in brackets above):')
+                inside = [mid for mid in used if mid not in recs]   # structural steps inside A4 (RA4-37 network, RA4-38 zone, RA4-39 zone nesting): no approval
+                used = [mid for mid in used if mid in recs]
+                if used: print('CONNECTIONS FOLLOWED (each approved connection, by its id in mappings.json — the code in brackets above):')
                 for mid in used:
                     m = recs.get(mid, {})
                     ev = '; '.join(e for e in m.get('evidence', []) if not str(e).startswith('engine_rationale:')) or '—'
                     print(f"  {mid}  {m.get('source', {}).get('id', '?')} -{m.get('relationship', '?')}-> {m.get('target', {}).get('id', '?')}: "
                           f"approved by {m.get('reviewer_id', '?')} on {m.get('approved_at', '?')}; evidence {ev}")
+                WHAT = {'RA4-37': 'a platform on its network', 'RA4-38': 'a shape in its network zone', 'RA4-39': 'a zone inside a larger zone'}
+                if inside: print('ALSO FOLLOWED, inside A4 (the layer\'s own structure — nothing to approve): ' + '; '.join(f"{x} {WHAT.get(x, '')}".strip() for x in inside))
                 print()
             if fg.design_records:  # LD-R04: where the entity is documented, and what did not fit there
                 from .designs import for_entity

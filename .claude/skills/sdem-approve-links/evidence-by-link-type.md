@@ -1,6 +1,6 @@
 # Evidence each link type needs before approval
 
-From [`schema/relationship-types.json`](https://github.com/taumoeps/bian-sdem-framework/blob/v0.18.0/schema/relationship-types.json) (the `required_evidence` of each relationship type). Write evidence as `kind:document-reference`.
+From [`schema/relationship-types.json`](https://github.com/taumoeps/bian-sdem-framework/blob/v0.19.0/schema/relationship-types.json) (the `required_evidence` of each relationship type). Write evidence as `kind:document-reference`.
 
 | Link | Required evidence kind(s) |
 |---|---|
