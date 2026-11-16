@@ -288,6 +288,35 @@
           "pattern": {
             "type": "object",
             "description": "the pattern the rule comes from (set from the included pattern file)"
+          },
+          "any_link": {
+            "type": "array",
+            "minItems": 2,
+            "description": "the record must have at least one of these links: inside the layer (kind, direction, to) or approved between layers (relationship, direction) — PR-35",
+            "items": {
+              "type": "object",
+              "properties": {
+                "kind": {
+                  "type": "string"
+                },
+                "relationship": {
+                  "type": "string"
+                },
+                "direction": {
+                  "enum": [
+                    "out",
+                    "in"
+                  ]
+                },
+                "to": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "reasoning": {
+            "type": "string",
+            "description": "why the rule holds — kept with it"
           }
         },
         "anyOf": [

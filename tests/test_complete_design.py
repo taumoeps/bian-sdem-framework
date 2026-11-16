@@ -72,6 +72,26 @@ class CompletenessTests(unittest.TestCase):
         self.assertRegex(text, r'Completeness: 1 of 4 records connected \(25%\) — 3 gaps')
         self.assertIn('2 × an interface belongs to the component that offers it', text)
 
+    def test_at_least_one_of_several_links(self):   # PR-35, CPL-07: an actor, an image
+        self.new()
+        self.propose(CS('A1', [R('ACTOR-MERCHANT', 'A1.BusinessActor', 'Merchant'), R('ACTOR-CUSTOMER', 'A1.BusinessActor', 'Customer'), R('ACTOR-TPP', 'A1.BusinessActor', 'Provider'),
+                               R('ROLE-PAYER', 'A1.BusinessRole', 'Payer'), R('IF-WEB', 'A1.BusinessInterface', 'Web channel', channel_kind='web')],
+                        [('ACTOR-CUSTOMER', 'assignment', 'ROLE-PAYER'), ('IF-WEB', 'serving', 'ACTOR-TPP')]), 'sdem-a1-business')
+        self.propose(CS('A4', [R('ART-A', 'A4.Artifact', 'hub image'), R('ART-B', 'A4.Artifact', 'api image'), R('NODE-1', 'A4.Node', 'compute')], [('NODE-1', 'assignment', 'ART-B')]), 'sdem-a4-technology')
+        c = json.loads(sdem('comply', '--workspace', self.ws, '--json', cwd=self.tmp)[1])
+        got = {(f['rule'], f['record']): f['outcome'] for f in c['findings'] if f['rule'] in ('CPL-A1-05', 'CPL-A4-02')}
+        self.assertEqual(got, {('CPL-A1-05', 'ACTOR-MERCHANT'): 'unresolved', ('CPL-A1-05', 'ACTOR-CUSTOMER'): 'compliant', ('CPL-A1-05', 'ACTOR-TPP'): 'compliant',
+                               ('CPL-A4-02', 'ART-A'): 'unresolved', ('CPL-A4-02', 'ART-B'): 'compliant'})
+        why = next(f['detail'] for f in c['findings'] if f['record'] == 'ACTOR-MERCHANT' and f['rule'] == 'CPL-A1-05')
+        self.assertIn('none of: assignment to any record · serving from any record · approved SERVED_BY to any record', why)
+
+    def test_a_rule_that_names_no_link_is_refused(self):   # PR-35
+        self.new()
+        p = self.ws / 'sdem-profile.json'; d = json.loads(p.read_text(encoding='utf-8'))
+        d['rules'] = [{'id': 'X-1', 'entity': 'A1.BusinessActor', 'any_link': [{'direction': 'in'}, {'kind': 'no-such-kind'}], 'message': 'x'}]; p.write_text(json.dumps(d), encoding='utf-8')
+        code, out, err = sdem('profile', 'check', '--workspace', self.ws, cwd=self.tmp)
+        self.assertNotEqual(code, 0); self.assertIn('each any_link names a kind', out + err); self.assertIn("any_link kind 'no-such-kind'", out + err)
+
     def test_an_existing_workspace_is_not_changed(self):   # CPL-06
         ws = self.tmp / 'old'; shutil.copytree(ROOT / 'examples' / 'payment-initiation', ws, ignore=shutil.ignore_patterns('graph'))
         self.assertFalse((ws / 'sdem-profile.json').exists())

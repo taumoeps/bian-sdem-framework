@@ -104,6 +104,14 @@ def evaluate(datasets, maps, mm, rules, exceptions=(), as_of=None):
                 lk = rule['link']; ends = (links_in if lk.get('direction') == 'in' else links_out).get((rid, lk['kind']), [])
                 ends = [e for e in ends if not lk.get('to') or (e in recs and mm.is_a(recs[e][1]['type'], lk['to']))]
                 if len(ends) < lk.get('min', 1): fails.append(f"{len(ends)} {lk['kind']} link(s){' to ' + lk['to'] if lk.get('to') else ''}, needs at least {lk.get('min', 1)}")
+            if rule.get('any_link'):   # PR-35: at least one of several links — inside the layer (kind, direction, to) or approved between layers (relationship, direction)
+                def has(lk):
+                    if lk.get('relationship'): return bool((across_in if lk.get('direction') == 'in' else across_out).get((rid, lk['relationship'])))
+                    ends = (links_in if lk.get('direction') == 'in' else links_out).get((rid, lk['kind']), [])
+                    return any(not lk.get('to') or (e in recs and mm.is_a(recs[e][1]['type'], lk['to'])) for e in ends)
+                if not any(has(lk) for lk in rule['any_link']):
+                    fails.append('none of: ' + ' · '.join((f"approved {lk['relationship']}" if lk.get('relationship') else f"{lk['kind']}") + (' from' if lk.get('direction') == 'in' else ' to')
+                                                         + (' ' + lk['to'] if lk.get('to') else ' any record') for lk in rule['any_link']))
             if rule.get('compare'):
                 c = rule['compare']; k = c['attribute']
                 for other in links_out.get((rid, c['kind']), []):   # PR-11a: a value that is missing or a placeholder cannot be compared — unresolved, never compliant

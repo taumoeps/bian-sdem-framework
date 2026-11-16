@@ -112,7 +112,7 @@ def _pattern_rules(doc, merged, origin):
             ref = next((x for x in merged['rules'] if x['id'] == it['rule']), None)
             if not ref: merged['_issues'].append(f"pattern {pat['id']} item {it['id']}: rule {it['rule']} is not declared — include its standard before the pattern ({origin})"); continue
             if ref['entity'] != ent: merged['_issues'].append(f"pattern {pat['id']} item {it['id']}: rule {it['rule']} is on {ref['entity']}, the pattern applies to {ent}"); continue
-            r.update({k: v for k, v in ref.items() if k in ('require', 'check', 'link', 'compare', 'across', 'standard')})
+            r.update({k: v for k, v in ref.items() if k in ('require', 'check', 'link', 'any_link', 'compare', 'across', 'standard')})
             if ref.get('when'): r['when'] = {**ref['when'], **when}
             if ref.get('message') and not it.get('message'): r['message'] = ref['message']
         for part, key in (('within', 'link'), ('require', 'require'), ('check', 'check'), ('across', 'across'), ('compare', 'compare')):
@@ -242,6 +242,10 @@ def check(merged, base_mm):
         for part in ('link', 'compare'):
             k = (r.get(part) or {}).get('kind')
             if k and k not in kinds | own_kinds: issues.append(f"rule {r['id']}: {part} kind {k!r} is neither an ArchiMate kind SDEM knows nor one of the profile's link kinds")
+        for lk in r.get('any_link') or []:   # PR-35
+            if not (lk.get('kind') or lk.get('relationship')): issues.append(f"rule {r['id']}: each any_link names a kind (inside the layer) or a relationship (between layers)")
+            if lk.get('kind') and lk['kind'] not in kinds | own_kinds: issues.append(f"rule {r['id']}: any_link kind {lk['kind']!r} is neither an ArchiMate kind SDEM knows nor one of the profile's link kinds")
+            if lk.get('to') and lk['to'] not in all_types: issues.append(f"rule {r['id']}: any_link to {lk['to']!r}, which is not a type")
         to = (r.get('link') or {}).get('to')
         if to and to not in all_types: issues.append(f"rule {r['id']}: link to {to!r}, which is not a type")
         elif to and all_types[to]['level'] != all_types[r['entity']]['level']: issues.append(f"rule {r['id']}: link to {to} — a rule follows within-layer links, so both types are in one layer")
@@ -639,6 +643,7 @@ def describe(r):
     parts = []
     if r.get('require'): parts.append('requires ' + ', '.join(r['require']))
     if r.get('link'): l = r['link']; parts.append(f"has ≥{l.get('min', 1)} {l['kind']} link(s) {'from' if l.get('direction') == 'in' else 'to'} {l.get('to', 'any record')}")
+    if r.get('any_link'): parts.append('has at least one of: ' + ' · '.join((('approved ' + l['relationship']) if l.get('relationship') else l['kind']) + (' from ' if l.get('direction') == 'in' else ' to ') + l.get('to', 'any record') for l in r['any_link']))
     if r.get('compare'): c = r['compare']; parts.append(f"{c['attribute']} must {c['must']} across {c['kind']}")
     if r.get('across'):
         a = r['across']; parts.append(f"has ≥{a.get('min', 1)} approved {a['relationship']} link(s)" + (f", each with {r['check']['attribute']} {r['check']['op']} {r['check'].get('value')}" if r.get('check') else ''))

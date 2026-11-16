@@ -4,7 +4,7 @@
   "standard": {
     "id": "SDEM-COMPLETE",
     "title": "A complete design: every record connected",
-    "version": "1.0",
+    "version": "1.1",
     "owner": "SDEM",
     "source": "ArchiMate 3.2 (which element a relationship joins); the audit of the public twin, docs/design/sdem-completeness-design.md"
   },
@@ -139,6 +139,68 @@
       "severity": "warning",
       "message": "a data entity is stored somewhere — an approved link",
       "reasoning": "data with no store cannot be traced to a platform or a zone"
+    },
+    {
+      "id": "CPL-A1-05",
+      "entity": "A1.BusinessActor",
+      "any_link": [
+        {
+          "kind": "assignment",
+          "direction": "out"
+        },
+        {
+          "kind": "serving",
+          "direction": "in"
+        },
+        {
+          "relationship": "SERVED_BY"
+        }
+      ],
+      "severity": "warning",
+      "message": "an actor does something in the design, or is served by it",
+      "reasoning": "an actor nothing serves and who does nothing is outside the design"
+    },
+    {
+      "id": "CPL-A4-02",
+      "entity": "A4.Artifact",
+      "any_link": [
+        {
+          "kind": "aggregation",
+          "direction": "in"
+        },
+        {
+          "kind": "assignment",
+          "direction": "in"
+        },
+        {
+          "relationship": "BUILT_AS",
+          "direction": "in"
+        }
+      ],
+      "severity": "warning",
+      "message": "an image or package belongs to a deployment or a platform, or is what a component is built as",
+      "reasoning": "an artifact nothing deploys"
+    },
+    {
+      "id": "CPL-A3-05",
+      "entity": "A3.ApplicationFunction",
+      "any_link": [
+        {
+          "kind": "assignment",
+          "direction": "in"
+        },
+        {
+          "kind": "realization",
+          "direction": "out"
+        },
+        {
+          "relationship": "AUTOMATED_BY",
+          "direction": "in"
+        }
+      ],
+      "severity": "warning",
+      "message": "a function is performed by a component, realises a service, or automates a process",
+      "reasoning": "behaviour nothing performs"
     }
   ]
 }
