@@ -19,6 +19,8 @@
 
 - **`sdem aid` no longer links the API ingress to the database (AID-C02; the public twin, F13).** A component counted as a user of a table when the API it exposes had an operation that accesses the table, so its node was proposed a connection to the database. Only a component's own access counts now.
 
+- **Proposed, not built:** [rejecting a proposed link, and flat network zones](docs/design/sdem-public-twin-follow-up-design.md) (RJ-01…RJ-07, ZF-01…ZF-06) — for the owner's approval.
+
 ## 0.19.0 — a full design: the information model, the links ArchiMate defines, events, products, channels and locations (2026-11-16)
 
 Upgrade: change the pin to `@v0.19.0`, `pip install -r requirements.txt`, `sdem agents install`; then `sdem migrate --workspace <dir> --person <you>` (metamodel 0.14.0 → 0.17.0, additive — nothing in your data changes; what is now thin is reported, never refused). Run `sdem aid` again to have it propose data tables, field matches and the new links.
