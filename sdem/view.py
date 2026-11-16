@@ -69,6 +69,9 @@ def layout(reader, pkg=None):
     keyof = {(n['lvl'], n['id']): n['k'] for n in nodes}
     edges = [{'s': keyof[(e['level'], e['source'])], 't': keyof[(e['level'], e['target'])], 'rel': e['kind'], 'scope': 'w'}
              for e in reader.edges('within-level') if (e['level'], e['source']) in keyof and (e['level'], e['target']) in keyof]
+    if lays.get('A4'):   # PL-01: a path is the line between the two nodes it connects
+        edges += [{'s': keyof[('A4', p_['from'])], 't': keyof[('A4', p_['to'])], 'rel': f"path · {p_['name']}" + (f" · {p_['protocol']}" if p_.get('protocol') else ''), 'scope': 'w'}
+                  for p_ in lays['A4'].get('paths', []) if ('A4', p_['from']) in keyof and ('A4', p_['to']) in keyof]
     drawn = {n['k'] for n in nodes}
     for e in reader.edges('cross-level'):
         s = reader.node(reader.mm.level(e['source']['type']) or '', e['source']['id'], e['source']['version'])

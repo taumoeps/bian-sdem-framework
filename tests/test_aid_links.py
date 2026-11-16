@@ -117,5 +117,15 @@ class ConnectedAndPlacedTests(unittest.TestCase):   # the owner's screenshots of
         self.assertEqual([(x['source'], x['kind'], x['target'], x['inferred']['rule']) for x in got], [('APP-1', 'access', 'ENT-1', 'AID-I07')])
 
 
+class PathAsLineTests(unittest.TestCase):   # PL-01 — the owner (2026-11-16): a path read as a network
+    def test_a_path_between_two_drawn_nodes_is_a_line_not_a_shape(self):
+        from sdem.zone_layout import layout
+        from sdem.metamodel import Metamodel
+        L = layout(json.loads((V2 / 'a4-technology.json').read_text(encoding='utf-8')), Metamodel.load())
+        self.assertNotIn('PATH-PAY-CORE-HSM', {s['id'] for s in L['shapes']})
+        self.assertEqual([(p['id'], p['from'], p['to'], p.get('protocol')) for p in L['paths']], [('PATH-PAY-CORE-HSM', 'INF-CORE-LEDGER-HOST', 'DEV-PAY-HSM', 'tls')])
+        self.assertFalse(any('PATH-PAY-CORE-HSM' in (l['source'], l['target']) for l in L['links']))
+
+
 if __name__ == '__main__':
     unittest.main()

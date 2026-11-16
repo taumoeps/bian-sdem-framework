@@ -83,12 +83,15 @@ def _place(recs, rels, x0=_X0, x1=_X1, z0=_Z0, z1=_Z1):
     for z, xs in direct.items():
         for x in xs:
             for q in stack(x): zone_of.setdefault(q, z)
+    as_line = {r['id'] for r in recs if r['type'] == 'A4.Path' and all((r.get('attributes') or {}).get(k) in zone_of for k in ('from', 'to'))
+               and (r.get('attributes') or {}).get('from') != (r.get('attributes') or {}).get('to')}
     def chain(z):
         out = []
         while z: out.append(z); z = parent.get(z)
         return out
     for r in recs:   # an environment, a network or a path is not deployed: drawn in the smallest zone holding everything it groups or connects
         if r['type'] not in ('A4.DeploymentEnvironment', 'A4.CommunicationNetwork', 'A4.Path'): continue
+        if r['id'] in as_line: continue   # PL-01: a path between two drawn nodes is the line between them, not a shape
         ends = (r.get('attributes') or {})
         members = [x['target'] for x in rels if x['source'] == r['id'] and x['kind'] == 'aggregation' and x['target'] in zone_of]
         if r['type'] != 'A4.DeploymentEnvironment':
@@ -148,7 +151,7 @@ def _place(recs, rels, x0=_X0, x1=_X1, z0=_Z0, z1=_Z1):
     for i, t in enumerate(tops):
         xb = xa + (x1 - x0) * share[i]
         place(t, xa + (0.17 if i else 0), z0, xb - (0.17 if i < len(tops) - 1 else 0), zb_top); xa = xb
-    rest = [r['id'] for r in recs if r['id'] not in pos and r['type'] != 'A4.NetworkZone']
+    rest = [r['id'] for r in recs if r['id'] not in pos and r['type'] != 'A4.NetworkZone' and r['id'] not in as_line]
     if rest:   # only what no zone holds, even through its host (LC-16 names it)
         lone = [q for q in rest if q not in spanning]
         label = 'Not in a zone' if not spanning & set(rest) else 'Across zones' if not lone else 'Not in a zone · across zones'
@@ -162,7 +165,7 @@ def _place(recs, rels, x0=_X0, x1=_X1, z0=_Z0, z1=_Z1):
     for z, xs in direct.items():
         for x in xs:
             for q in stack(x): inner_zone.setdefault(q, z)
-    return pos, regions, implied, inner_zone, name, at
+    return pos, regions, implied, inner_zone, name, at, as_line
 
 
 def layout(doc, mm=None, environment='production'):
@@ -179,7 +182,7 @@ def layout(doc, mm=None, environment='production'):
     recs = [r for r in doc.get('instances', []) if r['type'] != 'A4.Location']; rels = doc.get('relationships', [])   # a location is a place, not a shape (0.17.0)
     if not any(r['type'] == 'A4.NetworkZone' for r in recs):
         raise LayoutError('no network zones recorded — place each shape in a zone first (RA4-38, LC-16; sdem aid proposes them)')
-    pos, regions, implied, inner_zone, name, at = _place(recs, rels)
+    pos, regions, implied, inner_zone, name, at, as_line = _place(recs, rels)
     u = lambda x: round((x - _X0) / (_X1 - _X0), 4); v = lambda z: round((z - _Z0) / (_Z1 - _Z0), 4)
     rect = lambda r: [u(r[0]), v(r[1]), u(r[2]), v(r[3])]
     parent = {r['target']: r['source'] for r in rels if r['kind'] == 'composition' and r['source'] in at and r['target'] in at
@@ -198,6 +201,9 @@ def layout(doc, mm=None, environment='production'):
             'not_in_a_zone': next((rect(g['rect']) for g in regions if g['kind'] == 'not_in_a_zone'), None),
             'strip': next(({'label': g['label'], 'not_in_a_zone': g['lone'], 'rect': rect(g['rect'])} for g in regions if g['kind'] == 'not_in_a_zone'), None),
             'shapes': sorted(shapes, key=lambda s: s['id']), 'links': links,
+            # PL-01 (ArchiMate: a path is drawn as a line between the nodes it connects — the owner, 2026-11-16): each path whose ends are both drawn
+            'paths': [{'id': x, 'name': name[x], 'from': at[x]['from'], 'to': at[x]['to'], **{k: at[x][k] for k in ('protocol', 'encrypted', 'carries_data') if k in at[x]}}
+                      for x in sorted(as_line)],
             'connections': [{'from': a, 'to': b, 'rule': r} for a, b, r in zone_connections(doc, mm) if r in ('ZC-01', 'ZC-02') and a in zone_ids and b in zone_ids]}
 
 

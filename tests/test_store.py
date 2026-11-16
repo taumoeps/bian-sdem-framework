@@ -149,9 +149,11 @@ class StoreTests(unittest.TestCase):
             r = GraphReader.from_store(self.tmp / e)
             zones = {n['id'] for n in r.nodes(level='A4') if r.mm.is_a(n['type'], 'A4.NetworkZone')} if data.get('zones') else set()   # drawn as regions, not boxes
             fields = {n['id'] for n in r.nodes() if r.mm.is_a(n['type'], 'A3.DataAttribute') or r.mm.is_a(n['type'], 'A2.BusinessObjectAttribute') or r.mm.is_a(n['type'], 'A4.Location')}   # fields and locations are not drawn (TL-03)
-            self.assertEqual(len(data['nodes']), len(r.nodes()) - len(zones) - len(fields), e)
-            within = [x for x in r.edges('within-level') if not (x['level'] == 'A4' and {x['source'], x['target']} & zones) and not {x['source'], x['target']} & fields]   # a placement or nesting is shown by position
-            self.assertEqual(len(data['edges']), len(within) + len([x for x in r.edges('cross-level') if not {(e_['id'] if isinstance(e_, dict) else e_) for e_ in (x['source'], x['target'])} & fields]), e)
+            from sdem.view import _zone_layout
+            paths = {q['id'] for q in ((_zone_layout(r) or {}).get('paths') or [])} if data.get('zones') else set()   # PL-01: a path between two drawn nodes is a line, not a box
+            self.assertEqual(len(data['nodes']), len(r.nodes()) - len(zones) - len(fields) - len(paths), e)
+            within = [x for x in r.edges('within-level') if not (x['level'] == 'A4' and {x['source'], x['target']} & zones) and not {x['source'], x['target']} & (fields | paths)]   # a placement or nesting is shown by position
+            self.assertEqual(len(data['edges']), len(within) + len(paths) + len([x for x in r.edges('cross-level') if not {(e_['id'] if isinstance(e_, dict) else e_) for e_ in (x['source'], x['target'])} & fields]), e)
             self.assertNotRegex(page, r'<(script|link)[^>]+(src|href)=', e)  # nothing loaded from elsewhere
 
     def test_cli(self):
