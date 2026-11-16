@@ -52,6 +52,8 @@ sdem link --workspace <ws> --out <ws>/links --json                   # the one l
 sdem check --workspace <ws> --require-recorded --json
 ```
 
+**Run `sdem aid` again after the architect has approved links** (`--dry-run --json` first): several rules read *approved* links only — where a database or a deployment connects, which component uses a table — so the first pass leaves things "no rule reaches it" that the second pass connects (found in the public twin: the database was linked only on the second pass).
+
 `NOTE: not added — …` lines from `sdem aid` (in `--json`: the list `projection_ends`) are domains only names or descriptions pointed to (AID-M03, AID-E02): pass them on, do not act on them. Every inferred record and proposed link says what kind of evidence it rests on (`evidence_class`: `attribute_join`, `structural`, `pattern`, `name_token`, `text` — strongest first); call out those resting on `name_token` or `text`.
 
 ## 5. Hand back — always this review list

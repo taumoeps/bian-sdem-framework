@@ -29,7 +29,7 @@ reference to score. The reference is the owner's and is not in this repository. 
 | # | Finding | Evidence |
 |---|---|---|
 | F1 | **The zone model cannot hold a valid design.** LC-17 demands cloud/on-premises → one internal zone + DMZs → private zones. Five flat zones needed two invented zones and four changed kinds | CS-003; 3 SDEM records not in the reference |
-| F2 | **Required fields force values a design document does not give** — a deployment's platform and environment, an API operation's path (one operation could not be recorded) | run log 2, 3, 6; Q-08 |
+| F2 | ~~Required fields force values a design document does not give~~ — **withdrawn 2026-11-17: the operator's error, not SDEM's.** A record marked *planned* may leave a required field out (a warning, LC-04), and the design-from-document skill says so. The operator guessed two deployments' platforms and left the debtor-account operation unrecorded when neither was necessary | run log 2, 6; Q-08 |
 | F3 | **Zone placement is wrong:** AID-Z01/Z02 put all 8 deployments and 4 system-software records in the parent internal zone, including the ingress whose node is in the DMZ | 12 of 24 in-layer inferences rejected |
 | F4 | **AID invents a table for a BIAN object the design does not store** — 28 records and 28 proposed mappings for Party Authentication | 28 of 35 unexpected proposals |
 | F5 | **Nothing connects a process to the application that carries it** unless a BIAN domain sits between them. 6 of 8 processes trace to nothing; all four "what process is affected" impact questions went unanswered — SDEM said *evidence incomplete* rather than *no impact*, which is the honest answer | Q-31…34; trace PROC-DEBIT, PROC-RISK, PROC-HANDOFF, PROC-CONSENT |
@@ -41,7 +41,7 @@ reference to score. The reference is the owner's and is not in this repository. 
 | F11 | **API-level facts have no home:** request and response fields as things in their own right, their logical types and lengths, headers, scopes, security flows, a resource's permitted statuses | 18 expected records; Q-37…40, 43, 44, 46, 47; M-14, 15 |
 | F12 | **SDEM never proposed a forbidden link**, and its attribute-join proposals (deployed as, deployed on, stored in, uses domain) were sound: 21 of 22 expected or consistent; the other — the status process uses Payment Order Initiation — is not in the reference but follows from the document | 0 of 18; 21 of 22 |
 
-Operator's own limits, so they are not read as SDEM's: the permitted statuses could have been recorded as `allowed_values` on the status columns (Q-43, 44); the six API fields with no
+Operator's own limits, so they are not read as SDEM's: **the debtor-account operation should have been recorded as planned, without its path (one expected record and Q-08 lost), and the platforms of the fraud and notification deployments left out, not guessed — two of the eight approved *deployed on* links rest on those guesses (F2)**; the permitted statuses could have been recorded as `allowed_values` on the status columns (Q-43, 44); the six API fields with no
 column could have been listed in `payload_fields`; five answers were found by reading descriptions.
 
 ## What this says about the reference
@@ -70,9 +70,31 @@ Nothing below is done. Each SDEM change is its own change with tests first (plan
 | N4 | ~~`sdem check` covers the registry~~ — **withdrawn 2026-11-17:** it already does (AF-07 with `--require-recorded`; LC-28). Use `--require-recorded` in CI where agents edit | none |
 | N5 | Propose process → application links from what the records already say (F5) — and say *evidence incomplete* everywhere SDEM now says nothing | code (AID-L) |
 | N6 | Rules for platform software: on the node of its kind, in that node's zone (F6) | code (hosting inference) |
-| N7 | Loosen the zone model so flat zones are valid (F1); make a deployment's platform and an operation's path optional on a *planned* record (F2) | **metamodel — owner's approval** |
+| N7 | Loosen the zone model so flat zones are valid (F1) — a change to the check LC-17 and its design, no metamodel file. ~~Optional platform and path on a planned record~~: already so (F2 withdrawn) | **a rule the owner decided — owner's approval** |
 | N8 | API fields, headers, scopes and statuses as first-class records (F11) | **metamodel — owner's approval; design first** |
 | N9 | Reference for scenario 2: every expected record must be named in the design document; `in_design` checked by a second reader; relationship names from a fixed list (R1–R3) | the brief |
+
+## After the first score (2026-11-17) — what was changed, withdrawn and found next
+
+The owner asked for the fixes in the order recommended. Each is its own commit, test first.
+
+| Proposal | Outcome |
+|---|---|
+| N1 zone placement | **Done — AID-Z05.** Rebuilt from the same change sets: 12 wrong placements → 4 (the four system-software records, which have no host to follow) |
+| N2 the invented table | **Done — AID-I08.** Rebuilt: 28 inferred records → 0; AID's proposals between layers 42 → 14; SDEM now says *no table inferred for Party Authentication — no application here realises its domain* |
+| N3 field and contract checks | **Done in part — LC-29:** a column whose type cannot hold what its name says (would catch M-01, 02, 05). Not done: a table with no key is already LC-25 for a system of record; the alias mistake (M-08) rested on the operator's own use of `field_aliases`; a changed API path (M-12) gives SDEM nothing to judge it against |
+| N4 guard the registry | **Withdrawn** — it is guarded (F9, corrected above) |
+| N5 process → application links | **Withdrawn as code.** A process links to an application *service* or *function*, never a component — ArchiMate's rule and SDEM's. The design document named no application service, so there was nothing valid to link to. The design-from-document skill now says so, and the next brief must (N9) |
+| N6 platform software | **No new rule.** A second `sdem aid` pass, after the approvals, connects the database (AID-C02 reads approved links); the first pass could not. Key custody, events and audit have nothing in the data to place them by — "a person links it" is the right answer. The skill now says to run the second pass |
+| N7 flat zones | The owner agreed in principle (2026-11-17); the exact change to LC-17 is brought for approval before it is built. Its second half was dropped with F2 |
+| N8 API-level records | Held until scenario 2 shows whether the gap recurs (the owner, 2026-11-17) |
+
+Two more findings, from the second pass:
+
+| # | Finding |
+|---|---|
+| F13 | **AID-C02 linked the ingress node to the database.** An API operation *accesses* a table; the ingress component composes the API's interface; so the rule counts the ingress as a user of the data and proposes its node reaches the database — in a design whose point is that it does not. For a person to reject; the rule should not climb from an API operation to the component that only exposes it |
+| F14 | **A declined proposal is not remembered.** The owner left *BIAN Payment Transaction MAPPED_TO PaymentLedger* unapproved; there is no way to reject a proposed link. On the second pass SDEM, finding the object unmapped, inferred a new 30-field table for it instead. `sdem aid reject` remembers inferred *records*; proposed *links* need the same |
 
 ## Files
 
