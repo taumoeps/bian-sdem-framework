@@ -1,6 +1,6 @@
 # Two changes from the public twin — rejecting a proposed link, and flat network zones (RJ-01…RJ-07, ZF-01…ZF-06)
 
-> **Status: proposed — for the owner's approval. Nothing here is built.** The owner agreed both in principle on 2026-11-17 and asked to see the exact change first. From the first run of the public twin ([report](../evidence/payment-initiation-v3/report.md), findings F14 and F1). **No metamodel file changes in either.**
+> **Status: approved — the owner approved D1–D4 as recommended (2026-11-17); being built, tests first.** From the first run of the public twin ([report](../evidence/payment-initiation-v3/report.md), findings F14 and F1). **No metamodel file changes in either.**
 
 ## 1. Rejecting a proposed link (F14)
 
@@ -41,7 +41,7 @@
 
 ## 3. Decisions for the owner
 
-| # | Decision | Recommendation |
+| # | Decision | Decided (the owner, 2026-11-17 — as recommended) |
 |---|---|---|
 | D1 | Build `sdem reject` as RJ-01…RJ-07 | Yes |
 | D2 | RJ-04 — a rejected MAPPED_TO stops AID inferring a table for that object | Yes. The alternative — still infer one — repeats the invention the rejection was meant to stop |
