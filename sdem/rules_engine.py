@@ -111,6 +111,8 @@ class Run:
         self.proposals, self.candidates, self.log = [], [], []
         self.approved_order = list(dict.fromkeys((e['source']['id'], e['relationship'], e['target']['id']) for e in reader.fg.edges()))   # registry order: output is the same on every run
         self.approved = set(self.approved_order)   # membership only — never iterated (set order varies between runs)
+        self.rejected = {(e['source']['id'], e['relationship'], e['target']['id']) for e in reader.fg.edges(statuses=('rejected',))} - self.approved   # RJ-03: a person said no (RJ-05: unless approved since)
+        self.left_out_rejected = set()
         self.proposed = {}   # (src, rel, tgt) -> proposal record (this run)
         self.reported = {}   # (src, plan id, tgt) -> candidate record (this run)
         self.ids = {}        # (level, id) -> node, latest version
@@ -238,6 +240,9 @@ class Run:
         k = (src['id'], rel, tgt['id'])
         if k in self.approved:
             self.attempt(plan_id, src['id'], tgt['id'], step, data_read, 'already approved — not re-proposed', outcome='already_approved'); return None
+        if k in self.rejected:
+            self.left_out_rejected.add(k)
+            self.attempt(plan_id, src['id'], tgt['id'], step, data_read, 'rejected by a person — not proposed again (RJ-03)', outcome='rejected'); return None
         if k in self.proposed:
             rec = self.proposed[k]; rec['evidence'].append(f'engine_rationale:{plan_id} step{step} also: {working}')
             rec['evidence_class'] = strongest(rec.get('evidence_class'), ev or self.evidence_class(plan_id, step, working)); return rec
@@ -920,7 +925,7 @@ class Run:
         self.step3()
         self.step5(options or {})
         design = self.design()
-        out = {'proposals': self.proposals, 'candidates': self.candidates, 'log': self.log}
+        out = {'proposals': self.proposals, 'candidates': self.candidates, 'log': self.log, 'left_out_rejected': sorted(self.left_out_rejected)}
         if design: out['design'] = design
         return out
 

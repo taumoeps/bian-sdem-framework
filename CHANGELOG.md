@@ -19,7 +19,7 @@
 
 - **`sdem aid` no longer links the API ingress to the database (AID-C02; the public twin, F13).** A component counted as a user of a table when the API it exposes had an operation that accesses the table, so its node was proposed a connection to the database. Only a component's own access counts now.
 
-- **Proposed, not built:** [rejecting a proposed link, and flat network zones](docs/design/sdem-public-twin-follow-up-design.md) (RJ-01…RJ-07, ZF-01…ZF-06) — for the owner's approval.
+- **`sdem reject` — a person says no to a proposed link** ([design](docs/design/sdem-public-twin-follow-up-design.md), RJ-01…RJ-07; the owner's decisions D1, D2 of 2026-11-17; from the public twin, F14). `sdem reject <proposal> --proposals <file> --workspace <dir> --reviewer <you> --reason <why>` keeps the link in the registry as *rejected* with your name, the date and the reason, and a governance decision. It is then remembered: `sdem link` and `sdem aid` do not propose it again (and say how many they left out), and `sdem aid` infers nothing in its place — a rejected *maps to* no longer leads to a table being invented for the object; nor does a mapping proposed by an earlier run and still to decide. `sdem approve` of the same link later overrides the rejection, which stays in the registry. `sdem handback` and `sdem review --workspace` list rejected links apart from those still to decide. Until now a wrong proposal could only be left alone, which SDEM read as *not yet decided*. An agent never rejects (CTL-21).
 
 ## 0.19.0 — a full design: the information model, the links ArchiMate defines, events, products, channels and locations (2026-11-16)
 

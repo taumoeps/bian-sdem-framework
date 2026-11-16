@@ -25,6 +25,8 @@ JOURNEYS = {
                  'sdem review work/links/proposals.json'),
     'approve':  ('J3', 'a person approves proposed links into the registry — reviewer, date, required evidence, validated first', None, None,
                  'sdem approve P-RUN-001 --proposals work/links/proposals.json --workspace work/est --reviewer jane.architect --evidence deployment_design:PAY-REHOST#cutover'),
+    'reject':   ('J3', 'a person rejects proposed links — kept in the registry as rejected with the reason, so they are not proposed again and nothing is inferred in their place', None, None,
+                 'sdem reject P-RUN-018 --proposals work/links/proposals.json --workspace work/est --reviewer jane.architect --reason "the ingress only terminates the channel"'),
     'build':    ('J4', 'check the inputs and write the graph store (knowledge graph)', 'sdem.graph', ['build'],
                  'sdem build --workspace examples/card-fraud-alerts --out work/graph'),
     'query':    ('J4', 'find records in a graph store', 'sdem.graph', ['query'],
@@ -302,6 +304,13 @@ def review(argv):
         try: doc = json.loads(Path(f).read_text(encoding='utf-8'))
         except (OSError, ValueError) as e: print(f'ERROR: {f}: {e}', file=sys.stderr); return 2
         rows += [dict(m, _file=f) for m in doc.get('mappings', []) if m.get('status', 'proposed') == 'proposed']
+    decided = {}
+    if a.estate:   # RJ-07: with the workspace, a proposal a person has decided — approved or rejected — is not listed as still to review
+        try: decided = {(m['source']['id'], m['relationship'], m['target']['id']): m.get('status') for m in json.loads((Path(a.estate) / 'mappings.json').read_text(encoding='utf-8')).get('mappings', []) if m.get('status') in ('approved', 'rejected')}
+        except (OSError, ValueError): pass
+    n_rej = sum(1 for m in rows if decided.get((m['source']['id'], m['relationship'], m['target']['id'])) == 'rejected')
+    rows = [m for m in rows if (m['source']['id'], m['relationship'], m['target']['id']) not in decided]
+    if n_rej and not a.json: print(f'{n_rej} proposal(s) a person rejected are not listed (sdem handback shows them; sdem approve overrides)')
     rows.sort(key=lambda m: (m.get('confidence', 0), m['relationship'], m['source']['id']))
     names = _names(a.names, a.graph)
     if a.json:
@@ -597,6 +606,9 @@ def _dispatch(name, rest):
     if name == 'approve':
         from . import approve as _ap
         return _ap.main(rest)
+    if name == 'reject':
+        from . import reject as _rj
+        return _rj.main(rest)
     if name in ('change', 'events', 'work'):
         from . import agents
         return {'change': agents.change_main, 'events': agents.events_main, 'work': agents.work_main}[name](rest)

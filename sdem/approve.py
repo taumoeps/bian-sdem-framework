@@ -46,6 +46,9 @@ def approve(registry, proposals, ids, reviewer, evidence, supersedes=None, new_i
         r.update(mapping_id=new_id or _next_id(reg['mappings']), status='approved', reviewer_id=who, approved_at=date or datetime.date.today().isoformat(),
                  evidence=list(evidence) + [e for e in p.get('evidence', []) if e not in evidence])
         if bian_release: r['bian_release'] = bian_release   # the BIAN release a BIAN-anchored link relies on (the person states it)
+        was = next((m for m in reg['mappings'] if m.get('status') == 'rejected' and (m['source']['id'], m['relationship'], m['target']['id']) == (p['source']['id'], p['relationship'], p['target']['id'])), None)
+        if was and not supersedes:   # RJ-05: approving a link a person rejected overrides the rejection, which stays in the registry as it was — named by the approval
+            r['previous_mapping_id'] = was['mapping_id']
         if supersedes:
             old = next((m for m in reg['mappings'] if m['mapping_id'] == supersedes), None)
             if not old: raise ApproveError(f'{supersedes}: not in the registry')

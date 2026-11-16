@@ -53,8 +53,13 @@ def propose_information(a2, a3, mappings, mark, rejected=frozenset(), is_inferre
     realised = {m['source']['id'] for m in mappings if m.get('relationship') == 'REALIZED_BY' and m.get('status') != 'rejected'}
     has_apps = any(i.get('type') == 'A3.ApplicationComponent' and not is_inferred(i) for i in a3i.values())
     skipped = []
+    declined = {}   # RJ-04: a person rejected the object's mapping — where it is stored is theirs to say; nothing is inferred in its place
+    for m in mappings:
+        if m.get('relationship') == 'MAPPED_TO' and m.get('status') == 'rejected': declined.setdefault(m['source']['id'], m['target']['id'])
     for bo, fs in fields.items():   # AID-I01: the entities first, so a foreign key can point at one inferred in the same run
         if bo in mapped or a2i[bo].get('type') != 'A2.BusinessObject': continue
+        if bo in declined:
+            skipped.append({'id': bo, 'name': a2i[bo].get('name', bo), 'domains': sorted(domains.get(bo, ())), 'why': f'a person rejected its mapping to {declined[bo]} (RJ-04)'}); continue
         if has_apps and domains.get(bo) and not (domains[bo] & realised):
             skipped.append({'id': bo, 'name': a2i[bo].get('name', bo), 'domains': sorted(domains[bo])}); continue
         eid = f"AID-ENT-{_key(a2i[bo]['name'])}"

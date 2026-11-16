@@ -19,6 +19,11 @@ The rules engine (`sdem link`) **proposes** links; **a person approves** them in
    ```bash
    sdem connect <source id> <TYPE> <target id> --workspace <workspace> --reviewer <person> --evidence <kind:ref> --rationale "<why>" [--bian-release <release>]
    ```
+2b. **A proposed link that is wrong** — the architect rejects it with `sdem reject` (a person runs it — never an agent), saying why:
+   ```bash
+   sdem reject <P-id> --proposals <dir>/proposals.json --workspace <workspace> --reviewer <person> --reason "<why it is wrong>"
+   ```
+   It is kept in the registry as `rejected`, so `sdem link` and `sdem aid` do not propose it again and `sdem aid` infers nothing in its place (a rejected *maps to* stops a table being invented for that object). Leaving a wrong proposal alone is **not** a decision — SDEM reads it as *not yet decided*. `sdem approve` of the same link later overrides the rejection. An agent preparing the review lists the proposals it would reject, with the reason, for the architect to run.
 3. **Superseding an old link** (e.g. after a rehost): approve the new one with `--supersedes <old id>` — SDEM marks the old one `superseded` and links the two. Never edit an approved link.
 4. **Check:** `sdem validate --strict --workspace <workspace>` and `sdem check --workspace <workspace>`.
 5. **Pull request** on a branch; a reviewer merges — **the merge is the approval**. Then `sdem build … --out <graph>` and `sdem trace …` show the link in use.

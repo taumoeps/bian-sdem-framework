@@ -270,7 +270,7 @@ def validate(payload, registry=None, schema=None, resolver=None, entity_resolver
                 missing = sorted(required - kinds)
                 if missing and mapping.get('status') in ('proposed', 'needs_review'):   # drafts (F-1): evidence is required at approval
                     warnings.append(f"{prefix}: {'proposal' if mapping.get('status') == 'proposed' else 'needs_review link'} lacks required evidence kind(s) {missing}; must be supplied before approval")
-                elif missing:
+                elif missing and mapping.get('status') != 'rejected':   # RJ-02: a rejection is a person's reason, not a document proving the link
                     fail('governance', f"evidence missing required kind(s) {missing}")
             elif required and refs:
                 warnings.append(f"{prefix}: evidence is untyped; cannot confirm required kind(s) {sorted(required)} (use 'kind:ref')")

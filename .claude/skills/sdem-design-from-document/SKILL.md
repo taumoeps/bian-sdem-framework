@@ -67,4 +67,4 @@ Run `sdem handback --workspace <ws> --json` and build the list from it — it is
 5. **Connections to approve**, grouped by type with the evidence each needs — the document section is a good evidence reference; a link type that needs two kinds of evidence takes `--evidence` twice; preview each with `--dry-run` (allowed) to see whether it also needs `--bian-release`: `sdem approve <id> --proposals <ws>/links/proposals.json --workspace <ws> --reviewer <architect> --evidence <kind>:<file>#<section>`.
 6. **Requirements to confirm** once the targets are real: `sdem requirements confirm …`.
 
-Never run `sdem approve`, `sdem connect`, `sdem aid confirm|reject`, `sdem requirements confirm`, `sdem events accept|authorise` or `sdem change adopt` — they are the architect's (CTL-21).
+Never run `sdem approve`, `sdem reject`, `sdem connect`, `sdem aid confirm|reject`, `sdem requirements confirm`, `sdem events accept|authorise` or `sdem change adopt` — they are the architect's (CTL-21).

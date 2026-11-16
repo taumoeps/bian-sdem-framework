@@ -56,6 +56,16 @@ def collect(ws):
               for e in d['changes']['events'] if not (status.get(e['id']) or {}).get('planned')]
     review = [{'id': r['id'], 'link': f"{r['source']} {r['rel']} {r['target']}", 'confidence': r['confidence'], 'evidence_class': r.get('evidence_class'),
                'evidence_needed': r['evidence_needed']} for r in d['review']['rows']]
+    rejected = []   # RJ-07: links a person rejected — decided, listed apart from those still to review
+    try:
+        import json as _json
+        from pathlib import Path as _P
+        ms = _json.loads((_P(ws) / 'mappings.json').read_text(encoding='utf-8')).get('mappings', [])
+        k = lambda m: (m['source']['id'], m['relationship'], m['target']['id'])
+        ok = {k(m) for m in ms if m.get('status') == 'approved'}
+        rejected = [{'id': m['mapping_id'], 'link': ' '.join(k(m)), 'by': m.get('reviewer_id'), 'on': m.get('approved_at'), 'reason': (m.get('rationale') or '').split(' — as proposed:')[0]}
+                    for m in ms if m.get('status') == 'rejected' and k(m) not in ok]
+    except (OSError, ValueError, KeyError): pass
     comp = {'findings': [], 'expiring': []}
     try:
         from .comply import collect as comply
@@ -79,11 +89,11 @@ def collect(ws):
     if events: commands.append(f"sdem work plan --event {events[0]['id']} --workspace {w} --agent sdem-orchestrator --person <you>")
     return {'workspace': w, 'name': d['name'],
             'summary': {'check_errors': len(errors), 'missing_values': len(missing), 'missing_required': sum(m['required'] for m in missing),
-                        'unconfirmed_inferred': len(inferred), 'weak_inferred': sum(x['weak'] for x in inferred), 'links_to_review': len(review),
+                        'unconfirmed_inferred': len(inferred), 'weak_inferred': sum(x['weak'] for x in inferred), 'links_to_review': len(review), 'links_rejected': len(rejected),
                         'possible_duplicates': len(duplicates), 'records_without_source': len(unsourced), 'links_without_source': links['total'] - links['with_source'],
                         'events_to_plan': len(events), 'standards_not_met': sum(f['outcome'] == 'non_compliant' for f in comp['findings']),
                         'standards_unresolved': sum(f['outcome'] == 'unresolved' for f in comp['findings']), 'exceptions_expiring': len(comp['expiring'])},
-            'check_errors': errors, 'missing_values': missing, 'unconfirmed_inferred': inferred, 'links_to_review': review,
+            'check_errors': errors, 'missing_values': missing, 'unconfirmed_inferred': inferred, 'links_to_review': review, 'links_rejected': rejected,
             'possible_duplicates': duplicates, 'records_without_source': unsourced, 'links': links, 'events_to_plan': events, 'compliance': comp,
             'commands_for_the_person': commands,
             # read by sdem status (ST-01): the registry's own errors, the checks' advice, edits made outside SDEM, and the layers' size
@@ -101,6 +111,7 @@ def render(h):
         + ('' if r['required'] else ' — optional') + (' — planned' if r['lifecycle_status'] == 'planned' else ''))
     sec('Inferred by SDEM, not yet confirmed', h['unconfirmed_inferred'], lambda r: f"{r['layer']} {r['id']} {r['name']!r} — rule {r['rule']}, confidence {r['confidence']}, evidence {r['evidence_class'] or 'not recorded'}" + (' — WEAK: a name or description only' if r['weak'] else ''))
     sec('Links to review', h['links_to_review'], lambda r: f"{r['id']} {r['link']} — confidence {r['confidence']}, evidence {r['evidence_class'] or 'not recorded'}; needs {', '.join(r['evidence_needed']) or '—'}")
+    sec('Links a person rejected (not proposed again — sdem approve overrides)', h.get('links_rejected') or [], lambda r: f"{r['id']} {r['link']} — {r['reason']} ({r['on']})")
     sec('Possible duplicates', h['possible_duplicates'], lambda r: f"{r['layer']} {r['type']}: {', '.join(r['ids'])} ({r['rule']})")
     sec("Standards and patterns not met or unresolved (sdem comply)", h['compliance']['findings'],
         lambda r: f"{r['outcome'].replace('_', '-')}: {r['rule']} on {r['layer']} {r['record']} — {r['detail']}")

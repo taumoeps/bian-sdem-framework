@@ -100,6 +100,8 @@ def main(argv=None):
         print(f'ERROR: {exc}', file=sys.stderr); return 2
     engine = ENGINES[args.engine](args.threshold) if args.engine == 'baseline' else ENGINES[args.engine]()
     result = engine.infer(reader, {'id': 'RUN'})
+    if result.get('left_out_rejected'):   # RJ-03: said, not silently dropped
+        print(f"{len(result['left_out_rejected'])} link(s) a person rejected were not proposed again (RJ-03): " + '; '.join(f'{a} {r} {b}' for a, r, b in result['left_out_rejected'][:5]), file=sys.stderr)
     head = {'registry_version': load_registry()['$schema_version'], 'metamodel_version': reader.mm.version, 'engine': engine.name}
     print(json.dumps({**head, 'mappings': result['proposals']}, indent=2, ensure_ascii=False))
     if args.out:

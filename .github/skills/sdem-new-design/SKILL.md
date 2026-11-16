@@ -67,4 +67,4 @@ Run `sdem handback --workspace <ws> --json` first and build the list from it —
 5. **The change event(s)** — impact validation and the architect's acceptance only if work is to be planned from them.
 6. **What is still missing**: `missing_values` and `possible_duplicates` from `sdem handback`; A4 platforms (`sdem types A4`), business domains above the service domains, anything you assumed. A value nobody knows is left out on a `planned` record — never a placeholder (LC-04).
 
-Never run `sdem aid confirm|reject`, `sdem approve`, `sdem connect`, `sdem requirements confirm`, `sdem events accept|authorise` or `sdem change adopt` — they are the architect's decisions (CTL-21).
+Never run `sdem aid confirm|reject`, `sdem approve`, `sdem reject`, `sdem connect`, `sdem requirements confirm`, `sdem events accept|authorise` or `sdem change adopt` — they are the architect's decisions (CTL-21).

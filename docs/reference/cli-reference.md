@@ -2,7 +2,7 @@
 
 > **Generated** from the code by `sdem model regenerate` (`sdem/clidoc.py`), from the same catalogue as `sdem commands --json`; `sdem model check` fails in CI when it is stale — **do not edit by hand**. Each command's `--help` has the same options and a worked example. For *when* to use which command, in order, see the [scenarios](../sdem-scenarios.md); for what each does to your data, the [user guide](../sdem-workbench-user-guide.md#7-command-reference).
 
-122 commands and subcommands.
+123 commands and subcommands.
 
 ## Every command takes
 
@@ -111,6 +111,7 @@
 | [`sdem governance`](#cmd-governance) | governed decisions |
 | [`sdem governance verify`](#cmd-governance-verify) | every decision record: verified by a signed commit from its approver, or why not |
 | [`sdem handback`](#cmd-handback) | what a workspace leaves open for a person |
+| [`sdem reject`](#cmd-reject) 👤 | a person rejects proposed links |
 | [`sdem review`](#cmd-review) | list proposed links for review, weakest first |
 | [`sdem status`](#cmd-status) | where a design is and what to do next: what blocks it, what waits on a value or a person's decision, what is worth a look |
 
@@ -2051,6 +2052,36 @@ Example:
 
 ```bash
 sdem query --graph examples/card-fraud-alerts/graph --level A3
+```
+
+### sdem reject
+
+<a id="cmd-reject"></a>
+
+a person rejects proposed links — kept in the registry as rejected with the reason, so they are not proposed again and nothing is inferred in their place
+
+```
+sdem reject <ids> --proposals PROPOSALS [--workspace WORKSPACE] [--registry REGISTRY] --reviewer REVIEWER [--reason REASON] [--date DATE] [--dry-run]
+```
+
+*JSON: native · dry run: native · 👤 a person's own name*
+
+| Argument | Required | What it is |
+|---|---|---|
+| `<ids>` | yes | proposal id(s) from `sdem review` |
+| `--proposals` | yes | a proposals file written by sdem link (proposals.json) |
+| `--workspace` |  | workspace folder (its mappings.json) |
+| `--registry` |  | the registry, if not <workspace>/mappings.json |
+| `--reviewer`, `--person` | yes | your name — a person (CTL-21) |
+| `--reason` |  | why the link is wrong — required, and kept |
+| `--date` |  | the date (default today) |
+| `--dry-run` |  | show the record; write nothing |
+| `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
+
+Example:
+
+```bash
+sdem reject P-RUN-018 --proposals work/links/proposals.json --workspace work/est --reviewer jane.architect --reason "the ingress only terminates the channel"
 ```
 
 ### sdem releases

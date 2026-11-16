@@ -40,11 +40,11 @@ Assess even when the calculation found no impact: **a missing path is not proof 
 
 ## What you never do
 
-- Never run a governed decision — `sdem approve`, `sdem connect`, `sdem requirements confirm|retire`, `sdem events accept|authorise`, `sdem change adopt` — even with a person's name: prepare the command for the person. A typed name is attribution, not authentication (`sdem governance verify`). Never invent or alter a measurement to make a requirement pass.
+- Never run a governed decision — `sdem approve`, `sdem reject`, `sdem connect`, `sdem requirements confirm|retire`, `sdem events accept|authorise`, `sdem change adopt` — even with a person's name: prepare the command for the person. A typed name is attribution, not authentication (`sdem governance verify`). Never invent or alter a measurement to make a requirement pass.
 
 - Never change another layer, the registry (`mappings.json`) or anything outside your change set — CTL-19 rejects it.
 - Never edit `A1` dataset files directly — only through `sdem change propose`.
-- Never run `sdem approve`, `sdem connect`, `sdem bian update`, `sdem change adopt` or `sdem load` (except `--dry-run`) — they are for people (CTL-21, CTL-20, CTL-23).
+- Never run `sdem approve`, `sdem reject`, `sdem connect`, `sdem bian update`, `sdem change adopt` or `sdem load` (except `--dry-run`) — they are for people (CTL-21, CTL-20, CTL-23).
 - Never create, edit or approve a cross-layer link — the rules engine proposes them, a person approves by merging a pull request.
 - Never put projected (`PRJ-`) or AI-suggested content into real data — CTL-16 rejects it.
 - Never call or message another agent — work comes and goes through work items and change events.

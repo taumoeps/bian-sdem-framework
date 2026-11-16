@@ -122,9 +122,11 @@ def fill(workspace, person, dry_run=False, now=None):
         clinks, conn_unresolved = propose_connections(after.get('A3') or {}, after['A4'], registry.get('mappings', []), Metamodel.load(), run, person.strip(), now, crej)
         after['A4'].setdefault('relationships', []).extend(clinks); placements += len(clinks); connections = len(clinks)
         if placements and 'A4' not in added: added['A4'] = []
-    approved = {(m['source']['id'], m['relationship'], m['target']['id']) for m in registry.get('mappings', []) if m.get('status') == 'approved'}
-    for f in (runs.glob('AID-*-proposals.json') if runs.exists() else []):   # already proposed by an earlier run, still to review: not again
-        approved |= {(m['source']['id'], m['relationship'], m['target']['id']) for m in _j(f).get('mappings', [])}
+    approved = {(m['source']['id'], m['relationship'], m['target']['id']) for m in registry.get('mappings', []) if m.get('status') in ('approved', 'rejected')}   # decided by a person, either way (RJ-03)
+    earlier = []   # proposed by an earlier run, still to review: not again — and nothing inferred beside them meanwhile (RJ-04)
+    for f in (runs.glob('AID-*-proposals.json') if runs.exists() else []):
+        ms = _j(f).get('mappings', []); earlier += [m for m in ms if (m['source']['id'], m['relationship'], m['target']['id']) not in approved]
+        approved |= {(m['source']['id'], m['relationship'], m['target']['id']) for m in ms}
     proposals = []
     by_id = {i['id']: i for d in after.values() for i in d['instances']}
     def end(ref):   # as `sdem link` writes them: id, type, version — and the canonical id a BIAN record carries
@@ -148,12 +150,12 @@ def fill(workspace, person, dry_run=False, now=None):
                                          'source_system': 'SDEM-AID', 'instances': [], 'relationships': []})
         from .aid_links import match_existing   # AID-K02 first: an object an existing table stores is not given a new one
         from .metamodel import Metamodel as _MMk
-        for src, rel, tgt, rule, why, conf in match_existing(after, registry.get('mappings', []) + proposals, _MMk.load()):
+        for src, rel, tgt, rule, why, conf in match_existing(after, registry.get('mappings', []) + earlier + proposals, _MMk.load()):
             if src in by_id and tgt in by_id and (src, rel, tgt) not in approved:
                 proposals.append({'mapping_id': f'{run}-P{len(proposals) + 1:03d}', 'source': end({'id': src, 'type': by_id[src]['type'], 'version': by_id[src]['version']}), 'relationship': rel,
                                   'target': {'id': tgt, 'type': by_id[tgt]['type'], 'version': by_id[tgt]['version']}, 'status': 'proposed', 'confidence': conf,
                                   'evidence': [f'engine_rationale:{run} {rule}'], 'rationale': f'Inferred by sdem aid ({rule}): {why}', 'baseline_id': run, 'created_by': 'sdem aid'})
-        iinst, irels, ilinks, not_stored = propose_information(after['A2'], a3doc, registry.get('mappings', []) + proposals, mark, rejected, lambda r: is_inferred(r, confirmed=False))
+        iinst, irels, ilinks, not_stored = propose_information(after['A2'], a3doc, registry.get('mappings', []) + earlier + proposals, mark, rejected, lambda r: is_inferred(r, confirmed=False))
         for rec in iinst:
             if rec['id'] in present: continue
             a3doc['instances'].append(rec); present.add(rec['id']); by_id[rec['id']] = rec; added.setdefault('A3', []).append(rec['id'])
@@ -362,7 +364,8 @@ def main(argv):
               + f"{rec['proposed_connections']} connection(s) proposed in {a.estate}/{rec['proposals']} — checked")
     for e in rec['projection_ends']: print(f'NOTE: {e}')
     for e in rec.get('tables_not_inferred') or []:
-        print(f"NOTE: no table inferred for the BIAN object {e['name']} ({e['id']}) — no application here realises {', '.join(e['domains'])} (AID-I08); if one stores it, link the domain to it (sdem connect … REALIZED_BY …) and run sdem aid again")
+        print(f"NOTE: no table inferred for the BIAN object {e['name']} ({e['id']}) — " + (e['why'] + '; say where it is stored with sdem connect … MAPPED_TO …' if e.get('why') else
+              f"no application here realises {', '.join(e['domains'])} (AID-I08); if one stores it, link the domain to it (sdem connect … REALIZED_BY …) and run sdem aid again"))
     if rec.get('zone_placements'):
         print(f"zones: {rec['zone_placements']} shape(s) {'would be placed' if a.dry_run else 'placed'} in a proposed zone (AID-Z01) — from the hosting signals and the organisation's default; "
               f"decide each: sdem aid confirm|reject <shape> --workspace {a.estate} --person <you>")
