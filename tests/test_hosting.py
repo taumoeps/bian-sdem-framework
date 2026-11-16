@@ -62,6 +62,20 @@ class ProposalTests(Base):   # AID-Z01…Z04, LC-19
         self.assertIn('HS-02', placed[0]['inferred']['source']); self.assertEqual(placed[0]['inferred']['confidence'], 'high')
         self.assertIn('LC-19', sdem('check', '--workspace', ws, cwd=self.tmp)[1] + sdem('check', '--workspace', ws, cwd=self.tmp)[2])
 
+    def test_a_deployment_is_in_the_zone_of_the_platform_it_names(self):   # AID-Z05 — the public twin's first run, F3 (2026-11-17)
+        from sdem.hosting import propose
+        Z = lambda i, lvl, kind: {'id': i, 'type': 'A4.NetworkZone', 'version': '1', 'name': i, 'attributes': {'zone_level': lvl, 'zone_kind': kind}}
+        doc = {'model_id': 't', 'instances': [Z('ZONE-T', 0, 'cloud'), Z('ZONE-I', 1, 'internal'), Z('ZONE-D', 1, 'dmz'),
+                                              {'id': 'NODE-EDGE', 'type': 'A4.Node', 'version': '1', 'name': 'ingress', 'attributes': {'internet_facing': True}},
+                                              {'id': 'DEP-EDGE', 'type': 'A4.Deployment', 'version': '1', 'name': 'ingress deployment',
+                                               'attributes': {'component_id': 'APP-EDGE', 'environment_id': 'ENV', 'platform_id': 'NODE-EDGE'}}],
+               'relationships': [{'source': 'ZONE-T', 'kind': 'composition', 'target': 'ZONE-I'}, {'source': 'ZONE-T', 'kind': 'composition', 'target': 'ZONE-D'},
+                                 {'source': 'ZONE-D', 'kind': 'aggregation', 'target': 'NODE-EDGE'}]}   # no node-runs-deployment link yet: only platform_id says where it runs
+        zones, links, unresolved = propose(doc, self.mm, 'AID-T', 'jane.architect', '2026-11-17T00:00:00+00:00')
+        self.assertEqual([l for l in links if l['target'] == 'DEP-EDGE'], [])   # not placed in the internal zone: it is in its platform's zone, the DMZ
+        del doc['instances'][4]['attributes']['platform_id']
+        self.assertEqual([l['source'] for l in propose(doc, self.mm, 'AID-T', 'jane.architect', '2026-11-17T00:00:00+00:00')[1] if l['target'] == 'DEP-EDGE'], ['ZONE-I'])   # with no platform named, AID-Z01 as before
+
     def test_a_person_decides_each_placement(self):
         ws = self.without_zones(LEDGER); sdem('aid', '--workspace', ws, '--person', 'jane.architect', cwd=self.tmp)
         code, out, err = sdem('aid', 'reject', 'INF-MF-LPAR-PROD', '--workspace', ws, '--person', 'jane.architect', '--reason', 'moving to the cloud', cwd=self.tmp)

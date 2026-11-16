@@ -157,7 +157,7 @@ def placement_mark(link):
 
 
 def propose(doc, mm, run, person, now, rejected=(), stem=None):
-    """AID-Z01…Z04: for each A4 shape in no zone and not hosted by another, propose its zone — level 0 from the evidence, level 1 from
+    """AID-Z01…Z05: for each A4 shape in no zone and not hosted by another, propose its zone — level 0 from the evidence, level 1 from
     internet_facing; never a private (level-2) zone. Creates the policy's template zones (as inferred records) where the workspace has no
     level-0 zone of that kind. Returns (new zone records, new placement links, unresolved [{id, signals}])."""
     from .conformance import zones_of, UNPLACED
@@ -167,6 +167,7 @@ def propose(doc, mm, run, person, now, rejected=(), stem=None):
     hosted = {r['target'] for r in doc.get('relationships', []) if r['kind'] in ('assignment', 'composition', 'aggregation', 'realization')
               and r['source'] in local and r['target'] in local and not mm.is_a(local[r['source']]['type'], 'A4.CommunicationNetwork') and not mm.is_a(local[r['source']]['type'], ZONE)
               and local[r['source']]['type'] != 'A4.DeploymentEnvironment'}   # AID-Z04: in its host's zone
+    hosted |= {i['id'] for i in local.values() if (i.get('attributes') or {}).get('platform_id') in local}   # AID-Z05: a deployment is in the zone of the platform it names, before the link exists
     zones = {i['id']: (i.get('attributes') or {}) for i in local.values() if mm.is_a(i['type'], ZONE)}
     stem = re.sub(r'[^A-Z0-9]+', '-', (stem or doc.get('model_id') or 'WS').upper()).strip('-')[:24] or 'WS'
     new_zones, links, unresolved, made = [], [], [], {}
