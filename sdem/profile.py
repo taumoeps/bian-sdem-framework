@@ -52,6 +52,17 @@ def read(path):
     return doc
 
 
+SHIPPED = 'sdem:'   # CPL-02: an include that names a standard or pattern shipped with SDEM — "sdem:sdem-completeness.json"
+
+
+def shipped(name):
+    """The file of a standard or pattern shipped with SDEM (the folder `standards/`; `sdem/data/standards/` when installed)."""
+    base = (DATA_ROOT / 'standards').resolve(); f = (base / name[len(SHIPPED):]).resolve()
+    if base not in f.parents or f.suffix != '.json': raise ProfileError(f'{name}: not a file shipped with SDEM — the ones it ships are in {base}')
+    if not f.is_file(): raise ProfileError(f"{name}: SDEM ships no such standard or pattern — it ships: {', '.join(sorted(p.name for p in base.glob('*.json'))) or 'none'}")
+    return f
+
+
 def _fragment(path):
     """A standards or pattern file a profile includes (PR-13, PR-17)."""
     try: doc = json.loads(Path(path).read_text(encoding='utf-8'))
@@ -143,7 +154,7 @@ def resolve(path, _seen=()):
         if base.get('requires_sdem'): merged['requires_sdem'] = base['requires_sdem']
         if base.get('hosting'): merged['hosting'] = json.loads(json.dumps(base['hosting']))
     for inc in doc.get('includes', []):   # PR-13, PR-17: standards and patterns, after the base and before the profile's own additions
-        include(merged, (path.parent / inc).resolve())
+        include(merged, shipped(inc) if str(inc).startswith(SHIPPED) else (path.parent / inc).resolve())
     _add(merged, doc, path.name)
     own_map = doc.get('diagram_map') or {}   # PR-28: the profile's own entries are matched before its base's
     merged['diagram_map'] = {k: list(own_map.get(k, [])) + merged['diagram_map'][k] for k in MAP_KINDS}

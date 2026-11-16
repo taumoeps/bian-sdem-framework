@@ -75,6 +75,14 @@ def collect(ws):
             comp['findings'] = [{k: f.get(k) for k in ('rule', 'standard', 'pattern', 'layer', 'record', 'outcome', 'severity', 'detail')}
                                 for f in c['findings'] if f['outcome'] in ('non_compliant', 'unresolved')]
             comp['expiring'] = [e for e in listing(ws) if e['state'] == 'active' and e['days_left'] <= 30]
+            done = [f for f in c['findings'] if (f.get('standard') or {}).get('id') == 'SDEM-COMPLETE']   # CPL-05: SDEM's standard for a complete design, as one figure
+            if done:
+                gaps = [f for f in done if f['outcome'] in ('non_compliant', 'unresolved')]; by = {}
+                for f in gaps: by.setdefault(f['rule'], {'rule': f['rule'], 'message': f.get('message') or f['detail'], 'records': []})['records'].append(f['record'])
+                checked = {f['record'] for f in done}; open_ = {f['record'] for f in gaps}
+                comp['completeness'] = {'standard': 'SDEM-COMPLETE', 'records_checked': len(checked), 'records_connected': len(checked - open_), 'gaps': len(gaps),
+                                        'under_exception': sum(f['outcome'] == 'exception_approved' for f in done),
+                                        'by_rule': [{**v, 'records': sorted(v['records'])} for v in sorted(by.values(), key=lambda v: (-len(v['records']), v['rule']))]}
     except ValueError: pass   # a profile that does not pass its checks is in check_errors already
     w = str(ws)
     commands = []

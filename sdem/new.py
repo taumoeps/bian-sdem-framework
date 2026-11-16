@@ -67,6 +67,19 @@ ORG_RECORD = 'sdem-organisation.json'
 ORG_FORMAT = 'sdem-organisation/1'
 
 
+COMPLETENESS = 'sdem:sdem-completeness.json'   # CPL-03: what a new workspace is checked for without any setup
+
+
+def own_profile(ws):
+    """CPL-03: the profile of a new workspace started outside an organisation — nothing but SDEM's standard for a complete design."""
+    from .profile import FORMAT as PFORMAT
+    return {'format': PFORMAT, 'name': Path(ws).name, 'version': 1,
+            'description': f"The {Path(ws).name} workspace's design specification on top of SDEM's metamodel. It starts with SDEM's own standard for a complete "
+                           "design (every record connected — gaps are listed by sdem status, never failed by sdem check); add the organisation's types, "
+                           "attributes, rules, standards and patterns here.",
+            'includes': [COMPLETENESS]}
+
+
 def org_files(name, person, today=None):
     """WS-08: the files of a new organisation — its record and a starter base profile that passes `sdem profile check`."""
     from .profile import FORMAT as PFORMAT
@@ -77,6 +90,7 @@ def org_files(name, person, today=None):
             'description': f"{name}'s design specification on top of SDEM's metamodel — every workspace's profile extends it. Add the "
                            "organisation's types, attributes, rules, link kinds and names here, and its standards and patterns under includes; "
                            f"check with: sdem profile check --file {base}",
+            'includes': [COMPLETENESS],   # CPL-03: SDEM's own standard for a complete design — every workspace inherits it; take it out to switch it off
             'types': [], 'attributes': [], 'rules': []}
     return {ORG_RECORD: rec, base: prof}
 
@@ -193,6 +207,9 @@ def plan(workspace, person, bian_file=None, today=None, no_bian=False, from_dir=
         from . import profile as _p
         extra['sdem-profile.json'] = profile_doc
         record['profile'] = {'file': 'sdem-profile.json', 'from': 'organisation', **(_p.record() or {})}
+    elif not from_dir:   # CPL-03: a new workspace on its own starts with SDEM's standard for a complete design
+        extra['sdem-profile.json'] = own_profile(ws)
+        record['profile'] = {'file': 'sdem-profile.json', 'from': 'sdem', 'name': Path(ws).name, 'version': 1}
     if org is not None:
         import os
         o = _org_at(org)

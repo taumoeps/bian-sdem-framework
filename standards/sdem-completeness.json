@@ -1,0 +1,144 @@
+{
+  "format": "sdem-standard/1",
+  "description": "SDEM's own standard for a complete design: what every design connects, whatever its domain. Shipped with SDEM; a profile includes it as \"sdem:sdem-completeness.json\". Every rule is a warning — a gap is something still to decide, never a wrong design. A planned record that does not meet a rule is 'unresolved'; an active one is 'not met'. A person may grant an exception (sdem exception grant).",
+  "standard": {
+    "id": "SDEM-COMPLETE",
+    "title": "A complete design: every record connected",
+    "version": "1.0",
+    "owner": "SDEM",
+    "source": "ArchiMate 3.2 (which element a relationship joins); the audit of the public twin, docs/design/sdem-completeness-design.md"
+  },
+  "rules": [
+    {
+      "id": "CPL-A1-01",
+      "entity": "A1.BusinessRequirement",
+      "link": {
+        "kind": "realization",
+        "direction": "in",
+        "min": 1
+      },
+      "severity": "warning",
+      "message": "a requirement is met by a process, a capability or a service",
+      "reasoning": "a requirement nothing realises is a requirement the design does not meet"
+    },
+    {
+      "id": "CPL-A1-02",
+      "entity": "A1.BusinessProcess",
+      "link": {
+        "kind": "realization",
+        "direction": "out",
+        "min": 1
+      },
+      "severity": "warning",
+      "message": "a process realises a capability, a value-stream stage, a service or a requirement",
+      "reasoning": "a process that realises nothing has no stated purpose in the design"
+    },
+    {
+      "id": "CPL-A1-03",
+      "entity": "A1.BusinessObject",
+      "link": {
+        "kind": "access",
+        "direction": "in",
+        "min": 1
+      },
+      "severity": "warning",
+      "message": "a business object is used by a process, an event or a service",
+      "reasoning": "information nothing uses is not part of the design"
+    },
+    {
+      "id": "CPL-A1-04",
+      "entity": "A1.BusinessInterface",
+      "link": {
+        "kind": "serving",
+        "direction": "out",
+        "min": 1
+      },
+      "severity": "warning",
+      "message": "a channel serves an actor or a role",
+      "reasoning": "a channel nobody uses"
+    },
+    {
+      "id": "CPL-A3-01",
+      "entity": "A3.ApplicationInterface",
+      "link": {
+        "kind": "composition",
+        "direction": "in",
+        "to": "A3.ApplicationComponent",
+        "min": 1
+      },
+      "severity": "warning",
+      "message": "an interface belongs to the component that offers it",
+      "reasoning": "ArchiMate: an application interface is part of an application component"
+    },
+    {
+      "id": "CPL-A3-02",
+      "entity": "A3.ApplicationService",
+      "link": {
+        "kind": "realization",
+        "direction": "in",
+        "min": 1
+      },
+      "severity": "warning",
+      "message": "an application service is realised by a component or a function",
+      "reasoning": "a service nothing provides"
+    },
+    {
+      "id": "CPL-A3-03",
+      "entity": "A3.APIOperation",
+      "link": {
+        "kind": "composition",
+        "direction": "in",
+        "min": 1
+      },
+      "severity": "warning",
+      "message": "an API operation belongs to an interface",
+      "reasoning": "an operation outside any interface cannot be called"
+    },
+    {
+      "id": "CPL-A3-04",
+      "entity": "A3.DataEntity",
+      "link": {
+        "kind": "access",
+        "direction": "in",
+        "min": 1
+      },
+      "severity": "warning",
+      "message": "a data entity is used by a component, a function or an operation",
+      "reasoning": "data nothing reads or writes"
+    },
+    {
+      "id": "CPL-A4-01",
+      "entity": "A4.TechnologyService",
+      "link": {
+        "kind": "realization",
+        "direction": "in",
+        "min": 1
+      },
+      "severity": "warning",
+      "message": "a technology service is provided by a platform",
+      "reasoning": "a technology service nothing provides cannot be placed or traced"
+    },
+    {
+      "id": "CPL-X-01",
+      "entity": "A3.ApplicationComponent",
+      "across": {
+        "relationship": "DEPLOYED_AS",
+        "min": 1
+      },
+      "severity": "warning",
+      "message": "a component has a deployment — an approved link",
+      "reasoning": "software that runs nowhere"
+    },
+    {
+      "id": "CPL-X-02",
+      "entity": "A3.DataEntity",
+      "across": {
+        "relationship": "STORED_IN",
+        "min": 1
+      },
+      "severity": "warning",
+      "message": "a data entity is stored somewhere — an approved link",
+      "reasoning": "data with no store cannot be traced to a platform or a zone"
+    }
+  ]
+}

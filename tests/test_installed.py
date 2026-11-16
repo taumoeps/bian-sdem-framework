@@ -16,7 +16,7 @@ def package_data():
     """The package-data globs of pyproject.toml: {'schema': [...], 'metamodel': [...]}."""
     text = (ROOT / 'pyproject.toml').read_text()
     out = {}
-    for pkg, src in (('sdem.data.schema', 'schema'), ('sdem.data.metamodel', 'metamodel'), ('sdem.data.bian', 'bian'), ('sdem.data.copilot', '.github')):
+    for pkg, src in (('sdem.data.schema', 'schema'), ('sdem.data.metamodel', 'metamodel'), ('sdem.data.bian', 'bian'), ('sdem.data.standards', 'standards'), ('sdem.data.copilot', '.github')):
         m = re.search(r'"' + re.escape(pkg) + r'"\s*=\s*\[([^\]]*)\]', text.split('[tool.setuptools.package-data]')[1])
         out[src] = re.findall(r'"([^"]+)"', m.group(1))
     return out
