@@ -171,6 +171,7 @@ def propose(doc, mm, run, person, now, rejected=(), stem=None):
     zones = {i['id']: (i.get('attributes') or {}) for i in local.values() if mm.is_a(i['type'], ZONE)}
     stem = re.sub(r'[^A-Z0-9]+', '-', (stem or doc.get('model_id') or 'WS').upper()).strip('-')[:24] or 'WS'
     new_zones, links, unresolved, made = [], [], [], {}
+    flat = bool(zones) and not any(z.get('zone_level') == 0 for z in zones.values())   # ZF-05: flat zones — no on-premises or cloud zone to place by, and none is created
     def zone_for(kind, level1):
         top = next((z for z in sorted(zones) if zones[z].get('zone_level') == 0 and zones[z].get('zone_kind') == kind), None) \
               or made.get((kind, None))
@@ -188,6 +189,7 @@ def propose(doc, mm, run, person, now, rejected=(), stem=None):
     for x, zs in sorted(shapes.items()):
         rec = local[x]
         if zs or x in hosted or rec.get('lifecycle_status') == 'retired' or any(mm.is_a(rec['type'], t) for t in UNPLACED): continue
+        if flat: unresolved.append({'id': x, 'signals': [], 'why': 'the zones here are flat (no on-premises or cloud zone) — a person says which zone (ZF-05)'}); continue
         ev = evidence(rec, doc, mm, pol['signals'])
         kind, conf, used = judge(ev, pol['default'])
         if kind is None: unresolved.append({'id': x, 'signals': used}); continue

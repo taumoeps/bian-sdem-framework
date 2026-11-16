@@ -50,6 +50,7 @@ SDEM's technology layer (A4) is ArchiMate's: nodes, devices, system software, ne
 |---|---|---|
 | LC-16 | every A4 shape is in exactly one zone of level 1 or 2 — directly, or through what hosts it | warning (Z4) |
 | LC-17 | the structure holds: a level-1 zone is in a level 0, a level-2 zone in a level 1; each level 0 has one internal zone and at most one DMZ; at most one on-premises and one cloud level 0 | error — a level 0 with no internal zone yet is a warning (incomplete, not contradictory) |
+| LC-17, flat zones | **ZF-01…ZF-06 (the owner's decisions D3, D4, 2026-11-17 — [design](sdem-public-twin-follow-up-design.md)):** a workspace with *no* level-0 zone has flat zones — a level-1 or level-2 zone may stand with no parent, and several may be internal; kinds by level are unchanged. SDEM then works out no zone connection (ZF-04) and `sdem aid` guesses no zone (ZF-05). A workspace that has a level-0 zone is checked exactly as above | not an error |
 | LC-18 | a shape with `internet_facing: true` (M2b) is in a DMZ; a DMZ holds only internet-facing shapes | warning |
 
 ## 5. Trace and impact (extends KG-Q-08)

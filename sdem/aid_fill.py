@@ -375,7 +375,7 @@ def main(argv):
     for u in rec.get('exposure_unresolved', []):
         print(f"exposure: {u['id']} is internet facing — {'no internet-facing edge platform to expose it through' if not u['candidates'] else 'several candidates: ' + ', '.join(u['candidates'])} (AID-X01): a person decides")
     for u in rec.get('zones_unresolved', []):
-        print(f"zones: {u['id']} not placed — its evidence points both ways ({'; '.join(e['id'] + ' ' + e['read'] for e in u['signals'])}): a person places it (AID-Z01)")
+        print(f"zones: {u['id']} not placed — " + (u['why'] if u.get('why') else f"its evidence points both ways ({'; '.join(e['id'] + ' ' + e['read'] for e in u['signals'])}): a person places it (AID-Z01)"))
     if total and not a.dry_run:
         print(f'Next: review the inferred records in the layer files (marked "inferred", with source, reasoning and confidence), then '
               f'sdem aid confirm|reject <ids> --workspace {a.estate} --person <you>; then propose every connection in one list to review and approve from '

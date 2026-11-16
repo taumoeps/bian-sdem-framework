@@ -1,6 +1,6 @@
 # Two changes from the public twin — rejecting a proposed link, and flat network zones (RJ-01…RJ-07, ZF-01…ZF-06)
 
-> **Status: approved — the owner approved D1–D4 as recommended (2026-11-17); being built, tests first.** From the first run of the public twin ([report](../evidence/payment-initiation-v3/report.md), findings F14 and F1). **No metamodel file changes in either.**
+> **Status: built — the owner approved D1–D4 as recommended (2026-11-17). `sdem reject`: `sdem/reject.py`, `tests/test_reject.py`. Flat zones: `sdem/conformance.py`, `sdem/hosting.py`, `sdem/zones.py`, `tests/test_network_zones.py` (FlatZoneTests).** Two things were built differently from the text first approved, each marked below: RJ-05 and ZF-01. From the first run of the public twin ([report](../evidence/payment-initiation-v3/report.md), findings F14 and F1). **No metamodel file changes in either.**
 
 ## 1. Rejecting a proposed link (F14)
 
@@ -26,7 +26,7 @@
 
 | Id | Rule |
 |---|---|
-| ZF-01 | A level-1 or level-2 zone **may stand with no parent**. If it has a parent, the parent is one level up, as now. (LC-17 today: "a level-1 zone is part of a level-0 zone" — an error.) |
+| ZF-01 | **In a workspace with no level-0 zone** — its zones are *flat* — a level-1 or level-2 zone may stand with no parent. If it has a parent, the parent is one level up, as now. *(Built so, narrower than first written: a workspace that does have a level-0 zone keeps the full rule — there, a level-1 zone outside it is still an error — so every existing workspace checks exactly as before.)* |
 | ZF-02 | Kinds by level are unchanged: level 0 on premises or cloud; level 1 internal or DMZ; level 2 private. A flat design records its DMZ and internal zones at level 1 and its restricted zones at level 2. |
 | ZF-03 | "Exactly one internal zone, at most one DMZ" still holds **inside each level-0 zone**. Zones with no level-0 parent are not counted: a flat design may have several internal zones. |
 | ZF-04 | **What SDEM then does not work out.** Zone connections (ZC-01…ZC-03) come from the structure; between parentless zones there is none to read, so none is worked out — `sdem zones` says so, and the connections are what the design's paths state. |

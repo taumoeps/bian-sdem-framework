@@ -78,6 +78,43 @@ class StructureTests(unittest.TestCase):   # LC-17
         self.assertTrue(any('a level-0 zone has no internal zone yet' in x for x in w), w)
 
 
+class FlatZoneTests(unittest.TestCase):   # ZF-01…ZF-06 — the owner's decisions D3, D4 (2026-11-17); the public twin, F1
+    def flat(self):
+        Z = lambda i, lvl, kind: {'id': i, 'type': 'A4.NetworkZone', 'version': '1', 'name': i, 'lifecycle_status': 'active', 'attributes': {'zone_level': lvl, 'zone_kind': kind}}
+        N = lambda i, **a: {'id': i, 'type': 'A4.Node', 'version': '1', 'name': i, 'lifecycle_status': 'active', 'attributes': a}
+        zones = [Z('ZONE-EDGE', 1, 'dmz'), Z('ZONE-APP', 1, 'internal'), Z('ZONE-INTEG', 1, 'internal'), Z('ZONE-DATA', 2, 'private'), Z('ZONE-SEC', 2, 'private')]
+        nodes = [N('NODE-EDGE', internet_facing=True), N('NODE-APP'), N('NODE-INT'), N('NODE-DATA'), N('NODE-SEC')]
+        rels = [{'source': z, 'kind': 'aggregation', 'target': n} for z, n in (('ZONE-EDGE', 'NODE-EDGE'), ('ZONE-APP', 'NODE-APP'), ('ZONE-INTEG', 'NODE-INT'), ('ZONE-DATA', 'NODE-DATA'), ('ZONE-SEC', 'NODE-SEC'))]
+        return {'level': 'A4', 'model_id': 'flat-a4', 'model_version': '1', 'metamodel_version': Metamodel.load().version, 'source_system': 't', 'instances': zones + nodes, 'relationships': rels}
+
+    def test_zones_with_no_level_0_zone_stand_on_their_own(self):   # ZF-01, ZF-03: five flat zones, two of them internal — no error
+        self.assertEqual(found(self.flat(), 17), [])
+        d = self.flat(); d['relationships'].append({'source': 'ZONE-APP', 'kind': 'composition', 'target': 'ZONE-DATA'})   # a parent, when given, is still one level up
+        self.assertEqual(found(d, 17), [])
+        d = self.flat(); d['relationships'].append({'source': 'ZONE-DATA', 'kind': 'composition', 'target': 'ZONE-APP'})
+        self.assertTrue(any('ZONE-APP: a level-1 zone is part of a level-0 zone' in x for x in found(d, 17)))
+
+    def test_kinds_by_level_are_unchanged(self):   # ZF-02
+        d = self.flat(); d['instances'][0]['attributes']['zone_kind'] = 'private'
+        self.assertIn("instance ZONE-EDGE: a level-1 zone is internal or dmz, not 'private' (LC-17)", found(d, 17))
+
+    def test_no_zone_connection_is_worked_out_and_sdem_says_so(self):   # ZF-04
+        from sdem.hosting import zone_connections
+        from sdem.zones import flat_note
+        self.assertEqual(zone_connections(self.flat(), Metamodel.load()), [])
+        self.assertIn('ZF-04', flat_note(self.flat(), Metamodel.load())); self.assertEqual(flat_note(a4(), Metamodel.load()), '')
+
+    def test_aid_does_not_guess_a_zone_in_a_flat_workspace(self):   # ZF-05
+        from sdem.hosting import propose
+        d = self.flat(); d['instances'].append({'id': 'SYS-DB', 'type': 'A4.SystemSoftware', 'version': '1', 'name': 'Managed database', 'attributes': {}})
+        zones, links, unresolved = propose(d, Metamodel.load(), 'AID-T', 'jane.architect', '2026-11-17T00:00:00+00:00')
+        self.assertEqual((zones, links), ([], [])); self.assertEqual([(u['id'], u['why']) for u in unresolved], [('SYS-DB', 'the zones here are flat (no on-premises or cloud zone) — a person says which zone (ZF-05)')])
+
+    def test_the_layout_draws_flat_zones(self):
+        from sdem.zone_layout import layout
+        self.assertEqual(sorted(z['id'] for z in layout(self.flat(), Metamodel.load(), environment='all')['zones']), ['ZONE-APP', 'ZONE-DATA', 'ZONE-EDGE', 'ZONE-INTEG', 'ZONE-SEC'])
+
+
 class DmzTests(unittest.TestCase):   # LC-18
     def test_internet_facing_belongs_in_a_dmz_and_only_there(self):
         d = a4(); next(i for i in d['instances'] if i['id'] == 'INF-APIGW-PAY')['attributes']['internet_facing'] = False

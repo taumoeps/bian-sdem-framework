@@ -18,6 +18,7 @@ Warnings (the architecture dataset is usable but incomplete or dated):
   · LC-29 a column whose physical type cannot hold what its name says — an amount as a date, an identifier as money (sdem/graph.py)
   (all checked over the whole workspace: sdem/graph.py FederatedGraph.unconnected, unexposed, information_model).
   Error: LC-17 the zone structure contradicts itself (a kind wrong for its level, a zone in the wrong parent, two internal zones, two cloud zones).
+  Flat zones (ZF-01…ZF-06): where a workspace has no level-0 zone, a level-1 or level-2 zone may stand with no parent, and several may be internal.
 LC-01…LC-03 and LC-11 are checked by the graph loader and the registry validator; LC-12 by sdem-diff.
 """
 import json, re
@@ -286,13 +287,14 @@ def zone_checks(doc, mm, local, byid, errors, warnings, n):
         if shapes: n['LC-16 checked'] += 1; n['LC-16 failed'] += 1; warnings.append(f"no network zones recorded — place each of the {len(shapes)} shape(s) in a zone: on premises or cloud, internal or DMZ (RA4-38, LC-16)")
         return
     lvl = lambda z: zones[z].get('zone_level')
+    flat = not any(lvl(z) == 0 for z in zones)   # ZF-01: a workspace with no on-premises or cloud zone has flat zones — each may stand with no parent
     for z, at in sorted(zones.items()):   # LC-17
         n['LC-17 checked'] += 1; bad = []
         if at.get('zone_level') in ZONE_KINDS and at.get('zone_kind') not in ZONE_KINDS[at['zone_level']]:
             bad.append(f"a level-{at['zone_level']} zone is {' or '.join(ZONE_KINDS[at['zone_level']])}, not {at.get('zone_kind')!r}")
         p = parent.get(z)
         if at.get('zone_level') == 0 and p: bad.append(f'a level-0 zone is inside no other zone, but {p} is composed of it')
-        if at.get('zone_level') in (1, 2) and (not p or p not in zones or lvl(p) != at['zone_level'] - 1):
+        if at.get('zone_level') in (1, 2) and not (flat and not p) and (not p or p not in zones or lvl(p) != at['zone_level'] - 1):
             bad.append(f"a level-{at['zone_level']} zone is part of a level-{at['zone_level'] - 1} zone (composition, RA4-39){f' — {p} is level {lvl(p)}' if p in zones else ''}")
         for b in bad: n['LC-17 failed'] += 1; errors.append(f"instance {z}: {b} (LC-17)")
     tops = [z for z in zones if lvl(z) == 0]

@@ -32,7 +32,8 @@ def collect(workspace):
     placed = [{'shape': x, 'zone': zs[0] if zs else None, 'how': ('directly' if x in {y for v in direct.values() for y in v} else 'through its host') if zs else 'in no zone',
                **({'inferred': marks[(zs[0], x)]} if zs and (zs[0], x) in marks else {})} for x, zs in sorted(shapes.items())]
     conns = [{'from': a, 'to': b, 'rule': r} for a, b, r in zone_connections(doc, mm)]
-    return {'workspace': ws.as_posix(), 'zones': sorted(zones, key=lambda z: (z['level'] if z['level'] is not None else 9, z['id'])), 'placements': placed, 'connections': conns}
+    return {'workspace': ws.as_posix(), 'zones': sorted(zones, key=lambda z: (z['level'] if z['level'] is not None else 9, z['id'])), 'placements': placed, 'connections': conns,
+            **({'flat': flat_note(doc, mm)} if flat_note(doc, mm) else {})}
 
 
 def cut(workspace, a, b):
@@ -84,6 +85,13 @@ def cut(workspace, a, b):
     for x in ends: walk(fg.trace(x, 'up'), x)
     return {'workspace': ws.as_posix(), 'connection': {'from': a, 'to': b, 'rule': rule}, 'crossing': crossing, 'affected': ends,
             'depends': sorted(seen.values(), key=lambda r: (str(r['level']), r['id']))}
+
+
+def flat_note(doc, mm):
+    """ZF-04: said when the workspace's zones are flat — SDEM works out no connection between zones that have no structure to read."""
+    zs = [(i.get('attributes') or {}) for i in doc.get('instances', []) if mm.is_a(i['type'], 'A4.NetworkZone')]
+    if not zs or any(z.get('zone_level') == 0 for z in zs): return ''
+    return 'the zones here are flat (no on-premises or cloud zone): no connection between them is worked out — they are what the design\'s paths say (ZF-04)'
 
 
 def main(argv=None):
@@ -148,6 +156,7 @@ def main(argv=None):
               + (f"  holds: {', '.join(z['holds'])}" if z['holds'] else ''))
     print('connections (worked out from the structure):')
     for c in res['connections']: print(f"  {c['from']} — {c['to']}  ({c['rule']})")
+    if res.get('flat'): print('  ' + res['flat'])
     loose = [p['shape'] for p in res['placements'] if p['how'] == 'in no zone']
     waiting = [p['shape'] for p in res['placements'] if p.get('inferred', {}).get('status') == 'proposed']
     if loose: print(f"in no zone ({len(loose)}): {', '.join(loose)} — LC-16")
