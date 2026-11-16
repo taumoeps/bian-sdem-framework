@@ -56,6 +56,17 @@ class ChecksTests(unittest.TestCase):   # IM-08: LC-23 … LC-27
         (tmp / 'm.json').write_text(json.dumps({'registry_version': '1', 'mappings': list(mappings)}))
         return FederatedGraph.load([tmp / 'a2.json', tmp / 'a3.json', tmp / 'm.json'])
 
+    def test_a_column_whose_type_cannot_hold_what_its_name_says(self):   # LC-29 — the public twin's first run, F7 (2026-11-17)
+        F = lambda i, name, pt: rec(i, 'A3.DataAttribute', name, physical_type=pt)
+        cols = [F('F-1', 'amount', 'date'), F('F-2', 'currency', 'boolean'), F('F-3', 'consent_id', 'numeric(18,2)'), F('F-4', 'expires_at', 'varchar(20)'),
+                F('F-5', 'amount', 'numeric(18,2)'), F('F-6', 'currency', 'char(3)'), F('F-7', 'consent_id', 'uuid'), F('F-8', 'payment_id', 'bigint'), F('F-9', 'created_at', 'timestamptz'),
+                F('F-10', 'payment_status', 'varchar(40)'), F('F-11', 'key_hash', 'char(64)'), F('F-12', 'paymentAmount', 'timestamp'), F('F-13', 'amount', 'custom_money_type')]
+        a3 = level('A3', [rec('ENT-1', 'A3.DataEntity', 't', attributes=[c['name'] for c in cols])] + cols, [{'source': 'ENT-1', 'kind': 'composition', 'target': c['id']} for c in cols])
+        fg = self.graph(level('A2', [], []), a3); fg.check()
+        w = [x for v in fg.warnings.values() for x in v if 'LC-29' in x]
+        self.assertEqual(sorted(x.split(':')[0].replace('instance ', '') for x in w), ['F-1', 'F-12', 'F-2', 'F-3', 'F-4'])   # the unmistakable ones only; an unknown type is not judged
+        self.assertIn('F-1: is named as an amount (amount) but its type is date — check the type, or the name (LC-29)', ' '.join(w))
+
     def test_thin_disagreeing_keyless_and_mistyped(self):
         a2 = level('A2', [rec('BO-1', 'A2.BusinessObject', 'Payment', attributes=['amount', 'value_date']),
                           rec('BOA-1', 'A2.BusinessObjectAttribute', 'amount', data_type='amount'),

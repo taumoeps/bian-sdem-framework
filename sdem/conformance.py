@@ -15,6 +15,7 @@ Warnings (the architecture dataset is usable but incomplete or dated):
   · LC-23 a business object or data entity whose fields are names only (thin) · LC-24 field names and field records disagree
   · LC-25 a system of record with no primary key · LC-26 a foreign key to an entity with no key · LC-27 a field mapping between incompatible types
   · LC-28 an attribute that names other records than its approved links of the same meaning (sdem/aid_attr.py)
+  · LC-29 a column whose physical type cannot hold what its name says — an amount as a date, an identifier as money (sdem/graph.py)
   (all checked over the whole workspace: sdem/graph.py FederatedGraph.unconnected, unexposed, information_model).
   Error: LC-17 the zone structure contradicts itself (a kind wrong for its level, a zone in the wrong parent, two internal zones, two cloud zones).
 LC-01…LC-03 and LC-11 are checked by the graph loader and the registry validator; LC-12 by sdem-diff.

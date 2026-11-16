@@ -48,6 +48,7 @@ CONSTRAINTS = [
  ('LC-26', 'A foreign key points at a key', 'a data attribute associated with a data entity (a foreign key) points at an entity that has a primary-key field (metamodel 0.15.0)', 'enforced', '`sdem check` (warning)'),
  ('LC-27', 'Field mappings agree on type', 'a FIELD_MAPPED_TO links a BIAN attribute to a data attribute whose physical type can hold its logical type (a date in a date or timestamp; an amount in a numeric) (metamodel 0.15.0)', 'enforced', '`sdem check` (warning)'),
  ('LC-28', 'Attributes agree with approved links', 'where a record says in an attribute what an approved link says (stored_in and STORED_IN, consumes and SERVED_BY, deployed_on, deployed_as, built_as), both name the same records — the approved link is the fact (metamodel 0.16.0, AT-01)', 'enforced', '`sdem check` (warning)'),
+ ('LC-29', 'A column\'s type can hold what its name says', 'a data attribute named as an amount, a currency code, a date or time, or an identifier has a physical type of a family that can hold it — an amount is not a date, an identifier is not money (found by the public twin, F7; read from the last word of the name, and only where the type is unmistakable)', 'enforced', '`sdem check` (warning)'),
 ]
 
 

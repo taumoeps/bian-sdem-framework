@@ -291,6 +291,29 @@ class FederatedGraph:
                 lt = str((s_.get('attributes') or {}).get('data_type') or '').lower(); pt = str((t_.get('attributes') or {}).get('physical_type') or '').lower()
                 if lt in COMPAT and pt and not pt.startswith(COMPAT[lt]):
                     out.setdefault('A3', []).append(f"instance {t_['id']}: holds {s_['id']} ({lt}) as {pt} — the types do not match (LC-27)")
+        # LC-29 (warning; the public twin's first run, F7): a column whose physical type cannot hold what its name says — read from the
+        # last word(s) of the name only, and only where the type family is unmistakable. Never a refusal (FD-P2).
+        FAMILY = (('time', ('date', 'time', 'timestamp')), ('boolean', ('bool', 'bit')), ('number', ('numeric', 'decimal', 'number', 'money', 'int', 'bigint', 'smallint', 'float', 'double', 'real')),
+                  ('text', ('char', 'varchar', 'text', 'uuid', 'string', 'nvarchar')))
+        def family(pt):
+            pt = re.sub(r'[^a-z]', ' ', pt.lower()).split()
+            return next((f for f, words in FAMILY for w in pt[:1] if w.startswith(words)), None) if pt else None
+        ROLE = (('an amount', ('amount', 'balance', 'price', 'total'), {'number'}), ('a currency code', ('currency',), {'text'}),
+                ('a date or time', ('at', 'date', 'time', 'timestamp', 'datetime'), {'time'}),
+                ('an identifier', ('id', 'identifier', 'identification', 'reference', 'ref', 'key', 'hash'), {'text', 'whole number'}))
+        g3 = self.levels.get('A3')
+        for i in (g3.doc.get('instances', []) if g3 else []):
+            if not self.mm.is_a(i['type'], 'A3.DataAttribute') or i.get('lifecycle_status') == 'retired': continue
+            pt = str((i.get('attributes') or {}).get('physical_type') or ''); fam = family(pt)
+            if not fam: continue
+            last = re.split(r'[^a-z0-9]+', re.sub(r'(?<=[a-z0-9])(?=[A-Z])', '_', str(i.get('name', ''))).lower())
+            last = [w for w in last if w][-1:] or ['']
+            role = next((r for r in ROLE if last[0] in r[1]), None)
+            if not role: continue
+            what, _, ok = role
+            whole = fam == 'number' and not re.search(r'\(\s*\d+\s*,\s*[1-9]', pt) and not pt.lower().startswith(('float', 'double', 'real', 'money'))
+            if fam in ok or ('whole number' in ok and whole): continue
+            out.setdefault('A3', []).append(f"instance {i['id']}: is named as {what} ({i.get('name')}) but its type is {pt} — check the type, or the name (LC-29)")
         return {k: v for k, v in out.items() if v and k in self.levels}
 
     def network_edges(self):
