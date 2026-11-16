@@ -117,5 +117,28 @@ class A3ApplicationStructureTests(unittest.TestCase):   # application → compon
         self.assertEqual(z['R:APP-LC']['part_of'], z['R:APP-DOC']['part_of'])
         self.assertTrue(z['R:APP-LC']['part_of'].startswith('R:SBB'))
 
+
+class SpacingTests(unittest.TestCase):   # C8 — the owner's screenshots of v2 (2026-11-16): shapes on top of each other, records over headings
+    SITE_W, SITE_H = 0.9 / 5.6 * 0.5, 0.5 / 5.4 * 0.5   # DESNRE's shape (0.9 x 0.5) on its plate (5.6 x 5.4) at shape size 0.5, as fractions of the plate
+
+    def test_no_two_shapes_overlap_and_each_sits_in_its_region(self):
+        for ex in sorted(p.name for p in EX.iterdir() if (p / 'a2-service-domain.json').exists()):
+            for layer in ('A1', 'A2', 'A3'):
+                try: lay = load(EX / ex, layer)
+                except (FileNotFoundError, ContainmentError): continue
+                f = lay['fit']; self.assertTrue(0 < f <= 1)
+                pts = [(s['id'], s['at']) for s in lay['shapes']]
+                for i, (a, pa) in enumerate(pts):
+                    for b, pb in pts[i + 1:]:
+                        self.assertFalse(abs(pa[0] - pb[0]) < self.SITE_W * f and abs(pa[1] - pb[1]) < self.SITE_H * f, f'{ex} {layer}: {a} on {b}')
+                z = {x['id']: x['rect'] for x in lay['zones']}
+                for s in lay['shapes']:
+                    if s['zone']:
+                        r = z[s['zone']]; self.assertTrue(r[0] <= s['at'][0] <= r[2] and r[1] <= s['at'][1] <= r[3], f'{ex} {layer}: {s["id"]}')
+
+    def test_v2_bian_layer_is_drawn_at_most_a_fifth_smaller(self):
+        self.assertGreaterEqual(load(EX / 'payment-initiation-v2', 'A2')['fit'], 0.8)
+
+
 if __name__ == '__main__':
     unittest.main()

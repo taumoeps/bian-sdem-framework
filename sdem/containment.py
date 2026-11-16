@@ -138,43 +138,86 @@ def layout(doc, layer, mm=None):
         if z not in weight: weight[z] = 1 + len(own.get(z, [])) + sum(wt(k) for k in kids.get(z, []))
         return weight[z]
     pos, rects, part_of, level = {}, {}, {}, {}
-    HDR, PAD, GAP = 0.08, 0.01, 0.014
+    # C8 (the owner's screenshots of v2, 2026-11-16: shapes on top of each other, a region's record over its heading): sized from the inside out.
+    # Each region needs room for its own shapes on a grid of at least CW x CH (one shape and its label), a heading line, and — when the region is
+    # a record — that record's own row under the heading; regions are packed in rows, then stretched to fill the plate. When the plate is too small
+    # at full size, everything is scaled by `fit` (< 1) and the viewer draws the shapes that much smaller, so nothing overlaps.
+    CW, CH, LBL, PAD, GAP, CHAR = 0.09, 0.06, 0.035, 0.01, 0.012, 0.0034
+    def label(z):
+        if z.startswith('G:'): return z[2:]
+        x = z[2:]; return f"{H['kinds'].get(typ.get(x), typ.get(x, '').split('.')[-1])} · {recs[x].get('name', x)}"
+    def head(z):   # (height, width) of the band above a region's contents: its heading, and beside it (right) the region's own record
+        lw = min(0.26, len(label(z)) * CHAR + 0.02)
+        return (CH, lw + CW) if z.startswith('R:') else (LBL, lw)
+    def block(n, ratio=1.6):   # (cols, rows) of a grid of n shapes, a little wider than tall
+        if not n: return 0, 0
+        cols = max(1, min(n, round((n * ratio * CH / CW) ** 0.5))); return cols, -(-n // cols)
+    def shelves(items, gap=GAP, square=False):   # items: (key, w, h) — rows of items, the tightest of several row widths
+        if not items: return [], 0, 0
+        def rows_for(target):
+            rows, cur, cw = [], [], 0
+            for it in sorted(items, key=lambda t: (-t[2], t[0])):
+                if cur and cw + gap + it[1] > target + 1e-9: rows.append(cur); cur, cw = [], 0
+                cw += (gap if cur else 0) + it[1]; cur.append(it)
+            if cur: rows.append(cur)
+            W = max(sum(w for _, w, _ in r) + gap * (len(r) - 1) for r in rows); Hh = sum(max(h for _, _, h in r) for r in rows) + gap * (len(rows) - 1)
+            return rows, W, Hh
+        lo, hi = max(w for _, w, _ in items), sum(w for _, w, _ in items) + gap * (len(items) - 1)
+        tries = [rows_for(lo + (hi - lo) * i / 24) for i in range(25)]
+        score = (lambda t: (max(t[1], t[2]), t[1] * t[2])) if square else (lambda t: (t[1] * t[2] + 0.15 * max(t[1], t[2]) ** 2, t[1]))
+        return min(tries, key=score)
+    need = {}
+    def size(z):
+        if z in need: return need[z]
+        mine, ks = own.get(z, []), kids.get(z, [])
+        c, r_ = block(len(mine))
+        items = ([('own', c * CW, r_ * CH)] if mine else []) + [(k, *size(k)) for k in ks]
+        rows, w, h = shelves(items)
+        hh, hw = head(z)
+        need[z] = (max(w, hw) + 2 * PAD, hh + h + PAD + (0 if items else 0.01)); need[z + '#rows'] = rows
+        return need[z]
+    def fill(rows, x0, y0, x1, y1, gap):   # lay rows out in [x0,x1]×[y0,y1], sharing the spare room in proportion
+        if not rows: return []
+        hs = [max(h for _, _, h in r) for r in rows]; sy = ((y1 - y0) - gap * (len(rows) - 1)) / (sum(hs) or 1)
+        out, y = [], y0
+        for r, h in zip(rows, hs):
+            ws = [w for _, w, _ in r]; sx = ((x1 - x0) - gap * (len(r) - 1)) / (sum(ws) or 1); x = x0
+            for (k, w, _), ww in zip(r, ws):
+                out.append((k, (x, y, x + ww * sx, y + h * sy))); x += ww * sx + gap
+            y += h * sy + gap
+        return out
     def grid(xs, x0, y0, x1, y1):
         n = len(xs)
         if not n: return
         w, h = max(x1 - x0, 1e-6), max(y1 - y0, 1e-6)
-        cols = max(1, min(n, round((n * w / h) ** 0.5))); rows = -(-n // cols)
+        ok = [c for c in range(1, n + 1) if w / c >= CW - 1e-9 and h / -(-n // c) >= CH - 1e-9] or [max(1, min(n, int(w / CW + 1e-9)))]
+        cols = min(ok, key=lambda c: abs((w / c) / (h / -(-n // c)) - CW / CH)); rows = -(-n // cols)   # cells at least CW x CH, shaped like one
         for i, x in enumerate(xs):
             c, r_ = i % cols, i // cols
             pos[x] = (x0 + w * (c + 0.5) / cols, y0 + h * (r_ + 0.5) / rows)
-    def split(items, x0, y0, x1, y1):   # share [x0,x1]×[y0,y1] among items by weight, along the longer side
-        tot = sum(wt_ for _, wt_ in items) or 1
-        horiz = (x1 - x0) >= (y1 - y0)
-        span = (x1 - x0 if horiz else y1 - y0) - GAP * (len(items) - 1)
-        a_ = x0 if horiz else y0; out = []
-        for it, wt_ in items:
-            d = span * wt_ / tot
-            out.append((it, (a_, y0, a_ + d, y1) if horiz else (x0, a_, x1, a_ + d))); a_ += d + GAP
-        return out
     def place(z, x0, y0, x1, y1, lv):
         rects[z] = (x0, y0, x1, y1); level[z] = lv
-        if z.startswith('R:'): pos[z[2:]] = (x1 - min(0.05, (x1 - x0) / 2), y0 + min(HDR, y1 - y0) / 2)   # the container's own record: in its header band, right of the heading — lines to it end on it
-        ix0, iy0, ix1, iy1 = x0 + PAD, y0 + HDR, x1 - PAD, y1 - PAD
-        mine, ks = own.get(z, []), kids.get(z, [])
-        parts = ([('own', len(mine))] if mine else []) + [(k, wt(k)) for k in ks]
-        for it, (a0, b0, a1, b1) in split(parts, ix0, iy0, ix1, iy1):
-            if it == 'own': grid(mine, a0, b0, a1, b1)
+        hh, _ = head(z)
+        if z.startswith('R:'): pos[z[2:]] = (x1 - PAD - CW / 2, y0 + CH / 2)   # the container's own record: right of its heading, which the region is wide enough to clear — lines to it end on it
+        for it, (a0, b0, a1, b1) in fill(need[z + '#rows'], x0 + PAD, y0 + hh, x1 - PAD, y1 - PAD, GAP):
+            if it == 'own': grid(own.get(z, []), a0, b0, a1, b1)
             else: part_of[it] = z; place(it, a0, b0, a1, b1, lv + 1)
     strip = None
-    y_end = 1.0 - (0.1 if lone else 0)
-    for z, (a0, b0, a1, b1) in split([(t, max(wt(t), 0.12 * sum(wt(u) for u in tops))) for t in tops], 0.0, 0.0, 1.0, y_end):
+    for t in tops: size(t)
+    lc, lr = block(len(lone), 6)
+    rows, W, Hh = shelves([(t, *need[t]) for t in tops], 2 * GAP, square=True)
+    Hl = (lr * CH + 0.04) if lone else 0
+    fit = min(1.0, 1 / max(W, 1e-6), 1 / max(Hh + Hl, 1e-6))   # 1: everything fits at full size
+    cw_, ch_ = 1 / fit, 1 / fit   # the plate, in full-size units
+    y_end = ch_ - Hl
+    for z, (a0, b0, a1, b1) in fill(rows, 0.0, 0.0, cw_, y_end - (0.01 if lone else 0), 2 * GAP):
         place(z, a0, b0, a1, b1, 0)
     if lone:
-        strip = {'label': H['not_in'], 'not_in_a_zone': lone, 'rect': [0.0, round(y_end + 0.01, 4), 1.0, 1.0]}
-        grid(lone, 0.02, y_end + 0.03, 0.98, 0.99)
-    def label(z):
-        if z.startswith('G:'): return z[2:]
-        x = z[2:]; return f"{H['kinds'].get(typ.get(x), typ.get(x, '').split('.')[-1])} · {recs[x].get('name', x)}"
+        grid(lone, 0.02, y_end + 0.03, cw_ - 0.02, ch_ - 0.01)
+    pos = {k: (x * fit, y * fit) for k, (x, y) in pos.items()}
+    rects = {k: tuple(v * fit for v in q) for k, q in rects.items()}
+    if lone:
+        strip = {'label': H['not_in'], 'not_in_a_zone': lone, 'rect': [0.0, round(y_end * fit + 0.005, 4), 1.0, 1.0]}
     r4 = lambda q: [round(v, 4) for v in q]
     zones = [{'id': z, 'record': z[2:] if z.startswith('R:') else None, 'name': z[2:] if z.startswith('G:') else recs[z[2:]].get('name', z[2:]), 'label': label(z),
               'level': level[z], 'kind': 'group' if z.startswith('G:') else typ.get(z[2:]), 'part_of': part_of.get(z), 'rect': r4(rects[z])} for z in rects]
@@ -195,7 +238,7 @@ def layout(doc, layer, mm=None):
                 if (a, b) not in seen: seen.add((a, b)); conns.append({'from': R(a), 'to': R(b), 'rule': 'derived (potential)', 'via': sc})
     return {'viewpoint': 'containment', 'layer': layer, 'model_id': doc.get('model_id'), 'zones': zones, 'runs_on': [],
             'not_in_a_zone': strip['rect'] if strip else None, 'strip': strip, 'shapes': sorted(shapes, key=lambda s: s['id']), 'links': links,
-            'connections': conns, 'left_out': []}
+            'connections': conns, 'left_out': [], 'fit': round(fit, 4)}
 
 
 FILES = {'A1': 'a1-business.json', 'A2': 'a2-service-domain.json', 'A3': 'a3-application.json', 'A4': 'a4-technology.json'}

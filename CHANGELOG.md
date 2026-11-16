@@ -4,6 +4,7 @@
 
 ## Unreleased
 
+- **No shapes on top of each other in A1–A3 (C8, from the owner's screenshots of Payment Initiation v2).** The layout of the business, BIAN and application layers is sized from the inside out: each region gets room for its shapes at least one shape apart, its heading, and its own record beside the heading, so nothing is drawn on top of anything else. A layer too full for the plate reports how much smaller to draw it (`fit`), and DESNRE draws the shapes that much smaller. Payment Initiation v2's BIAN layer is drawn at 84% size, with every operation's label in the clear.
 - **Every shape connected, nothing stacked (from the owner's screenshots of Payment Initiation v2 on DESNRE).** The A4 layout wraps the shapes of a narrow zone into rows instead of drawing them on top of each other. `sdem bian import --objects` links a control record to the business objects its own fields refer to, as BIAN's schema does. `sdem aid` gives a table nobody uses an "accesses" link from the component realising its object's domain (AID-I07, inferred). Payment Initiation v2: the payment initiation procedure works on BIAN's payer, payee, their banks and the funding and compliance checks (CS-009); capture uses the payee table, validation the funding and compliance check tables (CS-010) — every shape in every layer is now linked.
 
 ## 0.19.0 — a full design: the information model, the links ArchiMate defines, events, products, channels and locations (2026-11-16)
