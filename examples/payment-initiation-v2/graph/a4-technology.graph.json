@@ -6,7 +6,7 @@
     "directed": true,
     "metadata": {
       "sdem_store_version": "1.0",
-      "export_sha256": "bd91d1dc729e2bbebd2f67606791cb6e0649a6e0a236c52a589ef7cc4d8ccde2",
+      "export_sha256": "8836ea74087eac0478d7bcb528935f21232daa9df2d7ff4227d9224caf0c35f9",
       "level": "A4",
       "model_id": "synthetic-bank-payments-v2-a4",
       "model_version": "2026.10",
@@ -28,7 +28,7 @@
               "APP-PAY-HUB",
               "CMP-PAY-EXEC"
             ],
-            "product_version": "1.30",
+            "product_version": "1.29",
             "license": "Apache-2.0",
             "end_of_support": "2027-06-30",
             "region": "region-a",

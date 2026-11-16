@@ -17,7 +17,7 @@
           "APP-PAY-HUB",
           "CMP-PAY-EXEC"
         ],
-        "product_version": "1.30",
+        "product_version": "1.29",
         "license": "Apache-2.0",
         "end_of_support": "2027-06-30",
         "region": "region-a",

@@ -50,7 +50,7 @@ def only_environment(doc, keep):
             'relationships': [r for r in rels if r['source'] not in drop and r['target'] not in drop]}, drop
 
 
-def _place(recs, rels, x0=_X0, x1=_X1, z0=_Z0, z1=_Z1):
+def _place(recs, rels, x0=_X0, x1=_X1, z0=_Z0, z1=_Z1, in_heading=frozenset()):
     """The layout in plate units: ({id: (x, z)}, regions, links shown by position, zone pairs side by side, {shape: innermost zone})."""
     typ = {r['id']: r['type'] for r in recs}; name = {r['id']: r['name'] for r in recs}
     at = {r['id']: (r.get('attributes') or {}) for r in recs}
@@ -70,8 +70,10 @@ def _place(recs, rels, x0=_X0, x1=_X1, z0=_Z0, z1=_Z1):
         for y in hosted.get(x, []):
             if y not in seen and not any(y in v for v in direct.values()): out += stack(y, seen + (x,))
         return out
+    placed_direct = {y for v in direct.values() for y in v}
     for x, ys in hosted.items():
-        for y in ys: implied.add((x, y))
+        for y in ys:
+            if y not in placed_direct: implied.add((x, y))   # ZL-02: shown by position only when drawn under its host — a host and what it serves, each placed in a zone, get a line
     kids = {z: [k for k in zones_ if parent.get(k) == z] for z in zones_}
     order = lambda z: (0 if at[z].get('zone_kind') == 'dmz' else 1, z)
     ROW, PAD, LBL = 0.42, 0.34, 0.26   # PAD: the gap between neighbouring zones — room for the arrow that connects them
@@ -83,6 +85,7 @@ def _place(recs, rels, x0=_X0, x1=_X1, z0=_Z0, z1=_Z1):
     for z, xs in direct.items():
         for x in xs:
             for q in stack(x): zone_of.setdefault(q, z)
+    heading_of = {}
     as_line = {r['id'] for r in recs if r['type'] == 'A4.Path' and all((r.get('attributes') or {}).get(k) in zone_of for k in ('from', 'to'))
                and (r.get('attributes') or {}).get('from') != (r.get('attributes') or {}).get('to')}
     def chain(z):
@@ -92,6 +95,7 @@ def _place(recs, rels, x0=_X0, x1=_X1, z0=_Z0, z1=_Z1):
     for r in recs:   # an environment, a network or a path is not deployed: drawn in the smallest zone holding everything it groups or connects
         if r['type'] not in ('A4.DeploymentEnvironment', 'A4.CommunicationNetwork', 'A4.Path'): continue
         if r['id'] in as_line: continue   # PL-01: a path between two drawn nodes is the line between them, not a shape
+        heading = r['id'] in in_heading
         ends = (r.get('attributes') or {})
         members = [x['target'] for x in rels if x['source'] == r['id'] and x['kind'] == 'aggregation' and x['target'] in zone_of]
         if r['type'] != 'A4.DeploymentEnvironment':
@@ -101,7 +105,9 @@ def _place(recs, rels, x0=_X0, x1=_X1, z0=_Z0, z1=_Z1):
         if not members: continue
         common = chain(zone_of[members[0]])
         for m in members[1:]: common = [c for c in common if c in chain(zone_of[m])]
-        if common: direct.setdefault(common[0], []).append(r['id'])
+        if common and heading: heading_of[r['id']] = common[0]   # ZL-03: shown in its zone's heading, not as a shape
+        elif heading: pass
+        elif common: direct.setdefault(common[0], []).append(r['id'])
         else: spanning.add(r['id'])   # it connects shapes in different level-0 zones — drawn across them, not missing a zone
     pos, regions = {}, []
     MX, MZ = 0.32, 0.2   # a shape's half footprint: kept this far inside its zone
@@ -143,7 +149,8 @@ def _place(recs, rels, x0=_X0, x1=_X1, z0=_Z0, z1=_Z1):
     tops = sorted([z for z in zones_ if z not in parent], key=lambda z: (at[z].get('zone_kind') != 'cloud', z))
     def weight(z):
         return max(1, len(direct.get(z, []))) + sum(weight(k) for k in kids[z])
-    rest = [r['id'] for r in recs if r['type'] != 'A4.NetworkZone' and r['id'] not in zone_of and not any(r['id'] in v for v in direct.values())]
+    rest = [r['id'] for r in recs if r['type'] != 'A4.NetworkZone' and r['id'] not in zone_of and not any(r['id'] in v for v in direct.values())
+            and r['id'] not in as_line and r['id'] not in in_heading]   # ZL-01: no strip kept for what is drawn as a line or a heading
     zb_top = z1 - (0.6 if rest else 0)
     raw = [weight(t) / (sum(weight(u) for u in tops) or 1) for t in tops]
     share = [max(r, 0.3) if len(tops) > 1 else 1 for r in raw]; share = [x / sum(share) for x in share]   # each level-0 zone at least 30% wide
@@ -151,7 +158,7 @@ def _place(recs, rels, x0=_X0, x1=_X1, z0=_Z0, z1=_Z1):
     for i, t in enumerate(tops):
         xb = xa + (x1 - x0) * share[i]
         place(t, xa + (0.17 if i else 0), z0, xb - (0.17 if i < len(tops) - 1 else 0), zb_top); xa = xb
-    rest = [r['id'] for r in recs if r['id'] not in pos and r['type'] != 'A4.NetworkZone' and r['id'] not in as_line]
+    rest = [r['id'] for r in recs if r['id'] not in pos and r['type'] != 'A4.NetworkZone' and r['id'] not in as_line and r['id'] not in in_heading]
     if rest:   # only what no zone holds, even through its host (LC-16 names it)
         lone = [q for q in rest if q not in spanning]
         label = 'Not in a zone' if not spanning & set(rest) else 'Across zones' if not lone else 'Not in a zone · across zones'
@@ -165,10 +172,10 @@ def _place(recs, rels, x0=_X0, x1=_X1, z0=_Z0, z1=_Z1):
     for z, xs in direct.items():
         for x in xs:
             for q in stack(x): inner_zone.setdefault(q, z)
-    return pos, regions, implied, inner_zone, name, at, as_line
+    return pos, regions, implied, inner_zone, name, at, as_line, heading_of
 
 
-def layout(doc, mm=None, environment='production'):
+def layout(doc, mm=None, environment='production', headings=False):
     """The deployment-zones layout of an A4 document — JSON-ready, coordinates as fractions of the plate."""
     from .hosting import zone_connections
     from .metamodel import Metamodel
@@ -182,7 +189,9 @@ def layout(doc, mm=None, environment='production'):
     recs = [r for r in doc.get('instances', []) if r['type'] != 'A4.Location']; rels = doc.get('relationships', [])   # a location is a place, not a shape (0.17.0)
     if not any(r['type'] == 'A4.NetworkZone' for r in recs):
         raise LayoutError('no network zones recorded — place each shape in a zone first (RA4-38, LC-16; sdem aid proposes them)')
-    pos, regions, implied, inner_zone, name, at, as_line = _place(recs, rels)
+    # ZL-03 (headings=True, as DESNRE draws A4): a network is shown by its zone's heading (its address range), and the one environment drawn is not a shape
+    hide = {r['id'] for r in recs if r['type'] == 'A4.CommunicationNetwork' or (r['type'] == 'A4.DeploymentEnvironment' and (environment or 'all').lower() != 'all')} if headings else set()
+    pos, regions, implied, inner_zone, name, at, as_line, heading_of = _place(recs, rels, in_heading=frozenset(hide))
     u = lambda x: round((x - _X0) / (_X1 - _X0), 4); v = lambda z: round((z - _Z0) / (_Z1 - _Z0), 4)
     rect = lambda r: [u(r[0]), v(r[1]), u(r[2]), v(r[3])]
     parent = {r['target']: r['source'] for r in rels if r['kind'] == 'composition' and r['source'] in at and r['target'] in at
@@ -191,11 +200,23 @@ def layout(doc, mm=None, environment='production'):
     zones = [{'id': g['id'], 'name': name[g['id']], 'label': f"Level {at[g['id']].get('zone_level', '?')} · {name[g['id']]}",
               'level': at[g['id']].get('zone_level'), 'kind': at[g['id']].get('zone_kind'), 'part_of': parent.get(g['id']), 'rect': rect(g['rect'])}
              for g in regions if g['kind'] == 'zone']
+    for z in zones:   # ZL-03: a network's address range in its zone's heading
+        rng = [v for q, zz in heading_of.items() if zz == z['id'] and typ.get(q) == 'A4.CommunicationNetwork'
+               for v in ((at[q].get('address_range') if isinstance(at[q].get('address_range'), list) else [at[q]['address_range']]) if at[q].get('address_range') else [])]
+        if rng: z['label'] += ' · ' + ', '.join(rng)
+    locs = {i['id']: i['name'] for i in doc.get('instances', []) if i['type'] == 'A4.Location'}
+    place_of = {r['target']: r['source'] for r in rels if r['kind'] == 'aggregation' and r['source'] in locs}
+    place_of.update({x: at[x]['location'] for x in at if at[x].get('location') in locs})
+    top_of = lambda q: (lambda zz: (lambda f: f(f, zz))(lambda f, y: y if not parent.get(y) else f(f, parent[y])))(inner_zone.get(q))
+    for z in zones:   # ZL-04: a level-0 zone whose shapes are all in one place names it — "Cloud — payments · Cloud region A"
+        if z['part_of']: continue
+        here = {place_of[q] for q in pos if q in place_of and inner_zone.get(q) and top_of(q) == z['id']}
+        if len(here) == 1: z['label'] += ' · ' + locs[here.pop()]
     zone_ids = {z['id'] for z in zones}
     shapes = [{'id': x, 'name': name[x], 'type': typ[x], 'zone': inner_zone.get(x), 'at': [u(p[0]), v(p[1])]} for x, p in pos.items() if x not in zone_ids]
     links = [{'source': r['source'], 'kind': r['kind'], 'target': r['target'], 'shown_by': 'position' if (r['source'], r['target']) in implied else 'line'}
              for r in rels if r['source'] not in zone_ids and r['target'] not in zone_ids and r['source'] in pos and r['target'] in pos]
-    return {'viewpoint': 'deployment-zones', 'model_id': doc.get('model_id'), 'environment': environment or 'all', 'left_out': sorted(dropped),
+    return {'viewpoint': 'deployment-zones', 'model_id': doc.get('model_id'), 'environment': environment or 'all', 'left_out': sorted(dropped), 'headings': bool(headings),
             'zones': zones,
             'runs_on': [{'platform': g['platform'], 'holds': g['holds'], 'rect': rect(g['rect'])} for g in regions if g['kind'] == 'runs_on'],
             'not_in_a_zone': next((rect(g['rect']) for g in regions if g['kind'] == 'not_in_a_zone'), None),
@@ -207,8 +228,8 @@ def layout(doc, mm=None, environment='production'):
             'connections': [{'from': a, 'to': b, 'rule': r} for a, b, r in zone_connections(doc, mm) if r in ('ZC-01', 'ZC-02') and a in zone_ids and b in zone_ids]}
 
 
-def load(workspace, environment='production'):
+def load(workspace, environment='production', headings=False):
     from pathlib import Path
     f = Path(workspace) / 'a4-technology.json'
     if not f.exists(): raise LayoutError(f'{workspace}: no a4-technology.json — no technology layer to lay out')
-    return layout(json.loads(f.read_text(encoding='utf-8')), environment=environment)
+    return layout(json.loads(f.read_text(encoding='utf-8')), environment=environment, headings=headings)

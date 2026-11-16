@@ -2,6 +2,10 @@
 
 > Entries before 0.7.0 describe the project under its former name, **SDMM (BIAN Service Domain Mapping Model)**, and its former terms; they are kept as written.
 
+## Unreleased
+
+- **A4, from the owner's review of Payment Initiation v2 (ZL-01…ZL-04).** The zones fill the plate — no empty strip is kept for what is drawn as a line. A host and what it serves, each placed in a zone, are joined by a line (the HSM realising message signing was invisible). `sdem zones --layout --headings`, which DESNRE uses (desnre 0.7.3), shows a network by its zone's heading and leaves out the one environment drawn, so neither takes a place a shape could use. A top zone names the one place its shapes are in ("Cloud — payments · Cloud region A"). v2: Managed Kubernetes's product version corrected to 1.29, the release its record and eleven approved links name (CS-011).
+
 ## 0.19.0 — a full design: the information model, the links ArchiMate defines, events, products, channels and locations (2026-11-16)
 
 Upgrade: change the pin to `@v0.19.0`, `pip install -r requirements.txt`, `sdem agents install`; then `sdem migrate --workspace <dir> --person <you>` (metamodel 0.14.0 → 0.17.0, additive — nothing in your data changes; what is now thin is reported, never refused). Run `sdem aid` again to have it propose data tables, field matches and the new links.

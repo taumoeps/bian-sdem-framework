@@ -1,0 +1,28 @@
+{
+ "layer": "A4",
+ "reason": "Managed Kubernetes contradicted itself: the record's version (the release in use, which eleven approved links name) is 1.29, its product_version said 1.30 — product_version corrected to 1.29 (found in the owner's review of v2's A4, 2026-11-17)",
+ "changes": [
+  {
+   "op": "update",
+   "record": {
+    "id": "INF-K8S-PAY-PROD",
+    "type": "A4.SystemSoftware",
+    "version": "1.29",
+    "name": "Managed Kubernetes — payments (production)",
+    "lifecycle_status": "active",
+    "description": "Production container platform for the payments estate.",
+    "attributes": {
+     "hosts": [
+      "APP-PAY-HUB",
+      "CMP-PAY-EXEC"
+     ],
+     "product_version": "1.29",
+     "license": "Apache-2.0",
+     "end_of_support": "2027-06-30",
+     "region": "region-a",
+     "location": "LOC-XA-REGION-A"
+    }
+   }
+  }
+ ]
+}

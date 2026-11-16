@@ -127,5 +127,30 @@ class PathAsLineTests(unittest.TestCase):   # PL-01 — the owner (2026-11-16): 
         self.assertFalse(any('PATH-PAY-CORE-HSM' in (l['source'], l['target']) for l in L['links']))
 
 
+class A4ReviewTests(unittest.TestCase):   # ZL-01…ZL-04 — the owner's review of v2's A4 (2026-11-17)
+    def lay(self, **kw):
+        from sdem.zone_layout import layout
+        from sdem.metamodel import Metamodel
+        return layout(json.loads((V2 / 'a4-technology.json').read_text(encoding='utf-8')), Metamodel.load(), **kw)
+
+    def test_the_zones_fill_the_plate_when_nothing_is_outside_them(self):   # ZL-01
+        L = self.lay(headings=True)
+        self.assertIsNone(L['strip']); self.assertEqual(max(z['rect'][3] for z in L['zones']), 1.0)
+
+    def test_what_a_host_serves_but_is_not_drawn_under_it_gets_a_line(self):   # ZL-02
+        x = [l for l in self.lay()['links'] if (l['source'], l['target']) == ('DEV-PAY-HSM', 'TS-HSM-SIGN')]
+        self.assertEqual([l['shown_by'] for l in x], ['line'])
+
+    def test_networks_and_the_one_environment_are_headings_not_shapes(self):   # ZL-03
+        L = self.lay(headings=True); ids = {s['id'] for s in L['shapes']}
+        self.assertFalse(ids & {'NET-PAY-PRIVATE', 'ENV-PAY-PROD'})
+        self.assertIn('Level 2 · Payments private network zone · 10.20.0.0/16', [z['label'] for z in L['zones']])
+        self.assertIn('NET-PAY-PRIVATE', {s['id'] for s in self.lay()['shapes']})   # sdem view keeps drawing it
+
+    def test_a_top_zone_names_the_one_place_its_shapes_are_in(self):   # ZL-04
+        labels = [z['label'] for z in self.lay()['zones'] if not z['part_of']]
+        self.assertEqual(labels, ['Level 0 · Cloud — payments · Cloud region A', 'Level 0 · On premises — core banking · Data centre DC-1'])
+
+
 if __name__ == '__main__':
     unittest.main()

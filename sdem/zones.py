@@ -122,10 +122,11 @@ def main(argv=None):
     ap.add_argument('--workspace', dest='estate', required=True, metavar='DIR'); ap.add_argument('--json', action='store_true')
     ap.add_argument('--layout', action='store_true', help='the deployment-zones layout: zone regions, where each shape sits, the zone arrows (sdem/zone_layout.py) — what every drawing of A4 uses')
     ap.add_argument('--environment', default='production', metavar='NAME', help='with --layout: the one environment drawn (name or kind; default production; all for every one)')
+    ap.add_argument('--headings', action='store_true', help="with --layout: networks shown by their zone's heading (address range), the one environment not drawn as a shape — as DESNRE draws A4 (ZL-03)")
     a = ap.parse_args(argv)
     if a.layout:
         from .zone_layout import load, LayoutError
-        try: lay = load(a.estate, a.environment)
+        try: lay = load(a.estate, a.environment, a.headings)
         except LayoutError as e: print(f'ERROR: {e}', file=sys.stderr); return 2
         if a.json: print(json.dumps(lay, indent=2)); return 0
         left = f" ({len(lay['left_out'])} record(s) of other environments left out)" if lay['left_out'] else ''
