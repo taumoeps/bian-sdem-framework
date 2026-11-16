@@ -1,82 +1,97 @@
-"""A complete design: every record connected — SDEM's own standard, shipped with it (docs/design/sdem-completeness-design.md CPL-01…CPL-06;
-the public twin's audit, 2026-11-17). It is an ordinary standards file read by the profile mechanism (PR-13); nothing here is new machinery
-but the `sdem:` include, the default for new workspaces and the one-line summary. Synthetic data only."""
-import json, os, shutil, subprocess, sys, tempfile, unittest
+"""Missing information and duplicate keys (owner's decisions D1 and D6, 2026-11-09; LC-04, LC-09, LC-09n in sdem/logical.py):
+a placeholder or empty string in a required attribute is not a value; a key held as a whole-part link is compared; near-duplicate names are said."""
+import copy, json, unittest
 from pathlib import Path
 
+from sdem.conformance import check_level, estate_index, unknown_value
+from sdem.metamodel import Metamodel
+
 ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT))
+PAY = ROOT / 'examples' / 'payment-initiation'
 
 
-def sdem(*args, cwd):
-    env = {**os.environ, 'PYTHONPATH': str(ROOT) + os.pathsep + os.environ.get('PYTHONPATH', '')}
-    r = subprocess.run([sys.executable, '-m', 'sdem', *map(str, args)], cwd=cwd, capture_output=True, text=True, env=env)
-    return r.returncode, r.stdout, r.stderr
-
-
-R = lambda i, t, n, **a: {'op': 'add', 'record': {'id': i, 'type': t, 'version': '1', 'name': n, 'lifecycle_status': a.pop('status', 'planned'), 'attributes': a}}
-CS = lambda layer, recs, rels=(): {'layer': layer, 'reason': 'test', 'changes': recs, 'relationships': {'add': [dict(zip(('source', 'kind', 'target'), r)) for r in rels]}}
+def _j(p): return json.loads(Path(p).read_text(encoding='utf-8'))
 
 
 class CompletenessTests(unittest.TestCase):
-    def setUp(self):
-        self.tmp = Path(tempfile.mkdtemp()); self.addCleanup(shutil.rmtree, self.tmp, True); self.ws = self.tmp / 'ws'
+    @classmethod
+    def setUpClass(cls):
+        cls.mm = Metamodel.load(); cls.a2 = _j(PAY / 'a2-service-domain.json'); cls.a3 = _j(PAY / 'a3-application.json')
 
-    def new(self, *extra):
-        code, out, err = sdem('new', '--workspace', self.ws, '--person', 'jane.architect', *extra, cwd=self.tmp); self.assertEqual(code, 0, err)
+    def _check(self, doc): return check_level(doc, self.mm, estate_index([doc]))[:2]
 
-    def propose(self, cs, agent):
-        f = self.tmp / 'cs.json'; f.write_text(json.dumps(cs), encoding='utf-8')
-        code, out, err = sdem('change', 'propose', f, '--workspace', self.ws, '--agent', agent, '--person', 'jane.architect', cwd=self.tmp); self.assertEqual(code, 0, err)
+    def _with(self, iid, status=None, **attrs):
+        d = copy.deepcopy(self.a3)
+        for i in d['instances']:
+            if i['id'] == iid:
+                i['attributes'].update(attrs)
+                if status: i['lifecycle_status'] = status
+        return d
 
-    def test_the_standard_ships_with_sdem_and_is_an_ordinary_standard(self):   # CPL-01, CPL-02
-        from sdem.profile import shipped
-        f = shipped('sdem:sdem-completeness.json'); d = json.loads(f.read_text(encoding='utf-8'))
-        self.assertEqual((d['format'], d['standard']['id']), ('sdem-standard/1', 'SDEM-COMPLETE'))
-        self.assertTrue(all(r['severity'] == 'warning' and r['id'].startswith('CPL-') and r.get('message') for r in d['rules']))   # never an error: a gap is not a wrong design
-        with self.assertRaises(Exception): shipped('sdem:../pyproject.toml')
+    def test_what_says_nothing(self):
+        for v in ('TBD', ' tbd ', 'Unknown', '?', '/TBD', '/payments/tbd/x', '', '   ', ['TBD'], ['x', 'TODO']):
+            self.assertTrue(unknown_value(v), v)
+        for v in ('/payments', 'POST', 'unknown-payee', [], ['amount'], 0, False, {'a': 'b'}, 'n/a-ish text'):
+            self.assertIsNone(unknown_value(v), v)
+        self.assertIsNone(unknown_value('TBD', allowed=('TBD',)))   # an allowed enumeration value is a value
 
-    def test_a_new_workspace_is_checked_for_completeness_without_setup(self):   # CPL-03
-        self.new()
-        p = json.loads((self.ws / 'sdem-profile.json').read_text(encoding='utf-8'))
-        self.assertEqual(p['includes'], ['sdem:sdem-completeness.json'])
-        self.assertEqual(sdem('profile', 'check', '--workspace', self.ws, cwd=self.tmp)[0], 0)
-        self.assertEqual(sdem('check', '--workspace', self.ws, cwd=self.tmp)[0], 0)
+    def test_a_placeholder_is_an_error_on_an_active_record(self):      # O9 reproduced
+        errs, _ = self._check(self._with('API-PI-01', path='TBD', payload_fields=['TBD']))
+        self.assertTrue(any("API-PI-01: required attribute 'path' has no value" in e and 'LC-04' in e for e in errs), errs)
+        self.assertTrue(any("'payload_fields'" in e for e in errs))
+        errs, _ = self._check(self._with('API-PI-01', path=''))
+        self.assertTrue(any("'path' has no value" in e and 'empty' in e for e in errs))
 
-    def test_a_new_organisation_starts_with_it_in_its_base(self):   # CPL-03
-        code, out, err = sdem('new', '--organisation', 'bank-xyz', '--person', 'jane.architect', cwd=self.tmp); self.assertEqual(code, 0, err)
-        base = json.loads((self.tmp / 'bank-xyz' / 'profiles' / 'bank-xyz-base.json').read_text(encoding='utf-8'))
-        self.assertIn('sdem:sdem-completeness.json', base['includes'])
+    def test_on_a_planned_record_it_is_a_warning(self):
+        errs, warns = self._check(self._with('API-PI-01', status='planned', path='TBD'))
+        self.assertFalse(any('API-PI-01' in e for e in errs), errs)
+        self.assertTrue(any("API-PI-01: planned instance — required attribute 'path' not yet known" in w for w in warns))
 
-    def test_a_gap_is_a_decision_to_take_never_a_failed_check(self):   # CPL-04
-        self.new()
-        self.propose(CS('A3', [R('APP-LEDGER', 'A3.ApplicationComponent', 'Account ledger'), R('API-LEDGER', 'A3.ApplicationInterface', 'Ledger internal API'),
-                               R('API-RISK', 'A3.ApplicationInterface', 'Risk internal API', status='active'), R('API-OK', 'A3.ApplicationInterface', 'Posting API')],
-                        [('APP-LEDGER', 'composition', 'API-OK')]), 'sdem-a3-application')
-        code, out, err = sdem('check', '--workspace', self.ws, cwd=self.tmp)
-        self.assertEqual(code, 0, out + err)                                   # sdem check: is the design wrong? — a gap is not, so it never fails
-        self.assertNotIn('API-LEDGER: CPL-', out); self.assertIn('WARN: level A3 (WS-A3): instance API-RISK: CPL-A3-01', out)   # planned: silent · active: a warning
-        c = json.loads(sdem('comply', '--workspace', self.ws, '--json', cwd=self.tmp)[1])
-        got = {(f['record'], f['outcome']) for f in c['findings'] if f['rule'] == 'CPL-A3-01'}
-        self.assertEqual(got, {('API-LEDGER', 'unresolved'), ('API-RISK', 'non_compliant'), ('API-OK', 'compliant')})   # planned: to do · active: not met (a warning)
+    def test_leaving_it_out_on_a_planned_record_is_the_way(self):
+        d = copy.deepcopy(self.a3)
+        for i in d['instances']:
+            if i['id'] == 'API-PI-01': i['lifecycle_status'] = 'planned'; i['attributes'].pop('path')
+        errs, warns = self._check(d)
+        self.assertFalse(any('API-PI-01' in e for e in errs)); self.assertTrue(any("'path' not yet known (LC-04)" in w for w in warns))
 
-    def test_status_says_it_in_one_line(self):   # CPL-05
-        self.new()
-        self.propose(CS('A3', [R('APP-LEDGER', 'A3.ApplicationComponent', 'Account ledger'), R('API-LEDGER', 'A3.ApplicationInterface', 'Ledger internal API'),
-                               R('API-RISK', 'A3.ApplicationInterface', 'Risk internal API'), R('API-OK', 'A3.ApplicationInterface', 'Posting API')],
-                        [('APP-LEDGER', 'composition', 'API-OK')]), 'sdem-a3-application')
-        s = json.loads(sdem('status', '--workspace', self.ws, '--json', cwd=self.tmp)[1])
-        self.assertEqual((s['completeness']['gaps'], s['completeness']['by_rule'][0]['rule'], s['completeness']['by_rule'][0]['records']), (3, 'CPL-A3-01', ['API-LEDGER', 'API-RISK']))   # two interfaces with no component — and the component has no deployment yet (CPL-X-01)
-        self.assertFalse([u for u in s['unresolved'] if 'CPL-' in u['text']])   # one summary, not a line per gap
-        text = sdem('status', '--workspace', self.ws, cwd=self.tmp)[1]
-        self.assertRegex(text, r'Completeness: 1 of 4 records connected \(25%\) — 3 gaps')
-        self.assertIn('2 × an interface belongs to the component that offers it', text)
+    def test_a_placeholder_in_an_optional_attribute_is_a_warning(self):
+        errs, warns = self._check(self._with('API-PI-01', operation_id='TBD'))
+        self.assertFalse(any('API-PI-01' in e for e in errs))
+        self.assertTrue(any("optional attribute 'operation_id' is a placeholder" in w for w in warns), warns)
 
-    def test_an_existing_workspace_is_not_changed(self):   # CPL-06
-        ws = self.tmp / 'old'; shutil.copytree(ROOT / 'examples' / 'payment-initiation', ws, ignore=shutil.ignore_patterns('graph'))
-        self.assertFalse((ws / 'sdem-profile.json').exists())
-        s = json.loads(sdem('status', '--workspace', ws, '--json', cwd=self.tmp)[1])
-        self.assertIsNone(s.get('completeness'))
+    def test_an_empty_list_is_a_value(self):
+        errs, warns = self._check(self._with('API-PI-01', payload_fields=[]))
+        self.assertFalse(any('API-PI-01' in x for x in errs + warns))
+
+    def test_an_api_operation_key_includes_its_interface(self):         # LC-09 was never evaluated for this type
+        d = copy.deepcopy(self.a3); op = next(i for i in d['instances'] if i['id'] == 'API-PI-01')
+        dup = {**copy.deepcopy(op), 'id': 'API-PI-01B', 'name': 'Create payment instruction again'}
+        d['instances'].append(dup)
+        self.assertFalse(any('LC-09' in e for e in self._check(d)[0]), 'no owner: the key is not complete')
+        d['relationships'].append({'source': 'IFC-PAY-API', 'kind': 'composition', 'target': 'API-PI-01B'})
+        self.assertTrue(any('2 instances of A3.APIOperation share the natural key "IFC-PAY-API", "POST", "/payment-instructions" (LC-09)' in e for e in self._check(d)[0]))
+
+    def test_a_service_operation_key_reaches_its_domain_through_its_group(self):
+        d = copy.deepcopy(self.a2); so = next(i for i in d['instances'] if i['id'] == 'SO-PI-01')
+        d['instances'].append({**copy.deepcopy(so), 'id': 'SO-PI-01B', 'canonical_id': 'SO-PI-01B'})
+        grp = next(r['source'] for r in d['relationships'] if r['target'] == 'SO-PI-01' and r['kind'] == 'composition')
+        d['relationships'].append({'source': grp, 'kind': 'composition', 'target': 'SO-PI-01B'})
+        self.assertTrue(any('A2.ServiceOperation share the natural key "SD-PI"' in e for e in self._check(d)[0]), self._check(d)[0])
+
+    def test_names_that_differ_only_in_case_or_spacing_are_a_possible_duplicate(self):
+        d = copy.deepcopy(self.a3); c = next(i for i in d['instances'] if i['type'] == 'A3.ApplicationComponent')
+        d['instances'].append({**copy.deepcopy(c), 'id': c['id'] + '-2', 'name': '  ' + c['name'].upper() + '.'})
+        errs, warns = self._check(d)
+        self.assertFalse(any('LC-09)' in e for e in errs))
+        self.assertTrue(any('possible duplicate: A3.ApplicationComponent' in w and '(LC-09n)' in w for w in warns), warns)
+
+    def test_the_examples_stay_clean(self):
+        for ws in sorted(p for p in (ROOT / 'examples').iterdir() if (p / 'mappings.json').exists()):
+            docs = [_j(f) for f in sorted(ws.glob('a[1-4]-*.json'))]; idx = estate_index(docs)
+            for d in docs:
+                errs, warns = check_level(d, self.mm, idx)[:2]
+                self.assertEqual(errs, [], ws.name)
+                self.assertFalse([w for w in warns if 'LC-09n' in w or 'optional attribute' in w], ws.name)
 
 
 if __name__ == '__main__':
