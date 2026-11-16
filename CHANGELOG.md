@@ -25,6 +25,8 @@
 
 - **The public twin, run 2** ([report](docs/evidence/payment-initiation-v3/report.md)) — the same benchmark after the fixes, not blind. Between layers SDEM's first-pass proposals went from 58 (35 not expected) to 27 (8 not expected); wrong inferences inside A4 from 12 to none; planted mistakes caught from 5 to 8 of 19; records held from 93% to 97% of those the document names; the second pass invents no table. One new finding (F15): rejecting a link made the next pass bring in an unrelated BIAN domain on a shared word.
 
+- **A second `sdem aid` pass no longer brings in a BIAN domain on a name alone (AID-M03; the public twin, F15).** A domain that only application names point to is held back as a note when the business side already names its domains — but "names" meant *proposes in this run*, so once a person had approved the business links the hold-back stopped, and the next-best name match was added as records. A link a person approved now counts.
+
 ## 0.19.0 — a full design: the information model, the links ArchiMate defines, events, products, channels and locations (2026-11-16)
 
 Upgrade: change the pin to `@v0.19.0`, `pip install -r requirements.txt`, `sdem agents install`; then `sdem migrate --workspace <dir> --person <you>` (metamodel 0.14.0 → 0.17.0, additive — nothing in your data changes; what is now thin is reported, never refused). Run `sdem aid` again to have it propose data tables, field matches and the new links.

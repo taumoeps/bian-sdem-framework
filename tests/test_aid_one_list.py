@@ -62,3 +62,38 @@ class AidOneListTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+class SecondPassTests(unittest.TestCase):   # AID-M03 after approvals — the public twin's run 2, F15 (2026-11-17)
+    def test_a_rejection_does_not_bring_in_the_next_best_name_match(self):
+        import json, os, shutil, subprocess, sys, tempfile
+        from pathlib import Path
+        root = Path(__file__).resolve().parents[1]; tmp = Path(tempfile.mkdtemp()); self.addCleanup(shutil.rmtree, tmp, True); ws = tmp / 'ws'
+        env = {**os.environ, 'PYTHONPATH': str(root) + os.pathsep + os.environ.get('PYTHONPATH', '')}
+        def sdem(*a):
+            r = subprocess.run([sys.executable, '-m', 'sdem', *map(str, a)], cwd=tmp, capture_output=True, text=True, env=env)
+            self.assertEqual(r.returncode, 0, r.stderr[-600:]); return r.stdout
+        R = lambda i, t, n, **a: {'op': 'add', 'record': {'id': i, 'type': t, 'version': '1', 'name': n, 'lifecycle_status': 'planned', 'attributes': a}}
+        cs = lambda layer, recs, rels=(): {'layer': layer, 'reason': 'test', 'changes': recs, 'relationships': {'add': [dict(zip(('source', 'kind', 'target'), r)) for r in rels]}}
+        sdem('new', '--workspace', ws, '--person', 'jane.architect')
+        (tmp / 'a1.json').write_text(json.dumps(cs('A1', [R('PROC-SUBMIT', 'A1.BusinessProcess', 'Receive the payment', invokes=['SO-PAYMENT-ORDER-INITIATION-INITIATE'])])))
+        (tmp / 'a3.json').write_text(json.dumps(cs('A3', [R('APP-EDGE', 'A3.ApplicationComponent', 'API ingress'), R('IFC', 'A3.ApplicationInterface', 'Payment Initiation API'),
+                                                          R('OP', 'A3.APIOperation', 'Create domestic payment', method='POST', path='/domestic-payments', payload_fields=['ConsentId', 'DomesticPaymentId', 'Status']),
+                                                          R('OP2', 'A3.APIOperation', 'Read domestic payment', method='GET', path='/domestic-payments/{DomesticPaymentId}', payload_fields=['DomesticPaymentId', 'Status']),
+                                                          R('DATA-PAYMENT', 'A3.DataEntity', 'PaymentLedger', attributes=['payment_id', 'payment_status'])],
+                                               [('APP-EDGE', 'composition', 'IFC'), ('IFC', 'composition', 'OP'), ('IFC', 'composition', 'OP2'), ('OP', 'access', 'DATA-PAYMENT'), ('OP2', 'access', 'DATA-PAYMENT')])))
+        sdem('change', 'propose', tmp / 'a1.json', '--workspace', ws, '--agent', 'sdem-a1-business', '--person', 'jane.architect')
+        sdem('change', 'propose', tmp / 'a3.json', '--workspace', ws, '--agent', 'sdem-a3-application', '--person', 'jane.architect')
+        sdem('bian', 'add', 'Payment Order Initiation', '--workspace', ws, '--person', 'jane.architect')
+        self.assertEqual(json.loads(sdem('aid', '--workspace', ws, '--person', 'jane.architect', '--dry-run', '--json'))['added'].get('A2', []), [])
+        sdem('link', '--workspace', ws, '--out', ws / 'links', '--no-review')
+        pf = ws / 'links' / 'proposals.json'; props = json.loads(pf.read_text(encoding='utf-8'))['mappings']
+        wrong = [p['mapping_id'] for p in props if p['relationship'] == 'REALIZED_BY' and p['target']['id'] == 'APP-EDGE']
+        self.assertTrue(wrong, f"the test needs the ingress proposed as realising the domain — {[(p['source']['id'], p['relationship'], p['target']['id']) for p in props]}")
+        for p in props:
+            if p['relationship'] == 'USES_DOMAIN':
+                sdem('approve', p['mapping_id'], '--proposals', pf, '--workspace', ws, '--reviewer', 'jane.architect', '--evidence', 'process_model:D#3', '--evidence', 'bian_alignment_guidance:D#4', '--bian-release', '14.0.0')
+        sdem('reject', *wrong, '--proposals', pf, '--workspace', ws, '--reviewer', 'jane.architect', '--reason', 'the ingress only terminates the channel')
+        second = json.loads(sdem('aid', '--workspace', ws, '--person', 'jane.architect', '--dry-run', '--json'))
+        self.assertEqual(second['added'].get('A2', []), [])   # a rejection, with the business links approved, must not turn the next-best name match into a record
+        self.assertTrue(any(e.startswith('not added') for e in second['projection_ends']), second['projection_ends'])

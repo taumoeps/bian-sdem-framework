@@ -361,11 +361,14 @@ def project(have, catalogue=None, registry=None, pid=None, created_at=None, eith
             fr, rr = fwd.records['A2'][d]['projection'], rev.records['A2'][d]['projection']
             prj.take_domain(d, 'M', f"supported from both sides. Business side (F1): {fr['reasoning']}. Application side (R2): {rr['reasoning']}", MEDIUM, fr['inferred_from'] + rr['inferred_from'],
                             strongest(fr.get('evidence_class'), rr.get('evidence_class')))
+        approved_links = [m for m in ((registry or {}).get('mappings', []) if isinstance(registry, dict) else (registry or [])) if m.get('status') == 'approved']
+        decided_f = {m['target']['id'] for m in approved_links if m.get('relationship') in ('USES_DOMAIN', 'SUPPORTED_BY')}   # domains the business side already uses, approved
+        decided_r = {m['source']['id'] for m in approved_links if m.get('relationship') == 'REALIZED_BY' and str(m['source'].get('type', '')).startswith('A2.')}   # domains an application already realises, approved
         if either:   # AID-M02: filling a workspace for a person to review — a domain one side supports is kept too, at that side's confidence
             kept_r = set()
             for side, d in [(fwd, d) for d in sorted(f - r)] + [(rev, d) for d in sorted(r - f)]:
                 x = side.records['A2'][d]['projection']
-                other = f if side is rev else r
+                other = (f | decided_f) if side is rev else (r | decided_r)   # AID-M03: "the other side already names its domains" — by a proposal now, or by a link a person approved earlier (F15)
                 weak_only = x['evidence_class'] in WEAK_CLASSES if x.get('evidence_class') else (side is rev and x['confidence'] <= LOW)
                 if other and weak_only:
                     # AID-M03, by evidence class (AID-E02): the other side already names its domains; a domain only names or descriptions on

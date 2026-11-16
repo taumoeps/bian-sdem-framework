@@ -120,7 +120,7 @@ and every API field the document names recorded.
 
 | # | Finding |
 |---|---|
-| F15 | **Rejecting one link led SDEM to bring in another domain.** After the owner rejected *Payment Order Initiation REALIZED_BY the API ingress*, the second `sdem aid` pass added BIAN's **Corporate Payroll Services** (21 records, inferred) and proposed it REALIZED_BY the ingress — on the word *payment* in the API's paths. On the first pass the same match was only a note ("not added — only names point to it"). A rejection must not make a weaker match look stronger. Not fixed; the 21 records are unconfirmed and were left for the owner |
+| F15 | **Rejecting one link led SDEM to bring in another domain.** After the owner rejected *Payment Order Initiation REALIZED_BY the API ingress*, the second `sdem aid` pass added BIAN's **Corporate Payroll Services** (21 records, inferred) and proposed it REALIZED_BY the ingress — on the word *payment* in the API's paths. On the first pass the same match was only a note ("not added — only names point to it"). A rejection must not make a weaker match look stronger. **Fixed the same day (AID-M03):** the cause was not the rejection itself — once the business links were *approved* they were no longer *proposed*, so the rule that holds a name-only match back saw no domain named on the business side; an approved link now counts. The 21 records in the run-2 workspace are unconfirmed and were left for the owner |
 
 Still open after run 2: process ↔ application (F5 — the design names no application service); platform software with nothing to place it by (F6); API-level facts as records (F11);
 a lost key, a broken API path, a removed access link or path end (M-03, 12, 19, 21); F15.
