@@ -278,6 +278,7 @@ def default_across(docs, approved, proposed, mm, rules, decided=()):
             if r == a['relationship'] and s != x and s in recs and t in recs and mm.known(recs[s]['type']) and mm.is_a(recs[s]['type'], rule['entity']): seen[t] = seen.get(t, 0) + 1
         if not seen: continue
         t = sorted(seen, key=lambda k: (-seen[k], k))[0]
+        if seen[t] < 2: continue   # one other record having the link is not a habit of the design: each component has its own deployment
         if (x, a['relationship'], t) in decided or any(o[:3] == (x, a['relationship'], t) for o in out): continue
         out.append((x, a['relationship'], t, f"placed by default to complete the draft — nothing in the design says this of {x}: {seen[t]} other {rule['entity'].split('.')[1]} record(s) have this link to {t}; review this first ({rule['id']}: {rule.get('message', '')})", 'AID-D09'))
     return out

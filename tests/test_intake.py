@@ -167,6 +167,7 @@ class Load(Base):
         rep = (self.ws / r['report']).read_text(encoding='utf-8')
         for h in ('## What came in', '## What the author said the design does not state', '## The draft', '## Yours to decide — weakest first'): self.assertIn(h, rep)
         self.assertIn('ACT-CUST', rep); self.assertIn('Consent control', rep)
+        self.assertIn('Nothing is approved, confirmed or rejected', rep)   # without --accept
         self.assertEqual(self.sdem('check', '--workspace', self.ws)[0], 0)
         code, out, err = self.sdem('intake', self.pkg, '--workspace', self.ws, '--person', 'jane.architect', '--allow-gaps'); self.assertEqual(code, 2); self.assertIn('already holds records', out + err)   # never loaded twice over
 
@@ -186,6 +187,7 @@ class Load(Base):
         self.assertEqual(self.sdem('check', '--workspace', self.ws)[0], 0)
         rep = (self.ws / r['report']).read_text(encoding='utf-8')
         self.assertIn('6 accepted as authored', rep); self.assertIn('never by an AI', rep); self.assertIn('Nothing below needs you for the design to be used', rep)
+        self.assertNotIn('Nothing here is approved', rep); self.assertIn("6 link(s) between layers the design states were approved as authored", rep)   # the opening line says what was done
         code, out, err = self.sdem('intake', self.pkg, '--workspace', self.tmp / 'ws2', '--person', 'sdem-orchestrator', '--accept'); self.assertEqual(code, 2)   # accepting is a person's (CTL-21)
 
     def test_a_package_that_fails_its_check_changes_nothing(self):   # IN-05

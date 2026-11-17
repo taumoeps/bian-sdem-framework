@@ -132,6 +132,14 @@ class DefaultsBetweenLayers(unittest.TestCase):
         why = next(g[3] for g in got if g[0] == 'DATA-C')
         self.assertIn('placed by default', why); self.assertIn('2 other', why); self.assertIn('review this first', why)
 
+    def test_one_other_record_is_not_where_the_others_go(self):   # AID-D09 — found on a real design: a component given another component's deployment
+        docs = self.docs()
+        docs['A3']['instances'] += [rec('APP-2', 'A3.ApplicationComponent', 'Other')]
+        docs['A4']['instances'] += [rec('DEP-1', 'A4.Deployment', 'App — production', component_id='APP-1')]
+        got = aid_complete.default_across(docs, [('APP-1', 'DEPLOYED_AS', 'DEP-1')], [], Metamodel.load(), RULES)
+        self.assertEqual([g for g in got if g[0] == 'APP-2'], [])   # each component has its own deployment: one other having DEP-1 says nothing of APP-2
+        self.assertEqual([g[:3] for g in aid_complete.default_across(self.docs(), [('DATA-A', 'STORED_IN', 'SYS-DB')], [], Metamodel.load(), RULES) if g[1] == 'STORED_IN'], [])   # one table in a store is not a habit either
+
     def test_with_nowhere_the_others_go_nothing_is_proposed(self):
         self.assertEqual([g for g in aid_complete.default_across(self.docs(), [], [], Metamodel.load(), RULES) if g[1] == 'STORED_IN'], [])
 

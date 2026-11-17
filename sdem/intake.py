@@ -374,7 +374,9 @@ def load(pkg, workspace, person, dry_run=False, allow_gaps=False, accept=False):
 def render_report(r, run, status, status_text, mine, ws, person, accepted=()):
     """IN-09: one report — what came in, what the design does not state, the draft, and what is the person's to decide, weakest first."""
     d = run.get('draft') or {}; c = r['counts']
-    L = [f'# Intake report — {Path(ws).name}', '', f"`sdem intake` by {person}. Nothing here is approved, confirmed or rejected: that is yours, below.", '',
+    L = [f'# Intake report — {Path(ws).name}', '',
+         f"`sdem intake` by {person}. " + (f"{len(accepted)} link(s) between layers the design states were approved as authored (`--accept`). What SDEM's rules then inferred is neither confirmed nor approved: it is marked, below."
+                                           if accepted else 'Nothing is approved, confirmed or rejected: that is yours, below.'), '',
          '## What came in', '',
          '| Layer | Records | Links inside |', '|---|---|---|'] + [f"| {l} | {n} | {c['links'][l]} |" for l, n in c['records'].items()] + ['',
          f"- SDEM refused nothing (a package with anything refused is not loaded).",
@@ -384,10 +386,19 @@ def render_report(r, run, status, status_text, mine, ws, person, accepted=()):
           f"- Links between layers the author suggested: {c['suggestions']} — now proposals; {len(mine)} of them only the author proposes (`aid/AUTHOR-proposals.json`)."),
          '',
          '## What the author said the design does not state', '']
-    L += [f"- `{x.get('record_id') or '—'}` — {x.get('detail', '')}" + (f" (section {x['design_section']})" if x.get('design_section') else '') for x in r['_not_stated']] or ['- nothing declared']
+    ns = r['_not_stated']
+    if not ns: L.append('- nothing declared')
+    else:   # said briefly: by what is missing, with the records — the author's full list is kept in intake/package/NOT-STATED.json
+        groups = {}
+        for x in ns: groups.setdefault(' '.join((x.get('detail') or '').split())[:110], []).append(x.get('record_id') or '—')
+        L.append(f"{len(ns)} item(s) — the full list is `intake/package/{NOTS}`. By what is missing:")
+        L.append('')
+        for d_, ids_ in sorted(groups.items(), key=lambda kv: (-len(kv[1]), kv[0]))[:12]:
+            L.append(f"- {d_}{'…' if len(d_) == 110 else ''} — {len(ids_)} record(s): {', '.join(sorted(set(ids_))[:5])}{' …' if len(set(ids_)) > 5 else ''}")
+        if len(groups) > 12: L.append(f"- … and {len(groups) - 12} more kinds")
     if r['gaps']:
-        L += ['', f"**What the design does not give ({len(r['gaps'])})** — left to SDEM's rules, never filled by the author:", '']
-        L += [f"- {g['message'].split(' — to fix:')[0]}" for g in r['gaps']]
+        rg = [g for g in r['gaps'] if g['kind'] == 'record']; pg = [g for g in r['gaps'] if g['kind'] == 'pattern']
+        L += ['', f"**What the design does not give** — left to SDEM's rules, never filled by the author: {len(rg)} record(s) not connected ({', '.join(sorted({g['record'] for g in rg})[:8])}{' …' if len({g['record'] for g in rg}) > 8 else ''}); {len(pg)} part(s) a fitting pattern asks for. `sdem comply --workspace {ws}` lists each."]
     L += ['', '## The draft', '', 'Patterns asked before anything was inferred: ' + ('; '.join(p['title'] for p in d.get('patterns_consulted') or []) or 'none fits this design') + '.', '', '```']
     L += [l for l in status_text.splitlines() if l.startswith(('Completeness:', 'Draft:', 'Pattern '))] + ['```', '',
           '*Completeness* counts only what the design states. *Draft* counts as well what SDEM completed by its own written rules (`sdem aid`) — never by an AI. Everything SDEM added is marked inferred or proposed, with the rule that produced it.', '',
