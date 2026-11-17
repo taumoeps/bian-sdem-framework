@@ -4,7 +4,7 @@
   "standard": {
     "id": "SDEM-COMPLETE",
     "title": "A complete design: every record connected",
-    "version": "1.1",
+    "version": "1.2",
     "owner": "SDEM",
     "source": "ArchiMate 3.2 (which element a relationship joins); the audit of the public twin, docs/design/sdem-completeness-design.md"
   },
@@ -24,14 +24,19 @@
     {
       "id": "CPL-A1-02",
       "entity": "A1.BusinessProcess",
-      "link": {
-        "kind": "realization",
-        "direction": "out",
-        "min": 1
-      },
+      "any_link": [
+        {
+          "kind": "realization",
+          "direction": "out"
+        },
+        {
+          "kind": "composition",
+          "direction": "in"
+        }
+      ],
       "severity": "warning",
-      "message": "a process realises a capability, a value-stream stage, a service or a requirement",
-      "reasoning": "a process that realises nothing has no stated purpose in the design"
+      "message": "a process realises a capability, a value-stream stage, a service or a requirement — or is a step of a process",
+      "reasoning": "a process that realises nothing has no stated purpose in the design; a step takes its purpose from the process it is part of"
     },
     {
       "id": "CPL-A1-03",

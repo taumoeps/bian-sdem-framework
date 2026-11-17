@@ -58,6 +58,8 @@ def collect(ws):
 
     if any(b['kind'] == 'check' for b in blocking): step(f'sdem check --workspace {w}', 'see what fails, and fix it through a change set (sdem change propose)')
     if any(b['kind'] == 'unrecorded_edit' for b in blocking): step(f'sdem change adopt --workspace {w} --person <you>', 'an edit made outside SDEM: a person adopts it (or reverts it) before anything else is accepted', True)
+    if complete and complete.get('inferred_to_confirm'):
+        step(f"sdem aid confirm '<source|kind|target>' --workspace {w} --person <you>", f"{complete['inferred_to_confirm']} record(s) are connected only by a link SDEM inferred from names — confirm each, or reject it: sdem aid reject … --reason … (sdem handback lists them)", True)
     if complete and complete['gaps']:
         step(f'sdem comply --workspace {w}', f"see each of the {complete['gaps']} gap(s) in the design's connections — link the record through a change set, or a person grants an exception (sdem exception grant)")
     for p in pats:
@@ -78,7 +80,7 @@ def collect(ws):
         step(f'sdem aid --workspace {w} --person <you> --dry-run', f"infer what is missing ({', '.join(gone)}) from the business design — every record marked inferred until a person confirms it; then without --dry-run when the person agrees")
     if not blocking and not unresolved: step(f'sdem document --workspace {w} --layer all', 'nothing blocks the design or waits on a person: write it up, or look at it all: sdem workbench --workspace ' + w)
 
-    state = 'blocked' if blocking else 'open' if unresolved or (complete and complete['gaps']) or any(p['open'] for p in pats) else 'clear'
+    state = 'blocked' if blocking else 'open' if unresolved or (complete and (complete['gaps'] or complete.get('inferred_to_confirm'))) or any(p['open'] for p in pats) else 'clear'
     return {'workspace': w, 'name': h['name'], 'state': state,
             'layers': h['layers'], 'missing_layers': [m['level'] for m in h['missing_layers']], 'connections': h['registry'],
             'counts': {'blocking': len(blocking), 'unresolved': len(unresolved), 'warnings': len(warnings)},
@@ -96,6 +98,7 @@ def render(s, limit=8):
     if c and c['records_checked']:   # CPL-05
         pct = round(100 * c['records_connected'] / c['records_checked'])
         L.append(f"Completeness: {c['records_connected']} of {c['records_checked']} records connected ({pct}%)" + (f" — {c['gaps']} gap{'s' if c['gaps'] != 1 else ''}" if c['gaps'] else ' — no gaps')
+                 + (f", {c['inferred_to_confirm']} record{'s' if c['inferred_to_confirm'] != 1 else ''} connected only by an inferred link, to confirm" if c.get('inferred_to_confirm') else '')
                  + (f", {c['under_exception']} under an exception" if c.get('under_exception') else ''))
         L += [f"  {len(r['records'])} × {r['message']}: {', '.join(r['records'][:4])}{' …' if len(r['records']) > 4 else ''}" for r in c['by_rule'][:6]]
     for p in s.get('patterns') or []:   # CPL-11

@@ -80,7 +80,19 @@ def collect(ws):
                 gaps = [f for f in done if f['outcome'] in ('non_compliant', 'unresolved')]; by = {}
                 for f in gaps: by.setdefault(f['rule'], {'rule': f['rule'], 'message': f.get('message') or f['detail'], 'records': []})['records'].append(f['record'])
                 checked = {f['record'] for f in done}; open_ = {f['record'] for f in gaps}
-                comp['completeness'] = {'standard': 'SDEM-COMPLETE', 'records_checked': len(checked), 'records_connected': len(checked - open_), 'gaps': len(gaps),
+                only = 0   # AID-D01: records that meet the standard only through a link SDEM inferred and nobody has confirmed — connected in the draft, still to confirm
+                try:
+                    from .comply import workspace_data, evaluate as _ev
+                    from . import profile as _pc
+                    ds, maps_, mm_c, _ = workspace_data(ws)
+                    unc = lambda r: isinstance(r.get('inferred'), dict) and r['inferred'].get('status') != 'confirmed'
+                    if any(unc(r) for d in ds.values() for r in d.get('relationships', [])):
+                        bare = {l: {**d, 'relationships': [r for r in d.get('relationships', []) if not unc(r)]} for l, d in ds.items()}
+                        rules_ = [r for r in _pc.rules() if (r.get('standard') or {}).get('id') == 'SDEM-COMPLETE']
+                        without = {f['record'] for f in _ev(bare, maps_, mm_c, rules_, _pc.exceptions()) if f['outcome'] in ('non_compliant', 'unresolved')}
+                        only = len(without - open_)
+                except (ValueError, OSError): pass
+                comp['completeness'] = {'standard': 'SDEM-COMPLETE', 'records_checked': len(checked), 'records_connected': len(checked - open_), 'gaps': len(gaps), 'inferred_to_confirm': only,
                                         'under_exception': sum(f['outcome'] == 'exception_approved' for f in done),
                                         'by_rule': [{**v, 'records': sorted(v['records'])} for v in sorted(by.values(), key=lambda v: (-len(v['records']), v['rule']))]}
             from . import profile as _p   # CPL-11: where the design stands against each pattern SDEM ships — one block a pattern and record, not a line a part

@@ -62,7 +62,9 @@ class AidFillTests(unittest.TestCase):
         props = json.loads((self.tmp / W / 'aid' / 'AID-001-proposals.json').read_text())['mappings']   # BIAN ends carry their canonical id, as sdem link writes
         self.assertTrue(all(m['target'].get('canonical_id') for m in props if m['target']['type'].startswith('A2.')))
         self.assertTrue(all(i['attributes'].get('inferred') for i in a3))
-        self.assertEqual(self.layer('a1-business.json'), self.a1)                        # what a person wrote is unchanged
+        a1 = self.layer('a1-business.json'); drafted = [r for r in a1['relationships'] if isinstance(r.get('inferred'), dict)]
+        self.assertEqual({**a1, 'relationships': [r for r in a1['relationships'] if r not in drafted]}, self.a1)   # what a person wrote is unchanged
+        self.assertEqual([(r['source'], r['kind'], r['target'], r['inferred']['rule']) for r in drafted], [('PRC-PAY', 'realization', 'CAP-PAY-INIT', 'AID-D01')])   # a link the completeness standard asked for, marked inferred
         self.assertEqual(json.loads((self.tmp / W / 'mappings.json').read_text())['mappings'], [])   # connections are only proposed
         code, out = sdem('check', '--workspace', W, cwd=self.tmp)
         self.assertEqual(code, 0, out); self.assertIn('inferred record(s) to confirm', out)
