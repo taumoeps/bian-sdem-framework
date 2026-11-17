@@ -83,6 +83,21 @@ def collect(ws):
                 comp['completeness'] = {'standard': 'SDEM-COMPLETE', 'records_checked': len(checked), 'records_connected': len(checked - open_), 'gaps': len(gaps),
                                         'under_exception': sum(f['outcome'] == 'exception_approved' for f in done),
                                         'by_rule': [{**v, 'records': sorted(v['records'])} for v in sorted(by.values(), key=lambda v: (-len(v['records']), v['rule']))]}
+            from . import profile as _p   # CPL-11: where the design stands against each pattern SDEM ships — one block a pattern and record, not a line a part
+            ship = _p.shipped_included(); anchors = {st['pattern']['id']: st['structure']['anchor'] for st in _p.structures()}; groups = {}
+            for f in c['findings']:
+                pid = (f.get('pattern') or {}).get('id')
+                if pid in ship and f.get('part'): groups.setdefault((pid, f['record']), []).append(f)
+            comp['patterns'] = []
+            for (pid, rid), fs in sorted(groups.items()):
+                roles = [f for f in fs if f['part']['kind'] == 'role' and f['part']['id'] != anchors.get(pid)]
+                comp['patterns'].append({'pattern': pid, 'title': fs[0]['pattern'].get('title'), 'anchor': rid, 'parts': len(roles), 'in_place': sum(f['outcome'] == 'compliant' for f in roles),
+                                         'under_exception': sum(f['outcome'] == 'exception_approved' for f in fs),
+                                         'open': [{'part': f['part']['id'], 'label': f['part']['label'], 'outcome': f['outcome'], 'detail': f['detail'], 'why': f['part'].get('reasoning')} for f in fs if f['outcome'] in ('non_compliant', 'unresolved')]})
+        from .comply import workspace_data   # CPL-09: a pattern SDEM ships that fits this design and is not included
+        ds, _, mm_, _ = workspace_data(ws)
+        from . import profile as _p2
+        comp['patterns_available'] = _p2.available(ds, mm_)
     except ValueError: pass   # a profile that does not pass its checks is in check_errors already
     w = str(ws)
     commands = []

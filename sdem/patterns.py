@@ -79,6 +79,14 @@ def structure_issues(st, all_types, base_mm, merged, known_attr):
         z = zones.get(r.get('zone'))
         if z and z.get('check') and r['type'] in all_types and _zone_applies(z, r['type'], is_a) and not known_attr(r['type'], z['check']['attribute']):
             out.append(f"{who}: zone {z['id']} checks {z['check']['attribute']!r}, which is not an attribute of role {r['id']} ({r['type']})")
+    from .profile import RECORD_FIELDS
+    for r in roles.values():   # PR-36: which records can be the part · PR-37: a part found anywhere in the design
+        for n in r.get('when') or {}:
+            if n not in RECORD_FIELDS and r['type'] in all_types and not known_attr(r['type'], n): out.append(f"{who}: role {r['id']}: when {n!r}, which is not an attribute of {r['type']}")
+        if r.get('anywhere') and r['id'] == S.get('anchor'): out.append(f"{who}: the anchor {r['id']} cannot be found anywhere — it is the record the pattern applies to (applies_when)")
+    aw = pat.get('applies_when') or {}
+    for n in aw.get('when') or {}:
+        if n not in RECORD_FIELDS and aw.get('entity') in all_types and not known_attr(aw['entity'], n): out.append(f"{who}: applies when {n!r}, which is not an attribute of {aw['entity']}")
     anchor = roles.get(S.get('anchor'))
     if not anchor: out.append(f"{who}: anchor {S.get('anchor')!r} is not one of its roles — name the role the pattern applies to")
     elif anchor['type'] in all_types:
@@ -95,7 +103,7 @@ def structure_issues(st, all_types, base_mm, merged, known_attr):
         if any(x['type'] not in all_types for x in ends): continue
         why = connector_issue(c, ends[0]['type'], ends[1]['type'], all_types, base_mm, merged)
         if why: out.append(f"{who}: connector {c['id']} ({c['from']} → {c['to']}): {why} — a pattern never adds a link the metamodel does not allow (PR-22)")
-    reach, todo = {S.get('anchor')}, True
+    reach, todo = {S.get('anchor')} | {r['id'] for r in roles.values() if r.get('anywhere')}, True
     while todo:
         todo = False
         for c in S.get('connectors', []):
@@ -138,8 +146,17 @@ def _conforms(inst):
 def bind(anchor_id, S, pid, recs, inside, across, mm):
     """{role: [record ids]} from the anchor through the connectors, and how each role was reached. A record that names a role of this
     pattern in conforms_to ("PID#role") is that role (and no other); candidates are sorted, so the result is the same every time."""
+    from .profile import applies
     roles = {r['id']: r for r in S['roles']}
     bound, via = {S['anchor']: [anchor_id]}, {}
+    def pick(b, found):   # of the records found, those that can be the part (its type, its `when` — PR-36), and the one that names it
+        want = roles[b]['type']; tag = f'{pid}#{b}'
+        cands = sorted({x for x in found if x in recs and mm.known(recs[x][1]['type']) and mm.is_a(recs[x][1]['type'], want) and applies(roles[b], recs[x][1])})
+        cands = [x for x in cands if not any(t.startswith(pid + '#') and t != tag for t in _conforms(recs[x][1]))]
+        named = [x for x in cands if tag in _conforms(recs[x][1])]
+        return named or cands, bool(named)
+    for b, r in roles.items():   # PR-37: a part found anywhere in the design, not through a connector
+        if r.get('anywhere') and b not in bound: bound[b] = pick(b, recs)[0]
     def ends(c, ids, forward):
         out = []
         table = inside if c.get('kind') else across
@@ -152,11 +169,7 @@ def bind(anchor_id, S, pid, recs, inside, across, mm):
         for c in S.get('connectors', []):
             for a, b, fwd in ((c['from'], c['to'], True), (c['to'], c['from'], False)):
                 if a in bound and b not in bound and b in roles:
-                    want = roles[b]['type']; tag = f'{pid}#{b}'
-                    cands = sorted({x for x in ends(c, bound[a], fwd) if x in recs and mm.known(recs[x][1]['type']) and mm.is_a(recs[x][1]['type'], want)})
-                    cands = [x for x in cands if not any(t.startswith(pid + '#') and t != tag for t in _conforms(recs[x][1]))]
-                    named = [x for x in cands if tag in _conforms(recs[x][1])]
-                    bound[b] = named or cands; via[b] = (c['id'], a, bool(named)); changed = True
+                    bound[b], named = pick(b, ends(c, bound[a], fwd)); via[b] = (c['id'], a, named); changed = True
     return bound, via
 
 
@@ -205,7 +218,7 @@ def evaluate(datasets, maps, mm, structures, exceptions=(), as_of=None):
             def emit(part_id, kind, label, outcome, detail, fails, sev):
                 f = {'rule': f'{pid}/{part_id}', 'standard': None, 'pattern': _ref(pat), 'layer': layer, 'record': rid, 'name': inst.get('name'),
                      'severity': 'warning' if not_yet else sev, 'message': f"{pat['title']}: {label}", 'outcome': outcome, 'detail': detail, 'parts': fails,
-                     'part': {'kind': kind, 'id': part_id, 'label': label}}
+                     'part': {'kind': kind, 'id': part_id, 'label': label, **({'reasoning': roles[part_id]['reasoning']} if kind == 'role' and roles[part_id].get('reasoning') else {})}}
                 if outcome == 'non_compliant' and planned: f.update(outcome='unresolved', detail='planned — ' + detail)
                 if f['outcome'] in ('non_compliant', 'unresolved'):
                     for x in exc.get((f['rule'], rid), []):
@@ -226,7 +239,10 @@ def evaluate(datasets, maps, mm, structures, exceptions=(), as_of=None):
                     continue
                 if len(got) < lo or (not got and lo):
                     c = S and via.get(r['id']); cid = c[0] if c else ''
-                    why = f"no {label} ({r['type']}) {'linked' if len(got) == 0 else f'— {len(got)} found, needs at least {lo}'}" + (f" through {cid} from {', '.join(bound.get(c[1]) or [])}" if c else '')
+                    where = ' where ' + ' and '.join(f'{k} = {v}' for k, v in r['when'].items()) if r.get('when') else ''
+                    if r.get('anywhere') and not got: why = f"no {label} in the design ({r['type']}{where})"   # PR-37
+                    elif c and not bound.get(c[1]): why = f"no {label} — it is found through {c[1]}, which is missing"
+                    else: why = f"no {label} ({r['type']}{where}) {'linked' if len(got) == 0 else f'— {len(got)} found, needs at least {lo}'}" + (f" through {cid} from {', '.join(bound.get(c[1]) or [])}" if c else '')
                     emit(r['id'], 'role', label, 'non_compliant', why, [why], sev); continue
                 if not got: emit(r['id'], 'role', label, 'not_applicable', 'optional — none in the design', [], sev); continue
                 if hi is not None and len(got) > hi:

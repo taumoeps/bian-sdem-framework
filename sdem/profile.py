@@ -63,6 +63,36 @@ def shipped(name):
     return f
 
 
+def shipped_patterns():
+    """CPL-09: the patterns shipped with SDEM — [(the name a profile includes it by, the pattern file)]."""
+    out = []
+    for f in sorted((DATA_ROOT / 'standards').glob('*.json')):
+        try: d = json.loads(f.read_text(encoding='utf-8'))
+        except ValueError: continue
+        if d.get('format') == PATTERN_FORMAT: out.append((SHIPPED + f.name, d))
+    return out
+
+
+def available(datasets, mm):
+    """CPL-09: the shipped patterns that fit this design and that its profile does not include — each with the record it would apply to.
+    A pattern fits when a record is what its `applies_when` names; one that names no `when` fits nothing in particular and is never offered."""
+    have = {x['id'] for x in (ACTIVE or {}).get('included', [])}
+    out = []
+    for name, d in shipped_patterns():
+        pat = d['pattern']; aw = pat.get('applies_when') or {}
+        if pat['id'] in have or not aw.get('when'): continue
+        hit = sorted(i['id'] for ds in datasets.values() for i in ds.get('instances', [])
+                     if mm.known(i['type']) and mm.is_a(i['type'], aw['entity']) and applies({'when': aw['when']}, i))
+        if hit: out.append({'include': name, 'id': pat['id'], 'title': pat['title'], 'because': hit[0]})
+    return out
+
+
+def shipped_included():
+    """The ids of the active profile's standards and patterns that are SDEM's own shipped files (CPL-11)."""
+    base = (DATA_ROOT / 'standards').resolve().as_posix() + '/'
+    return {x['id'] for x in (ACTIVE or {}).get('included', []) if x['file'].startswith(base)}
+
+
 def _fragment(path):
     """A standards or pattern file a profile includes (PR-13, PR-17)."""
     try: doc = json.loads(Path(path).read_text(encoding='utf-8'))
@@ -238,7 +268,7 @@ def check(merged, base_mm):
         for n in r.get('require', []):
             if not known_attr(n): issues.append(f"rule {r['id']}: requires {n!r}, which is not an attribute of {r['entity']} (declare it under attributes)")
         for n in r.get('when', {}):
-            if not known_attr(n): issues.append(f"rule {r['id']}: when {n!r}, which is not an attribute of {r['entity']} (declare it under attributes)")
+            if n not in RECORD_FIELDS and not known_attr(n): issues.append(f"rule {r['id']}: when {n!r}, which is not an attribute of {r['entity']} (declare it under attributes)")
         for part in ('link', 'compare'):
             k = (r.get(part) or {}).get('kind')
             if k and k not in kinds | own_kinds: issues.append(f"rule {r['id']}: {part} kind {k!r} is neither an ArchiMate kind SDEM knows nor one of the profile's link kinds")
@@ -438,12 +468,15 @@ def requirement_categories():
     return [c['id'] for c in (ACTIVE or {}).get('requirement_categories', [])]
 
 
+RECORD_FIELDS = ('lifecycle_status', 'name')   # what a `when` may name besides an attribute (PR-10, PR-36)
+
+
 def applies(rule, inst):
     """Whether a rule's `when` holds for a record: each named attribute (or lifecycle_status) has the value, or one of the values; a list
     attribute (conforms_to …) holds when it contains one of them (PR-10) — so a pattern applies to the records that say they follow it."""
     at = inst.get('attributes') or {}
     for k, want in (rule.get('when') or {}).items():
-        have = inst.get(k) if k == 'lifecycle_status' else at.get(k)
+        have = inst.get(k) if k in RECORD_FIELDS else at.get(k)   # PR-36: a record's name, as its lifecycle status, is the record's own field
         wants = want if isinstance(want, list) else [want]
         if not (any(h in wants for h in have) if isinstance(have, list) else have in wants): return False
     return True
@@ -636,6 +669,49 @@ def adopt(a):
     return 0
 
 
+def include_file(a):
+    """PR-38: a person adds a standard or pattern to what the workspace's profile includes — a file shipped with SDEM ("sdem:<file>") or one
+    of the organisation's (a path from the workspace). The profile is checked as it would be before anything is written; the decision is on
+    record (include_in_profile, attributed). A workspace with no profile gets one that holds the include and nothing else."""
+    import os, tempfile
+    from .validate import is_person
+    from .metamodel import Metamodel
+    ws = Path(a.estate); name = a.file
+    if not is_person(a.person): raise ProfileError(f"--person {a.person!r}: what a workspace's profile includes is a person's decision — give your own name (CTL-21)")
+    from .layers import FILES
+    if not any((ws / x).exists() for x in FILES.values()): raise ProfileError(f'{ws}: no such workspace (sdem new starts one)')
+    path = shipped(name) if name.startswith(SHIPPED) else (ws / name).resolve()
+    kind, fd = _fragment(path); meta = fd[kind]
+    f = ws / FILE
+    doc = json.loads(f.read_text(encoding='utf-8')) if f.exists() else {
+        'format': FORMAT, 'name': ws.resolve().name, 'version': 1,
+        'description': f"The {ws.resolve().name} workspace's design specification on top of SDEM's metamodel: the standards and patterns it includes."}
+    there = f.exists() and any(x['file'] == path.resolve().as_posix() for x in resolve(f)['included'])   # by this profile, or by a base it extends
+    out = {'workspace': str(ws), 'profile': FILE, 'included': [] if there else [name], 'kind': kind, 'id': meta['id'], 'title': meta['title'], 'version': meta['version'], 'dry_run': bool(a.dry_run)}
+    if not there:
+        cand = {**doc, 'includes': list(doc.get('includes', [])) + [name]}
+        fd_, tmp = tempfile.mkstemp(dir=ws, prefix='.sdem-profile-', suffix='.json')   # checked where it will live: its includes and base are found from the workspace
+        try:
+            with os.fdopen(fd_, 'w', encoding='utf-8') as h: json.dump(cand, h)
+            issues = check(resolve(tmp), Metamodel.base())
+        finally: os.unlink(tmp)
+        if issues: raise ProfileError(f"{name}: with it the profile does not pass its check — nothing written: " + '; '.join(issues[:5]) + (f' (and {len(issues) - 5} more)' if len(issues) > 5 else ''))
+        if not a.dry_run:
+            from .files import Batch
+            from .governance import record as gd
+            g = gd(ws, 'include_in_profile', a.person, name, {'kind': kind, 'id': meta['id'], 'title': meta['title'], 'version': meta['version'], 'reason': a.reason})
+            b = Batch(); b.json(f, cand)
+            if (ws / 'workspace.json').exists():
+                rec = json.loads((ws / 'workspace.json').read_text(encoding='utf-8'))
+                if not rec.get('profile'): rec['profile'] = {'file': FILE, 'from': 'sdem', 'name': cand['name'], 'version': cand['version']}; b.json(ws / 'workspace.json', rec)
+            b.commit(); out['decision'] = g['id']
+    if a.json: print(json.dumps(out, indent=2))
+    elif there: print(f"{name} ({meta['title']}) is already included in {ws}'s profile — nothing to do")
+    else: print(f"{'would include' if a.dry_run else 'included'} {name} — the {kind} {meta['id']} {meta['title']} v{meta['version']} — in {ws / FILE}"
+                + (f" — decision {out['decision']} (attributed)" if 'decision' in out else '') + f'\nNext — sdem status --workspace {ws} says where the design stands against it')
+    return 0
+
+
 def describe(r):
     """A rule in words: 'A4.InfrastructureComponent where environment = production requires dr_tier, dr_region'."""
     out = r['entity']
@@ -686,6 +762,10 @@ def main(argv=None):
     d = sub.add_parser('adopt', help="put the workspace under its sdem-profile.json: the layers it adds start empty, and the adoption is recorded — a person's decision")
     d.add_argument('--workspace', dest='estate', required=True, metavar='DIR'); d.add_argument('--person', required=True, help='your name — a person')
     d.add_argument('--reason', required=True); d.add_argument('--dry-run', action='store_true'); d.add_argument('--json', action='store_true')
+    i = sub.add_parser('include', help="add a standard or pattern to what the workspace's profile includes — one shipped with SDEM (sdem:<file>) or the organisation's own — a person's decision (PR-38)")
+    i.add_argument('file', metavar='FILE', help='"sdem:<file>" for a standard or pattern shipped with SDEM, or a path from the workspace folder')
+    i.add_argument('--workspace', dest='estate', required=True, metavar='DIR'); i.add_argument('--person', required=True, help='your name — a person')
+    i.add_argument('--reason', help='why (kept with the decision)'); i.add_argument('--dry-run', action='store_true'); i.add_argument('--json', action='store_true')
     e = sub.add_parser('example', help='write a synthetic bank base profile, team profiles that extend it (one adds layers), and a team profile with the bank\'s standards and secure API pattern')
     e.add_argument('--out', required=True, metavar='DIR'); e.add_argument('--json', action='store_true')
     a = ap.parse_args(argv)
@@ -703,6 +783,7 @@ def main(argv=None):
                   f'wrote {", ".join(written)} (synthetic) — start a workspace with one: sdem new --workspace <dir> --person <you> --profile {written[1]}')
             return 0
         if a.cmd == 'adopt': return adopt(a)
+        if a.cmd == 'include': return include_file(a)
         path = Path(a.file) if a.file else Path(a.estate or '.') / FILE
         if not a.file and not a.estate: raise ProfileError('give --workspace DIR or --file FILE')
         merged = resolve(path); issues = check(merged, Metamodel.base())

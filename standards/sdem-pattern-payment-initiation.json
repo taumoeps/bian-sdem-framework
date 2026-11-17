@@ -1,0 +1,332 @@
+{
+  "format": "sdem-pattern/1",
+  "description": "SDEM's starting pattern for a payment initiation solution: what such a design has and how its parts connect, in all four layers. Shipped with SDEM; a person includes it in a workspace's profile (sdem profile include sdem:sdem-pattern-payment-initiation.json). It applies to a design that uses BIAN's service domain Payment Order Initiation, and to no other. Every part is a warning — something still to decide, never a failed check. A part SDEM cannot tell apart by structure (the key store) is named by a person with conforms_to; SDEM never guesses which record it is. An organisation with its own pattern for payment initiation includes that instead.",
+  "pattern": {
+    "id": "PAT-PAYMENT-INITIATION",
+    "title": "Payment initiation",
+    "version": "1.0",
+    "owner": "SDEM",
+    "severity": "warning",
+    "source": "BIAN 14.0.0 service domains Payment Order Initiation, Party Authentication and Fraud Evaluation; the New Zealand Payment Initiation API standard v2.3.3 (payment consents, idempotency) — cited, not copied; ArchiMate 3.2; docs/design/sdem-completeness-design.md (CPL-08)",
+    "applies_when": {
+      "entity": "A2.ServiceDomain",
+      "when": {
+        "name": "Payment Order Initiation"
+      }
+    }
+  },
+  "structure": {
+    "anchor": "payment-order-initiation",
+    "zones": [
+      {
+        "id": "dmz",
+        "label": "DMZ",
+        "zone_kind": "dmz"
+      },
+      {
+        "id": "restricted",
+        "label": "Restricted zone",
+        "zone_kind": "private"
+      }
+    ],
+    "roles": [
+      {
+        "id": "payment-order-initiation",
+        "label": "Payment Order Initiation (BIAN)",
+        "type": "A2.ServiceDomain"
+      },
+      {
+        "id": "payment-process",
+        "label": "Process that receives the payment",
+        "type": "A1.BusinessProcess",
+        "max": null,
+        "reasoning": "the business step that takes the payment order — what the solution is for"
+      },
+      {
+        "id": "payments-component",
+        "label": "Component that handles the payment",
+        "type": "A3.ApplicationComponent",
+        "max": null,
+        "reasoning": "software realises the service domain; without it the payment is handled by nothing"
+      },
+      {
+        "id": "payment-records",
+        "label": "Records of the consent, the payment and duplicate protection",
+        "type": "A3.DataEntity",
+        "min": 3,
+        "max": null,
+        "reasoning": "a payment is made under a recorded consent, is itself recorded, and a repeated request must be recognised (idempotency) — three records"
+      },
+      {
+        "id": "database",
+        "label": "Database the records are stored in",
+        "type": "A4.SystemSoftware",
+        "max": null,
+        "reasoning": "the records are durable: they are stored on a platform"
+      },
+      {
+        "id": "party-authentication",
+        "label": "Party Authentication (BIAN)",
+        "type": "A2.ServiceDomain",
+        "anywhere": true,
+        "when": {
+          "name": "Party Authentication"
+        },
+        "reasoning": "the customer is authenticated and authorises the consent before any payment is taken"
+      },
+      {
+        "id": "authorisation-process",
+        "label": "Process that captures and authorises the consent",
+        "type": "A1.BusinessProcess",
+        "max": null,
+        "reasoning": "the business step in which the customer agrees"
+      },
+      {
+        "id": "fraud-evaluation",
+        "label": "Fraud Evaluation (BIAN)",
+        "type": "A2.ServiceDomain",
+        "anywhere": true,
+        "when": {
+          "name": "Fraud Evaluation"
+        },
+        "reasoning": "the payment is screened for fraud before the account is debited"
+      },
+      {
+        "id": "fraud-process",
+        "label": "Process that screens the payment for fraud",
+        "type": "A1.BusinessProcess",
+        "max": null,
+        "reasoning": "the business step that screens the payment — it comes before the debit"
+      },
+      {
+        "id": "api",
+        "label": "API payment providers call",
+        "type": "A3.ApplicationInterface",
+        "anywhere": true,
+        "when": {
+          "internet_facing": true
+        },
+        "max": null,
+        "reasoning": "payment initiation is offered to third parties over an internet-facing API"
+      },
+      {
+        "id": "api-operations",
+        "label": "API operations: create and read a consent, create and read a payment",
+        "type": "A3.APIOperation",
+        "min": 4,
+        "max": null,
+        "reasoning": "the least a payment initiation API offers"
+      },
+      {
+        "id": "api-component",
+        "label": "Component that offers the API",
+        "type": "A3.ApplicationComponent",
+        "max": null,
+        "reasoning": "an interface belongs to the component that offers it — here the ingress"
+      },
+      {
+        "id": "audit-record",
+        "label": "Audit record of decisions",
+        "type": "A3.DataEntity",
+        "max": null,
+        "reasoning": "who was let in, and what was refused, is kept"
+      },
+      {
+        "id": "edge-platform",
+        "label": "Edge platform the API is exposed through",
+        "type": "A4.InfrastructureComponent",
+        "max": null,
+        "zone": "dmz",
+        "reasoning": "what faces the internet sits in a DMZ, not among the applications"
+      },
+      {
+        "id": "key-store",
+        "label": "Key or secret store",
+        "type": "A4.SystemSoftware",
+        "anywhere": true,
+        "zone": "restricted",
+        "reasoning": "signing keys and client secrets are held apart from the applications that use them"
+      }
+    ],
+    "connectors": [
+      {
+        "id": "P1",
+        "from": "payment-process",
+        "to": "payment-order-initiation",
+        "relationship": "USES_DOMAIN",
+        "label": "uses"
+      },
+      {
+        "id": "P2",
+        "from": "payment-order-initiation",
+        "to": "payments-component",
+        "relationship": "REALIZED_BY",
+        "label": "realised by"
+      },
+      {
+        "id": "P3",
+        "from": "payments-component",
+        "to": "payment-records",
+        "kind": "access",
+        "label": "reads and writes"
+      },
+      {
+        "id": "P4",
+        "from": "payment-records",
+        "to": "database",
+        "relationship": "STORED_IN",
+        "label": "stored in"
+      },
+      {
+        "id": "P5",
+        "from": "authorisation-process",
+        "to": "party-authentication",
+        "relationship": "USES_DOMAIN",
+        "label": "uses"
+      },
+      {
+        "id": "P6",
+        "from": "fraud-process",
+        "to": "fraud-evaluation",
+        "relationship": "USES_DOMAIN",
+        "label": "uses"
+      },
+      {
+        "id": "P7",
+        "from": "api-component",
+        "to": "api",
+        "kind": "composition",
+        "label": "offers"
+      },
+      {
+        "id": "P8",
+        "from": "api",
+        "to": "api-operations",
+        "kind": "composition",
+        "label": "has"
+      },
+      {
+        "id": "P9",
+        "from": "api-component",
+        "to": "audit-record",
+        "kind": "access",
+        "label": "writes"
+      },
+      {
+        "id": "P10",
+        "from": "api",
+        "to": "edge-platform",
+        "relationship": "EXPOSED_THROUGH",
+        "label": "exposed through"
+      }
+    ],
+    "layout": {
+      "zones": {
+        "restricted": [
+          800.0,
+          640.0,
+          260.0,
+          150.0
+        ],
+        "dmz": [
+          1090.0,
+          640.0,
+          260.0,
+          150.0
+        ]
+      },
+      "roles": {
+        "fraud-process": [
+          40.0,
+          70.0,
+          200.0,
+          70.0
+        ],
+        "payment-process": [
+          300.0,
+          70.0,
+          200.0,
+          70.0
+        ],
+        "authorisation-process": [
+          560.0,
+          70.0,
+          200.0,
+          70.0
+        ],
+        "fraud-evaluation": [
+          40.0,
+          230.0,
+          200.0,
+          70.0
+        ],
+        "payment-order-initiation": [
+          300.0,
+          230.0,
+          200.0,
+          70.0
+        ],
+        "party-authentication": [
+          560.0,
+          230.0,
+          200.0,
+          70.0
+        ],
+        "payments-component": [
+          300.0,
+          400.0,
+          200.0,
+          70.0
+        ],
+        "payment-records": [
+          560.0,
+          400.0,
+          200.0,
+          70.0
+        ],
+        "api-component": [
+          860.0,
+          400.0,
+          200.0,
+          70.0
+        ],
+        "api": [
+          1120.0,
+          400.0,
+          200.0,
+          70.0
+        ],
+        "api-operations": [
+          1380.0,
+          400.0,
+          200.0,
+          70.0
+        ],
+        "audit-record": [
+          860.0,
+          530.0,
+          200.0,
+          70.0
+        ],
+        "database": [
+          560.0,
+          690.0,
+          200.0,
+          70.0
+        ],
+        "key-store": [
+          830.0,
+          690.0,
+          200.0,
+          70.0
+        ],
+        "edge-platform": [
+          1120.0,
+          690.0,
+          200.0,
+          70.0
+        ]
+      }
+    }
+  }
+}

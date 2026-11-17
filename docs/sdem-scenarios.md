@@ -216,12 +216,15 @@ sdem profile check --file profiles/bank-xyz-base.json           # after each edi
 sdem profile adopt --workspace workspaces/ledger --person your.name --reason "ledger follows the bank design spec"   # an existing workspace
 sdem check --workspace workspaces/ledger                        # the profile's required attributes and rules
 sdem comply --workspace workspaces/ledger                       # each standard and pattern: compliant, non-compliant, unresolved …
+sdem status --workspace workspaces/ledger                       # how complete the design is — and a pattern SDEM ships that fits it
+sdem profile include sdem:sdem-pattern-payment-initiation.json --workspace workspaces/ledger --person your.name --dry-run
+sdem pattern draw --id PAT-PAYMENT-INITIATION --workspace workspaces/ledger --anchor SD-PAYMENT-ORDER-INITIATION -o pattern.html
 sdem exception grant --workspace workspaces/ledger --rule NET-07 --records APP-LEDGER-CORE --expires 2026-12-31 \
   --reason "moves to the restricted zone in Q4" --person your.name --dry-run
 sdem exception list --workspace workspaces/ledger
 ```
 
-Standards and patterns are files the profile `includes`; adding one is a profile change, checked by `sdem profile check`. **A person decides:** adopting a profile, and every exception (time-limited).
+Standards and patterns are files the profile `includes`; adding one is a profile change, checked by `sdem profile check`. SDEM ships its own: a standard for a complete design — every record connected, on for a new workspace — and patterns for kinds of solution (payment initiation); `sdem status` names the pattern that fits a design, and says once where the design stands against each. **A person decides:** adopting a profile, including a standard or pattern (`sdem profile include`), and every exception (time-limited).
 
 ## 12. A reference pattern from the organisation's diagram
 

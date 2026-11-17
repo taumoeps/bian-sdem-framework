@@ -1,6 +1,6 @@
 # A complete design — every record connected (CPL-01…CPL-06, and what follows)
 
-> **Status: stages 1 and 2 built (2026-11-17) — the owner's decisions in conversation: build it; on by default for new workspaces, by choice for existing ones.** Stages 3–5 are listed, not built. From the audit that followed the first full load of an independent design (Payment Initiation v3, the [public twin](../evidence/payment-initiation-v3/report.md)).
+> **Status: stages 1, 2 and 3 built (2026-11-17) — the owner's decisions in conversation: build it; on by default for new workspaces, by choice for existing ones.** Stages 4–6 are listed, not built. From the audit that followed the first full load of an independent design (Payment Initiation v3, the [public twin](../evidence/payment-initiation-v3/report.md)).
 
 ## The problem
 
@@ -40,10 +40,25 @@ An architect assesses a design by seeing it whole. A list of warnings about a st
 
 **Inference is AID's, never an AI's.** AID is fixed, written rules — deterministic, each with an id. An AI agent never adds an inferred link or record to a design; what it thinks, it says in words in its hand-back, and it enters the design only when the architect states it or an AID rule produces it. (On Payment Initiation v3 the operator — an AI — wrote sixteen guessed links in as facts; that is the failure this rules out.)
 
+## Stage 3 — built (2026-11-17): the first pattern for a kind of solution
+
+The owner approved the list of parts and that it ships with SDEM (2026-11-17). SDEM's pattern machinery (PR-17…PR-31) is used as it was, with two additions to what a part may say (PR-36, PR-37) — needed because a solution's parts are not all reached from one record.
+
+| Id | Rule |
+|---|---|
+| CPL-08 | **SDEM ships a pattern for payment initiation**: `standards/sdem-pattern-payment-initiation.json` (`sdem-pattern/1`, id `PAT-PAYMENT-INITIATION`, owner SDEM). It applies to a design that has BIAN's service domain *Payment Order Initiation*, and to no other. Fourteen parts beside the domain, each with its reason, in all four layers: a process that receives the payment (uses the domain); the component that handles it (realises the domain); records of the consent, the payment and duplicate protection (at least three, read and written by that component); a database they are stored in; BIAN *Party Authentication* and a process that uses it; BIAN *Fraud Evaluation* and a process that uses it; the internet-facing API, its operations (at least four: create and read a consent, create and read a payment) and the component that offers it; an audit record that component writes; an edge platform the API is exposed through, in a DMZ; a key or secret store, in a restricted zone. **Every part is a warning** — to decide, never a failed check. What a part's meaning rests on is BIAN's own domain names and the design's structure, never a record's name; the one part structure cannot single out — the key store — is named by a person (`conforms_to`), and until then is *unresolved*. |
+| CPL-09 | **SDEM says which pattern fits.** `sdem status` (and `sdem handback --json`: `compliance.patterns_available`) names each shipped pattern whose `applies_when` a record of the design meets and which the profile does not include, with that record — and the command for a person to include it. Nothing is applied until then. |
+| CPL-10 | **A person includes it with one command**: `sdem profile include sdem:<file> --workspace … --person …` (PR-38). An existing workspace takes SDEM's completeness standard the same way (CPL-06). |
+| CPL-11 | **Said once.** For each pattern SDEM ships and each record it applies to, `sdem status` gives one block — `Pattern Payment initiation (SD-…): 10 of 14 parts in place — 4 to decide`, then each open part with why it matters — not a line a part among the warnings; `sdem pattern draw` shows it over the design (PR-25). A design with open parts is *open*. An organisation's own patterns are listed as before. |
+
+On Payment Initiation v3 (without the operator's guessed links): 10 of 14 parts in place. Open: no *Fraud Evaluation* domain (the design has a fraud-screening process that names no BIAN operation) and so no process that uses it; the API is exposed through nothing approved (SDEM's own proposal for it waits on the owner); nobody has said which platform is the key store.
+
+**Not said by this pattern, and why:** that fraud screening comes *before* the debit (an order across several processes — the structure follows single links); which of the three records is the consent, the payment or the duplicate-protection record (nothing but a name tells them apart — stage 4).
+
 ## Stages to come — each its own change, tests first
 
 | Stage | What | Kind |
 |---|---|---|
-| 3 | **Patterns for kinds of solution** that say what a solution has and how its parts connect — payment initiation first, then BIAN's *Transact* and *Fulfill* functional patterns (about twenty functional patterns cover every service domain); `sdem status` names the pattern that fits the BIAN domains a design uses, and a person includes it | content, and a suggestion in `sdem status` |
-| 4 | **`sdem aid` completes the draft** (an option): for each gap a standard or pattern finds, the link — or the missing part — marked *inferred*, with its basis and confidence; the weakest flagged | code (AID rules) |
-| 5 | **Inferred, and seen to be.** `sdem view` and the data sent to DESNRE mark what is inferred; `sdem check` lists any link or record marked inferred that names no AID rule, and any link whose source is not a document, an AID rule or a named person | code |
+| 4 | **`sdem aid` completes the draft** (an option): for each gap a standard or pattern finds, the link — or the missing part — marked *inferred*, with its basis and confidence; the weakest flagged. Includes naming which record is which part where the design gives evidence | code (AID rules) |
+| 5 | **More patterns**: one for each of BIAN's functional patterns, *Transact* and *Fulfil* first (about twenty cover every service domain) — what any domain of that kind has in each layer | content |
+| 6 | **Inferred, and seen to be.** `sdem view` and the data sent to DESNRE mark what is inferred; `sdem check` lists any link or record marked inferred that names no AID rule, and any link whose source is not a document, an AID rule or a named person | code |
