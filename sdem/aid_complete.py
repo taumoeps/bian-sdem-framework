@@ -255,3 +255,29 @@ def name_parts(docs, maps, mm, structures):
                         'why': (f"{one[0]} is the one candidate with the word '{sorted(w for w, x in hits.items() if x == one[0])[0]}' of the part's name — name evidence only" if len(one) == 1
                                 else 'no one candidate is singled out by its name — a person says which')})
     return out
+
+
+def default_across(docs, approved, proposed, mm, rules, decided=()):
+    """AID-D09 (with `sdem aid --complete-draft`). Where a rule asks a record for an approved link between layers (`across`) and nothing is
+    approved or proposed for it, PROPOSE the link to where most other records of its kind go — the target that relationship has most often
+    among the approved and proposed links from records the rule applies to. A proposal, low, for a person to approve; said to be a default.
+    None where no other record of its kind has such a link, or a person decided that link already.
+    approved, proposed: [(source, relationship, target)]. Returns [(source, relationship, target, why, 'AID-D09')]."""
+    from .comply import evaluate
+    recs = {i['id']: i for d in docs.values() for i in d.get('instances', [])}
+    by_rule = {r['id']: r for r in rules}
+    live = list(approved) + list(proposed)
+    out = []
+    for f in evaluate(docs, live, mm, rules, ()):   # a proposed link counts here: the question is what the draft still lacks
+        rule = by_rule.get(f['rule']) or {}; a = rule.get('across')
+        if not a or f['outcome'] not in ('non_compliant', 'unresolved') or a.get('direction') == 'in': continue
+        x = f['record']
+        if x not in recs or _unconfirmed(recs[x]): continue
+        seen = {}
+        for s, r, t in live:
+            if r == a['relationship'] and s != x and s in recs and t in recs and mm.known(recs[s]['type']) and mm.is_a(recs[s]['type'], rule['entity']): seen[t] = seen.get(t, 0) + 1
+        if not seen: continue
+        t = sorted(seen, key=lambda k: (-seen[k], k))[0]
+        if (x, a['relationship'], t) in decided or any(o[:3] == (x, a['relationship'], t) for o in out): continue
+        out.append((x, a['relationship'], t, f"placed by default to complete the draft — nothing in the design says this of {x}: {seen[t]} other {rule['entity'].split('.')[1]} record(s) have this link to {t}; review this first ({rule['id']}: {rule.get('message', '')})", 'AID-D09'))
+    return out

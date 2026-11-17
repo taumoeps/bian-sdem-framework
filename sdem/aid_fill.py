@@ -269,6 +269,17 @@ def fill(workspace, person, dry_run=False, now=None, complete_draft=False):
         draft['links_inferred'] = len(draft['links']); placements += len(draft['links']); connections += len(draft['links'])
         joined = {e for l in draft['links'] for e in l['link'].split('|')[::2]}
         conn_unresolved = [u for u in conn_unresolved if u['id'] not in joined]   # no longer linked to nothing
+    if complete_draft and _prof.ACTIVE is not None and _prof.rules():   # AID-D09: a gap between layers nothing proposes a link for — a default proposal, where the others of its kind go
+        from .aid_complete import default_across
+        from .metamodel import Metamodel as _MMx
+        prop_now = [(p['source']['id'], p['relationship'], p['target']['id']) for p in proposals + earlier]
+        for src, rel, tgt, why, drule in default_across(after, live_maps, prop_now, _MMx.load(), _prof.rules(), approved):
+            if src not in by_id or tgt not in by_id: continue
+            s_, t_ = by_id[src], by_id[tgt]
+            proposals.append({'mapping_id': f'{run}-P{len(proposals) + 1:03d}', 'source': {'id': src, 'type': s_['type'], 'version': s_['version']}, 'relationship': rel,
+                              'target': {'id': tgt, 'type': t_['type'], 'version': t_['version']}, 'status': 'proposed', 'confidence': 'low', 'evidence_class': 'structural',
+                              'evidence': [f'engine_rationale:{run} {drule}'], 'rationale': f'Inferred by sdem aid ({drule}): {why}', 'baseline_id': run, 'created_by': 'sdem aid'})
+            draft['defaults'] += 1; draft.setdefault('default_proposals', []).append(f'{src} {rel} {tgt}')
     BAND = {'low': 0.4, 'medium': 0.6, 'high': 0.8}   # the registry holds confidence as a number, as the engine writes it (found building Payment Initiation v2)
     for pr in proposals:
         if isinstance(pr.get('confidence'), str): pr['confidence'] = BAND.get(pr['confidence'], 0.4)
@@ -436,6 +447,7 @@ def main(argv):
         print(f"draft: {dr['links_inferred']} link(s) a standard asks for {'would be inferred' if a.dry_run else 'inferred'} from names (AID-D01, AID-D02) — each marked inferred, low confidence; "
               f"confirm or reject each by naming it: sdem aid confirm|reject '<source|kind|target>' --workspace {a.estate} --person <you>")
         for l in dr['links'][:12]: print(f"  {l['link'].replace('|', ' ')}  ({l['rule']}, asked by {l['asked_by']})" + ('  — PLACED BY DEFAULT, no evidence: review first' if l['rule'] == 'AID-D08' else ''))
+    for x in dr.get('default_proposals') or []: print(f"draft: {x} — PROPOSED BY DEFAULT, no evidence (AID-D09): review first, then approve or reject it like any proposal")
     if dr.get('left_open'):
         print(f"draft: {len(dr['left_open'])} gap(s) left open — nothing in the design says what the link is (AID-D03); a person states it through a change set"
               + ('' if a.complete_draft else ' — or run again with --complete-draft to place each by default, marked so') + ':')

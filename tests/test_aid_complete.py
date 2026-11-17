@@ -119,6 +119,27 @@ class Defaults(unittest.TestCase):
         self.assertIn('rejected', next(o['why'] for o in open_ if o['record'] == 'API-ONE'))
 
 
+class DefaultsBetweenLayers(unittest.TestCase):
+    """AID-D09 — with the option, a gap between layers no rule proposes a link for gets a default PROPOSAL: where the others of its kind go."""
+    def docs(self):
+        return {'A3': {'instances': [rec(f'DATA-{x}', 'A3.DataEntity', f'table {x}') for x in 'ABC'] + [rec('APP-1', 'A3.ApplicationComponent', 'App')],
+                       'relationships': [{'source': 'APP-1', 'kind': 'access', 'target': f'DATA-{x}'} for x in 'ABC']},
+                'A4': {'instances': [rec('SYS-DB', 'A4.SystemSoftware', 'Database'), rec('SYS-OLD', 'A4.SystemSoftware', 'Archive')], 'relationships': []}}
+
+    def test_it_goes_where_the_others_go_and_says_it_is_a_default(self):
+        got = aid_complete.default_across(self.docs(), [('DATA-A', 'STORED_IN', 'SYS-DB')], [('DATA-B', 'STORED_IN', 'SYS-DB')], Metamodel.load(), RULES)
+        self.assertEqual([g[:3] for g in got if g[1] == 'STORED_IN'], [('DATA-C', 'STORED_IN', 'SYS-DB')])
+        why = next(g[3] for g in got if g[0] == 'DATA-C')
+        self.assertIn('placed by default', why); self.assertIn('2 other', why); self.assertIn('review this first', why)
+
+    def test_with_nowhere_the_others_go_nothing_is_proposed(self):
+        self.assertEqual([g for g in aid_complete.default_across(self.docs(), [], [], Metamodel.load(), RULES) if g[1] == 'STORED_IN'], [])
+
+    def test_a_link_a_person_rejected_is_not_proposed_by_default(self):
+        got = aid_complete.default_across(self.docs(), [('DATA-A', 'STORED_IN', 'SYS-DB')], [('DATA-B', 'STORED_IN', 'SYS-DB')], Metamodel.load(), RULES, decided={('DATA-C', 'STORED_IN', 'SYS-DB')})
+        self.assertEqual([g for g in got if g[0] == 'DATA-C'], [])
+
+
 class Parts(unittest.TestCase):
     """AID-D06, AID-D07 — a part a pattern requires: added when the design has nothing of its kind, named when a name says which it is."""
     PID = 'PAT-PAYMENT-INITIATION'
