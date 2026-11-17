@@ -190,6 +190,21 @@ class Load(Base):
         self.assertNotIn('Nothing here is approved', rep); self.assertIn("6 link(s) between layers the design states were approved as authored", rep)   # the opening line says what was done
         code, out, err = self.sdem('intake', self.pkg, '--workspace', self.tmp / 'ws2', '--person', 'sdem-orchestrator', '--accept'); self.assertEqual(code, 2)   # accepting is a person's (CTL-21)
 
+    def test_no_inference_takes_the_design_as_written_and_nothing_else(self):   # IN-14
+        p = package(); p['NOT-STATED.json']['items'] += [{'record_id': x, 'detail': 'the design does not say', 'design_section': '1'} for x in ('PROC-SCREEN', 'DEP-HUB', 'SYS-DB')]; self.write(p)
+        code, out, err = self.sdem('intake', self.pkg, '--workspace', self.ws, '--person', 'jane.architect', '--accept', '--no-inference', '--json'); self.assertEqual(code, 0, (out + err)[-1200:])
+        r = json.loads(out)
+        self.assertIn('none — taken as written (--no-inference)', [s['did'] for s in r['steps'] if s['step'] == 'draft'])
+        self.assertFalse((self.ws / 'aid').exists() and list((self.ws / 'aid').glob('AID-*.json')))   # sdem aid was not run
+        for f in ('a1-business.json', 'a3-application.json', 'a4-technology.json', 'a2-service-domain.json'):
+            d = json.loads((self.ws / f).read_text(encoding='utf-8'))
+            self.assertFalse([i['id'] for i in d['instances'] if isinstance((i.get('attributes') or {}).get('inferred'), dict)], f)   # nothing inferred: no record …
+            self.assertFalse([x for x in d.get('relationships', []) if isinstance(x.get('inferred'), dict)], f)                         # … and no link
+        ids = {i['id'] for i in json.loads((self.ws / 'a2-service-domain.json').read_text(encoding='utf-8'))['instances'] if i['type'] == 'A2.ServiceDomain'}
+        self.assertEqual(ids, {'SD-PAYMENT-ORDER-INITIATION'})   # the domain the package names — not the ones a pattern would have had SDEM bring in
+        s = json.loads(self.sdem('status', '--workspace', self.ws, '--json')[1])
+        self.assertEqual(s['completeness']['inferred_to_confirm'], 0); self.assertGreater(s['completeness']['gaps'], 0)   # what the design does not give stays open, and is said
+
     def test_a_package_that_fails_its_check_changes_nothing(self):   # IN-05
         p = package(); p['a3-application.json']['instances'][1]['type'] = 'A3.Gadget'; self.write(p)
         code, out, err = self.sdem('intake', self.pkg, '--workspace', self.ws, '--person', 'jane.architect'); self.assertEqual(code, 1)

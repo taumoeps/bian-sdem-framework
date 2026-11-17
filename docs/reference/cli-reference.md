@@ -1587,7 +1587,7 @@ sdem impact INF-CLOUD-K8S-PROD --change rehost --graph examples/card-fraud-alert
 take in a design authored as SDEM data (the package of the authoring guide): --check says everything wrong at once, with no workspace — what its author runs before handing over; with --workspace it checks, loads, adds the BIAN domains named, includes the patterns that fit, completes the first draft and writes one report — a person's command (IN-01…IN-10)
 
 ```
-sdem intake <package> [--check] [--workspace WORKSPACE] [--person PERSON] [--dry-run] [--allow-gaps] [--accept]
+sdem intake <package> [--check] [--workspace WORKSPACE] [--person PERSON] [--dry-run] [--allow-gaps] [--accept] [--no-inference]
 ```
 
 *JSON: native · dry run: native · 👤 a person's own name*
@@ -1601,6 +1601,7 @@ sdem intake <package> [--check] [--workspace WORKSPACE] [--person PERSON] [--dry
 | `--dry-run` |  | check, and say what would be loaded and done; write nothing |
 | `--allow-gaps` |  | do not fail on a record that is neither connected nor declared in NOT-STATED.json (it is still listed). Without it, every loose end must be accounted for |
 | `--accept` |  | take the design as authored: the links between layers its author wrote from the design are approved under your name, on the evidence of the design sections they cite — none is left for review. What SDEM's rules then infer stays marked inferred. Your decision, recorded as yours |
+| `--no-inference` |  | take the design as written and nothing else: sdem aid is not run and SDEM proposes no link — what the package does not give stays open and is listed |
 | `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
 
 Example:

@@ -258,7 +258,7 @@ def validate(payload, registry=None, schema=None, resolver=None, entity_resolver
                 # drafts: BIAN anchoring is required at approval, flagged until then.
                 draft = mapping.get('status') in ('proposed', 'needs_review')
                 report = (lambda msg: warnings.append(f'{prefix}: {msg}; must be supplied before approval')) if draft else (lambda msg: fail('governance', msg))
-                if not mapping.get('bian_release'):
+                if not mapping.get('bian_release') and mapping.get('status') != 'rejected':   # RJ-02: a rejection relies on no BIAN release — it says the link is not there
                     report(f"{rule['authority']} mapping requires bian_release")
                 for label, ent in (('source', source), ('target', target)):
                     if level_of(ent.get('type'), registry) == bian_level and not ent.get('canonical_id'):

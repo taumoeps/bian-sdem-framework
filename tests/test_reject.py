@@ -65,6 +65,15 @@ class RejectTests(unittest.TestCase):
         fg = FederatedGraph.load(sorted(self.ws.glob('a*.json')) + [self.ws / 'mappings.json'])
         self.assertNotIn(self.key, {(e['source']['id'], e['relationship'], e['target']['id']) for e in fg.edges()})   # RJ-06
 
+    def test_a_link_to_a_bian_record_is_rejected_without_naming_a_bian_release(self):   # RJ-02 — found when sdem intake declined a proposal to a service domain
+        m = json.loads((self.ws / 'mappings.json').read_text(encoding='utf-8'))
+        bian = next(x for x in m['mappings'] if x['relationship'] in ('USES_DOMAIN', 'SUPPORTED_BY', 'REALIZED_BY') and (x['source']['type'].startswith('A2.') or x['target']['type'].startswith('A2.')))
+        prop = {**{k: v for k, v in bian.items() if k not in ('bian_release', 'reviewer_id', 'approved_at')}, 'mapping_id': 'P-BIAN', 'status': 'proposed'}
+        m['mappings'] = [x for x in m['mappings'] if x is not bian]; (self.ws / 'mappings.json').write_text(json.dumps(m, indent=2), encoding='utf-8')
+        pf = self.tmp / 'p.json'; pf.write_text(json.dumps({'mappings': [prop]}), encoding='utf-8')
+        code, out, err = sdem('reject', 'P-BIAN', '--proposals', pf, '--workspace', self.ws, '--reviewer', 'jane.architect', '--reason', 'not this domain', cwd=self.tmp)
+        self.assertEqual(code, 0, out + err)   # a rejection relies on no BIAN release: it says the link is not there
+
     def test_approving_it_later_overrides_the_rejection(self):   # RJ-05
         pid = self.pid(); self.reject(pid, '--reason', 'not yet')
         props = {'mappings': [self.gone | {'mapping_id': 'P-RUN-900', 'status': 'proposed'}]}

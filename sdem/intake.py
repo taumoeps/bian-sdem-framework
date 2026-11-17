@@ -265,7 +265,7 @@ def render_check(r):
     return '\n'.join(L)
 
 
-def load(pkg, workspace, person, dry_run=False, allow_gaps=False, accept=False):
+def load(pkg, workspace, person, dry_run=False, allow_gaps=False, accept=False, infer=True):
     """IN-05…IN-10: check, then the one order — the workspace, the layers, BIAN, the patterns, the complete first draft, every proposed link,
     the report. A package with errors changes nothing."""
     from .validate import is_person
@@ -328,12 +328,16 @@ def load(pkg, workspace, person, dry_run=False, allow_gaps=False, accept=False):
                       what=f"accepting {m['source']['id']} {m['relationship']} {m['target']['id']} as authored")
                 accepted.append(f"{m['source']['id']} {m['relationship']} {m['target']['id']}")
             steps.append({'step': 'accept', 'did': f'{len(accepted)} link(s) between layers accepted as authored'})
-        run = json.loads(_must('aid', '--workspace', ws, '--person', person, '--complete-draft', '--json', what='completing the first draft (sdem aid --complete-draft)'))
-        steps.append({'step': 'draft', 'did': run.get('id')})
-        _must('link', '--workspace', ws, '--out', ws / 'links', '--no-review', what='listing every proposed link (sdem link)')
+        if infer:
+            run = json.loads(_must('aid', '--workspace', ws, '--person', person, '--complete-draft', '--json', what='completing the first draft (sdem aid --complete-draft)'))
+            steps.append({'step': 'draft', 'did': run.get('id')})
+            _must('link', '--workspace', ws, '--out', ws / 'links', '--no-review', what='listing every proposed link (sdem link)')
+        else:   # IN-14: the design as written and nothing else — SDEM infers and proposes nothing
+            run = {'draft': {}}; steps.append({'step': 'draft', 'did': 'none — taken as written (--no-inference)'})
         declined = []
         if accept and r['complete']:   # IN-13: taken as authored — what SDEM's rules would propose beside the author's links is not taken, and is recorded so
             lp = ws / 'links' / 'proposals.json'
+            if not lp.exists(): _must('link', '--workspace', ws, '--out', ws / 'links', '--no-review', what="listing the links SDEM's rules would propose beside the author's")   # with --no-inference none was listed yet
             ids = [m['mapping_id'] for m in json.loads(lp.read_text(encoding='utf-8')).get('mappings', [])] if lp.exists() else []
             if ids:
                 _must('reject', *ids, '--proposals', lp, '--workspace', ws, '--reviewer', person, '--reason', 'the design is taken as authored (sdem intake --accept): not one of its author\'s links',
@@ -435,6 +439,7 @@ def main(argv=None):
     ap.add_argument('--dry-run', action='store_true', help='check, and say what would be loaded and done; write nothing')
     ap.add_argument('--allow-gaps', action='store_true', help='do not fail on a record that is neither connected nor declared in NOT-STATED.json (it is still listed). Without it, every loose end must be accounted for')
     ap.add_argument('--accept', action='store_true', help="take the design as authored: the links between layers its author wrote from the design are approved under your name, on the evidence of the design sections they cite — none is left for review. What SDEM's rules then infer stays marked inferred. Your decision, recorded as yours")
+    ap.add_argument('--no-inference', action='store_true', help='take the design as written and nothing else: sdem aid is not run and SDEM proposes no link — what the package does not give stays open and is listed')
     ap.add_argument('--json', action='store_true')
     a = ap.parse_args(argv)
     try:
@@ -443,7 +448,7 @@ def main(argv=None):
             r = check(a.package, a.allow_gaps)
             print(json.dumps(_public(r), indent=2) if a.json else render_check(r)); return 0 if r['ok'] else 1
         if not a.person: raise IntakeError('--person is required with --workspace: your own name')
-        r = load(a.package, a.estate, a.person, a.dry_run, a.allow_gaps, a.accept)
+        r = load(a.package, a.estate, a.person, a.dry_run, a.allow_gaps, a.accept, not a.no_inference)
     except IntakeError as e:
         print(f'ERROR: {e}', file=sys.stderr); return 2
     if a.json: print(json.dumps(r, indent=2)); return 0 if r['ok'] else 1

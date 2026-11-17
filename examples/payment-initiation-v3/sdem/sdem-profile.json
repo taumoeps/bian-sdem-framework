@@ -1,0 +1,11 @@
+{
+  "format": "sdem-profile/1",
+  "name": "sdem",
+  "version": 1,
+  "description": "The sdem workspace's design specification on top of SDEM's metamodel. It starts with SDEM's own standard for a complete design (every record connected — gaps are listed by sdem status, never failed by sdem check); add the organisation's types, attributes, rules, standards and patterns here.",
+  "includes": [
+    "sdem:sdem-completeness.json",
+    "sdem:sdem-pattern-payment-initiation.json",
+    "sdem:sdem-pattern-bian-transact.json"
+  ]
+}
