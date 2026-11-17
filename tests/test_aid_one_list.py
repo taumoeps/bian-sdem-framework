@@ -85,7 +85,8 @@ class SecondPassTests(unittest.TestCase):   # AID-M03 after approvals — the pu
         sdem('change', 'propose', tmp / 'a1.json', '--workspace', ws, '--agent', 'sdem-a1-business', '--person', 'jane.architect')
         sdem('change', 'propose', tmp / 'a3.json', '--workspace', ws, '--agent', 'sdem-a3-application', '--person', 'jane.architect')
         sdem('bian', 'add', 'Payment Order Initiation', '--workspace', ws, '--person', 'jane.architect')
-        self.assertEqual(json.loads(sdem('aid', '--workspace', ws, '--person', 'jane.architect', '--dry-run', '--json'))['added'].get('A2', []), [])
+        named = lambda run: [i for i in run['added'].get('A2', []) if 'PARTY-AUTHENTICATION' not in i and 'FRAUD-EVALUATION' not in i and i != 'FP-ASSESS']   # not the domains the payment-initiation pattern names (AID-D05, CPL-16): those, and their functional pattern, rest on the pattern, not on a name
+        self.assertEqual(named(json.loads(sdem('aid', '--workspace', ws, '--person', 'jane.architect', '--dry-run', '--json'))), [])
         sdem('link', '--workspace', ws, '--out', ws / 'links', '--no-review')
         pf = ws / 'links' / 'proposals.json'; props = json.loads(pf.read_text(encoding='utf-8'))['mappings']
         wrong = [p['mapping_id'] for p in props if p['relationship'] == 'REALIZED_BY' and p['target']['id'] == 'APP-EDGE']
@@ -95,5 +96,5 @@ class SecondPassTests(unittest.TestCase):   # AID-M03 after approvals — the pu
                 sdem('approve', p['mapping_id'], '--proposals', pf, '--workspace', ws, '--reviewer', 'jane.architect', '--evidence', 'process_model:D#3', '--evidence', 'bian_alignment_guidance:D#4', '--bian-release', '14.0.0')
         sdem('reject', *wrong, '--proposals', pf, '--workspace', ws, '--reviewer', 'jane.architect', '--reason', 'the ingress only terminates the channel')
         second = json.loads(sdem('aid', '--workspace', ws, '--person', 'jane.architect', '--dry-run', '--json'))
-        self.assertEqual(second['added'].get('A2', []), [])   # a rejection, with the business links approved, must not turn the next-best name match into a record
+        self.assertEqual(named(second), [])   # a rejection, with the business links approved, must not turn the next-best name match into a record
         self.assertTrue(any(e.startswith('not added') for e in second['projection_ends']), second['projection_ends'])

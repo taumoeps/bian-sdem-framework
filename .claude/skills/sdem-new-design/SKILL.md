@@ -54,6 +54,8 @@ sdem requirements propose <draft> --workspace <ws> --person <architect> --dry-ru
 
 ## 4. Let SDEM infer A2–A4 — only if asked
 
+**From here on follow the skill `sdem-complete-draft` — its order is fixed and is the one `sdem status` prints:** the BIAN domains the design names, then the standards and every pattern that fits, *then* `sdem aid` (with `--complete-draft` when the architect wants a whole first draft), then `sdem link`, then the hand-back, weakest first. What follows here is the least of it.
+
 If the request says to infer the other layers (that is the architect's agreement), first `sdem aid --workspace <ws> --person <architect> --dry-run --json`. **Check its `added.A2`: the `SD-…` service domains must be the ones you chose with `sdem bian search`.** If any other domain appears, find where it came from: if a process or activity is missing `invokes`, fix it with an A1 change set (`op: update`) and dry-run again. Domains that only a shared word in an A3 or A4 name points to are not added when your processes name their domains (AID-M03): `sdem aid` lists them as `NOTE: not added — …` (in `--json`: `projection_ends`). Pass those notes on in your review list; do not rename records to avoid them. Only then run `sdem aid` without `--dry-run`. If the request does not ask for inference, stop here and offer it. Then `sdem link --workspace <ws> --out <ws>/links --json` — the one list of proposed connections the architect approves from (AID-W09) — and `sdem check --workspace <ws> --json`.
 
 ## 5. Hand back — always this review list

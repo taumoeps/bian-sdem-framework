@@ -61,21 +61,27 @@ def collect(ws):
 
     if any(b['kind'] == 'check' for b in blocking): step(f'sdem check --workspace {w}', 'see what fails, and fix it through a change set (sdem change propose)')
     if any(b['kind'] == 'unrecorded_edit' for b in blocking): step(f'sdem change adopt --workspace {w} --person <you>', 'an edit made outside SDEM: a person adopts it (or reverts it) before anything else is accepted', True)
-    if complete and complete.get('inferred_to_confirm'):
-        step(f"sdem aid confirm '<source|kind|target>' --workspace {w} --person <you>", f"{complete['inferred_to_confirm']} record(s) are connected only by a link SDEM inferred from names — confirm each, or reject it: sdem aid reject … --reason … (sdem handback lists them)", True)
+    # CPL-17: the steps of a complete first draft, in the one order (the skill sdem-complete-draft): standards and patterns first, then infer, then every
+    # proposed link in one list, then look, then a person decides — whoever follows this list does them in that order
+    for x in avail:
+        step(f"sdem profile include {x['include']} --workspace {w} --person <you>", f"a pattern for this kind of solution ships with SDEM ({x['title']}, because of {x['because']}) — including it checks the design has what such a solution needs", True)
+    draft_open = bool(complete and complete.get('draft_connected', complete['records_connected']) < complete['records_checked']) or any(p.get('draft_in_place', p['in_place']) < p['parts'] for p in pats)
+    if draft_open and not blocking:
+        step(f'sdem aid --workspace {w} --person <you> --complete-draft --dry-run', 'complete the first draft: SDEM asks the standards and every pattern that fits, then infers what is missing — each item marked inferred, a gap with no evidence placed by default and marked so; then without --dry-run when the person agrees')
+    if h['links_to_review'] or (draft_open and not blocking):
+        step(f'sdem link --workspace {w} --out work/links', 'every proposed link between layers in one list, weakest first')
     if complete and complete['gaps']:
         step(f'sdem comply --workspace {w}', f"see each of the {complete['gaps']} gap(s) in the design's connections — link the record through a change set, or a person grants an exception (sdem exception grant)")
     for p in pats:
         if p['open']: step(f"sdem pattern draw --id {p['pattern']} --workspace {w} --anchor {p['anchor']} -o pattern.html", f"see the {p['title']} pattern drawn over the design — which parts are there, which are missing; add a part through a change set, or a person grants an exception")
-    for x in avail:
-        step(f"sdem profile include {x['include']} --workspace {w} --person <you>", f"a pattern for this kind of solution ships with SDEM ({x['title']}, because of {x['because']}) — including it checks the design has what such a solution needs", True)
     if any(b['kind'] == 'standard_not_met' for b in blocking) or any(u['kind'] == 'standard_unresolved' for u in unresolved):
         step(f'sdem comply --workspace {w}', "meet each of the organisation's rules — or a person grants a time-limited exception (sdem exception grant)")
     if any(u['kind'] == 'value_unknown' for u in unresolved): step(f'sdem handback --workspace {w}', 'give each unknown value, or mark its record planned, through a change set')
+    if complete and complete.get('inferred_to_confirm'):
+        step(f"sdem aid confirm '<source|kind|target>' --workspace {w} --person <you>", f"{complete['inferred_to_confirm']} record(s) are connected only by a link SDEM inferred from names — confirm each, or reject it: sdem aid reject … --reason … (sdem handback lists them)", True)
     if h['unconfirmed_inferred']:
         step(f'sdem aid confirm <ids> --workspace {w} --person <you>', 'confirm what SDEM inferred — or reject it: sdem aid reject <ids> …', True)
     if h['links_to_review']:
-        step(f'sdem link --workspace {w} --out work/links', 'see the proposed links, weakest first')
         step(f'sdem approve <id> --proposals work/links/proposals.json --workspace {w} --reviewer <you> --evidence <kind>:<ref>', 'approve each link with its evidence', True)
     if h['events_to_plan']: step(f"sdem work plan --event {h['events_to_plan'][0]['id']} --workspace {w} --agent sdem-orchestrator --person <you>", 'plan the validated change', True)
     have = {x['level'] for x in h['layers']}; gone = [m['level'] for m in h['missing_layers']]
@@ -111,6 +117,7 @@ def render(s, limit=8):
     for p in s.get('patterns') or []:   # CPL-11
         n = len(p['open'])
         L.append(f"Pattern {p['title']} ({p['anchor']}): {p['in_place']} of {p['parts']} parts in place" + (f' — {n} to decide' if n else ' — nothing missing')
+                 + (f"; in the draft: {p['draft_in_place']} of {p['parts']} counting what is inferred or proposed" if p.get('draft_in_place', 0) > p['in_place'] else '')
                  + (f", {p['under_exception']} under an exception" if p.get('under_exception') else ''))
         L += [f"  {o['detail']}" + (f" — why: {o['why']}" if o.get('why') else '') for o in p['open'][:6]] + ([f"  … and {n - 6} more (sdem comply)"] if n > 6 else [])
     for x in s.get('patterns_available') or []:   # CPL-09

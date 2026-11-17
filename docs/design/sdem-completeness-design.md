@@ -79,6 +79,18 @@ BIAN gives every service domain a functional pattern — what it does with its a
 
 **What these patterns are and are not.** The two share most of their structure, because what makes a domain *complete across four layers* is the same whatever it does; they differ in BIAN's word for what the domain handles and, for Fulfill, the product. They do not say what a *lending* or a *cards* solution needs — that is a pattern for the solution, as payment initiation has. The other sixteen functional patterns are not built: each should be written when a design needs it, not copied from these.
 
+## The order, kept by the tool (2026-11-17)
+
+Twice in one day the agreed order — standards and patterns first, then inference — was skipped by the operator, with the order written in this document. A written order is not enough.
+
+| Id | Rule |
+|---|---|
+| CPL-16 | **`sdem aid` asks every pattern SDEM ships that fits the design, whether or not the profile includes it**, before it infers anything — and says which it consulted, every run (`draft.patterns_consulted`; *patterns consulted: …*, or *none*). Consulting a pattern is not including it: the profile is unchanged, and `sdem status` still offers the pattern for a person to include so that it is checked from then on. |
+| CPL-17 | **`sdem status` prints the steps in the one order**: include the patterns that fit (a person) → `sdem aid --complete-draft` → `sdem link` → look (`sdem comply`, `sdem pattern draw`) → confirm what is inferred → approve the links (a person). The inference step is offered while the draft is not whole. |
+| CPL-18 | **One skill says it, and a test holds the two together**: `sdem-complete-draft` (every agent platform's skills folder) gives the nine steps, what each leaves behind, the hand-back weakest first, and what is never done; `sdem-new-design` and `sdem-design-from-document` point to it; `AGENTS.md` rule 7 says inference is SDEM's, never the agent's. `tests/test_draft_order.py` fails if the skill's order and the order `sdem status` prints differ. |
+
+A pattern's block in `sdem status` also says where the **draft** stands (CPL-15): *3 of 14 parts in place — 11 to decide; in the draft: 9 of 14 counting what is inferred or proposed*.
+
 ## Stages to come — each its own change, tests first
 
 | Stage | What | Kind |

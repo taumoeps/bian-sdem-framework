@@ -128,11 +128,19 @@ def fill(workspace, person, dry_run=False, now=None, complete_draft=False):
                                          'source': 'docs/design/sdem-completeness-design.md stage 4', 'reasoning': why, 'from': frm, **k}
     live_maps = [(m['source']['id'], m['relationship'], m['target']['id']) for m in registry.get('mappings', []) if m.get('status') == 'approved']
     domain_uses, domains_added, parts_added = [], [], []
-    if _prof.ACTIVE is not None and _prof.structures():   # AID-D05: a BIAN domain a pattern names and the design lacks — from the catalogue, marked inferred
+    from .metamodel import Metamodel as _MMd
+    structs = list(_prof.structures()) + _prof.fitting(after, _MMd.load())   # CPL-16: every pattern SDEM ships that fits is asked, in the profile or not
+    consulted = []
+    for st in structs:
+        aw = st['pattern'].get('applies_when') or {}
+        hit = sorted(i['id'] for d in after.values() for i in d['instances'] if _MMd.load().known(i['type']) and _MMd.load().is_a(i['type'], aw.get('entity', ''))
+                     and _prof.applies({'when': aw.get('when') or {}}, i) and not is_inferred(i, confirmed=False))
+        if hit: consulted.append({'id': st['pattern']['id'], 'title': st['pattern']['title'], 'included': st.get('included', True), 'applies_to': hit[0],
+                                  **({'include': st['file']} if st.get('included') is False else {})})
+    if structs:   # AID-D05: a BIAN domain a pattern names and the design lacks — from the catalogue, marked inferred
         from .aid_complete import pattern_domains
-        from .metamodel import Metamodel as _MMd
         earlier_maps = [(m['source']['id'], m['relationship'], m['target']['id']) for f in (runs.glob('AID-*-proposals.json') if runs.exists() else []) for m in _j(f).get('mappings', [])]
-        drecs, dlinks, domain_uses, domains_added = pattern_domains(after, catalogue, live_maps + earlier_maps, _MMd.load(), _prof.structures(), dmark, rejected)
+        drecs, dlinks, domain_uses, domains_added = pattern_domains(after, catalogue, live_maps + earlier_maps, _MMd.load(), structs, dmark, rejected)
         if drecs:
             a2doc = after.setdefault('A2', {'level': 'A2', 'model_id': f'{stem}-A2', 'model_version': now[:10], 'metamodel_version': _MMd.load().version,
                                             'source_system': 'SDEM-AID', 'instances': [], 'relationships': []})
@@ -141,7 +149,7 @@ def fill(workspace, person, dry_run=False, now=None, complete_draft=False):
             a2doc.setdefault('relationships', []).extend(dlinks)
         domain_uses = [(*u, 'AID-D05') for u in domain_uses]
         from .aid_complete import pattern_parts   # AID-D06: a part a pattern requires and the design has nothing of — a planned record, marked inferred
-        precs, plinks, pprops, parts_added = pattern_parts(after, live_maps, _MMd.load(), _prof.structures(), dmark, rejected)
+        precs, plinks, pprops, parts_added = pattern_parts(after, live_maps, _MMd.load(), structs, dmark, rejected)
         for lvl, rs in sorted(precs.items()):
             doc = after.setdefault(lvl, {'level': lvl, 'model_id': f'{stem}-{lvl}', 'model_version': now[:10], 'metamodel_version': _MMd.load().version,
                                          'source_system': 'SDEM-AID', 'instances': [], 'relationships': []})
@@ -252,11 +260,11 @@ def fill(workspace, person, dry_run=False, now=None, complete_draft=False):
                           'target': end({'id': tgt, 'type': t_['type'], 'version': t_['version']}), 'status': 'proposed', 'confidence': 'low', 'evidence_class': 'name_token' if drule == 'AID-D05' else 'pattern',
                           'evidence': [f'engine_rationale:{run} {drule}'], 'rationale': f'Inferred by sdem aid ({drule}): {why}' + (' — approve with process_model evidence' if drule == 'AID-D05' else ''),
                           'baseline_id': run, 'created_by': 'sdem aid'})
-    draft = {'links_inferred': 0, 'defaults': 0, 'links': [], 'left_open': [], 'domains_added': domains_added, 'parts_added': parts_added, 'parts_to_name': []}
-    if _prof.ACTIVE is not None and _prof.structures():   # AID-D07: which record is the part — suggested from its name, never written
+    draft = {'links_inferred': 0, 'defaults': 0, 'links': [], 'left_open': [], 'domains_added': domains_added, 'parts_added': parts_added, 'parts_to_name': [], 'patterns_consulted': consulted}
+    if structs:   # AID-D07: which record is the part — suggested from its name, never written
         from .aid_complete import name_parts
         from .metamodel import Metamodel as _MMn
-        draft['parts_to_name'] = name_parts(after, live_maps, _MMn.load(), _prof.structures())
+        draft['parts_to_name'] = name_parts(after, live_maps, _MMn.load(), structs)
     if _prof.ACTIVE is not None and _prof.rules():   # AID-D01…D03: the links a standard asks for and the design lacks — inferred where a name gives evidence, said where none does
         from .aid_complete import propose_links
         from .metamodel import Metamodel as _MMc
@@ -438,6 +446,9 @@ def main(argv):
         print(f"A4: {rec['a4_connections']} connection(s) {'would be proposed' if a.dry_run else 'proposed'} for shapes linked to nothing (AID-C01…C06) — confirm or reject by the shape's id")
     for u in rec.get('a4_unresolved', []): print(f"A4: {u['id']} not connected — {u['why']}")
     dr = rec.get('draft') or {}
+    if dr.get('patterns_consulted'):   # CPL-16: said every time — which patterns were asked before anything was inferred
+        print('patterns consulted: ' + '; '.join(f"{p['title']} (" + ('in the profile' if p['included'] else f"fits the design; not in the profile — a person includes it to keep it checked: sdem profile include {p['include']} --workspace {a.estate} --person <you>") + ')' for p in dr['patterns_consulted']))
+    else: print('patterns consulted: none — no pattern SDEM ships or the profile includes fits this design')
     if dr.get('domains_added'): print(f"draft: {', '.join(dr['domains_added'])} {'would be' if a.dry_run else ''} brought in from BIAN because a pattern names them (AID-D05) — marked inferred: confirm or reject each")
     if dr.get('parts_added'): print(f"draft: {len(dr['parts_added'])} part(s) a pattern asks for and the design has nothing of {'would be' if a.dry_run else ''} added as planned records (AID-D06) — marked inferred: {', '.join(dr['parts_added'][:8])}{' …' if len(dr['parts_added']) > 8 else ''}")
     for x in dr.get('parts_to_name') or []:

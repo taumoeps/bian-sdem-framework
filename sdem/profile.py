@@ -87,6 +87,13 @@ def available(datasets, mm):
     return sorted(out, key=lambda x: (not x['specific'], x['include']))   # the pattern for this kind of solution before the one for its kind of domain (CPL-12)
 
 
+def fitting(datasets, mm):
+    """CPL-16: the structures of the shipped patterns that fit this design and that its profile does not include — for `sdem aid`,
+    which asks every pattern that fits before it infers anything. Consulting one is not including it."""
+    names = {x['include'] for x in available(datasets, mm)}
+    return [{'pattern': d['pattern'], 'structure': d['structure'], 'file': n, 'included': False} for n, d in shipped_patterns() if n in names and d.get('structure')]
+
+
 def shipped_included():
     """The ids of the active profile's standards and patterns that are SDEM's own shipped files (CPL-11)."""
     base = (DATA_ROOT / 'standards').resolve().as_posix() + '/'

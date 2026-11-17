@@ -118,10 +118,26 @@ def collect(ws):
             for f in c['findings']:
                 pid = (f.get('pattern') or {}).get('id')
                 if pid in ship and f.get('part'): groups.setdefault((pid, f['record']), []).append(f)
-            comp['patterns'] = []
+            comp['patterns'] = []; in_draft = {}
+            try:   # CPL-15 for patterns: the same parts counting what is proposed between layers and not yet decided
+                import json as _j3
+                from pathlib import Path as _P3
+                from .comply import workspace_data as _wd
+                from .patterns import evaluate as _pe
+                ds3, maps3, mm3, _ = _wd(ws)
+                reg3 = _j3.loads((_P3(ws) / 'mappings.json').read_text(encoding='utf-8')).get('mappings', [])
+                dec3 = {(m['source']['id'], m['relationship'], m['target']['id']) for m in reg3 if m.get('status') in ('approved', 'rejected')}
+                pr3 = set()
+                for pf in sorted((_P3(ws) / 'aid').glob('*-proposals.json')) + [_P3(ws) / 'links' / 'proposals.json']:
+                    if pf.exists(): pr3 |= {(m['source']['id'], m['relationship'], m['target']['id']) for m in _j3.loads(pf.read_text(encoding='utf-8')).get('mappings', [])}
+                for f in _pe(ds3, list(maps3) + sorted(pr3 - dec3), mm3, _p.structures(), _p.exceptions())[0]:
+                    if f['part']['kind'] == 'role' and f['part']['id'] != anchors.get(f['pattern']['id']) and (f['outcome'] == 'compliant' or 'inferred, not yet confirmed' in (f.get('detail') or '')):
+                        in_draft[(f['pattern']['id'], f['record'])] = in_draft.get((f['pattern']['id'], f['record']), 0) + 1
+            except (ValueError, OSError, KeyError): pass
             for (pid, rid), fs in sorted(groups.items()):
                 roles = [f for f in fs if f['part']['kind'] == 'role' and f['part']['id'] != anchors.get(pid)]
                 comp['patterns'].append({'pattern': pid, 'title': fs[0]['pattern'].get('title'), 'anchor': rid, 'parts': len(roles), 'in_place': sum(f['outcome'] == 'compliant' for f in roles),
+                                         'draft_in_place': max(in_draft.get((pid, rid), 0), sum(f['outcome'] == 'compliant' for f in roles)),
                                          'under_exception': sum(f['outcome'] == 'exception_approved' for f in fs),
                                          'open': [{'part': f['part']['id'], 'label': f['part']['label'], 'outcome': f['outcome'], 'detail': f['detail'], 'why': f['part'].get('reasoning')} for f in fs if f['outcome'] in ('non_compliant', 'unresolved')]})
         from .comply import workspace_data   # CPL-09: a pattern SDEM ships that fits this design and is not included

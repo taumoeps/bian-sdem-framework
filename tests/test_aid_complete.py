@@ -264,7 +264,7 @@ class InAWorkspace(unittest.TestCase):
         self.propose('A1', 'sdem-a1-business', [rec('PROC-PAY', 'A1.BusinessProcess', 'Take the payment')])
         self.ok('profile', 'include', PATTERN, '--workspace', self.ws, '--person', 'jane.architect')
         run = json.loads(self.ok('aid', '--workspace', self.ws, '--person', 'jane.architect', '--json'))
-        self.assertIn('AID-PAT-PAYMENT-INITIATION-KEY-STORE', run['draft']['parts_added']); self.assertTrue(all(i.startswith('AID-PAT-PAYMENT-INITIATION-') for i in run['draft']['parts_added']))
+        self.assertIn('AID-PAT-PAYMENT-INITIATION-KEY-STORE', run['draft']['parts_added']); self.assertTrue(all(i.startswith('AID-PAT-') for i in run['draft']['parts_added']))   # the solution's pattern, and its domain's kind (CPL-16: every pattern that fits is asked)
         a4 = {i['id']: i for i in json.loads((self.ws / 'a4-technology.json').read_text(encoding='utf-8'))['instances']}
         self.assertEqual(a4['AID-PAT-PAYMENT-INITIATION-KEY-STORE']['attributes']['inferred']['rule'], 'AID-D06')
         self.assertEqual(run['draft']['parts_to_name'], [])

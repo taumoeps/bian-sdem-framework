@@ -45,6 +45,8 @@ Each layer's change set goes under that layer's agent (CTL-19); if your platform
 
 ## 4. Let SDEM infer and propose
 
+**From here on follow the skill `sdem-complete-draft` — its order is fixed and is the one `sdem status` prints:** the BIAN domains the design names, then the standards and every pattern that fits, *then* `sdem aid` (with `--complete-draft` when the architect wants a whole first draft), then `sdem link`, then the hand-back, weakest first. What follows here is the least of it.
+
 ```
 sdem aid --workspace <ws> --person <architect> --dry-run --json      # check added.A2: the domains your invokes name
 sdem aid --workspace <ws> --person <architect> --json                # only if the architect asked for inference
