@@ -2,7 +2,10 @@
 
 > Entries before 0.7.0 describe the project under its former name, **SDMM (BIAN Service Domain Mapping Model)**, and its former terms; they are kept as written.
 
-## Unreleased
+## 0.19.0 — a full design: the information model, the links ArchiMate defines, events, products, channels and locations (2026-11-16)
+
+Upgrade: change the pin to `@v0.19.0`, `pip install -r requirements.txt`, `sdem agents install`; then `sdem migrate --workspace <dir> --person <you>` (metamodel 0.14.0 → 0.17.0, additive — nothing in your data changes; what is now thin is reported, never refused). Run `sdem aid` again to have it propose data tables, field matches and the new links.
+
 
 - **A plan to benchmark SDEM without any real organisation's designs** ([the public twin](docs/design/sdem-public-twin-benchmark-plan.md), PT-01…PT-39; the owner's decisions D1–D9, 2026-11-17). A made-up New Zealand retail bank — a third party initiating a single domestic payment under the NZ open banking standard (v2.3.3) — is designed and frozen outside SDEM by an independent author ([the brief](docs/design/sdem-public-twin-reference-brief.md)); SDEM is then given the design document only and scored against the hidden reference: what it holds, the links it proposes (before and after a person's approvals, stated and implied apart), its answers, and the planted mistakes it catches. A plan only — nothing is built yet, and no code changes.
 
@@ -41,9 +44,7 @@
 
 - **Patterns for BIAN's functional patterns: Transact and Fulfill** (CPL-12…CPL-14). A pattern that applies by a service domain's functional pattern serves every domain of that kind — 14 Transact domains, 39 Fulfill — without a file a domain: who uses the domain, what carries it, an API that implements one of its operations, where its transaction or arrangement is kept and where it runs; for Fulfill also the product the arrangements are for. `sdem status` offers the one that fits, after a pattern for the solution itself. Including both a solution's pattern and its domain's is allowed; `sdem aid` does not add the same kind of part for each.
 
-## 0.19.0 — a full design: the information model, the links ArchiMate defines, events, products, channels and locations (2026-11-16)
-
-Upgrade: change the pin to `@v0.19.0`, `pip install -r requirements.txt`, `sdem agents install`; then `sdem migrate --workspace <dir> --person <you>` (metamodel 0.14.0 → 0.17.0, additive — nothing in your data changes; what is now thin is reported, never refused). Run `sdem aid` again to have it propose data tables, field matches and the new links.
+**After the first 0.19.0 build (2026-11-16), also in 0.19.0** — the entries above: the public twin, `sdem reject`, flat network zones, a complete design (the completeness standard, patterns for kinds of solution, `sdem aid` completing the draft). No metamodel change: metamodel 0.17.0 as before.
 
 - **`sdem trace` reads cleanly:** "connections followed" lists only approved links — the structural steps inside A4 (a shape in its zone, a zone in a larger one, a platform on its network) are named on one line below, no more `? -?-> ?`; with `--follow-composition` a zone is no longer listed twice.
 - **SDEM proposes what the architect stated by hand in v2 (the owner's approvals 2, 2b, 3, 4).** `sdem aid` now proposes the direct A1→A3 links from approved paths — a process SERVED_BY and AUTOMATED_BY the application, a business service, event and channel REALIZED_BY it, platform services (AID-L01…L06); an A1 object ALIGNED_TO the BIAN object of the same name and a kept table STORED_IN the design's database (AID-I05, I06); a BIAN object mapped to an **existing** table before any new one is inferred (AID-K02) and its fields matched to the table's columns (AID-K01) — one clear best only, never a guess. On v2: 16 of the 25 links the owner stated by hand are now proposed in one pass, and no duplicate table is inferred. Documents mark a BIAN field as its object's own or repeated from a parent object; onboarding reads business events, products, channels, locations and data tables.
