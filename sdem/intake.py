@@ -203,16 +203,17 @@ def check(pkg, allow_gaps=False):
                         std, pat = f.get('standard') or {}, f.get('pattern') or {}
                         if std.get('id') == 'SDEM-COMPLETE':
                             across = 'approved' in (f.get('message') or '') or 'approved' in (f.get('detail') or '')
-                            gaps.append({'record': f['record'], 'rule': f['rule'], 'file': SUGG if across else LAYERS.get(f.get('layer'), 'the layer file'),
-                                         'message': f"{f['record']} is not connected: {f.get('message')} ({f['rule']})" + (' — give the link between layers' if across else ' — write the link in the layer')})
+                            gaps.append({'record': f['record'], 'rule': f['rule'], 'kind': 'record', 'declared': f['record'] in declared, 'file': SUGG if across else LAYERS.get(f.get('layer'), 'the layer file'),
+                                         'message': f"{f['record']} is not connected: {f.get('message')} ({f['rule']})"})
                         elif pat.get('id') and f.get('part') and f['part'].get('kind') == 'role':
                             d_ = (f.get('detail') or '').replace('planned — ', '')
                             if 'which is missing' in d_: continue   # follows from another part that is missing: said there
-                            gaps.append({'record': f['record'], 'rule': f['rule'], 'file': 'the design',
+                            gaps.append({'record': f['record'], 'rule': f['rule'], 'kind': 'pattern', 'declared': True, 'file': 'the design',
                                          'message': f"the {pat.get('title')} pattern, which fits this design ({f['record']}): {d_}" + (f" — why it is needed: {f['part']['reasoning']}" if f['part'].get('reasoning') else '')
                                                     + _how(pat.get('id'), f['part']['id'])})
                 undeclared = gaps
-                if not allow_gaps: errors += [{'file': g['file'], 'message': 'NOT COMPLETE — ' + g['message']} for g in gaps]
+                if not allow_gaps:   # IN-11: every loose end is accounted for — linked, if the design says so, or declared; an author never fills it
+                    errors += [{'file': g['file'], 'message': f"NOT ACCOUNTED FOR — {g['message']} — write the link only if the design says it; otherwise add {g['record']} to {NOTS}"} for g in gaps if not g['declared']]
         finally: shutil.rmtree(tmp, ignore_errors=True)
     return {'package': str(pkg), 'ok': not errors, 'errors': errors,
             'counts': {'records': {l: len(d['instances']) for l, d in docs.items()}, 'links': {l: len(d['relationships']) for l, d in docs.items()},
@@ -257,10 +258,10 @@ def render_check(r):
     else:
         L.append(f"OK: {r['package']} passes SDEM's checks — " + ' · '.join(f'{l} {n} record(s), {c["links"][l]} link(s)' for l, n in c['records'].items())
                  + f"; {c['suggestions']} link(s) between layers; BIAN: {', '.join(r['bian']['service_domains']) or 'none named'}"
-                 + ('; COMPLETE — every record connected, every part of every pattern that fits present' if r['complete'] else ''))
+                 + ('; COMPLETE as written — every record connected, every part of every pattern that fits present' if r['complete'] else ''))
         if r['gaps']:
-            L.append(f"NOT COMPLETE (allowed by --allow-gaps) — {len(r['gaps'])} gap(s):")
-            L += [f"  {g['file']}: {g['message']}" for g in r['gaps'][:60]]
+            L.append(f"For information — {len(r['gaps'])} thing(s) the design does not give, which SDEM's own rules (sdem aid) will go on to complete where they can, each marked inferred. Nothing for the author to do:")
+            L += [f"  {g['message'].split(' — to fix:')[0]}" + ('' if g['declared'] else '  [NOT DECLARED]') for g in r['gaps'][:60]]
     return '\n'.join(L)
 
 
@@ -381,18 +382,16 @@ def render_report(r, run, status, status_text, mine, ws, person, accepted=()):
          f"- Named by the design but not BIAN's (not loaded as service domains): {', '.join(r['bian']['bank_local_not_bian']) or 'none'}.",
          (f"- Links between layers: {len(accepted)} accepted as authored (`--accept`), each on the design section it cites, under {person}'s name." if accepted else
           f"- Links between layers the author suggested: {c['suggestions']} — now proposals; {len(mine)} of them only the author proposes (`aid/AUTHOR-proposals.json`)."),
-         f"- Design decisions the author made where the document was silent: {len(r['decisions'])}" + (' — listed below.' if r['decisions'] else '.'), '',
+         '',
          '## What the author said the design does not state', '']
     L += [f"- `{x.get('record_id') or '—'}` — {x.get('detail', '')}" + (f" (section {x['design_section']})" if x.get('design_section') else '') for x in r['_not_stated']] or ['- nothing declared']
-    if r['decisions']:
-        L += ['', "## What the author decided where the design document was silent", '']
-        L += [f"- {x.get('what', '')} — {x.get('decision', '')}" + (f" (why: {x['reason']})" if x.get('reason') else '') for x in r['decisions']]
     if r['gaps']:
-        L += ['', f"**Not complete ({len(r['gaps'])}) — taken in with `--allow-gaps`:**", '']
-        L += [f"- {g['message']}" for g in r['gaps']]
+        L += ['', f"**What the design does not give ({len(r['gaps'])})** — left to SDEM's rules, never filled by the author:", '']
+        L += [f"- {g['message'].split(' — to fix:')[0]}" for g in r['gaps']]
     L += ['', '## The draft', '', 'Patterns asked before anything was inferred: ' + ('; '.join(p['title'] for p in d.get('patterns_consulted') or []) or 'none fits this design') + '.', '', '```']
     L += [l for l in status_text.splitlines() if l.startswith(('Completeness:', 'Draft:', 'Pattern '))] + ['```', '',
-          '*Completeness* counts only what is stated or confirmed. *Draft* counts what is inferred or proposed as well — a proposed link is drawn dashed and is not a connection until you approve it.', '',
+          '*Completeness* counts only what the design states. *Draft* counts as well what SDEM completed by its own written rules (`sdem aid`) — never by an AI. Everything SDEM added is marked inferred or proposed, with the rule that produced it.', '',
+          '**Nothing below needs you for the design to be used.** It is what SDEM inferred, weakest first, for whenever you choose to confirm or reject it.', '',
           '## Yours to decide — weakest first', '']
     said = {x.get('record_id') for x in r['_not_stated']}
     links = d.get('links') or []
@@ -423,8 +422,8 @@ def main(argv=None):
     ap.add_argument('--workspace', dest='estate', metavar='DIR', help='the workspace to start with this design (a new folder, or one that holds no records yet)')
     ap.add_argument('--person', help='your name — a person')
     ap.add_argument('--dry-run', action='store_true', help='check, and say what would be loaded and done; write nothing')
-    ap.add_argument('--allow-gaps', action='store_true', help='take (or pass) a design that is not complete — records not connected, or a part of a fitting pattern missing; each gap is listed. Without it, not complete is an error')
-    ap.add_argument('--accept', action='store_true', help="take the design as authored: its links between layers are approved under your name, on the evidence of the design sections they cite — no link is left for review. Your decision, recorded as yours")
+    ap.add_argument('--allow-gaps', action='store_true', help='do not fail on a record that is neither connected nor declared in NOT-STATED.json (it is still listed). Without it, every loose end must be accounted for')
+    ap.add_argument('--accept', action='store_true', help="take the design as authored: the links between layers its author wrote from the design are approved under your name, on the evidence of the design sections they cite — none is left for review. What SDEM's rules then infer stays marked inferred. Your decision, recorded as yours")
     ap.add_argument('--json', action='store_true')
     a = ap.parse_args(argv)
     try:

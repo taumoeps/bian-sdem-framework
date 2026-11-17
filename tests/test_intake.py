@@ -55,7 +55,6 @@ def complete():
                                                                                  S('Currency Exchange', 'REALIZED_BY', 'APP-FX'), S(f'Currency Exchange: {op}', 'IMPLEMENTED_BY', 'OP-FX'),
                                                                                  S('DATA-FX', 'STORED_IN', 'SYS-DB'), S('APP-FX', 'DEPLOYED_AS', 'DEP-FX')]},
         'NOT-STATED.json': {'items': []},
-        'DECISIONS.json': {'decisions': [{'what': 'DATA-FX STORED_IN SYS-DB', 'decision': 'the exchanges table is in the one database', 'reason': 'the document names no other store', 'design_section': '6'}]},
         'CHECKLIST.json': {'cli_executed': True},
     }
 
@@ -111,29 +110,31 @@ class Check(Base):
         text = self.sdem('intake', self.pkg, '--check')[1]
         self.assertIn('9 thing(s) to fix', text); self.assertIn('OpenAPI 3.1', text)   # the allowed values are in the message: the author can fix it without asking
 
-    def test_a_design_that_is_not_complete_fails_and_each_gap_says_what_to_add(self):   # IN-11
-        self.write(package())
+    def test_every_loose_end_is_linked_or_declared_and_the_author_fills_none(self):   # IN-11 (the owner: only SDEM's rules infer, never an AI)
+        self.write(package())   # ACT-CUST is declared not stated; PROC-SCREEN, DEP-HUB and SYS-DB are loose and not declared
         code, out, err = self.sdem('intake', self.pkg, '--check', '--json'); self.assertEqual(code, 1, out + err)
         msgs = [e['message'] for e in json.loads(out)['errors']]
-        self.assertTrue(all(m.startswith('NOT COMPLETE — ') for m in msgs), msgs)
+        self.assertTrue(all(m.startswith('NOT ACCOUNTED FOR — ') and 'write the link only if the design says it; otherwise add' in m for m in msgs), msgs)
         text = ' | '.join(msgs)
-        self.assertIn('ACT-CUST is not connected: an actor does something in the design, or is served by it (CPL-A1-05)', text)   # listing it as not stated does not excuse it
-        self.assertIn('PROC-SCREEN is not connected', text)
-        self.assertNotIn('DATA-PAY is not connected', text)                                # its store is given as a link between layers
-        self.assertIn('the Payment initiation pattern, which fits this design', text); self.assertIn('no Fraud Evaluation (BIAN) in the design', text); self.assertIn('why it is needed: ', text)
-        self.assertNotIn('which is missing', text)                                         # a part that only follows from a missing part is not said twice
-        code, out, err = self.sdem('intake', self.pkg, '--check', '--allow-gaps', '--json'); self.assertEqual(code, 0, out + err)
-        r = json.loads(out); self.assertEqual((r['ok'], r['complete']), (True, False)); self.assertEqual(len(r['gaps']), len(msgs))
+        self.assertIn('PROC-SCREEN is not connected', text); self.assertNotIn('ACT-CUST', text)       # declared: accounted for
+        self.assertNotIn('DATA-PAY is not connected', text)                                           # its store is given as a link between layers
+        self.assertNotIn('pattern', text)                                                             # what a pattern lacks is never the author's to add
+        p = package(); p['NOT-STATED.json']['items'] += [{'record_id': x, 'detail': 'the design does not say', 'design_section': '1'} for x in ('PROC-SCREEN', 'DEP-HUB', 'SYS-DB')]; self.write(p)
+        code, out, err = self.sdem('intake', self.pkg, '--check', '--json'); self.assertEqual(code, 0, out + err)
+        r = json.loads(out); self.assertEqual((r['ok'], r['complete'], r['errors']), (True, False, []))
+        kinds = {g['kind'] for g in r['gaps']}; self.assertEqual(kinds, {'record', 'pattern'})
+        info = self.sdem('intake', self.pkg, '--check')[1]
+        self.assertIn("which SDEM's own rules (sdem aid) will go on to complete where they can, each marked inferred. Nothing for the author to do", info)
+        self.assertIn('no Fraud Evaluation (BIAN) in the design', info); self.assertNotIn('to fix:', info)
 
     def test_a_complete_design_passes_with_nothing_left(self):   # IN-11
         self.write(complete())
         code, out, err = self.sdem('intake', self.pkg, '--check', '--json'); self.assertEqual(code, 0, out + err)
         r = json.loads(out); self.assertEqual((r['ok'], r['complete'], r['gaps'], r['errors']), (True, True, [], []))
-        self.assertIn('COMPLETE — every record connected, every part of every pattern that fits present', self.sdem('intake', self.pkg, '--check')[1])
+        self.assertIn('COMPLETE as written — every record connected, every part of every pattern that fits present', self.sdem('intake', self.pkg, '--check')[1])
         p = complete(); p['CROSS-LAYER-SUGGESTIONS.json']['suggestions'] = [x for x in p['CROSS-LAYER-SUGGESTIONS.json']['suggestions'] if x['link_type'] != 'DEPLOYED_AS']; self.write(p)
         code, out, err = self.sdem('intake', self.pkg, '--check'); self.assertEqual(code, 1)
-        self.assertIn('CROSS-LAYER-SUGGESTIONS.json: NOT COMPLETE — APP-FX is not connected: a component has a deployment', out)
-        self.assertIn('Deployment of the component', out)                                   # and the pattern's part it leaves empty
+        self.assertIn('CROSS-LAYER-SUGGESTIONS.json: NOT ACCOUNTED FOR — APP-FX is not connected: a component has a deployment', out)
 
     def test_a_missing_file_or_a_folder_that_is_not_a_package_is_refused_plainly(self):   # IN-01
         p = package(); del p['BIAN-DOMAINS.json']; del p['a1-business.json']; self.write(p)
@@ -184,7 +185,7 @@ class Load(Base):
         self.assertEqual((s['state'], s['blocking'], s['unresolved']), ('clear', [], []))   # IN-13: nothing to review, confirm, approve or plan — the design's first load is not a change to plan
         self.assertEqual(self.sdem('check', '--workspace', self.ws)[0], 0)
         rep = (self.ws / r['report']).read_text(encoding='utf-8')
-        self.assertIn('6 accepted as authored', rep); self.assertIn('## What the author decided where the design document was silent', rep); self.assertIn('the exchanges table is in the one database', rep)
+        self.assertIn('6 accepted as authored', rep); self.assertIn('never by an AI', rep); self.assertIn('Nothing below needs you for the design to be used', rep)
         code, out, err = self.sdem('intake', self.pkg, '--workspace', self.tmp / 'ws2', '--person', 'sdem-orchestrator', '--accept'); self.assertEqual(code, 2)   # accepting is a person's (CTL-21)
 
     def test_a_package_that_fails_its_check_changes_nothing(self):   # IN-05

@@ -1599,8 +1599,8 @@ sdem intake <package> [--check] [--workspace WORKSPACE] [--person PERSON] [--dry
 | `--workspace` |  | the workspace to start with this design (a new folder, or one that holds no records yet) |
 | `--person` |  | your name — a person |
 | `--dry-run` |  | check, and say what would be loaded and done; write nothing |
-| `--allow-gaps` |  | take (or pass) a design that is not complete — records not connected, or a part of a fitting pattern missing; each gap is listed. Without it, not complete is an error |
-| `--accept` |  | take the design as authored: its links between layers are approved under your name, on the evidence of the design sections they cite — no link is left for review. Your decision, recorded as yours |
+| `--allow-gaps` |  | do not fail on a record that is neither connected nor declared in NOT-STATED.json (it is still listed). Without it, every loose end must be accounted for |
+| `--accept` |  | take the design as authored: the links between layers its author wrote from the design are approved under your name, on the evidence of the design sections they cite — none is left for review. What SDEM's rules then infer stays marked inferred. Your decision, recorded as yours |
 | `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
 
 Example:

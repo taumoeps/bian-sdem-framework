@@ -28,10 +28,13 @@ class Guide(unittest.TestCase):
     def test_it_stands_alone_method_files_rules_checks(self):   # AU-02
         for h in ('## 1. What you hand over', '## 2. The method', '## 3. The rules', '## 4. What SDEM will check', '## 5. The vocabulary', '## 6. Links between layers', '## 7. Before you hand over', '## 8. Better than the checklist'):
             self.assertIn(h, self.text)
-        for f in ('a1-business.json', 'a3-application.json', 'a4-technology.json', 'BIAN-DOMAINS.json', 'CROSS-LAYER-SUGGESTIONS.json', 'DECISIONS.json', 'NOT-STATED.json', 'CHECKLIST.json'):
+        for f in ('a1-business.json', 'a3-application.json', 'a4-technology.json', 'BIAN-DOMAINS.json', 'CROSS-LAYER-SUGGESTIONS.json', 'NOT-STATED.json', 'CHECKLIST.json'):
             self.assertIn(f, self.text)
-        for rule in ('never write the A2 file', 'Never a placeholder', 'never written in a layer file', 'You are the designer, and the design you hand over is COMPLETE', 'you decide it',
-                     'Decide openly, never silently', 'until it prints `OK … COMPLETE`', '"conforms_to"'):   # AU-08: complete, decided openly, tested black and white
+        for rule in ('never write the A2 file', 'Never a placeholder', 'never written in a layer file', 'You are translating a design into data. You are not designing, and you do not fill gaps',
+                     'you do not decide it and you do not guess it', 'Do not invent, do not decide, do not complete', 'until it prints `OK`'):   # AU-08: translate only; SDEM's rules complete
+            self.assertIn(rule, self.text)
+        self.assertNotIn('DECISIONS.json', self.text)   # an author decides nothing
+        for rule in ('NOT-STATED.json',):
             self.assertIn(rule, self.text)
 
     def test_every_type_an_author_may_write_is_there_with_its_allowed_values(self):   # AU-03

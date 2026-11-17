@@ -19,14 +19,14 @@ INTRO = '''# Authoring a full design as SDEM data — A1 to A4
 
 SDEM holds a solution design as records in four layers — **A1** business, **A2** BIAN service domains, **A3** application, **A4** technology — with links inside each layer and links between layers. You write the records and the links inside A1, A3 and A4, and the links between layers. SDEM takes A2 from BIAN itself.
 
-**You are the designer, and the design you hand over is COMPLETE.** Nobody reviews your files to fill them in. One command takes them in as authored. So:
+**You are translating a design into data. You are not designing, and you do not fill gaps.** One command takes your files in as written. So:
 
 - **SDEM accepts every record and link you wrote** — the vocabulary below is exact.
-- **Every record is connected, and every part your kind of solution needs is there** — section 4 says what that means, exactly.
-- **Where the design document is silent on something a complete design needs, you decide it** — as a design decision, with its reason, listed in `DECISIONS.json`. You do not leave it out, and you do not hide that you decided it.
-- **The test is black and white:** `python -m sdem intake <your folder> --check` (section 8) prints `OK … COMPLETE`, or it prints each thing still to fix. You are finished when it prints `COMPLETE`, and not before.
+- **Everything in your files is something the design says.** Where the design is silent — which component offers an interface, what stores a table — **you do not decide it and you do not guess it. You list it in `NOT-STATED.json`.** SDEM completes the design afterwards by its own written rules, and marks everything it adds as inferred. A guess of yours, written as data, could not be told from a stated fact; so it is not allowed.
+- **Every loose end is accounted for:** each record that is not connected as section 4 asks is either linked, because the design says so, or named in `NOT-STATED.json`.
+- **The test is black and white:** `python -m sdem intake <your folder> --check` (section 8) prints `OK`, or it prints each thing still to fix. You are finished when it prints `OK`, and not before.
 
-## 1. What you hand over — nine files
+## 1. What you hand over — eight files
 
 | File | What it holds |
 |---|---|
@@ -34,9 +34,8 @@ SDEM holds a solution design as records in four layers — **A1** business, **A2
 | `a3-application.json` | the application layer, same form, `"level": "A3"` |
 | `a4-technology.json` | the technology layer, same form, `"level": "A4"` |
 | `BIAN-DOMAINS.json` | `{{"release": "…", "service_domains": [{{"name": BIAN's exact name, "source": design section}}], "operations": [{{"service_domain", "name", "used_by": [A1 process ids], "source"}}], "bank_local_not_bian": [names the design uses that are NOT BIAN service domains]}}` |
-| `CROSS-LAYER-SUGGESTIONS.json` | every link between layers: `{{"suggestions": [{{"source": id, "link_type": one of section 6's, "target": id, "design_section", "basis": "stated", "implied" or "decision", "reason"}}]}}`. An end that is BIAN's is given by name: a service domain as `"Payment Order Initiation"`, one of its operations as `"Payment Order Initiation: Initiate"` |
-| `DECISIONS.json` | `{{"decisions": [{{"what": the record or link, "decision": what you decided, "reason", "design_section"}}]}}` — everything you decided because the design document did not say it. May be empty only if the document said everything |
-| `NOT-STATED.json` | `{{"items": [{{"record_id", "detail", "design_section"}}]}}` — **optional attribute values only** that neither the document gives nor you can responsibly decide (an image digest, a product version, a host name). It never excuses a missing record or link: those you decide |
+| `CROSS-LAYER-SUGGESTIONS.json` | every link between layers the design states or plainly implies: `{{"suggestions": [{{"source": id, "link_type": one of section 6's, "target": id, "design_section", "basis": "stated" or "implied", "reason"}}]}}`. An end that is BIAN's is given by name: a service domain as `"Payment Order Initiation"`, one of its operations as `"Payment Order Initiation: Initiate"` |
+| `NOT-STATED.json` | `{{"items": [{{"record_id", "detail": what the design does not say, "design_section"}}]}}` — every record section 4 asks a link of that the design does not give; every value left out; and, with a name of your own as `record_id`, each thing a full design has that this one does not speak of at all (no value stream, no product) |
 | `CHECKLIST.json` | the result of each check in section 7, with counts — and `"cli_executed": false` |
 | `README.md` | what you did, from which design, and its limits |
 
@@ -50,22 +49,22 @@ SDEM holds a solution design as records in four layers — **A1** business, **A2
    - **A4**: nodes and devices; system software (databases, queues, key stores, monitoring); technology services; deployments (one per component and environment); environments; network zones; locations; artifacts; paths between nodes.
 3. **Use the design's own names** for records, exactly. Give each a short stable id of your own (`APP-LEDGER`), used consistently in every file.
 4. **Write the links inside each layer** — only the combinations section 5 lists, in that direction.
-5. **Complete it.** Every record has the links section 4 asks of its kind; every part of each pattern that fits your design is there. Where the document does not say — which component offers an interface, what stores a table, what screens for fraud — **decide it as the designer**, write it, and add it to `DECISIONS.json` with your reason.
-6. **Write every link between layers** in `CROSS-LAYER-SUGGESTIONS.json`, each with the design section that supports it, or `"basis": "decision"`.
+5. **Account for every record.** For each record, section 4 asks a link of its kind: write it if the design says it; if the design does not, add the record to `NOT-STATED.json` with what is missing. Never write a link to make a record look connected.
+6. **Write every link between layers the design states** in `CROSS-LAYER-SUGGESTIONS.json`, each with the design section that says it.
 7. **Check your files** — with SDEM itself if you can run Python (section 8), otherwise by the checklist (section 7) — and report the result honestly.
 
 ## 3. The rules
 
 1. One file per layer; **never write the A2 file** and never invent a service domain. A bank-local concept ("consent control") is not BIAN: list it under `bank_local_not_bian`.
 2. A record: `{{"id", "type", "version": "1", "name", "lifecycle_status", "description" (optional), "attributes": {{…}}}}`. `lifecycle_status`: planned, active, deprecated or retired.
-3. **Never a placeholder** (`TBD`, `unknown`, `3.x`, `n/a`): SDEM reads it as wrong. An attribute value you can decide, decide and record in `DECISIONS.json`; one you cannot (an image digest, a vendor's version), leave out, mark the record `planned`, and list it in `NOT-STATED.json`. A `planned` record may omit required attributes; an `active` one may not.
+3. **Where the design does not state a value, leave the attribute out, mark the record `planned`, and list it in `NOT-STATED.json`.** Never a placeholder (`TBD`, `unknown`, `3.x`, `n/a`): SDEM reads it as wrong. A `planned` record may omit required attributes; an `active` one may not.
 4. An attribute with allowed values takes exactly one of them, spelled as shown.
 5. A link inside a layer: `{{"source": id, "kind": kind, "target": id}}` — the (source type, kind, target type) must be listed in section 5. A subtype may use its parent's links. If the link you want is not listed, it is not allowed: use the one that is, or leave it out and say so.
 6. **Links between layers are never written in a layer file** — they go in `CROSS-LAYER-SUGGESTIONS.json`, all of them.
 7. Cite the design on every record and link: `"source_id": "document:design.md#4"` (in `attributes` for a record).
 8. Network zones: `zone_level` 0 with `zone_kind` on_premises or cloud; level 1 internal or dmz; level 2 private. A "restricted" zone is *private*, level 2. A design that simply lists its zones has no level-0 zone — do not add one.
-9. **Decide openly, never silently.** Everything in your files that the design document does not say is in `DECISIONS.json` with its reason, and its link carries `"basis": "decision"`. A decision is a choice between things a designer could defend — which component, which store, which zone. It is not a made-up fact about the world: no real vendor, product version, host name or person. Made-up data only; nothing from any real organisation.
-10. **The design is complete** — section 4 lists exactly what that means and the check in section 8 tests it. Where a pattern must know which record is one of its parts and cannot tell (the check says *ambiguous … name it*), name it on the record: `"conforms_to": ["<PATTERN-ID>#<part>"]` in its `attributes`.
+9. **Do not invent, do not decide, do not complete.** No record, link, value, image name, host, provider, version or owner the design does not give — however obvious it seems, and however much it would tidy the result. Completing a design is SDEM's job, done by its written rules and marked as inferred; it is never yours.
+10. **Every record is accounted for** — section 4 lists what SDEM checks. Each record meets it from what the design says, or is in `NOT-STATED.json`. Where the design itself says which record is a part of a pattern (its key store, say), name it on the record: `"conforms_to": ["<PATTERN-ID>#<part>"]` in its `attributes`.
 
 '''
 
@@ -77,8 +76,8 @@ CHECKS = '''## 7. Before you hand over — the checks, if you cannot run section
 | Attributes | every attribute name is listed for the type or its parent; every value with allowed values is one of them; no placeholder anywhere |
 | Links | every link is a (source type, kind, target type) section 5 lists, in that direction; both ids exist in the same file |
 | No A2, no cross-layer | no `a2-…` file; no link between layers inside a layer file; every suggestion's link type and end types are in section 6 |
-| Complete | every record meets section 4; every part of every pattern that fits is there; nothing is left for anyone to fill in |
-| Decided openly | everything not in the design document is in `DECISIONS.json` with its reason; every other record and link cites the design section that says it |
+| Accounted for | every record meets section 4 from what the design says, or is in `NOT-STATED.json` with what the design does not say |
+| Traceable | every record and link cites a design section that says it; nothing in the files is absent from the design; you decided nothing |
 | Honest | `CHECKLIST.json` says whether SDEM's check was run (`"cli_executed"`) and carries its last output; nothing is described as validated that was not |
 
 ## 8. Better than the checklist: run SDEM's own check
@@ -90,7 +89,7 @@ unzip sdem-{version}.zip -d sdem && cd sdem
 python -m sdem intake <the folder with your eight files> --check
 ```
 
-It says **everything** still to fix, at once, each with the file and the reason: what SDEM would refuse, and — as `NOT COMPLETE — …` — each record that is not connected and each part a fitting pattern needs, with what to add. **Fix what it reports and run it again, until it prints `OK … COMPLETE`.** A later run can show what an earlier error hid, so keep going until that line. Then set `"cli_executed": true` in `CHECKLIST.json` and paste the last output into it. Nothing is loaded and nothing is sent anywhere: the check works on a throw-away copy.
+It says **everything** still to fix, at once, each with the file and the reason: what SDEM would refuse, and each record that is neither connected nor declared (`NOT ACCOUNTED FOR — …`). For those, write the link **only if the design says it**; otherwise add the record to `NOT-STATED.json`. **Fix what it reports and run it again, until it prints `OK`.** A later run can show what an earlier error hid. It also lists, for information, what SDEM's rules will go on to complete — you do nothing about those. Then set `"cli_executed": true` in `CHECKLIST.json` and paste the last output into it. Nothing is loaded and nothing is sent anywhere: the check works on a throw-away copy.
 
 To find BIAN's exact names and a domain's operations: `python -m sdem bian search <words>`.
 
@@ -101,7 +100,7 @@ If you cannot run it, say so (`"cli_executed": false`) and use section 7 — but
 def _standards():
     """What SDEM will check, from the standards and patterns it ships — so the guide and the check never drift."""
     L = ['## 4. What SDEM will check — a complete design', '',
-         "Every record of the kind named meets its rule — the check in section 8 fails on each that does not. *Between layers* means a link you give in `CROSS-LAYER-SUGGESTIONS.json`.", '',
+         "Every record of the kind named meets its rule, or is in `NOT-STATED.json` — the check in section 8 fails on each that is neither. *Between layers* means a link you give in `CROSS-LAYER-SUGGESTIONS.json`.", '',
          '| Rule | Applies to | A complete design has |', '|---|---|---|']
     std = json.loads((ROOT / 'standards' / 'sdem-completeness.json').read_text(encoding='utf-8'))
     def say(r):
@@ -115,7 +114,7 @@ def _standards():
         d = json.loads(f.read_text(encoding='utf-8'))
         if d.get('format') == 'sdem-pattern/1': pats.append(d)
     if pats:
-        L += ['', '**Patterns for kinds of solution.** Where your design is one of these, it has every one of these parts — the check names each that is missing, and why it is needed. A part the design document does not mention, you design, and record in `DECISIONS.json`.', '']
+        L += ['', '**Patterns for kinds of solution.** Where the design is one of these, SDEM also looks for these parts. Write each part the design has. A part the design does not mention, you leave out: the rules of SDEM add what they can, marked inferred.', '']
         for d in pats:
             p, S = d['pattern'], d['structure']; aw = p['applies_when']
             when = ', '.join(f'{k} = {v}' for k, v in (aw.get('when') or {}).items())

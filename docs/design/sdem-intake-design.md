@@ -25,20 +25,28 @@ Getting a design an outside author wrote (an AI assistant, with the [authoring g
 | IN-09 | **One report** (`intake/report.md`, and `report.json`): what came in; what the author said the design does not state, and what is unconnected and undeclared; the draft — *Completeness* and *Draft*, never merged, and each pattern; then **what is the person's to decide, weakest first**: placed by default, inferred from a name (flagged where the author said *not stated*), brought in by a pattern, links to approve, gaps left open — and the commands. The package is kept as it came (`intake/package/`). |
 | IN-10 | Agents: `--check` and `--dry-run` are theirs to run; taking a design in is the person's. |
 
-## Complete, and accepted as authored (the owner, 2026-11-17)
+## Who fills a gap: SDEM's rules, never an AI, and not the owner (the owner, 2026-11-17)
 
-> *"Stop including me in the review. The AI agent should be able to output the correct response with no gaps; it should not require me if the instructions and authoring are black and white."*
+Two directions from the owner, the same day, which together settle it:
 
-The first build of intake still ended in a list for the owner: gaps the author had been told to leave ("where the design does not say, leave it out"), and every link between layers held for approval. Both were by design, and both made the owner the reviewer of an AI's output. Changed:
+> *"Stop including me in the review … it should not require me if the instructions and authoring are black and white."*
+> *"I don't want AI inferring fixes other than AID."*
+
+A first attempt at the former had the author — an AI — decide whatever the design document left open, and list its decisions. That is an AI inferring fixes; it was withdrawn the same day. The settled split:
+
+| Who | Does | Never |
+|---|---|---|
+| **The author** (an AI assistant, with the guide and SDEM's own check) | translates: writes what the design says, and accounts for every loose end by listing it as *not stated* | decides, guesses or completes anything |
+| **SDEM** (`sdem aid`, its written rules) | completes the draft: asks the standards and patterns, infers what the design gives evidence for, places the rest by default — each item marked inferred, with the rule that produced it | presents an inference as a fact |
+| **The person who runs intake** | takes the design in, with one command | is asked to review a link the design itself states |
 
 | Id | Rule |
 |---|---|
-| IN-11 | **Complete is the bar, and the check tests it.** `sdem intake --check` evaluates the package as it would stand once taken in — its BIAN domains and operations, every pattern SDEM ships that fits, and the links between layers it gives counted as links — and **fails on every record not connected and every part of a fitting pattern not there**: `NOT COMPLETE — …`, each with why it is needed and what to write. Listing something as *not stated* does not excuse it. The author loops on the check until it prints `OK … COMPLETE`. `--allow-gaps` takes or passes a design that is not complete, each gap listed (replaces IN-04). |
-| IN-12 | **`--accept`: the design is taken as authored.** Its links between layers are approved under the name of the person who runs the command, each on the evidence of the design section it cites — none is left for review. Off unless given: without it the links are proposals, as before. It is that person's decision, recorded as theirs (CTL-21 holds: an agent's name is refused). |
+| IN-11 | **Every loose end is accounted for — by the author declaring it, not filling it.** `sdem intake --check` evaluates the package as it would stand once taken in (its BIAN domains and operations, every fitting pattern, its links between layers counted) and fails on each record that is neither connected nor named in `NOT-STATED.json`: `NOT ACCOUNTED FOR — … write the link only if the design says it; otherwise add it to NOT-STATED.json`. What the design does not give — unconnected records that are declared, parts a fitting pattern lacks — is listed **for information**, as what SDEM's rules will go on to complete; the author does nothing about it. `--allow-gaps` passes undeclared ones too. (Replaces IN-04.) |
+| IN-12 | **`--accept`: the design's own links are taken as authored.** The links between layers the author wrote from the design are approved under the name of the person who runs the command, each on the evidence of the design section it cites — none is left for review. Off unless given. An agent's name is refused (CTL-21). What SDEM then infers is **not** approved or confirmed by it: it stays marked inferred or proposed. |
+| IN-13 | **A first load is not a change to plan.** The change events intake's own loading raises are recorded as the design's first load (`intake/first-load.json`); `sdem status` does not ask for work to be planned from them. Where the design as written is already complete and is accepted, the links SDEM's rules would propose beside the author's are declined under the same decision, and `sdem status` ends *clear*. |
 
-| IN-13 | **A first load is not a change to plan.** The change events intake's own loading raises are recorded as the design's first load (`intake/first-load.json`); `sdem status` does not ask for work to be planned from them — nothing existed before them to be changed. And with a complete design accepted as authored, the links SDEM's own rules would propose beside the author's are declined under the same decision (`sdem reject`, with that reason) — the author's links are the design's. So `sdem status` ends *clear*. |
-
-With both, a complete package comes in with one command and leaves nothing to confirm, approve or decide. What SDEM vouches for is that the design is valid and complete; the design choices are its author's — which is why the [authoring guide](../reference/authoring-guide.md) now makes the author the designer and has every choice the document did not make listed in `DECISIONS.json` (AU-08), kept with the workspace and shown in the report.
+**Where that leaves a design that is not complete as written** — the usual case. It is taken in whole; what it states is approved; SDEM's rules complete the draft, and everything they added is marked. `sdem status` reports the two figures apart: *Completeness* (what the design states) and *Draft* (counting what SDEM inferred or proposed). The inferred items are SDEM's, to be confirmed or rejected whenever a person chooses — the design is usable as a draft without that. Nobody, and no AI, has turned an inference into a fact.
 
 ## Measured
 
