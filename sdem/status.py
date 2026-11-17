@@ -103,6 +103,10 @@ def render(s, limit=8):
         L.append(f"Completeness: {c['records_connected']} of {c['records_checked']} records connected ({pct}%)" + (f" — {c['gaps']} gap{'s' if c['gaps'] != 1 else ''}" if c['gaps'] else ' — no gaps')
                  + (f", {c['inferred_to_confirm']} record{'s' if c['inferred_to_confirm'] != 1 else ''} connected only by an inferred link, to confirm" if c.get('inferred_to_confirm') else '')
                  + (f", {c['under_exception']} under an exception" if c.get('under_exception') else ''))
+        if c.get('inferred_to_confirm') or c.get('proposed_to_approve'):   # CPL-15: the draft, and what it rests on
+            rests = ([f"{c['inferred_to_confirm']} inferred, to confirm" + (f" ({c['placed_by_default']} placed by default with no evidence — review first)" if c.get('placed_by_default') else '')] if c.get('inferred_to_confirm') else []) \
+                    + ([f"{c['proposed_to_approve']} by a proposed link between layers, to approve"] if c.get('proposed_to_approve') else [])
+            L.append(f"Draft: {c['draft_connected']} of {c['records_checked']} records connected counting what is inferred or proposed — " + '; '.join(rests))
         L += [f"  {len(r['records'])} × {r['message']}: {', '.join(r['records'][:4])}{' …' if len(r['records']) > 4 else ''}" for r in c['by_rule'][:6]]
     for p in s.get('patterns') or []:   # CPL-11
         n = len(p['open'])

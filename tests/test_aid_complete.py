@@ -84,6 +84,41 @@ class Links(unittest.TestCase):
         self.assertEqual(got, [])
 
 
+class Defaults(unittest.TestCase):
+    """AID-D08 — the option to complete the draft: a gap with no evidence is placed by default, said to be so, to review first."""
+    def run_(self, instances, rels=(), rejected=(), complete=True):
+        docs = {'A3': {'level': 'A3', 'instances': instances, 'relationships': [dict(zip(('source', 'kind', 'target'), r)) for r in rels]}}
+        links, open_ = aid_complete.propose_links(docs, [], Metamodel.load(), RULES, mark, set(rejected), complete=complete)
+        return [(r['source'], r['kind'], r['target'], r['inferred']['rule']) for r in links.get('A3', [])], open_, links.get('A3', [])
+
+    BASE = [rec('APP-HUB', 'A3.ApplicationComponent', 'Hub'), rec('APP-DOOR', 'A3.ApplicationComponent', 'Front door'), rec('APP-SIDE', 'A3.ApplicationComponent', 'Side'),
+            rec('API-ONE', 'A3.ApplicationInterface', 'One'), rec('API-TWO', 'A3.ApplicationInterface', 'Two'), rec('API-SIX', 'A3.ApplicationInterface', 'Six'),
+            rec('DATA-A', 'A3.DataEntity', 'a'), rec('DATA-B', 'A3.DataEntity', 'b')]
+    RELS = [('APP-HUB', 'access', 'DATA-A'), ('APP-HUB', 'access', 'DATA-B'), ('APP-HUB', 'flow', 'APP-DOOR'), ('APP-DOOR', 'composition', 'API-SIX')]
+
+    def test_without_the_option_nothing_is_placed_without_evidence(self):   # AID-D03 stands
+        got, open_, _ = self.run_(self.BASE, self.RELS, complete=False)
+        self.assertEqual(got, []); self.assertEqual({o['record'] for o in open_ if o['rule'] == 'CPL-A3-01'}, {'API-ONE', 'API-TWO'})
+
+    def test_with_it_every_gap_is_placed_and_marked_as_a_default(self):   # AID-D08
+        got, open_, raw = self.run_(self.BASE, self.RELS)
+        self.assertEqual(got, [('APP-HUB', 'composition', 'API-ONE', 'AID-D08'), ('APP-HUB', 'composition', 'API-TWO', 'AID-D08')])   # the most connected component
+        m = raw[0]['inferred']
+        self.assertEqual((m['confidence'], m['evidence_class'], m['default'], m['asked_by']), ('low', 'structural', True, 'CPL-A3-01'))
+        self.assertIn('placed by default', m['reasoning']); self.assertIn('nothing in the design supports this link', m['reasoning']); self.assertIn('review this first', m['reasoning'])
+        self.assertFalse([o for o in open_ if o['rule'] == 'CPL-A3-01'])
+
+    def test_a_record_it_already_touches_comes_before_the_most_connected(self):   # AID-D08
+        got, _, raw = self.run_(self.BASE, self.RELS + [('APP-SIDE', 'serving', 'API-ONE')])
+        self.assertIn(('APP-SIDE', 'composition', 'API-ONE', 'AID-D08'), got)   # APP-SIDE already serves it: the one candidate linked to it
+        self.assertIn('already linked', next(r['inferred']['reasoning'] for r in raw if r['target'] == 'API-ONE'))
+
+    def test_a_default_a_person_rejected_is_not_replaced_by_another_guess(self):   # AID-D08, AID-W05
+        got, open_, _ = self.run_(self.BASE, self.RELS, rejected={'APP-HUB|composition|API-ONE'})
+        self.assertEqual(got, [('APP-HUB', 'composition', 'API-TWO', 'AID-D08')])
+        self.assertIn('rejected', next(o['why'] for o in open_ if o['record'] == 'API-ONE'))
+
+
 class Parts(unittest.TestCase):
     """AID-D06, AID-D07 — a part a pattern requires: added when the design has nothing of its kind, named when a name says which it is."""
     PID = 'PAT-PAYMENT-INITIATION'
@@ -171,6 +206,21 @@ class InAWorkspace(unittest.TestCase):
         self.assertEqual(s['completeness']['inferred_to_confirm'], 1)
         self.assertRegex(self.ok('status', '--workspace', self.ws), r'Completeness: .* — \d+ gaps?, 1 record connected only by an inferred link, to confirm')
         self.assertEqual(json.loads(self.ok('aid', '--workspace', self.ws, '--person', 'jane.architect', '--dry-run', '--json'))['draft']['links_inferred'], 0)   # not twice
+
+    def test_the_option_completes_the_draft_and_status_says_what_rests_on_what(self):   # AID-D08, CPL-15
+        self.design()
+        self.propose('A4', 'sdem-a4-technology', [rec('DEP-LEDGER', 'A4.Deployment', 'Account ledger — production', component_id='APP-LEDGER')])
+        run = json.loads(self.ok('aid', '--workspace', self.ws, '--person', 'jane.architect', '--complete-draft', '--json'))
+        self.assertEqual(run['draft']['defaults'], 1)
+        self.assertEqual([r for r in self.inferred() if r[3] == 'AID-D08'][0][:3][1:], ('composition', 'API-AUTH'))
+        self.assertFalse([o for o in run['draft']['left_open'] if o['rule'] == 'CPL-A3-01'])
+        self.ok('link', '--workspace', self.ws, '--out', self.ws / 'links', '--no-review')
+        c = json.loads(self.ok('status', '--workspace', self.ws, '--json'))['completeness']
+        self.assertEqual((c['inferred_to_confirm'], c['placed_by_default']), (2, 1))
+        self.assertGreaterEqual(c['proposed_to_approve'], 1)   # APP-LEDGER DEPLOYED_AS DEP-LEDGER: proposed, not yet a person's — a gap still, and said to be covered
+        text = self.ok('status', '--workspace', self.ws)
+        self.assertRegex(text, r'Draft: \d+ of \d+ records connected counting what is inferred or proposed')
+        self.assertIn('1 placed by default with no evidence — review first', text)
 
     def test_a_person_confirms_or_rejects_an_inferred_link_by_naming_it(self):   # AID-D04
         self.design(); self.ok('aid', '--workspace', self.ws, '--person', 'jane.architect')

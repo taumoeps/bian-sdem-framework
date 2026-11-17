@@ -48,6 +48,8 @@ Upgrade: change the pin to `@v0.19.0`, `pip install -r requirements.txt`, `sdem 
 
 - **`sdem aid` writes a link that closes two gaps once** (AID-D01, AID-D02): a process with nothing to realise and a requirement nothing meets are one link, and it was written twice. Found loading a design authored directly as SDEM layer files.
 
+- **A whole first draft: `sdem aid --complete-draft`** (AID-D08, CPL-15). An architect refines a complete draft more readily than they judge a list of gaps. With the option, a gap nothing in the design gives evidence for is placed by default — to the candidate already linked to the record, else the most connected one — and marked *placed by default, review this first*; without it, such a gap is left open as before. `sdem status` adds a line for the draft: records connected counting what is inferred or proposed, how many rest on an inferred link, how many were placed by default, and how many on a link between layers still to approve.
+
 **After the first 0.19.0 build (2026-11-16), also in 0.19.0** — the entries above: the public twin, `sdem reject`, flat network zones, a complete design (the completeness standard, patterns for kinds of solution, `sdem aid` completing the draft). No metamodel change: metamodel 0.17.0 as before.
 
 - **`sdem trace` reads cleanly:** "connections followed" lists only approved links — the structural steps inside A4 (a shape in its zone, a zone in a larger one, a platform on its network) are named on one line below, no more `? -?-> ?`; with `--follow-composition` a zone is no longer listed twice.

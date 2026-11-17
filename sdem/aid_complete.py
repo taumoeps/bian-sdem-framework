@@ -39,8 +39,8 @@ def _met(rule, x, layer, rels, recs, mm):
     return False
 
 
-def propose_links(docs, maps, mm, rules, mark, rejected=()):
-    """AID-D01…D03. docs: {layer: dataset}; maps: approved links between layers [(source, relationship, target)]; rules: the active
+def propose_links(docs, maps, mm, rules, mark, rejected=(), complete=False):
+    """AID-D01…D03, and with `complete` AID-D08 (a gap with no evidence placed by default, marked so). docs: {layer: dataset}; maps: approved links between layers [(source, relationship, target)]; rules: the active
     profile's rules. Returns ({layer: [link inside the layer, marked inferred]}, [gap left open: record, layer, rule, message, why])."""
     from .comply import evaluate
     findings = evaluate(docs, maps, mm, rules, ())
@@ -60,7 +60,7 @@ def propose_links(docs, maps, mm, rules, mark, rejected=()):
         peers = [i for l, i in recs.values() if l == layer and mm.known(i['type']) and mm.is_a(i['type'], rule['entity'])]
         mine = words(recs[x][1].get('name'), x)
         mine = {w for w in mine if sum(w in words(p.get('name'), p['id']) for p in peers) == 1}   # a word other records of its kind share singles out nothing
-        placed = why = None
+        placed = why = None; named_ = []
         if _met(rule, x, layer, rels, recs, mm): continue   # a link this run already wrote for another record's gap closes this one too
         for n, lk in enumerate(options(rule)):
             cands = sorted(c for c, (l, i) in recs.items() if l == layer and c != x and mm.known(i['type']) and not _unconfirmed(i)
@@ -77,10 +77,10 @@ def propose_links(docs, maps, mm, rules, mark, rejected=()):
                           'inferred': mark('AID-D01', f"{x} and {c} share the word '{w}', which no other {rule['entity'].split('.')[1]} and no other candidate has — {rule['id']} asks for the link ({rule.get('message', '')})",
                                            x, confidence='low', evidence_class='name_token', asked_by=rule['id'])}
                 break
-            if len(targets) > 1: why = f"{' or '.join(targets)} — each shares a word with it; a person says which"
+            if len(targets) > 1: why = f"{' or '.join(targets)} — each shares a word with it; a person says which"; named_ = targets
             pending.setdefault((rule['id'], n), []).append((layer, x, cands, lk))
         if placed: out.setdefault(layer, []).append(placed); rels[layer].append((placed['source'], placed['kind'], placed['target']))
-        else: left.append({'record': x, 'layer': layer, 'rule': rule['id'], 'message': rule.get('message', ''), 'why': why or 'no name evidence points to one candidate'})
+        else: left.append({'record': x, 'layer': layer, 'rule': rule['id'], 'message': rule.get('message', ''), 'why': why or 'no name evidence points to one candidate', '_named': named_})
     done = {(l, r['source'], r['kind'], r['target']) for l, rs in out.items() for r in rs}
     for (rid, n), items in sorted(pending.items()):   # AID-D02: one record still open, one candidate with no such link — by elimination
         rule = by_rule[rid]
@@ -98,6 +98,34 @@ def propose_links(docs, maps, mm, rules, mark, rejected=()):
             'inferred': mark('AID-D02', f"by elimination: {x} is the only {rule['entity'].split('.')[1]} still without this link and {free[0]} the only candidate with none — nothing names either; review this first ({rule['id']}: {rule.get('message', '')})",
                              x, confidence='low', evidence_class='structural', asked_by=rule['id'])})
         rels[layer].append((s, k, t)); left = [o for o in left if not (o['record'] == x and o['rule'] == rid)]
+    if complete:   # AID-D08: the option to complete the draft — what is left is placed by default, and said to be: nothing in the design supports it
+        still = []
+        for o in left:
+            rule, x, layer = by_rule[o['rule']], o['record'], o['layer']
+            if _met(rule, x, layer, rels, recs, mm): continue
+            def was_rejected(lk): return any(len(p := key.split('|')) == 3 and p[1] == lk['kind'] and (p[2] if lk.get('direction') == 'in' else p[0]) == x for key in rejected)
+            if any(was_rejected(lk) for lk in options(rule)):
+                o['why'] = 'a link inferred for it was rejected by a person — it is not placed again'; still.append(o); continue
+            done_ = False
+            for lk in options(rule):
+                cands = sorted(c for c, (l, i) in recs.items() if l == layer and c != x and mm.known(i['type']) and not _unconfirmed(i)
+                               and (not lk.get('to') or mm.is_a(i['type'], lk['to'])) and allowed(layer, x, c, lk))
+                if not cands: continue
+                touching = [c for c in cands if any((s == c and t == x) or (s == x and t == c) for s, _, t in rels[layer])]
+                named = [c for c in o.get('_named') or [] if c in cands]
+                if len(touching) == 1: c, basis = touching[0], f'{touching[0]} is the one candidate already linked to {x}'
+                elif named: c, basis = named[0], f"{named[0]} is the first of the candidates that share a word with it ({', '.join(named)})"
+                else:
+                    deg = lambda c: sum(c in (s, t) for s, _, t in rels[layer])
+                    c = sorted(cands, key=lambda c: (-deg(c), c))[0]; basis = f"{c} is the most connected {recs[c][1]['type'].split('.')[1]} in the design"
+                s, k, t = triple(x, c, lk)
+                out.setdefault(layer, []).append({'source': s, 'kind': k, 'target': t,
+                    'inferred': mark('AID-D08', f"placed by default to complete the draft — nothing in the design supports this link: {basis}; review this first ({rule['id']}: {rule.get('message', '')})",
+                                     x, confidence='low', evidence_class='structural', asked_by=rule['id'], default=True)})
+                rels[layer].append((s, k, t)); done_ = True; break
+            if not done_: still.append(o)
+        left = still
+    for o in left: o.pop('_named', None)
     return out, left
 
 

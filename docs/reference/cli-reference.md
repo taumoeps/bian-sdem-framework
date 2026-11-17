@@ -276,7 +276,7 @@ Architecture Inference Design: fill a workspace's gaps — inferred records mark
 Subcommands: [`sdem aid check`](#cmd-aid-check) · [`sdem aid gaps`](#cmd-aid-gaps) · [`sdem aid project`](#cmd-aid-project)
 
 ```
-sdem aid --workspace WORKSPACE --person PERSON [--dry-run]
+sdem aid --workspace WORKSPACE --person PERSON [--dry-run] [--complete-draft]
 ```
 
 *JSON: native · dry run: native · 👤 a person's own name*
@@ -287,6 +287,7 @@ sdem aid --workspace WORKSPACE --person PERSON [--dry-run]
 | `--person` | yes | your name — a person |
 | `--dry-run` |  | nothing written; what would be written is listed under "would_write" |
 | `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
+| `--complete-draft` |  | also place, by default, each gap a standard finds that nothing in the design gives evidence for — so the first draft is whole; each is marked 'placed by default', to review first (AID-D08) |
 
 Example:
 

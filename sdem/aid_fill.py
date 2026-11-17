@@ -60,7 +60,7 @@ def _rejected(ws):
     return _j(f) if f.exists() else {'rejected': []}
 
 
-def fill(workspace, person, dry_run=False, now=None):
+def fill(workspace, person, dry_run=False, now=None, complete_draft=False):
     """Infer what the workspace is missing into its layer files (AID-W01…W04). Returns the run record; nothing written when refused."""
     from .aid import project
     from .connect import estate_errors
@@ -252,7 +252,7 @@ def fill(workspace, person, dry_run=False, now=None):
                           'target': end({'id': tgt, 'type': t_['type'], 'version': t_['version']}), 'status': 'proposed', 'confidence': 'low', 'evidence_class': 'name_token' if drule == 'AID-D05' else 'pattern',
                           'evidence': [f'engine_rationale:{run} {drule}'], 'rationale': f'Inferred by sdem aid ({drule}): {why}' + (' — approve with process_model evidence' if drule == 'AID-D05' else ''),
                           'baseline_id': run, 'created_by': 'sdem aid'})
-    draft = {'links_inferred': 0, 'links': [], 'left_open': [], 'domains_added': domains_added, 'parts_added': parts_added, 'parts_to_name': []}
+    draft = {'links_inferred': 0, 'defaults': 0, 'links': [], 'left_open': [], 'domains_added': domains_added, 'parts_added': parts_added, 'parts_to_name': []}
     if _prof.ACTIVE is not None and _prof.structures():   # AID-D07: which record is the part — suggested from its name, never written
         from .aid_complete import name_parts
         from .metamodel import Metamodel as _MMn
@@ -261,10 +261,11 @@ def fill(workspace, person, dry_run=False, now=None):
         from .aid_complete import propose_links
         from .metamodel import Metamodel as _MMc
         lrej = {r['id'] for r in _rejected(ws)['rejected'] if '|' in r['id']}
-        dlinks_, draft['left_open'] = propose_links(after, live_maps, _MMc.load(), _prof.rules(), dmark, lrej)
+        dlinks_, draft['left_open'] = propose_links(after, live_maps, _MMc.load(), _prof.rules(), dmark, lrej, complete=complete_draft)
         for lvl, ls in sorted(dlinks_.items()):
             after[lvl].setdefault('relationships', []).extend(ls); added.setdefault(lvl, [])
             draft['links'] += [{'layer': lvl, 'link': f"{r['source']}|{r['kind']}|{r['target']}", 'rule': r['inferred']['rule'], 'asked_by': r['inferred']['asked_by'], 'reasoning': r['inferred']['reasoning']} for r in ls]
+        draft['defaults'] = sum(l['rule'] == 'AID-D08' for l in draft['links'])
         draft['links_inferred'] = len(draft['links']); placements += len(draft['links']); connections += len(draft['links'])
         joined = {e for l in draft['links'] for e in l['link'].split('|')[::2]}
         conn_unresolved = [u for u in conn_unresolved if u['id'] not in joined]   # no longer linked to nothing
@@ -399,8 +400,9 @@ def main(argv):
                                  epilog=__doc__.split('\n\n')[2])
     ap.add_argument('--workspace', dest='estate', required=True, metavar='DIR'); ap.add_argument('--person', required=True, help='your name — a person')
     ap.add_argument('--dry-run', action='store_true'); ap.add_argument('--json', action='store_true')
+    ap.add_argument('--complete-draft', action='store_true', help="also place, by default, each gap a standard finds that nothing in the design gives evidence for — so the first draft is whole; each is marked 'placed by default', to review first (AID-D08)")
     a = ap.parse_args(argv)
-    try: rec = fill(a.estate, a.person, a.dry_run)
+    try: rec = fill(a.estate, a.person, a.dry_run, complete_draft=a.complete_draft)
     except AidError as e:
         from .errors import note
         if 'would not pass its checks' in str(e):
@@ -433,9 +435,10 @@ def main(argv):
     if dr.get('links_inferred'):
         print(f"draft: {dr['links_inferred']} link(s) a standard asks for {'would be inferred' if a.dry_run else 'inferred'} from names (AID-D01, AID-D02) — each marked inferred, low confidence; "
               f"confirm or reject each by naming it: sdem aid confirm|reject '<source|kind|target>' --workspace {a.estate} --person <you>")
-        for l in dr['links'][:12]: print(f"  {l['link'].replace('|', ' ')}  ({l['rule']}, asked by {l['asked_by']})")
+        for l in dr['links'][:12]: print(f"  {l['link'].replace('|', ' ')}  ({l['rule']}, asked by {l['asked_by']})" + ('  — PLACED BY DEFAULT, no evidence: review first' if l['rule'] == 'AID-D08' else ''))
     if dr.get('left_open'):
-        print(f"draft: {len(dr['left_open'])} gap(s) left open — nothing in the design says what the link is (AID-D03); a person states it through a change set:")
+        print(f"draft: {len(dr['left_open'])} gap(s) left open — nothing in the design says what the link is (AID-D03); a person states it through a change set"
+              + ('' if a.complete_draft else ' — or run again with --complete-draft to place each by default, marked so') + ':')
         for o in dr['left_open'][:12]: print(f"  {o['record']} ({o['rule']}: {o['message']}) — {o['why']}")
     for u in rec.get('exposure_unresolved', []):
         print(f"exposure: {u['id']} is internet facing — {'no internet-facing edge platform to expose it through' if not u['candidates'] else 'several candidates: ' + ', '.join(u['candidates'])} (AID-X01): a person decides")

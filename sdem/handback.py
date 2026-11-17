@@ -92,7 +92,25 @@ def collect(ws):
                         without = {f['record'] for f in _ev(bare, maps_, mm_c, rules_, _pc.exceptions()) if f['outcome'] in ('non_compliant', 'unresolved')}
                         only = len(without - open_)
                 except (ValueError, OSError): pass
+                defaults, covered = 0, set()   # CPL-15: what the draft rests on — links placed by default (AID-D08), and gaps a link proposed between layers would close once a person approves it
+                try:
+                    import json as _j2
+                    from pathlib import Path as _P2
+                    defaults = sum(1 for d in ds.values() for r in d.get('relationships', []) if unc(r) and r['inferred'].get('default'))
+                    reg = _j2.loads((_P2(ws) / 'mappings.json').read_text(encoding='utf-8')).get('mappings', [])
+                    decided = {(m['source']['id'], m['relationship'], m['target']['id']) for m in reg if m.get('status') in ('approved', 'rejected')}
+                    props = set()
+                    for pf in sorted((_P2(ws) / 'aid').glob('*-proposals.json')) + [_P2(ws) / 'links' / 'proposals.json']:
+                        if pf.exists(): props |= {(m['source']['id'], m['relationship'], m['target']['id']) for m in _j2.loads(pf.read_text(encoding='utf-8')).get('mappings', [])}
+                    props -= decided
+                    rules_by = {r['id']: r for r in _pc.rules()}
+                    for f in gaps:
+                        a_ = (rules_by.get(f['rule']) or {}).get('across')
+                        if a_ and any(r == a_['relationship'] and (t if a_.get('direction') == 'in' else s) == f['record'] for s, r, t in props): covered.add((f['rule'], f['record']))
+                except (ValueError, OSError, NameError, KeyError): pass
                 comp['completeness'] = {'standard': 'SDEM-COMPLETE', 'records_checked': len(checked), 'records_connected': len(checked - open_), 'gaps': len(gaps), 'inferred_to_confirm': only,
+                                        'placed_by_default': defaults, 'proposed_to_approve': len({r for _, r in covered}),
+                                        'draft_connected': len(checked - {f['record'] for f in gaps if (f['rule'], f['record']) not in covered}),
                                         'under_exception': sum(f['outcome'] == 'exception_approved' for f in done),
                                         'by_rule': [{**v, 'records': sorted(v['records'])} for v in sorted(by.values(), key=lambda v: (-len(v['records']), v['rule']))]}
             from . import profile as _p   # CPL-11: where the design stands against each pattern SDEM ships — one block a pattern and record, not a line a part
