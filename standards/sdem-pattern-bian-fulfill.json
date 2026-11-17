@@ -3,7 +3,7 @@
   "description": "SDEM's starting pattern for any BIAN service domain whose functional pattern is Fulfill — it fulfils the obligations of a service arrangement over its life. What such a domain has in each layer of a complete design: who uses it, what carries it, where its arrangement is kept and where it runs. It applies by the domain's functional pattern, so one file covers every Fulfill domain; a pattern for a particular kind of solution (payment initiation) says more. Shipped with SDEM; a person includes it (sdem profile include sdem:sdem-pattern-bian-fulfill.json). Every part is a warning — to decide, never a failed check.",
   "pattern": {
     "id": "PAT-BIAN-FULFILL",
-    "title": "BIAN Fulfill — a arrangement",
+    "title": "BIAN Fulfill — an arrangement",
     "version": "1.0",
     "owner": "SDEM",
     "severity": "warning",

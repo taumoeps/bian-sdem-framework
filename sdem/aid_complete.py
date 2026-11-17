@@ -30,6 +30,15 @@ def _unconfirmed(rec):
     return isinstance(m, dict) and m.get('status') != 'confirmed'
 
 
+def _met(rule, x, layer, rels, recs, mm):
+    """Whether one of the links the rule asks of record x is among the layer's links (those this run has written included)."""
+    for lk in ([rule['link']] if rule.get('link') else [l for l in rule.get('any_link') or [] if l.get('kind')]):
+        for s, k, t in rels[layer]:
+            other = s if lk.get('direction') == 'in' else t
+            if k == lk['kind'] and (t if lk.get('direction') == 'in' else s) == x and other in recs and (not lk.get('to') or mm.is_a(recs[other][1]['type'], lk['to'])): return True
+    return False
+
+
 def propose_links(docs, maps, mm, rules, mark, rejected=()):
     """AID-D01…D03. docs: {layer: dataset}; maps: approved links between layers [(source, relationship, target)]; rules: the active
     profile's rules. Returns ({layer: [link inside the layer, marked inferred]}, [gap left open: record, layer, rule, message, why])."""
@@ -52,6 +61,7 @@ def propose_links(docs, maps, mm, rules, mark, rejected=()):
         mine = words(recs[x][1].get('name'), x)
         mine = {w for w in mine if sum(w in words(p.get('name'), p['id']) for p in peers) == 1}   # a word other records of its kind share singles out nothing
         placed = why = None
+        if _met(rule, x, layer, rels, recs, mm): continue   # a link this run already wrote for another record's gap closes this one too
         for n, lk in enumerate(options(rule)):
             cands = sorted(c for c, (l, i) in recs.items() if l == layer and c != x and mm.known(i['type']) and not _unconfirmed(i)
                            and (not lk.get('to') or mm.is_a(i['type'], lk['to'])) and allowed(layer, x, c, lk))
@@ -77,12 +87,13 @@ def propose_links(docs, maps, mm, rules, mark, rejected=()):
         items = [it for it in items if any(o['record'] == it[1] and o['rule'] == rid for o in left)]
         if len(items) != 1: continue
         layer, x, cands, lk = items[0]
+        if _met(rule, x, layer, rels, recs, mm): left = [o for o in left if not (o['record'] == x and o['rule'] == rid)]; continue
         kind_peers = {i['id'] for l, i in recs.values() if l == layer and mm.known(i['type']) and mm.is_a(i['type'], rule['entity'])}
         def linked(c): return any(k == lk['kind'] and ((s == c and t in kind_peers) if lk.get('direction') == 'in' else (t == c and s in kind_peers)) for s, k, t in rels[layer])
         free = [c for c in cands if not linked(c)]
         if len(free) != 1: continue
         s, k, t = triple(x, free[0], lk)
-        if f'{s}|{k}|{t}' in rejected or (layer, s, k, t) in done: continue
+        if f'{s}|{k}|{t}' in rejected or (layer, s, k, t) in done or (s, k, t) in rels[layer]: continue
         out.setdefault(layer, []).append({'source': s, 'kind': k, 'target': t,
             'inferred': mark('AID-D02', f"by elimination: {x} is the only {rule['entity'].split('.')[1]} still without this link and {free[0]} the only candidate with none — nothing names either; review this first ({rule['id']}: {rule.get('message', '')})",
                              x, confidence='low', evidence_class='structural', asked_by=rule['id'])})

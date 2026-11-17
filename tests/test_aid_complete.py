@@ -69,6 +69,14 @@ class Links(unittest.TestCase):
         self.assertEqual(self.run_(base, rejected={'APP-LEDGER|composition|API-LEDGER'})[0], [])                 # rejected: never again
         self.assertIn('rejected', next(o['why'] for o in self.run_(base, rejected={'APP-LEDGER|composition|API-LEDGER'})[1] if o['record'] == 'API-LEDGER'))
 
+    def test_one_link_that_closes_two_gaps_is_written_once(self):   # AID-D01 — found loading a design ChatGPT authored: the process's gap and the requirement's gap are the same link
+        docs = {'A1': {'level': 'A1', 'instances': [rec('PROC-CONSENT', 'A1.BusinessProcess', 'Capture consent'), rec('PROC-PAY', 'A1.BusinessProcess', 'Take payment'),
+                                                    rec('PROC-POST', 'A1.BusinessProcess', 'Post it'),
+                                                    rec('R-01', 'A1.BusinessRequirement', 'Consent is recorded'), rec('R-02', 'A1.BusinessRequirement', 'Limits apply'), rec('R-03', 'A1.BusinessRequirement', 'Logs kept')], 'relationships': []}}
+        links, open_ = aid_complete.propose_links(docs, [], Metamodel.load(), RULES, mark, set())
+        self.assertEqual([(r['source'], r['kind'], r['target']) for r in links['A1']], [('PROC-CONSENT', 'realization', 'R-01')])
+        self.assertFalse([o for o in open_ if o['record'] in ('PROC-CONSENT', 'R-01')])
+
     def test_nothing_is_built_on_an_unconfirmed_inferred_record(self):   # AID-W08
         ghost = rec('AID-APP', 'A3.ApplicationComponent', 'Ledger (inferred)', inferred={'rule': 'AID-F02'})
         got, _, _ = self.run_([ghost, rec('APP-DOOR', 'A3.ApplicationComponent', 'Front door'), rec('APP-E', 'A3.ApplicationComponent', 'Else'),

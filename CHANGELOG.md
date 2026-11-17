@@ -46,6 +46,8 @@ Upgrade: change the pin to `@v0.19.0`, `pip install -r requirements.txt`, `sdem 
 
 - **`sdem status` says a completeness gap once for active records too** (CPL-05): a design loaded through `sdem transform` has active records, and each gap was listed again as a warning line beside the summary. Found re-running Payment Initiation v3 through the transform.
 
+- **`sdem aid` writes a link that closes two gaps once** (AID-D01, AID-D02): a process with nothing to realise and a requirement nothing meets are one link, and it was written twice. Found loading a design authored directly as SDEM layer files.
+
 **After the first 0.19.0 build (2026-11-16), also in 0.19.0** — the entries above: the public twin, `sdem reject`, flat network zones, a complete design (the completeness standard, patterns for kinds of solution, `sdem aid` completing the draft). No metamodel change: metamodel 0.17.0 as before.
 
 - **`sdem trace` reads cleanly:** "connections followed" lists only approved links — the structural steps inside A4 (a shape in its zone, a zone in a larger one, a platform on its network) are named on one line below, no more `? -?-> ?`; with `--follow-composition` a zone is no longer listed twice.
