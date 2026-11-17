@@ -101,6 +101,22 @@ class CompletenessTests(unittest.TestCase):
         code, out, err = sdem('profile', 'check', '--workspace', self.ws, cwd=self.tmp)
         self.assertNotEqual(code, 0); self.assertIn('each any_link names a kind', out + err); self.assertIn("any_link kind 'no-such-kind'", out + err)
 
+    def test_a_product_and_an_application_event_are_checked_too(self):   # CPL-20 — found in the picture of a design SDEM had called 100% connected
+        self.new()
+        self.propose(CS('A1', [R('PROD-A', 'A1.Product', 'Account'), R('PROD-B', 'A1.Product', 'Other'), R('SVC-1', 'A1.BusinessService', 'Service'), R('PROC-1', 'A1.BusinessProcess', 'Do it')],
+                        [('PROD-A', 'aggregation', 'SVC-1'), ('PROC-1', 'realization', 'SVC-1')]), 'sdem-a1-business')
+        self.propose(CS('A3', [R('APP-1', 'A3.ApplicationComponent', 'App'), R('EVT-A', 'A3.Event', 'Raised'), R('EVT-B', 'A3.Event', 'Orphan')], [('APP-1', 'triggering', 'EVT-A')]), 'sdem-a3-application')
+        c = json.loads(sdem('comply', '--workspace', self.ws, '--json', cwd=self.tmp)[1])
+        got = {(f['rule'], f['record']): f['outcome'] for f in c['findings'] if f['rule'] in ('CPL-A1-06', 'CPL-A3-06')}
+        self.assertEqual(got, {('CPL-A1-06', 'PROD-A'): 'compliant', ('CPL-A1-06', 'PROD-B'): 'unresolved', ('CPL-A3-06', 'EVT-A'): 'compliant', ('CPL-A3-06', 'EVT-B'): 'unresolved'})
+
+    def test_no_kind_of_record_is_left_unchecked(self):   # CPL-20: the hole is closed for good — a kind of record the standard has no rule for cannot be called connected
+        from sdem.metamodel import Metamodel
+        mm = Metamodel.base(); rules = json.loads((ROOT / 'standards' / 'sdem-completeness.json').read_text(encoding='utf-8'))['rules']
+        unchecked = [t for t, e in sorted(mm.entities.items()) if e['level'] in ('A1', 'A3', 'A4') and not e.get('abstract') and not e.get('artefact')
+                     and not any(mm.is_a(t, r['entity']) for r in rules)]
+        self.assertEqual(unchecked, [], 'every kind of record an author may write has a completeness rule')
+
     def test_an_existing_workspace_is_not_changed(self):   # CPL-06
         ws = self.tmp / 'old'; shutil.copytree(ROOT / 'examples' / 'payment-initiation', ws, ignore=shutil.ignore_patterns('graph'))
         self.assertFalse((ws / 'sdem-profile.json').exists())

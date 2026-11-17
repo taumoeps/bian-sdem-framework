@@ -6,8 +6,8 @@
 
 | Layer | Records | Links inside |
 |---|---|---|
-| A1 | 48 | 71 |
-| A3 | 49 | 54 |
+| A1 | 48 | 72 |
+| A3 | 49 | 55 |
 | A4 | 28 | 42 |
 
 - SDEM refused nothing (a package with anything refused is not loaded).
@@ -24,7 +24,7 @@
 Patterns asked before anything was inferred: none fits this design.
 
 ```
-Completeness: 72 of 72 records connected (100%) — no gaps
+Completeness: 125 of 125 records connected (100%) — no gaps
 Pattern BIAN Transact — a transaction (SD-PAYMENT-ORDER-INITIATION): 9 of 9 parts in place — nothing missing
 Pattern Payment initiation (SD-PAYMENT-ORDER-INITIATION): 14 of 14 parts in place — nothing missing
 ```

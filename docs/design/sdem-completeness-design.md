@@ -97,6 +97,12 @@ A pattern's block in `sdem status` also says where the **draft** stands (CPL-15)
 |---|---|
 | CPL-19 | Three rules for where things are: **a node sits in a network zone** (CPL-A4-03); **platform software runs on a node, or sits in a zone** (CPL-A4-04); **a deployment runs on a node or platform, or belongs to an environment** (CPL-A4-05). Without them a design could be "complete" and still leave SDEM to infer a zone for everything in A4 — found when a design accepted as authored still had something to confirm. |
 
+## Every kind of record (standard 1.4, 2026-11-18)
+
+| Id | Rule |
+|---|---|
+| CPL-20 | **No kind of record is left unchecked.** The standard had rules for seventeen kinds of record and none for the rest, so a record of an unruled kind — a product, an application event — counted for nothing: it was neither a gap nor part of the figure. Payment Initiation v3 was reported *72 of 72 connected (100%)* with two shapes in its picture joined to nothing. The standard now has a rule for **every** kind of record an author may write in A1, A3 and A4 (thirty-four rules: CPL-A1-06…12, CPL-A3-06…08, CPL-A4-06…12 added), so the figure is of all the design's records — *125 of 125* — and `tests/test_complete_design.py` fails if the metamodel ever has a kind the standard does not check. |
+
 ## Stages to come — each its own change, tests first
 
 | Stage | What | Kind |

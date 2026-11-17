@@ -1029,6 +1029,12 @@
       "source_id": "ai-decision"
     },
     {
+      "source": "PROD-ACCOUNT",
+      "kind": "aggregation",
+      "target": "SVC-INIT",
+      "source_id": "ai-decision"
+    },
+    {
       "source": "SVC-INIT",
       "kind": "serving",
       "target": "ACTOR-MERCHANT",

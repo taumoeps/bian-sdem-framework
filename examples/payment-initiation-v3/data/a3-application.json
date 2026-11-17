@@ -1089,6 +1089,12 @@
    "source_id": "document:design.md#5"
   },
   {
+   "source": "APP-PAYHUB",
+   "kind": "triggering",
+   "target": "EVT-HANDOFF",
+   "source_id": "document:design.md#5"
+  },
+  {
    "source": "API-DEBTOR-READ",
    "kind": "access",
    "target": "DATA-CONSENT",

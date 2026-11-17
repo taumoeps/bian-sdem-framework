@@ -68,13 +68,13 @@ From each record's `source_id`. BIAN records come from the BIAN 14.0.0 release, 
 | Basis | Links inside a layer | Links between layers | Where it is recorded |
 |---|---|---|---|
 | stated in the document | 94 | 11 | the link's `source_id`: the section |
-| implied by the document | 61 | 18 | `added-by-reading.json`: the section and the sentence it follows from |
-| decided by the AI | 12 | 3 | `decided-by-ai.json`: the reason |
-| **Total** | **167** | **32** | |
+| implied by the document | 62 | 18 | `added-by-reading.json`: the section and the sentence it follows from |
+| decided by the AI | 13 | 3 | `decided-by-ai.json`: the reason |
+| **Total** | **169** | **32** | |
 
 No link was produced by `sdem transform` or inferred by `sdem aid`.
 
-### The 17 decisions the document does not make — the only content not traceable to the design
+### The 18 decisions the document does not make — the only content not traceable to the design
 
 | What | Why |
 |---|---|
@@ -87,6 +87,7 @@ No link was produced by `sdem transform` or inferred by `sdem aid`.
 | CAP-RISK realization R-20 | segment boundaries, private persistence routes and managed secrets are controls of the payment risk capability |
 | SVC-INIT realization R-22 | throttling and participant identification apply to every call on the service |
 | PROC-STATUS realization R-24 | the debtor-account read is one of the reads the status process answers |
+| PROD-ACCOUNT aggregation SVC-INIT | the document names the retail account product and the initiation service the bank offers side by side, without saying one includes the other; payment initiation is offered on the account |
 | SVC-INIT serving ACTOR-MERCHANT | the merchant's checkout payment is what the initiation service exists for |
 | NODE-APP assignment SYS-MQ | durable events are produced and consumed by the applications on the application compute |
 | NODE-SEC assignment SYS-OBS | audit evidence is kept apart from the applications, with identity and secrets |
@@ -129,7 +130,7 @@ No link was produced by `sdem transform` or inferred by `sdem aid`.
 
 ```
 sdem check   — 0 errors
-Completeness — 72 of 72 records connected (100%)
+Completeness — 125 of 125 records connected (100%)
 Pattern BIAN Transact      — 9 of 9 parts
 Pattern Payment initiation — 14 of 14 parts
 ```
@@ -139,6 +140,6 @@ Reproduce: `sdem status --workspace examples/payment-initiation-v3/sdem` · rebu
 ## 7. What this trace does not show
 
 - **That the narrative design is itself right.** It was written by an AI from public standards and is marked by its own author as a candidate, not certified.
-- **That the 17 decisions are the right ones.** Six of the nine requirement decisions differ from the choices in the author's own answer key; the three technology decisions match it.
+- **That the 18 decisions are the right ones.** Six of the nine requirement decisions differ from the choices in the author's own answer key; the three technology decisions match it.
 - **Approval by a real person.** The links between layers in `sdem/` are recorded under `jane.architect`, the made-up architect of SDEM's examples.
 

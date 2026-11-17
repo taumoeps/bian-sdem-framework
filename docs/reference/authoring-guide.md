@@ -74,6 +74,23 @@ Every record of the kind named meets its rule, or is in `NOT-STATED.json` — th
 | CPL-A4-03 | A4.Node | a node sits in a network zone — `aggregation` from A4.NetworkZone |
 | CPL-A4-04 | A4.SystemSoftware | platform software runs on a node, or sits in a network zone — `assignment` from another record **or** `aggregation` from another record |
 | CPL-A4-05 | A4.Deployment | a deployment runs on a node or platform, or belongs to an environment — `assignment` from another record **or** `aggregation` from another record |
+| CPL-A1-06 | A1.Product | a product includes a service or a business object, or is part of a product — `aggregation` to another record **or** `composition` to another record **or** `composition` from another record |
+| CPL-A3-06 | A3.Event | an application event is raised by a component or function, or triggers one — or realises a business event — `triggering` from another record **or** `triggering` to another record **or** `access` to another record **or** *between layers* `REALIZED_BY` **or** *between layers* `IMPLEMENTED_BY` |
+| CPL-A1-07 | A1.BusinessCapability | a capability is realised by a process, is part of or has another capability, or is supported by a service domain — `realization` from another record **or** `aggregation` from another record **or** `aggregation` to another record **or** `composition` from another record **or** `composition` to another record **or** *between layers* `SUPPORTED_BY` |
+| CPL-A1-08 | A1.BusinessEvent | a business event is raised by a process or triggers one — `triggering` from another record **or** `triggering` to another record **or** *between layers* `REALIZED_BY` |
+| CPL-A1-09 | A1.BusinessRole | a role is assigned to something, or an actor is assigned to it, or it is served — `assignment` to another record **or** `assignment` from another record **or** `serving` from another record |
+| CPL-A1-10 | A1.BusinessService | a business service is realised by a process, serves someone, or is part of a product — `realization` from another record **or** `serving` to another record **or** `aggregation` from another record **or** *between layers* `REALIZED_BY` |
+| CPL-A1-11 | A1.ValueStream | a value stream has its stages — `composition` to another record **or** `aggregation` to another record **or** *between layers* `ALIGNED_TO` |
+| CPL-A1-12 | A1.ValueStreamStage | a stage belongs to a value stream — `composition` from another record **or** `aggregation` from another record |
+| CPL-A3-07 | A3.DataAttribute | a field belongs to a data entity — `composition` from another record **or** `aggregation` from another record |
+| CPL-A3-08 | A3.SolutionBuildingBlock | a solution building block is realised by, or made of, something — `realization` from another record **or** `realization` to another record **or** `composition` from another record **or** `composition` to another record **or** `aggregation` from another record **or** `aggregation` to another record |
+| CPL-A4-06 | A4.CommunicationNetwork | a network connects something, or belongs to a zone — `association` from another record **or** `association` to another record **or** `aggregation` from another record **or** `aggregation` to another record |
+| CPL-A4-07 | A4.DeploymentEnvironment | an environment holds deployments or platforms — `aggregation` to another record **or** `composition` to another record |
+| CPL-A4-08 | A4.Device | a device sits in a network zone, or runs something — `aggregation` from another record **or** `assignment` to another record **or** `composition` from another record |
+| CPL-A4-09 | A4.Location | a location holds something — `aggregation` to another record **or** `composition` to another record **or** `composition` from another record |
+| CPL-A4-10 | A4.NetworkZone | a network zone holds something, or is inside a zone — `aggregation` to another record **or** `aggregation` from another record |
+| CPL-A4-11 | A4.Path | a path joins the nodes at its ends — `association` to another record **or** `association` from another record **or** `realization` from another record |
+| CPL-A4-12 | A4.TechnologyInterface | a technology interface belongs to a node or software, or an application interface is exposed through it — `composition` from another record **or** `assignment` from another record **or** `serving` to another record **or** *between layers* `EXPOSED_THROUGH` |
 
 **Patterns for kinds of solution.** Where the design is one of these, SDEM also looks for these parts. Write each part the design has. A part the design does not mention, you leave out: the rules of SDEM add what they can, marked inferred.
 

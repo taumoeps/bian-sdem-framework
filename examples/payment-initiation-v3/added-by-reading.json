@@ -344,6 +344,14 @@
   "why": "APP-NOTIFY is a downstream notification component"
  },
  {
+  "source": "APP-PAYHUB",
+  "link": "triggering",
+  "target": "EVT-HANDOFF",
+  "section": 5,
+  "basis": "implied",
+  "why": "upon recorded acceptance the hub persists AcceptedSettlementInProcess and emits a durable handoff event"
+ },
+ {
   "source": "API-DEBTOR-READ",
   "link": "access",
   "target": "DATA-CONSENT",

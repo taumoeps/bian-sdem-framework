@@ -40,6 +40,7 @@ link(a3, 'APP-EDGE', 'flow', 'APP-PAYHUB', 5, 'implied', 'the ingress terminates
 link(a3, 'APP-EDGE', 'flow', 'APP-CONSENT', 5, 'implied', 'consent creation and read arrive at the ingress; APP-CONSENT controls the consent lifecycle')
 link(a3, 'APP-IDENT', 'flow', 'APP-CONSENT', 5, 'implied', 'authentication accepts or rejects the consent that APP-CONSENT holds')
 link(a3, 'APP-PAYHUB', 'flow', 'APP-NOTIFY', 5, 'implied', 'APP-NOTIFY is a downstream notification component')
+link(a3, 'APP-PAYHUB', 'triggering', 'EVT-HANDOFF', 5, 'implied', 'upon recorded acceptance the hub persists AcceptedSettlementInProcess and emits a durable handoff event')
 link(a3, 'API-DEBTOR-READ', 'access', 'DATA-CONSENT', 5, 'implied', 'the debtor account is a column of the ConsentLedger')
 # ---- A4 (§6) ----
 for p, a, b, why in (('PATH-EDGE', 'NODE-EDGE', None, 'HTTPS/TLS crosses the external boundary at the API ingress'),

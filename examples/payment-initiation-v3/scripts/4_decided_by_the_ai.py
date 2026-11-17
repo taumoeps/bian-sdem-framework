@@ -19,6 +19,7 @@ for r, src, why in (
     ('R-22', 'SVC-INIT', 'throttling and participant identification apply to every call on the service'),
     ('R-24', 'PROC-STATUS', 'the debtor-account read is one of the reads the status process answers')):
     link(a1, src, 'realization', r, why)
+link(a1, 'PROD-ACCOUNT', 'aggregation', 'SVC-INIT', 'the document names the retail account product and the initiation service the bank offers side by side, without saying one includes the other; payment initiation is offered on the account')
 link(a1, 'SVC-INIT', 'serving', 'ACTOR-MERCHANT', "the merchant's checkout payment is what the initiation service exists for")
 link(a4, 'NODE-APP', 'assignment', 'SYS-MQ', 'durable events are produced and consumed by the applications on the application compute')
 link(a4, 'NODE-SEC', 'assignment', 'SYS-OBS', 'audit evidence is kept apart from the applications, with identity and secrets')

@@ -4,7 +4,7 @@
   "standard": {
     "id": "SDEM-COMPLETE",
     "title": "A complete design: every record connected",
-    "version": "1.3",
+    "version": "1.4",
     "owner": "SDEM",
     "source": "ArchiMate 3.2 (which element a relationship joins); the audit of the public twin, docs/design/sdem-completeness-design.md"
   },
@@ -253,6 +253,391 @@
       "severity": "warning",
       "message": "a deployment runs on a node or platform, or belongs to an environment",
       "reasoning": "a deployment placed nowhere"
+    },
+    {
+      "id": "CPL-A1-06",
+      "entity": "A1.Product",
+      "any_link": [
+        {
+          "kind": "aggregation",
+          "direction": "out"
+        },
+        {
+          "kind": "composition",
+          "direction": "out"
+        },
+        {
+          "kind": "composition",
+          "direction": "in"
+        }
+      ],
+      "severity": "warning",
+      "message": "a product includes a service or a business object, or is part of a product",
+      "reasoning": "a product that offers nothing is a name, not a part of the design"
+    },
+    {
+      "id": "CPL-A3-06",
+      "entity": "A3.Event",
+      "any_link": [
+        {
+          "kind": "triggering",
+          "direction": "in"
+        },
+        {
+          "kind": "triggering",
+          "direction": "out"
+        },
+        {
+          "kind": "access",
+          "direction": "out"
+        },
+        {
+          "relationship": "REALIZED_BY",
+          "direction": "in"
+        },
+        {
+          "relationship": "IMPLEMENTED_BY",
+          "direction": "in"
+        }
+      ],
+      "severity": "warning",
+      "message": "an application event is raised by a component or function, or triggers one — or realises a business event",
+      "reasoning": "an event nothing raises and nothing reacts to does not happen"
+    },
+    {
+      "id": "CPL-A1-07",
+      "entity": "A1.BusinessCapability",
+      "any_link": [
+        {
+          "kind": "realization",
+          "direction": "in"
+        },
+        {
+          "kind": "aggregation",
+          "direction": "in"
+        },
+        {
+          "kind": "aggregation",
+          "direction": "out"
+        },
+        {
+          "kind": "composition",
+          "direction": "in"
+        },
+        {
+          "kind": "composition",
+          "direction": "out"
+        },
+        {
+          "relationship": "SUPPORTED_BY",
+          "direction": "out"
+        }
+      ],
+      "severity": "warning",
+      "message": "a capability is realised by a process, is part of or has another capability, or is supported by a service domain",
+      "reasoning": "a capability nothing delivers and nothing belongs to"
+    },
+    {
+      "id": "CPL-A1-08",
+      "entity": "A1.BusinessEvent",
+      "any_link": [
+        {
+          "kind": "triggering",
+          "direction": "in"
+        },
+        {
+          "kind": "triggering",
+          "direction": "out"
+        },
+        {
+          "relationship": "REALIZED_BY",
+          "direction": "out"
+        }
+      ],
+      "severity": "warning",
+      "message": "a business event is raised by a process or triggers one",
+      "reasoning": "an event outside every process"
+    },
+    {
+      "id": "CPL-A1-09",
+      "entity": "A1.BusinessRole",
+      "any_link": [
+        {
+          "kind": "assignment",
+          "direction": "out"
+        },
+        {
+          "kind": "assignment",
+          "direction": "in"
+        },
+        {
+          "kind": "serving",
+          "direction": "in"
+        }
+      ],
+      "severity": "warning",
+      "message": "a role is assigned to something, or an actor is assigned to it, or it is served",
+      "reasoning": "a role nobody plays and that does nothing"
+    },
+    {
+      "id": "CPL-A1-10",
+      "entity": "A1.BusinessService",
+      "any_link": [
+        {
+          "kind": "realization",
+          "direction": "in"
+        },
+        {
+          "kind": "serving",
+          "direction": "out"
+        },
+        {
+          "kind": "aggregation",
+          "direction": "in"
+        },
+        {
+          "relationship": "REALIZED_BY",
+          "direction": "out"
+        }
+      ],
+      "severity": "warning",
+      "message": "a business service is realised by a process, serves someone, or is part of a product",
+      "reasoning": "a service nothing provides and nobody uses"
+    },
+    {
+      "id": "CPL-A1-11",
+      "entity": "A1.ValueStream",
+      "any_link": [
+        {
+          "kind": "composition",
+          "direction": "out"
+        },
+        {
+          "kind": "aggregation",
+          "direction": "out"
+        },
+        {
+          "relationship": "ALIGNED_TO",
+          "direction": "out"
+        }
+      ],
+      "severity": "warning",
+      "message": "a value stream has its stages",
+      "reasoning": "a value stream with no stages says nothing"
+    },
+    {
+      "id": "CPL-A1-12",
+      "entity": "A1.ValueStreamStage",
+      "any_link": [
+        {
+          "kind": "composition",
+          "direction": "in"
+        },
+        {
+          "kind": "aggregation",
+          "direction": "in"
+        }
+      ],
+      "severity": "warning",
+      "message": "a stage belongs to a value stream",
+      "reasoning": "a stage of nothing"
+    },
+    {
+      "id": "CPL-A3-07",
+      "entity": "A3.DataAttribute",
+      "any_link": [
+        {
+          "kind": "composition",
+          "direction": "in"
+        },
+        {
+          "kind": "aggregation",
+          "direction": "in"
+        }
+      ],
+      "severity": "warning",
+      "message": "a field belongs to a data entity",
+      "reasoning": "a column of no table"
+    },
+    {
+      "id": "CPL-A3-08",
+      "entity": "A3.SolutionBuildingBlock",
+      "any_link": [
+        {
+          "kind": "realization",
+          "direction": "in"
+        },
+        {
+          "kind": "realization",
+          "direction": "out"
+        },
+        {
+          "kind": "composition",
+          "direction": "in"
+        },
+        {
+          "kind": "composition",
+          "direction": "out"
+        },
+        {
+          "kind": "aggregation",
+          "direction": "in"
+        },
+        {
+          "kind": "aggregation",
+          "direction": "out"
+        }
+      ],
+      "severity": "warning",
+      "message": "a solution building block is realised by, or made of, something",
+      "reasoning": "a building block that builds nothing"
+    },
+    {
+      "id": "CPL-A4-06",
+      "entity": "A4.CommunicationNetwork",
+      "any_link": [
+        {
+          "kind": "association",
+          "direction": "in"
+        },
+        {
+          "kind": "association",
+          "direction": "out"
+        },
+        {
+          "kind": "aggregation",
+          "direction": "in"
+        },
+        {
+          "kind": "aggregation",
+          "direction": "out"
+        }
+      ],
+      "severity": "warning",
+      "message": "a network connects something, or belongs to a zone",
+      "reasoning": "a network nothing is on"
+    },
+    {
+      "id": "CPL-A4-07",
+      "entity": "A4.DeploymentEnvironment",
+      "any_link": [
+        {
+          "kind": "aggregation",
+          "direction": "out"
+        },
+        {
+          "kind": "composition",
+          "direction": "out"
+        }
+      ],
+      "severity": "warning",
+      "message": "an environment holds deployments or platforms",
+      "reasoning": "an empty environment"
+    },
+    {
+      "id": "CPL-A4-08",
+      "entity": "A4.Device",
+      "any_link": [
+        {
+          "kind": "aggregation",
+          "direction": "in"
+        },
+        {
+          "kind": "assignment",
+          "direction": "out"
+        },
+        {
+          "kind": "composition",
+          "direction": "in"
+        }
+      ],
+      "severity": "warning",
+      "message": "a device sits in a network zone, or runs something",
+      "reasoning": "a device nowhere"
+    },
+    {
+      "id": "CPL-A4-09",
+      "entity": "A4.Location",
+      "any_link": [
+        {
+          "kind": "aggregation",
+          "direction": "out"
+        },
+        {
+          "kind": "composition",
+          "direction": "out"
+        },
+        {
+          "kind": "composition",
+          "direction": "in"
+        }
+      ],
+      "severity": "warning",
+      "message": "a location holds something",
+      "reasoning": "a location with nothing in it"
+    },
+    {
+      "id": "CPL-A4-10",
+      "entity": "A4.NetworkZone",
+      "any_link": [
+        {
+          "kind": "aggregation",
+          "direction": "out"
+        },
+        {
+          "kind": "aggregation",
+          "direction": "in"
+        }
+      ],
+      "severity": "warning",
+      "message": "a network zone holds something, or is inside a zone",
+      "reasoning": "an empty zone"
+    },
+    {
+      "id": "CPL-A4-11",
+      "entity": "A4.Path",
+      "any_link": [
+        {
+          "kind": "association",
+          "direction": "out"
+        },
+        {
+          "kind": "association",
+          "direction": "in"
+        },
+        {
+          "kind": "realization",
+          "direction": "in"
+        }
+      ],
+      "severity": "warning",
+      "message": "a path joins the nodes at its ends",
+      "reasoning": "a path between nothing"
+    },
+    {
+      "id": "CPL-A4-12",
+      "entity": "A4.TechnologyInterface",
+      "any_link": [
+        {
+          "kind": "composition",
+          "direction": "in"
+        },
+        {
+          "kind": "assignment",
+          "direction": "in"
+        },
+        {
+          "kind": "serving",
+          "direction": "out"
+        },
+        {
+          "relationship": "EXPOSED_THROUGH",
+          "direction": "in"
+        }
+      ],
+      "severity": "warning",
+      "message": "a technology interface belongs to a node or software, or an application interface is exposed through it",
+      "reasoning": "an interface of nothing"
     }
   ]
 }

@@ -80,18 +80,19 @@ for b, where in (('stated in the document', 'the link\'s `source_id`: the sectio
     L.append(f"| {b} | {cnt[b]} | {mc[b]} | {where} |")
 L += [f"| **Total** | **{sum(cnt.values())}** | **{sum(mc.values())}** | |", '',
       'No link was produced by `sdem transform` or inferred by `sdem aid`.', '',
-      '### The 17 decisions the document does not make — the only content not traceable to the design', '', '| What | Why |', '|---|---|'] + [f"| {d['what']} | {d['why']} |" for d in decided] + ['']
+      f'### The {len(decided)} decisions the document does not make — the only content not traceable to the design', '', '| What | Why |', '|---|---|'] + [f"| {d['what']} | {d['why']} |" for d in decided] + ['']
 # ---- requirements
 L += ['## 5. Every requirement → what meets it', '', '| Requirement | Met by | Basis |', '|---|---|---|']
 a1 = layers['A1']
 for i in sorted((x for x in recs if re.match(r'R-\d+$', x)), key=lambda x: int(x[2:])):
     srcs = [(r['source'], 'decided by the AI' if r.get('source_id') == 'ai-decision' else 'implied (§' + str(implied.get((r['source'], r['kind'], r['target']), {}).get('section', '?')) + ')') for r in a1['relationships'] if r['target'] == i and r['kind'] == 'realization']
     L.append(f"| {i} — {recs[i][1]['name'][:70]} | " + (', '.join(f'`{s}`' for s, _ in srcs) or '**nothing**') + ' | ' + ('; '.join(sorted({b for _, b in srcs})) or '—') + ' |')
-L += ['', '## 6. What SDEM says of the end state', '', '```', 'sdem check   — 0 errors', 'Completeness — 72 of 72 records connected (100%)', 'Pattern BIAN Transact      — 9 of 9 parts', 'Pattern Payment initiation — 14 of 14 parts', '```', '',
+n_design = sum(1 for i, (l, r) in recs.items() if l != 'A2')
+L += ['', '## 6. What SDEM says of the end state', '', '```', 'sdem check   — 0 errors', f'Completeness — {n_design} of {n_design} records connected (100%)', 'Pattern BIAN Transact      — 9 of 9 parts', 'Pattern Payment initiation — 14 of 14 parts', '```', '',
       'Reproduce: `sdem status --workspace examples/payment-initiation-v3/sdem` · rebuild the workspace from the data: `sdem intake examples/payment-initiation-v3/data --workspace <new folder> --person <you> --accept --no-inference` · regenerate this file: `python examples/payment-initiation-v3/scripts/trace.py`', '',
       '## 7. What this trace does not show', '',
       '- **That the narrative design is itself right.** It was written by an AI from public standards and is marked by its own author as a candidate, not certified.',
-      '- **That the 17 decisions are the right ones.** Six of the nine requirement decisions differ from the choices in the author\'s own answer key; the three technology decisions match it.',
+      f'- **That the {len(decided)} decisions are the right ones.** Six of the nine requirement decisions differ from the choices in the author\'s own answer key; the three technology decisions match it.',
       '- **Approval by a real person.** The links between layers in `sdem/` are recorded under `jane.architect`, the made-up architect of SDEM\'s examples.', '']
 (B / 'TRACEABILITY.md').write_text('\n'.join(L) + '\n', encoding='utf-8'); print('wrote TRACEABILITY.md', len(L), 'lines; records without section:', nosrc[:8], '| inner', dict(cnt), '| between', dict(mc))
 print('missing scope records:', [i for _, _, ids in SCOPE for i in ids if i not in recs])

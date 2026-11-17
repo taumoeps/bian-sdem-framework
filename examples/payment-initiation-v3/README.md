@@ -26,8 +26,8 @@ python examples/payment-initiation-v3/scripts/trace.py               # regenerat
 |---|---|
 | `1_stated_in_the_document.py` | the records, and the links the document states outright — each citing its section |
 | `2_as_a_package.py` | the same, as the package `sdem intake` takes |
-| `3_implied_by_the_document.py` | the 90 links that follow from the document's own sentences → `added-by-reading.json` |
-| `4_decided_by_the_ai.py` | the 17 things the document does not say, decided, each with its reason → `decided-by-ai.json` |
+| `3_implied_by_the_document.py` | the 91 links that follow from the document's own sentences → `added-by-reading.json` |
+| `4_decided_by_the_ai.py` | the 18 things the document does not say, decided, each with its reason → `decided-by-ai.json` |
 | `build.sh` | runs them in order and checks the result: `sh examples/payment-initiation-v3/scripts/build.sh <folder>` reproduces `data/` exactly |
 | `trace.py` | writes `TRACEABILITY.md` from the workspace |
 
