@@ -181,7 +181,7 @@ class Load(Base):
         s = json.loads(self.sdem('status', '--workspace', self.ws, '--json')[1])
         c = s['completeness']; self.assertEqual((c['gaps'], c['inferred_to_confirm'], c['records_connected']), (0, 0, c['records_checked']))
         p = next(x for x in s['patterns'] if x['pattern'] == 'PAT-BIAN-TRANSACT'); self.assertEqual((p['in_place'], p['open']), (p['parts'], []))
-        self.assertEqual([u for u in s['unresolved'] if u['kind'] in ('link_to_review', 'inferred_unconfirmed')], [])   # nothing to review, nothing to confirm
+        self.assertEqual((s['state'], s['blocking'], s['unresolved']), ('clear', [], []))   # IN-13: nothing to review, confirm, approve or plan — the design's first load is not a change to plan
         self.assertEqual(self.sdem('check', '--workspace', self.ws)[0], 0)
         rep = (self.ws / r['report']).read_text(encoding='utf-8')
         self.assertIn('6 accepted as authored', rep); self.assertIn('## What the author decided where the design document was silent', rep); self.assertIn('the exchanges table is in the one database', rep)

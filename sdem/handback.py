@@ -52,8 +52,14 @@ def collect(ws):
     from .agents import Estate, CoordinationError
     try: status = {r['id']: r for r in Estate(ws).status()}
     except (CoordinationError, OSError, ValueError): status = {}
+    first_load = set()   # IN-13: the change events of a design's first load (sdem intake) — nothing existed before them, so nothing is planned from them
+    try:
+        import json as _jf
+        from pathlib import Path as _Pf
+        first_load = set(_jf.loads((_Pf(ws) / 'intake' / 'first-load.json').read_text(encoding='utf-8')).get('events', []))
+    except (OSError, ValueError): pass
     events = [{'id': e['id'], 'layer': e.get('layer'), 'change_set': e.get('change_set'), 'validation': (status.get(e['id']) or {}).get('validation')}
-              for e in d['changes']['events'] if not (status.get(e['id']) or {}).get('planned')]
+              for e in d['changes']['events'] if not (status.get(e['id']) or {}).get('planned') and e['id'] not in first_load]
     review = [{'id': r['id'], 'link': f"{r['source']} {r['rel']} {r['target']}", 'confidence': r['confidence'], 'evidence_class': r.get('evidence_class'),
                'evidence_needed': r['evidence_needed']} for r in d['review']['rows']]
     rejected = []   # RJ-07: links a person rejected — decided, listed apart from those still to review

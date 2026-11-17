@@ -294,6 +294,10 @@ def load(pkg, workspace, person, dry_run=False, allow_gaps=False, accept=False):
         steps.append({'step': 'load', 'did': r['counts']['records']})
         if r['bian']['service_domains']: _must('bian', 'add', *r['bian']['service_domains'], '--workspace', ws, '--person', person, what='adding the BIAN service domains the package names')
         _invokes(ws, tmp, r['bian']['operations'], person)
+        ev = ws / 'coordination' / 'events'   # IN-13: the change events of the design's first load — nothing existed before them to be changed, so there is no work to plan from them
+        first = sorted(f.stem for f in ev.glob('CE-*.json')) if ev.exists() else []
+        (ws / 'intake').mkdir(parents=True, exist_ok=True)
+        (ws / 'intake' / 'first-load.json').write_text(json.dumps({'events': first, 'by': person, 'note': 'the change events of sdem intake: the first load of the design'}, indent=1), encoding='utf-8')
         steps.append({'step': 'bian', 'did': {'service_domains': r['bian']['service_domains'], 'operations': [o['id'] for o in r['bian']['operations']]}})
         avail = json.loads(_must('status', '--workspace', ws, '--json', what='reading the status')).get('patterns_available') or []
         for p in avail: _must('profile', 'include', p['include'], '--workspace', ws, '--person', person, '--reason', f"sdem intake: fits the design ({p['because']})", what=f"including {p['include']}")
@@ -326,6 +330,15 @@ def load(pkg, workspace, person, dry_run=False, allow_gaps=False, accept=False):
         run = json.loads(_must('aid', '--workspace', ws, '--person', person, '--complete-draft', '--json', what='completing the first draft (sdem aid --complete-draft)'))
         steps.append({'step': 'draft', 'did': run.get('id')})
         _must('link', '--workspace', ws, '--out', ws / 'links', '--no-review', what='listing every proposed link (sdem link)')
+        declined = []
+        if accept and r['complete']:   # IN-13: taken as authored — what SDEM's rules would propose beside the author's links is not taken, and is recorded so
+            lp = ws / 'links' / 'proposals.json'
+            ids = [m['mapping_id'] for m in json.loads(lp.read_text(encoding='utf-8')).get('mappings', [])] if lp.exists() else []
+            if ids:
+                _must('reject', *ids, '--proposals', lp, '--workspace', ws, '--reviewer', person, '--reason', 'the design is taken as authored (sdem intake --accept): not one of its author\'s links',
+                      what="declining the links SDEM's rules propose beside the author's")
+                declined = ids
+            steps.append({'step': 'as-authored', 'did': f"{len(declined)} link(s) SDEM's rules proposed beside the author's, declined"})
         by = {i['id']: i for f in FILES.values() if (ws / f).exists() for i in json.loads((ws / f).read_text(encoding='utf-8'))['instances']}
         have = set()
         for f in sorted((ws / 'aid').glob('*-proposals.json')) + [ws / 'links' / 'proposals.json']:
