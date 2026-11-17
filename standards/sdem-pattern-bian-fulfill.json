@@ -1,0 +1,261 @@
+{
+  "format": "sdem-pattern/1",
+  "description": "SDEM's starting pattern for any BIAN service domain whose functional pattern is Fulfill — it fulfils the obligations of a service arrangement over its life. What such a domain has in each layer of a complete design: who uses it, what carries it, where its arrangement is kept and where it runs. It applies by the domain's functional pattern, so one file covers every Fulfill domain; a pattern for a particular kind of solution (payment initiation) says more. Shipped with SDEM; a person includes it (sdem profile include sdem:sdem-pattern-bian-fulfill.json). Every part is a warning — to decide, never a failed check.",
+  "pattern": {
+    "id": "PAT-BIAN-FULFILL",
+    "title": "BIAN Fulfill — a arrangement",
+    "version": "1.0",
+    "owner": "SDEM",
+    "severity": "warning",
+    "source": "BIAN Semantic API Practitioner Guide v8.1 §3.2.1, Figure 9 (the functional patterns and their generic artefacts: Fulfill — Arrangement); BIAN Service Landscape 14.0; ArchiMate 3.2; docs/design/sdem-completeness-design.md (CPL-12)",
+    "applies_when": {
+      "entity": "A2.ServiceDomain",
+      "when": {
+        "functional_pattern": "FP-FULFILL"
+      }
+    }
+  },
+  "structure": {
+    "anchor": "domain",
+    "roles": [
+      {
+        "id": "domain",
+        "label": "Fulfill service domain (BIAN)",
+        "type": "A2.ServiceDomain"
+      },
+      {
+        "id": "capability",
+        "label": "Business capability the domain supports",
+        "type": "A1.BusinessCapability",
+        "max": null,
+        "reasoning": "a service domain is there for a business capability; without one the design does not say what it is for"
+      },
+      {
+        "id": "process",
+        "label": "Process that uses the domain",
+        "type": "A1.BusinessProcess",
+        "max": null,
+        "reasoning": "the business step in which the arrangement is handled"
+      },
+      {
+        "id": "business-service",
+        "label": "Business service the process provides",
+        "type": "A1.BusinessService",
+        "max": null,
+        "reasoning": "an arrangement is a service the organisation gives a customer over time"
+      },
+      {
+        "id": "product",
+        "label": "Product the arrangements are for",
+        "type": "A1.Product",
+        "max": null,
+        "reasoning": "BIAN: a Fulfill domain fulfils the obligations of a service arrangement, most often for a product or facility"
+      },
+      {
+        "id": "service-groups",
+        "label": "The domain's service groups (BIAN)",
+        "type": "A2.ServiceGroup",
+        "max": null,
+        "reasoning": "BIAN groups what the domain offers; its operations are reached through them"
+      },
+      {
+        "id": "service-operations",
+        "label": "The domain's service operations (BIAN)",
+        "type": "A2.ServiceOperation",
+        "max": null,
+        "reasoning": "what BIAN says can be done with the arrangement"
+      },
+      {
+        "id": "api-operations",
+        "label": "API operation that implements one of the domain's operations",
+        "type": "A3.APIOperation",
+        "max": null,
+        "reasoning": "a domain no API implements is offered to nothing"
+      },
+      {
+        "id": "component",
+        "label": "Component that realises the domain",
+        "type": "A3.ApplicationComponent",
+        "max": null,
+        "reasoning": "software carries the domain; without it nothing does"
+      },
+      {
+        "id": "record",
+        "label": "Record of the arrangement",
+        "type": "A3.DataEntity",
+        "max": null,
+        "reasoning": "the arrangement is the domain's control record in BIAN — the design keeps it somewhere"
+      },
+      {
+        "id": "store",
+        "label": "Platform the record is stored on",
+        "type": "A4.SystemSoftware",
+        "max": null,
+        "reasoning": "a record is durable only on a platform"
+      },
+      {
+        "id": "deployment",
+        "label": "Deployment of the component",
+        "type": "A4.Deployment",
+        "max": null,
+        "reasoning": "software that is deployed nowhere runs nowhere"
+      }
+    ],
+    "connectors": [
+      {
+        "id": "B1",
+        "from": "capability",
+        "to": "domain",
+        "relationship": "SUPPORTED_BY",
+        "label": "supported by"
+      },
+      {
+        "id": "B2",
+        "from": "process",
+        "to": "domain",
+        "relationship": "USES_DOMAIN",
+        "label": "uses"
+      },
+      {
+        "id": "B3",
+        "from": "domain",
+        "to": "component",
+        "relationship": "REALIZED_BY",
+        "label": "realised by"
+      },
+      {
+        "id": "B4",
+        "from": "domain",
+        "to": "service-groups",
+        "kind": "composition",
+        "label": "has"
+      },
+      {
+        "id": "B5",
+        "from": "service-groups",
+        "to": "service-operations",
+        "kind": "composition",
+        "label": "has"
+      },
+      {
+        "id": "B6",
+        "from": "service-operations",
+        "to": "api-operations",
+        "relationship": "IMPLEMENTED_BY",
+        "label": "implemented by"
+      },
+      {
+        "id": "B7",
+        "from": "component",
+        "to": "record",
+        "kind": "access",
+        "label": "reads and writes"
+      },
+      {
+        "id": "B8",
+        "from": "record",
+        "to": "store",
+        "relationship": "STORED_IN",
+        "label": "stored in"
+      },
+      {
+        "id": "B9",
+        "from": "component",
+        "to": "deployment",
+        "relationship": "DEPLOYED_AS",
+        "label": "deployed as"
+      },
+      {
+        "id": "B10",
+        "from": "process",
+        "to": "business-service",
+        "kind": "realization",
+        "label": "realises"
+      },
+      {
+        "id": "B11",
+        "from": "product",
+        "to": "business-service",
+        "kind": "aggregation",
+        "label": "includes"
+      }
+    ],
+    "layout": {
+      "zones": {},
+      "roles": {
+        "product": [
+          40.0,
+          70.0,
+          200.0,
+          70.0
+        ],
+        "business-service": [
+          300.0,
+          70.0,
+          200.0,
+          70.0
+        ],
+        "process": [
+          560.0,
+          70.0,
+          200.0,
+          70.0
+        ],
+        "capability": [
+          820.0,
+          70.0,
+          200.0,
+          70.0
+        ],
+        "domain": [
+          560.0,
+          230.0,
+          200.0,
+          70.0
+        ],
+        "service-groups": [
+          820.0,
+          230.0,
+          200.0,
+          70.0
+        ],
+        "service-operations": [
+          1080.0,
+          230.0,
+          200.0,
+          70.0
+        ],
+        "component": [
+          560.0,
+          400.0,
+          200.0,
+          70.0
+        ],
+        "record": [
+          300.0,
+          400.0,
+          200.0,
+          70.0
+        ],
+        "api-operations": [
+          1080.0,
+          400.0,
+          200.0,
+          70.0
+        ],
+        "store": [
+          300.0,
+          560.0,
+          200.0,
+          70.0
+        ],
+        "deployment": [
+          560.0,
+          560.0,
+          200.0,
+          70.0
+        ]
+      }
+    }
+  }
+}

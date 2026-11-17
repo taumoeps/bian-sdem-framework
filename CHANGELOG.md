@@ -39,6 +39,8 @@
 
 - **`sdem aid` adds the parts a pattern asks for** (AID-D06, AID-D07). Where a pattern requires a part and the design has no record of that kind at all — no data entity, no platform software — `sdem aid` adds it as a planned record named for the part, marked inferred, with the pattern's link to it; an early design gets the skeleton of its kind of solution. Where records of the kind exist it adds nothing, and where several records could be one part it suggests which from the name — a person writes it.
 
+- **Patterns for BIAN's functional patterns: Transact and Fulfill** (CPL-12…CPL-14). A pattern that applies by a service domain's functional pattern serves every domain of that kind — 14 Transact domains, 39 Fulfill — without a file a domain: who uses the domain, what carries it, an API that implements one of its operations, where its transaction or arrangement is kept and where it runs; for Fulfill also the product the arrangements are for. `sdem status` offers the one that fits, after a pattern for the solution itself. Including both a solution's pattern and its domain's is allowed; `sdem aid` does not add the same kind of part for each.
+
 ## 0.19.0 — a full design: the information model, the links ArchiMate defines, events, products, channels and locations (2026-11-16)
 
 Upgrade: change the pin to `@v0.19.0`, `pip install -r requirements.txt`, `sdem agents install`; then `sdem migrate --workspace <dir> --person <you>` (metamodel 0.14.0 → 0.17.0, additive — nothing in your data changes; what is now thin is reported, never refused). Run `sdem aid` again to have it propose data tables, field matches and the new links.

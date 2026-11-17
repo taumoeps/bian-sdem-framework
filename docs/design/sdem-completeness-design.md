@@ -63,9 +63,21 @@ On Payment Initiation v3 (without the operator's guessed links): 10 of 14 parts 
 
 **The rest of the stage (built 2026-11-17).** A part a pattern requires, where the design has *no record of that kind at all*, is added as a planned record marked inferred, with the pattern's link to it (AID-D06) — so an early design, with a business layer and little else, gets the skeleton of its kind of solution to refine. Where records of the kind exist, nothing is added: SDEM does not invent a fourth table beside three. Which record is a part (the key store) is suggested from its name and written by a person (AID-D07).
 
+## Stage 5 — begun (2026-11-17): patterns for BIAN's functional patterns
+
+BIAN gives every service domain a functional pattern — what it does with its asset — and each pattern a generic artefact (BIAN Semantic API Practitioner Guide v8.1 §3.2.1): *Transact* a transaction, *Fulfill* an arrangement. Eighteen patterns cover the 258 domains of release 14.0.0; a pattern file that applies by a domain's `functional_pattern` therefore serves every domain of that kind, with no file a domain.
+
+| Id | Rule |
+|---|---|
+| CPL-12 | **SDEM ships a pattern for *Transact*** (`standards/sdem-pattern-bian-transact.json`, `PAT-BIAN-TRANSACT`; 14 domains — Payment Order Initiation, Currency Exchange, Letter of Credit …): the capability the domain supports; a process that uses it; BIAN's own service groups and operations, and an API operation that implements one; the component that realises it; a record of the transaction that component reads and writes; the platform it is stored on; the component's deployment. Warnings only. `sdem status` offers it for any design with a Transact domain — after a pattern for the solution itself, when there is one. |
+| CPL-13 | **… and one for *Fulfill*** (`standards/sdem-pattern-bian-fulfill.json`, `PAT-BIAN-FULFILL`; 39 domains — Current Account, Consumer Loan, Credit Card …): the same, in terms of the arrangement — and the business service the process provides and **the product the arrangements are for**. |
+| CPL-14 | **Two patterns on one design.** A solution's own pattern and its domain's kind may both be included; each is reported in its own block. `sdem aid` does not add the same kind of part for each (AID-D06): what an earlier pattern added counts as there. |
+
+**What these patterns are and are not.** The two share most of their structure, because what makes a domain *complete across four layers* is the same whatever it does; they differ in BIAN's word for what the domain handles and, for Fulfill, the product. They do not say what a *lending* or a *cards* solution needs — that is a pattern for the solution, as payment initiation has. The other sixteen functional patterns are not built: each should be written when a design needs it, not copied from these.
+
 ## Stages to come — each its own change, tests first
 
 | Stage | What | Kind |
 |---|---|---|
-| 5 | **More patterns**: one for each of BIAN's functional patterns, *Transact* and *Fulfil* first (about twenty cover every service domain) — what any domain of that kind has in each layer | content |
+| 5 (rest) | The other functional patterns, as designs need them; patterns for further kinds of solution | content |
 | 6 | **Inferred, and seen to be.** `sdem view` and the data sent to DESNRE mark what is inferred; `sdem check` lists any link or record marked inferred that names no AID rule, and any link whose source is not a document, an AID rule or a named person | code |

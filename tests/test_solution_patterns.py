@@ -165,7 +165,8 @@ class InAWorkspace(Base):
 
     def test_status_names_the_pattern_that_fits_the_design(self):   # CPL-09
         self.new(); s = self.status()
-        self.assertEqual([(p['include'], p['id'], p['because']) for p in s['patterns_available']], [(FILE, PID, 'SD-PAYMENT-ORDER-INITIATION')])
+        self.assertEqual([(p['include'], p['id'], p['because']) for p in s['patterns_available']],
+                         [(FILE, PID, 'SD-PAYMENT-ORDER-INITIATION'), ('sdem:sdem-pattern-bian-transact.json', 'PAT-BIAN-TRANSACT', 'SD-PAYMENT-ORDER-INITIATION')])   # the solution's own first, then its kind of domain's (CPL-12)
         self.assertTrue(any(n['person_decides'] and n['command'] == f'sdem profile include {FILE} --workspace {self.ws} --person <you>' for n in s['next']))
         text = sdem('status', '--workspace', self.ws, cwd=self.tmp)[1]
         self.assertIn('A pattern for this kind of solution ships with SDEM: Payment initiation', text)
@@ -188,7 +189,7 @@ class InAWorkspace(Base):
         gd = _j(next(self.ws.rglob(r['decision'] + '.json')))
         self.assertEqual((gd['kind'], gd['named_person'], gd['subject']), ('include_in_profile', 'jane.architect', FILE))
         code, out, err = inc(FILE, '--person', 'jane.architect', '--json'); self.assertEqual(code, 0); self.assertEqual(json.loads(out)['included'], [])   # already there: nothing to do
-        self.assertEqual(self.status()['patterns_available'], [])
+        self.assertEqual([p['id'] for p in self.status()['patterns_available']], ['PAT-BIAN-TRANSACT'])   # the one not yet included
         self.assertEqual(sdem('check', '--workspace', self.ws, cwd=self.tmp)[0], 0)   # every part is a warning: a gap is never a failed check
 
     def test_an_existing_workspace_takes_a_shipped_file_the_same_way(self):   # CPL-10, CPL-06

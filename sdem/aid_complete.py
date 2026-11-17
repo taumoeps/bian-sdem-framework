@@ -163,8 +163,9 @@ def pattern_parts(docs, maps, mm, structures, mark, rejected=()):
     Returns ({layer: [record]}, {layer: [link]}, [(source, relationship, target, why, 'AID-D06')], [id added])."""
     from .profile import RECORD_FIELDS
     new, links, props, ids = {}, {}, [], []
-    kinds = [i['type'] for d in docs.values() for i in d.get('instances', [])]   # the design as it stands: what this run adds is not evidence for adding more
+    stands = [i['type'] for d in docs.values() for i in d.get('instances', [])]
     for pat, S, anchor, recs, (bound, via) in _bound(docs, maps, mm, structures):
+        kinds = stands + [r['type'] for rs in new.values() for r in rs]   # the design as it stands, and what an earlier pattern added (CPL-14): within one pattern, what it adds is not evidence against adding its next part
         roles = {r['id']: r for r in S['roles']}; conn = {c['id']: c for c in S.get('connectors', [])}; pid = pat['id']
         changed = True
         while changed:

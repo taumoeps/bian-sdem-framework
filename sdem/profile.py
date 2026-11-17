@@ -83,8 +83,8 @@ def available(datasets, mm):
         if pat['id'] in have or not aw.get('when'): continue
         hit = sorted(i['id'] for ds in datasets.values() for i in ds.get('instances', [])
                      if mm.known(i['type']) and mm.is_a(i['type'], aw['entity']) and applies({'when': aw['when']}, i))
-        if hit: out.append({'include': name, 'id': pat['id'], 'title': pat['title'], 'because': hit[0]})
-    return out
+        if hit: out.append({'include': name, 'id': pat['id'], 'title': pat['title'], 'because': hit[0], 'specific': 'name' in aw['when']})
+    return sorted(out, key=lambda x: (not x['specific'], x['include']))   # the pattern for this kind of solution before the one for its kind of domain (CPL-12)
 
 
 def shipped_included():
