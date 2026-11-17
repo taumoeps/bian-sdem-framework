@@ -2473,16 +2473,17 @@ sdem transform run <export> -o O [--rules RULES] [--known KNOWN …] [--model-id
 what you may write: each layer's kinds of record, their fields (type, required, allowed values) and allowed links; the requirement and change-set formats — your profile's included with --workspace
 
 ```
-sdem types [<what>] [--workspace WORKSPACE]
+sdem types [<what>] [--workspace WORKSPACE] [-o O]
 ```
 
 *JSON: native · dry run: sandbox*
 
 | Argument | Required | What it is |
 |---|---|---|
-| `<what>` |  | a layer (A1), a type (A1.BusinessProcess), requirement or change-set; nothing: the overview |
+| `<what>` |  | a layer (A1), a type (A1.BusinessProcess), requirement, change-set, or authoring (the guide for an outside author — an AI assistant without the CLI); nothing: the overview |
 | `--workspace` |  | include the workspace's organisation profile |
 | `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
+| `-o`, `--out` |  | with `authoring`: write the guide to this file |
 
 Example:
 

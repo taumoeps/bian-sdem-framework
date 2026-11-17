@@ -113,6 +113,8 @@ sdem types A1 --workspace workspaces/ledger --json                          # ag
 sdem change diff work/ledger-a1-draft.json --workspace workspaces/ledger -o work/ledger-a1.json
 sdem change propose work/ledger-a1.json --workspace workspaces/ledger --agent sdem-a1-business --person your.name --dry-run --json
 sdem handback --workspace workspaces/ledger --json                          # agent: what the document did not say
+sdem types authoring -o work/sdem-authoring-guide.md                        # or: an AI assistant without SDEM writes the layer files — hand it this one file with the design
+sdem aid --workspace workspaces/ledger --person your.name --complete-draft --dry-run   # then the complete first draft, in the order of the skill sdem-complete-draft
 ```
 
 **A person decides:** whether each change set is applied (`sdem change propose` without `--dry-run`), and everything in scenario 3's list.

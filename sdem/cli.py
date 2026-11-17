@@ -117,7 +117,7 @@ JOURNEYS = {
 
 # generated documents and schemas, in the order CI checks them
 GENERATORS = ['diagram', 'relationships', 'structure', 'spec', 'kgspec', 'catalogue', 'attributes', 'confidence',
-              'logical', 'physical', 'metamodel_spec', 'controls', 'inferences', 'viewpoints', 'clidoc', 'scenarioskill']
+              'logical', 'physical', 'metamodel_spec', 'controls', 'inferences', 'viewpoints', 'clidoc', 'scenarioskill', 'authorguide']
 
 
 from .layers import DATASET_FILES as ESTATE_FILES   # LR-02: the core four and the profile's layers

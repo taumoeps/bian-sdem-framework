@@ -11,6 +11,7 @@ With --workspace, the workspace's organisation profile is included (its types, f
 Read-only. Built because the agent baseline (2026-11-02) found every mistake was a field, value or link no command listed.
 """
 import argparse, json, sys
+from pathlib import Path
 
 from .paths import DATA_ROOT
 
@@ -99,11 +100,18 @@ def main(argv=None):
     ap = argparse.ArgumentParser(prog='sdem types', formatter_class=argparse.RawDescriptionHelpFormatter,
                                  description='What you may write: each layer\'s kinds of record, their fields (type, required, allowed values) and the links each may have; '
                                              'the requirement and change-set formats. With --workspace, your organisation profile is included.',
-                                 epilog='Examples:\n  sdem types A1\n  sdem types A1.BusinessProcess --json\n  sdem types requirement\n  sdem types A3 --workspace workspaces/payments')
-    ap.add_argument('what', nargs='?', help='a layer (A1), a type (A1.BusinessProcess), requirement or change-set; nothing: the overview')
+                                 epilog='Examples:\n  sdem types A1\n  sdem types A1.BusinessProcess --json\n  sdem types requirement\n  sdem types authoring -o sdem-authoring-guide.md    # hand it to an AI assistant with the design\n  sdem types A3 --workspace workspaces/payments')
+    ap.add_argument('what', nargs='?', help='a layer (A1), a type (A1.BusinessProcess), requirement, change-set, or authoring (the guide for an outside author — an AI assistant without the CLI); nothing: the overview')
     ap.add_argument('--workspace', dest='estate', metavar='DIR', help="include the workspace's organisation profile"); ap.add_argument('--json', action='store_true')
+    ap.add_argument('-o', '--out', metavar='FILE', help='with `authoring`: write the guide to this file')
     a = ap.parse_args(argv)
     mm = Metamodel.load(); w = a.what
+    if w in ('authoring', 'authoring-guide'):   # AU-01: the one file an outside author is given — the method, the rules and this version's vocabulary
+        from .authorguide import render
+        text = render()
+        if a.out: Path(a.out).write_text(text, encoding='utf-8'); print(f'wrote {a.out} — hand it to the author with the design ({len(text) // 1000} KB)')
+        else: print(text)
+        return 0
     if w in ('requirement', 'requirements'): res = requirement_format()
     elif w in ('change-set', 'changeset', 'change_set'): res = change_set_format()
     elif w and '.' in w:
