@@ -54,7 +54,10 @@ def collect(ws):
     for d in h['possible_duplicates']:
         if not d['same_key']: warnings.append(_item('possible_duplicate', f"{d['layer']} {d['type']}: {', '.join(d['ids'])} — one record, or two? ({d['rule']})"))
     for x in h['compliance']['expiring']: warnings.append(_item('exception_expiring', f"exception {x['id']} ({x['rule']}) ends {x['expires']}"))
-    for a in h['advice']: warnings.append(_item('advice', f"{a['layer']}: {a['text']}", layer=a['layer']))
+    said = ([f": {r['rule']} —" for r in complete['by_rule']] if complete else []) + [f": {p['pattern']}/" for p in pats]   # CPL-05, CPL-11: sdem check's own line for a gap already in a summary above
+    for a in h['advice']:
+        if any(k in a['text'] for k in said): continue
+        warnings.append(_item('advice', f"{a['layer']}: {a['text']}", layer=a['layer']))
 
     if any(b['kind'] == 'check' for b in blocking): step(f'sdem check --workspace {w}', 'see what fails, and fix it through a change set (sdem change propose)')
     if any(b['kind'] == 'unrecorded_edit' for b in blocking): step(f'sdem change adopt --workspace {w} --person <you>', 'an edit made outside SDEM: a person adopts it (or reverts it) before anything else is accepted', True)
@@ -78,7 +81,7 @@ def collect(ws):
     have = {x['level'] for x in h['layers']}; gone = [m['level'] for m in h['missing_layers']]
     if 'A1' in have and gone and not h['unconfirmed_inferred']:
         step(f'sdem aid --workspace {w} --person <you> --dry-run', f"infer what is missing ({', '.join(gone)}) from the business design — every record marked inferred until a person confirms it; then without --dry-run when the person agrees")
-    if not blocking and not unresolved: step(f'sdem document --workspace {w} --layer all', 'nothing blocks the design or waits on a person: write it up, or look at it all: sdem workbench --workspace ' + w)
+    if not blocking and not unresolved and not (complete and (complete['gaps'] or complete.get('inferred_to_confirm'))) and not any(p['open'] for p in pats): step(f'sdem document --workspace {w} --layer all', 'nothing blocks the design or waits on a person: write it up, or look at it all: sdem workbench --workspace ' + w)
 
     state = 'blocked' if blocking else 'open' if unresolved or (complete and (complete['gaps'] or complete.get('inferred_to_confirm'))) or any(p['open'] for p in pats) else 'clear'
     return {'workspace': w, 'name': h['name'], 'state': state,

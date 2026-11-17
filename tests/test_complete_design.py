@@ -72,6 +72,15 @@ class CompletenessTests(unittest.TestCase):
         self.assertRegex(text, r'Completeness: 1 of 4 records connected \(25%\) — 3 gaps')
         self.assertIn('2 × an interface belongs to the component that offers it', text)
 
+    def test_status_says_it_once_for_active_records_too(self):   # CPL-05 — found loading a design through sdem transform: its records are active, and each gap was also a warning line
+        self.new()
+        self.propose(CS('A3', [R('APP-LEDGER', 'A3.ApplicationComponent', 'Account ledger', status='active'), R('API-ONE', 'A3.ApplicationInterface', 'One', status='active'),
+                               R('API-TWO', 'A3.ApplicationInterface', 'Two', status='active')]), 'sdem-a3-application')
+        s = json.loads(sdem('status', '--workspace', self.ws, '--json', cwd=self.tmp)[1])
+        self.assertEqual(s['completeness']['by_rule'][0]['records'], ['API-ONE', 'API-TWO'])
+        self.assertFalse([x['text'] for x in s['warnings'] + s['unresolved'] + s['blocking'] if 'CPL-' in x['text']])
+        self.assertIn('CPL-A3-01', sdem('check', '--workspace', self.ws, cwd=self.tmp)[1])   # sdem check still says each one
+
     def test_at_least_one_of_several_links(self):   # PR-35, CPL-07: an actor, an image
         self.new()
         self.propose(CS('A1', [R('ACTOR-MERCHANT', 'A1.BusinessActor', 'Merchant'), R('ACTOR-CUSTOMER', 'A1.BusinessActor', 'Customer'), R('ACTOR-TPP', 'A1.BusinessActor', 'Provider'),
