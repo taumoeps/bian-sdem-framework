@@ -135,3 +135,83 @@ def pattern_domains(docs, catalogue, maps, mm, structures, mark, rejected=()):
                 if (p, 'USES_DOMAIN', sd) not in live:
                     uses.append((p, 'USES_DOMAIN', sd, f"{p} is the one process whose name has the word '{w}' of BIAN's {name}, which the pattern {pat['id']} asks a process to use — name evidence only"))
     return new, links, uses, added
+
+
+def _bound(docs, maps, mm, structures):
+    """Each structured pattern and record it applies to, with its parts filled as `sdem comply` fills them (approved links only)."""
+    from .patterns import bind
+    from .profile import applies
+    recs = {i['id']: (l, i) for l, d in docs.items() for i in d.get('instances', [])}
+    inside, across = {}, {}
+    for d in docs.values():
+        for r in d.get('relationships', []):
+            inside.setdefault((r['source'], r['kind'], 'out'), []).append(r['target']); inside.setdefault((r['target'], r['kind'], 'in'), []).append(r['source'])
+    for s, rel, t in maps:
+        across.setdefault((s, rel, 'out'), []).append(t); across.setdefault((t, rel, 'in'), []).append(s)
+    for st in structures:
+        pat, S = st['pattern'], st['structure']; aw = pat.get('applies_when') or {}
+        for a, (l, r) in sorted(recs.items()):
+            if mm.known(r['type']) and mm.is_a(r['type'], aw.get('entity', '')) and applies({'when': aw.get('when') or {}}, r) and not _unconfirmed(r):
+                yield pat, S, a, recs, bind(a, S, pat['id'], recs, inside, across, mm)
+
+
+def pattern_parts(docs, maps, mm, structures, mark, rejected=()):
+    """AID-D06. A part a pattern requires, where the design has no record of that kind at all, is added as a planned record named for the
+    part and marked inferred (evidence: the pattern), with the link the pattern draws to it — inside a layer written and marked, between
+    layers proposed. Not a BIAN record (AID-D05 brings those from BIAN), not a part whose type is no one kind of record, not one a person
+    rejected; and where records of the kind exist, nothing: which of them is the part is a link for a person to state.
+    Returns ({layer: [record]}, {layer: [link]}, [(source, relationship, target, why, 'AID-D06')], [id added])."""
+    from .profile import RECORD_FIELDS
+    new, links, props, ids = {}, {}, [], []
+    kinds = [i['type'] for d in docs.values() for i in d.get('instances', [])]   # the design as it stands: what this run adds is not evidence for adding more
+    for pat, S, anchor, recs, (bound, via) in _bound(docs, maps, mm, structures):
+        roles = {r['id']: r for r in S['roles']}; conn = {c['id']: c for c in S.get('connectors', [])}; pid = pat['id']
+        changed = True
+        while changed:
+            changed = False
+            for b, role in roles.items():
+                if b == S['anchor'] or bound.get(b): continue
+                c, a = (conn[via[b][0]], via[b][1]) if b in via else (None, None)
+                if not (role.get('anywhere') or (a and bound.get(a))): continue
+                t = role['type']; layer = t.split('.')[0]
+                if layer not in ('A1', 'A3', 'A4') or not mm.known(t) or mm.is_abstract(t) or any(mm.known(k) and mm.is_a(k, t) for k in kinds): bound[b] = bound.get(b) or []; continue
+                want = max(role.get('min', 1), 1); made = []
+                for n in range(1, want + 1):
+                    rid = f"AID-{pid}-{b.upper()}" + (f'-{n}' if want > 1 else '')
+                    if rid in rejected or rid in recs or rid in ids: continue
+                    why = f"the pattern {pat['title']} ({pid}) says a design that has {anchor} has this part, and the design has no {t.split('.')[1]} at all: {role.get('reasoning', '')}".rstrip(': ')
+                    r = {'id': rid, 'type': t, 'version': '1', 'name': (role.get('label') or b) + (f' {n}' if want > 1 else '') + ' (inferred)', 'lifecycle_status': 'planned',
+                         'attributes': {**{k: v for k, v in (role.get('when') or {}).items() if k not in RECORD_FIELDS},
+                                        'conforms_to': [f'{pid}#{b}'],   # it is this part and no other (PR-23)
+                                        'inferred': mark('AID-D06', why, anchor, confidence='low', evidence_class='pattern', asked_by=f'{pid}/{b}')}}
+                    new.setdefault(layer, []).append(r); ids.append(rid); made.append(rid)
+                    for other in (bound.get(a) or []) if c else []:
+                        s, t2 = (other, rid) if c['from'] == a else (rid, other)
+                        lw = f"the pattern {pid} draws this link ({c.get('label') or c['id']}) to the part it asks for"
+                        if c.get('kind'): links.setdefault(layer, []).append({'source': s, 'kind': c['kind'], 'target': t2, 'inferred': mark('AID-D06', lw, anchor, confidence='low', evidence_class='pattern', asked_by=f"{pid}/{c['id']}")})
+                        else: props.append((s, c['relationship'], t2, lw, 'AID-D06'))
+                if made: bound[b] = made; changed = True
+                else: bound[b] = bound.get(b) or []
+                if not made: roles = {k: v for k, v in roles.items() if k != b}   # decided: not again in this run
+    return new, links, props, ids
+
+
+def name_parts(docs, maps, mm, structures):
+    """AID-D07. Where several records could each be a part and the pattern allows fewer, the one whose name or id shares a word with the
+    part's — and no other candidate does — is SUGGESTED. Nothing is written: a person names the part on the record (conforms_to) through a
+    change set. Returns [{pattern, part, label, anchor, candidates, suggested (or None), conforms_to, why}]."""
+    out = []
+    for pat, S, anchor, recs, (bound, _) in _bound(docs, maps, mm, structures):
+        for role in S['roles']:
+            got, hi = bound.get(role['id']) or [], role.get('max', 1)
+            if hi is None or len(got) <= hi: continue
+            hits = {}
+            for w in words(role.get('label') or role['id']):
+                cs = [x for x in got if w in words(recs[x][1].get('name'), x)]
+                if len(cs) == 1: hits[w] = cs[0]
+            one = sorted(set(hits.values()))
+            out.append({'pattern': pat['id'], 'part': role['id'], 'label': role.get('label') or role['id'], 'anchor': anchor, 'candidates': sorted(got),
+                        'suggested': one[0] if len(one) == 1 else None, 'conforms_to': f"{pat['id']}#{role['id']}",
+                        'why': (f"{one[0]} is the one candidate with the word '{sorted(w for w, x in hits.items() if x == one[0])[0]}' of the part's name — name evidence only" if len(one) == 1
+                                else 'no one candidate is singled out by its name — a person says which')})
+    return out

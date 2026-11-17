@@ -76,6 +76,60 @@ class Links(unittest.TestCase):
         self.assertEqual(got, [])
 
 
+class Parts(unittest.TestCase):
+    """AID-D06, AID-D07 — a part a pattern requires: added when the design has nothing of its kind, named when a name says which it is."""
+    PID = 'PAT-PAYMENT-INITIATION'
+
+    def setUp(self):
+        self.st = [{'pattern': (d := json.loads((ROOT / 'standards' / 'sdem-pattern-payment-initiation.json').read_text(encoding='utf-8')))['pattern'], 'structure': d['structure'], 'file': 'x'}]
+
+    def docs(self, a3=(), a3rels=(), a4=()):
+        act = lambda i, t, n, **a: {**rec(i, t, n, **a), 'lifecycle_status': 'active'}
+        return {'A1': {'instances': [act('PROC-PAY', 'A1.BusinessProcess', 'Take the payment')], 'relationships': []},
+                'A2': {'instances': [act('SD-POI', 'A2.ServiceDomain', 'Payment Order Initiation')], 'relationships': []},
+                'A3': {'instances': [act('APP-HUB', 'A3.ApplicationComponent', 'Hub'), *a3], 'relationships': [dict(zip(('source', 'kind', 'target'), r)) for r in a3rels]},
+                'A4': {'instances': list(a4), 'relationships': []}}
+    MAPS = [('PROC-PAY', 'USES_DOMAIN', 'SD-POI'), ('SD-POI', 'REALIZED_BY', 'APP-HUB')]
+
+    def test_a_part_the_design_has_nothing_of_is_added_marked_inferred_and_linked(self):   # AID-D06
+        new, links, props, ids = aid_complete.pattern_parts(self.docs(), self.MAPS, Metamodel.load(), self.st, mark)
+        got = {r['id']: r for rs in new.values() for r in rs}
+        stores = sorted(i for i in got if 'PAYMENT-RECORDS' in i)
+        self.assertEqual(stores, [f'AID-{self.PID}-PAYMENT-RECORDS-{n}' for n in (1, 2, 3)])   # the pattern asks for three
+        r = got[stores[0]]; m = r['attributes']['inferred']
+        self.assertEqual((r['type'], r['lifecycle_status'], r['name']), ('A3.DataEntity', 'planned', 'Records of the consent, the payment and duplicate protection 1 (inferred)'))
+        self.assertEqual((m['rule'], m['evidence_class'], m['confidence'], m['asked_by'], m['from']), ('AID-D06', 'pattern', 'low', f'{self.PID}/payment-records', 'SD-POI'))
+        self.assertEqual(sorted((x['source'], x['kind'], x['target'], x['inferred']['rule']) for x in links['A3'] if x['kind'] == 'access' and x['source'] == 'APP-HUB'),
+                         [('APP-HUB', 'access', s, 'AID-D06') for s in stores])
+        self.assertIn(f'AID-{self.PID}-DATABASE', got)                                           # found through the records, so it follows them
+        self.assertEqual(sorted(p[:3] for p in props if p[1] == 'STORED_IN'), [(s, 'STORED_IN', f'AID-{self.PID}-DATABASE') for s in stores])   # between layers: proposed, for a person to approve
+        api = got[f'AID-{self.PID}-API']; self.assertIs(api['attributes']['internet_facing'], True)   # what the part says of itself
+        self.assertEqual(len([i for i in got if 'API-OPERATIONS' in i]), 4)
+        self.assertNotIn(f'AID-{self.PID}-EDGE-PLATFORM', got)                                    # 'an infrastructure component' is not a kind of record: a person says which
+        self.assertFalse([i for i in got if got[i]['type'].startswith('A2.')])                    # BIAN records come from BIAN only (AID-S05, AID-D05)
+        self.assertEqual(sorted(ids), sorted(got))
+
+    def test_where_the_design_has_records_of_the_kind_nothing_is_added(self):   # AID-D06
+        d = self.docs(a3=[rec('DATA-X', 'A3.DataEntity', 'a table')])
+        new, links, props, ids = aid_complete.pattern_parts(d, self.MAPS, Metamodel.load(), self.st, mark)
+        self.assertFalse([i for i in ids if 'RECORDS' in i or 'AUDIT' in i or 'DATABASE' in i])   # a table exists: which part it is, and what uses it, is a link to state — not a record to invent
+
+    def test_a_rejected_part_is_not_added_again(self):   # AID-D06, AID-W05
+        _, _, _, ids = aid_complete.pattern_parts(self.docs(), self.MAPS, Metamodel.load(), self.st, mark, {f'AID-{self.PID}-KEY-STORE'})
+        self.assertNotIn(f'AID-{self.PID}-KEY-STORE', ids); self.assertIn(f'AID-{self.PID}-API', ids)
+
+    def test_which_record_is_the_part_is_suggested_from_its_name_never_written(self):   # AID-D07
+        a4 = [rec('SYS-DB', 'A4.SystemSoftware', 'Managed database'), rec('SYS-KMS', 'A4.SystemSoftware', 'Managed key custody'), rec('SYS-MQ', 'A4.SystemSoftware', 'Durable events')]
+        d = self.docs(a4=a4); before = json.dumps(d, sort_keys=True)
+        got = aid_complete.name_parts(d, self.MAPS, Metamodel.load(), self.st)
+        self.assertEqual(json.dumps(d, sort_keys=True), before)
+        k = next(x for x in got if x['part'] == 'key-store')
+        self.assertEqual((k['pattern'], k['anchor'], k['candidates'], k['suggested'], k['conforms_to']), (self.PID, 'SD-POI', ['SYS-DB', 'SYS-KMS', 'SYS-MQ'], 'SYS-KMS', f'{self.PID}#key-store'))
+        self.assertIn("'key'", k['why'])
+        d2 = self.docs(a4=a4 + [rec('SYS-HSM', 'A4.SystemSoftware', 'Key module')])
+        self.assertIsNone(next(x for x in aid_complete.name_parts(d2, self.MAPS, Metamodel.load(), self.st) if x['part'] == 'key-store')['suggested'])   # two say 'key': a person says which
+
+
 class InAWorkspace(unittest.TestCase):
     def setUp(self):
         self.tmp = Path(tempfile.mkdtemp()); self.addCleanup(shutil.rmtree, self.tmp, True); self.ws = self.tmp / 'ws'
@@ -124,6 +178,22 @@ class InAWorkspace(unittest.TestCase):
         self.assertEqual(self.inferred(), [])
         self.ok('aid', '--workspace', self.ws, '--person', 'jane.architect')
         self.assertEqual(self.inferred(), [])
+
+    def test_aid_adds_the_parts_and_the_workspace_still_passes_its_checks(self):   # AID-D06, AID-D07
+        self.ok('new', '--workspace', self.ws, '--person', 'jane.architect')
+        self.ok('bian', 'add', 'Payment Order Initiation', '--workspace', self.ws, '--person', 'jane.architect')
+        self.propose('A1', 'sdem-a1-business', [rec('PROC-PAY', 'A1.BusinessProcess', 'Take the payment')])
+        self.ok('profile', 'include', PATTERN, '--workspace', self.ws, '--person', 'jane.architect')
+        run = json.loads(self.ok('aid', '--workspace', self.ws, '--person', 'jane.architect', '--json'))
+        self.assertIn('AID-PAT-PAYMENT-INITIATION-KEY-STORE', run['draft']['parts_added']); self.assertTrue(all(i.startswith('AID-PAT-PAYMENT-INITIATION-') for i in run['draft']['parts_added']))
+        a4 = {i['id']: i for i in json.loads((self.ws / 'a4-technology.json').read_text(encoding='utf-8'))['instances']}
+        self.assertEqual(a4['AID-PAT-PAYMENT-INITIATION-KEY-STORE']['attributes']['inferred']['rule'], 'AID-D06')
+        self.assertEqual(run['draft']['parts_to_name'], [])
+        self.assertEqual(sdem('check', '--workspace', self.ws, cwd=self.tmp)[0], 0)
+        one = 'AID-PAT-PAYMENT-INITIATION-KEY-STORE'
+        self.ok('aid', 'reject', one, '--workspace', self.ws, '--person', 'jane.architect', '--reason', 'not in this design')
+        again = json.loads(self.ok('aid', '--workspace', self.ws, '--person', 'jane.architect', '--dry-run', '--json'))
+        self.assertNotIn(one, again['draft']['parts_added'])
 
     def test_a_bian_domain_the_pattern_names_is_brought_in_marked_inferred(self):   # AID-D05
         self.ok('new', '--workspace', self.ws, '--person', 'jane.architect')

@@ -1,6 +1,6 @@
 # A complete design — every record connected (CPL-01…CPL-06, and what follows)
 
-> **Status: stages 1, 2 and 3 built, stage 4 in part (2026-11-17) — the owner's decisions in conversation: build it; on by default for new workspaces, by choice for existing ones.** Stages 4–6 are listed, not built. From the audit that followed the first full load of an independent design (Payment Initiation v3, the [public twin](../evidence/payment-initiation-v3/report.md)).
+> **Status: stages 1 to 4 built (2026-11-17) — the owner's decisions in conversation: build it; on by default for new workspaces, by choice for existing ones.** Stages 4–6 are listed, not built. From the audit that followed the first full load of an independent design (Payment Initiation v3, the [public twin](../evidence/payment-initiation-v3/report.md)).
 
 ## The problem
 
@@ -55,18 +55,17 @@ On Payment Initiation v3 (without the operator's guessed links): 10 of 14 parts 
 
 **Not said by this pattern, and why:** that fraud screening comes *before* the debit (an order across several processes — the structure follows single links); which of the three records is the consent, the payment or the duplicate-protection record (nothing but a name tells them apart — stage 4).
 
-## Stage 4 — built in part (2026-11-17): `sdem aid` completes the draft
+## Stage 4 — built (2026-11-17): `sdem aid` completes the draft
 
 `sdem aid` already wrote what it infers into the workspace, marked inferred, for a person to confirm or reject (AID-W01…W05). It now also asks the workspace's standards and patterns what is missing, and fills what the design gives evidence for ([aid-spec](aid-spec.md) AID-D01…AID-D05): a link a rule asks for, from a distinctive shared word (AID-D01) or by elimination (AID-D02); a BIAN domain a pattern names, from the catalogue, and the process that uses it (AID-D05). Each carries the rule that inferred it and the rule or part that asked for it. A person confirms or rejects a link by naming it (AID-D04); `sdem status` says how many records are connected only by an inferred link.
 
 **Where the owner's direction is not met, and why (AID-D03).** The direction was that every gap be placed, the weakest flagged. A gap for which the design holds no evidence at all — a requirement whose name points nowhere — is **left open and listed**, not placed: a rule can only choose a partner on some ground, and with none it would be choosing at random. Elimination (AID-D02) is the weakest ground SDEM uses. On Payment Initiation v3, of fourteen gaps: eight inferred, six left open (two interfaces, a requirement, an actor, an image with no evidence; one technology service with two candidates) — and *Fraud Evaluation* brought in.
 
-**Still to build in this stage:** a part a pattern requires that is not a BIAN domain and is wholly absent (no audit record, no API) added as a planned record marked inferred; naming which record is which part (the key store) where a name gives evidence.
+**The rest of the stage (built 2026-11-17).** A part a pattern requires, where the design has *no record of that kind at all*, is added as a planned record marked inferred, with the pattern's link to it (AID-D06) — so an early design, with a business layer and little else, gets the skeleton of its kind of solution to refine. Where records of the kind exist, nothing is added: SDEM does not invent a fourth table beside three. Which record is a part (the key store) is suggested from its name and written by a person (AID-D07).
 
 ## Stages to come — each its own change, tests first
 
 | Stage | What | Kind |
 |---|---|---|
-| 4 (rest) | A part a pattern requires and the design lacks, added as a planned record marked inferred; naming which record is which part where a name gives evidence | code (AID rules) |
 | 5 | **More patterns**: one for each of BIAN's functional patterns, *Transact* and *Fulfil* first (about twenty cover every service domain) — what any domain of that kind has in each layer | content |
 | 6 | **Inferred, and seen to be.** `sdem view` and the data sent to DESNRE mark what is inferred; `sdem check` lists any link or record marked inferred that names no AID rule, and any link whose source is not a document, an AID rule or a named person | code |
