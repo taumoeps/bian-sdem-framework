@@ -9,6 +9,8 @@ An architect judges a design by seeing it whole, then refines it. So SDEM comple
 
 **`sdem status --workspace <ws>` prints these steps in this order under "Next" — follow it; do not reorder, and do not skip a step because it "looks done".**
 
+**A design that arrives as a package** (the eight files of the authoring guide, `sdem types authoring`) **goes through one command that does steps 1 to 7 in this order:** `sdem intake <folder> --check` (yours to run — everything wrong, at once, no workspace), then `sdem intake <folder> --workspace <ws> --person <architect>` (**the person's** — prepare it, preview it with `--dry-run`, hand it over). The check fails until the design is complete — every record connected, every part of each fitting pattern there; `--allow-gaps` takes one that is not. With `--accept` the person takes the links between layers as authored, with no review of each: that flag is theirs alone to add. Read its report (`<ws>/intake/report.md`) back as the hand-back of step 8. Use the steps one by one only for a design that did not arrive as a package.
+
 | # | Step | Command | Who |
 |---|---|---|---|
 | 1 | **Load** the design | a document: skill `sdem-design-from-document` · layer files an outside author wrote (given `sdem types authoring -o <file>` — the authoring guide — beforehand): `sdem change diff <file> --workspace <ws> -o <draft>` then `sdem change propose … --dry-run`, then without · past designs: `sdem transform run` then `sdem load` (a person) · a new design: skill `sdem-new-design` | you (load: a person) |

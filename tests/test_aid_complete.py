@@ -237,7 +237,7 @@ class InAWorkspace(unittest.TestCase):
         self.assertFalse([o for o in run['draft']['left_open'] if o['rule'] == 'CPL-A3-01'])
         self.ok('link', '--workspace', self.ws, '--out', self.ws / 'links', '--no-review')
         c = json.loads(self.ok('status', '--workspace', self.ws, '--json'))['completeness']
-        self.assertEqual((c['inferred_to_confirm'], c['placed_by_default']), (2, 1))
+        self.assertEqual((c['inferred_to_confirm'], c['placed_by_default']), (3, 1))   # two interfaces, and the deployment SDEM placed (CPL-A4-05, standard 1.3)
         self.assertGreaterEqual(c['proposed_to_approve'], 1)   # APP-LEDGER DEPLOYED_AS DEP-LEDGER: proposed, not yet a person's — a gap still, and said to be covered
         text = self.ok('status', '--workspace', self.ws)
         self.assertRegex(text, r'Draft: \d+ of \d+ records connected counting what is inferred or proposed')

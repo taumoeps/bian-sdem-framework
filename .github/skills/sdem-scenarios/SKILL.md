@@ -120,7 +120,9 @@ sdem types A1 --workspace workspaces/ledger --json                          # ag
 sdem change diff work/ledger-a1-draft.json --workspace workspaces/ledger -o work/ledger-a1.json
 sdem change propose work/ledger-a1.json --workspace workspaces/ledger --agent sdem-a1-business --person your.name --dry-run --json
 sdem handback --workspace workspaces/ledger --json                          # agent: what the document did not say
-sdem types authoring -o work/sdem-authoring-guide.md                        # or: an AI assistant without SDEM writes the layer files — hand it this one file with the design
+sdem types authoring --kit work/author-kit                                  # or: an AI assistant without SDEM writes the design as data — hand it the kit (the guide, and SDEM as a zip to check with)
+sdem intake designs/ledger-package --check                                  # what came back: everything wrong, at once — no workspace
+sdem intake designs/ledger-package --workspace workspaces/ledger-2 --person your.name --dry-run   # then one command takes it in: load, BIAN, patterns, the complete first draft, one report
 sdem aid --workspace workspaces/ledger --person your.name --complete-draft --dry-run   # then the complete first draft, in the order of the skill sdem-complete-draft
 ```
 

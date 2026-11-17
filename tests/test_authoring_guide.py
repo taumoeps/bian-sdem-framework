@@ -26,11 +26,12 @@ class Guide(unittest.TestCase):
             self.assertEqual(r.returncode, 0, r.stderr); self.assertEqual(f.read_text(encoding='utf-8'), self.text)
 
     def test_it_stands_alone_method_files_rules_checks(self):   # AU-02
-        for h in ('## 1. What you hand over', '## 2. The method', '## 3. The rules', '## 4. What SDEM will check', '## 5. The vocabulary', '## 6. Links between layers', '## 7. Before you hand over'):
+        for h in ('## 1. What you hand over', '## 2. The method', '## 3. The rules', '## 4. What SDEM will check', '## 5. The vocabulary', '## 6. Links between layers', '## 7. Before you hand over', '## 8. Better than the checklist'):
             self.assertIn(h, self.text)
-        for f in ('a1-business.json', 'a3-application.json', 'a4-technology.json', 'BIAN-DOMAINS.json', 'CROSS-LAYER-SUGGESTIONS.json', 'NOT-STATED.json', 'CHECKLIST.json'):
+        for f in ('a1-business.json', 'a3-application.json', 'a4-technology.json', 'BIAN-DOMAINS.json', 'CROSS-LAYER-SUGGESTIONS.json', 'DECISIONS.json', 'NOT-STATED.json', 'CHECKLIST.json'):
             self.assertIn(f, self.text)
-        for rule in ('never write the A2 file', 'Never a placeholder', 'never written in a layer file', 'Do not invent to complete', '"cli_executed": false'):
+        for rule in ('never write the A2 file', 'Never a placeholder', 'never written in a layer file', 'You are the designer, and the design you hand over is COMPLETE', 'you decide it',
+                     'Decide openly, never silently', 'until it prints `OK … COMPLETE`', '"conforms_to"'):   # AU-08: complete, decided openly, tested black and white
             self.assertIn(rule, self.text)
 
     def test_every_type_an_author_may_write_is_there_with_its_allowed_values(self):   # AU-03
@@ -61,6 +62,25 @@ class Guide(unittest.TestCase):
         for r in load_registry()['relationships']:
             if r['source_type'].split('.')[0] in ('A1', 'A3', 'A4') or r['target_type'].split('.')[0] in ('A1', 'A3', 'A4'):
                 self.assertIn(f"| {r['source_type']} | `{r['relationship']}` | {r['target_type']} |", self.text)
+
+
+class Kit(unittest.TestCase):
+    def test_the_kit_is_the_guide_and_an_sdem_the_author_can_run_the_check_from(self):   # AU-07, IN-02
+        import shutil, zipfile
+        tmp = Path(tempfile.mkdtemp()); self.addCleanup(shutil.rmtree, tmp, True)
+        r = subprocess.run([sys.executable, '-m', 'sdem', 'types', 'authoring', '--kit', tmp / 'kit'], capture_output=True, text=True, env=ENV, cwd=ROOT)
+        self.assertEqual(r.returncode, 0, r.stderr)
+        self.assertEqual((tmp / 'kit' / 'sdem-authoring-guide.md').read_text(encoding='utf-8'), authorguide.render())
+        z = next((tmp / 'kit').glob('sdem-*.zip')); zipfile.ZipFile(z).extractall(tmp / 'sdem')
+        pkg = tmp / 'pkg'; pkg.mkdir()
+        R = lambda i, t, n: {'id': i, 'type': t, 'version': '1', 'name': n, 'lifecycle_status': 'planned', 'attributes': {}}
+        for name, doc in (('a1-business.json', {'level': 'A1', 'instances': [R('P-1', 'A1.BusinessProcess', 'Do it'), R('R-1', 'A1.BusinessRequirement', 'It is done')], 'relationships': [{'source': 'P-1', 'kind': 'realization', 'target': 'R-1'}]}),
+                          ('a3-application.json', {'level': 'A3', 'instances': [R('APP-1', 'A3.Gadget', 'App')], 'relationships': []}), ('a4-technology.json', {'level': 'A4', 'instances': [], 'relationships': []}),
+                          ('BIAN-DOMAINS.json', {'service_domains': []}), ('CROSS-LAYER-SUGGESTIONS.json', {'suggestions': []}), ('NOT-STATED.json', {'items': []})):
+            (pkg / name).write_text(json.dumps(doc), encoding='utf-8')
+        clean = {'PATH': os.environ.get('PATH', '')}   # as an outside author has it: no SDEM installed, nothing on the path but Python
+        r = subprocess.run([sys.executable, '-m', 'sdem', 'intake', pkg, '--check'], capture_output=True, text=True, env=clean, cwd=tmp / 'sdem')
+        self.assertEqual(r.returncode, 1, r.stdout + r.stderr); self.assertIn('A3.Gadget', r.stdout); self.assertIn('1 thing(s) to fix', r.stdout)
 
 
 if __name__ == '__main__':

@@ -99,6 +99,8 @@ JOURNEYS = {
                    'sdem extensions'),
     'releases': ('J9', 'what each SDEM release changed: migrations, breaking changes, deprecations and the actions to take', 'sdem.release_notes', [],
                  'sdem releases --since 0.15.0'),
+    'intake':   ('J1', "take in a design authored as SDEM data (the package of the authoring guide): --check says everything wrong at once, with no workspace — what its author runs before handing over; with --workspace it checks, loads, adds the BIAN domains named, includes the patterns that fit, completes the first draft and writes one report — a person's command (IN-01…IN-10)", 'sdem.intake', [],
+                 'sdem intake designs/ledger-package --check'),
     'types':    ('J1', "what you may write: each layer's kinds of record, their fields (type, required, allowed values) and allowed links; the requirement and change-set formats — your profile's included with --workspace", 'sdem.typeinfo', [],
                  'sdem types A1.BusinessProcess'),
     'requirements': ('J5', 'requirements and constraints the workspace must keep meeting, their measurements, and what a change does to them: in scope, satisfied, breached, not evaluable — and the risk findings', 'sdem.requirements', [],

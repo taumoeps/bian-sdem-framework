@@ -91,6 +91,12 @@ Twice in one day the agreed order — standards and patterns first, then inferen
 
 A pattern's block in `sdem status` also says where the **draft** stands (CPL-15): *3 of 14 parts in place — 11 to decide; in the draft: 9 of 14 counting what is inferred or proposed*.
 
+## Placement at A4 (standard 1.3, 2026-11-17)
+
+| Id | Rule |
+|---|---|
+| CPL-19 | Three rules for where things are: **a node sits in a network zone** (CPL-A4-03); **platform software runs on a node, or sits in a zone** (CPL-A4-04); **a deployment runs on a node or platform, or belongs to an environment** (CPL-A4-05). Without them a design could be "complete" and still leave SDEM to infer a zone for everything in A4 — found when a design accepted as authored still had something to confirm. |
+
 ## Stages to come — each its own change, tests first
 
 | Stage | What | Kind |

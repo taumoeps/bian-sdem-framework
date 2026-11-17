@@ -2,7 +2,7 @@
 
 > **Generated** from the code by `sdem model regenerate` (`sdem/clidoc.py`), from the same catalogue as `sdem commands --json`; `sdem model check` fails in CI when it is stale — **do not edit by hand**. Each command's `--help` has the same options and a worked example. For *when* to use which command, in order, see the [scenarios](../sdem-scenarios.md); for what each does to your data, the [user guide](../sdem-workbench-user-guide.md#7-command-reference).
 
-124 commands and subcommands.
+125 commands and subcommands.
 
 ## Every command takes
 
@@ -78,6 +78,7 @@
 |---|---|
 | [`sdem check`](#cmd-check) | check architecture datasets and registry against the metamodel |
 | [`sdem comply`](#cmd-comply) | the organisation's standards and reference-architecture patterns over a workspace: per rule and record compliant, non-compliant … |
+| [`sdem intake`](#cmd-intake) 👤 | take in a design authored as SDEM data (the package of the authoring guide): --check says everything wrong at once, with no workspace |
 | [`sdem pattern`](#cmd-pattern) | reference-architecture patterns as structures |
 | [`sdem pattern draw`](#cmd-pattern-draw) | draw a pattern (PR-25) |
 | [`sdem pattern extract`](#cmd-pattern-extract) | a diagram → a DRAFT pattern file and a report; nothing enters the profile until a person includes it (PR-30) |
@@ -1579,6 +1580,35 @@ Example:
 sdem impact INF-CLOUD-K8S-PROD --change rehost --graph examples/card-fraud-alerts/graph
 ```
 
+### sdem intake
+
+<a id="cmd-intake"></a>
+
+take in a design authored as SDEM data (the package of the authoring guide): --check says everything wrong at once, with no workspace — what its author runs before handing over; with --workspace it checks, loads, adds the BIAN domains named, includes the patterns that fit, completes the first draft and writes one report — a person's command (IN-01…IN-10)
+
+```
+sdem intake <package> [--check] [--workspace WORKSPACE] [--person PERSON] [--dry-run] [--allow-gaps] [--accept]
+```
+
+*JSON: native · dry run: native · 👤 a person's own name*
+
+| Argument | Required | What it is |
+|---|---|---|
+| `<package>` | yes | the folder holding the package (the eight files of the authoring guide) |
+| `--check` |  | check the whole package and say everything wrong at once — no workspace, nothing written; what its author runs before handing over |
+| `--workspace` |  | the workspace to start with this design (a new folder, or one that holds no records yet) |
+| `--person` |  | your name — a person |
+| `--dry-run` |  | check, and say what would be loaded and done; write nothing |
+| `--allow-gaps` |  | take (or pass) a design that is not complete — records not connected, or a part of a fitting pattern missing; each gap is listed. Without it, not complete is an error |
+| `--accept` |  | take the design as authored: its links between layers are approved under your name, on the evidence of the design sections they cite — no link is left for review. Your decision, recorded as yours |
+| `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
+
+Example:
+
+```bash
+sdem intake designs/ledger-package --check
+```
+
 ### sdem layout
 
 <a id="cmd-layout"></a>
@@ -2473,7 +2503,7 @@ sdem transform run <export> -o O [--rules RULES] [--known KNOWN …] [--model-id
 what you may write: each layer's kinds of record, their fields (type, required, allowed values) and allowed links; the requirement and change-set formats — your profile's included with --workspace
 
 ```
-sdem types [<what>] [--workspace WORKSPACE] [-o O]
+sdem types [<what>] [--workspace WORKSPACE] [-o O] [--kit KIT]
 ```
 
 *JSON: native · dry run: sandbox*
@@ -2484,6 +2514,7 @@ sdem types [<what>] [--workspace WORKSPACE] [-o O]
 | `--workspace` |  | include the workspace's organisation profile |
 | `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
 | `-o`, `--out` |  | with `authoring`: write the guide to this file |
+| `--kit` |  | with `authoring`: write the guide AND SDEM itself as a zip into this folder — everything an outside author needs, to write the package and to check it |
 
 Example:
 

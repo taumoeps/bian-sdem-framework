@@ -4,7 +4,7 @@
   "standard": {
     "id": "SDEM-COMPLETE",
     "title": "A complete design: every record connected",
-    "version": "1.2",
+    "version": "1.3",
     "owner": "SDEM",
     "source": "ArchiMate 3.2 (which element a relationship joins); the audit of the public twin, docs/design/sdem-completeness-design.md"
   },
@@ -206,6 +206,53 @@
       "severity": "warning",
       "message": "a function is performed by a component, realises a service, or automates a process",
       "reasoning": "behaviour nothing performs"
+    },
+    {
+      "id": "CPL-A4-03",
+      "entity": "A4.Node",
+      "link": {
+        "kind": "aggregation",
+        "direction": "in",
+        "to": "A4.NetworkZone",
+        "min": 1
+      },
+      "severity": "warning",
+      "message": "a node sits in a network zone",
+      "reasoning": "where a node sits decides what may reach it; a node in no zone cannot be placed or drawn"
+    },
+    {
+      "id": "CPL-A4-04",
+      "entity": "A4.SystemSoftware",
+      "any_link": [
+        {
+          "kind": "assignment",
+          "direction": "in"
+        },
+        {
+          "kind": "aggregation",
+          "direction": "in"
+        }
+      ],
+      "severity": "warning",
+      "message": "platform software runs on a node, or sits in a network zone",
+      "reasoning": "software that runs nowhere"
+    },
+    {
+      "id": "CPL-A4-05",
+      "entity": "A4.Deployment",
+      "any_link": [
+        {
+          "kind": "assignment",
+          "direction": "in"
+        },
+        {
+          "kind": "aggregation",
+          "direction": "in"
+        }
+      ],
+      "severity": "warning",
+      "message": "a deployment runs on a node or platform, or belongs to an environment",
+      "reasoning": "a deployment placed nowhere"
     }
   ]
 }

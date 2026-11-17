@@ -104,10 +104,15 @@ def main(argv=None):
     ap.add_argument('what', nargs='?', help='a layer (A1), a type (A1.BusinessProcess), requirement, change-set, or authoring (the guide for an outside author — an AI assistant without the CLI); nothing: the overview')
     ap.add_argument('--workspace', dest='estate', metavar='DIR', help="include the workspace's organisation profile"); ap.add_argument('--json', action='store_true')
     ap.add_argument('-o', '--out', metavar='FILE', help='with `authoring`: write the guide to this file')
+    ap.add_argument('--kit', metavar='DIR', help='with `authoring`: write the guide AND SDEM itself as a zip into this folder — everything an outside author needs, to write the package and to check it')
     a = ap.parse_args(argv)
     mm = Metamodel.load(); w = a.what
     if w in ('authoring', 'authoring-guide'):   # AU-01: the one file an outside author is given — the method, the rules and this version's vocabulary
         from .authorguide import render
+        if a.kit:
+            from .authorguide import kit
+            g, z = kit(a.kit)
+            print(f'wrote {g} and {z} — hand both to the author with the design: the guide says what to write, the zip lets them run SDEM\'s own check on it (python -m sdem intake <folder> --check)'); return 0
         text = render()
         if a.out: Path(a.out).write_text(text, encoding='utf-8'); print(f'wrote {a.out} — hand it to the author with the design ({len(text) // 1000} KB)')
         else: print(text)
