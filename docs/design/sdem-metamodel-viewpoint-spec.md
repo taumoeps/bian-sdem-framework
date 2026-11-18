@@ -1,6 +1,6 @@
 # The SDEM metamodel viewpoint — the design seen as SDEM holds it (spec)
 
-> **Status: proposed (2026-11-18).** §1–§6 document what is built and add no new behaviour; §7 proposes a second viewpoint for the same 3D view — the ArchiMate viewpoint — not built. It names, in one place, the viewpoint the DESNRE 3D view and `sdem view` draw, gathers its rules from the specs that built it, and sets it beside SDEM's ArchiMate viewpoints so a reader knows which picture is which. The rules it gathers stay in their own specs, which remain the source: the [containment layout](sdem-layer-containment-design.md) (approved 2026-11-15) and the [network zones](sdem-network-zones-design.md) (approved 2026-11-14; ZL-01…ZL-06, ZC-01…ZC-03).
+> **Status: proposed (2026-11-18).** §1–§6 document what is built and add no new behaviour; §7 adds a second viewpoint for the same 3D view — the ArchiMate viewpoint — **built in DESNRE (2026-11-18, desnre-site e6cea46)** as the owner approved V4–V6 as recommended. It names, in one place, the viewpoint the DESNRE 3D view and `sdem view` draw, gathers its rules from the specs that built it, and sets it beside SDEM's ArchiMate viewpoints so a reader knows which picture is which. The rules it gathers stay in their own specs, which remain the source: the [containment layout](sdem-layer-containment-design.md) (approved 2026-11-15) and the [network zones](sdem-network-zones-design.md) (approved 2026-11-14; ZL-01…ZL-06, ZC-01…ZC-03).
 
 ## 1. What it is
 
@@ -59,7 +59,7 @@ SDEM already draws ArchiMate viewpoints itself: [`sdem diagram`](sdem-diagram-sp
 | V2 | DESNRE's Design-document views and `sdem diagram` | **keep both for now**; when DESNRE's views are next changed, compare them with `sdem diagram`'s templates and draw from SDEM if it covers them — one set of ArchiMate templates instead of two |
 | V3 | Lines in the 3D view | **leave as one line style**: the viewpoint shows that a link exists; ArchiMate relationship notation belongs to the ArchiMate views |
 
-## 7. Proposed: the ArchiMate viewpoint in the 3D view
+## 7. The ArchiMate viewpoint in the 3D view (built)
 
 The owner's request (2026-11-18): the 3D view offers **two viewpoints, switched on the view itself** — the *SDEM metamodel viewpoint* (§1–§6, as today) and an *ArchiMate viewpoint* for the architect, built from the diagrams the Design document already draws, one per plate.
 
@@ -91,6 +91,13 @@ A3 is split in two **plates only**: SDEM's four layers, metamodel and data do no
 
 | # | Decision | Recommendation |
 |---|---|---|
-| V4 | Where it is built | **in the DESNRE project that owns the 3D view** (`index.html`; the workspace view is redesigned there — not changed from the SDEM sessions without the owner's yes). The diagram-code split (AVP-01) is in `workbench.html` and goes with it. |
+| V4 | Where it is built | *Decided 2026-11-18: built in `desnre-site` (`index.html` the view, `workbench.html` the plates).* **in the DESNRE project that owns the 3D view** (`index.html`; the workspace view is redesigned there — not changed from the SDEM sessions without the owner's yes). The diagram-code split (AVP-01) is in `workbench.html` and goes with it. |
 | V5 | A1's plate: the business view or the capability map | **the business view** — it carries the processes the A2 domains serve, so the lines between plates read; the capability map stays in the Design document (9.2) |
 | V6 | Which viewpoint opens first | **the SDEM metamodel viewpoint** for a design's owner (as today); **ArchiMate** for the visitors' example `/example/payment`, where the audience is architects |
+
+### 7.4 As built
+
+- **Positions (AVP-01):** the workbench draws each plate's diagram off screen with the Design document's own diagram code and reads each record's box from it; a box that holds others becomes a region, its record a small mark at the region's heading corner (where links from other plates meet it). Records of other layers that a diagram shows for context (the processes above the BIAN view, the technology band of the data view) are left to their own plates.
+- **Links inside a plate** are the design's own links between records on it, each in its ArchiMate line; a link shown by nesting is not drawn again.
+- **The renderer** draws any number of plates; the metamodel viewpoint and the home page are drawn as before.
+- **Not yet:** a data object's fields as shapes (the A3-1 plate shows the objects only); routing the A1 plate's many realisation lines more quietly.
