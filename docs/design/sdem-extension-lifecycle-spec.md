@@ -4,7 +4,7 @@
 > ([`audit-2026-11-19.md`](https://github.com/taumoeps/sdem-extensions/blob/main/security/docs/audit-2026-11-19.md)) and the owner's
 > question: *removing the security extension seemed implicit — install and removal should be explicit, across SDEM and DESNRE, and say
 > what happens to the data.* Builds on [metamodel extensions](sdem-metamodel-extensions-spec.md) (MX-01…MX-17), the
-> [extensions contract](sdem-extensions-spec.md) (EXT-01…EXT-15), and DESNRE's publish and workbench designs (DP-…, DW-40…DW-42, DG-90…DG-93).
+> [extensions contract](sdem-extensions-spec.md) (EXT-01…EXT-15), and DESNRE's publish, workbench and agent designs (DP-10…DP-14, DW-40…DW-42, DG-90…DG-93).
 > The first extension it governs is `sdem-security`; it is written for any metamodel extension (e.g. a later resilience extension).
 
 ## 1. Why
@@ -78,7 +78,7 @@ and the publish shows it before anything leaves.
 | Id | Rule |
 |---|---|
 | **EL-14** | **Uninstalling the package** (`pip uninstall`) touches no data. A workspace that still includes the extension is refused with a message naming it (MX-11a) until it is reinstalled or switched off; the site keeps what was last published. |
-| **EL-15** | **Data is kept by default, everywhere.** Switching off archives in the workspace (EL-05); the site keeps its **previous published version** (rollback, DP-…) and the **design document's history** (DG-…), which may hold security content; neither is shown as the design. Reason: the links were approved by named people with evidence — a governed record — and keeping them makes switching off reversible (EL-06). |
+| **EL-15** | **Data is kept by default, everywhere.** Switching off archives in the workspace (EL-05); the site keeps its **previous published version** (rollback, DP-11) and the **design document's history** (the replaced narratives, DG-90), which may hold security content; neither is shown as the design. Reason: the links were approved by named people with evidence — a governed record — and keeping them makes switching off reversible (EL-06). |
 | **EL-16** | **Purge is separate, explicit and never the default** — for a real need (a data request, a client's instruction). `sdem <name> purge --workspace … --person … --reason …` (`--dry-run` lists every file and every site copy it would remove): deletes the extension's archive files and their retired-id entries' links (the ids stay retired), records the decision (`purge_extension_data`) — the decision itself keeps no security content. If the design is published, the next publish asks the site (owner only, a person's step) to remove the extension's data from the **previous version** and the extension's sections from **every document in the history**, and the site confirms what it removed. |
 | **EL-17** | **What purge cannot reach is said.** A workspace kept in git still holds the data in its history; copies people downloaded are theirs. The purge's message names these and leaves them to the person — SDEM never rewrites git history. |
 
