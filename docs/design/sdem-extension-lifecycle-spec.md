@@ -1,7 +1,7 @@
 # Extension lifecycle — install, switch on, publish, switch off, remove, restore, purge (spec)
 
 > **Status: approved (2026-11-19) — the owner approved EL-D1…EL-D7 as recommended ("approve"); being built.** Written after the security extension's audit
-> ([`audit-2026-11-19.md`](https://github.com/taumoeps/sdem-extensions/blob/main/security/docs/audit-2026-11-19.md)) and the owner's
+> ([`audit-2026-11-19.md`](https://github.com/taumoeps/sdem-extensions/blob/main/metamodel/security/docs/audit-2026-11-19.md)) and the owner's
 > question: *removing the security extension seemed implicit — install and removal should be explicit, across SDEM and DESNRE, and say
 > what happens to the data.* Builds on [metamodel extensions](sdem-metamodel-extensions-spec.md) (MX-01…MX-17), the
 > [extensions contract](sdem-extensions-spec.md) (EXT-01…EXT-15), and DESNRE's publish, workbench and agent designs (DP-10…DP-14, DW-40…DW-42, DG-90…DG-93).

@@ -37,7 +37,7 @@ All three are checked against ArchiMate 3.2 (EXPOSED_THROUGH as serving, BUILT_A
 | 1. Make the workspace complete and clean — fix or approve what is open | the architect | `sdem check --workspace <ws>`, `sdem zones --workspace <ws>`, `sdem trace A4 --direction up --graph <ws>/graph` |
 | 2. Rebuild the graph | the architect | `python -m sdem.graph build <ws>/a*.json <ws>/mappings.json --out <ws>/graph` |
 | 3. Preview each layer — what you see is what the 3D view draws | the architect | `sdem layout --layer A1\|A2\|A3\|A4 --workspace <ws>`, or `sdem view --graph <ws>/graph` |
-| 4. Install the extension (once) | the architect | in SDEM's environment: `pip install "git+https://github.com/taumoeps/sdem-extensions#subdirectory=desnre"` — then `sdem extensions` lists it |
+| 4. Install the extension (once) | the architect | in SDEM's environment: `pip install "git+https://github.com/taumoeps/sdem-extensions#subdirectory=publishers/desnre"` — then `sdem extensions` lists it |
 | 5. Create a draft | the architect | `sdem desnre create <ws>` — the first time it asks you to confirm the workspace is made-up data; checks versions and `sdem check`; builds the model from `sdem layout` and `sdem zones --layout`; sends it as a **draft**, not public; opens the preview (`--dry-run` builds it and sends nothing) |
 | 6. Publish | a person, after looking at the preview | `sdem desnre publish <ws>` — live at `?model=<the workspace's name>` |
 

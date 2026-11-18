@@ -67,7 +67,7 @@ So the aspect's records live in the layer's own file (e.g. `security.json`), its
 | **Security (`SEC`)** — `sdem-security` | `SecurityControl` (control id from the catalogue, kind: preventive · detective · corrective, implemented: yes · partly · planned, evidence), `Threat`, `TrustBoundary`, `DataClassification` | `PROTECTS` control → any record; `MITIGATES` control → threat; `APPLIES_TO` threat → record; `BOUNDS` trust boundary → zone or component | NIST CSF 2.0 functions; SP 800-53 control families; SDEM's existing `personal_information`, `access_classification`, `security_scheme`, `zone_kind`, `internet_facing`, `encrypted` |
 | **Resilience (`RES`)** — `sdem-resilience` | `RecoveryTier` (RTO, RPO), `RecoveryPlan`, `FailoverPair` | `COVERS` plan → A1 process / A3 component / A4 node; `PAIRS` A4 ↔ A4 (different regions) | SDEM's `recovery` and `availability` requirement categories; the DR rules in the profile spec's examples (PR-10, PR-11) |
 
-Each ships synthetic data for SDEM's examples (payment-initiation-v3), tests (EXT-14) and its viewpoint (MX-15). The security aspect's own spec: [`sdem-extensions/security/docs/security-aspect-spec.md`](https://github.com/taumoeps/sdem-extensions/blob/main/security/docs/security-aspect-spec.md).
+Each ships synthetic data for SDEM's examples (payment-initiation-v3), tests (EXT-14) and its viewpoint (MX-15). The security aspect's own spec: [`sdem-extensions/metamodel/security/docs/security-aspect-spec.md`](https://github.com/taumoeps/sdem-extensions/blob/main/metamodel/security/docs/security-aspect-spec.md).
 
 ## 7. Where they live
 
