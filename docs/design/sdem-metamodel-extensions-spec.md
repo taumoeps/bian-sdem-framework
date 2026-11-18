@@ -2,6 +2,11 @@
 
 > **Status: approved (2026-11-18) — the owner approved MX-D1…MX-D6 as recommended ("commit and start"); being built.** The owner's decision (2026-11-18): cross-cutting architectures such as security and disaster recovery are **not core layers**; they are added as a new kind of SDEM extension, a **metamodel extension**, which extends both the **metamodel** (types, attributes, links, rules that SDEM checks, traces and assesses) and **SDEM** (its own commands, e.g. `sdem security`). This needs one change to SDEM's core (§5), so the metamodel owner's approval (AGENTS.md rule 2). Builds on the [extensions contract](sdem-extensions-spec.md) (EXT-01…EXT-15) and the [profile](sdem-profile-spec.md) merge (PR-01…PR-12).
 
+> **Part 2 (§10–§15), 2026-11-19 — proposed, for the owner's decisions MX-D7…MX-D13 (§15):** three kinds of metamodel extension —
+> **vertical** (a layer across A1–A4, as security), **horizontal** (more types inside one layer, e.g. a later network extension for A4)
+> and **bridge** (what joins two others) — what the security build taught every future vertical one, and how SDEM tracks them all.
+> No horizontal or bridge extension exists yet; the network extension's own spec is not written here.
+
 ## 1. Why
 
 SDEM's core is four layers, A1 Business to A4 Technology, joined by nine cross-layer link types. Some architectures are not a layer: **security, resilience (disaster recovery), privacy, observability** cut across all four. A security control protects a business process, a service domain's data, an interface and a network zone at once.
@@ -71,7 +76,10 @@ Each ships synthetic data for SDEM's examples (payment-initiation-v3), tests (EX
 
 ## 7. Where they live
 
-In **[sdem-extensions](https://github.com/taumoeps/sdem-extensions)** (public, Apache 2.0), one folder each (`security/`, `resilience/`), beside the DESNRE publisher: the aspect file, the commands, the tests. SDEM's own repository changes only by §5.
+In **[sdem-extensions](https://github.com/taumoeps/sdem-extensions)** (public, Apache 2.0), laid out by kind (2026-11-19): `metamodel/<name>/`
+for metamodel extensions — vertical, horizontal and bridge alike (the manifest's `scope` and `requires` say which, MX-18, MX-41) —
+`publishers/` (e.g. DESNRE's publisher) and `templates/`. Each folder is its own package: the pack, the commands, the tests, the docs.
+SDEM's own repository changes only by §5 and the core rules of §10–§14 (MX-44).
 
 ## 8. Tests
 
@@ -89,3 +97,76 @@ In **[sdem-extensions](https://github.com/taumoeps/sdem-extensions)** (public, A
 | MX-D4 | No inference for aspects in the first version | **yes** — every aspect record and link comes from a person or a source; inference rules later, by spec |
 | MX-D5 | Security first, on NIST (public domain) | **yes**; resilience second |
 | MX-D6 | Metamodel version: a minor bump (0.18.0), with migration of nothing (aspects are additive) | *As built: not needed — the metamodel files do not change (§5).* |
+
+## 10. Three kinds of metamodel extension (Part 2)
+
+| Kind | What it adds | Its records live | Example |
+|---|---|---|---|
+| **Vertical** | a **layer across** A1–A4 (LR-11): its own types, and link types that reach any layer | in its own file (`security.json`) | security (S1–S5) |
+| **Horizontal** | **more types inside one core layer**, each extending a type SDEM has there (PR-03), with their attributes, link kinds and rules | in that layer's file (`a4-technology.json`) | network, for A4 (planned) |
+| **Bridge** | **only what joins two or more extensions**: link types between their types, rules, viewer features — no records of its own | (its links in `mappings.json`) | network-security (planned) |
+
+| Id | Rule |
+|---|---|
+| **MX-18** | **An extension states its kind and scope in its manifest**: `"scope": {"across": ["S"]}` (vertical), `{"within": ["A4"]}` (horizontal), or both for a bridge, with `"requires"` (MX-41). SDEM checks the pack against it: a vertical pack adds an `across` layer and no types inside a core layer; a horizontal pack adds no layer and only types that extend a type of the layer it names; a bridge adds no layer and no types. A pack that does more than its scope says is refused. |
+| **MX-19** | **No extension changes another or the core** (MX-03, for all three kinds): it adds, never redefines, removes or renames. Type names are namespaced by the extension (`SEC.`, `NET.`); a name another active extension or the core already uses is refused. |
+
+## 11. Vertical metamodel extensions — what the security build taught (Part 2)
+
+Security was the first vertical extension; its two audits (sdem-extensions `metamodel/security/docs/audit-2026-11-19.md`, AUD-01…AUD-36) found what a vertical extension needs beyond §2–§4. Every future one (resilience, privacy, observability) follows these.
+
+| Id | Rule | Learned from |
+|---|---|---|
+| **MX-20** | **Sub-layers are an attribute, not files.** A vertical layer may divide into views of the core layers (S1–S5 for A1, A2, A3 data, A3 applications, A4) by a required attribute on its types (`security_layer`) — one file, one layer code. | SX-D2 |
+| **MX-21** | **One scope, read from the pack.** What the extension's commands cover — coverage, checklists, "unprotected" lists — is the set of types its link types may reach, read from its own pack, never a second list in its code; a test holds them together. | AUD-04, AUD-07 |
+| **MX-22** | **Only what can act counts.** A record of the extension that is retired, deprecated or marked not applicable (e.g. `implementation_status: not_applicable`) never counts towards coverage or a check. | AUD-03 |
+| **MX-23** | **Its own checks follow SDEM's outcomes**: not decidable yet (a planned subject, a proposed requirement) → `unresolved`, not `non_compliant` (PR-11a); listed as `computed_rules` (MX-17) so a person can except them; a check that names something other than a record (e.g. an empty sub-layer) is reported, not exceptable. | AUD-02, AUD-27 |
+| **MX-24** | **It fails clearly, never with a false all-clear.** Its commands stop with a message when SDEM's own answer (e.g. `sdem comply`) fails, is in a form it does not know, or its standard is missing from the profile; findings are taken by the standard's id, never by a name prefix. | AUD-06 |
+| **MX-25** | **One meaning for its key words.** Where a word such as *protected* can mean "a control of its own" or "through what holds it", the extension defines it once (its coverage) and every consumer — its document, the viewer, the agent — says which it gives. | AUD-28 |
+| **MX-26** | **It publishes its own results.** Read-only commands give `--json` for a publisher (a review, coverage, a checklist) and one gives a readable document (`sdem <name> document`), so a viewer and its agent quote the extension instead of working its findings out. Its manifest's `viewer` (EL-01) lists them. | EL-01, the agent's `security_review` |
+| **MX-27** | **Its whole life is commands** (the [extension lifecycle](sdem-extension-lifecycle-spec.md), EL-01…EL-17): `remove`, `restore`, `purge` over SDEM's `profile exclude`, `restore`, `purge`; each says what happens to a published copy. Its records are never deleted by switching off. | AUD-01, EL |
+| **MX-28** | **It is tested and documented to one standard**: unit tests of its own logic that run without SDEM; tests with SDEM that make each rule and check fire (never a test that passes on an empty result); CI against SDEM's release tag and `main`, on Linux and Windows; a README with *What you get, and from where*, the two ways to install, and every removal step; an independent audit before its first release. | AUD test gaps, the CI fixes |
+| **MX-29** | **Its records are made-up in examples, its catalogues public.** Shipped reference content (a control catalogue) is openly licensed, with its source pinned to a commit and a checksum; proprietary frameworks are cited by identifier only (MX-09). | MX-09, AUD-20 |
+
+## 12. Horizontal metamodel extensions (Part 2)
+
+| Id | Rule |
+|---|---|
+| **MX-30** | **Types inside one core layer, by inheritance.** Each type `extends` a type SDEM has in the layer the scope names (PR-03) — e.g. a firewall extends `A4.Node`, a subnet `A4.CommunicationNetwork` — and inherits its attributes, link rules, cross-layer link types, impact rules and its place in requirements analysis. It may add attributes (PR-04), link kinds inside the layer mapped to ArchiMate kinds (PR-05), and rules (PR-10…PR-16). |
+| **MX-31** | **Cross-layer links come from the parent types**, so the layers above and below need no change: an A3 component already DEPLOYED_ON an `A4.Node` may be DEPLOYED_ON a firewall. A horizontal extension adds a cross-layer link type only to the layer directly above or below (LR-06), never across the stack — that is a vertical or a bridge extension's. |
+| **MX-32** | **Other extensions reach its types through their parents.** A link type another extension declares to a core type (security's PROTECTS to `A4.Node`) reaches the horizontal extension's subtypes of it, without either knowing the other. *To be proved by a test before the first horizontal extension (§14): a vertical pack's link type to a core type accepts a horizontal pack's subtype.* |
+| **MX-33** | **Its records live in the core layer's file**, marked by their type. Switching it off (MX-16) therefore archives **by type**: every record of its types, every link inside the layer and every connection that touches them leave `a4-technology.json` and `mappings.json` together, kept whole in its archive — and a record of a core type it touched is never changed. Restore and purge (EL-06, EL-16) work the same way. *Needs `sdem profile exclude` to archive by type as well as by file (§14).* |
+| **MX-34** | **A viewer draws its types as their parents unless told otherwise.** The manifest's `viewer` names, per type, the core shape it is drawn as (a firewall as a node, a subnet as a network) and may name its own; DESNRE's registry (EL-02) gives it features on the layer's existing views — no tab or 3D stack of its own. The design document's section for that layer (e.g. 9.6 Technology architecture) gains its types; there is no new section. |
+| **MX-35** | **Its checks and documents are the layer's.** Its rules run in `sdem comply` and `sdem check` like the layer's own; `sdem document --layer A4` shows its types in their own sections. A horizontal extension may also publish its own results (MX-26), e.g. a network document. |
+
+## 13. Bridge metamodel extensions (Part 2)
+
+| Id | Rule |
+|---|---|
+| **MX-36** | **What a bridge is.** A small metamodel extension that `requires` two or more others, each with a version range (`"requires": {"security": ">=0.2,<0.3", "network": ">=0.1,<0.2"}`), and adds **only what joins them**: link types between their types (a firewall rule ENFORCES a trust boundary), rules across them (every internet-facing subnet is bounded), and viewer features (e.g. firewall rules on the security plates). It has no layer and no records of its own; its links are approved by a person like any other and kept in `mappings.json`. |
+| **MX-37** | **Two extensions never join each other directly.** Neither a vertical nor a horizontal extension names another extension's types; anything that would is a bridge's. So each extension can be versioned, switched on and off, and tested alone, and a new extension edits none of the existing ones. |
+| **MX-38** | **A person switches a bridge on — SDEM suggests it.** Installing a bridge changes no workspace. `sdem status` in a workspace where everything a bridge requires is on says so and gives the command (`sdem profile include ext:<bridge> …`); SDEM never includes it by itself — it changes what the design is checked against (MX-10). Including a bridge whose requirements are not all on, or not in range, is refused with the reason. |
+| **MX-39** | **Switching off respects what depends on it.** Excluding an extension a bridge requires, while the bridge is on, is refused — naming the bridge — unless the person excludes the bridge first, or both together (`sdem profile exclude ext:security ext:network-security`): the bridge's links are archived with it (MX-16). Restoring follows the order the other way. |
+| **MX-40** | **A bridge has an owner and its own tests**: its manifest names who maintains it; its CI installs every extension it requires at the edges of their ranges. |
+
+## 14. Tracking and managing metamodel extensions (Part 2)
+
+| Id | Rule |
+|---|---|
+| **MX-41** | **The manifest says what an extension depends on**: `scope` (MX-18); `requires` — other extensions, with ranges (a bridge; a horizontal extension may require another, e.g. network on a cloud-platform extension); `builds_on` — the core types, attributes and link types it extends or names (MX-11b uses it before an upgrade); `enhances` — extensions it works better with but does not need (it says so; it never changes behaviour on its own because of them). |
+| **MX-42** | **One view of what is active.** `sdem extensions graph --workspace …` (and `--json`) shows the extensions included in a workspace: kind and scope, version, what each requires and builds on, the types each adds, and the link types between them — and the bridges installed but not included whose requirements are met. DESNRE's Extensions panel (EL-12) shows the same for a published design. |
+| **MX-43** | **SDEM enforces it** when a profile is resolved: missing or out-of-range requirements (refused, MX-11a), a type-name collision (refused, MX-19), a pack doing more than its scope (refused, MX-18), and the dependency order on exclude and restore (MX-39). |
+| **MX-44** | **Built before the first horizontal or bridge extension** — the core changes this part needs: the scope check (MX-18), namespace collisions (MX-19), archiving by type (MX-33), the inheritance test (MX-32), `requires` and the dependency order (MX-38, MX-39, MX-43), and `sdem extensions graph` (MX-42). Vertical extensions need none of them to keep working. |
+
+## 15. Decisions for the owner (Part 2)
+
+| # | Decision | Recommendation |
+|---|---|---|
+| MX-D7 | Three kinds — vertical, horizontal, bridge — stated in the manifest's `scope` and checked by SDEM (MX-18) | **yes** |
+| MX-D8 | The lessons of the security build (MX-20…MX-29) bind every future vertical extension | **yes** |
+| MX-D9 | Horizontal extensions by inheritance inside one layer, archived by type when switched off, drawn as their parents (MX-30…MX-35) | **yes** |
+| MX-D10 | Extensions never join each other directly; a bridge does (MX-36, MX-37) | **yes** |
+| MX-D11 | A bridge is switched on by a person; SDEM suggests it when its requirements are on, and refuses excluding what it depends on (MX-38, MX-39) | **yes** |
+| MX-D12 | `requires` / `builds_on` / `enhances` in the manifest, and `sdem extensions graph` (MX-41, MX-42) | **yes** |
+| MX-D13 | Build the core part (MX-44) before the first horizontal extension, and prove MX-32 by a test first | **yes** |
+
