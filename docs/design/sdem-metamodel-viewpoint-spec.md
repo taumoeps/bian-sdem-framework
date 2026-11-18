@@ -98,6 +98,8 @@ A3 is split in two **plates only**: SDEM's four layers, metamodel and data do no
 ### 7.4 As built
 
 - **Positions (AVP-01):** the workbench draws each plate's diagram off screen with the Design document's own diagram code and reads each record's box from it; a box that holds others becomes a region, its record a small mark at the region's heading corner (where links from other plates meet it). Records of other layers that a diagram shows for context (the processes above the BIAN view, the technology band of the data view) are left to their own plates.
-- **Links inside a plate** are the design's own links between records on it, each in its ArchiMate line; a link shown by nesting is not drawn again.
+- **Links inside a plate** are the design's own links between records on it, each in its ArchiMate line; a link shown by nesting is also drawn as a faint dotted line on A1–A3 (the owner, 2026-11-18: every shape visibly joined), not on A4, where the zones show it. A4's communication paths join the nodes they connect.
+- **Connections view:** with the regions hidden, a container is drawn as its own shape, so a line between plates always ends on a shape.
+- **Names:** the switch reads *Architecture* (left) and *Metamodel* (right) (the owner, 2026-11-18).
 - **The renderer** draws any number of plates; the metamodel viewpoint and the home page are drawn as before.
 - **Not yet:** a data object's fields as shapes (the A3-1 plate shows the objects only); routing the A1 plate's many realisation lines more quietly.
