@@ -24,7 +24,7 @@ The level of detail was decided twice, by two pieces of code. The fix is to deci
 |---|---|
 | **ARV-01** | **One view model per layer.** For each plate, one function computes a *view model* from the design's data: the **shapes** (records), the **groupings** (records drawn inside another), the **connections** inside the plate, each one's **position** and **route**. |
 | **ARV-02** | **Two renderers, one model.** The Design document draws the view model as an ArchiMate SVG figure; the 3D view draws the same view model on its plate. Neither adds, drops or moves anything. The only differences are the medium: flat or in perspective, and the 3D view's interaction (rotate, zoom, light a trace). |
-| **ARV-03** | **One canvas.** Every plate is laid out on the same canvas, 1000 × 640; the 3D plate has the same proportions (6 × 3.84), so nothing is stretched. |
+| **ARV-03** | **One square canvas.** Every plate is laid out on the same canvas, 1000 × 1000, and the 3D plate is square (6 × 6), as in the Metamodel viewpoint — so nothing is stretched, and the 2D figure is square too. Rows, groupings and what they hold are spread to fill it (the owner, 2026-11-18; first built at 1000 × 640). |
 | **ARV-04** | **All from the data.** No AI, no per-design drawing, no hand layout: the same workspace always gives the same five diagrams (deterministic order: the data's own order, then by id). |
 | **ARV-05** | **The level of detail is the table in §3**, the same for every workspace. A record kind left out is named in the figure's caption with its count ("34 service operations are in table 9.3"), never silently missing. |
 | **ARV-06** | **Connections between plates** are the approved connections (and A3's access and stored-in links across A3-1/A3-2/A4). When one end is a record not shown (a service operation), the line goes to the shape that contains it and is marked ×n (as `sdem diagram` does, DG-09). Proposed and rejected connections are not drawn. |
@@ -119,7 +119,7 @@ A1 → A2 `USES_DOMAIN`, `SUPPORTED_BY` · A2 → A3-2 `REALIZED_BY` (service do
 | AV1 | A1: one diagram (business view with capabilities as groupings) instead of two | **one** — the plate and the document then agree, and nothing is lost |
 | AV2 | Nesting: shown by the grouping only (ArchiMate), or also by a faint line (today's 3D) | **grouping only, in both views** — ArchiMate's rule; the connections view (⇅) still lists every link |
 | AV3 | A2 level: service groups shown, operations counted (not drawn) | **as §3** — 34 operations would crowd the plate; table 9.3 lists them |
-| AV4 | One canvas proportion for all plates (1000 × 640) | **yes** — so 2D and 3D are the same shape |
+| AV4 | One canvas proportion for all plates (1000 × 640; square, 1000 × 1000, since 2026-11-18) | **yes** — so 2D and 3D are the same shape |
 | AV5 | Build in DESNRE now, after approval | **yes**, in one change, with the §7 test |
 
 ## 9. As built
