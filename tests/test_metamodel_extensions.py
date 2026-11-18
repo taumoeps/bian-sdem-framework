@@ -101,6 +101,11 @@ class MetamodelExtensionTests(unittest.TestCase):
         r = subprocess.run([sys.executable, '-m', 'sdem', 'check', '--workspace', ws2, '--json'], cwd=self.tmp, capture_output=True, text=True, env=env)
         self.assertEqual(r.returncode, 0, r.stdout[-800:] + r.stderr[-800:])
 
+    def test_its_document_is_titled_by_the_layer_and_its_types(self):  # LR-01: a profile layer's document reads as the core's do
+        _, out, _ = self.sdem('document', '--workspace', self.ws, '--layer', 'S')
+        self.assertTrue(out.startswith('# S Security Architecture'), out[:80])
+        self.assertIn('## 1. Security controls', out); self.assertNotIn('S.Security', out)
+
     def test_only_a_cross_cutting_layer_may_skip_layers(self):  # LR-06 still holds for above and below
         doc = json.loads(json.dumps(PACK)); doc['layers'][0]['position'] = 'below'
         f = self.tmp / 'below.json'; f.write_text(json.dumps(doc))

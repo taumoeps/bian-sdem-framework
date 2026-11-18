@@ -20,9 +20,16 @@ def _j(p):
     return json.loads(Path(p).read_text(encoding='utf-8'))
 
 
+def _layer_title(code):
+    """A layer a profile or a metamodel extension adds (LR-01, MX-01): its code and name from the layer registry — 'S Security Architecture'."""
+    from .layers import layers
+    row = next((l for l in layers() if l['code'] == code), None)
+    return f"{code} {row['name']}" if row and row.get('name') and row['name'] != code else code
+
+
 def _label(t):
-    """A1.BusinessCapability → Business capabilities."""
-    words = re.sub(r'([A-Z]+)([A-Z][a-z])', r'\1 \2', re.sub(r'([a-z])([A-Z])', r'\1 \2', t.split('.', 1)[-1])).split()
+    """A1.BusinessCapability → Business capabilities; a profile layer's SEC.S.SecurityControl → Security controls (its last part)."""
+    words = re.sub(r'([A-Z]+)([A-Z][a-z])', r'\1 \2', re.sub(r'([a-z])([A-Z])', r'\1 \2', t.split('.')[-1])).split()
     last = words[-1]
     last = last + 's' if last.isupper() else last[:-1] + 'ies' if last.endswith('y') and last[-2:-1] not in 'aeiou' else last + 'es' if last.endswith(('s', 'x')) else last + 's'
     words = words[:-1] + [last]
@@ -150,7 +157,7 @@ def document(ws, layer):
                                'condition': q.get('condition'), 'evidence': q.get('evidence', [])})
             if q.get('status') != 'confirmed': gaps['requirements_not_confirmed'].append(q['id'])
     counts = {s['title']: len(s['records']) for s in sections}
-    return {'layer': layer, 'title': LAYER_TITLES.get(layer, layer), 'workspace': ws.name, 'fingerprint': h.hexdigest()[:12],
+    return {'layer': layer, 'title': LAYER_TITLES.get(layer) or _layer_title(layer), 'workspace': ws.name, 'fingerprint': h.hexdigest()[:12],
             'summary': {'records': len(recs), 'by_type': counts, 'unconfirmed': len(gaps['unconfirmed']),
                         'with_approved_connection': len(recs) - len(gaps['no_connection'])},
             'sections': sections, 'requirements': layer_reqs, 'gaps': gaps}
