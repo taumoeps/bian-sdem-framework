@@ -34,6 +34,7 @@ def grant(ws, rule, records, reason, expires, person, dry_run=False, as_of=None)
     from .patterns import part_ids
     known = {r['id']: r for r in _p.rules()}
     known.update({k: {'id': k, 'pattern': st['pattern']} for k, st in part_ids(_p.structures()).items()})   # PR-24: a part of a structured pattern
+    known.update({r['id']: {'id': r['id'], 'standard': {'id': r.get('extension')}} for r in (_p.ACTIVE or {}).get('computed_rules', [])})   # MX-17: an extension's computed rule
     if rule not in known: raise ValueError(f"{rule}: not a rule of the profile ({', '.join(sorted(known)) or 'none'})")
     ids = {i['id'] for f in FILES.values() if (ws / f).exists() for i in _j(ws / f).get('instances', [])}
     unknown = [r for r in records if r not in ids]

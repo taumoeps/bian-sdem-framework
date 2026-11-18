@@ -2,13 +2,16 @@
 
 > Entries before 0.7.0 describe the project under its former name, **SDMM (BIAN Service Domain Mapping Model)**, and its former terms; they are kept as written.
 
-## Unreleased
-
-- **A metamodel extension's layer reads as a document like A1–A4** (LR-01, MX-01). `sdem document --layer S` titled the security layer's document just "S" and its sections "S.Security controls"; it now takes the layer's name from the layer registry ("S Security Architecture") and names each section by the type's own name ("Security controls"). Nothing else in the document changes.
-
 ## 0.19.0 — a full design: the information model, the links ArchiMate defines, events, products, channels and locations (2026-11-16)
 
 Upgrade: change the pin to `@v0.19.0`, `pip install -r requirements.txt`, `sdem agents install`; then `sdem migrate --workspace <dir> --person <you>` (metamodel 0.14.0 → 0.17.0, additive — nothing in your data changes; what is now thin is reported, never refused). Run `sdem aid` again to have it propose data tables, field matches and the new links.
+
+*Added 2026-11-19 — part of 0.19.0 (the owner's choice); the tag moves to include them:*
+
+- **A metamodel extension can be switched off again** (MX-16, PR-38a). `sdem profile exclude ext:<name> --workspace … --person … --reason …` takes it out of the profile; its layer files and every connection touching their records are kept whole in `archive/<name>-<date>.json`, and the connections' ids are retired so no new link is given one. The design passes its checks afterwards. Before, removing `ext:security` left its links behind and `sdem check` failed (the security audit's AUD-01).
+- **Exceptions for rules an extension computes** (MX-17). A pack may name `computed_rules`; `sdem exception grant` accepts them (e.g. `SEC-S08`), as it does the profile's rules.
+
+- **A metamodel extension's layer reads as a document like A1–A4** (LR-01, MX-01). `sdem document --layer S` titled the security layer's document just "S" and its sections "S.Security controls"; it now takes the layer's name from the layer registry ("S Security Architecture") and names each section by the type's own name ("Security controls"). Nothing else in the document changes.
 
 
 - **Metamodel extensions: a cross-cutting architecture such as security, added to SDEM and removed again** ([spec](docs/design/sdem-metamodel-extensions-spec.md), MX-01…MX-15; [layer registry LR-11](docs/design/sdem-layers-spec.md)). A profile layer may now sit **across** the stack as well as above A1 or below A4: its link types may reach any layer, not only its neighbour (above and below still link to their neighbour). An installed extension can ship such a layer as a pack — its types, link types, attributes, rules and standards — which a person switches on in a workspace with `sdem profile include ext:<name>` (recorded, attributed). A workspace that includes an extension which is not installed, or which does not support this SDEM, is refused with a message naming it — its records are never checked as if they were not there. Trace, impact, check, change sets, agents and requirements already worked across profile layers, so they work across this one. SDEM's metamodel files do not change. Tests: `tests/test_metamodel_extensions.py`.

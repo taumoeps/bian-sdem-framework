@@ -1,7 +1,7 @@
 """Metamodel extensions (docs/design/sdem-metamodel-extensions-spec.md, MX-01…MX-11a; the layer registry's LR-11): an installed
 extension's pack adds a cross-cutting layer — its own file, types and link types that may reach any layer — switched on per
 workspace by a person, refused (never skipped) when the extension is missing or does not support this SDEM. Synthetic data only."""
-import json, os, shutil, subprocess, sys, tempfile, unittest
+import json, os, re, shutil, subprocess, sys, tempfile, unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -16,7 +16,8 @@ PACK = {
     'attributes': [{'entity': 'SECT.S.SecurityControl', 'name': 'control_id', 'type': 'string', 'required': True}],
     'link_kinds': [{'kind': 'mitigates', 'source_type': 'SECT.S.SecurityControl', 'target_type': 'SECT.S.Threat', 'maps_to': 'association'}],
     'link_types': [{'source_type': 'SECT.S.SecurityControl', 'relationship': 'PROTECTS', 'target_type': 'A3.DataEntity', 'required_evidence': ['design_document']},
-                   {'source_type': 'SECT.S.SecurityControl', 'relationship': 'PROTECTS', 'target_type': 'A1.BusinessProcess', 'required_evidence': ['design_document']}]}
+                   {'source_type': 'SECT.S.SecurityControl', 'relationship': 'PROTECTS', 'target_type': 'A1.BusinessProcess', 'required_evidence': ['design_document']}],
+    'computed_rules': [{'id': 'SECT-C01', 'message': 'a check the extension computes itself'}]}
 CONTROLS = {'layer': 'S', 'reason': 'security design', 'changes': [
     {'op': 'add', 'record': {'id': 'CTL-SC28', 'type': 'SECT.S.SecurityControl', 'version': '1', 'name': 'Protection at rest', 'lifecycle_status': 'active', 'attributes': {'control_id': 'SC-28'}}},
     {'op': 'add', 'record': {'id': 'THR-DISCLOSE', 'type': 'SECT.S.Threat', 'version': '1', 'name': 'Payment data disclosed', 'lifecycle_status': 'active'}}],
@@ -105,6 +106,36 @@ class MetamodelExtensionTests(unittest.TestCase):
         _, out, _ = self.sdem('document', '--workspace', self.ws, '--layer', 'S')
         self.assertTrue(out.startswith('# S Security Architecture'), out[:80])
         self.assertIn('## 1. Security controls', out); self.assertNotIn('S.Security', out)
+
+    def test_a_person_may_grant_an_exception_to_a_rule_the_extension_computes(self):  # MX-17
+        _, out, _ = self.sdem('exception', 'grant', '--workspace', self.ws, '--rule', 'SECT-C01', '--records', 'APP-PAY-HUB', '--expires', '2099-12-31',
+                              '--reason', 'made-up', '--person', 'steven', '--dry-run', ok=(0, 1, 2))
+        self.assertNotIn('not a rule of the profile', out)
+
+    def test_switching_it_off_archives_its_layer_and_never_reuses_a_link_id(self):  # MX-16
+        ws = self.tmp / 'off'; shutil.copytree(self.ws, ws)
+        maps = json.loads((ws / 'mappings.json').read_text())['mappings']
+        ours = [m['mapping_id'] for m in maps if m['source']['id'] == 'CTL-SC28']
+        _, _, d = self.sdem('profile', 'exclude', 'ext:sectest', '--workspace', ws, '--person', 'steven', '--reason', 'made-up', '--json')
+        self.assertEqual(sorted(d['connections_retired']), sorted(ours)); self.assertFalse((ws / 'security.json').exists())
+        arc = json.loads((ws / d['archive']).read_text()); self.assertIn('security.json', arc['files']); self.assertEqual(len(arc['mappings']), len(ours))
+        _, _, c = self.sdem('check', '--workspace', ws, '--require-recorded', '--json'); self.assertTrue(c['ok'], c)
+        _, _, n = self.sdem('connect', 'PRC-PAY-02', 'USES_DOMAIN', 'SD-PA', '--workspace', ws, '--person', 'steven', '--evidence', 'business_architecture_document:made-up#1',
+                            '--evidence', 'domain_scope_assessment:made-up#1', '--evidence', 'process_model:made-up#1', '--rationale', 'made-up', '--json', ok=(0, 1, 2))
+        self.assertIsNotNone(n, 'the new connection was not made')
+        new = {m['mapping_id'] for m in json.loads((ws / 'mappings.json').read_text())['mappings']} - {m['mapping_id'] for m in maps}
+        num = lambda i: int(re.search(r'(\d+)$', i).group(1))
+        self.assertEqual(len(new), 1); self.assertGreater(num(new.pop()), max(num(i) for i in ours), 'a new link took a retired id')   # the security links were the newest
+
+    def test_switching_off_twice_in_a_day_keeps_both_archives(self):  # MX-16, AUD-24
+        ws = self.tmp / 'twice'; shutil.copytree(self.ws, ws)
+        _, _, d1 = self.sdem('profile', 'exclude', 'ext:sectest', '--workspace', ws, '--person', 'steven', '--reason', 'one', '--json')
+        self.sdem('profile', 'include', 'ext:sectest', '--workspace', ws, '--person', 'steven', '--reason', 'again')
+        self.sdem('profile', 'adopt', '--workspace', ws, '--person', 'steven', '--reason', 'again')
+        _, _, d2 = self.sdem('profile', 'exclude', 'ext:sectest', '--workspace', ws, '--person', 'steven', '--reason', 'two', '--json')
+        self.assertNotEqual(d1['archive'], d2['archive'])
+        first = json.loads((ws / d1['archive']).read_text()); self.assertEqual(len(first['mappings']), len(d1['connections_retired']))
+        self.assertTrue(d1['connections_retired'])
 
     def test_only_a_cross_cutting_layer_may_skip_layers(self):  # LR-06 still holds for above and below
         doc = json.loads(json.dumps(PACK)); doc['layers'][0]['position'] = 'below'

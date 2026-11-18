@@ -49,7 +49,8 @@ def connect(estate, source, relationship, target, reviewer, evidence, rationale,
     stated = {'mapping_id': 'P-STATED-1', 'source': end(source), 'relationship': rel, 'target': end(target), 'status': 'proposed',
               'evidence': [], 'rationale': f'Stated by {reviewer.strip()} (not proposed by the engine): {rationale.strip()}',
               'baseline_id': 'PERSON-STATED', 'created_by': 'sdem connect'}
-    new, recs = approve(registry, {'mappings': [stated]}, ['P-STATED-1'], reviewer, evidence, None, new_id, date, bian_release)
+    from .approve import retired_ids
+    new, recs = approve(registry, {'mappings': [stated]}, ['P-STATED-1'], reviewer, evidence, None, new_id, date, bian_release, retired_ids(estate))
     errors = estate_errors(docs, new)
     if errors:
         raise ApproveError('the workspace would not pass its checks with this connection — nothing was written:\n  ' + '\n  '.join(errors[:10]))

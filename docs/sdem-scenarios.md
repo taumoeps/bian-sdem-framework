@@ -305,6 +305,8 @@ sdem model status                                               # this SDEM's me
 ```bash
 sdem extensions                                                 # the installed extensions: what each reads, where it sends data
 sdem extensions --json                                          # the same, as data
+sdem profile include ext:security --workspace workspaces/ledger --person your.name --reason "security design"   # switch a metamodel extension on (a person)
+sdem profile exclude ext:security --workspace workspaces/ledger --person your.name --reason "…" --dry-run   # switch it off again: its layer and connections archived, not lost (MX-16)
 ```
 
 An installed extension runs as `sdem <name> …` — its own commands and options, listed by `sdem <name> --help`. Extensions are not part of SDEM; they are installed beside it (for example the DESNRE 3D publisher, from the sdem-extensions repository).

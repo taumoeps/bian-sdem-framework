@@ -579,6 +579,36 @@
           }
         }
       }
+    },
+    "computed_rules": {
+      "type": "array",
+      "description": "MX-17: rules a metamodel extension computes with its own commands (not sdem comply) — listed so a person can grant an exception to one (sdem exception grant).",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "message"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "severity": {
+            "enum": [
+              "error",
+              "warning"
+            ]
+          },
+          "extension": {
+            "type": "string",
+            "description": "the metamodel extension that computes it (set when its pack is folded in)"
+          }
+        }
+      }
     }
   }
 }

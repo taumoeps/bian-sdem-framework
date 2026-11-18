@@ -16,21 +16,32 @@ class ApproveError(Exception):
     pass
 
 
-def _next_id(mappings):
-    """The registry's own id style: the most common prefix (e.g. PAY-) and the next number after the highest."""
-    ids = [m['mapping_id'] for m in mappings]
-    pref = collections.Counter(re.match(r'^(.*?)(\d+)$', i).group(1) for i in ids if re.match(r'^(.*?)(\d+)$', i)).most_common(1)
+RETIRED = 'archive/retired-mappings.json'   # MX-16: links taken out of the registry when a layer is switched off — their ids are never given again
+
+
+def retired_ids(workspace):
+    """The ids of links a workspace has retired (sdem profile exclude): kept so a new link never takes one of them."""
+    f = Path(workspace) / RETIRED
+    try: return [m['mapping_id'] for m in json.loads(f.read_text(encoding='utf-8')).get('mappings', []) if m.get('mapping_id')]
+    except (OSError, ValueError): return []
+
+
+def _next_id(mappings, retired=()):
+    """The registry's own id style: the most common prefix (e.g. PAY-) and the next number after the highest — counting retired ids too."""
+    live = [m['mapping_id'] for m in mappings]; ids = live + list(retired)
+    pref = collections.Counter(re.match(r'^(.*?)(\d+)$', i).group(1) for i in (live or ids) if re.match(r'^(.*?)(\d+)$', i)).most_common(1)   # the prefix from the live links (AUD-32)
     p = pref[0][0] if pref else 'MAP-'
     nums = [int(re.match(r'^(.*?)(\d+)$', i).group(2)) for i in ids if i.startswith(p) and re.match(r'^(.*?)(\d+)$', i)]
     width = max((len(re.match(r'^(.*?)(\d+)$', i).group(2)) for i in ids if i.startswith(p)), default=3)
     return f'{p}{max(nums, default=0) + 1:0{width}d}'
 
 
-def approve(registry, proposals, ids, reviewer, evidence, supersedes=None, new_id=None, date=None, bian_release=None):
+def approve(registry, proposals, ids, reviewer, evidence, supersedes=None, new_id=None, date=None, bian_release=None, retired=()):
     """Returns the new registry (a copy) and the approved records; raises ApproveError with the reason when it cannot."""
     who = (reviewer or '').strip()
     if not is_person(who):
         raise ApproveError(f'CTL-21: the reviewer must be a person, not {reviewer!r} — give your own name')
+    if new_id and new_id in set(retired): raise ApproveError(f'--new-id {new_id}: a retired link had this id (archive/retired-mappings.json) — ids are never given twice')
     if not evidence: raise ApproveError('--evidence is required: the document that proves the link, as kind:reference (see `sdem approve --help`)')
     if any(':' not in e for e in evidence): raise ApproveError('evidence must be written kind:reference, e.g. deployment_design:PAY-REHOST#cutover')
     if supersedes and len(ids) != 1: raise ApproveError('--supersedes works with one proposal at a time')
@@ -43,7 +54,7 @@ def approve(registry, proposals, ids, reviewer, evidence, supersedes=None, new_i
         if not p: raise ApproveError(f'{pid}: not in the proposals file')
         if (p['source']['id'], p['relationship'], p['target']['id']) in approved_keys: raise ApproveError(f'{pid}: this link is already approved in the registry')
         r = copy.deepcopy(p)
-        r.update(mapping_id=new_id or _next_id(reg['mappings']), status='approved', reviewer_id=who, approved_at=date or datetime.date.today().isoformat(),
+        r.update(mapping_id=new_id or _next_id(reg['mappings'], retired), status='approved', reviewer_id=who, approved_at=date or datetime.date.today().isoformat(),
                  evidence=list(evidence) + [e for e in p.get('evidence', []) if e not in evidence])
         if bian_release: r['bian_release'] = bian_release   # the BIAN release a BIAN-anchored link relies on (the person states it)
         was = next((m for m in reg['mappings'] if m.get('status') == 'rejected' and (m['source']['id'], m['relationship'], m['target']['id']) == (p['source']['id'], p['relationship'], p['target']['id'])), None)
@@ -85,7 +96,7 @@ def main(argv=None):
     if not a.registry and not a.estate: ap.error('give --workspace DIR or --registry FILE')
     try:
         reg = json.loads(reg_path.read_text(encoding='utf-8')); props = json.loads(Path(a.proposals).read_text(encoding='utf-8'))
-        new, recs = approve(reg, props, a.ids, a.reviewer, a.evidence, a.supersedes, a.new_id, a.date, a.bian_release)
+        new, recs = approve(reg, props, a.ids, a.reviewer, a.evidence, a.supersedes, a.new_id, a.date, a.bian_release, retired_ids(reg_path.parent))
     except (OSError, ValueError) as e:
         print(f'ERROR: {e}', file=sys.stderr); return 2
     except ApproveError as e:

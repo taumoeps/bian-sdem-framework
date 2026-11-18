@@ -2,7 +2,7 @@
 
 > **Generated** from the code by `sdem model regenerate` (`sdem/clidoc.py`), from the same catalogue as `sdem commands --json`; `sdem model check` fails in CI when it is stale — **do not edit by hand**. Each command's `--help` has the same options and a worked example. For *when* to use which command, in order, see the [scenarios](../sdem-scenarios.md); for what each does to your data, the [user guide](../sdem-workbench-user-guide.md#7-command-reference).
 
-125 commands and subcommands.
+126 commands and subcommands.
 
 ## Every command takes
 
@@ -86,6 +86,7 @@
 | [`sdem profile adopt`](#cmd-profile-adopt) 👤 | put the workspace under its sdem-profile.json: the layers it adds start empty, and the adoption is recorded |
 | [`sdem profile check`](#cmd-profile-check) | check the workspace's profile (and the base it extends) against SDEM's metamodel |
 | [`sdem profile example`](#cmd-profile-example) | write a synthetic bank base profile, team profiles that extend it (one adds layers), and a team profile with the bank's standards and secure API pattern |
+| [`sdem profile exclude`](#cmd-profile-exclude) 👤 | switch a standard, pattern or metamodel extension off again |
 | [`sdem profile include`](#cmd-profile-include) 👤 | add a standard or pattern to what the workspace's profile includes |
 | [`sdem profile show`](#cmd-profile-show) | the merged profile: every type, attribute, rule, link kind and name it adds |
 | [`sdem types`](#cmd-types) | what you may write: each layer's kinds of record, their fields (type, required, allowed values) and allowed links; the requirement and change-set formats |
@@ -1982,7 +1983,7 @@ sdem pattern extract --from FROM [--profile PROFILE] [--workspace WORKSPACE] --i
 
 the organisation's design specification on top of SDEM's metamodel — its own types, attributes, rules, link kinds and names (sdem-profile.json, optionally extending a shared base): check, show, example
 
-Subcommands: [`sdem profile adopt`](#cmd-profile-adopt) · [`sdem profile check`](#cmd-profile-check) · [`sdem profile example`](#cmd-profile-example) · [`sdem profile include`](#cmd-profile-include) · [`sdem profile show`](#cmd-profile-show)
+Subcommands: [`sdem profile adopt`](#cmd-profile-adopt) · [`sdem profile check`](#cmd-profile-check) · [`sdem profile example`](#cmd-profile-example) · [`sdem profile exclude`](#cmd-profile-exclude) · [`sdem profile include`](#cmd-profile-include) · [`sdem profile show`](#cmd-profile-show)
 
 ### sdem profile adopt
 
@@ -2037,6 +2038,27 @@ sdem profile example --out OUT
 | Argument | Required | What it is |
 |---|---|---|
 | `--out` | yes | where to write the result (a file or folder) |
+| `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
+
+### sdem profile exclude
+
+<a id="cmd-profile-exclude"></a>
+
+switch a standard, pattern or metamodel extension off again — its layers and their connections are archived, not lost (MX-16)
+
+```
+sdem profile exclude <file> --workspace WORKSPACE --person PERSON --reason REASON [--dry-run]
+```
+
+*JSON: native · dry run: native · 👤 a person's own name*
+
+| Argument | Required | What it is |
+|---|---|---|
+| `<file>` | yes | as it is written in the profile's includes, e.g. ext:security |
+| `--workspace` | yes | the workspace folder — found from the current folder when you are inside one (WS-11) |
+| `--person` | yes | your name — a person |
+| `--reason` | yes | why — recorded with the decision |
+| `--dry-run` |  | nothing written; what would be written is listed under "would_write" |
 | `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
 
 ### sdem profile include

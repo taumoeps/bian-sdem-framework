@@ -214,6 +214,8 @@ def include_pack(merged, name, _seen=(), local=None):
     _add(merged, {'attributes': p['attributes'], 'rules': p['rules']}, f"{name} ({f.name})")
     for k in ('layers', 'types'): merged['names'][k].update(p['names'][k])
     merged['included'] += [x for x in p['included'] if x['file'] not in {y['file'] for y in merged['included']}]
+    # MX-17: rules the extension computes itself (its own commands, not sdem comply) — named so a person can grant an exception to one
+    merged.setdefault('computed_rules', []).extend({**r, 'extension': m['name']} for r in (read(f).get('computed_rules') or []) if r.get('id'))
     merged['structures'] += p['structures']; merged['_issues'] += p['_issues']
     merged['aspects'].append({'name': name, 'extension': m['name'], 'version': m.get('version'), 'file': f.as_posix(), 'pack': p['name'], 'pack_version': p['version']})
 
@@ -777,6 +779,85 @@ def include_file(a):
     return 0
 
 
+def exclude_file(a):
+    """MX-16: a person switches a standard, a pattern or a metamodel extension off again — the counterpart of include (PR-38, MX-10).
+    For a part that adds layers (e.g. ext:security, or a pack the workspace carries as a file), the layer files, every connection that
+    touches their records and the exceptions that name them leave the design together, kept whole in a new archive file
+    (archive/<name>-<date>[-n].json — never overwriting one); the connections' ids are kept as retired, so no new link takes one. The
+    change is made first on a copy of the workspace and checked there: if the design would not pass, nothing is written."""
+    import contextlib, datetime, io, shutil, tempfile
+    from .validate import is_person
+    ws = Path(a.estate); name = a.file
+    if not is_person(a.person): raise ProfileError(f"--person {a.person!r}: what a workspace's profile includes is a person's decision — give your own name (CTL-21)")
+    if not (a.reason or '').strip(): raise ProfileError('--reason is required: why it is switched off (kept with the decision)')
+    f = ws / FILE
+    if not f.exists(): raise ProfileError(f'{ws}: no sdem-profile.json — nothing is included')
+    doc = json.loads(f.read_text(encoding='utf-8'))
+    if name not in (doc.get('includes') or []): raise ProfileError(f"{name} is not included in {ws}'s profile ({', '.join(doc.get('includes') or []) or 'it includes nothing'})")
+    if name.startswith(EXT):
+        try: path, _ = pack(name); layers = read(path).get('layers') or []
+        except ProfileError as e: raise ProfileError(f'{e} — install it again to switch it off cleanly: its layers and their connections are found from its pack')
+    else:   # a standard, a pattern, or a pack the workspace carries as a file (a published copy): its own layers, if it adds any
+        pf = (ws / name) if not name.startswith(SHIPPED) else None
+        try: layers = (read(pf).get('layers') or []) if pf is not None and pf.is_file() and read(pf).get('format') == FORMAT else []
+        except (OSError, ValueError, ProfileError): layers = []
+    files = [l['file'] for l in layers if l.get('file') and (ws / l['file']).exists()]
+    gone = {i['id'] for fn in files for i in json.loads((ws / fn).read_text(encoding='utf-8')).get('instances', [])}
+    reg_f = ws / 'mappings.json'
+    reg = json.loads(reg_f.read_text(encoding='utf-8')) if reg_f.exists() else None
+    out_maps = [m for m in (reg or {}).get('mappings', []) if m['source']['id'] in gone or m['target']['id'] in gone]
+    ex_f = ws / 'exceptions.json'; exc = json.loads(ex_f.read_text(encoding='utf-8')) if ex_f.exists() else None
+    out_exc = [e for e in (exc or {}).get('exceptions', []) if set(e.get('records') or []) & gone]   # an exception for an archived record goes with it
+    keep = {**doc, 'includes': [i for i in doc['includes'] if i != name]}
+    day = datetime.date.today().isoformat(); tag = re.sub(r'[^a-z0-9-]+', '-', name.lower()).strip('-')
+    arc_name, n = f'archive/{tag}-{day}.json', 2
+    while (ws / arc_name).exists(): arc_name = f'archive/{tag}-{day}-{n}.json'; n += 1   # AUD-24: never over an earlier archive
+    out = {'workspace': str(ws), 'excluded': name, 'layers_removed': [l['code'] for l in layers], 'files_archived': files, 'records': len(gone),
+           'connections_retired': [m['mapping_id'] for m in out_maps], 'exceptions_archived': [e.get('id') for e in out_exc], 'archive': arc_name, 'dry_run': bool(a.dry_run)}
+    from .approve import RETIRED
+    def write(root, decision):
+        from .files import Batch
+        arc = {'format': 'sdem-archive/1', 'excluded': name, 'reason': a.reason.strip(), 'by': a.person.strip(), 'decision': decision, 'at': day,
+               'files': {fn: json.loads((ws / fn).read_text(encoding='utf-8')) for fn in files}, 'mappings': out_maps, 'exceptions': out_exc,
+               'note': 'Switched off by a person (sdem profile exclude, MX-16). To switch it on again: sdem profile include, sdem profile adopt, then restore these files and connections.'}
+        rf = root / RETIRED
+        ret = json.loads(rf.read_text(encoding='utf-8')) if rf.exists() else {'format': 'sdem-retired-mappings/1', 'note': 'Connections taken out of mappings.json when a layer was switched off; their ids are never given again.', 'mappings': []}
+        ret['mappings'] += [{'mapping_id': m['mapping_id'], 'archive': arc_name, 'decision': decision} for m in out_maps]
+        b = Batch(); b.json(root / arc_name, arc); b.json(rf, ret); b.json(root / FILE, keep)
+        if reg is not None and out_maps: b.json(root / 'mappings.json', {**reg, 'mappings': [m for m in reg['mappings'] if m not in out_maps]})
+        if exc is not None and out_exc: b.json(root / 'exceptions.json', {**exc, 'exceptions': [e for e in exc['exceptions'] if e not in out_exc]})
+        b.commit()
+        for fn in files: (root / fn).unlink()
+    # AUD-26: try it on a copy first — the design must pass its check without the part, or nothing is written
+    with tempfile.TemporaryDirectory() as t:
+        trial = Path(t) / ws.resolve().name; shutil.copytree(ws, trial, ignore=shutil.ignore_patterns('graph', '.git'))
+        write(trial, 'trial')
+        from .cli import main as graph_main   # sdem check, in this process — SDEM starts no program it does not name (privacy)
+        so, se = io.StringIO(), io.StringIO()
+        try:
+            with contextlib.redirect_stdout(so), contextlib.redirect_stderr(se): graph_main(['check', '--workspace', str(trial), '--json'])
+        except SystemExit: pass
+        finally: deactivate()   # the trial's profile was active while it was checked
+        try: ok = json.loads(so.getvalue()).get('ok')
+        except ValueError: ok = False
+        if not ok:
+            why = '; '.join(ln.strip() for ln in (so.getvalue() + se.getvalue()).splitlines() if ln.strip().startswith('ERROR'))[:600] or (se.getvalue() or so.getvalue()).strip()[-400:]
+            raise ProfileError(f'{name}: without it the design would not pass its check — nothing written: {why}')
+    if not a.dry_run:
+        from .files import record as ledger
+        from .governance import record as gd
+        g = gd(ws, 'exclude_from_profile', a.person, name, {'reason': a.reason.strip(), 'layers': out['layers_removed'], 'records': len(gone),
+                                                          'connections_retired': out['connections_retired'], 'archive': arc_name})
+        write(ws, g['id'])
+        ledger([f] + ([reg_f] if out_maps else []) + ([ex_f] if out_exc else []), by=f"{a.person.strip()} (sdem profile exclude, {g['id']})", note=a.reason.strip())
+        out['decision'] = g['id']
+    if a.json: print(json.dumps(out, indent=2))
+    else: print(f"{'would switch off' if a.dry_run else 'switched off'} {name} in {ws} (checked: the design passes without it): "
+                + (f"layer(s) {', '.join(out['layers_removed'])} ({out['records']} record(s)), {len(out_maps)} connection(s) and {len(out_exc)} exception(s) kept in {arc_name}" if layers else 'no layers to remove')
+                + (f" — decision {out['decision']} (attributed)" if 'decision' in out else '') + f'\nNext — sdem check --workspace {ws}')
+    return 0
+
+
 def describe(r):
     """A rule in words: 'A4.InfrastructureComponent where environment = production requires dr_tier, dr_region'."""
     out = r['entity']
@@ -831,6 +912,10 @@ def main(argv=None):
     i.add_argument('file', metavar='FILE', help='"sdem:<file>" for a standard or pattern shipped with SDEM, "ext:<name>" for an installed metamodel extension (e.g. ext:security), or a path from the workspace folder')
     i.add_argument('--workspace', dest='estate', required=True, metavar='DIR'); i.add_argument('--person', required=True, help='your name — a person')
     i.add_argument('--reason', help='why (kept with the decision)'); i.add_argument('--dry-run', action='store_true'); i.add_argument('--json', action='store_true')
+    x = sub.add_parser('exclude', help="switch a standard, pattern or metamodel extension off again — its layers and their connections are archived, not lost (MX-16)")
+    x.add_argument('file', metavar='FILE', help='as it is written in the profile\'s includes, e.g. ext:security')
+    x.add_argument('--workspace', dest='estate', required=True, metavar='DIR'); x.add_argument('--person', required=True, help='your name — a person')
+    x.add_argument('--reason', required=True); x.add_argument('--dry-run', action='store_true'); x.add_argument('--json', action='store_true')
     e = sub.add_parser('example', help='write a synthetic bank base profile, team profiles that extend it (one adds layers), and a team profile with the bank\'s standards and secure API pattern')
     e.add_argument('--out', required=True, metavar='DIR'); e.add_argument('--json', action='store_true')
     a = ap.parse_args(argv)
@@ -849,6 +934,7 @@ def main(argv=None):
             return 0
         if a.cmd == 'adopt': return adopt(a)
         if a.cmd == 'include': return include_file(a)
+        if a.cmd == 'exclude': return exclude_file(a)
         path = Path(a.file) if a.file else Path(a.estate or '.') / FILE
         if not a.file and not a.estate: raise ProfileError('give --workspace DIR or --file FILE')
         merged = resolve(path); issues = check(merged, Metamodel.base())

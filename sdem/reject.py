@@ -17,7 +17,7 @@ class RejectError(Exception):
     pass
 
 
-def reject(registry, proposals, ids, reviewer, reason, date=None):
+def reject(registry, proposals, ids, reviewer, reason, date=None, retired=()):
     """Returns the new registry (a copy) and the rejected records; raises RejectError with the reason when it cannot."""
     who = (reviewer or '').strip()
     if not is_person(who): raise RejectError(f'CTL-21: the reviewer must be a person, not {reviewer!r} — give your own name')
@@ -33,7 +33,7 @@ def reject(registry, proposals, ids, reviewer, reason, date=None):
         if decided.get(key(p)) == 'approved': raise RejectError(f'{pid}: this link is approved in the registry — supersede or retire it there; a proposal is what `sdem reject` decides')
         if decided.get(key(p)) == 'rejected': raise RejectError(f'{pid}: this link is already rejected in the registry')
         r = copy.deepcopy(p)
-        r.update(mapping_id=_next_id(reg['mappings']), status='rejected', reviewer_id=who, approved_at=date or datetime.date.today().isoformat(),
+        r.update(mapping_id=_next_id(reg['mappings'], retired), status='rejected', reviewer_id=who, approved_at=date or datetime.date.today().isoformat(),
                  rationale=f"Rejected by {who}: {why} — as proposed: {p.get('rationale', '')}".rstrip(' —:'))
         reg['mappings'].append(r); decided[key(r)] = 'rejected'; out.append((r, why))
     issues = validate(reg, load_registry(), load_schema(), metamodel=Metamodel.load())
@@ -59,7 +59,8 @@ def main(argv=None):
     if not a.registry and not a.estate: ap.error('give --workspace DIR or --registry FILE')
     try:
         reg = json.loads(reg_path.read_text(encoding='utf-8')); props = json.loads(Path(a.proposals).read_text(encoding='utf-8'))
-        new, recs = reject(reg, props, a.ids, a.reviewer, a.reason, a.date)
+        from .approve import retired_ids
+        new, recs = reject(reg, props, a.ids, a.reviewer, a.reason, a.date, retired_ids(reg_path.parent))
     except (OSError, ValueError) as e:
         print(f'ERROR: {e}', file=sys.stderr); return 2
     except RejectError as e:
