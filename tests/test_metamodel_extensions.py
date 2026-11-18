@@ -26,10 +26,15 @@ CONTROLS = {'layer': 'S', 'reason': 'security design', 'changes': [
 def fake_extension(folder, name, sdem_range='>=0.0'):
     """A stand-in for an installed metamodel extension: sdem-<name> answering --manifest with its pack."""
     pack = folder / f'{name}-pack.json'; pack.write_text(json.dumps(PACK))
-    prog = folder / f'sdem-{name}'
     man = {'name': name, 'command': f'sdem-{name}', 'version': '0.1.0', 'kind': ['metamodel'], 'sdem': sdem_range, 'pack': str(pack), 'description': 'a test security pack'}
-    prog.write_text(f'#!{sys.executable}\nimport sys, json\nif "--manifest" in sys.argv: print(json.dumps({man!r}))\n')
-    prog.chmod(0o755)
+    body = f'import sys, json\nif "--manifest" in sys.argv: print(json.dumps({man!r}))\n'
+    if os.name == 'nt':   # Windows finds a command by its extension (PATHEXT): a .cmd that runs the script with this Python
+        (folder / f'sdem-{name}.py').write_text(body)
+        (folder / f'sdem-{name}.cmd').write_text(f'@"{sys.executable}" "%~dp0sdem-{name}.py" %*\r\n')
+    else:
+        prog = folder / f'sdem-{name}'
+        prog.write_text(f'#!{sys.executable}\n' + body)
+        prog.chmod(0o755)
 
 
 class MetamodelExtensionTests(unittest.TestCase):
