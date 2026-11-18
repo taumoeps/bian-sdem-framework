@@ -61,6 +61,8 @@ SDEM already draws ArchiMate viewpoints itself: [`sdem diagram`](sdem-diagram-sp
 
 ## 7. The ArchiMate viewpoint in the 3D view (built)
 
+> **Superseded (2026-11-18)** by the [Architecture viewpoint spec](sdem-architecture-viewpoint-spec.md): the plates are now drawn from one view model shared with the Design document. Kept for history.
+
 The owner's request (2026-11-18): the 3D view offers **two viewpoints, switched on the view itself** — the *SDEM metamodel viewpoint* (§1–§6, as today) and an *ArchiMate viewpoint* for the architect, built from the diagrams the Design document already draws, one per plate.
 
 ### 7.1 The five plates
