@@ -2,7 +2,7 @@
 
 > **Generated** from the code by `sdem model regenerate` (`sdem/clidoc.py`), from the same catalogue as `sdem commands --json`; `sdem model check` fails in CI when it is stale — **do not edit by hand**. Each command's `--help` has the same options and a worked example. For *when* to use which command, in order, see the [scenarios](../sdem-scenarios.md); for what each does to your data, the [user guide](../sdem-workbench-user-guide.md#7-command-reference).
 
-126 commands and subcommands.
+128 commands and subcommands.
 
 ## Every command takes
 
@@ -88,6 +88,8 @@
 | [`sdem profile example`](#cmd-profile-example) | write a synthetic bank base profile, team profiles that extend it (one adds layers), and a team profile with the bank's standards and secure API pattern |
 | [`sdem profile exclude`](#cmd-profile-exclude) 👤 | switch a standard, pattern or metamodel extension off again |
 | [`sdem profile include`](#cmd-profile-include) 👤 | add a standard or pattern to what the workspace's profile includes |
+| [`sdem profile purge`](#cmd-profile-purge) 👤 | delete the archived data of a part that was switched off |
+| [`sdem profile restore`](#cmd-profile-restore) 👤 | switch a part back on from one of its archives |
 | [`sdem profile show`](#cmd-profile-show) | the merged profile: every type, attribute, rule, link kind and name it adds |
 | [`sdem types`](#cmd-types) | what you may write: each layer's kinds of record, their fields (type, required, allowed values) and allowed links; the requirement and change-set formats |
 | [`sdem validate`](#cmd-validate) | validate a relationship document (registry or proposals) |
@@ -1983,7 +1985,7 @@ sdem pattern extract --from FROM [--profile PROFILE] [--workspace WORKSPACE] --i
 
 the organisation's design specification on top of SDEM's metamodel — its own types, attributes, rules, link kinds and names (sdem-profile.json, optionally extending a shared base): check, show, example
 
-Subcommands: [`sdem profile adopt`](#cmd-profile-adopt) · [`sdem profile check`](#cmd-profile-check) · [`sdem profile example`](#cmd-profile-example) · [`sdem profile exclude`](#cmd-profile-exclude) · [`sdem profile include`](#cmd-profile-include) · [`sdem profile show`](#cmd-profile-show)
+Subcommands: [`sdem profile adopt`](#cmd-profile-adopt) · [`sdem profile check`](#cmd-profile-check) · [`sdem profile example`](#cmd-profile-example) · [`sdem profile exclude`](#cmd-profile-exclude) · [`sdem profile include`](#cmd-profile-include) · [`sdem profile purge`](#cmd-profile-purge) · [`sdem profile restore`](#cmd-profile-restore) · [`sdem profile show`](#cmd-profile-show)
 
 ### sdem profile adopt
 
@@ -2079,6 +2081,50 @@ sdem profile include <file> --workspace WORKSPACE --person PERSON [--reason REAS
 | `--workspace` | yes | the workspace folder — found from the current folder when you are inside one (WS-11) |
 | `--person` | yes | your name — a person |
 | `--reason` |  | why (kept with the decision) |
+| `--dry-run` |  | nothing written; what would be written is listed under "would_write" |
+| `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
+
+### sdem profile purge
+
+<a id="cmd-profile-purge"></a>
+
+delete the archived data of a part that was switched off — never the default; the ids stay retired (EL-16)
+
+```
+sdem profile purge [<file>] [--archive ARCHIVE] --workspace WORKSPACE --person PERSON --reason REASON [--dry-run]
+```
+
+*JSON: native · dry run: native · 👤 a person's own name*
+
+| Argument | Required | What it is |
+|---|---|---|
+| `<file>` |  | every archive of this part, e.g. ext:security |
+| `--archive` |  | one archive |
+| `--workspace` | yes | the workspace folder — found from the current folder when you are inside one (WS-11) |
+| `--person` | yes | your name — a person |
+| `--reason` | yes | why — recorded with the decision |
+| `--dry-run` |  | nothing written; what would be written is listed under "would_write" |
+| `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
+
+### sdem profile restore
+
+<a id="cmd-profile-restore"></a>
+
+switch a part back on from one of its archives — layers, connections (their old ids) and exceptions, checked first (EL-06)
+
+```
+sdem profile restore --archive ARCHIVE --workspace WORKSPACE --person PERSON --reason REASON [--skip-unfit] [--dry-run]
+```
+
+*JSON: native · dry run: native · 👤 a person's own name*
+
+| Argument | Required | What it is |
+|---|---|---|
+| `--archive` | yes | archive/<name>-<date>.json, as sdem profile exclude wrote it |
+| `--workspace` | yes | the workspace folder — found from the current folder when you are inside one (WS-11) |
+| `--person` | yes | your name — a person |
+| `--reason` | yes | why — recorded with the decision |
+| `--skip-unfit` |  | leave in the archive the connections whose other end has left the design |
 | `--dry-run` |  | nothing written; what would be written is listed under "would_write" |
 | `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
 

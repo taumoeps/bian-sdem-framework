@@ -775,7 +775,8 @@ def include_file(a):
     if a.json: print(json.dumps(out, indent=2))
     elif there: print(f"{name} ({meta['title']}) is already included in {ws}'s profile — nothing to do")
     else: print(f"{'would include' if a.dry_run else 'included'} {name} — the {kind} {meta['id']} {meta['title']} v{meta['version']} — in {ws / FILE}"
-                + (f" — decision {out['decision']} (attributed)" if 'decision' in out else '') + f'\nNext — sdem status --workspace {ws} says where the design stands against it')
+                + (f" — decision {out['decision']} (attributed)" if 'decision' in out else '') + f'\nNext — sdem status --workspace {ws} says where the design stands against it'
+                + ('\nIf the design is published (e.g. to DESNRE), the published copy changes only when you publish it again (EL-04, EL-05).' if name.startswith(EXT) else ''))
     return 0
 
 
@@ -854,7 +855,129 @@ def exclude_file(a):
     if a.json: print(json.dumps(out, indent=2))
     else: print(f"{'would switch off' if a.dry_run else 'switched off'} {name} in {ws} (checked: the design passes without it): "
                 + (f"layer(s) {', '.join(out['layers_removed'])} ({out['records']} record(s)), {len(out_maps)} connection(s) and {len(out_exc)} exception(s) kept in {arc_name}" if layers else 'no layers to remove')
-                + (f" — decision {out['decision']} (attributed)" if 'decision' in out else '') + f'\nNext — sdem check --workspace {ws}')
+                + (f" — decision {out['decision']} (attributed)" if 'decision' in out else '') + f'\nNext — sdem check --workspace {ws}\nIf the design is published (e.g. to DESNRE), the published copy changes only when you publish it again (EL-04, EL-05).')
+    return 0
+
+
+def _check_copy(ws, apply_to):
+    """Make a change on a copy of the workspace and run sdem check there, in this process: (ok, why)."""
+    import contextlib, io, shutil, tempfile
+    with tempfile.TemporaryDirectory() as t:
+        trial = Path(t) / Path(ws).resolve().name; shutil.copytree(ws, trial, ignore=shutil.ignore_patterns('graph', '.git'))
+        apply_to(trial)
+        from .cli import main as sdem_main
+        so, se = io.StringIO(), io.StringIO()
+        try:
+            with contextlib.redirect_stdout(so), contextlib.redirect_stderr(se): sdem_main(['check', '--workspace', str(trial), '--json'])
+        except SystemExit: pass
+        finally: deactivate()
+        try: ok = json.loads(so.getvalue()).get('ok')
+        except ValueError: ok = False
+        why = '; '.join(ln.strip() for ln in (so.getvalue() + se.getvalue()).splitlines() if ln.strip().startswith('ERROR'))[:600] or (se.getvalue() or so.getvalue()).strip()[-400:]
+        return bool(ok), why
+
+
+def restore_file(a):
+    """EL-06: a person switches an extension on again from one of its archives (MX-16) — the include back in the profile, its layer
+    files, the connections (with their old ids, never given to others) and the exceptions. Tried on a copy and checked first. A
+    connection whose other end has since left the design does not fit: refused, listed, or left in the archive with --skip-unfit."""
+    import datetime
+    from .validate import is_person
+    from .approve import RETIRED
+    from .layers import FILES
+    ws = Path(a.estate); af = (ws / a.archive) if not Path(a.archive).is_absolute() else Path(a.archive)
+    if not is_person(a.person): raise ProfileError(f"--person {a.person!r}: restoring is a person's decision — give your own name (CTL-21)")
+    if not (a.reason or '').strip(): raise ProfileError('--reason is required: why it is switched on again')
+    if not af.is_file(): raise ProfileError(f'{a.archive}: no such archive in {ws} (sdem profile exclude writes them to archive/)')
+    arc = json.loads(af.read_text(encoding='utf-8'))
+    if arc.get('format') != 'sdem-archive/1': raise ProfileError(f'{a.archive}: not an SDEM archive')
+    if arc.get('restored'): raise ProfileError(f"{a.archive}: already restored on {arc['restored'].get('at')} ({arc['restored'].get('decision')})")
+    name = arc['excluded']; f = ws / FILE; doc = json.loads(f.read_text(encoding='utf-8')) if f.exists() else {'format': FORMAT, 'name': ws.resolve().name, 'version': 1, 'includes': []}
+    if name in (doc.get('includes') or []): raise ProfileError(f'{name} is already included in {ws} — restore puts back a part that was switched off')
+    if name.startswith(EXT): pack(name)   # installed and supported (MX-11a) — or refused here, with the reason
+    busy = [fn for fn in arc.get('files', {}) if (ws / fn).exists() and json.loads((ws / fn).read_text(encoding='utf-8')).get('instances')]
+    if busy: raise ProfileError(f"{', '.join(busy)} already hold(s) records — restore does not merge into a layer that has been started again")
+    have = {i['id'] for fn in FILES.values() if (ws / fn).exists() for i in json.loads((ws / fn).read_text(encoding='utf-8')).get('instances', [])}
+    have |= {i['id'] for d in arc.get('files', {}).values() for i in d.get('instances', [])}
+    unfit = [m for m in arc.get('mappings', []) if m['source']['id'] not in have or m['target']['id'] not in have]
+    if unfit and not a.skip_unfit:
+        raise ProfileError(f"{len(unfit)} archived connection(s) no longer fit — a record they join has left the design: "
+                           + ', '.join(f"{m['mapping_id']} ({m['source']['id']} {m['relationship']} {m['target']['id']})" for m in unfit[:10])
+                           + ' — restore the rest with --skip-unfit (those stay in the archive)')
+    back = [m for m in arc.get('mappings', []) if m not in unfit]
+    exc_back = [e for e in arc.get('exceptions', []) if set(e.get('records') or []) <= have]
+    day = datetime.date.today().isoformat()
+    out = {'workspace': str(ws), 'restored': name, 'archive': str(a.archive), 'files': sorted(arc.get('files', {})), 'connections': [m['mapping_id'] for m in back],
+           'left_in_archive': [m['mapping_id'] for m in unfit], 'exceptions': [e.get('id') for e in exc_back], 'dry_run': bool(a.dry_run)}
+    def write(root, decision):
+        from .files import Batch
+        b = Batch()
+        pf = root / FILE; pd = json.loads(pf.read_text(encoding='utf-8')) if pf.exists() else dict(doc)
+        b.json(pf, {**pd, 'includes': list(pd.get('includes') or []) + [name]})
+        for fn, d in arc.get('files', {}).items(): b.json(root / fn, d)
+        rf = root / 'mappings.json'; reg = json.loads(rf.read_text(encoding='utf-8')) if rf.exists() else {'mappings': []}
+        b.json(rf, {**reg, 'mappings': reg['mappings'] + back})
+        if exc_back:
+            ef = root / 'exceptions.json'; ex = json.loads(ef.read_text(encoding='utf-8')) if ef.exists() else {'format': 'sdem-exceptions/1', 'exceptions': []}
+            b.json(ef, {**ex, 'exceptions': ex['exceptions'] + exc_back})
+        rt = root / RETIRED
+        if rt.exists():   # the restored ids are live again; the ones left in the archive stay retired
+            ret = json.loads(rt.read_text(encoding='utf-8')); ids = {m['mapping_id'] for m in back}
+            b.json(rt, {**ret, 'mappings': [m for m in ret['mappings'] if m['mapping_id'] not in ids]})
+        b.json(root / af.relative_to(ws) if af.is_relative_to(ws) else af, {**arc, 'restored': {'at': day, 'decision': decision, 'by': a.person.strip(), 'left_in_archive': out['left_in_archive']}})
+        b.commit()
+    ok, why = _check_copy(ws, lambda t: write(t, 'trial'))
+    if not ok: raise ProfileError(f'{name}: restored, the design would not pass its check — nothing written: {why}')
+    if not a.dry_run:
+        from .files import record as ledger
+        from .governance import record as gd
+        g = gd(ws, 'restore_from_archive', a.person, name, {'reason': a.reason.strip(), 'archive': str(a.archive), 'connections': out['connections'], 'left_in_archive': out['left_in_archive']})
+        write(ws, g['id'])
+        ledger([f, ws / 'mappings.json'] + [ws / fn for fn in arc.get('files', {})] + ([ws / 'exceptions.json'] if exc_back else []), by=f"{a.person.strip()} (sdem profile restore, {g['id']})", note=a.reason.strip())
+        out['decision'] = g['id']
+    print(json.dumps(out, indent=2) if a.json else
+          f"{'would restore' if a.dry_run else 'restored'} {name} in {ws} from {a.archive} (checked): {len(out['files'])} layer file(s), {len(back)} connection(s), {len(exc_back)} exception(s)"
+          + (f"; {len(unfit)} connection(s) left in the archive" if unfit else '') + (f" — decision {out['decision']} (attributed)" if 'decision' in out else '') + '\nIf the design is published (e.g. to DESNRE), the published copy changes only when you publish it again (EL-04, EL-05).')
+    return 0
+
+
+def purge_file(a):
+    """EL-16, EL-17: a person deletes the archived data of a part that was switched off — one archive, or every archive of a name.
+    Never the default, never part of switching off. The link ids stay retired; the decision records what was deleted, not its content.
+    It says what it cannot reach: the workspace's git history, and copies people downloaded."""
+    from .validate import is_person
+    from .approve import RETIRED
+    ws = Path(a.estate)
+    if not is_person(a.person): raise ProfileError(f"--person {a.person!r}: purging data is a person's decision — give your own name (CTL-21)")
+    if not (a.reason or '').strip(): raise ProfileError('--reason is required: why the data is deleted (kept with the decision)')
+    arcs = sorted((ws / 'archive').glob('*.json')) if (ws / 'archive').is_dir() else []
+    arcs = [p for p in arcs if p.name != Path(RETIRED).name and (json.loads(p.read_text(encoding='utf-8')).get('format') == 'sdem-archive/1')]
+    pick = [p for p in arcs if (a.archive and (p == ws / a.archive or p.name == Path(a.archive).name)) or (a.file and json.loads(p.read_text(encoding='utf-8')).get('excluded') == a.file)]
+    if not (a.archive or a.file): raise ProfileError('name what to purge: an archive (--archive archive/<file>.json) or every archive of a part (e.g. ext:security)')
+    if not pick: raise ProfileError(f"nothing to purge in {ws}: no archive {'of ' + a.file if a.file else a.archive}")
+    summ = []
+    for p in pick:
+        d = json.loads(p.read_text(encoding='utf-8'))
+        summ.append({'archive': p.relative_to(ws).as_posix(), 'excluded': d.get('excluded'), 'records': sum(len(x.get('instances', [])) for x in d.get('files', {}).values()),
+                     'connections': len(d.get('mappings', [])), 'exceptions': len(d.get('exceptions', [])), 'restored': bool(d.get('restored'))})
+    out = {'workspace': str(ws), 'purged': summ, 'dry_run': bool(a.dry_run),
+           'not_reached': ["the workspace's git history, if it is kept in git — SDEM never rewrites it", 'copies people downloaded or exported',
+                           'a published copy (e.g. DESNRE): its previous version and document history — the publisher asks the site on the next publish (EL-16)']}
+    if not a.dry_run:
+        from .governance import record as gd
+        from .files import Batch
+        g = gd(ws, 'purge_extension_data', a.person, ', '.join(sorted({x['excluded'] or '?' for x in summ})), {'reason': a.reason.strip(), 'archives': [x['archive'] for x in summ],
+               'counts': [{k: x[k] for k in ('records', 'connections', 'exceptions')} for x in summ]})
+        rt = ws / RETIRED
+        if rt.exists():   # the ids stay retired — only the pointer to the deleted archive goes
+            ret = json.loads(rt.read_text(encoding='utf-8')); gone = {x['archive'] for x in summ}
+            b = Batch(); b.json(rt, {**ret, 'mappings': [({**m, 'archive': None, 'purged': g['id']} if m.get('archive') in gone else m) for m in ret['mappings']]}); b.commit()
+        for p in pick: p.unlink()
+        out['decision'] = g['id']
+    print(json.dumps(out, indent=2) if a.json else
+          f"{'would delete' if a.dry_run else 'deleted'} " + '; '.join(f"{x['archive']} ({x['records']} record(s), {x['connections']} connection(s), {x['exceptions']} exception(s))" for x in summ)
+          + (f" — decision {out['decision']} (attributed; it keeps no archived content)" if 'decision' in out else '')
+          + '\nNot reached by this command: ' + '; '.join(out['not_reached']) + '.')
     return 0
 
 
@@ -916,6 +1039,15 @@ def main(argv=None):
     x.add_argument('file', metavar='FILE', help='as it is written in the profile\'s includes, e.g. ext:security')
     x.add_argument('--workspace', dest='estate', required=True, metavar='DIR'); x.add_argument('--person', required=True, help='your name — a person')
     x.add_argument('--reason', required=True); x.add_argument('--dry-run', action='store_true'); x.add_argument('--json', action='store_true')
+    rs = sub.add_parser('restore', help="switch a part back on from one of its archives — layers, connections (their old ids) and exceptions, checked first (EL-06)")
+    rs.add_argument('--archive', required=True, metavar='FILE', help='archive/<name>-<date>.json, as sdem profile exclude wrote it')
+    rs.add_argument('--workspace', dest='estate', required=True, metavar='DIR'); rs.add_argument('--person', required=True, help='your name — a person')
+    rs.add_argument('--reason', required=True); rs.add_argument('--skip-unfit', action='store_true', help='leave in the archive the connections whose other end has left the design')
+    rs.add_argument('--dry-run', action='store_true'); rs.add_argument('--json', action='store_true')
+    pg = sub.add_parser('purge', help="delete the archived data of a part that was switched off — never the default; the ids stay retired (EL-16)")
+    pg.add_argument('file', nargs='?', metavar='FILE', help='every archive of this part, e.g. ext:security'); pg.add_argument('--archive', metavar='FILE', help='one archive')
+    pg.add_argument('--workspace', dest='estate', required=True, metavar='DIR'); pg.add_argument('--person', required=True, help='your name — a person')
+    pg.add_argument('--reason', required=True); pg.add_argument('--dry-run', action='store_true'); pg.add_argument('--json', action='store_true')
     e = sub.add_parser('example', help='write a synthetic bank base profile, team profiles that extend it (one adds layers), and a team profile with the bank\'s standards and secure API pattern')
     e.add_argument('--out', required=True, metavar='DIR'); e.add_argument('--json', action='store_true')
     a = ap.parse_args(argv)
@@ -935,6 +1067,8 @@ def main(argv=None):
         if a.cmd == 'adopt': return adopt(a)
         if a.cmd == 'include': return include_file(a)
         if a.cmd == 'exclude': return exclude_file(a)
+        if a.cmd == 'restore': return restore_file(a)
+        if a.cmd == 'purge': return purge_file(a)
         path = Path(a.file) if a.file else Path(a.estate or '.') / FILE
         if not a.file and not a.estate: raise ProfileError('give --workspace DIR or --file FILE')
         merged = resolve(path); issues = check(merged, Metamodel.base())

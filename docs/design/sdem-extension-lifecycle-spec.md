@@ -1,6 +1,6 @@
 # Extension lifecycle — install, switch on, publish, switch off, remove, restore, purge (spec)
 
-> **Status: proposed (2026-11-19) — for the owner's decisions EL-D1…EL-D7 (§9).** Written after the security extension's audit
+> **Status: approved (2026-11-19) — the owner approved EL-D1…EL-D7 as recommended ("approve"); being built.** Written after the security extension's audit
 > ([`audit-2026-11-19.md`](https://github.com/taumoeps/sdem-extensions/blob/main/security/docs/audit-2026-11-19.md)) and the owner's
 > question: *removing the security extension seemed implicit — install and removal should be explicit, across SDEM and DESNRE, and say
 > what happens to the data.* Builds on [metamodel extensions](sdem-metamodel-extensions-spec.md) (MX-01…MX-17), the
@@ -103,3 +103,17 @@ and the publish shows it before anything leaves.
 | EL-D5 | DESNRE's **extension registry** as one file on the site, read by the page and the agent (EL-02) | **yes** |
 | EL-D6 | The published record moves to `extensions.<name> = {state, …, results}` (EL-07), with both forms read during the change | **yes** |
 | EL-D7 | Where the parts are built: SDEM (restore and purge decision kinds, the commands' messages), sdem-security 0.2.0 (`viewer`, `restore`, `purge`), sdem-desnre 0.8.0 (state, change list, results stamp), the site (registry, gate, notice, panel, agent, purge endpoint) | **yes** — in that order, each tested before the next |
+
+## 10. As built (2026-11-19)
+
+| Rules | Where | What |
+|---|---|---|
+| EL-04, EL-05 | SDEM (`profile include`, `exclude`) and sdem-security (`remove`) | each says that a published copy changes only on the next publish; `remove` names the DESNRE site and the commands |
+| EL-06 | SDEM `sdem profile restore --archive …` (decision `restore_from_archive`); sdem-security `restore` | the include, layer files, connections with their old ids, and exceptions back; tried on a copy and checked; unfit connections refused or left in the archive (`--skip-unfit`); an archive restores once |
+| EL-16, EL-17 | SDEM `sdem profile purge [ext:<name>] [--archive …]` (decision `purge_extension_data`, no archived content); sdem-security `purge` | the archives deleted, the ids kept retired with the purge's decision; the output names what it cannot reach |
+| EL-01 | sdem-security 0.2.0 manifest `viewer` | layer S, S1–S5, its results, `sdem-desnre>=0.8.0` |
+| EL-07…EL-09 | sdem-desnre 0.8.0 | `extensions.<name> = {state, since, by, version, decision, results, results_at}` or `{state: off, since, by, reason, decision, archive}`, from SDEM's decisions; `extension_purges`; `create` lists `+`/`−`/`~` against the live design and asks before sending |
+| EL-02, EL-03, EL-10…EL-13 | the DESNRE site | `assets/extensions.json`; one gate (`extOn`); the off notice in Health and Metamodel; the Extensions panel; Architecture as the fallback 3D view; the agent's `extensions_switched_off` |
+| EL-16 (site) | `api/_lib/models.js` `applyPurges` | on going live: the extension leaves the previous version; every narrative citing it (history, draft, live) removed; applied once, recorded in `purges/` |
+
+Not yet: a design published before desnre 0.8.0 shows no "since"/"by" until published again.

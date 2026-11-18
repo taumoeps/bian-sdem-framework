@@ -137,6 +137,28 @@ class MetamodelExtensionTests(unittest.TestCase):
         first = json.loads((ws / d1['archive']).read_text()); self.assertEqual(len(first['mappings']), len(d1['connections_retired']))
         self.assertTrue(d1['connections_retired'])
 
+    def test_restore_brings_it_back_with_its_old_ids_and_purge_deletes_only_the_archive(self):  # EL-06, EL-16
+        ws = self.tmp / 'back'; shutil.copytree(self.ws, ws)
+        before = sorted(m['mapping_id'] for m in json.loads((ws / 'mappings.json').read_text())['mappings'])
+        _, _, d = self.sdem('profile', 'exclude', 'ext:sectest', '--workspace', ws, '--person', 'steven', '--reason', 'off', '--json')
+        _, _, r = self.sdem('profile', 'restore', '--archive', d['archive'], '--workspace', ws, '--person', 'steven', '--reason', 'on again', '--json')
+        self.assertEqual(sorted(r['connections']), sorted(d['connections_retired']))
+        self.assertEqual(sorted(m['mapping_id'] for m in json.loads((ws / 'mappings.json').read_text())['mappings']), before)   # the same links, the same ids
+        self.assertIn('ext:sectest', json.loads((ws / 'sdem-profile.json').read_text())['includes'])
+        _, _, c = self.sdem('check', '--workspace', ws, '--require-recorded', '--json'); self.assertTrue(c['ok'], c)
+        code, out, _ = self.sdem('profile', 'restore', '--archive', d['archive'], '--workspace', ws, '--person', 'steven', '--reason', 'twice', ok=(1, 2))
+        self.assertIn('already restored', out)
+        _, _, d2 = self.sdem('profile', 'exclude', 'ext:sectest', '--workspace', ws, '--person', 'steven', '--reason', 'off for good', '--json')
+        _, _, dry = self.sdem('profile', 'purge', 'ext:sectest', '--workspace', ws, '--person', 'steven', '--reason', 'a data request', '--dry-run', '--json')
+        self.assertEqual(len(dry['purged']), 2); self.assertTrue((ws / d2['archive']).exists())
+        _, _, pg = self.sdem('profile', 'purge', 'ext:sectest', '--workspace', ws, '--person', 'steven', '--reason', 'a data request', '--json')
+        self.assertFalse((ws / d['archive']).exists()); self.assertFalse((ws / d2['archive']).exists())
+        ret = json.loads((ws / 'archive' / 'retired-mappings.json').read_text())['mappings']
+        self.assertEqual(sorted(m['mapping_id'] for m in ret), sorted(d2['connections_retired']))   # still retired, never given again
+        self.assertTrue(all(m['archive'] is None and m['purged'] == pg['decision'] for m in ret))
+        gd = json.loads(next((ws / 'decisions').glob(f"{pg['decision']}.json")).read_text())
+        self.assertNotIn('CTL-SC28', json.dumps(gd))   # the decision records what was deleted, not its content
+
     def test_only_a_cross_cutting_layer_may_skip_layers(self):  # LR-06 still holds for above and below
         doc = json.loads(json.dumps(PACK)); doc['layers'][0]['position'] = 'below'
         f = self.tmp / 'below.json'; f.write_text(json.dumps(doc))
