@@ -388,7 +388,7 @@
     },
     "layers": {
       "type": "array",
-      "description": "layers the profile adds above A1 or below A4 (docs/design/sdem-layers-spec.md)",
+      "description": "layers the profile adds above A1, below A4, or across them all — a cross-cutting architecture such as security (docs/design/sdem-layers-spec.md, LR-11)",
       "items": {
         "type": "object",
         "required": [
@@ -408,9 +408,10 @@
           "position": {
             "enum": [
               "above",
-              "below"
+              "below",
+              "across"
             ],
-            "description": "above A1 or below A4; layers on one side are listed nearest the core first"
+            "description": "above A1 or below A4 (layers on one side are listed nearest the core first), or across — a cross-cutting layer whose link types may reach any layer (LR-11)"
           },
           "file": {
             "type": "string",
@@ -427,7 +428,7 @@
     },
     "link_types": {
       "type": "array",
-      "description": "link types between a profile layer and its neighbour (from the upper layer's type to the lower's)",
+      "description": "link types between a profile layer and its neighbour (from the upper layer's type to the lower's), or between a cross-cutting layer and any layer (LR-11)",
       "items": {
         "type": "object",
         "required": [

@@ -2043,7 +2043,7 @@ sdem profile example --out OUT
 
 <a id="cmd-profile-include"></a>
 
-add a standard or pattern to what the workspace's profile includes — one shipped with SDEM (sdem:<file>) or the organisation's own — a person's decision (PR-38)
+add a standard or pattern to what the workspace's profile includes — one shipped with SDEM (sdem:<file>), the organisation's own, or an installed metamodel extension (ext:<name>, MX-10) — a person's decision (PR-38)
 
 ```
 sdem profile include <file> --workspace WORKSPACE --person PERSON [--reason REASON] [--dry-run]
@@ -2053,7 +2053,7 @@ sdem profile include <file> --workspace WORKSPACE --person PERSON [--reason REAS
 
 | Argument | Required | What it is |
 |---|---|---|
-| `<file>` | yes | "sdem:<file>" for a standard or pattern shipped with SDEM, or a path from the workspace folder |
+| `<file>` | yes | "sdem:<file>" for a standard or pattern shipped with SDEM, "ext:<name>" for an installed metamodel extension (e.g. ext:security), or a path from the workspace folder |
 | `--workspace` | yes | the workspace folder — found from the current folder when you are inside one (WS-11) |
 | `--person` | yes | your name — a person |
 | `--reason` |  | why (kept with the decision) |

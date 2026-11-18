@@ -26,7 +26,7 @@ FILE = 'sdem-profile.json'
 FORMAT = 'sdem-profile/1'
 STANDARD_FORMAT, PATTERN_FORMAT = 'sdem-standard/1', 'sdem-pattern/1'   # files a profile includes (PR-13, PR-17)
 EXCEPTIONS_FILE = 'exceptions.json'                                     # a workspace's granted exceptions (PR-18)
-PRIVATE = ('chain', 'included', '_issues', '_origin')                   # kept with the merged profile, not part of its content
+PRIVATE = ('chain', 'included', '_issues', '_origin', 'aspects')                   # kept with the merged profile, not part of its content
 SCHEMA = DATA_ROOT / 'schema' / 'profile.schema.json'
 LEVELS = ('A1', 'A2', 'A3', 'A4')
 ATTR_TYPES = ('string', 'integer', 'number', 'boolean', 'date', 'enum', 'list<string>', 'map<string,string>')
@@ -52,6 +52,12 @@ def read(path):
     return doc
 
 
+def _format_of(path):
+    try: return json.loads(Path(path).read_text(encoding='utf-8')).get('format')
+    except (OSError, ValueError, AttributeError): return None
+
+
+EXT = 'ext:'   # MX-01, MX-10: an include that names an installed metamodel extension's pack — "ext:security"
 SHIPPED = 'sdem:'   # CPL-02: an include that names a standard or pattern shipped with SDEM — "sdem:sdem-completeness.json"
 
 
@@ -61,6 +67,29 @@ def shipped(name):
     if base not in f.parents or f.suffix != '.json': raise ProfileError(f'{name}: not a file shipped with SDEM — the ones it ships are in {base}')
     if not f.is_file(): raise ProfileError(f"{name}: SDEM ships no such standard or pattern — it ships: {', '.join(sorted(p.name for p in base.glob('*.json'))) or 'none'}")
     return f
+
+
+_PACKS = {}
+
+
+def pack(name):
+    """MX-01, MX-10, MX-11a: the pack file of the installed metamodel extension `ext:<name>` — refused, never skipped, when the
+    extension is not installed, is not a metamodel extension, or does not support this SDEM."""
+    if name in _PACKS: return _PACKS[name]
+    ext = name[len(EXT):]
+    from . import extensions as _x
+    prog = _x.find(ext)
+    if not prog: raise ProfileError(f"{name}: the profile includes the metamodel extension {ext!r}, but sdem-{ext} is not installed — install it into SDEM's environment (sdem extensions lists what is), or take it out of the profile")
+    m = _x.manifest(prog) or {}
+    kinds = m.get('kind') if isinstance(m.get('kind'), list) else [m.get('kind')]
+    if 'metamodel' not in kinds or not m.get('pack'): raise ProfileError(f"{name}: sdem-{ext} is installed but is not a metamodel extension (its manifest has no kind 'metamodel' and pack)")
+    if m.get('sdem'):
+        from .paths import version
+        from .upgrade import satisfies
+        if not satisfies(version(), m['sdem']): raise ProfileError(f"{name}: sdem-{ext} {m.get('version', '')} supports SDEM {m['sdem']}; this is SDEM {version()} — install a version of sdem-{ext} for it (MX-11a)")
+    f = Path(m['pack'])
+    if not f.is_file(): raise ProfileError(f"{name}: sdem-{ext} names its pack {f}, which is not there — reinstall the extension")
+    _PACKS[name] = (f, m); return _PACKS[name]
 
 
 def shipped_patterns():
@@ -172,6 +201,23 @@ def include(merged, ip):
     merged['included'].append({'file': ip.as_posix(), 'kind': kind, 'id': meta['id'], 'version': meta['version'], 'title': meta['title'], 'owner': meta['owner']})
 
 
+def include_pack(merged, name, _seen=(), local=None):
+    """MX-01…MX-03: fold a metamodel extension's pack — a profile file of its own (its layers, types, link types, attributes, rules,
+    link kinds, requirement categories, names, and the standards it includes) — into a merged profile, adding only (PR-14).
+    `local`: the pack as a file the workspace carries (a copy sent with a published design, where the extension is not installed)."""
+    f, m = (local, {'name': (read(local).get('name') or local.stem), 'version': read(local).get('version')}) if local else pack(name)
+    if any(a['name'] == name for a in merged.setdefault('aspects', [])): return
+    p = resolve(f, _seen)
+    for k in LISTS:
+        if k in ('attributes', 'rules'): continue
+        merged[k] += [{**x, 'source': x.get('source') or f"metamodel extension {m['name']} {m.get('version', '')}".strip()} if k == 'layers' else dict(x) for x in p[k]]
+    _add(merged, {'attributes': p['attributes'], 'rules': p['rules']}, f"{name} ({f.name})")
+    for k in ('layers', 'types'): merged['names'][k].update(p['names'][k])
+    merged['included'] += [x for x in p['included'] if x['file'] not in {y['file'] for y in merged['included']}]
+    merged['structures'] += p['structures']; merged['_issues'] += p['_issues']
+    merged['aspects'].append({'name': name, 'extension': m['name'], 'version': m.get('version'), 'file': f.as_posix(), 'pack': p['name'], 'pack_version': p['version']})
+
+
 def resolve(path, _seen=()):
     """The profile at `path` with its base profiles folded in (base first), then the standards and patterns it includes, then its
     own additions — as one merged profile; `chain` names every profile file, `included` every standards and pattern file."""
@@ -191,7 +237,11 @@ def resolve(path, _seen=()):
         if base.get('requires_sdem'): merged['requires_sdem'] = base['requires_sdem']
         if base.get('hosting'): merged['hosting'] = json.loads(json.dumps(base['hosting']))
     for inc in doc.get('includes', []):   # PR-13, PR-17: standards and patterns, after the base and before the profile's own additions
-        include(merged, shipped(inc) if str(inc).startswith(SHIPPED) else (path.parent / inc).resolve())
+        if str(inc).startswith(EXT): include_pack(merged, inc, _seen + (path,)); continue   # MX-01: a metamodel extension's pack
+        ip = shipped(inc) if str(inc).startswith(SHIPPED) else (path.parent / inc).resolve()
+        if ip.suffix == '.json' and ip.is_file() and _format_of(ip) == FORMAT:   # MX-01: a pack the workspace carries as a file
+            include_pack(merged, f'file:{inc}', _seen + (path,), local=ip); continue
+        include(merged, ip)
     _add(merged, doc, path.name)
     own_map = doc.get('diagram_map') or {}   # PR-28: the profile's own entries are matched before its base's
     merged['diagram_map'] = {k: list(own_map.get(k, [])) + merged['diagram_map'][k] for k in MAP_KINDS}
@@ -241,6 +291,8 @@ def check(merged, base_mm):
         elif l['file'] in RESERVED_FILES or l['file'] in {x['file'] for x in own_layers.values()}: issues.append(f"layer {l['code']}: file {l['file']} is already used")
         else: own_layers[l['code']] = l
     order = [l['code'] for l in reversed([l for l in own_layers.values() if l['position'] == 'above'])] + list(CORE_CODES) + [l['code'] for l in own_layers.values() if l['position'] == 'below']
+    across = {c for c, l in own_layers.items() if l['position'] == 'across'}   # LR-11
+    order += sorted(across)
     known = dict(base_mm.entities); declared = {}
     for t in merged['types']:
         m = re.fullmatch(r'[A-Z][A-Z0-9]*\.([A-Z][A-Z0-9]{0,5})\.[A-Za-z0-9]+', t['type'])
@@ -320,12 +372,14 @@ def check(merged, base_mm):
         ends = [all_types.get(x['source_type']), all_types.get(x['target_type'])]
         if not all(ends): issues.append(f"{name}: {x['source_type'] if not ends[0] else x['target_type']} is not a type"); continue
         a, b = ends[0]['level'], ends[1]['level']
-        if not (a in order and b in order and order.index(b) - order.index(a) == 1): issues.append(f"{name}: links a layer to the layer directly below it ({a} is not directly above {b})")
+        if (a in across) != (b in across): pass   # LR-11: a cross-cutting layer's link types may reach any layer
+        elif a in across: issues.append(f"{name}: both ends are in cross-cutting layers — links inside one are its link kinds"); continue
+        elif not (a in order and b in order and order.index(b) - order.index(a) == 1): issues.append(f"{name}: links a layer to the layer directly below it ({a} is not directly above {b})")
         elif a not in own_layers and b not in own_layers: issues.append(f"{name}: both layers are SDEM's — links between core layers are SDEM's nine link types")
         elif (x['source_type'], x['relationship'], x['target_type']) in core_edges: issues.append(f"{name}: already an SDEM link type")
         touching |= {a, b}
     for code in own_layers:
-        if code not in touching: issues.append(f"layer {code}: no link type joins it to its neighbour — add one under link_types")
+        if code not in touching: issues.append(f"layer {code}: no link type joins it to " + ('another layer' if code in across else 'its neighbour') + ' — add one under link_types')
     for l in merged['names']['layers']:
         if l not in order: issues.append(f"names.layers: {l} is not a layer ({', '.join(order)})")
     for t in merged['names']['types']:
@@ -687,13 +741,17 @@ def include_file(a):
     if not is_person(a.person): raise ProfileError(f"--person {a.person!r}: what a workspace's profile includes is a person's decision — give your own name (CTL-21)")
     from .layers import FILES
     if not any((ws / x).exists() for x in FILES.values()): raise ProfileError(f'{ws}: no such workspace (sdem new starts one)')
-    path = shipped(name) if name.startswith(SHIPPED) else (ws / name).resolve()
-    kind, fd = _fragment(path); meta = fd[kind]
+    if name.startswith(EXT):   # MX-10: switching on an installed metamodel extension in this workspace
+        path, man = pack(name); pk = read(path)
+        kind, meta = 'metamodel extension', {'id': name, 'title': man.get('description') or pk.get('name', name), 'version': man.get('version') or pk.get('version')}
+    else:
+        path = shipped(name) if name.startswith(SHIPPED) else (ws / name).resolve()
+        kind, fd = _fragment(path); meta = fd[kind]
     f = ws / FILE
     doc = json.loads(f.read_text(encoding='utf-8')) if f.exists() else {
         'format': FORMAT, 'name': ws.resolve().name, 'version': 1,
         'description': f"The {ws.resolve().name} workspace's design specification on top of SDEM's metamodel: the standards and patterns it includes."}
-    there = f.exists() and any(x['file'] == path.resolve().as_posix() for x in resolve(f)['included'])   # by this profile, or by a base it extends
+    there = f.exists() and (any(x['name'] == name for x in resolve(f).get('aspects', [])) if name.startswith(EXT) else any(x['file'] == path.resolve().as_posix() for x in resolve(f)['included']))   # by this profile, or by a base it extends
     out = {'workspace': str(ws), 'profile': FILE, 'included': [] if there else [name], 'kind': kind, 'id': meta['id'], 'title': meta['title'], 'version': meta['version'], 'dry_run': bool(a.dry_run)}
     if not there:
         cand = {**doc, 'includes': list(doc.get('includes', [])) + [name]}
@@ -769,8 +827,8 @@ def main(argv=None):
     d = sub.add_parser('adopt', help="put the workspace under its sdem-profile.json: the layers it adds start empty, and the adoption is recorded — a person's decision")
     d.add_argument('--workspace', dest='estate', required=True, metavar='DIR'); d.add_argument('--person', required=True, help='your name — a person')
     d.add_argument('--reason', required=True); d.add_argument('--dry-run', action='store_true'); d.add_argument('--json', action='store_true')
-    i = sub.add_parser('include', help="add a standard or pattern to what the workspace's profile includes — one shipped with SDEM (sdem:<file>) or the organisation's own — a person's decision (PR-38)")
-    i.add_argument('file', metavar='FILE', help='"sdem:<file>" for a standard or pattern shipped with SDEM, or a path from the workspace folder')
+    i = sub.add_parser('include', help="add a standard or pattern to what the workspace's profile includes — one shipped with SDEM (sdem:<file>), the organisation's own, or an installed metamodel extension (ext:<name>, MX-10) — a person's decision (PR-38)")
+    i.add_argument('file', metavar='FILE', help='"sdem:<file>" for a standard or pattern shipped with SDEM, "ext:<name>" for an installed metamodel extension (e.g. ext:security), or a path from the workspace folder')
     i.add_argument('--workspace', dest='estate', required=True, metavar='DIR'); i.add_argument('--person', required=True, help='your name — a person')
     i.add_argument('--reason', help='why (kept with the decision)'); i.add_argument('--dry-run', action='store_true'); i.add_argument('--json', action='store_true')
     e = sub.add_parser('example', help='write a synthetic bank base profile, team profiles that extend it (one adds layers), and a team profile with the bank\'s standards and secure API pattern')

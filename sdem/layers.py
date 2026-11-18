@@ -2,7 +2,7 @@
 
 SDEM's four core layers — A1 Business, A2 Service Domain (BIAN), A3 Application, A4 Technology — are always present. An organisation
 profile (sdem/profile.py) may add layers **above A1** or **below A4**, each with its own record file, types and link types to its
-neighbour. Everything that works layer by layer — the workspace's files, the ledger, check, build, trace, impact, validation,
+neighbour, or **across** them all (LR-11: a cross-cutting architecture such as security, whose link types may reach any layer). Everything that works layer by layer — the workspace's files, the ledger, check, build, trace, impact, validation,
 requirements, change sets, the dashboards — reads the layers from here, so a profile's layers take part without code changes.
 
 The collections below are *live*: they reflect the active profile at the moment they are read (FILES, CODES, AGENTS).
@@ -32,7 +32,8 @@ def layers():
                         'source': l.get('source', 'organisation profile'), 'description': l.get('description', '')}
     above = [row(l) for l in own if l['position'] == 'above']   # listed nearest A1 first
     below = [row(l) for l in own if l['position'] == 'below']   # listed nearest A4 first
-    return list(reversed(above)) + core + below
+    across = [{**row(l), 'across': True} for l in own if l['position'] == 'across']   # LR-11: beside the stack, after it
+    return list(reversed(above)) + core + below + across
 
 
 def codes(): return [l['code'] for l in layers()]

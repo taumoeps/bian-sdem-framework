@@ -48,17 +48,15 @@ Kept outside SDEM's data, a security model would not be checked, traced, approve
 | **MX-14** | **Standards and patterns** an aspect ships run in `sdem comply` (PR-13…PR-24), e.g. "every internet-facing zone's interfaces use oauth2 or mutualTLS", "every personal-information entity is protected by an encryption-at-rest control". |
 | **MX-15** | **Viewpoints**: an aspect may describe its viewpoint (which of its types and links to draw, and how), so DESNRE draws it as a **vertical plate** beside the A1–A4 stack in the 3D view, with lines into each layer, and as a figure in the Design document — one view model for both, as the [Architecture viewpoint](sdem-architecture-viewpoint-spec.md). |
 
-## 5. The one core change
+## 5. The one core change — as built (2026-11-18)
 
-SDEM loads the metamodel as **core + active profile** today (`Metamodel.load()`, PR-06). This adds a third source and the cross-cutting rules:
+Building it showed SDEM already had most of what an aspect needs: the **layer registry** (LR-01…LR-10, v0.13.0) lets a profile add a layer with its own record file, types, link types, agent and requirements, and trace, impact, check and change sets already work across such layers. So an aspect **is a profile layer**, and the core change is small:
 
-1. `Metamodel.load()` merges **core + aspects the profile includes + profile**; `Metamodel.base()` stays SDEM's own (PR-06).
-2. Record files `aspect-<id>.json` are read with the layer files (`sdem check`, `load`, the graph store).
-3. Cross-layer link checking accepts an aspect's declared link types between its types and A1–A4 records (MX-05); the nine core link types are unchanged.
-4. `sdem trace` / `sdem impact` follow approved aspect links (MX-08).
-5. `sdem extensions check` validates an aspect file (MX-03).
+1. **`position: across`** (LR-11): a layer beside the stack whose link types may join any layer, not only its neighbour (`sdem/profile.py` check, `sdem/layers.py`, `schema/profile.schema.json`).
+2. **`includes: ["ext:<name>"]`** (MX-01, MX-10): a profile includes an installed metamodel extension's pack — a profile file of its own, named in the extension's manifest (`kind: ["metamodel"]`, `pack`) — folded in, adding only (PR-14); `sdem profile include ext:<name>` is a person's recorded decision.
+3. **Refused, never skipped** (MX-11a): the extension not installed, not a metamodel extension, or not supporting this SDEM — every command on the workspace stops with a message naming it.
 
-No change to A1–A4, to the nine link types, to inference (`sdem aid` infers nothing for an aspect in the first version — §9, MX-D4) or to existing workspaces.
+So the aspect's records live in the layer's own file (e.g. `security.json`), its types are named as profile layer types are (`SEC.S.SecurityControl` — organisation, layer, name), and its links into A1–A4 use ArchiMate kinds SDEM knows (association, realization, …). **SDEM's metamodel files do not change**, so no metamodel version bump (MX-D6 not needed). Not yet built: `sdem extensions check --against <version>` (MX-11b).
 
 ## 6. The first two aspects (worked examples)
 
@@ -88,4 +86,4 @@ In **[sdem-extensions](https://github.com/taumoeps/sdem-extensions)** (public, A
 | MX-D3 | Switched on per workspace by the profile (`sdem profile include ext:<name>`) | **yes** — installed is not active (MX-10) |
 | MX-D4 | No inference for aspects in the first version | **yes** — every aspect record and link comes from a person or a source; inference rules later, by spec |
 | MX-D5 | Security first, on NIST (public domain) | **yes**; resilience second |
-| MX-D6 | Metamodel version: a minor bump (0.18.0), with migration of nothing (aspects are additive) | **yes** — the usual bump: migrate the examples, rebuild their graph stores, regenerate, freeze |
+| MX-D6 | Metamodel version: a minor bump (0.18.0), with migration of nothing (aspects are additive) | *As built: not needed — the metamodel files do not change (§5).* |
