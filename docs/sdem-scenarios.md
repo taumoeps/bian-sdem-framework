@@ -303,6 +303,9 @@ sdem model status                                               # this SDEM's me
 ## 16. Extensions — what is installed, and running one
 
 ```bash
+sdem viewpoint list                                             # the viewpoints SDEM defines
+sdem viewpoint show architecture                                # what each plate of the Architecture view draws and leaves out, and how each kind of record is drawn (ArchiMate)
+sdem viewpoint check                                            # maintainers: the viewpoints and the ArchiMate notation agree with the metamodel
 sdem extensions                                                 # the installed extensions: what each reads, where it sends data
 sdem extensions --json                                          # the same, as data
 sdem profile include ext:security --workspace workspaces/ledger --person your.name --reason "security design"   # switch a metamodel extension on (a person)

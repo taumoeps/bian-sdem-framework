@@ -1,0 +1,264 @@
+{
+ "format": "sdem-notation/1",
+ "notation_version": "1.0.0",
+ "standard": "ArchiMate 3.2",
+ "note": "ARV-12…ARV-17: how each SDEM type and link is DRAWN in ArchiMate — not where its definition comes from (that is each type's reference). Not part of the frozen core (MS-04): changing it changes no record.",
+ "layers": [
+  "strategy",
+  "business",
+  "application",
+  "technology",
+  "physical",
+  "motivation",
+  "implementation",
+  "other"
+ ],
+ "entities": {
+  "A1.BusinessCapability": {
+   "element": "Capability",
+   "layer": "strategy"
+  },
+  "A1.ValueStream": {
+   "element": "Value Stream",
+   "layer": "strategy"
+  },
+  "A1.ValueStreamStage": {
+   "element": "Value Stream",
+   "layer": "strategy",
+   "why": "ArchiMate has no stage element; a stage is a value stream inside its value stream (composition)"
+  },
+  "A1.BusinessProcess": {
+   "element": "Business Process",
+   "layer": "business"
+  },
+  "A1.BusinessService": {
+   "element": "Business Service",
+   "layer": "business"
+  },
+  "A1.BusinessActor": {
+   "element": "Business Actor",
+   "layer": "business"
+  },
+  "A1.BusinessRole": {
+   "element": "Business Role",
+   "layer": "business"
+  },
+  "A1.BusinessObject": {
+   "element": "Business Object",
+   "layer": "business"
+  },
+  "A1.BusinessRequirement": {
+   "element": "Requirement",
+   "layer": "motivation"
+  },
+  "A1.BusinessEvent": {
+   "element": "Business Event",
+   "layer": "business"
+  },
+  "A1.Product": {
+   "element": "Product",
+   "layer": "business"
+  },
+  "A1.BusinessInterface": {
+   "element": "Business Interface",
+   "layer": "business"
+  },
+  "A2.BusinessArea": {
+   "element": "Grouping",
+   "layer": "other",
+   "why": "BIAN: a group of business domains — no behaviour of its own"
+  },
+  "A2.BusinessDomain": {
+   "element": "Grouping",
+   "layer": "other",
+   "why": "BIAN: a group of service domains"
+  },
+  "A2.ServiceDomain": {
+   "element": "Business Function",
+   "layer": "business",
+   "why": "BIAN: a discrete, non-overlapping business capability partition — behaviour grouped by function, so a Business Function"
+  },
+  "A2.ControlRecord": {
+   "element": "Business Object",
+   "layer": "business",
+   "why": "BIAN: the record a service domain keeps of what it controls — passive information"
+  },
+  "A2.ServiceGroup": {
+   "element": "Business Service",
+   "layer": "business",
+   "why": "BIAN: a group of a service domain's operations offered to others"
+  },
+  "A2.ServiceOperation": {
+   "element": "Business Service",
+   "layer": "business",
+   "why": "BIAN: one offered operation of a service domain"
+  },
+  "A2.FunctionalPattern": {
+   "element": "Business Function",
+   "layer": "business",
+   "why": "BIAN: the pattern of behaviour a service domain follows"
+  },
+  "A2.AssetType": {
+   "element": "Business Object",
+   "layer": "business",
+   "why": "BIAN: the kind of asset a service domain controls"
+  },
+  "A2.BehaviorQualifier": {
+   "element": "Business Function",
+   "layer": "business",
+   "why": "BIAN: a refinement of a service domain's behaviour"
+  },
+  "A2.BusinessScenario": {
+   "element": "Business Interaction",
+   "layer": "business",
+   "why": "BIAN: service domains working together on one business event"
+  },
+  "A2.BusinessObject": {
+   "element": "Business Object",
+   "layer": "business"
+  },
+  "A2.BusinessObjectAttribute": {
+   "element": "Business Object",
+   "layer": "business",
+   "why": "a field of a business object — drawn inside it"
+  },
+  "A2.BOMModel": {
+   "element": "Representation",
+   "layer": "business",
+   "why": "BIAN: the published form of the business object model"
+  },
+  "A2.Wireframe": {
+   "element": "Representation",
+   "layer": "business",
+   "why": "BIAN: the published shape of an API"
+  },
+  "A2.SemanticAPI": {
+   "element": "Business Interface",
+   "layer": "business",
+   "why": "BIAN: a service domain's published API, at the business level"
+  },
+  "A3.ApplicationComponent": {
+   "element": "Application Component",
+   "layer": "application"
+  },
+  "A3.ApplicationService": {
+   "element": "Application Service",
+   "layer": "application"
+  },
+  "A3.ApplicationInterface": {
+   "element": "Application Interface",
+   "layer": "application"
+  },
+  "A3.ApplicationFunction": {
+   "element": "Application Function",
+   "layer": "application"
+  },
+  "A3.APIOperation": {
+   "element": "Application Service",
+   "layer": "application",
+   "why": "one operation an interface offers — ArchiMate models it as an application service"
+  },
+  "A3.DataEntity": {
+   "element": "Data Object",
+   "layer": "application"
+  },
+  "A3.Event": {
+   "element": "Application Event",
+   "layer": "application"
+  },
+  "A3.SolutionBuildingBlock": {
+   "element": "Application Component",
+   "layer": "application",
+   "why": "TOGAF: a solution building block — drawn as the component it is"
+  },
+  "A3.DataAttribute": {
+   "element": "Data Object",
+   "layer": "application",
+   "why": "a field of a data object — drawn inside it"
+  },
+  "A4.InfrastructureComponent": {
+   "element": "Node",
+   "layer": "technology",
+   "why": "the abstract parent of SDEM's technology types — its subtypes name their own element"
+  },
+  "A4.Deployment": {
+   "element": "Artifact",
+   "layer": "technology",
+   "why": "a component deployed on a node — drawn as the deployed artifact"
+  },
+  "A4.DeploymentEnvironment": {
+   "element": "Grouping",
+   "layer": "other",
+   "why": "an environment (production, test) groups what is deployed in it"
+  },
+  "A4.Node": {
+   "element": "Node",
+   "layer": "technology"
+  },
+  "A4.Device": {
+   "element": "Device",
+   "layer": "technology"
+  },
+  "A4.SystemSoftware": {
+   "element": "System Software",
+   "layer": "technology"
+  },
+  "A4.TechnologyService": {
+   "element": "Technology Service",
+   "layer": "technology"
+  },
+  "A4.TechnologyInterface": {
+   "element": "Technology Interface",
+   "layer": "technology"
+  },
+  "A4.CommunicationNetwork": {
+   "element": "Communication Network",
+   "layer": "technology"
+  },
+  "A4.NetworkZone": {
+   "element": "Grouping",
+   "layer": "other",
+   "why": "a trust zone groups the nodes in it"
+  },
+  "A4.Path": {
+   "element": "Path",
+   "layer": "technology"
+  },
+  "A4.Artifact": {
+   "element": "Artifact",
+   "layer": "technology"
+  },
+  "A4.Location": {
+   "element": "Location",
+   "layer": "other"
+  }
+ },
+ "within_layer": {
+  "composition": "composition",
+  "aggregation": "aggregation",
+  "assignment": "assignment",
+  "realization": "realization",
+  "serving": "serving",
+  "access": "access",
+  "flow": "flow",
+  "triggering": "triggering",
+  "specialization": "specialization",
+  "association": "association"
+ },
+ "cross_layer": {
+  "ALIGNED_TO": "association",
+  "AUTOMATED_BY": "realization",
+  "BUILT_AS": "realization",
+  "DEPLOYED_AS": "realization",
+  "DEPLOYED_ON": "assignment",
+  "EXPOSED_THROUGH": "assignment",
+  "FIELD_MAPPED_TO": "association",
+  "IMPLEMENTED_BY": "realization",
+  "MAPPED_TO": "association",
+  "REALIZED_BY": "realization",
+  "SERVED_BY": "serving",
+  "STORED_IN": "realization",
+  "SUPPORTED_BY": "serving",
+  "USES_DOMAIN": "serving"
+ }
+}

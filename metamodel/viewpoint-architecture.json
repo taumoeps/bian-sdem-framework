@@ -1,0 +1,273 @@
+{
+ "format": "sdem-viewpoint/1",
+ "name": "architecture",
+ "title": "Architecture",
+ "version": "1.0.0",
+ "notation": "ArchiMate 3.2",
+ "note": "ARV-18…ARV-21: the Architecture viewpoint as data — §3 of the Architecture viewpoint spec. A plate that names a type includes its subtypes (ARV-19); a type no plate names is counted as left out. Layouts are named; viewers implement them (ARV-20).",
+ "layouts": {
+  "rows-by-kind": "ARV-08: rows by kind, in reading order",
+  "nested-groupings": "ARV-09: groupings sized by what they hold, shapes inside",
+  "zones-nodes-deployments": "A4: location → network zones → nodes → what is assigned to them"
+ },
+ "plates": [
+  {
+   "code": "A1",
+   "name": "Business Architecture",
+   "answers": "who is served, by which steps, for which capability",
+   "layout": "rows-by-kind",
+   "shapes": [
+    "A1.BusinessActor",
+    "A1.BusinessRole",
+    "A1.BusinessInterface",
+    "A1.BusinessService",
+    "A1.Product",
+    "A1.ValueStreamStage",
+    "A1.BusinessProcess"
+   ],
+   "groupings": [
+    {
+     "type": "A1.BusinessCapability",
+     "holds": [
+      {
+       "kind": "realization",
+       "of": "A1.BusinessProcess"
+      },
+      {
+       "kind": "aggregation",
+       "of": "A1.BusinessCapability"
+      }
+     ]
+    },
+    {
+     "type": "A1.ValueStream",
+     "holds": [
+      {
+       "kind": "composition",
+       "of": "A1.ValueStreamStage"
+      }
+     ]
+    }
+   ],
+   "connections": [
+    "serving",
+    "flow",
+    "realization",
+    "assignment",
+    "aggregation"
+   ],
+   "left_out": [
+    {
+     "types": [
+      "A1.BusinessRequirement"
+     ],
+     "why": "motivation — in the requirements tables (section 3) and traceability (section 10)"
+    },
+    {
+     "types": [
+      "A1.BusinessActivity"
+     ],
+     "why": "the steps inside a process — in the business section of the design document"
+    },
+    {
+     "types": [
+      "A1.BusinessObject",
+      "A1.BusinessEvent"
+     ],
+     "why": "not drawn on this plate — listed in the A1 layer document"
+    }
+   ]
+  },
+  {
+   "code": "A2",
+   "name": "Service Domains",
+   "answers": "the BIAN functions used, and how each is organised",
+   "layout": "nested-groupings",
+   "shapes": [
+    "A2.ControlRecord",
+    "A2.ServiceGroup",
+    "A2.AssetType",
+    "A2.FunctionalPattern"
+   ],
+   "groupings": [
+    {
+     "type": "A2.ServiceDomain",
+     "holds": [
+      {
+       "kind": "aggregation",
+       "of": "A2.ControlRecord"
+      },
+      {
+       "kind": "composition",
+       "of": "A2.ServiceGroup"
+      }
+     ]
+    }
+   ],
+   "connections": [
+    "association"
+   ],
+   "left_out": [
+    {
+     "types": [
+      "A2.ServiceOperation",
+      "A2.BehaviorQualifier"
+     ],
+     "why": "counted on each service group and control record (\"7 operations\"), listed in table 9.3"
+    },
+    {
+     "types": [
+      "A2.BusinessArea",
+      "A2.BusinessDomain"
+     ],
+     "why": "BIAN's catalogue structure above the service domains"
+    },
+    {
+     "types": [
+      "A2.BusinessScenario",
+      "A2.BusinessObject",
+      "A2.BusinessObjectAttribute",
+      "A2.BOMModel",
+      "A2.Wireframe",
+      "A2.SemanticAPI"
+     ],
+     "why": "BIAN's reference content — in the A2 layer document"
+    }
+   ]
+  },
+  {
+   "code": "A3-1",
+   "name": "Data Architecture",
+   "answers": "what is held, and its fields",
+   "layout": "nested-groupings",
+   "shapes": [
+    "A3.DataAttribute"
+   ],
+   "groupings": [
+    {
+     "type": "A3.DataEntity",
+     "holds": [
+      {
+       "kind": "composition",
+       "of": "A3.DataAttribute"
+      }
+     ]
+    }
+   ],
+   "connections": [
+    "association"
+   ],
+   "left_out": []
+  },
+  {
+   "code": "A3-2",
+   "name": "Application Architecture",
+   "answers": "the software, the order a request reaches it, and what it exposes",
+   "layout": "rows-by-kind",
+   "shapes": [
+    "A3.ApplicationComponent",
+    "A3.APIOperation",
+    "A3.Event"
+   ],
+   "groupings": [
+    {
+     "type": "A3.ApplicationInterface",
+     "holds": [
+      {
+       "kind": "composition",
+       "of": "A3.APIOperation"
+      }
+     ]
+    }
+   ],
+   "connections": [
+    "flow",
+    "triggering",
+    "composition"
+   ],
+   "left_out": [
+    {
+     "types": [
+      "A3.ApplicationService",
+      "A3.ApplicationFunction",
+      "A3.SolutionBuildingBlock"
+     ],
+     "why": "not drawn on this plate — listed in the A3 layer document"
+    }
+   ]
+  },
+  {
+   "code": "A4",
+   "name": "Technology Architecture",
+   "answers": "where it runs, and how the places connect",
+   "layout": "zones-nodes-deployments",
+   "shapes": [
+    "A4.Deployment",
+    "A4.SystemSoftware"
+   ],
+   "groupings": [
+    {
+     "type": "A4.Location",
+     "holds": [
+      {
+       "kind": "aggregation",
+       "of": "A4.NetworkZone"
+      }
+     ]
+    },
+    {
+     "type": "A4.NetworkZone",
+     "holds": [
+      {
+       "kind": "aggregation",
+       "of": "A4.Node"
+      }
+     ]
+    },
+    {
+     "type": "A4.Node",
+     "holds": [
+      {
+       "kind": "assignment",
+       "of": "A4.Deployment"
+      },
+      {
+       "kind": "assignment",
+       "of": "A4.SystemSoftware"
+      }
+     ]
+    }
+   ],
+   "connections": [
+    "type:A4.Path"
+   ],
+   "left_out": [
+    {
+     "types": [
+      "A4.DeploymentEnvironment"
+     ],
+     "why": "one environment at a time (VP-11) — named in the caption"
+    },
+    {
+     "types": [
+      "A4.Device",
+      "A4.TechnologyService",
+      "A4.TechnologyInterface",
+      "A4.CommunicationNetwork",
+      "A4.Artifact"
+     ],
+     "why": "not drawn on this plate yet — listed in the A4 layer document"
+    }
+   ]
+  }
+ ],
+ "between_plates": [
+  "USES_DOMAIN",
+  "SUPPORTED_BY",
+  "REALIZED_BY",
+  "IMPLEMENTED_BY",
+  "STORED_IN",
+  "DEPLOYED_ON",
+  "DEPLOYED_AS"
+ ]
+}

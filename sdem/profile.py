@@ -435,6 +435,7 @@ def apply(mm, merged):
                  'reference': {'standard': merged['name'], 'concept': t.get('name') or t['type'].split('.')[-1], 'locator': t.get('source', 'organisation profile')},
                  'evidence_status': 'organisation_defined', 'definition_source': 'organisation_profile', 'confidence': 'high',
                  'confidence_basis': f"declared by the organisation's profile {merged['name']}", 'reasoning': t.get('reasoning', "a kind of thing in the organisation's own layer")}
+            if t.get('archimate'): e['archimate'] = t['archimate']   # ARV-15: the element it is drawn as, if the profile or extension names one
             ents.append(e); by[e['type']] = e; continue
         parent = by[t['extends']]
         e = {**{k: parent[k] for k in ('level', 'artefact') if k in parent}, 'type': t['type'], 'extends': t['extends'], 'abstract': False,
@@ -442,6 +443,7 @@ def apply(mm, merged):
              'reference': {'standard': merged['name'], 'concept': t.get('name') or t['type'].split('.')[-1], 'locator': t.get('source', 'organisation profile')},
              'evidence_status': 'organisation_defined', 'definition_source': 'organisation_profile', 'confidence': 'high',
              'confidence_basis': f"declared by the organisation's profile {merged['name']}", 'reasoning': t.get('reasoning', 'organisation-specific kind, mapped onto an SDEM type')}
+        if t.get('archimate'): e['archimate'] = t['archimate']   # ARV-15: else it inherits its parent's notation
         ents.append(e); by[e['type']] = e
     rels = copy.deepcopy(mm.relationships)
     for k in merged['link_kinds']:

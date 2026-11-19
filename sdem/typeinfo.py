@@ -33,6 +33,12 @@ def _attr(a):
     return out
 
 
+def _notation(mm, t):
+    from .notation import for_type
+    try: return for_type(mm, t)
+    except (OSError, ValueError): return None
+
+
 def describe_type(mm, t, full=True):
     from .conformance import definitions, model
     from . import profile as _p
@@ -44,6 +50,7 @@ def describe_type(mm, t, full=True):
     out = {'type': t, 'layer': e['level'], 'abstract': bool(e.get('abstract')), 'extends': mm.ancestors(t), 'definition': e.get('definition', ''),
            'source': ' · '.join(x for x in ((e.get('reference') or {}).get('standard'), (e.get('reference') or {}).get('concept')) if x),
            'identifier': (e.get('identifier') or {}).get('key', ['id']),
+           'archimate': _notation(mm, t),   # ARV-16: how it is drawn — its own, or inherited (ARV-15)
            'record_fields': {'required': ['id', 'type', 'version', 'name', 'lifecycle_status'], 'optional': ['description', 'attributes'],
                              'lifecycle_status': list(_lifecycle())},
            'attributes': [_attr(defs[n]) for n in own]}

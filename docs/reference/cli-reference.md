@@ -2,7 +2,7 @@
 
 > **Generated** from the code by `sdem model regenerate` (`sdem/clidoc.py`), from the same catalogue as `sdem commands --json`; `sdem model check` fails in CI when it is stale — **do not edit by hand**. Each command's `--help` has the same options and a worked example. For *when* to use which command, in order, see the [scenarios](../sdem-scenarios.md); for what each does to your data, the [user guide](../sdem-workbench-user-guide.md#7-command-reference).
 
-128 commands and subcommands.
+132 commands and subcommands.
 
 ## Every command takes
 
@@ -93,6 +93,10 @@
 | [`sdem profile show`](#cmd-profile-show) | the merged profile: every type, attribute, rule, link kind and name it adds |
 | [`sdem types`](#cmd-types) | what you may write: each layer's kinds of record, their fields (type, required, allowed values) and allowed links; the requirement and change-set formats |
 | [`sdem validate`](#cmd-validate) | validate a relationship document (registry or proposals) |
+| [`sdem viewpoint`](#cmd-viewpoint) | the viewpoints SDEM defines, as data |
+| [`sdem viewpoint check`](#cmd-viewpoint-check) | check every viewpoint and the ArchiMate notation against SDEM's metamodel (ARV-16, ARV-21) |
+| [`sdem viewpoint list`](#cmd-viewpoint-list) | the viewpoints SDEM defines |
+| [`sdem viewpoint show`](#cmd-viewpoint-show) | one viewpoint: its plates, what each draws and leaves out, its layouts |
 
 ### J2 · Link the architectures
 
@@ -2672,6 +2676,63 @@ Example:
 ```bash
 sdem view --graph examples/card-fraud-alerts/graph -o work/view.html
 ```
+
+### sdem viewpoint
+
+<a id="cmd-viewpoint"></a>
+
+the viewpoints SDEM defines, as data — what each plate draws and leaves out, and the ArchiMate element each kind of record is drawn as (list, show, check)
+
+Subcommands: [`sdem viewpoint check`](#cmd-viewpoint-check) · [`sdem viewpoint list`](#cmd-viewpoint-list) · [`sdem viewpoint show`](#cmd-viewpoint-show)
+
+### sdem viewpoint check
+
+<a id="cmd-viewpoint-check"></a>
+
+check every viewpoint and the ArchiMate notation against SDEM's metamodel (ARV-16, ARV-21)
+
+```
+sdem viewpoint check
+```
+
+*JSON: native · dry run: sandbox*
+
+| Argument | Required | What it is |
+|---|---|---|
+| `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
+
+### sdem viewpoint list
+
+<a id="cmd-viewpoint-list"></a>
+
+the viewpoints SDEM defines
+
+```
+sdem viewpoint list
+```
+
+*JSON: native · dry run: sandbox*
+
+| Argument | Required | What it is |
+|---|---|---|
+| `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
+
+### sdem viewpoint show
+
+<a id="cmd-viewpoint-show"></a>
+
+one viewpoint: its plates, what each draws and leaves out, its layouts
+
+```
+sdem viewpoint show <name>
+```
+
+*JSON: native · dry run: sandbox*
+
+| Argument | Required | What it is |
+|---|---|---|
+| `<name>` | yes | its name |
+| `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
 
 ### sdem work
 

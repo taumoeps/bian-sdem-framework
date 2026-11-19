@@ -128,3 +128,65 @@ A1 → A2 `USES_DOMAIN`, `SUPPORTED_BY` · A2 → A3-2 `REALIZED_BY` (service do
 - **Names:** the document keeps its block names (`ax-capabilities` → A1, `ax-bian` → A2, `ax-data` → A3-1, `ax-application` → A3-2, `ax-technology` → A4; `arch-A1` … `arch-A4` also accepted), so documents already written show the plates without being rewritten. 9.1's business view stays a summary and says so in its caption.
 - **Routes** are elbows between the facing sides of two shapes, computed once in the view model; routing around other shapes (ARV-10's "around") is not yet done.
 - **"Open in 3D"** on each figure brings the 3D view to that plate, flat.
+
+## 10. Explicit notation and viewpoint definitions (2026-11-19)
+
+> **Status: approved (2026-11-19) — the owner: "write the design spec and then implement"; AV6…AV10 as recommended (§10.5).** The owner's
+> point: the Architecture view was *derived implicitly from the metamodel* — which ArchiMate element each record is drawn as, and what
+> each plate holds, lived in DESNRE's drawing code (`assets/archview.js`) and in §3's table, not in SDEM. This makes both explicit, as data,
+> in SDEM. **It is not a metamodel extension** (it adds nothing a design holds, and cannot be switched off) **and it changes no record**.
+
+### 10.1 What was implicit, and why it matters
+
+| | Where it lived | The gap |
+|---|---|---|
+| **Which ArchiMate element a type is drawn as** | `archview.js` (its shape kinds, `K3`) and the workbench's layer colours | SDEM's metamodel records where each type's *definition* comes from (`reference`: ArchiMate 3.2 for 23 types, BIAN for every A2 type, SDEM's own for a few) — a **source**, not a **notation**: a BIAN service domain must still be drawn as some ArchiMate element (a business function), and only the site's code said which |
+| **What each plate holds** | `archview.js`'s five builders and §3 | a type another extension adds inside a layer (MX-30), or a profile's type, is drawn only if someone edits the site's code |
+| **Extensions** | the security pack names an ArchiMate element per type (`archimate`) | the core did not — extensions were more explicit than SDEM itself |
+
+### 10.2 The notation — in SDEM's metamodel
+
+| Id | Rule |
+|---|---|
+| **ARV-12** | **Every SDEM type has an ArchiMate notation**, in `metamodel/archimate-notation.json` (format `sdem-notation/1`): the ArchiMate element it is drawn as (`Business Function`, `Application Component`, `Node` …) and that element's ArchiMate layer (strategy, business, application, technology, physical, motivation, implementation, other). An abstract type may have one, for its subtypes to inherit. |
+| **ARV-13** | **Notation is not source.** A type's `reference` (where its definition comes from) is unchanged; the notation says how it is drawn. They agree where the type *is* an ArchiMate element (`A3.ApplicationComponent` → Application Component); they differ where it is not (`A2.ServiceDomain`, from BIAN, drawn as a Business Function — the reason is written beside it). |
+| **ARV-14** | **Every link kind and every cross-layer relationship has its ArchiMate relationship** in the same file — the within-layer kinds are already ArchiMate's (composition, flow, serving …); the cross-layer ones are mapped (`REALIZED_BY` → realization, `DEPLOYED_ON` → assignment, `USES_DOMAIN` → serving …). |
+| **ARV-15** | **Profiles and extensions declare theirs; subtypes inherit.** A profile's or a pack's type may name its `archimate` element (security's do); if it does not, it inherits the nearest ancestor's notation — so a network extension's firewall extending `A4.Node` is drawn as a Node with no change to any viewer. |
+| **ARV-16** | **SDEM says it.** `sdem types <layer> --json` gives each type's resolved notation (`archimate: {element, layer, from}` — `from` names where it came from: SDEM, an ancestor, a profile, an extension). `sdem viewpoint check` (and SDEM's tests, so CI) fail if an SDEM type has none. |
+| **ARV-17** | **Not part of the frozen core.** The notation file, like `export-conventions.json`, is described by the metamodel but is not one of the frozen items (MS-04: entity types, link types, within-layer rules, attributes): changing how a type is *drawn* changes no record and needs no migration or `metamodel_version` change. It is versioned by its own `notation_version`, and listed in the CHANGELOG when it changes. |
+
+### 10.3 The viewpoint definition — the Architecture viewpoint as data
+
+| Id | Rule |
+|---|---|
+| **ARV-18** | **The Architecture viewpoint is a definition file**, `metamodel/viewpoint-architecture.json` (format `sdem-viewpoint/1`): its plates in order (A1, A2, A3-1, A3-2, A4), and for each the question it answers, its **shapes** (types), its **groupings** (a type and the link kinds by which it holds others), its **connections** (link kinds), and what it **leaves out** (types, with why and where they are listed instead) — §3's table, as data. |
+| **ARV-19** | **Types by inheritance.** A plate that names a type includes its subtypes — a profile's or a horizontal extension's (MX-30) — unless the definition says otherwise; a type no plate names is listed as *left out* with its count, never silently dropped (ARV-05). |
+| **ARV-20** | **Layout stays an algorithm, named in the definition.** Each plate names its layout (`rows-by-kind`, `nested-groupings`, `zones-nodes-deployments` — §4, ARV-08…ARV-11); viewers implement the named layouts. The definition decides *what* is drawn; the layout decides *where*. |
+| **ARV-21** | **SDEM says it.** `sdem viewpoint list` and `sdem viewpoint show <name> [--json]`; `sdem viewpoint check` (and SDEM's tests, so CI) fail if a definition names a type, link kind or layout SDEM does not know, or leaves a type of its layer neither drawn nor named as left out. |
+| **ARV-22** | **Extensions add viewpoints, the core keeps its own.** A vertical extension ships its own definition (security's S1–S5, MX-15), named in its manifest's `viewer`; a horizontal one adds none — its types join the core plates by ARV-19. A definition from an extension never changes the core's. |
+
+### 10.4 Viewers read them
+
+| Id | Rule |
+|---|---|
+| **ARV-23** | **The publisher sends them** with the design: each type's notation (already in `sdem types`) and the viewpoint definitions in use (`viewpoints`) — sdem-desnre 0.8.1. |
+| **ARV-24** | **DESNRE draws from them, keeping its code as the fallback.** Plates take their records from the definition (subtypes included, ARV-19); a shape's ArchiMate element, its symbol and its layer colour come from the notation; the caption names what is left out from the definition. A design published before ARV-23 is drawn as before. The same view model still feeds the 2D figure and the 3D plate (ARV-01, ARV-02). |
+
+### 10.5 Decisions (approved 2026-11-19)
+
+| # | Decision | Decided |
+|---|---|---|
+| AV6 | The notation in SDEM's metamodel, as a file beside the frozen core, versioned on its own (ARV-12…ARV-17) | **yes** |
+| AV7 | The Architecture viewpoint as a definition file in SDEM, with layouts named, not encoded (ARV-18…ARV-21) | **yes** |
+| AV8 | Subtypes join their parent's plate; unnamed types are counted as left out (ARV-19) | **yes** |
+| AV9 | Vertical extensions ship their own viewpoint; horizontal ones join the core plates (ARV-22) | **yes** |
+| AV10 | The publisher sends both; DESNRE draws from them with its code as the fallback (ARV-23, ARV-24) | **yes** |
+
+Not yet: the Metamodel viewpoint (VP-…) as a definition too; viewpoint extensions of their own kind (a C4- or TOGAF-style view that adds no data) — later, by spec.
+
+### 10.6 As built (2026-11-19)
+
+- **SDEM:** `metamodel/archimate-notation.json` (49 types declared, the rest inherited; 10 link kinds; 14 cross-layer relationships) and `sdem/notation.py`; `sdem types --json` gives each type's `archimate` (its own, a profile's or an extension's, or inherited — the security pack's types come through as Requirement, Assessment, Grouping); `metamodel/viewpoint-architecture.json` and `sdem viewpoint list|show|check`; `tests/test_notation_viewpoint.py`.
+- **sdem-desnre 0.8.1:** sends `viewpoints` with the design (each type's notation was already in `types`).
+- **DESNRE:** `assets/archview.js` takes each plate's caption from the definition (left-out groups with their counts and reasons; any unnamed type counted), places a profile's or an extension's type by its nearest SDEM type, and gives each shape its ArchiMate element, shown on hover in the Design document's figures. Without a definition (a design published earlier) the plates are exactly as before — tested.
+- Not yet: the five plates' layouts still live in `archview.js` (named in the definition, ARV-20); the Metamodel viewpoint as a definition.
