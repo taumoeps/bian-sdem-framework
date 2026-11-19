@@ -725,6 +725,12 @@ def main(argv=None):
     up.add_argument('--a2', required=True, metavar='FILE', help='your shared BIAN layer, e.g. bian/a2-service-domain.json')
     up.add_argument('--person', required=True, help='your name — a person'); up.add_argument('--dry-run', action='store_true'); up.add_argument('--json', action='store_true')
     a = ap.parse_args(argv)
+    if getattr(a, 'estate', None):   # BX-13: BIAN's commands work on a workspace where BIAN is on
+        from . import profile as _p, parts
+        _p.activate_from(a.estate)
+        if not parts.bian_on():
+            print(f"sdem bian: BIAN is not on in {a.estate} — {parts.why()}. Switch it on (a person's decision): sdem profile include ext:bian --workspace {a.estate} --person <you> --reason \"…\"", file=sys.stderr)
+            return 2
     if a.cmd == 'custom':   # the old name (WS-04): says what to use instead
         print('NOTE: sdem bian custom is now sdem bian add (--add) and sdem bian select (--only, --from, --all)', file=sys.stderr)
         if not (a.add or a.only or a.from_file or a.all): raise BianError('say which: --add, --only, --from or --all')

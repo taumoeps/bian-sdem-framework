@@ -35,7 +35,10 @@ def weakest(*classes):
 
 
 def _rules():
-    return {m['id']: m for m in json.loads((DATA_ROOT / 'metamodel' / 'relationship-rules.json').read_text(encoding='utf-8'))['mappings']}
+    from . import parts   # BX-02: inference rules that name an A2 type belong to ext:bian
+    ms = json.loads((DATA_ROOT / 'metamodel' / 'relationship-rules.json').read_text(encoding='utf-8'))['mappings']
+    if not parts.bian_on(): ms = [m for m in ms if 'A2.' not in json.dumps(m)]
+    return {m['id']: m for m in ms}
 
 
 def _list(v):
@@ -224,6 +227,7 @@ class Run:
 
     # -- outputs
     def attempt(self, plan_id, src, tgt, step, data_read, reasoning, proposal_id=None, fallback=False, predicted=None, given=None, outcome=None):
+        if plan_id not in self.rules: return None   # BX-02, BX-13: a rule of an extension that is off (e.g. ext:bian) does not run
         self.log.append({'plan_id': plan_id, 'connection': f"{src} → {tgt}" if tgt else src, 'step_assigned': self.rules[plan_id]['fill_step'], 'step_used': step,
                          'fallback': fallback, 'data_read': data_read, 'reasoning': reasoning, 'confidence_predicted': predicted or self.rules[plan_id]['confidence'],
                          'confidence_given': given, 'proposal_id': proposal_id, 'outcome': outcome or ('proposed' if proposal_id else 'no_proposal')})
@@ -237,6 +241,7 @@ class Run:
 
     def propose(self, plan_id, rel, src, tgt, step, working, data_read, fallback=False, band=None, ev=None):
         """A catalogue-typed proposal. Skips (and logs) a link already approved or already proposed in this run."""
+        if plan_id not in self.rules: return None   # BX-02, BX-13: a rule of an extension that is off (e.g. ext:bian) does not run
         k = (src['id'], rel, tgt['id'])
         if k in self.approved:
             self.attempt(plan_id, src['id'], tgt['id'], step, data_read, 'already approved — not re-proposed', outcome='already_approved'); return None
@@ -832,6 +837,7 @@ class Run:
         return stems({w for w in tokens(*texts) if w not in self.GENERIC and len(w) > 2})
 
     def rank(self, plan, src, text, rel=None):
+        if plan not in self.rules: return None   # BX-02, BX-13: a rule of an extension that is off (e.g. ext:bian) does not run
         doms = self.of('A2.ServiceDomain')
         if len(doms) < 2:
             self.attempt(plan, src['id'], None, 5, [], 'single-candidate — no proposal'); return

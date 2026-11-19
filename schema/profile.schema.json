@@ -467,6 +467,10 @@
           },
           "reasoning": {
             "type": "string"
+          },
+          "requires": {
+            "type": "string",
+            "description": "BX-50: a part this link type needs, e.g. \"ext:bian\" — left out (and said so) where that part is off"
           }
         }
       }

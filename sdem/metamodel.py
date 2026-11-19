@@ -32,19 +32,25 @@ class Metamodel:
         if _p.ACTIVE is None or mm_dir != MM_DIR: return base
         cache = getattr(cls, '_merged_cache', None)
         if cache is None: cache = {}; setattr(cls, '_merged_cache', cache)
-        key = _p.digest(_p.ACTIVE)
+        from . import parts
+        key = (_p.digest(_p.ACTIVE), parts.bian_on())
         if key not in cache: cache.clear(); cache[key] = _p.apply(base, _p.ACTIVE)
         return cache[key]
 
     @classmethod
     def base(cls, mm_dir=MM_DIR):
         """SDEM's own metamodel, as shipped — no profile."""
+        from . import parts
         ents, versions = [], set()
         for name in LEVEL_FILES:
             doc = json.loads((Path(mm_dir) / name).read_text(encoding='utf-8'))
-            ents += doc['entities']; versions.add(doc['metamodel_version'])
+            versions.add(doc['metamodel_version'])
+            if name == parts.A2_FILE and not parts.bian_on(): continue   # BX-02, BX-13: BIAN's types belong to ext:bian
+            ents += doc['entities']
         rels = json.loads((Path(mm_dir) / 'level-relationships.json').read_text(encoding='utf-8'))
         versions.add(rels['metamodel_version'])
+        if not parts.bian_on():   # its within-layer rules too
+            rels = {**rels, 'constraints': [c for c in rels.get('constraints', []) if c.get('level') != parts.A2 and not parts.a2(c.get('source_type')) and not parts.a2(c.get('target_type'))]}
         if len(versions) != 1:
             raise ValueError(f'metamodel files disagree on metamodel_version: {sorted(versions)}')
         return cls(ents, rels, versions.pop())

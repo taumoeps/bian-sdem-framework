@@ -1468,14 +1468,15 @@ sdem explain SD-PI --projection work/prj
 the installed SDEM extensions (a program called sdem-<name> beside SDEM, with a manifest) — run one as sdem <name> …; SDEM knows none by name (EXT-15)
 
 ```
-sdem extensions
+sdem extensions [--workspace WORKSPACE]
 ```
 
 *JSON: native · dry run: sandbox*
 
 | Argument | Required | What it is |
 |---|---|---|
-| `--json` |  | as data: {"count", "items"} |
+| `--json` |  | as data: {"count", "items", "built_in"} |
+| `--workspace` |  | also say whether each built-in extension is on in this workspace, and why (BX-10…BX-13) |
 
 Example:
 
@@ -1899,7 +1900,7 @@ sdem model usage
 start a workspace: the four layers (A2 your BIAN layer) and an empty registry of connections — checked, recorded
 
 ```
-sdem new [--workspace WORKSPACE] [--organisation ORGANISATION] --person PERSON [--bian BIAN] [--no-bian] [--example {payment-initiation}] [--from FROM] [--profile PROFILE] [--hosting HOSTING] [--explore] [--dry-run]
+sdem new [--workspace WORKSPACE] [--organisation ORGANISATION] --person PERSON [--bian BIAN] [--no-bian] [--core] [--example {payment-initiation}] [--from FROM] [--profile PROFILE] [--hosting HOSTING] [--explore] [--dry-run]
 ```
 
 *JSON: native · dry run: native · 👤 a person's own name*
@@ -1911,6 +1912,7 @@ sdem new [--workspace WORKSPACE] [--organisation ORGANISATION] --person PERSON [
 | `--person` | yes | your name — a person |
 | `--bian` |  | start with exactly this BIAN layer in A2 (default: A2 empty; sdem aid brings in the domains your design needs from bian/a2-service-domain.json if it exists, else the base BIAN) |
 | `--no-bian` |  | start without a BIAN layer (add it later); business then does not connect to applications |
+| `--core` |  | a core-only design: SDEM's core layers A1, A3 and A4 and no BIAN — switch BIAN on later with sdem profile include ext:bian (BX-13) |
 | `--example` {payment-initiation} |  | start with a synthetic example that ships with SDEM as the baseline (made-up data, for learning) — the same as --from its folder |
 | `--from` |  | start with this content as the baseline: the four layers, mappings.json and requirements.json found in DIR — checked first, recorded in the ledger and as a decision; only when the workspace is created (a baseline is never re-taken) |
 | `--profile` |  | start with this organisation profile (kept as sdem-profile.json; its base is still found): its types, rules and names apply, and the layers it adds above A1 or below A4 start empty beside the core four |

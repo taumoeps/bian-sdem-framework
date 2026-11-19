@@ -103,7 +103,7 @@ SDEM's own repository changes only by §5 and the core rules of §10–§14 (MX-
 | Kind | What it adds | Its records live | Example |
 |---|---|---|---|
 | **Vertical** | a **layer across** A1–A4 (LR-11): its own types, and link types that reach any layer | in its own file (`security.json`) | security (S1–S5) |
-| **Horizontal** | **more types inside one core layer**, each extending a type SDEM has there (PR-03), with their attributes, link kinds and rules | in that layer's file (`a4-technology.json`) | network, for A4 (planned) |
+| **Horizontal** | **extends the stack** (BX-43, 2026-11-20): **more types inside one core layer**, each extending a type SDEM has there (PR-03), with their attributes, link kinds and rules — or **a layer of its own between core layers** (the reserved A2, LR-01a) | in that layer's file (`a4-technology.json`; `a2-service-domain.json`) | network, for A4 (planned); **BIAN**, A2 ([BIAN extension](sdem-bian-extension-spec.md)) |
 | **Bridge** | **only what joins two or more extensions**: link types between their types, rules, viewer features — no records of its own | (its links in `mappings.json`) | network-security (planned) |
 
 | Id | Rule |

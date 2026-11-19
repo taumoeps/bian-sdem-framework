@@ -144,7 +144,7 @@ def org_profile(org, ws):
             'description': f"The {Path(ws).name} workspace's additions to {rec['name']}'s base profile — add its own types, attributes and rules here"}
 
 
-def plan(workspace, person, bian_file=None, today=None, no_bian=False, from_dir=None, label=None, profile_file=None, profile_doc=None, org=None, hosting=None):
+def plan(workspace, person, bian_file=None, today=None, no_bian=False, core_only=False, from_dir=None, label=None, profile_file=None, profile_doc=None, org=None, hosting=None):
     """The files of a new workspace and its record — nothing written here (WS-01, WS-02)."""
     from .connect import estate_errors
     from .load import EMPTY_REGISTRY
@@ -194,6 +194,7 @@ def plan(workspace, person, bian_file=None, today=None, no_bian=False, from_dir=
     if errors: raise NewError('the new workspace would not pass its checks — nothing written:\n  ' + '\n  '.join(errors[:10]))
     sds = sum(1 for i in (a2 or {}).get('instances', []) if i['type'] == 'A2.ServiceDomain')
     record = {'format': FORMAT, 'name': ws.name, 'created': today, 'created_by': person.strip(),
+              **({'core_only': True} if core_only else {}),
               'bian': {'catalogue': catalogue, 'source': source, 'selection': 'none' if no_bian else 'given' if bian_file else 'relevant',
                        'service_domains': sds}}
     if hosting: record['hosting'] = {'template': hosting, 'zones': [z['id'] for z in docs['a4-technology.json']['instances'] if z['type'] == 'A4.NetworkZone']}
@@ -234,6 +235,7 @@ def main(argv=None):
     ap.add_argument('--person', required=True, help='your name — a person')
     ap.add_argument('--bian', metavar='FILE', help=f'start with exactly this BIAN layer in A2 (default: A2 empty; sdem aid brings in the domains your design needs from {SHARED.as_posix()} if it exists, else the base BIAN)')
     ap.add_argument('--no-bian', action='store_true', help='start without a BIAN layer (add it later); business then does not connect to applications')
+    ap.add_argument('--core', action='store_true', help="a core-only design: SDEM's core layers A1, A3 and A4 and no BIAN — switch BIAN on later with sdem profile include ext:bian (BX-13)")
     ap.add_argument('--example', choices=sorted(EXAMPLES), help='start with a synthetic example that ships with SDEM as the baseline (made-up data, for learning) — the same as --from its folder')
     ap.add_argument('--from', dest='source', metavar='DIR', help='start with this content as the baseline: the four layers, mappings.json and requirements.json found in DIR — checked first, '
                     'recorded in the ledger and as a decision; only when the workspace is created (a baseline is never re-taken)')
@@ -266,7 +268,11 @@ def main(argv=None):
                 tf.write_text(json.dumps({**pdoc, 'extends': (Path(org) / _org_at(org)['base_profile']).resolve().as_posix()}), encoding='utf-8')
                 _p.activate_file(tf)
         else: _p.deactivate()
-        docs, registry, record, extra = plan(a.estate, a.person, a.bian, no_bian=a.no_bian, from_dir=a.source, label=f'the synthetic example {a.example}' if a.example else None,
+        core = getattr(a, 'core', False)
+        if core:
+            if a.bian or a.example: raise NewError('--core starts a design without BIAN: not with --bian or --example')
+            from . import parts; parts._set(False, 'sdem new --core (BX-13)')
+        docs, registry, record, extra = plan(a.estate, a.person, a.bian, no_bian=a.no_bian or core, core_only=core, from_dir=a.source, label=f'the synthetic example {a.example}' if a.example else None,
                                              profile_file=pf, profile_doc=pdoc, org=org, hosting=a.hosting)
     except _p.ProfileError as e:
         print(f'ERROR: {e}', file=sys.stderr); return 2
@@ -377,7 +383,8 @@ def catalogue(workspace):
     """The BIAN catalogue a workspace chooses its service domains from (WS-01): its own A2 layer plus the catalogue its record
     names — the shared layer, or the base BIAN. An A2 dataset (the workspace's own records first), or None."""
     ws = Path(workspace)
-    from . import profile as _p; _p.activate_from(ws)   # PR-07
+    from . import profile as _p, parts; _p.activate_from(ws)   # PR-07
+    if not parts.bian_on(): return None   # BX-13: no A2 layer, no BIAN catalogue — AID infers among the core layers only
     rec = json.loads((ws / RECORD).read_text(encoding='utf-8')) if (ws / RECORD).exists() else {}
     src = (rec.get('bian') or {}).get('catalogue', 'base')
     if src is None: cat = None

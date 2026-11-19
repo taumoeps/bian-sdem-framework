@@ -26,7 +26,9 @@ def agent_for(code):
 def layers():
     """Every layer, top to bottom: [{code, file, name, agent, core, source}] — the profile's layers above A1, the core four, its layers below A4."""
     from . import profile as _p
-    core = [{'code': c, 'file': f, 'name': n, 'agent': a, 'core': True, 'source': 'SDEM'} for c, f, n, a in CORE]
+    from . import parts
+    core = [{'code': c, 'file': f, 'name': n, 'agent': a, 'core': True, 'source': 'SDEM' if c != parts.A2 else 'ext:bian'} for c, f, n, a in CORE
+            if c != parts.A2 or parts.bian_on()]   # BX-04, BX-13: no A2 layer where BIAN is off
     own = (_p.ACTIVE or {}).get('layers', [])
     def row(l): return {'code': l['code'], 'file': l['file'], 'name': l.get('name') or l['code'], 'agent': agent_for(l['code']), 'core': False,
                         'source': l.get('source', 'organisation profile'), 'description': l.get('description', '')}

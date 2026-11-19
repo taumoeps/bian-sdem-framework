@@ -1,0 +1,6 @@
+{
+ "format": "sdem-profile/1",
+ "name": "bian",
+ "version": 1,
+ "description": "BX-01, BX-02: the built-in BIAN extension. Its content — the A2 layer (a2-service-domain.json), its within-layer rules, the link types and inference rules that touch A2, the BIAN catalogue and sdem bian — is SDEM's own metamodel, used where this extension is on (step 1 of 0.20: nothing moved, nothing renamed). Including it is the recorded decision that a workspace is a BIAN design."
+}

@@ -72,6 +72,10 @@ def shipped(name):
 _PACKS = {}
 
 
+BUILTIN = {'bian': {'name': 'bian', 'version': '1.0.0', 'kind': ['metamodel'], 'scope': {'within': ['A2']}, 'builtin': True, 'pack_file': 'ext-bian-pack.json',
+                   'description': 'BIAN Service Domain Architecture — the A2 layer, its types, link types and inference rules (banking; built in, BX-01)'}}
+
+
 def pack(name):
     """MX-01, MX-10, MX-11a: the pack file of the installed metamodel extension `ext:<name>` — refused, never skipped, when the
     extension is not installed, is not a metamodel extension, or does not support this SDEM."""
@@ -79,6 +83,8 @@ def pack(name):
     ext = name[len(EXT):]
     from . import extensions as _x
     prog = _x.find(ext)
+    if not prog and ext in BUILTIN:   # BX-01: a metamodel extension shipped inside SDEM (step 1 of 0.20: BIAN)
+        _PACKS[name] = (DATA_ROOT / 'metamodel' / BUILTIN[ext]['pack_file'], {k: v for k, v in BUILTIN[ext].items() if k != 'pack_file'}); return _PACKS[name]
     if not prog: raise ProfileError(f"{name}: the profile includes the metamodel extension {ext!r}, but sdem-{ext} is not installed — install it into SDEM's environment (sdem extensions lists what is), or take it out of the profile")
     m = _x.manifest(prog) or {}
     kinds = m.get('kind') if isinstance(m.get('kind'), list) else [m.get('kind')]
@@ -208,9 +214,15 @@ def include_pack(merged, name, _seen=(), local=None):
     f, m = (local, {'name': (read(local).get('name') or local.stem), 'version': read(local).get('version')}) if local else pack(name)
     if any(a['name'] == name for a in merged.setdefault('aspects', [])): return
     p = resolve(f, _seen)
+    from . import parts
     for k in LISTS:
         if k in ('attributes', 'rules'): continue
-        merged[k] += [{**x, 'source': x.get('source') or f"metamodel extension {m['name']} {m.get('version', '')}".strip()} if k == 'layers' else dict(x) for x in p[k]]
+        rows = p[k]
+        if k == 'link_types' and not parts.bian_on():   # BX-50: a link type that requires BIAN applies only where BIAN is on — said, not an error
+            kept = [x for x in rows if x.get('requires') != parts.EXT_BIAN]
+            merged.setdefault('left_out', []).extend({'extension': m['name'], 'link_type': f"{x.get('source_type')} {x.get('relationship')} {x.get('target_type')}", 'requires': parts.EXT_BIAN} for x in rows if x not in kept)
+            rows = kept
+        merged[k] += [{**x, 'source': x.get('source') or f"metamodel extension {m['name']} {m.get('version', '')}".strip()} if k == 'layers' else dict(x) for x in rows]
     _add(merged, {'attributes': p['attributes'], 'rules': p['rules']}, f"{name} ({f.name})")
     for k in ('layers', 'types'): merged['names'][k].update(p['names'][k])
     merged['included'] += [x for x in p['included'] if x['file'] not in {y['file'] for y in merged['included']}]
@@ -566,6 +578,7 @@ def activate_file(path):
 def deactivate():
     global ACTIVE, _ACTIVE_KEY, ACTIVE_EXCEPTIONS
     ACTIVE_EXCEPTIONS = []
+    from . import parts; parts.reset()   # BX-12: no workspace, BIAN on
     if ACTIVE is not None:
         ACTIVE, _ACTIVE_KEY = None, None
         from . import conformance; conformance.model.cache_clear()
@@ -573,10 +586,12 @@ def deactivate():
 
 def activate_from(folder):
     """Activate the workspace folder's profile if it has one; otherwise SDEM's metamodel alone. Returns the merged profile or None."""
+    from . import parts
     f = Path(folder) / FILE
+    parts.for_workspace(folder)   # BX-10…BX-13 first: what the profile resolves to depends on it (BX-50)
     if f.exists():
-        merged = activate_file(f); _load_exceptions(folder); return merged
-    deactivate(); return None
+        merged = activate_file(f); _load_exceptions(folder); parts.for_workspace(folder, merged); return merged
+    deactivate(); parts.for_workspace(folder); return None
 
 
 def activate_from_paths(paths):
@@ -771,8 +786,10 @@ def include_file(a):
             g = gd(ws, 'include_in_profile', a.person, name, {'kind': kind, 'id': meta['id'], 'title': meta['title'], 'version': meta['version'], 'reason': a.reason})
             b = Batch(); b.json(f, cand)
             if (ws / 'workspace.json').exists():
-                rec = json.loads((ws / 'workspace.json').read_text(encoding='utf-8'))
-                if not rec.get('profile'): rec['profile'] = {'file': FILE, 'from': 'sdem', 'name': cand['name'], 'version': cand['version']}; b.json(ws / 'workspace.json', rec)
+                rec = json.loads((ws / 'workspace.json').read_text(encoding='utf-8')); before = json.dumps(rec, sort_keys=True)
+                if not rec.get('profile'): rec['profile'] = {'file': FILE, 'from': 'sdem', 'name': cand['name'], 'version': cand['version']}
+                if name == 'ext:bian': rec.pop('core_only', None)   # BX-10: BIAN on again
+                if json.dumps(rec, sort_keys=True) != before: b.json(ws / 'workspace.json', rec)
             b.commit(); out['decision'] = g['id']
     if a.json: print(json.dumps(out, indent=2))
     elif there: print(f"{name} ({meta['title']}) is already included in {ws}'s profile — nothing to do")
@@ -804,6 +821,8 @@ def exclude_file(a):
         pf = (ws / name) if not name.startswith(SHIPPED) else None
         try: layers = (read(pf).get('layers') or []) if pf is not None and pf.is_file() and read(pf).get('format') == FORMAT else []
         except (OSError, ValueError, ProfileError): layers = []
+    from . import parts
+    if name == parts.EXT_BIAN: layers = [{'code': parts.A2, 'file': parts.A2_FILE}]   # BX-14: BIAN's layer is the reserved A2
     files = [l['file'] for l in layers if l.get('file') and (ws / l['file']).exists()]
     gone = {i['id'] for fn in files for i in json.loads((ws / fn).read_text(encoding='utf-8')).get('instances', [])}
     reg_f = ws / 'mappings.json'
@@ -827,6 +846,8 @@ def exclude_file(a):
         ret = json.loads(rf.read_text(encoding='utf-8')) if rf.exists() else {'format': 'sdem-retired-mappings/1', 'note': 'Connections taken out of mappings.json when a layer was switched off; their ids are never given again.', 'mappings': []}
         ret['mappings'] += [{'mapping_id': m['mapping_id'], 'archive': arc_name, 'decision': decision} for m in out_maps]
         b = Batch(); b.json(root / arc_name, arc); b.json(rf, ret); b.json(root / FILE, keep)
+        if name == parts.EXT_BIAN and (root / 'workspace.json').exists():   # BX-13, BX-14: a person chose a core-only design
+            wrec = json.loads((root / 'workspace.json').read_text(encoding='utf-8')); wrec['core_only'] = True; b.json(root / 'workspace.json', wrec)
         if reg is not None and out_maps: b.json(root / 'mappings.json', {**reg, 'mappings': [m for m in reg['mappings'] if m not in out_maps]})
         if exc is not None and out_exc: b.json(root / 'exceptions.json', {**exc, 'exceptions': [e for e in exc['exceptions'] if e not in out_exc]})
         b.commit()
@@ -927,6 +948,9 @@ def restore_file(a):
             ret = json.loads(rt.read_text(encoding='utf-8')); ids = {m['mapping_id'] for m in back}
             b.json(rt, {**ret, 'mappings': [m for m in ret['mappings'] if m['mapping_id'] not in ids]})
         b.json(root / af.relative_to(ws) if af.is_relative_to(ws) else af, {**arc, 'restored': {'at': day, 'decision': decision, 'by': a.person.strip(), 'left_in_archive': out['left_in_archive']}})
+        if name == 'ext:bian' and (root / 'workspace.json').exists():   # BX-10: BIAN on again
+            wrec = json.loads((root / 'workspace.json').read_text(encoding='utf-8'))
+            if wrec.pop('core_only', None) is not None: b.json(root / 'workspace.json', wrec)
         b.commit()
     ok, why = _check_copy(ws, lambda t: write(t, 'trial'))
     if not ok: raise ProfileError(f'{name}: restored, the design would not pass its check — nothing written: {why}')

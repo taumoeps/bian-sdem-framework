@@ -2,6 +2,10 @@
 
 > Entries before 0.7.0 describe the project under its former name, **SDMM (BIAN Service Domain Mapping Model)**, and its former terms; they are kept as written.
 
+## Unreleased — 0.20, step 1 (branch `release/0.20`)
+
+- **BIAN is a built-in horizontal extension, `ext:bian`** ([spec](docs/design/sdem-bian-extension-spec.md), BX-01…BX-51). The A2 Service Domain layer, its types, within-layer rules, the link types and inference rules that touch it belong to it; SDEM's core is A1, A3 and A4. **Nothing else changes:** A2 is still A2, every type name, record, link and decision is the same, and no workspace is migrated. With BIAN on — every existing workspace, which holds `a2-service-domain.json` — SDEM's answers are the same as 0.19's: 30 recorded answers compared, all identical (`tests/golden/0.19/`). A workspace started with `sdem new --core` (new) is a core-only design — `--no-bian` keeps its 0.19 meaning (no A2 data yet, BIAN still in use); `sdem profile include ext:bian` adds BIAN, `sdem profile exclude ext:bian` takes it off (refused when the design still needs it). `sdem extensions --workspace …` says whether BIAN is on and why. A pack's link type may require BIAN (`"requires": "ext:bian"`) — left out, and said so, where it is off.
+
 ## 0.19.0 — a full design: the information model, the links ArchiMate defines, events, products, channels and locations (2026-11-16)
 
 Upgrade: change the pin to `@v0.19.0`, `pip install -r requirements.txt`, `sdem agents install`; then `sdem migrate --workspace <dir> --person <you>` (metamodel 0.14.0 → 0.17.0, additive — nothing in your data changes; what is now thin is reported, never refused). Run `sdem aid` again to have it propose data tables, field matches and the new links.

@@ -83,12 +83,24 @@ def run(name, argv):
 
 def main(argv=None):
     ap = argparse.ArgumentParser(prog='sdem extensions', description='The installed SDEM extensions — run one as sdem <name> … (EXT-15)')
-    ap.add_argument('--json', action='store_true', help='as data: {"count", "items"}')
+    ap.add_argument('--json', action='store_true', help='as data: {"count", "items", "built_in"}')
+    ap.add_argument('--workspace', dest='estate', metavar='DIR', help="also say whether each built-in extension is on in this workspace, and why (BX-10…BX-13)")
     a = ap.parse_args(argv)
     items = installed()
+    from .profile import BUILTIN
+    from . import parts
+    if a.estate:
+        from . import profile as _p; _p.activate_from(a.estate)
+    built = [{'name': n, 'program': 'built into SDEM', 'manifest': {k: v for k, v in m.items() if k != 'pack_file'},
+              **({'on': parts.bian_on(), 'why': parts.why(), **({'make_explicit': f'sdem profile include ext:{n} --workspace {a.estate} --person <you> --reason "…"'}
+                 if parts.bian_on() and 'BX-11' in parts.why() else {})} if a.estate and n == 'bian' else {})}
+             for n, m in BUILTIN.items() if n not in {x['name'] for x in items}]   # BX-01: a built-in metamodel extension — an installed one of the same name takes its place
     if a.json:
-        print(json.dumps({'count': len(items), 'items': items}, indent=2, ensure_ascii=False))
+        print(json.dumps({'count': len(items), 'items': items, 'built_in': built}, indent=2, ensure_ascii=False))
         return 0
+    for x in built:
+        print(f"  {x['name']:<14} {x['manifest'].get('version', ''):<8} built in — {x['manifest'].get('description', '')}"
+              + (f"\n  {'':<14} {'on' if x['on'] else 'off'} in this workspace: {x['why']}" + (f"\n  {'':<14} make it explicit: {x['make_explicit']}" if x.get('make_explicit') else '') if 'on' in x else ''))
     if not items:
         print('No SDEM extensions installed. An extension is a program called sdem-<name>; install it into the same environment as SDEM '
               '(for example pip install <its folder>), then run it as sdem <name>.')

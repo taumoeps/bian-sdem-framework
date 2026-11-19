@@ -30,7 +30,9 @@ EXIT_OK, EXIT_ISSUES, EXIT_USAGE = 0, 1, 2
 def load_registry(path=RULES, core=False):
     """SDEM's link-type registry — with the active profile's layers and link types added (LR-06), unless core=True."""
     reg = json.loads(Path(path).read_text(encoding='utf-8'))
-    from . import profile as _p
+    from . import profile as _p, parts
+    if Path(path) == RULES and not parts.bian_on():   # BX-02, BX-13: link types touching A2 belong to ext:bian
+        reg = {**reg, 'relationships': parts.keep(reg['relationships'], lambda r: (r.get('source_type'), r.get('target_type')))}
     if core or _p.ACTIVE is None or Path(path) != RULES: return reg
     from .layers import layers
     reg['levels'] = [{'code': l['code'], 'name': l['name']} for l in layers()]
