@@ -88,7 +88,7 @@ def write_package_data(out):
     from .paths import DATA_ROOT
     out = Path(out); out.mkdir(parents=True, exist_ok=True)
     for k, v in builtin_data().items():
-        (out / PKG_FILES[k]).write_text(json.dumps(v, indent=1, ensure_ascii=False) + '\n', encoding='utf-8')
+        (out / PKG_FILES[k]).write_bytes((json.dumps(v, indent=1, ensure_ascii=False) + '\n').encode('utf-8'))   # LF on every platform (BP-11)
     if (out / CATALOGUE).exists(): shutil.rmtree(out / CATALOGUE)
     shutil.copytree(DATA_ROOT / 'bian', out / CATALOGUE)
     return sorted(p.relative_to(out).as_posix() for p in out.rglob('*') if p.is_file())
