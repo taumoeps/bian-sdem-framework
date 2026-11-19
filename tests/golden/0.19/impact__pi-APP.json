@@ -1,0 +1,455 @@
+{
+ "command": [
+  "impact",
+  "APP-PAY-HUB",
+  "--change",
+  "retire",
+  "--graph",
+  "<tmp>/payment-initiation-graph",
+  "--json"
+ ],
+ "exit": 0,
+ "output": {
+  "change": "retire",
+  "changed": "APP-PAY-HUB",
+  "coverage": {
+   "A1": {
+    "classification": "review_required",
+    "confirmed": false,
+    "evidence": "incomplete",
+    "paths": [
+     "PAY-001",
+     "PAY-003",
+     "PAY-004",
+     "PAY-106"
+    ],
+    "present": true,
+    "reached": true,
+    "reason": "3 record(s) reached through approved links; the strongest rule gives review_required; evidence incomplete: 0 link(s) not approved, 11 record(s) with no approved link where one is expected",
+    "records": [
+     {
+      "classification": "review_required",
+      "id": "CAP-PAY-010",
+      "rule": "retire/up2+ → review_required (impact rules 0.5.0)",
+      "via": [
+       "PAY-106",
+       "PAY-001"
+      ]
+     },
+     {
+      "classification": "review_required",
+      "id": "PRC-PAY-01",
+      "rule": "retire/up2+ → review_required (impact rules 0.5.0)",
+      "via": [
+       "PAY-106",
+       "PAY-003"
+      ]
+     },
+     {
+      "classification": "review_required",
+      "id": "PRC-PAY-02",
+      "rule": "retire/up2+ → review_required (impact rules 0.5.0)",
+      "via": [
+       "PAY-106",
+       "PAY-004"
+      ]
+     }
+    ],
+    "related_within_layer": [],
+    "result": "impact_detected",
+    "unapproved_links": [],
+    "unmapped_count": 11,
+    "unmapped_records": [
+     "ACT-PAY-01a",
+     "ACT-PAY-01b",
+     "ACT-PAY-02a",
+     "ACT-PAY-02b",
+     "BO-PAYEE",
+     "CAP-PAY-000",
+     "ROLE-PAY-OFFICER",
+     "VSS-P1",
+     "VSS-P2",
+     "VSS-P3",
+     "VSS-P4"
+    ]
+   },
+   "A2": {
+    "classification": "design_change_required",
+    "confirmed": false,
+    "evidence": "incomplete",
+    "paths": [
+     "PAY-106"
+    ],
+    "present": true,
+    "reached": true,
+    "reason": "1 record(s) reached through approved links; the strongest rule gives design_change_required; evidence incomplete: 0 link(s) not approved, 16 record(s) with no approved link where one is expected",
+    "records": [
+     {
+      "classification": "design_change_required",
+      "id": "SD-PI",
+      "rule": "retire/up1 → design_change_required (impact rules 0.5.0)",
+      "via": [
+       "PAY-106"
+      ]
+     }
+    ],
+    "related_within_layer": [],
+    "result": "impact_detected",
+    "unapproved_links": [],
+    "unmapped_count": 16,
+    "unmapped_records": [
+     "BBO-PARTY",
+     "BBOA-AMOUNT",
+     "BBOA-PARTY-REF",
+     "SD-PA",
+     "SD-PE",
+     "SO-PA-01",
+     "SO-PA-02",
+     "SO-PA-03",
+     "SO-PA-04",
+     "SO-PA-05",
+     "SO-PA-06",
+     "SO-PA-07",
+     "SO-PE-01",
+     "SO-PE-02",
+     "SO-PE-03",
+     "SO-PI-06"
+    ]
+   },
+   "A3": {
+    "classification": "design_change_required",
+    "confirmed": false,
+    "evidence": "incomplete",
+    "paths": [],
+    "present": true,
+    "reached": true,
+    "reason": "1 record(s) reached through approved links; the strongest rule gives design_change_required; evidence incomplete: 0 link(s) not approved, 7 record(s) with no approved link where one is expected; 6 record(s) linked inside the layer to the changed record(s) are not followed by the impact rules: CMP-PAY-CAPTURE, CMP-PAY-EXEC, CMP-PAY-VALIDATE, EVT-PAY-STATUS, IFC-PAY-API, SVC-PAY-INIT",
+    "records": [
+     {
+      "classification": "design_change_required",
+      "id": "APP-PAY-HUB",
+      "rule": "retire/self → design_change_required (impact rules 0.5.0)",
+      "via": []
+     }
+    ],
+    "related_within_layer": [
+     "CMP-PAY-CAPTURE",
+     "CMP-PAY-EXEC",
+     "CMP-PAY-VALIDATE",
+     "EVT-PAY-STATUS",
+     "IFC-PAY-API",
+     "SVC-PAY-INIT"
+    ],
+    "result": "impact_detected",
+    "unapproved_links": [],
+    "unmapped_count": 7,
+    "unmapped_records": [
+     "API-PI-06",
+     "CMP-PAY-CAPTURE",
+     "CMP-PAY-VALIDATE",
+     "ENT-ACCOUNT-CACHE",
+     "ENT-PAY-EVENT",
+     "EVT-PAY-STATUS",
+     "SVC-PAY-INIT"
+    ]
+   },
+   "A4": {
+    "classification": "review_required",
+    "confirmed": false,
+    "evidence": "incomplete",
+    "paths": [
+     "PAY-108",
+     "PAY-109",
+     "PAY-110",
+     "PAY-113",
+     "PAY-115",
+     "RA4-37",
+     "RA4-38",
+     "RA4-39"
+    ],
+    "present": true,
+    "reached": true,
+    "reason": "9 record(s) reached through approved links; the strongest rule gives review_required; evidence incomplete: 0 link(s) not approved, 4 record(s) with no approved link where one is expected",
+    "records": [
+     {
+      "classification": "review_required",
+      "id": "INF-K8S-PAY-PROD",
+      "rule": "retire/down1 → review_required (impact rules 0.5.0)",
+      "via": [
+       "PAY-108"
+      ]
+     },
+     {
+      "classification": "no_impact",
+      "id": "ZONE-PAY-PRIVATE",
+      "rule": "retire/down2+ → no_impact (impact rules 0.5.0)",
+      "via": [
+       "PAY-108",
+       "RA4-38"
+      ]
+     },
+     {
+      "classification": "no_impact",
+      "id": "ZONE-PAY-INTERNAL",
+      "rule": "retire/down2+ → no_impact (impact rules 0.5.0)",
+      "via": [
+       "PAY-108",
+       "RA4-38",
+       "RA4-39"
+      ]
+     },
+     {
+      "classification": "no_impact",
+      "id": "ZONE-PAY-CLOUD",
+      "rule": "retire/down2+ → no_impact (impact rules 0.5.0)",
+      "via": [
+       "PAY-108",
+       "RA4-38",
+       "RA4-39",
+       "RA4-39"
+      ]
+     },
+     {
+      "classification": "no_impact",
+      "id": "NET-PAY-PRIVATE",
+      "rule": "retire/down2+ → no_impact (impact rules 0.5.0)",
+      "via": [
+       "PAY-108",
+       "RA4-37"
+      ]
+     },
+     {
+      "classification": "review_required",
+      "id": "DEP-PAYHUB-PROD",
+      "rule": "retire/down1 → review_required (impact rules 0.5.0)",
+      "via": [
+       "PAY-109"
+      ]
+     },
+     {
+      "classification": "review_required",
+      "id": "DEP-PAYHUB-UAT",
+      "rule": "retire/down1 → review_required (impact rules 0.5.0)",
+      "via": [
+       "PAY-110"
+      ]
+     },
+     {
+      "classification": "review_required",
+      "id": "INF-K8S-PAY-UAT",
+      "rule": "retire/down1 → review_required (impact rules 0.5.0)",
+      "via": [
+       "PAY-113"
+      ]
+     },
+     {
+      "classification": "review_required",
+      "id": "ART-PAYHUB-IMG",
+      "rule": "retire/down1 → review_required (impact rules 0.5.0)",
+      "via": [
+       "PAY-115"
+      ]
+     }
+    ],
+    "related_within_layer": [],
+    "result": "impact_detected",
+    "unapproved_links": [],
+    "unmapped_count": 4,
+    "unmapped_records": [
+     "INF-CORE-LEDGER-HOST",
+     "INF-PG-PAY-PROD",
+     "TS-MQ",
+     "TS-SECRETS"
+    ]
+   }
+  },
+  "instances": [
+   {
+    "classification": "design_change_required",
+    "id": "APP-PAY-HUB",
+    "level": "A3",
+    "name": "Payments Hub",
+    "relation": "self",
+    "rule": "retire/self → design_change_required (impact rules 0.5.0)",
+    "type": "A3.ApplicationComponent",
+    "via": []
+   },
+   {
+    "classification": "design_change_required",
+    "id": "SD-PI",
+    "level": "A2",
+    "name": "Payment Initiation (synthetic selection)",
+    "relation": "up1",
+    "rule": "retire/up1 → design_change_required (impact rules 0.5.0)",
+    "type": "A2.ServiceDomain",
+    "via": [
+     "PAY-106"
+    ]
+   },
+   {
+    "classification": "review_required",
+    "id": "CAP-PAY-010",
+    "level": "A1",
+    "name": "Initiate Payment",
+    "relation": "up2+",
+    "rule": "retire/up2+ → review_required (impact rules 0.5.0)",
+    "type": "A1.BusinessCapability",
+    "via": [
+     "PAY-106",
+     "PAY-001"
+    ]
+   },
+   {
+    "classification": "review_required",
+    "id": "PRC-PAY-01",
+    "level": "A1",
+    "name": "Capture and validate payment instruction",
+    "relation": "up2+",
+    "rule": "retire/up2+ → review_required (impact rules 0.5.0)",
+    "type": "A1.BusinessProcess",
+    "via": [
+     "PAY-106",
+     "PAY-003"
+    ]
+   },
+   {
+    "classification": "review_required",
+    "id": "PRC-PAY-02",
+    "level": "A1",
+    "name": "Execute and confirm payment",
+    "relation": "up2+",
+    "rule": "retire/up2+ → review_required (impact rules 0.5.0)",
+    "type": "A1.BusinessProcess",
+    "via": [
+     "PAY-106",
+     "PAY-004"
+    ]
+   },
+   {
+    "classification": "review_required",
+    "id": "INF-K8S-PAY-PROD",
+    "level": "A4",
+    "name": "Managed Kubernetes — payments (production)",
+    "relation": "down1",
+    "rule": "retire/down1 → review_required (impact rules 0.5.0)",
+    "type": "A4.SystemSoftware",
+    "via": [
+     "PAY-108"
+    ]
+   },
+   {
+    "classification": "no_impact",
+    "id": "ZONE-PAY-PRIVATE",
+    "level": "A4",
+    "name": "Payments private network zone",
+    "relation": "down2+",
+    "rule": "retire/down2+ → no_impact (impact rules 0.5.0)",
+    "type": "A4.NetworkZone",
+    "via": [
+     "PAY-108",
+     "RA4-38"
+    ]
+   },
+   {
+    "classification": "no_impact",
+    "id": "ZONE-PAY-INTERNAL",
+    "level": "A4",
+    "name": "Internal network — payments",
+    "relation": "down2+",
+    "rule": "retire/down2+ → no_impact (impact rules 0.5.0)",
+    "type": "A4.NetworkZone",
+    "via": [
+     "PAY-108",
+     "RA4-38",
+     "RA4-39"
+    ]
+   },
+   {
+    "classification": "no_impact",
+    "id": "ZONE-PAY-CLOUD",
+    "level": "A4",
+    "name": "Cloud — payments",
+    "relation": "down2+",
+    "rule": "retire/down2+ → no_impact (impact rules 0.5.0)",
+    "type": "A4.NetworkZone",
+    "via": [
+     "PAY-108",
+     "RA4-38",
+     "RA4-39",
+     "RA4-39"
+    ]
+   },
+   {
+    "classification": "no_impact",
+    "id": "NET-PAY-PRIVATE",
+    "level": "A4",
+    "name": "Payments private network",
+    "relation": "down2+",
+    "rule": "retire/down2+ → no_impact (impact rules 0.5.0)",
+    "type": "A4.CommunicationNetwork",
+    "via": [
+     "PAY-108",
+     "RA4-37"
+    ]
+   },
+   {
+    "classification": "review_required",
+    "id": "DEP-PAYHUB-PROD",
+    "level": "A4",
+    "name": "Payments Hub — production",
+    "relation": "down1",
+    "rule": "retire/down1 → review_required (impact rules 0.5.0)",
+    "type": "A4.Deployment",
+    "via": [
+     "PAY-109"
+    ]
+   },
+   {
+    "classification": "review_required",
+    "id": "DEP-PAYHUB-UAT",
+    "level": "A4",
+    "name": "Payments Hub — UAT",
+    "relation": "down1",
+    "rule": "retire/down1 → review_required (impact rules 0.5.0)",
+    "type": "A4.Deployment",
+    "via": [
+     "PAY-110"
+    ]
+   },
+   {
+    "classification": "review_required",
+    "id": "INF-K8S-PAY-UAT",
+    "level": "A4",
+    "name": "Managed Kubernetes — payments (UAT)",
+    "relation": "down1",
+    "rule": "retire/down1 → review_required (impact rules 0.5.0)",
+    "type": "A4.SystemSoftware",
+    "via": [
+     "PAY-113"
+    ]
+   },
+   {
+    "classification": "review_required",
+    "id": "ART-PAYHUB-IMG",
+    "level": "A4",
+    "name": "payments-hub:7.1",
+    "relation": "down1",
+    "rule": "retire/down1 → review_required (impact rules 0.5.0)",
+    "type": "A4.Artifact",
+    "via": [
+     "PAY-115"
+    ]
+   }
+  ],
+  "mappings_to_supersede": [
+   "PAY-106",
+   "PAY-108",
+   "PAY-109",
+   "PAY-110",
+   "PAY-113",
+   "PAY-115"
+  ],
+  "reason": "instance removed; direct dependents lose a dependency, indirect ones review",
+  "rules_version": "0.5.0"
+ }
+}

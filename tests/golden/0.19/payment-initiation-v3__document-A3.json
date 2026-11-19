@@ -1,0 +1,2576 @@
+{
+ "command": [
+  "document",
+  "--workspace",
+  "<tmp>/v3",
+  "--layer",
+  "A3",
+  "--json"
+ ],
+ "exit": 0,
+ "output": {
+  "fingerprint": "<volatile>",
+  "gaps": {
+   "no_connection": [
+    "API-CONSENT-CREATE",
+    "API-CONSENT-READ",
+    "API-DEBTOR-READ",
+    "EVT-HANDOFF",
+    "F-CONSENT-CONSENT-ID",
+    "F-CONSENT-THIRD-PARTY-ID",
+    "F-CONSENT-CUSTOMER-ID",
+    "F-CONSENT-STATUS",
+    "F-CONSENT-INSTRUCTION-IDENTIFICATION",
+    "F-CONSENT-END-TO-END-IDENTIFICATION",
+    "F-CONSENT-AMOUNT",
+    "F-CONSENT-CURRENCY",
+    "F-CONSENT-CREDITOR-ACCOUNT",
+    "F-CONSENT-DEBTOR-ACCOUNT",
+    "F-CONSENT-EXPIRES-AT",
+    "F-PAYMENT-PAYMENT-ID",
+    "F-PAYMENT-CONSENT-ID",
+    "F-PAYMENT-INSTRUCTION-IDENTIFICATION",
+    "F-PAYMENT-AMOUNT",
+    "F-PAYMENT-CURRENCY",
+    "F-PAYMENT-PAYMENT-STATUS",
+    "F-PAYMENT-LEDGER-POSTING-ID",
+    "F-PAYMENT-HANDOFF-ID",
+    "F-PAYMENT-CREATED-AT",
+    "F-IDEMP-KEY-HASH",
+    "F-IDEMP-THIRD-PARTY-ID",
+    "F-IDEMP-REQUEST-HASH",
+    "F-IDEMP-RESOURCE-ID",
+    "F-IDEMP-EXPIRES-AT",
+    "F-AUDIT-EVENT-ID",
+    "F-AUDIT-ACTOR-REF",
+    "F-AUDIT-ACTION",
+    "F-AUDIT-CORRELATION-ID",
+    "F-AUDIT-RECORDED-AT"
+   ],
+   "placeholders": [],
+   "requirements_not_confirmed": [],
+   "unconfirmed": []
+  },
+  "layer": "A3",
+  "requirements": [],
+  "sections": [
+   {
+    "definition": "A modular, deployable part of an application",
+    "records": [
+     {
+      "attribute_sources": {
+       "deployed_as": "document:design.md#6"
+      },
+      "attributes": {
+       "deployed_as": [
+        "APP-EDGE — production (DEP-EDGE)"
+       ]
+      },
+      "connections": [
+       {
+        "direction": "out",
+        "evidence": [
+         "deployment_design:design.md#6",
+         "author:design section 6"
+        ],
+        "id": "DEP-EDGE",
+        "mapping_id": "MAP-011",
+        "name": "APP-EDGE — production",
+        "relationship": "DEPLOYED_AS",
+        "status": "approved"
+       },
+       {
+        "direction": "out",
+        "evidence": [
+         "deployment_design:design.md#6",
+         "author:design section 6"
+        ],
+        "id": "NODE-EDGE",
+        "mapping_id": "MAP-019",
+        "name": "Redundant API ingress",
+        "relationship": "DEPLOYED_ON",
+        "status": "approved"
+       },
+       {
+        "direction": "in",
+        "evidence": [
+         "engine_rationale:S17 step3 implements SO-PAYMENT-ORDER-INITIATION-INITIATE via API-PAYMENT-CREATE (approved); SO-PAYMENT-ORDER-INITIATION-RETRIEVE via API-PAYMENT-READ (approved)"
+        ],
+        "id": "SD-PAYMENT-ORDER-INITIATION",
+        "mapping_id": "MAP-033",
+        "name": "Payment Order Initiation",
+        "relationship": "REALIZED_BY",
+        "status": "rejected"
+       }
+      ],
+      "description": "Terminates the accredited provider API channel and produces correlated security events.",
+      "fields": [],
+      "id": "APP-EDGE",
+      "lifecycle_status": "planned",
+      "links_in": [],
+      "links_out": [
+       {
+        "id": "IFC-PAYMENT-INITIATION",
+        "kind": "composition",
+        "name": "Payment Initiation API v2.3.3",
+        "source_id": "document:design.md#5"
+       },
+       {
+        "id": "DATA-AUDIT",
+        "kind": "access",
+        "name": "SecurityEventLog",
+        "source_id": "document:design.md#5"
+       },
+       {
+        "id": "APP-PAYHUB",
+        "kind": "flow",
+        "name": "Payments hub",
+        "source_id": "document:design.md#5"
+       },
+       {
+        "id": "APP-CONSENT",
+        "kind": "flow",
+        "name": "Consent processing",
+        "source_id": "document:design.md#5"
+       }
+      ],
+      "name": "API ingress",
+      "provenance": "from the design document design.md#5,document:design.md#6",
+      "type": "A3.ApplicationComponent",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {
+       "deployed_as": "document:design.md#6"
+      },
+      "attributes": {
+       "deployed_as": [
+        "APP-IDENT — production (DEP-IDENT)"
+       ]
+      },
+      "connections": [
+       {
+        "direction": "in",
+        "evidence": [
+         "application_architecture_document:design.md#5",
+         "bian_alignment_guidance:design.md#5",
+         "author:design section 5"
+        ],
+        "id": "SD-PARTY-AUTHENTICATION",
+        "mapping_id": "MAP-006",
+        "name": "Party Authentication",
+        "relationship": "REALIZED_BY",
+        "status": "approved"
+       },
+       {
+        "direction": "out",
+        "evidence": [
+         "deployment_design:design.md#6",
+         "author:design section 6"
+        ],
+        "id": "DEP-IDENT",
+        "mapping_id": "MAP-012",
+        "name": "APP-IDENT — production",
+        "relationship": "DEPLOYED_AS",
+        "status": "approved"
+       },
+       {
+        "direction": "out",
+        "evidence": [
+         "deployment_design:design.md#6",
+         "author:design section 6"
+        ],
+        "id": "NODE-SEC",
+        "mapping_id": "MAP-020",
+        "name": "Identity and secrets",
+        "relationship": "DEPLOYED_ON",
+        "status": "approved"
+       }
+      ],
+      "description": "Handles customer authentication.",
+      "fields": [],
+      "id": "APP-IDENT",
+      "lifecycle_status": "planned",
+      "links_in": [],
+      "links_out": [
+       {
+        "id": "APP-CONSENT",
+        "kind": "flow",
+        "name": "Consent processing",
+        "source_id": "document:design.md#5"
+       }
+      ],
+      "name": "Identity",
+      "provenance": "from the design document design.md#5,document:design.md#6",
+      "type": "A3.ApplicationComponent",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {
+       "deployed_as": "document:design.md#6"
+      },
+      "attributes": {
+       "deployed_as": [
+        "APP-CONSENT — production (DEP-CONSENT)"
+       ]
+      },
+      "connections": [
+       {
+        "direction": "out",
+        "evidence": [
+         "deployment_design:design.md#6",
+         "author:design section 6"
+        ],
+        "id": "DEP-CONSENT",
+        "mapping_id": "MAP-013",
+        "name": "APP-CONSENT — production",
+        "relationship": "DEPLOYED_AS",
+        "status": "approved"
+       },
+       {
+        "direction": "out",
+        "evidence": [
+         "deployment_design:design.md#6",
+         "author:design section 6"
+        ],
+        "id": "NODE-APP",
+        "mapping_id": "MAP-021",
+        "name": "Three-node application compute",
+        "relationship": "DEPLOYED_ON",
+        "status": "approved"
+       }
+      ],
+      "description": "Controls the consent lifecycle and its persistence.",
+      "fields": [],
+      "id": "APP-CONSENT",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "APP-EDGE",
+        "kind": "flow",
+        "name": "API ingress",
+        "source_id": "document:design.md#5"
+       },
+       {
+        "id": "APP-IDENT",
+        "kind": "flow",
+        "name": "Identity",
+        "source_id": "document:design.md#5"
+       }
+      ],
+      "links_out": [
+       {
+        "id": "DATA-CONSENT",
+        "kind": "access",
+        "name": "ConsentLedger",
+        "source_id": "document:design.md#5"
+       }
+      ],
+      "name": "Consent processing",
+      "provenance": "from the design document design.md#5,document:design.md#6",
+      "type": "A3.ApplicationComponent",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {
+       "deployed_as": "document:design.md#6"
+      },
+      "attributes": {
+       "deployed_as": [
+        "APP-PAYHUB — production (DEP-PAYHUB)"
+       ]
+      },
+      "connections": [
+       {
+        "direction": "in",
+        "evidence": [
+         "application_architecture_document:design.md#5",
+         "bian_alignment_guidance:design.md#5",
+         "author:design section 5"
+        ],
+        "id": "SD-PAYMENT-ORDER-INITIATION",
+        "mapping_id": "MAP-005",
+        "name": "Payment Order Initiation",
+        "relationship": "REALIZED_BY",
+        "status": "approved"
+       },
+       {
+        "direction": "out",
+        "evidence": [
+         "deployment_design:design.md#6",
+         "author:design section 6"
+        ],
+        "id": "DEP-PAYHUB",
+        "mapping_id": "MAP-014",
+        "name": "APP-PAYHUB — production",
+        "relationship": "DEPLOYED_AS",
+        "status": "approved"
+       },
+       {
+        "direction": "out",
+        "evidence": [
+         "deployment_design:design.md#6",
+         "author:design section 6"
+        ],
+        "id": "NODE-APP",
+        "mapping_id": "MAP-022",
+        "name": "Three-node application compute",
+        "relationship": "DEPLOYED_ON",
+        "status": "approved"
+       }
+      ],
+      "description": "Validates and orchestrates initiation, idempotency, risk, status and retries.",
+      "fields": [],
+      "id": "APP-PAYHUB",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "APP-EDGE",
+        "kind": "flow",
+        "name": "API ingress",
+        "source_id": "document:design.md#5"
+       }
+      ],
+      "links_out": [
+       {
+        "id": "DATA-CONSENT",
+        "kind": "access",
+        "name": "ConsentLedger",
+        "source_id": "document:design.md#5"
+       },
+       {
+        "id": "DATA-PAYMENT",
+        "kind": "access",
+        "name": "PaymentLedger",
+        "source_id": "document:design.md#5"
+       },
+       {
+        "id": "DATA-IDEMP",
+        "kind": "access",
+        "name": "IdempotencyRegistry",
+        "source_id": "document:design.md#5"
+       },
+       {
+        "id": "APP-RISK",
+        "kind": "flow",
+        "name": "Fraud service",
+        "source_id": "document:design.md#5"
+       },
+       {
+        "id": "APP-LEDGER",
+        "kind": "flow",
+        "name": "Account ledger",
+        "source_id": "document:design.md#5"
+       },
+       {
+        "id": "APP-OUTBOUND",
+        "kind": "flow",
+        "name": "Outbound connector",
+        "source_id": "document:design.md#5"
+       },
+       {
+        "id": "APP-NOTIFY",
+        "kind": "flow",
+        "name": "Notification service",
+        "source_id": "document:design.md#5"
+       },
+       {
+        "id": "EVT-HANDOFF",
+        "kind": "triggering",
+        "name": "Durable handoff event",
+        "source_id": "document:design.md#5"
+       }
+      ],
+      "name": "Payments hub",
+      "provenance": "from the design document design.md#5,document:design.md#6",
+      "type": "A3.ApplicationComponent",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {
+       "deployed_as": "document:design.md#6"
+      },
+      "attributes": {
+       "deployed_as": [
+        "APP-RISK — production (DEP-RISK)"
+       ]
+      },
+      "connections": [
+       {
+        "direction": "out",
+        "evidence": [
+         "deployment_design:design.md#6",
+         "author:design section 6"
+        ],
+        "id": "DEP-RISK",
+        "mapping_id": "MAP-015",
+        "name": "APP-RISK — production",
+        "relationship": "DEPLOYED_AS",
+        "status": "approved"
+       },
+       {
+        "direction": "out",
+        "evidence": [
+         "deployment_design:design.md#6",
+         "author:design section 6"
+        ],
+        "id": "NODE-APP",
+        "mapping_id": "MAP-023",
+        "name": "Three-node application compute",
+        "relationship": "DEPLOYED_ON",
+        "status": "approved"
+       },
+       {
+        "direction": "in",
+        "evidence": [
+         "application_architecture_document:design.md#ai-decision",
+         "bian_alignment_guidance:design.md#ai-decision",
+         "author:design section ai-decision"
+        ],
+        "id": "SD-FRAUD-EVALUATION",
+        "mapping_id": "MAP-032",
+        "name": "Fraud Evaluation",
+        "relationship": "REALIZED_BY",
+        "status": "approved"
+       }
+      ],
+      "description": "Returns a risk decision.",
+      "fields": [],
+      "id": "APP-RISK",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "APP-PAYHUB",
+        "kind": "flow",
+        "name": "Payments hub",
+        "source_id": "document:design.md#5"
+       }
+      ],
+      "links_out": [],
+      "name": "Fraud service",
+      "provenance": "from the design document design.md#5,document:design.md#6",
+      "type": "A3.ApplicationComponent",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {
+       "deployed_as": "document:design.md#6"
+      },
+      "attributes": {
+       "deployed_as": [
+        "APP-LEDGER — production (DEP-LEDGER)"
+       ]
+      },
+      "connections": [
+       {
+        "direction": "out",
+        "evidence": [
+         "deployment_design:design.md#6",
+         "author:design section 6"
+        ],
+        "id": "DEP-LEDGER",
+        "mapping_id": "MAP-016",
+        "name": "APP-LEDGER — production",
+        "relationship": "DEPLOYED_AS",
+        "status": "approved"
+       },
+       {
+        "direction": "out",
+        "evidence": [
+         "deployment_design:design.md#6",
+         "author:design section 6"
+        ],
+        "id": "NODE-INT",
+        "mapping_id": "MAP-025",
+        "name": "Ledger and execution integration",
+        "relationship": "DEPLOYED_ON",
+        "status": "approved"
+       }
+      ],
+      "description": "Owns account eligibility and posting; rejects repeated posting ids.",
+      "fields": [],
+      "id": "APP-LEDGER",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "APP-PAYHUB",
+        "kind": "flow",
+        "name": "Payments hub",
+        "source_id": "document:design.md#5"
+       }
+      ],
+      "links_out": [],
+      "name": "Account ledger",
+      "provenance": "from the design document design.md#5,document:design.md#6",
+      "type": "A3.ApplicationComponent",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {
+       "deployed_as": "document:design.md#6"
+      },
+      "attributes": {
+       "deployed_as": [
+        "APP-OUTBOUND — production (DEP-OUT)"
+       ]
+      },
+      "connections": [
+       {
+        "direction": "out",
+        "evidence": [
+         "deployment_design:design.md#6",
+         "author:design section 6"
+        ],
+        "id": "DEP-OUT",
+        "mapping_id": "MAP-018",
+        "name": "APP-OUTBOUND — production",
+        "relationship": "DEPLOYED_AS",
+        "status": "approved"
+       },
+       {
+        "direction": "out",
+        "evidence": [
+         "deployment_design:design.md#6",
+         "author:design section 6"
+        ],
+        "id": "NODE-INT",
+        "mapping_id": "MAP-026",
+        "name": "Ledger and execution integration",
+        "relationship": "DEPLOYED_ON",
+        "status": "approved"
+       }
+      ],
+      "description": "Performs the accepted-instruction handoff.",
+      "fields": [],
+      "id": "APP-OUTBOUND",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "APP-PAYHUB",
+        "kind": "flow",
+        "name": "Payments hub",
+        "source_id": "document:design.md#5"
+       }
+      ],
+      "links_out": [],
+      "name": "Outbound connector",
+      "provenance": "from the design document design.md#5,document:design.md#6",
+      "type": "A3.ApplicationComponent",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {
+       "deployed_as": "document:design.md#6"
+      },
+      "attributes": {
+       "deployed_as": [
+        "APP-NOTIFY — production (DEP-NOTIFY)"
+       ]
+      },
+      "connections": [
+       {
+        "direction": "out",
+        "evidence": [
+         "deployment_design:design.md#6",
+         "author:design section 6"
+        ],
+        "id": "DEP-NOTIFY",
+        "mapping_id": "MAP-017",
+        "name": "APP-NOTIFY — production",
+        "relationship": "DEPLOYED_AS",
+        "status": "approved"
+       },
+       {
+        "direction": "out",
+        "evidence": [
+         "deployment_design:design.md#6",
+         "author:design section 6"
+        ],
+        "id": "NODE-APP",
+        "mapping_id": "MAP-024",
+        "name": "Three-node application compute",
+        "relationship": "DEPLOYED_ON",
+        "status": "approved"
+       }
+      ],
+      "description": "A non-critical downstream notification component.",
+      "fields": [],
+      "id": "APP-NOTIFY",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "APP-PAYHUB",
+        "kind": "flow",
+        "name": "Payments hub",
+        "source_id": "document:design.md#5"
+       }
+      ],
+      "links_out": [],
+      "name": "Notification service",
+      "provenance": "from the design document design.md#5,document:design.md#6",
+      "type": "A3.ApplicationComponent",
+      "version": "1"
+     }
+    ],
+    "title": "Application components",
+    "type": "A3.ApplicationComponent"
+   },
+   {
+    "definition": "An access point to an application service",
+    "records": [
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "field_aliases": {
+        "ConsentId": "consent_id",
+        "DomesticPaymentId": "payment_id",
+        "NZDomesticConsent1/EndToEndIdentification": "end_to_end_identification",
+        "NZDomesticConsent1/InstructedAmount/Amount": "amount",
+        "NZDomesticConsent1/InstructedAmount/Currency": "currency",
+        "NZDomesticConsent1/InstructionIdentification": "instruction_identification",
+        "Status": "status"
+       },
+       "internet_facing": true,
+       "protocol": "https",
+       "security_scheme": "oauth2"
+      },
+      "connections": [
+       {
+        "direction": "in",
+        "evidence": [
+         "application_architecture_document:design.md#5",
+         "author:design section 5"
+        ],
+        "id": "IF-TPP",
+        "mapping_id": "MAP-009",
+        "name": "Provider API channel",
+        "relationship": "REALIZED_BY",
+        "status": "approved"
+       },
+       {
+        "direction": "out",
+        "evidence": [
+         "network_design:design.md#6",
+         "author:design section 6"
+        ],
+        "id": "NODE-EDGE",
+        "mapping_id": "MAP-010",
+        "name": "Redundant API ingress",
+        "relationship": "EXPOSED_THROUGH",
+        "status": "approved"
+       }
+      ],
+      "description": "The provider-facing API: domestic payment consents and domestic payments, as the NZ Banking Data standard v2.3.3 defines them.",
+      "fields": [],
+      "id": "IFC-PAYMENT-INITIATION",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "APP-EDGE",
+        "kind": "composition",
+        "name": "API ingress",
+        "source_id": "document:design.md#5"
+       }
+      ],
+      "links_out": [
+       {
+        "id": "API-CONSENT-CREATE",
+        "kind": "composition",
+        "name": "Create domestic payment consent",
+        "source_id": "document:design.md#5"
+       },
+       {
+        "id": "API-CONSENT-READ",
+        "kind": "composition",
+        "name": "Read domestic payment consent",
+        "source_id": "document:design.md#5"
+       },
+       {
+        "id": "API-PAYMENT-CREATE",
+        "kind": "composition",
+        "name": "Create domestic payment",
+        "source_id": "document:design.md#5"
+       },
+       {
+        "id": "API-PAYMENT-READ",
+        "kind": "composition",
+        "name": "Read domestic payment",
+        "source_id": "document:design.md#5"
+       },
+       {
+        "id": "API-DEBTOR-READ",
+        "kind": "composition",
+        "name": "Read payment debtor account",
+        "source_id": "document:design.md#5"
+       }
+      ],
+      "name": "Payment Initiation API v2.3.3",
+      "provenance": "from the design document design.md#5,document:design.md#6",
+      "type": "A3.ApplicationInterface",
+      "version": "1"
+     }
+    ],
+    "title": "Application interfaces",
+    "type": "A3.ApplicationInterface"
+   },
+   {
+    "definition": "A callable operation of an API contract",
+    "records": [
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "method": "POST",
+       "path": "/domestic-payment-consents",
+       "payload_fields": [
+        "InstructionIdentification",
+        "EndToEndIdentification",
+        "InstructedAmount/Amount",
+        "InstructedAmount/Currency",
+        "CreditorAccount/SchemeName",
+        "CreditorAccount/Identification",
+        "CreditorAccount/Name",
+        "DebtorAccount/Identification",
+        "DebtorAccountRelease",
+        "RemittanceInformation/Reference",
+        "ConsentId",
+        "Status"
+       ],
+       "request_fields": [
+        "instruction_identification (F-CONSENT-INSTRUCTION-IDENTIFICATION)",
+        "end_to_end_identification (F-CONSENT-END-TO-END-IDENTIFICATION)",
+        "amount (F-CONSENT-AMOUNT)",
+        "currency (F-CONSENT-CURRENCY)"
+       ],
+       "response_fields": [
+        "consent_id (F-CONSENT-CONSENT-ID)",
+        "status (F-CONSENT-STATUS)"
+       ]
+      },
+      "connections": [],
+      "description": "",
+      "fields": [],
+      "id": "API-CONSENT-CREATE",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "IFC-PAYMENT-INITIATION",
+        "kind": "composition",
+        "name": "Payment Initiation API v2.3.3",
+        "source_id": "document:design.md#5"
+       }
+      ],
+      "links_out": [
+       {
+        "id": "DATA-CONSENT",
+        "kind": "access",
+        "name": "ConsentLedger",
+        "source_id": "document:design.md#5"
+       }
+      ],
+      "name": "Create domestic payment consent",
+      "provenance": "from the design document design.md#5",
+      "type": "A3.APIOperation",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "method": "GET",
+       "path": "/domestic-payment-consents/{ConsentId}",
+       "payload_fields": [
+        "ConsentId",
+        "Status"
+       ],
+       "request_fields": [
+        "consent_id (F-CONSENT-CONSENT-ID)"
+       ],
+       "response_fields": [
+        "consent_id (F-CONSENT-CONSENT-ID)",
+        "status (F-CONSENT-STATUS)"
+       ]
+      },
+      "connections": [],
+      "description": "",
+      "fields": [],
+      "id": "API-CONSENT-READ",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "IFC-PAYMENT-INITIATION",
+        "kind": "composition",
+        "name": "Payment Initiation API v2.3.3",
+        "source_id": "document:design.md#5"
+       }
+      ],
+      "links_out": [
+       {
+        "id": "DATA-CONSENT",
+        "kind": "access",
+        "name": "ConsentLedger",
+        "source_id": "document:design.md#5"
+       }
+      ],
+      "name": "Read domestic payment consent",
+      "provenance": "from the design document design.md#5",
+      "type": "A3.APIOperation",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "method": "POST",
+       "path": "/domestic-payments",
+       "payload_fields": [
+        "ConsentId",
+        "DomesticPaymentId",
+        "Status"
+       ],
+       "request_fields": [
+        "consent_id (F-PAYMENT-CONSENT-ID)"
+       ],
+       "response_fields": [
+        "payment_id (F-PAYMENT-PAYMENT-ID)",
+        "payment_status (F-PAYMENT-PAYMENT-STATUS)"
+       ]
+      },
+      "connections": [
+       {
+        "direction": "in",
+        "evidence": [
+         "api_contract:design.md#5",
+         "bian_alignment_guidance:design.md#5",
+         "author:design section 5"
+        ],
+        "id": "SO-PAYMENT-ORDER-INITIATION-INITIATE",
+        "mapping_id": "MAP-007",
+        "name": "Payment Order Initiation: Initiate",
+        "relationship": "IMPLEMENTED_BY",
+        "status": "approved"
+       }
+      ],
+      "description": "",
+      "fields": [],
+      "id": "API-PAYMENT-CREATE",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "IFC-PAYMENT-INITIATION",
+        "kind": "composition",
+        "name": "Payment Initiation API v2.3.3",
+        "source_id": "document:design.md#5"
+       }
+      ],
+      "links_out": [
+       {
+        "id": "DATA-PAYMENT",
+        "kind": "access",
+        "name": "PaymentLedger",
+        "source_id": "document:design.md#5"
+       }
+      ],
+      "name": "Create domestic payment",
+      "provenance": "from the design document design.md#5",
+      "type": "A3.APIOperation",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "method": "GET",
+       "path": "/domestic-payments/{DomesticPaymentId}",
+       "payload_fields": [
+        "DomesticPaymentId",
+        "Status"
+       ],
+       "request_fields": [
+        "payment_id (F-PAYMENT-PAYMENT-ID)"
+       ],
+       "response_fields": [
+        "payment_id (F-PAYMENT-PAYMENT-ID)",
+        "payment_status (F-PAYMENT-PAYMENT-STATUS)"
+       ]
+      },
+      "connections": [
+       {
+        "direction": "in",
+        "evidence": [
+         "api_contract:design.md#5",
+         "bian_alignment_guidance:design.md#5",
+         "author:design section 5"
+        ],
+        "id": "SO-PAYMENT-ORDER-INITIATION-RETRIEVE",
+        "mapping_id": "MAP-008",
+        "name": "Payment Order Initiation: Retrieve",
+        "relationship": "IMPLEMENTED_BY",
+        "status": "approved"
+       }
+      ],
+      "description": "",
+      "fields": [],
+      "id": "API-PAYMENT-READ",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "IFC-PAYMENT-INITIATION",
+        "kind": "composition",
+        "name": "Payment Initiation API v2.3.3",
+        "source_id": "document:design.md#5"
+       }
+      ],
+      "links_out": [
+       {
+        "id": "DATA-PAYMENT",
+        "kind": "access",
+        "name": "PaymentLedger",
+        "source_id": "document:design.md#5"
+       }
+      ],
+      "name": "Read domestic payment",
+      "provenance": "from the design document design.md#5",
+      "type": "A3.APIOperation",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "method": "GET"
+      },
+      "connections": [],
+      "description": "Returned only where DebtorAccountRelease is true (R-24). The document gives no path.",
+      "fields": [],
+      "id": "API-DEBTOR-READ",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "IFC-PAYMENT-INITIATION",
+        "kind": "composition",
+        "name": "Payment Initiation API v2.3.3",
+        "source_id": "document:design.md#5"
+       }
+      ],
+      "links_out": [
+       {
+        "id": "DATA-CONSENT",
+        "kind": "access",
+        "name": "ConsentLedger",
+        "source_id": "document:design.md#5"
+       }
+      ],
+      "name": "Read payment debtor account",
+      "provenance": "from the design document design.md#5,document:design.md#2",
+      "type": "A3.APIOperation",
+      "version": "1"
+     }
+    ],
+    "title": "API operations",
+    "type": "A3.APIOperation"
+   },
+   {
+    "definition": "A logical data entity held by an application",
+    "records": [
+     {
+      "attribute_sources": {
+       "stored_in": "document:design.md#6"
+      },
+      "attributes": {
+       "attributes": [
+        "consent_id",
+        "third_party_id",
+        "customer_id",
+        "status",
+        "instruction_identification",
+        "end_to_end_identification",
+        "amount",
+        "currency",
+        "creditor_account",
+        "debtor_account",
+        "expires_at"
+       ],
+       "personal_information": true,
+       "stored_in": [
+        "Managed database (SYS-DB)"
+       ]
+      },
+      "connections": [
+       {
+        "direction": "out",
+        "evidence": [
+         "deployment_design:design.md#6",
+         "author:design section 6"
+        ],
+        "id": "SYS-DB",
+        "mapping_id": "MAP-027",
+        "name": "Managed database",
+        "relationship": "STORED_IN",
+        "status": "approved"
+       }
+      ],
+      "description": "",
+      "fields": [
+       {
+        "allowed_values": [],
+        "family": null,
+        "id": "F-CONSENT-CONSENT-ID",
+        "key": true,
+        "name": "consent_id",
+        "personal": false,
+        "refers_to": null,
+        "required": false,
+        "type": "uuid"
+       },
+       {
+        "allowed_values": [],
+        "family": null,
+        "id": "F-CONSENT-THIRD-PARTY-ID",
+        "key": false,
+        "name": "third_party_id",
+        "personal": false,
+        "refers_to": null,
+        "required": false,
+        "type": "varchar(64)"
+       },
+       {
+        "allowed_values": [],
+        "family": null,
+        "id": "F-CONSENT-CUSTOMER-ID",
+        "key": false,
+        "name": "customer_id",
+        "personal": true,
+        "refers_to": null,
+        "required": false,
+        "type": "uuid"
+       },
+       {
+        "allowed_values": [
+         "AwaitingAuthorisation",
+         "Authorised",
+         "Rejected",
+         "Consumed"
+        ],
+        "family": null,
+        "id": "F-CONSENT-STATUS",
+        "key": false,
+        "name": "status",
+        "personal": false,
+        "refers_to": null,
+        "required": false,
+        "type": "varchar(32)"
+       },
+       {
+        "allowed_values": [],
+        "family": null,
+        "id": "F-CONSENT-INSTRUCTION-IDENTIFICATION",
+        "key": false,
+        "name": "instruction_identification",
+        "personal": false,
+        "refers_to": null,
+        "required": false,
+        "type": "varchar(36)"
+       },
+       {
+        "allowed_values": [],
+        "family": null,
+        "id": "F-CONSENT-END-TO-END-IDENTIFICATION",
+        "key": false,
+        "name": "end_to_end_identification",
+        "personal": false,
+        "refers_to": null,
+        "required": false,
+        "type": "varchar(36)"
+       },
+       {
+        "allowed_values": [],
+        "family": null,
+        "id": "F-CONSENT-AMOUNT",
+        "key": false,
+        "name": "amount",
+        "personal": false,
+        "refers_to": null,
+        "required": false,
+        "type": "numeric(18,2)"
+       },
+       {
+        "allowed_values": [],
+        "family": null,
+        "id": "F-CONSENT-CURRENCY",
+        "key": false,
+        "name": "currency",
+        "personal": false,
+        "refers_to": null,
+        "required": false,
+        "type": "char(3)"
+       },
+       {
+        "allowed_values": [],
+        "family": null,
+        "id": "F-CONSENT-CREDITOR-ACCOUNT",
+        "key": false,
+        "name": "creditor_account",
+        "personal": true,
+        "refers_to": null,
+        "required": false,
+        "type": "varchar(32)"
+       },
+       {
+        "allowed_values": [],
+        "family": null,
+        "id": "F-CONSENT-DEBTOR-ACCOUNT",
+        "key": false,
+        "name": "debtor_account",
+        "personal": true,
+        "refers_to": null,
+        "required": false,
+        "type": "varchar(32)"
+       },
+       {
+        "allowed_values": [],
+        "family": null,
+        "id": "F-CONSENT-EXPIRES-AT",
+        "key": false,
+        "name": "expires_at",
+        "personal": false,
+        "refers_to": null,
+        "required": false,
+        "type": "timestamptz"
+       }
+      ],
+      "id": "DATA-CONSENT",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "F-PAYMENT-CONSENT-ID",
+        "kind": "association",
+        "name": "consent_id",
+        "source_id": "document:design.md#5"
+       },
+       {
+        "id": "API-CONSENT-CREATE",
+        "kind": "access",
+        "name": "Create domestic payment consent",
+        "source_id": "document:design.md#5"
+       },
+       {
+        "id": "API-CONSENT-READ",
+        "kind": "access",
+        "name": "Read domestic payment consent",
+        "source_id": "document:design.md#5"
+       },
+       {
+        "id": "APP-CONSENT",
+        "kind": "access",
+        "name": "Consent processing",
+        "source_id": "document:design.md#5"
+       },
+       {
+        "id": "APP-PAYHUB",
+        "kind": "access",
+        "name": "Payments hub",
+        "source_id": "document:design.md#5"
+       },
+       {
+        "id": "API-DEBTOR-READ",
+        "kind": "access",
+        "name": "Read payment debtor account",
+        "source_id": "document:design.md#5"
+       }
+      ],
+      "links_out": [
+       {
+        "id": "F-CONSENT-CONSENT-ID",
+        "kind": "composition",
+        "name": "consent_id",
+        "source_id": "document:design.md#5"
+       },
+       {
+        "id": "F-CONSENT-THIRD-PARTY-ID",
+        "kind": "composition",
+        "name": "third_party_id",
+        "source_id": "document:design.md#5"
+       },
+       {
+        "id": "F-CONSENT-CUSTOMER-ID",
+        "kind": "composition",
+        "name": "customer_id",
+        "source_id": "document:design.md#5"
+       },
+       {
+        "id": "F-CONSENT-STATUS",
+        "kind": "composition",
+        "name": "status",
+        "source_id": "document:design.md#5"
+       },
+       {
+        "id": "F-CONSENT-INSTRUCTION-IDENTIFICATION",
+        "kind": "composition",
+        "name": "instruction_identification",
+        "source_id": "document:design.md#5"
+       },
+       {
+        "id": "F-CONSENT-END-TO-END-IDENTIFICATION",
+        "kind": "composition",
+        "name": "end_to_end_identification",
+        "source_id": "document:design.md#5"
+       },
+       {
+        "id": "F-CONSENT-AMOUNT",
+        "kind": "composition",
+        "name": "amount",
+        "source_id": "document:design.md#5"
+       },
+       {
+        "id": "F-CONSENT-CURRENCY",
+        "kind": "composition",
+        "name": "currency",
+        "source_id": "document:design.md#5"
+       },
+       {
+        "id": "F-CONSENT-CREDITOR-ACCOUNT",
+        "kind": "composition",
+        "name": "creditor_account",
+        "source_id": "document:design.md#5"
+       },
+       {
+        "id": "F-CONSENT-DEBTOR-ACCOUNT",
+        "kind": "composition",
+        "name": "debtor_account",
+        "source_id": "document:design.md#5"
+       },
+       {
+        "id": "F-CONSENT-EXPIRES-AT",
+        "kind": "composition",
+        "name": "expires_at",
+        "source_id": "document:design.md#5"
+       }
+      ],
+      "name": "ConsentLedger",
+      "provenance": "from the design document design.md#5,document:design.md#6",
+      "type": "A3.DataEntity",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {
+       "stored_in": "document:design.md#6"
+      },
+      "attributes": {
+       "attributes": [
+        "payment_id",
+        "consent_id",
+        "instruction_identification",
+        "amount",
+        "currency",
+        "payment_status",
+        "ledger_posting_id",
+        "handoff_id",
+        "created_at"
+       ],
+       "stored_in": [
+        "Managed database (SYS-DB)"
+       ]
+      },
+      "connections": [
+       {
+        "direction": "out",
+        "evidence": [
+         "deployment_design:design.md#6",
+         "author:design section 6"
+        ],
+        "id": "SYS-DB",
+        "mapping_id": "MAP-028",
+        "name": "Managed database",
+        "relationship": "STORED_IN",
+        "status": "approved"
+       }
+      ],
+      "description": "",
+      "fields": [
+       {
+        "allowed_values": [],
+        "family": null,
+        "id": "F-PAYMENT-PAYMENT-ID",
+        "key": true,
+        "name": "payment_id",
+        "personal": false,
+        "refers_to": null,
+        "required": false,
+        "type": "uuid"
+       },
+       {
+        "allowed_values": [],
+        "family": null,
+        "id": "F-PAYMENT-CONSENT-ID",
+        "key": false,
+        "name": "consent_id",
+        "personal": false,
+        "refers_to": "ConsentLedger",
+        "required": false,
+        "type": "uuid"
+       },
+       {
+        "allowed_values": [],
+        "family": null,
+        "id": "F-PAYMENT-INSTRUCTION-IDENTIFICATION",
+        "key": false,
+        "name": "instruction_identification",
+        "personal": false,
+        "refers_to": null,
+        "required": false,
+        "type": "varchar(36)"
+       },
+       {
+        "allowed_values": [],
+        "family": null,
+        "id": "F-PAYMENT-AMOUNT",
+        "key": false,
+        "name": "amount",
+        "personal": false,
+        "refers_to": null,
+        "required": false,
+        "type": "numeric(18,2)"
+       },
+       {
+        "allowed_values": [],
+        "family": null,
+        "id": "F-PAYMENT-CURRENCY",
+        "key": false,
+        "name": "currency",
+        "personal": false,
+        "refers_to": null,
+        "required": false,
+        "type": "char(3)"
+       },
+       {
+        "allowed_values": [
+         "Pending",
+         "Rejected",
+         "AcceptedSettlementInProcess",
+         "AcceptedSettlementCompleted"
+        ],
+        "family": null,
+        "id": "F-PAYMENT-PAYMENT-STATUS",
+        "key": false,
+        "name": "payment_status",
+        "personal": false,
+        "refers_to": null,
+        "required": false,
+        "type": "varchar(40)"
+       },
+       {
+        "allowed_values": [],
+        "family": null,
+        "id": "F-PAYMENT-LEDGER-POSTING-ID",
+        "key": false,
+        "name": "ledger_posting_id",
+        "personal": false,
+        "refers_to": null,
+        "required": false,
+        "type": "uuid"
+       },
+       {
+        "allowed_values": [],
+        "family": null,
+        "id": "F-PAYMENT-HANDOFF-ID",
+        "key": false,
+        "name": "handoff_id",
+        "personal": false,
+        "refers_to": null,
+        "required": false,
+        "type": "uuid"
+       },
+       {
+        "allowed_values": [],
+        "family": null,
+        "id": "F-PAYMENT-CREATED-AT",
+        "key": false,
+        "name": "created_at",
+        "personal": false,
+        "refers_to": null,
+        "required": false,
+        "type": "timestamptz"
+       }
+      ],
+      "id": "DATA-PAYMENT",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "API-PAYMENT-CREATE",
+        "kind": "access",
+        "name": "Create domestic payment",
+        "source_id": "document:design.md#5"
+       },
+       {
+        "id": "API-PAYMENT-READ",
+        "kind": "access",
+        "name": "Read domestic payment",
+        "source_id": "document:design.md#5"
+       },
+       {
+        "id": "APP-PAYHUB",
+        "kind": "access",
+        "name": "Payments hub",
+        "source_id": "document:design.md#5"
+       }
+      ],
+      "links_out": [
+       {
+        "id": "F-PAYMENT-PAYMENT-ID",
+        "kind": "composition",
+        "name": "payment_id",
+        "source_id": "document:design.md#5"
+       },
+       {
+        "id": "F-PAYMENT-CONSENT-ID",
+        "kind": "composition",
+        "name": "consent_id",
+        "source_id": "document:design.md#5"
+       },
+       {
+        "id": "F-PAYMENT-INSTRUCTION-IDENTIFICATION",
+        "kind": "composition",
+        "name": "instruction_identification",
+        "source_id": "document:design.md#5"
+       },
+       {
+        "id": "F-PAYMENT-AMOUNT",
+        "kind": "composition",
+        "name": "amount",
+        "source_id": "document:design.md#5"
+       },
+       {
+        "id": "F-PAYMENT-CURRENCY",
+        "kind": "composition",
+        "name": "currency",
+        "source_id": "document:design.md#5"
+       },
+       {
+        "id": "F-PAYMENT-PAYMENT-STATUS",
+        "kind": "composition",
+        "name": "payment_status",
+        "source_id": "document:design.md#5"
+       },
+       {
+        "id": "F-PAYMENT-LEDGER-POSTING-ID",
+        "kind": "composition",
+        "name": "ledger_posting_id",
+        "source_id": "document:design.md#5"
+       },
+       {
+        "id": "F-PAYMENT-HANDOFF-ID",
+        "kind": "composition",
+        "name": "handoff_id",
+        "source_id": "document:design.md#5"
+       },
+       {
+        "id": "F-PAYMENT-CREATED-AT",
+        "kind": "composition",
+        "name": "created_at",
+        "source_id": "document:design.md#5"
+       }
+      ],
+      "name": "PaymentLedger",
+      "provenance": "from the design document design.md#5,document:design.md#6",
+      "type": "A3.DataEntity",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {
+       "stored_in": "document:design.md#6"
+      },
+      "attributes": {
+       "attributes": [
+        "key_hash",
+        "third_party_id",
+        "request_hash",
+        "resource_id",
+        "expires_at"
+       ],
+       "stored_in": [
+        "Managed database (SYS-DB)"
+       ]
+      },
+      "connections": [
+       {
+        "direction": "out",
+        "evidence": [
+         "deployment_design:design.md#6",
+         "author:design section 6"
+        ],
+        "id": "SYS-DB",
+        "mapping_id": "MAP-029",
+        "name": "Managed database",
+        "relationship": "STORED_IN",
+        "status": "approved"
+       }
+      ],
+      "description": "",
+      "fields": [
+       {
+        "allowed_values": [],
+        "family": null,
+        "id": "F-IDEMP-KEY-HASH",
+        "key": true,
+        "name": "key_hash",
+        "personal": false,
+        "refers_to": null,
+        "required": false,
+        "type": "char(64)"
+       },
+       {
+        "allowed_values": [],
+        "family": null,
+        "id": "F-IDEMP-THIRD-PARTY-ID",
+        "key": false,
+        "name": "third_party_id",
+        "personal": false,
+        "refers_to": null,
+        "required": false,
+        "type": "varchar(64)"
+       },
+       {
+        "allowed_values": [],
+        "family": null,
+        "id": "F-IDEMP-REQUEST-HASH",
+        "key": false,
+        "name": "request_hash",
+        "personal": false,
+        "refers_to": null,
+        "required": false,
+        "type": "char(64)"
+       },
+       {
+        "allowed_values": [],
+        "family": null,
+        "id": "F-IDEMP-RESOURCE-ID",
+        "key": false,
+        "name": "resource_id",
+        "personal": false,
+        "refers_to": null,
+        "required": false,
+        "type": "uuid"
+       },
+       {
+        "allowed_values": [],
+        "family": null,
+        "id": "F-IDEMP-EXPIRES-AT",
+        "key": false,
+        "name": "expires_at",
+        "personal": false,
+        "refers_to": null,
+        "required": false,
+        "type": "timestamptz"
+       }
+      ],
+      "id": "DATA-IDEMP",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "APP-PAYHUB",
+        "kind": "access",
+        "name": "Payments hub",
+        "source_id": "document:design.md#5"
+       }
+      ],
+      "links_out": [
+       {
+        "id": "F-IDEMP-KEY-HASH",
+        "kind": "composition",
+        "name": "key_hash",
+        "source_id": "document:design.md#5"
+       },
+       {
+        "id": "F-IDEMP-THIRD-PARTY-ID",
+        "kind": "composition",
+        "name": "third_party_id",
+        "source_id": "document:design.md#5"
+       },
+       {
+        "id": "F-IDEMP-REQUEST-HASH",
+        "kind": "composition",
+        "name": "request_hash",
+        "source_id": "document:design.md#5"
+       },
+       {
+        "id": "F-IDEMP-RESOURCE-ID",
+        "kind": "composition",
+        "name": "resource_id",
+        "source_id": "document:design.md#5"
+       },
+       {
+        "id": "F-IDEMP-EXPIRES-AT",
+        "kind": "composition",
+        "name": "expires_at",
+        "source_id": "document:design.md#5"
+       }
+      ],
+      "name": "IdempotencyRegistry",
+      "provenance": "from the design document design.md#5,document:design.md#6",
+      "type": "A3.DataEntity",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "attributes": [
+        "event_id",
+        "actor_ref",
+        "action",
+        "correlation_id",
+        "recorded_at"
+       ],
+       "personal_information": true
+      },
+      "connections": [
+       {
+        "direction": "out",
+        "evidence": [
+         "deployment_design:design.md#ai-decision",
+         "author:design section ai-decision"
+        ],
+        "id": "SYS-OBS",
+        "mapping_id": "MAP-030",
+        "name": "Audit and metrics",
+        "relationship": "STORED_IN",
+        "status": "approved"
+       }
+      ],
+      "description": "",
+      "fields": [
+       {
+        "allowed_values": [],
+        "family": null,
+        "id": "F-AUDIT-EVENT-ID",
+        "key": true,
+        "name": "event_id",
+        "personal": false,
+        "refers_to": null,
+        "required": false,
+        "type": "uuid"
+       },
+       {
+        "allowed_values": [],
+        "family": null,
+        "id": "F-AUDIT-ACTOR-REF",
+        "key": false,
+        "name": "actor_ref",
+        "personal": true,
+        "refers_to": null,
+        "required": false,
+        "type": "varchar(64)"
+       },
+       {
+        "allowed_values": [],
+        "family": null,
+        "id": "F-AUDIT-ACTION",
+        "key": false,
+        "name": "action",
+        "personal": false,
+        "refers_to": null,
+        "required": false,
+        "type": "varchar(64)"
+       },
+       {
+        "allowed_values": [],
+        "family": null,
+        "id": "F-AUDIT-CORRELATION-ID",
+        "key": false,
+        "name": "correlation_id",
+        "personal": false,
+        "refers_to": null,
+        "required": false,
+        "type": "uuid"
+       },
+       {
+        "allowed_values": [],
+        "family": null,
+        "id": "F-AUDIT-RECORDED-AT",
+        "key": false,
+        "name": "recorded_at",
+        "personal": false,
+        "refers_to": null,
+        "required": false,
+        "type": "timestamptz"
+       }
+      ],
+      "id": "DATA-AUDIT",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "APP-EDGE",
+        "kind": "access",
+        "name": "API ingress",
+        "source_id": "document:design.md#5"
+       }
+      ],
+      "links_out": [
+       {
+        "id": "F-AUDIT-EVENT-ID",
+        "kind": "composition",
+        "name": "event_id",
+        "source_id": "document:design.md#5"
+       },
+       {
+        "id": "F-AUDIT-ACTOR-REF",
+        "kind": "composition",
+        "name": "actor_ref",
+        "source_id": "document:design.md#5"
+       },
+       {
+        "id": "F-AUDIT-ACTION",
+        "kind": "composition",
+        "name": "action",
+        "source_id": "document:design.md#5"
+       },
+       {
+        "id": "F-AUDIT-CORRELATION-ID",
+        "kind": "composition",
+        "name": "correlation_id",
+        "source_id": "document:design.md#5"
+       },
+       {
+        "id": "F-AUDIT-RECORDED-AT",
+        "kind": "composition",
+        "name": "recorded_at",
+        "source_id": "document:design.md#5"
+       }
+      ],
+      "name": "SecurityEventLog",
+      "provenance": "from the design document design.md#5",
+      "type": "A3.DataEntity",
+      "version": "1"
+     }
+    ],
+    "title": "Data entities",
+    "type": "A3.DataEntity"
+   },
+   {
+    "definition": "An event an application produces or consumes",
+    "records": [
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "event_source": "Payments hub (APP-PAYHUB)"
+      },
+      "connections": [],
+      "description": "Emitted by the hub when a payment is recorded as accepted for execution.",
+      "fields": [],
+      "id": "EVT-HANDOFF",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "APP-PAYHUB",
+        "kind": "triggering",
+        "name": "Payments hub",
+        "source_id": "document:design.md#5"
+       }
+      ],
+      "links_out": [],
+      "name": "Durable handoff event",
+      "provenance": "from the design document design.md#5",
+      "type": "A3.Event",
+      "version": "1"
+     }
+    ],
+    "title": "Events",
+    "type": "A3.Event"
+   },
+   {
+    "definition": "A field of a data entity: its physical type, whether it is required, and whether it is a key",
+    "records": [
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "classification": "internal",
+       "physical_type": "uuid",
+       "primary_key": true
+      },
+      "connections": [],
+      "description": "",
+      "fields": [],
+      "id": "F-CONSENT-CONSENT-ID",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "DATA-CONSENT",
+        "kind": "composition",
+        "name": "ConsentLedger",
+        "source_id": "document:design.md#5"
+       }
+      ],
+      "links_out": [],
+      "name": "consent_id",
+      "provenance": "from the design document design.md#5",
+      "type": "A3.DataAttribute",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "classification": "internal",
+       "physical_type": "varchar(64)"
+      },
+      "connections": [],
+      "description": "",
+      "fields": [],
+      "id": "F-CONSENT-THIRD-PARTY-ID",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "DATA-CONSENT",
+        "kind": "composition",
+        "name": "ConsentLedger",
+        "source_id": "document:design.md#5"
+       }
+      ],
+      "links_out": [],
+      "name": "third_party_id",
+      "provenance": "from the design document design.md#5",
+      "type": "A3.DataAttribute",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "classification": "confidential",
+       "personal_information": true,
+       "physical_type": "uuid"
+      },
+      "connections": [],
+      "description": "",
+      "fields": [],
+      "id": "F-CONSENT-CUSTOMER-ID",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "DATA-CONSENT",
+        "kind": "composition",
+        "name": "ConsentLedger",
+        "source_id": "document:design.md#5"
+       }
+      ],
+      "links_out": [],
+      "name": "customer_id",
+      "provenance": "from the design document design.md#5",
+      "type": "A3.DataAttribute",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "allowed_values": [
+        "AwaitingAuthorisation",
+        "Authorised",
+        "Rejected",
+        "Consumed"
+       ],
+       "classification": "internal",
+       "physical_type": "varchar(32)"
+      },
+      "connections": [],
+      "description": "",
+      "fields": [],
+      "id": "F-CONSENT-STATUS",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "DATA-CONSENT",
+        "kind": "composition",
+        "name": "ConsentLedger",
+        "source_id": "document:design.md#5"
+       }
+      ],
+      "links_out": [],
+      "name": "status",
+      "provenance": "from the design document design.md#5,document:design.md#3",
+      "type": "A3.DataAttribute",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "classification": "internal",
+       "physical_type": "varchar(36)"
+      },
+      "connections": [],
+      "description": "",
+      "fields": [],
+      "id": "F-CONSENT-INSTRUCTION-IDENTIFICATION",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "DATA-CONSENT",
+        "kind": "composition",
+        "name": "ConsentLedger",
+        "source_id": "document:design.md#5"
+       }
+      ],
+      "links_out": [],
+      "name": "instruction_identification",
+      "provenance": "from the design document design.md#5",
+      "type": "A3.DataAttribute",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "classification": "internal",
+       "physical_type": "varchar(36)"
+      },
+      "connections": [],
+      "description": "",
+      "fields": [],
+      "id": "F-CONSENT-END-TO-END-IDENTIFICATION",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "DATA-CONSENT",
+        "kind": "composition",
+        "name": "ConsentLedger",
+        "source_id": "document:design.md#5"
+       }
+      ],
+      "links_out": [],
+      "name": "end_to_end_identification",
+      "provenance": "from the design document design.md#5",
+      "type": "A3.DataAttribute",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "classification": "internal",
+       "physical_type": "numeric(18,2)"
+      },
+      "connections": [],
+      "description": "",
+      "fields": [],
+      "id": "F-CONSENT-AMOUNT",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "DATA-CONSENT",
+        "kind": "composition",
+        "name": "ConsentLedger",
+        "source_id": "document:design.md#5"
+       }
+      ],
+      "links_out": [],
+      "name": "amount",
+      "provenance": "from the design document design.md#5",
+      "type": "A3.DataAttribute",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "classification": "internal",
+       "physical_type": "char(3)"
+      },
+      "connections": [],
+      "description": "",
+      "fields": [],
+      "id": "F-CONSENT-CURRENCY",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "DATA-CONSENT",
+        "kind": "composition",
+        "name": "ConsentLedger",
+        "source_id": "document:design.md#5"
+       }
+      ],
+      "links_out": [],
+      "name": "currency",
+      "provenance": "from the design document design.md#5",
+      "type": "A3.DataAttribute",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "classification": "confidential",
+       "personal_information": true,
+       "physical_type": "varchar(32)"
+      },
+      "connections": [],
+      "description": "",
+      "fields": [],
+      "id": "F-CONSENT-CREDITOR-ACCOUNT",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "DATA-CONSENT",
+        "kind": "composition",
+        "name": "ConsentLedger",
+        "source_id": "document:design.md#5"
+       }
+      ],
+      "links_out": [],
+      "name": "creditor_account",
+      "provenance": "from the design document design.md#5",
+      "type": "A3.DataAttribute",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "classification": "confidential",
+       "personal_information": true,
+       "physical_type": "varchar(32)"
+      },
+      "connections": [],
+      "description": "",
+      "fields": [],
+      "id": "F-CONSENT-DEBTOR-ACCOUNT",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "DATA-CONSENT",
+        "kind": "composition",
+        "name": "ConsentLedger",
+        "source_id": "document:design.md#5"
+       }
+      ],
+      "links_out": [],
+      "name": "debtor_account",
+      "provenance": "from the design document design.md#5",
+      "type": "A3.DataAttribute",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "classification": "internal",
+       "physical_type": "timestamptz"
+      },
+      "connections": [],
+      "description": "",
+      "fields": [],
+      "id": "F-CONSENT-EXPIRES-AT",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "DATA-CONSENT",
+        "kind": "composition",
+        "name": "ConsentLedger",
+        "source_id": "document:design.md#5"
+       }
+      ],
+      "links_out": [],
+      "name": "expires_at",
+      "provenance": "from the design document design.md#5",
+      "type": "A3.DataAttribute",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "classification": "internal",
+       "physical_type": "uuid",
+       "primary_key": true
+      },
+      "connections": [],
+      "description": "",
+      "fields": [],
+      "id": "F-PAYMENT-PAYMENT-ID",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "DATA-PAYMENT",
+        "kind": "composition",
+        "name": "PaymentLedger",
+        "source_id": "document:design.md#5"
+       }
+      ],
+      "links_out": [],
+      "name": "payment_id",
+      "provenance": "from the design document design.md#5",
+      "type": "A3.DataAttribute",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "classification": "internal",
+       "physical_type": "uuid"
+      },
+      "connections": [],
+      "description": "",
+      "fields": [],
+      "id": "F-PAYMENT-CONSENT-ID",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "DATA-PAYMENT",
+        "kind": "composition",
+        "name": "PaymentLedger",
+        "source_id": "document:design.md#5"
+       }
+      ],
+      "links_out": [
+       {
+        "id": "DATA-CONSENT",
+        "kind": "association",
+        "name": "ConsentLedger",
+        "source_id": "document:design.md#5"
+       }
+      ],
+      "name": "consent_id",
+      "provenance": "from the design document design.md#5",
+      "type": "A3.DataAttribute",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "classification": "internal",
+       "physical_type": "varchar(36)"
+      },
+      "connections": [],
+      "description": "",
+      "fields": [],
+      "id": "F-PAYMENT-INSTRUCTION-IDENTIFICATION",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "DATA-PAYMENT",
+        "kind": "composition",
+        "name": "PaymentLedger",
+        "source_id": "document:design.md#5"
+       }
+      ],
+      "links_out": [],
+      "name": "instruction_identification",
+      "provenance": "from the design document design.md#5",
+      "type": "A3.DataAttribute",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "classification": "internal",
+       "physical_type": "numeric(18,2)"
+      },
+      "connections": [],
+      "description": "",
+      "fields": [],
+      "id": "F-PAYMENT-AMOUNT",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "DATA-PAYMENT",
+        "kind": "composition",
+        "name": "PaymentLedger",
+        "source_id": "document:design.md#5"
+       }
+      ],
+      "links_out": [],
+      "name": "amount",
+      "provenance": "from the design document design.md#5",
+      "type": "A3.DataAttribute",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "classification": "internal",
+       "physical_type": "char(3)"
+      },
+      "connections": [],
+      "description": "",
+      "fields": [],
+      "id": "F-PAYMENT-CURRENCY",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "DATA-PAYMENT",
+        "kind": "composition",
+        "name": "PaymentLedger",
+        "source_id": "document:design.md#5"
+       }
+      ],
+      "links_out": [],
+      "name": "currency",
+      "provenance": "from the design document design.md#5",
+      "type": "A3.DataAttribute",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "allowed_values": [
+        "Pending",
+        "Rejected",
+        "AcceptedSettlementInProcess",
+        "AcceptedSettlementCompleted"
+       ],
+       "classification": "internal",
+       "physical_type": "varchar(40)"
+      },
+      "connections": [],
+      "description": "",
+      "fields": [],
+      "id": "F-PAYMENT-PAYMENT-STATUS",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "DATA-PAYMENT",
+        "kind": "composition",
+        "name": "PaymentLedger",
+        "source_id": "document:design.md#5"
+       }
+      ],
+      "links_out": [],
+      "name": "payment_status",
+      "provenance": "from the design document design.md#5,document:design.md#3",
+      "type": "A3.DataAttribute",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "classification": "internal",
+       "physical_type": "uuid"
+      },
+      "connections": [],
+      "description": "",
+      "fields": [],
+      "id": "F-PAYMENT-LEDGER-POSTING-ID",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "DATA-PAYMENT",
+        "kind": "composition",
+        "name": "PaymentLedger",
+        "source_id": "document:design.md#5"
+       }
+      ],
+      "links_out": [],
+      "name": "ledger_posting_id",
+      "provenance": "from the design document design.md#5",
+      "type": "A3.DataAttribute",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "classification": "internal",
+       "physical_type": "uuid"
+      },
+      "connections": [],
+      "description": "",
+      "fields": [],
+      "id": "F-PAYMENT-HANDOFF-ID",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "DATA-PAYMENT",
+        "kind": "composition",
+        "name": "PaymentLedger",
+        "source_id": "document:design.md#5"
+       }
+      ],
+      "links_out": [],
+      "name": "handoff_id",
+      "provenance": "from the design document design.md#5",
+      "type": "A3.DataAttribute",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "classification": "internal",
+       "physical_type": "timestamptz"
+      },
+      "connections": [],
+      "description": "",
+      "fields": [],
+      "id": "F-PAYMENT-CREATED-AT",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "DATA-PAYMENT",
+        "kind": "composition",
+        "name": "PaymentLedger",
+        "source_id": "document:design.md#5"
+       }
+      ],
+      "links_out": [],
+      "name": "created_at",
+      "provenance": "from the design document design.md#5",
+      "type": "A3.DataAttribute",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "classification": "internal",
+       "physical_type": "char(64)",
+       "primary_key": true
+      },
+      "connections": [],
+      "description": "",
+      "fields": [],
+      "id": "F-IDEMP-KEY-HASH",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "DATA-IDEMP",
+        "kind": "composition",
+        "name": "IdempotencyRegistry",
+        "source_id": "document:design.md#5"
+       }
+      ],
+      "links_out": [],
+      "name": "key_hash",
+      "provenance": "from the design document design.md#5",
+      "type": "A3.DataAttribute",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "classification": "internal",
+       "physical_type": "varchar(64)"
+      },
+      "connections": [],
+      "description": "",
+      "fields": [],
+      "id": "F-IDEMP-THIRD-PARTY-ID",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "DATA-IDEMP",
+        "kind": "composition",
+        "name": "IdempotencyRegistry",
+        "source_id": "document:design.md#5"
+       }
+      ],
+      "links_out": [],
+      "name": "third_party_id",
+      "provenance": "from the design document design.md#5",
+      "type": "A3.DataAttribute",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "classification": "internal",
+       "physical_type": "char(64)"
+      },
+      "connections": [],
+      "description": "",
+      "fields": [],
+      "id": "F-IDEMP-REQUEST-HASH",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "DATA-IDEMP",
+        "kind": "composition",
+        "name": "IdempotencyRegistry",
+        "source_id": "document:design.md#5"
+       }
+      ],
+      "links_out": [],
+      "name": "request_hash",
+      "provenance": "from the design document design.md#5",
+      "type": "A3.DataAttribute",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "classification": "internal",
+       "physical_type": "uuid"
+      },
+      "connections": [],
+      "description": "",
+      "fields": [],
+      "id": "F-IDEMP-RESOURCE-ID",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "DATA-IDEMP",
+        "kind": "composition",
+        "name": "IdempotencyRegistry",
+        "source_id": "document:design.md#5"
+       }
+      ],
+      "links_out": [],
+      "name": "resource_id",
+      "provenance": "from the design document design.md#5",
+      "type": "A3.DataAttribute",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "classification": "internal",
+       "physical_type": "timestamptz"
+      },
+      "connections": [],
+      "description": "",
+      "fields": [],
+      "id": "F-IDEMP-EXPIRES-AT",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "DATA-IDEMP",
+        "kind": "composition",
+        "name": "IdempotencyRegistry",
+        "source_id": "document:design.md#5"
+       }
+      ],
+      "links_out": [],
+      "name": "expires_at",
+      "provenance": "from the design document design.md#5",
+      "type": "A3.DataAttribute",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "classification": "internal",
+       "physical_type": "uuid",
+       "primary_key": true
+      },
+      "connections": [],
+      "description": "",
+      "fields": [],
+      "id": "F-AUDIT-EVENT-ID",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "DATA-AUDIT",
+        "kind": "composition",
+        "name": "SecurityEventLog",
+        "source_id": "document:design.md#5"
+       }
+      ],
+      "links_out": [],
+      "name": "event_id",
+      "provenance": "from the design document design.md#5",
+      "type": "A3.DataAttribute",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "classification": "confidential",
+       "personal_information": true,
+       "physical_type": "varchar(64)"
+      },
+      "connections": [],
+      "description": "",
+      "fields": [],
+      "id": "F-AUDIT-ACTOR-REF",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "DATA-AUDIT",
+        "kind": "composition",
+        "name": "SecurityEventLog",
+        "source_id": "document:design.md#5"
+       }
+      ],
+      "links_out": [],
+      "name": "actor_ref",
+      "provenance": "from the design document design.md#5",
+      "type": "A3.DataAttribute",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "classification": "internal",
+       "physical_type": "varchar(64)"
+      },
+      "connections": [],
+      "description": "",
+      "fields": [],
+      "id": "F-AUDIT-ACTION",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "DATA-AUDIT",
+        "kind": "composition",
+        "name": "SecurityEventLog",
+        "source_id": "document:design.md#5"
+       }
+      ],
+      "links_out": [],
+      "name": "action",
+      "provenance": "from the design document design.md#5",
+      "type": "A3.DataAttribute",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "classification": "internal",
+       "physical_type": "uuid"
+      },
+      "connections": [],
+      "description": "",
+      "fields": [],
+      "id": "F-AUDIT-CORRELATION-ID",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "DATA-AUDIT",
+        "kind": "composition",
+        "name": "SecurityEventLog",
+        "source_id": "document:design.md#5"
+       }
+      ],
+      "links_out": [],
+      "name": "correlation_id",
+      "provenance": "from the design document design.md#5",
+      "type": "A3.DataAttribute",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "classification": "internal",
+       "physical_type": "timestamptz"
+      },
+      "connections": [],
+      "description": "",
+      "fields": [],
+      "id": "F-AUDIT-RECORDED-AT",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "DATA-AUDIT",
+        "kind": "composition",
+        "name": "SecurityEventLog",
+        "source_id": "document:design.md#5"
+       }
+      ],
+      "links_out": [],
+      "name": "recorded_at",
+      "provenance": "from the design document design.md#5",
+      "type": "A3.DataAttribute",
+      "version": "1"
+     }
+    ],
+    "title": "Data attributes",
+    "type": "A3.DataAttribute"
+   }
+  ],
+  "summary": {
+   "by_type": {
+    "API operations": 5,
+    "Application components": 8,
+    "Application interfaces": 1,
+    "Data attributes": 30,
+    "Data entities": 4,
+    "Events": 1
+   },
+   "records": 49,
+   "unconfirmed": 0,
+   "with_approved_connection": 15
+  },
+  "title": "A3 Application Architecture",
+  "workspace": "v3"
+ }
+}

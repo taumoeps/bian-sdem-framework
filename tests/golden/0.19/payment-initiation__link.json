@@ -1,0 +1,18 @@
+{
+ "command": [
+  "link",
+  "--workspace",
+  "<tmp>/pi",
+  "--out",
+  "<tmp>/payment-initiation-links",
+  "--json"
+ ],
+ "exit": 0,
+ "output": {
+  "count": 0,
+  "folder": "<tmp>/payment-initiation-links",
+  "next": null,
+  "proposals": [],
+  "proposals_file": "<tmp>/payment-initiation-links/proposals.json"
+ }
+}

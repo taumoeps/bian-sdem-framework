@@ -1,0 +1,18 @@
+{
+ "command": [
+  "link",
+  "--workspace",
+  "<tmp>/v3",
+  "--out",
+  "<tmp>/payment-initiation-v3-links",
+  "--json"
+ ],
+ "exit": 0,
+ "output": {
+  "count": 0,
+  "folder": "<tmp>/payment-initiation-v3-links",
+  "next": null,
+  "proposals": [],
+  "proposals_file": "<tmp>/payment-initiation-v3-links/proposals.json"
+ }
+}

@@ -1,0 +1,770 @@
+{
+ "command": [
+  "document",
+  "--workspace",
+  "<tmp>/pi",
+  "--layer",
+  "A1",
+  "--json"
+ ],
+ "exit": 0,
+ "output": {
+  "fingerprint": "<volatile>",
+  "gaps": {
+   "no_connection": [
+    "CAP-PAY-000",
+    "VSS-P1",
+    "VSS-P2",
+    "VSS-P3",
+    "VSS-P4",
+    "ACT-PAY-01a",
+    "ACT-PAY-01b",
+    "ACT-PAY-02a",
+    "ACT-PAY-02b",
+    "ROLE-PAY-OFFICER",
+    "BO-PAYEE"
+   ],
+   "placeholders": [],
+   "requirements_not_confirmed": [],
+   "unconfirmed": []
+  },
+  "layer": "A1",
+  "requirements": [
+   {
+    "category": "availability",
+    "condition": {
+     "metric": "availability_pct",
+     "operator": ">=",
+     "period": "month",
+     "unit": "%",
+     "value": 99.95
+    },
+    "evidence": [
+     "service_level_agreement:SLA-PAY-001#s2"
+    ],
+    "id": "REQ-AV-01",
+    "name": "Payment capture availability",
+    "statement": "Customers can submit and have validated a payment instruction 99.95% of each month.",
+    "status": "confirmed",
+    "subject": "PRC-PAY-01",
+    "subject_name": "Capture and validate payment instruction"
+   },
+   {
+    "category": "data_residency",
+    "condition": {
+     "metric": "region",
+     "operator": "in",
+     "value": [
+      "XA"
+     ]
+    },
+    "evidence": [
+     "policy:DATA-RESIDENCY-POL#4"
+    ],
+    "id": "REQ-RES-01",
+    "name": "Payment data stays in Region A",
+    "statement": "Payment instructions and their records are processed and stored in Region A only.",
+    "status": "confirmed",
+    "subject": "PRC-PAY-02",
+    "subject_name": "Execute and confirm payment"
+   }
+  ],
+  "sections": [
+   {
+    "definition": "A business ability independent of how it is implemented",
+    "records": [
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "conforms_to": [
+        "BIAN BCM 14.0"
+       ],
+       "level": 1,
+       "maturity_current": 3,
+       "maturity_target": 4,
+       "owner": "Payments Operations Officer (ROLE-PAY-OFFICER)",
+       "strategic_importance": "core",
+       "subject": [
+        "payments"
+       ]
+      },
+      "connections": [],
+      "description": "Move money on behalf of customers: initiate, execute, settle and report payments across schemes.",
+      "fields": [],
+      "id": "CAP-PAY-000",
+      "lifecycle_status": "active",
+      "links_in": [],
+      "links_out": [
+       {
+        "id": "CAP-PAY-010",
+        "kind": "composition",
+        "name": "Initiate Payment",
+        "source_id": null
+       }
+      ],
+      "name": "Payments",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A1.BusinessCapability",
+      "version": "1.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "access_classification": "internal",
+       "conforms_to": [
+        "BIAN BCM 14.0"
+       ],
+       "level": 2,
+       "maturity_current": 2,
+       "maturity_target": 4,
+       "owner": "Payments Operations Officer (ROLE-PAY-OFFICER)",
+       "strategic_importance": "core",
+       "subject": [
+        "payments"
+       ]
+      },
+      "connections": [
+       {
+        "direction": "out",
+        "evidence": [
+         "business_architecture_document:BA-PAY-2026#s2",
+         "domain_scope_assessment:DSA-PAY-INIT-001"
+        ],
+        "id": "SD-PI",
+        "mapping_id": "PAY-001",
+        "name": "Payment Initiation (synthetic selection)",
+        "relationship": "SUPPORTED_BY",
+        "status": "approved"
+       }
+      ],
+      "description": "Capture a customer's payment instruction, validate and authorise it, and hand it to execution — for credit transfers from a customer account.",
+      "fields": [],
+      "id": "CAP-PAY-010",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "CAP-PAY-000",
+        "kind": "composition",
+        "name": "Payments",
+        "source_id": null
+       },
+       {
+        "id": "PRC-PAY-01",
+        "kind": "realization",
+        "name": "Capture and validate payment instruction",
+        "source_id": null
+       },
+       {
+        "id": "PRC-PAY-02",
+        "kind": "realization",
+        "name": "Execute and confirm payment",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "VS-MAKE-PAYMENT",
+        "kind": "serving",
+        "name": "Make a Payment",
+        "source_id": null
+       }
+      ],
+      "name": "Initiate Payment",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A1.BusinessCapability",
+      "version": "1.0"
+     }
+    ],
+    "title": "Business capabilities",
+    "type": "A1.BusinessCapability"
+   },
+   {
+    "definition": "The stages by which stakeholders receive value",
+    "records": [
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "owner": "Payments Operations Officer (ROLE-PAY-OFFICER)",
+       "stages": [
+        "Capture payment instruction (VSS-P1)",
+        "Validate and authorise (VSS-P2)",
+        "Execute transfer (VSS-P3)",
+        "Confirm to customer (VSS-P4)"
+       ],
+       "stakeholder": "retail customer",
+       "value_proposition": "money reaches the payee quickly and safely"
+      },
+      "connections": [
+       {
+        "direction": "out",
+        "evidence": [
+         "process_model:PM-MAKE-PAYMENT-2026",
+         "scenario_suitability_review:SCN-REVIEW-CT-001"
+        ],
+        "id": "BS-CREDIT-TRANSFER",
+        "mapping_id": "PAY-002",
+        "name": "Customer credit transfer",
+        "relationship": "ALIGNED_TO",
+        "status": "approved"
+       }
+      ],
+      "description": "The customer's journey from deciding to pay someone to seeing the payment confirmed.",
+      "fields": [],
+      "id": "VS-MAKE-PAYMENT",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "CAP-PAY-010",
+        "kind": "serving",
+        "name": "Initiate Payment",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "VSS-P1",
+        "kind": "composition",
+        "name": "Capture payment instruction",
+        "source_id": null
+       },
+       {
+        "id": "VSS-P2",
+        "kind": "composition",
+        "name": "Validate and authorise",
+        "source_id": null
+       },
+       {
+        "id": "VSS-P3",
+        "kind": "composition",
+        "name": "Execute transfer",
+        "source_id": null
+       },
+       {
+        "id": "VSS-P4",
+        "kind": "composition",
+        "name": "Confirm to customer",
+        "source_id": null
+       }
+      ],
+      "name": "Make a Payment",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A1.ValueStream",
+      "version": "1.0"
+     }
+    ],
+    "title": "Value streams",
+    "type": "A1.ValueStream"
+   },
+   {
+    "definition": "One named segment of a value stream",
+    "records": [
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "entrance_criteria": "customer decides to pay",
+       "exit_criteria": "instruction captured",
+       "value_item": "a complete, correct instruction"
+      },
+      "connections": [],
+      "description": "The customer enters payee, amount and date.",
+      "fields": [],
+      "id": "VSS-P1",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "VS-MAKE-PAYMENT",
+        "kind": "composition",
+        "name": "Make a Payment",
+        "source_id": null
+       }
+      ],
+      "links_out": [],
+      "name": "Capture payment instruction",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A1.ValueStreamStage",
+      "version": "1.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "entrance_criteria": "instruction captured",
+       "exit_criteria": "instruction authorised",
+       "value_item": "an authorised instruction"
+      },
+      "connections": [],
+      "description": "The instruction is checked and the customer authorises it.",
+      "fields": [],
+      "id": "VSS-P2",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "VS-MAKE-PAYMENT",
+        "kind": "composition",
+        "name": "Make a Payment",
+        "source_id": null
+       }
+      ],
+      "links_out": [],
+      "name": "Validate and authorise",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A1.ValueStreamStage",
+      "version": "1.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {},
+      "connections": [],
+      "description": "The bank executes the transfer.",
+      "fields": [],
+      "id": "VSS-P3",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "VS-MAKE-PAYMENT",
+        "kind": "composition",
+        "name": "Make a Payment",
+        "source_id": null
+       }
+      ],
+      "links_out": [],
+      "name": "Execute transfer",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A1.ValueStreamStage",
+      "version": "1.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {},
+      "connections": [],
+      "description": "The customer sees the payment status.",
+      "fields": [],
+      "id": "VSS-P4",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "VS-MAKE-PAYMENT",
+        "kind": "composition",
+        "name": "Make a Payment",
+        "source_id": null
+       }
+      ],
+      "links_out": [],
+      "name": "Confirm to customer",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A1.ValueStreamStage",
+      "version": "1.0"
+     }
+    ],
+    "title": "Value stream stages",
+    "type": "A1.ValueStreamStage"
+   },
+   {
+    "definition": "Coordinated business behaviour",
+    "records": [
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "automation_level": "automated",
+       "criticality": "high",
+       "frequency": "continuous",
+       "invokes": [
+        "Initiate Payment Instruction (SO-PI-01)",
+        "Evaluate Payment Instruction Validation (SO-PI-02)"
+       ],
+       "level": 2,
+       "modified": "2026-09-30",
+       "outcome": "authorised payment instruction",
+       "owner": "Payments Operations Officer (ROLE-PAY-OFFICER)",
+       "triggered_by": "customer submits a payment"
+      },
+      "connections": [
+       {
+        "direction": "out",
+        "evidence": [
+         "process_model:PM-MAKE-PAYMENT-2026"
+        ],
+        "id": "SD-PI",
+        "mapping_id": "PAY-003",
+        "name": "Payment Initiation (synthetic selection)",
+        "relationship": "USES_DOMAIN",
+        "status": "approved"
+       }
+      ],
+      "description": "Capture the instruction from the channel, validate it against account and scheme rules, obtain authorisation.",
+      "fields": [],
+      "id": "PRC-PAY-01",
+      "lifecycle_status": "active",
+      "links_in": [],
+      "links_out": [
+       {
+        "id": "CAP-PAY-010",
+        "kind": "realization",
+        "name": "Initiate Payment",
+        "source_id": null
+       },
+       {
+        "id": "ACT-PAY-01a",
+        "kind": "composition",
+        "name": "Capture instruction",
+        "source_id": null
+       },
+       {
+        "id": "ACT-PAY-01b",
+        "kind": "composition",
+        "name": "Validate instruction",
+        "source_id": null
+       },
+       {
+        "id": "BO-PAY-INSTR",
+        "kind": "access",
+        "name": "Payment Instruction",
+        "source_id": null
+       }
+      ],
+      "name": "Capture and validate payment instruction",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A1.BusinessProcess",
+      "version": "1.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "automation_level": "partly automated",
+       "criticality": "high",
+       "frequency": "continuous",
+       "invokes": [
+        "Execute Payment Instruction Execution (SO-PI-03)",
+        "Retrieve Payment Instruction (SO-PI-04)"
+       ],
+       "level": 2,
+       "modified": "2026-09-30",
+       "outcome": "payment executed and confirmed",
+       "owner": "Payments Operations Officer (ROLE-PAY-OFFICER)",
+       "triggered_by": "instruction authorised"
+      },
+      "connections": [
+       {
+        "direction": "out",
+        "evidence": [
+         "process_model:PM-MAKE-PAYMENT-2026"
+        ],
+        "id": "SD-PI",
+        "mapping_id": "PAY-004",
+        "name": "Payment Initiation (synthetic selection)",
+        "relationship": "USES_DOMAIN",
+        "status": "approved"
+       }
+      ],
+      "description": "Execute the authorised instruction and report its status to the customer.",
+      "fields": [],
+      "id": "PRC-PAY-02",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "ROLE-PAY-OFFICER",
+        "kind": "assignment",
+        "name": "Payments Operations Officer",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "CAP-PAY-010",
+        "kind": "realization",
+        "name": "Initiate Payment",
+        "source_id": null
+       },
+       {
+        "id": "ACT-PAY-02a",
+        "kind": "composition",
+        "name": "Execute payment",
+        "source_id": null
+       },
+       {
+        "id": "ACT-PAY-02b",
+        "kind": "composition",
+        "name": "Retrieve status",
+        "source_id": null
+       }
+      ],
+      "name": "Execute and confirm payment",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A1.BusinessProcess",
+      "version": "1.0"
+     }
+    ],
+    "title": "Business processes",
+    "type": "A1.BusinessProcess"
+   },
+   {
+    "definition": "A fine-grained activity within a process",
+    "records": [
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "invokes": [
+        "Initiate Payment Instruction (SO-PI-01)"
+       ],
+       "sequence": 1
+      },
+      "connections": [],
+      "description": "Record the payee, amount, currency and value date.",
+      "fields": [],
+      "id": "ACT-PAY-01a",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "PRC-PAY-01",
+        "kind": "composition",
+        "name": "Capture and validate payment instruction",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "BO-PAYEE",
+        "kind": "access",
+        "name": "Payee",
+        "source_id": null
+       }
+      ],
+      "name": "Capture instruction",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A1.BusinessActivity",
+      "version": "1.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "invokes": [
+        "Evaluate Payment Instruction Validation (SO-PI-02)"
+       ],
+       "sequence": 2
+      },
+      "connections": [],
+      "description": "Evaluate the instruction for completeness, limits and sanctions.",
+      "fields": [],
+      "id": "ACT-PAY-01b",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "PRC-PAY-01",
+        "kind": "composition",
+        "name": "Capture and validate payment instruction",
+        "source_id": null
+       }
+      ],
+      "links_out": [],
+      "name": "Validate instruction",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A1.BusinessActivity",
+      "version": "1.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "invokes": [
+        "Execute Payment Instruction Execution (SO-PI-03)"
+       ],
+       "sequence": 1
+      },
+      "connections": [],
+      "description": "Submit the instruction for execution.",
+      "fields": [],
+      "id": "ACT-PAY-02a",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "PRC-PAY-02",
+        "kind": "composition",
+        "name": "Execute and confirm payment",
+        "source_id": null
+       }
+      ],
+      "links_out": [],
+      "name": "Execute payment",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A1.BusinessActivity",
+      "version": "1.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "invokes": [
+        "Retrieve Payment Instruction (SO-PI-04)"
+       ],
+       "sequence": 2
+      },
+      "connections": [],
+      "description": "Obtain the current status of the instruction.",
+      "fields": [],
+      "id": "ACT-PAY-02b",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "PRC-PAY-02",
+        "kind": "composition",
+        "name": "Execute and confirm payment",
+        "source_id": null
+       }
+      ],
+      "links_out": [],
+      "name": "Retrieve status",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A1.BusinessActivity",
+      "version": "1.0"
+     }
+    ],
+    "title": "Business activities",
+    "type": "A1.BusinessActivity"
+   },
+   {
+    "definition": "Responsibility for a class of business behaviour",
+    "records": [
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "responsibilities": "handle exceptions in payment processing",
+       "role_kind": "role"
+      },
+      "connections": [],
+      "description": "Handles exceptions in payment processing.",
+      "fields": [],
+      "id": "ROLE-PAY-OFFICER",
+      "lifecycle_status": "active",
+      "links_in": [],
+      "links_out": [
+       {
+        "id": "PRC-PAY-02",
+        "kind": "assignment",
+        "name": "Execute and confirm payment",
+        "source_id": null
+       }
+      ],
+      "name": "Payments Operations Officer",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A1.BusinessRole",
+      "version": "1.0"
+     }
+    ],
+    "title": "Business roles",
+    "type": "A1.BusinessRole"
+   },
+   {
+    "definition": "A business-level information concept",
+    "records": [
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "access_classification": "confidential",
+       "attributes": [
+        "debtor_account",
+        "creditor_account",
+        "amount",
+        "currency",
+        "value_date",
+        "payment_reference",
+        "remittance_information"
+       ],
+       "glossary_uri": "https://example.org/glossary/payment-instruction",
+       "personal_information": true
+      },
+      "connections": [
+       {
+        "direction": "out",
+        "evidence": [
+         "business_glossary:GL-PAY-2026#payment-instruction",
+         "object_alignment_review:OAR-PAY-001"
+        ],
+        "id": "BBO-PAY-INSTR",
+        "mapping_id": "PAY-005",
+        "name": "Payment Instruction",
+        "relationship": "ALIGNED_TO",
+        "status": "approved"
+       }
+      ],
+      "description": "A customer's request to pay an amount to a payee on a date.",
+      "fields": [],
+      "id": "BO-PAY-INSTR",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "PRC-PAY-01",
+        "kind": "access",
+        "name": "Capture and validate payment instruction",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "BO-PAYEE",
+        "kind": "aggregation",
+        "name": "Payee",
+        "source_id": null
+       }
+      ],
+      "name": "Payment Instruction",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A1.BusinessObject",
+      "version": "1.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "access_classification": "confidential",
+       "attributes": [
+        "payee_name",
+        "payee_account",
+        "payee_bank"
+       ],
+       "glossary_uri": "https://example.org/glossary/payee",
+       "personal_information": true
+      },
+      "connections": [],
+      "description": "A party the customer pays.",
+      "fields": [],
+      "id": "BO-PAYEE",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "ACT-PAY-01a",
+        "kind": "access",
+        "name": "Capture instruction",
+        "source_id": null
+       },
+       {
+        "id": "BO-PAY-INSTR",
+        "kind": "aggregation",
+        "name": "Payment Instruction",
+        "source_id": null
+       }
+      ],
+      "links_out": [],
+      "name": "Payee",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A1.BusinessObject",
+      "version": "1.0"
+     }
+    ],
+    "title": "Business objects",
+    "type": "A1.BusinessObject"
+   }
+  ],
+  "summary": {
+   "by_type": {
+    "Business activities": 4,
+    "Business capabilities": 2,
+    "Business objects": 2,
+    "Business processes": 2,
+    "Business roles": 1,
+    "Value stream stages": 4,
+    "Value streams": 1
+   },
+   "records": 16,
+   "unconfirmed": 0,
+   "with_approved_connection": 5
+  },
+  "title": "A1 Business Architecture",
+  "workspace": "pi"
+ }
+}

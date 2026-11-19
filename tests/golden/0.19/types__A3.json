@@ -1,0 +1,1365 @@
+{
+ "command": [
+  "types",
+  "A3",
+  "--json"
+ ],
+ "exit": 0,
+ "output": {
+  "layer": "A3",
+  "types": [
+   {
+    "abstract": false,
+    "archimate": {
+     "element": "Application Service",
+     "from": "SDEM",
+     "layer": "application",
+     "why": "one operation an interface offers — ArchiMate models it as an application service"
+    },
+    "attributes": [
+     {
+      "allowed_values": [
+       "GET",
+       "POST",
+       "PUT",
+       "PATCH",
+       "DELETE",
+       "HEAD",
+       "OPTIONS",
+       "BATCH",
+       "MQ",
+       "FILE"
+      ],
+      "description": "HTTP method, or BATCH / MQ / FILE for non-HTTP",
+      "name": "method",
+      "required": true,
+      "type": "string"
+     },
+     {
+      "description": "resource path",
+      "name": "path",
+      "required": true,
+      "type": "string"
+     },
+     {
+      "description": "request and response field names",
+      "name": "payload_fields",
+      "required": true,
+      "type": "list<string>"
+     },
+     {
+      "description": "the operation's unique id in its API contract",
+      "name": "operation_id",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "whether the operation is deprecated in its contract",
+      "name": "deprecated",
+      "required": false,
+      "type": "boolean"
+     },
+     {
+      "description": "the data attributes the operation takes",
+      "name": "request_fields",
+      "refers_to": [
+       "A3.DataAttribute"
+      ],
+      "required": false,
+      "type": "list<string>"
+     },
+     {
+      "description": "the data attributes the operation returns",
+      "name": "response_fields",
+      "refers_to": [
+       "A3.DataAttribute"
+      ],
+      "required": false,
+      "type": "list<string>"
+     },
+     {
+      "description": "the response status codes the operation defines, e.g. 201, 400, 404",
+      "name": "responses",
+      "required": false,
+      "type": "list<string>"
+     },
+     {
+      "description": "the path and query parameters the operation takes",
+      "name": "parameters",
+      "required": false,
+      "type": "list<string>"
+     }
+    ],
+    "definition": "A callable operation of an API contract",
+    "extends": [],
+    "identifier": [
+     "owning interface",
+     "method",
+     "path"
+    ],
+    "layer": "A3",
+    "link_types_to_other_layers": [
+     {
+      "direction": "in",
+      "evidence_needed": [
+       "api_contract"
+      ],
+      "other_end": "A2.ServiceOperation",
+      "relationship": "IMPLEMENTED_BY"
+     }
+    ],
+    "links_in": [
+     {
+      "from": "A3.ApplicationComponent",
+      "kind": "composition",
+      "rule": "RA3-28"
+     },
+     {
+      "from": "A3.ApplicationInterface",
+      "kind": "composition",
+      "rule": "RA3-27"
+     }
+    ],
+    "links_out": [
+     {
+      "kind": "access",
+      "rule": "RA3-29",
+      "to": "A3.DataEntity"
+     }
+    ],
+    "organisation_rules": [],
+    "record_fields": {
+     "lifecycle_status": [
+      "planned",
+      "active",
+      "deprecated",
+      "retired"
+     ],
+     "optional": [
+      "description",
+      "attributes"
+     ],
+     "required": [
+      "id",
+      "type",
+      "version",
+      "name",
+      "lifecycle_status"
+     ]
+    },
+    "source": "BIAN Semantic API · Service Operation (API)",
+    "type": "A3.APIOperation"
+   },
+   {
+    "abstract": false,
+    "archimate": {
+     "element": "Application Component",
+     "from": "SDEM",
+     "layer": "application"
+    },
+    "attributes": [
+     {
+      "description": "ids of the A4 platforms that host it",
+      "name": "deployed_on",
+      "refers_to": [
+       "A4.InfrastructureComponent"
+      ],
+      "required": false,
+      "type": "list<string>"
+     },
+     {
+      "description": "ids of its A4 deployments",
+      "name": "deployed_as",
+      "refers_to": [
+       "A4.Deployment"
+      ],
+      "required": false,
+      "type": "list<string>"
+     },
+     {
+      "description": "ids of the A4 artifacts it is built as",
+      "name": "built_as",
+      "refers_to": [
+       "A4.Artifact"
+      ],
+      "required": false,
+      "type": "list<string>"
+     },
+     {
+      "deprecated": true,
+      "description": "id of the A4 network it sits in",
+      "instead": "SDEM join key for rule S37; zone-wins precedence from use case C3 finding 3 — docs/use-case-testing.md",
+      "name": "network_zone",
+      "refers_to": [
+       "A4.NetworkZone"
+      ],
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "the supplier of the component (\"in-house\" when built by the bank)",
+      "name": "vendor",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "deprecated": true,
+      "description": "data entities it accesses",
+      "instead": "duplicates the A3 access relationship (RA3-16)",
+      "name": "accesses",
+      "refers_to": [
+       "A3.DataEntity"
+      ],
+      "required": false,
+      "type": "list<string>"
+     },
+     {
+      "description": "the product release that is in use (not the version of this model record)",
+      "name": "release_version",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "the licence, as an SPDX identifier (e.g. Apache-2.0)",
+      "name": "license",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "the product's CPE 2.3 name, for vulnerability matching",
+      "name": "cpe",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "allowed_values": [
+       "on-premises",
+       "IaaS",
+       "PaaS",
+       "SaaS"
+      ],
+      "description": "how the application is hosted",
+      "name": "hosting_model",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "how quickly the application must be back after an outage (e.g. \"4h\")",
+      "name": "recovery_time_objective",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "how much data loss is tolerable, as a time (e.g. \"15m\")",
+      "name": "recovery_point_objective",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "allowed_values": [
+       "keep",
+       "enhance",
+       "replace",
+       "retire"
+      ],
+      "description": "what the bank plans to do with the application",
+      "name": "disposition",
+      "required": false,
+      "type": "string"
+     }
+    ],
+    "definition": "A modular, deployable part of an application",
+    "extends": [],
+    "identifier": [
+     "name"
+    ],
+    "layer": "A3",
+    "link_types_to_other_layers": [
+     {
+      "direction": "in",
+      "evidence_needed": [
+       "application_architecture_document"
+      ],
+      "other_end": "A2.ServiceDomain",
+      "relationship": "REALIZED_BY"
+     },
+     {
+      "direction": "out",
+      "evidence_needed": [
+       "deployment_design"
+      ],
+      "other_end": "A4.Node",
+      "relationship": "DEPLOYED_ON"
+     },
+     {
+      "direction": "out",
+      "evidence_needed": [
+       "deployment_design"
+      ],
+      "other_end": "A4.Device",
+      "relationship": "DEPLOYED_ON"
+     },
+     {
+      "direction": "out",
+      "evidence_needed": [
+       "deployment_design"
+      ],
+      "other_end": "A4.SystemSoftware",
+      "relationship": "DEPLOYED_ON"
+     },
+     {
+      "direction": "out",
+      "evidence_needed": [
+       "deployment_design"
+      ],
+      "other_end": "A4.Deployment",
+      "relationship": "DEPLOYED_AS"
+     },
+     {
+      "direction": "out",
+      "evidence_needed": [
+       "build_pipeline"
+      ],
+      "other_end": "A4.Artifact",
+      "relationship": "BUILT_AS"
+     },
+     {
+      "direction": "in",
+      "evidence_needed": [
+       "application_architecture_document"
+      ],
+      "other_end": "A1.BusinessService",
+      "relationship": "REALIZED_BY"
+     },
+     {
+      "direction": "out",
+      "evidence_needed": [
+       "deployment_design"
+      ],
+      "other_end": "A4.TechnologyService",
+      "relationship": "SERVED_BY"
+     }
+    ],
+    "links_in": [
+     {
+      "from": "A3.ApplicationComponent",
+      "kind": "aggregation",
+      "rule": "RA3-02"
+     },
+     {
+      "from": "A3.ApplicationComponent",
+      "kind": "composition",
+      "rule": "RA3-01"
+     },
+     {
+      "from": "A3.ApplicationComponent",
+      "kind": "flow",
+      "rule": "RA3-10"
+     },
+     {
+      "from": "A3.ApplicationComponent",
+      "kind": "serving",
+      "rule": "RA3-11"
+     },
+     {
+      "from": "A3.ApplicationComponent",
+      "kind": "triggering",
+      "rule": "RA3-12"
+     },
+     {
+      "from": "A3.ApplicationService",
+      "kind": "serving",
+      "rule": "RA3-08"
+     },
+     {
+      "from": "A3.Event",
+      "kind": "triggering",
+      "rule": "RA3-25"
+     },
+     {
+      "from": "A3.SolutionBuildingBlock",
+      "kind": "aggregation",
+      "rule": "RA3-30"
+     }
+    ],
+    "links_out": [
+     {
+      "kind": "access",
+      "rule": "RA3-16",
+      "to": "A3.DataEntity"
+     },
+     {
+      "kind": "aggregation",
+      "rule": "RA3-02",
+      "to": "A3.ApplicationComponent"
+     },
+     {
+      "kind": "assignment",
+      "rule": "RA3-04",
+      "to": "A3.ApplicationFunction"
+     },
+     {
+      "kind": "composition",
+      "rule": "RA3-28",
+      "to": "A3.APIOperation"
+     },
+     {
+      "kind": "composition",
+      "rule": "RA3-01",
+      "to": "A3.ApplicationComponent"
+     },
+     {
+      "kind": "composition",
+      "rule": "RA3-03",
+      "to": "A3.ApplicationInterface"
+     },
+     {
+      "kind": "flow",
+      "rule": "RA3-10",
+      "to": "A3.ApplicationComponent"
+     },
+     {
+      "kind": "realization",
+      "rule": "RA3-06",
+      "to": "A3.ApplicationService"
+     },
+     {
+      "kind": "serving",
+      "rule": "RA3-11",
+      "to": "A3.ApplicationComponent"
+     },
+     {
+      "kind": "triggering",
+      "rule": "RA3-12",
+      "to": "A3.ApplicationComponent"
+     },
+     {
+      "kind": "triggering",
+      "rule": "RA3-22",
+      "to": "A3.Event"
+     }
+    ],
+    "organisation_rules": [],
+    "record_fields": {
+     "lifecycle_status": [
+      "planned",
+      "active",
+      "deprecated",
+      "retired"
+     ],
+     "optional": [
+      "description",
+      "attributes"
+     ],
+     "required": [
+      "id",
+      "type",
+      "version",
+      "name",
+      "lifecycle_status"
+     ]
+    },
+    "source": "ArchiMate 3.2 · Application Component",
+    "type": "A3.ApplicationComponent"
+   },
+   {
+    "abstract": false,
+    "archimate": {
+     "element": "Application Function",
+     "from": "SDEM",
+     "layer": "application"
+    },
+    "attributes": [
+     {
+      "description": "ids of the API operations the function is reached through",
+      "name": "exposed_through",
+      "refers_to": [
+       "A3.APIOperation"
+      ],
+      "required": false,
+      "type": "list<string>"
+     },
+     {
+      "description": "ids of A4 technology services it uses",
+      "name": "consumes",
+      "refers_to": [
+       "A4.TechnologyService"
+      ],
+      "required": false,
+      "type": "list<string>"
+     }
+    ],
+    "definition": "Internal application behaviour",
+    "extends": [],
+    "identifier": [
+     "name"
+    ],
+    "layer": "A3",
+    "link_types_to_other_layers": [
+     {
+      "direction": "in",
+      "evidence_needed": [
+       "process_model"
+      ],
+      "other_end": "A1.BusinessProcess",
+      "relationship": "AUTOMATED_BY"
+     },
+     {
+      "direction": "out",
+      "evidence_needed": [
+       "deployment_design"
+      ],
+      "other_end": "A4.TechnologyService",
+      "relationship": "SERVED_BY"
+     }
+    ],
+    "links_in": [
+     {
+      "from": "A3.ApplicationComponent",
+      "kind": "assignment",
+      "rule": "RA3-04"
+     },
+     {
+      "from": "A3.ApplicationFunction",
+      "kind": "composition",
+      "rule": "RA3-13"
+     },
+     {
+      "from": "A3.ApplicationFunction",
+      "kind": "flow",
+      "rule": "RA3-15"
+     },
+     {
+      "from": "A3.ApplicationFunction",
+      "kind": "triggering",
+      "rule": "RA3-14"
+     },
+     {
+      "from": "A3.ApplicationService",
+      "kind": "serving",
+      "rule": "RA3-09"
+     },
+     {
+      "from": "A3.Event",
+      "kind": "triggering",
+      "rule": "RA3-24"
+     }
+    ],
+    "links_out": [
+     {
+      "kind": "access",
+      "rule": "RA3-17",
+      "to": "A3.DataEntity"
+     },
+     {
+      "kind": "composition",
+      "rule": "RA3-13",
+      "to": "A3.ApplicationFunction"
+     },
+     {
+      "kind": "flow",
+      "rule": "RA3-15",
+      "to": "A3.ApplicationFunction"
+     },
+     {
+      "kind": "realization",
+      "rule": "RA3-05",
+      "to": "A3.ApplicationService"
+     },
+     {
+      "kind": "triggering",
+      "rule": "RA3-14",
+      "to": "A3.ApplicationFunction"
+     },
+     {
+      "kind": "triggering",
+      "rule": "RA3-23",
+      "to": "A3.Event"
+     }
+    ],
+    "organisation_rules": [],
+    "record_fields": {
+     "lifecycle_status": [
+      "planned",
+      "active",
+      "deprecated",
+      "retired"
+     ],
+     "optional": [
+      "description",
+      "attributes"
+     ],
+     "required": [
+      "id",
+      "type",
+      "version",
+      "name",
+      "lifecycle_status"
+     ]
+    },
+    "source": "ArchiMate 3.2 · Application Function",
+    "type": "A3.ApplicationFunction"
+   },
+   {
+    "abstract": false,
+    "archimate": {
+     "element": "Application Interface",
+     "from": "SDEM",
+     "layer": "application"
+    },
+    "attributes": [
+     {
+      "description": "ids of A4 technology interfaces it is exposed through",
+      "name": "exposed_through",
+      "refers_to": [
+       "A4.TechnologyInterface"
+      ],
+      "required": false,
+      "type": "list<string>"
+     },
+     {
+      "description": "product field name → canonical attribute name",
+      "name": "field_aliases",
+      "required": false,
+      "type": "map<string,string>"
+     },
+     {
+      "allowed_values": [
+       "OpenAPI 3.1",
+       "OpenAPI 3.0",
+       "AsyncAPI 3.0",
+       "AsyncAPI 2.6",
+       "WSDL",
+       "GraphQL",
+       "none"
+      ],
+      "description": "the format of the interface's machine-readable contract",
+      "name": "contract_format",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "allowed_values": [
+       "apiKey",
+       "http",
+       "mutualTLS",
+       "oauth2",
+       "openIdConnect"
+      ],
+      "description": "how callers authenticate",
+      "name": "security_scheme",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "the protocol the interface uses (e.g. https, amqp, kafka, mqtt)",
+      "name": "protocol",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "whether it is reached from the internet — then it is EXPOSED_THROUGH an edge platform in a DMZ (LC-22)",
+      "name": "internet_facing",
+      "required": false,
+      "type": "boolean"
+     }
+    ],
+    "definition": "An access point to an application service",
+    "extends": [],
+    "identifier": [
+     "name"
+    ],
+    "layer": "A3",
+    "link_types_to_other_layers": [
+     {
+      "direction": "out",
+      "evidence_needed": [
+       "network_design"
+      ],
+      "other_end": "A4.Node",
+      "relationship": "EXPOSED_THROUGH"
+     },
+     {
+      "direction": "out",
+      "evidence_needed": [
+       "network_design"
+      ],
+      "other_end": "A4.Device",
+      "relationship": "EXPOSED_THROUGH"
+     },
+     {
+      "direction": "out",
+      "evidence_needed": [
+       "network_design"
+      ],
+      "other_end": "A4.SystemSoftware",
+      "relationship": "EXPOSED_THROUGH"
+     },
+     {
+      "direction": "in",
+      "evidence_needed": [
+       "application_architecture_document"
+      ],
+      "other_end": "A1.BusinessInterface",
+      "relationship": "REALIZED_BY"
+     }
+    ],
+    "links_in": [
+     {
+      "from": "A3.ApplicationComponent",
+      "kind": "composition",
+      "rule": "RA3-03"
+     }
+    ],
+    "links_out": [
+     {
+      "kind": "assignment",
+      "rule": "RA3-07",
+      "to": "A3.ApplicationService"
+     },
+     {
+      "kind": "composition",
+      "rule": "RA3-27",
+      "to": "A3.APIOperation"
+     }
+    ],
+    "organisation_rules": [],
+    "record_fields": {
+     "lifecycle_status": [
+      "planned",
+      "active",
+      "deprecated",
+      "retired"
+     ],
+     "optional": [
+      "description",
+      "attributes"
+     ],
+     "required": [
+      "id",
+      "type",
+      "version",
+      "name",
+      "lifecycle_status"
+     ]
+    },
+    "source": "ArchiMate 3.2 · Application Interface",
+    "type": "A3.ApplicationInterface"
+   },
+   {
+    "abstract": false,
+    "archimate": {
+     "element": "Application Service",
+     "from": "SDEM",
+     "layer": "application"
+    },
+    "attributes": [
+     {
+      "description": "ids of A4 technology services it uses",
+      "name": "consumes",
+      "refers_to": [
+       "A4.TechnologyService"
+      ],
+      "required": false,
+      "type": "list<string>"
+     }
+    ],
+    "definition": "Externally exposed application behaviour",
+    "extends": [],
+    "identifier": [
+     "name"
+    ],
+    "layer": "A3",
+    "link_types_to_other_layers": [
+     {
+      "direction": "in",
+      "evidence_needed": [
+       "process_model"
+      ],
+      "other_end": "A1.BusinessProcess",
+      "relationship": "SERVED_BY"
+     },
+     {
+      "direction": "in",
+      "evidence_needed": [
+       "process_model"
+      ],
+      "other_end": "A1.BusinessActor",
+      "relationship": "SERVED_BY"
+     },
+     {
+      "direction": "in",
+      "evidence_needed": [
+       "process_model"
+      ],
+      "other_end": "A1.BusinessRole",
+      "relationship": "SERVED_BY"
+     },
+     {
+      "direction": "in",
+      "evidence_needed": [
+       "application_architecture_document"
+      ],
+      "other_end": "A1.BusinessService",
+      "relationship": "REALIZED_BY"
+     }
+    ],
+    "links_in": [
+     {
+      "from": "A3.ApplicationComponent",
+      "kind": "realization",
+      "rule": "RA3-06"
+     },
+     {
+      "from": "A3.ApplicationFunction",
+      "kind": "realization",
+      "rule": "RA3-05"
+     },
+     {
+      "from": "A3.ApplicationInterface",
+      "kind": "assignment",
+      "rule": "RA3-07"
+     }
+    ],
+    "links_out": [
+     {
+      "kind": "access",
+      "rule": "RA3-18",
+      "to": "A3.DataEntity"
+     },
+     {
+      "kind": "serving",
+      "rule": "RA3-08",
+      "to": "A3.ApplicationComponent"
+     },
+     {
+      "kind": "serving",
+      "rule": "RA3-09",
+      "to": "A3.ApplicationFunction"
+     }
+    ],
+    "organisation_rules": [],
+    "record_fields": {
+     "lifecycle_status": [
+      "planned",
+      "active",
+      "deprecated",
+      "retired"
+     ],
+     "optional": [
+      "description",
+      "attributes"
+     ],
+     "required": [
+      "id",
+      "type",
+      "version",
+      "name",
+      "lifecycle_status"
+     ]
+    },
+    "source": "ArchiMate 3.2 · Application Service",
+    "type": "A3.ApplicationService"
+   },
+   {
+    "abstract": false,
+    "archimate": {
+     "element": "Data Object",
+     "from": "SDEM",
+     "layer": "application",
+     "why": "a field of a data object — drawn inside it"
+    },
+    "attributes": [
+     {
+      "description": "the field’s type in the store, e.g. varchar(35), numeric(18,2), timestamp",
+      "name": "physical_type",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "whether the field must have a value (not null)",
+      "name": "required",
+      "required": false,
+      "type": "boolean"
+     },
+     {
+      "description": "whether the field is (part of) the entity’s primary key",
+      "name": "primary_key",
+      "required": false,
+      "type": "boolean"
+     },
+     {
+      "description": "whether no two records share a value",
+      "name": "unique",
+      "required": false,
+      "type": "boolean"
+     },
+     {
+      "description": "the values the field may take",
+      "name": "allowed_values",
+      "required": false,
+      "type": "list<string>"
+     },
+     {
+      "description": "the value a new record gets when none is given",
+      "name": "default",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "whether the field holds personal information",
+      "name": "personal_information",
+      "required": false,
+      "type": "boolean"
+     },
+     {
+      "allowed_values": [
+       "public",
+       "internal",
+       "confidential",
+       "restricted"
+      ],
+      "description": "the field’s information classification",
+      "name": "classification",
+      "required": false,
+      "type": "string"
+     }
+    ],
+    "definition": "A field of a data entity: its physical type, whether it is required, and whether it is a key",
+    "extends": [],
+    "identifier": [
+     "owning data entity",
+     "name"
+    ],
+    "layer": "A3",
+    "link_types_to_other_layers": [
+     {
+      "direction": "in",
+      "evidence_needed": [
+       "data_model"
+      ],
+      "other_end": "A2.BusinessObjectAttribute",
+      "relationship": "FIELD_MAPPED_TO"
+     }
+    ],
+    "links_in": [
+     {
+      "from": "A3.DataEntity",
+      "kind": "composition",
+      "rule": "RA3-33"
+     }
+    ],
+    "links_out": [
+     {
+      "kind": "association",
+      "rule": "RA3-34",
+      "to": "A3.DataEntity"
+     }
+    ],
+    "organisation_rules": [],
+    "record_fields": {
+     "lifecycle_status": [
+      "planned",
+      "active",
+      "deprecated",
+      "retired"
+     ],
+     "optional": [
+      "description",
+      "attributes"
+     ],
+     "required": [
+      "id",
+      "type",
+      "version",
+      "name",
+      "lifecycle_status"
+     ]
+    },
+    "source": "SDEM · Data attribute (a field of a Data Object)",
+    "type": "A3.DataAttribute"
+   },
+   {
+    "abstract": false,
+    "archimate": {
+     "element": "Data Object",
+     "from": "SDEM",
+     "layer": "application"
+    },
+    "attributes": [
+     {
+      "description": "column names",
+      "name": "attributes",
+      "required": true,
+      "type": "list<string>"
+     },
+     {
+      "description": "ids of the A4 system software or artifact holding it",
+      "name": "stored_in",
+      "refers_to": [
+       "A4.SystemSoftware",
+       "A4.Artifact"
+      ],
+      "required": false,
+      "type": "list<string>"
+     },
+     {
+      "description": "column name → canonical attribute name",
+      "name": "field_aliases",
+      "required": false,
+      "type": "map<string,string>"
+     },
+     {
+      "description": "whether it holds information about an identifiable person",
+      "name": "personal_information",
+      "required": false,
+      "type": "boolean"
+     },
+     {
+      "description": "link to the agreed glossary definition",
+      "name": "glossary_uri",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "whether this application is the authoritative source for the data",
+      "name": "system_of_record",
+      "required": false,
+      "type": "boolean"
+     },
+     {
+      "description": "how long the data must be kept (e.g. \"7y\")",
+      "name": "retention_period",
+      "required": false,
+      "type": "string"
+     }
+    ],
+    "definition": "A logical data entity held by an application",
+    "extends": [],
+    "identifier": [
+     "stored_in",
+     "name"
+    ],
+    "layer": "A3",
+    "link_types_to_other_layers": [
+     {
+      "direction": "in",
+      "evidence_needed": [
+       "data_model"
+      ],
+      "other_end": "A2.BusinessObject",
+      "relationship": "MAPPED_TO"
+     },
+     {
+      "direction": "in",
+      "evidence_needed": [
+       "data_model"
+      ],
+      "other_end": "A1.BusinessObject",
+      "relationship": "MAPPED_TO"
+     },
+     {
+      "direction": "out",
+      "evidence_needed": [
+       "deployment_design"
+      ],
+      "other_end": "A4.Artifact",
+      "relationship": "STORED_IN"
+     },
+     {
+      "direction": "out",
+      "evidence_needed": [
+       "deployment_design"
+      ],
+      "other_end": "A4.SystemSoftware",
+      "relationship": "STORED_IN"
+     }
+    ],
+    "links_in": [
+     {
+      "from": "A3.APIOperation",
+      "kind": "access",
+      "rule": "RA3-29"
+     },
+     {
+      "from": "A3.ApplicationComponent",
+      "kind": "access",
+      "rule": "RA3-16"
+     },
+     {
+      "from": "A3.ApplicationFunction",
+      "kind": "access",
+      "rule": "RA3-17"
+     },
+     {
+      "from": "A3.ApplicationService",
+      "kind": "access",
+      "rule": "RA3-18"
+     },
+     {
+      "from": "A3.DataAttribute",
+      "kind": "association",
+      "rule": "RA3-34"
+     },
+     {
+      "from": "A3.DataEntity",
+      "kind": "aggregation",
+      "rule": "RA3-20"
+     },
+     {
+      "from": "A3.DataEntity",
+      "kind": "association",
+      "rule": "RA3-32"
+     },
+     {
+      "from": "A3.DataEntity",
+      "kind": "composition",
+      "rule": "RA3-19"
+     },
+     {
+      "from": "A3.DataEntity",
+      "kind": "specialization",
+      "rule": "RA3-21"
+     },
+     {
+      "from": "A3.Event",
+      "kind": "access",
+      "rule": "RA3-26"
+     }
+    ],
+    "links_out": [
+     {
+      "kind": "aggregation",
+      "rule": "RA3-20",
+      "to": "A3.DataEntity"
+     },
+     {
+      "kind": "association",
+      "rule": "RA3-32",
+      "to": "A3.DataEntity"
+     },
+     {
+      "kind": "composition",
+      "rule": "RA3-33",
+      "to": "A3.DataAttribute"
+     },
+     {
+      "kind": "composition",
+      "rule": "RA3-19",
+      "to": "A3.DataEntity"
+     },
+     {
+      "kind": "specialization",
+      "rule": "RA3-21",
+      "to": "A3.DataEntity"
+     }
+    ],
+    "organisation_rules": [],
+    "record_fields": {
+     "lifecycle_status": [
+      "planned",
+      "active",
+      "deprecated",
+      "retired"
+     ],
+     "optional": [
+      "description",
+      "attributes"
+     ],
+     "required": [
+      "id",
+      "type",
+      "version",
+      "name",
+      "lifecycle_status"
+     ]
+    },
+    "source": "ArchiMate 3.2 · Data Object",
+    "type": "A3.DataEntity"
+   },
+   {
+    "abstract": false,
+    "archimate": {
+     "element": "Application Event",
+     "from": "SDEM",
+     "layer": "application"
+    },
+    "attributes": [
+     {
+      "description": "ids of A4 technology services (brokers) it is published to",
+      "name": "published_to",
+      "refers_to": [
+       "A4.TechnologyService"
+      ],
+      "required": false,
+      "type": "list<string>"
+     },
+     {
+      "description": "the type name the event carries (e.g. \"payment.initiated\")",
+      "name": "event_type",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "the source the event identifies itself with",
+      "name": "event_source",
+      "refers_to": [
+       "A3.ApplicationComponent"
+      ],
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "link to the schema the event data follows",
+      "name": "schema_uri",
+      "required": false,
+      "type": "string"
+     }
+    ],
+    "definition": "An event an application produces or consumes",
+    "extends": [],
+    "identifier": [
+     "name"
+    ],
+    "layer": "A3",
+    "link_types_to_other_layers": [
+     {
+      "direction": "in",
+      "evidence_needed": [
+       "event_design"
+      ],
+      "other_end": "A2.ServiceOperation",
+      "relationship": "IMPLEMENTED_BY"
+     },
+     {
+      "direction": "in",
+      "evidence_needed": [
+       "event_design"
+      ],
+      "other_end": "A1.BusinessEvent",
+      "relationship": "REALIZED_BY"
+     }
+    ],
+    "links_in": [
+     {
+      "from": "A3.ApplicationComponent",
+      "kind": "triggering",
+      "rule": "RA3-22"
+     },
+     {
+      "from": "A3.ApplicationFunction",
+      "kind": "triggering",
+      "rule": "RA3-23"
+     }
+    ],
+    "links_out": [
+     {
+      "kind": "access",
+      "rule": "RA3-26",
+      "to": "A3.DataEntity"
+     },
+     {
+      "kind": "triggering",
+      "rule": "RA3-25",
+      "to": "A3.ApplicationComponent"
+     },
+     {
+      "kind": "triggering",
+      "rule": "RA3-24",
+      "to": "A3.ApplicationFunction"
+     }
+    ],
+    "organisation_rules": [],
+    "record_fields": {
+     "lifecycle_status": [
+      "planned",
+      "active",
+      "deprecated",
+      "retired"
+     ],
+     "optional": [
+      "description",
+      "attributes"
+     ],
+     "required": [
+      "id",
+      "type",
+      "version",
+      "name",
+      "lifecycle_status"
+     ]
+    },
+    "source": "ArchiMate 3.2 · Application Event",
+    "type": "A3.Event"
+   },
+   {
+    "abstract": false,
+    "archimate": {
+     "element": "Application Component",
+     "from": "SDEM",
+     "layer": "application",
+     "why": "TOGAF: a solution building block — drawn as the component it is"
+    },
+    "attributes": [
+     {
+      "description": "ids of the components the building block aggregates",
+      "name": "components",
+      "refers_to": [
+       "A3.ApplicationComponent"
+      ],
+      "required": false,
+      "type": "list<string>"
+     }
+    ],
+    "definition": "An organisation-defined reusable solution grouping",
+    "extends": [],
+    "identifier": [
+     "name"
+    ],
+    "layer": "A3",
+    "link_types_to_other_layers": [],
+    "links_in": [
+     {
+      "from": "A3.SolutionBuildingBlock",
+      "kind": "composition",
+      "rule": "RA3-31"
+     }
+    ],
+    "links_out": [
+     {
+      "kind": "aggregation",
+      "rule": "RA3-30",
+      "to": "A3.ApplicationComponent"
+     },
+     {
+      "kind": "composition",
+      "rule": "RA3-31",
+      "to": "A3.SolutionBuildingBlock"
+     }
+    ],
+    "organisation_rules": [],
+    "record_fields": {
+     "lifecycle_status": [
+      "planned",
+      "active",
+      "deprecated",
+      "retired"
+     ],
+     "optional": [
+      "description",
+      "attributes"
+     ],
+     "required": [
+      "id",
+      "type",
+      "version",
+      "name",
+      "lifecycle_status"
+     ]
+    },
+    "source": "TOGAF · Solution Building Block",
+    "type": "A3.SolutionBuildingBlock"
+   }
+  ]
+ }
+}

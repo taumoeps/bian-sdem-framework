@@ -1,0 +1,3360 @@
+{
+ "command": [
+  "comply",
+  "--workspace",
+  "<tmp>/v3",
+  "--json"
+ ],
+ "exit": 0,
+ "output": {
+  "as_of": "<volatile>",
+  "bindings": [
+   {
+    "anchor": "SD-PAYMENT-ORDER-INITIATION",
+    "pattern": "PAT-PAYMENT-INITIATION",
+    "roles": {
+     "api": [
+      "IFC-PAYMENT-INITIATION"
+     ],
+     "api-component": [
+      "APP-EDGE"
+     ],
+     "api-operations": [
+      "API-CONSENT-CREATE",
+      "API-CONSENT-READ",
+      "API-DEBTOR-READ",
+      "API-PAYMENT-CREATE",
+      "API-PAYMENT-READ"
+     ],
+     "audit-record": [
+      "DATA-AUDIT"
+     ],
+     "authorisation-process": [
+      "PROC-AUTH"
+     ],
+     "database": [
+      "SYS-DB"
+     ],
+     "edge-platform": [
+      "NODE-EDGE"
+     ],
+     "fraud-evaluation": [
+      "SD-FRAUD-EVALUATION"
+     ],
+     "fraud-process": [
+      "PROC-RISK"
+     ],
+     "key-store": [
+      "SYS-KMS"
+     ],
+     "party-authentication": [
+      "SD-PARTY-AUTHENTICATION"
+     ],
+     "payment-order-initiation": [
+      "SD-PAYMENT-ORDER-INITIATION"
+     ],
+     "payment-process": [
+      "PROC-STATUS",
+      "PROC-SUBMIT"
+     ],
+     "payment-records": [
+      "DATA-CONSENT",
+      "DATA-IDEMP",
+      "DATA-PAYMENT"
+     ],
+     "payments-component": [
+      "APP-PAYHUB"
+     ]
+    }
+   },
+   {
+    "anchor": "SD-PAYMENT-ORDER-INITIATION",
+    "pattern": "PAT-BIAN-TRANSACT",
+    "roles": {
+     "api-operations": [
+      "API-PAYMENT-CREATE",
+      "API-PAYMENT-READ"
+     ],
+     "capability": [
+      "CAP-PAY"
+     ],
+     "component": [
+      "APP-PAYHUB"
+     ],
+     "deployment": [
+      "DEP-PAYHUB"
+     ],
+     "domain": [
+      "SD-PAYMENT-ORDER-INITIATION"
+     ],
+     "process": [
+      "PROC-STATUS",
+      "PROC-SUBMIT"
+     ],
+     "record": [
+      "DATA-CONSENT",
+      "DATA-IDEMP",
+      "DATA-PAYMENT"
+     ],
+     "service-groups": [
+      "SG-PAYMENT-ORDER-INITIATION-COMPLIANCE",
+      "SG-PAYMENT-ORDER-INITIATION-CONFIRMATION",
+      "SG-PAYMENT-ORDER-INITIATION-ORDER-INITIATION",
+      "SG-PAYMENT-ORDER-INITIATION-PAYMENT-ORDER-INITIATION-TRANSACTION"
+     ],
+     "service-operations": [
+      "SO-PAYMENT-ORDER-INITIATION-EXCHANGE-ORDER-INITIATION",
+      "SO-PAYMENT-ORDER-INITIATION-INITIATE",
+      "SO-PAYMENT-ORDER-INITIATION-RETRIEVE",
+      "SO-PAYMENT-ORDER-INITIATION-RETRIEVE-COMPLIANCE",
+      "SO-PAYMENT-ORDER-INITIATION-RETRIEVE-CONFIRMATION",
+      "SO-PAYMENT-ORDER-INITIATION-RETRIEVE-ORDER-INITIATION",
+      "SO-PAYMENT-ORDER-INITIATION-UPDATE"
+     ],
+     "store": [
+      "SYS-DB"
+     ]
+    }
+   }
+  ],
+  "blocking": 0,
+  "findings": [
+   {
+    "detail": "",
+    "layer": "A1",
+    "message": "a requirement is met by a process, a capability or a service",
+    "name": "The accredited third party can create a one-off domestic payment consent and…",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "R-01",
+    "rule": "CPL-A1-01",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A1",
+    "message": "a requirement is met by a process, a capability or a service",
+    "name": "The bank uses the redirect authorisation flow to authenticate the customer…",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "R-02",
+    "rule": "CPL-A1-01",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A1",
+    "message": "a requirement is met by a process, a capability or a service",
+    "name": "Unauthorised domestic consent is time-limited to 24 hours; expired consent…",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "R-03",
+    "rule": "CPL-A1-01",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A1",
+    "message": "a requirement is met by a process, a capability or a service",
+    "name": "Only an authorised domestic consent may be used to submit one domestic payment.",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "R-04",
+    "rule": "CPL-A1-01",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A1",
+    "message": "a requirement is met by a process, a capability or a service",
+    "name": "The same payment request will not create a second debit under supported…",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "R-05",
+    "rule": "CPL-A1-01",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A1",
+    "message": "a requirement is met by a process, a capability or a service",
+    "name": "Payment data use NZD and valid domestic account identification; invalid data…",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "R-06",
+    "rule": "CPL-A1-01",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A1",
+    "message": "a requirement is met by a process, a capability or a service",
+    "name": "The bank checks debtor account eligibility and available funds before posting.",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "R-07",
+    "rule": "CPL-A1-01",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A1",
+    "message": "a requirement is met by a process, a capability or a service",
+    "name": "The bank applies a risk screening decision before debit and execution handoff.",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "R-08",
+    "rule": "CPL-A1-01",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A1",
+    "message": "a requirement is met by a process, a capability or a service",
+    "name": "The bank commits exactly one ledger debit per successfully accepted payment.",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "R-09",
+    "rule": "CPL-A1-01",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A1",
+    "message": "a requirement is met by a process, a capability or a service",
+    "name": "After the initial checks, the bank hands the accepted instruction to its…",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "R-10",
+    "rule": "CPL-A1-01",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A1",
+    "message": "a requirement is met by a process, a capability or a service",
+    "name": "The third party can retrieve the bank payment resource and its reported status.",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "R-11",
+    "rule": "CPL-A1-01",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A1",
+    "message": "a requirement is met by a process, a capability or a service",
+    "name": "Customer decline, failed authentication or expired consent do not debit…",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "R-12",
+    "rule": "CPL-A1-01",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A1",
+    "message": "a requirement is met by a process, a capability or a service",
+    "name": "Payment API is available at least 99.95% monthly (fictional target).",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "R-13",
+    "rule": "CPL-A1-01",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A1",
+    "message": "a requirement is met by a process, a capability or a service",
+    "name": "Read p95 response latency at most 500 ms at 200 requests per second…",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "R-14",
+    "rule": "CPL-A1-01",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A1",
+    "message": "a requirement is met by a process, a capability or a service",
+    "name": "Payments platform recovery time at most 30 minutes and recovery point at…",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "R-15",
+    "rule": "CPL-A1-01",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A1",
+    "message": "a requirement is met by a process, a capability or a service",
+    "name": "Personal and account information is protected and access to consent and…",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "R-16",
+    "rule": "CPL-A1-01",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A1",
+    "message": "a requirement is met by a process, a capability or a service",
+    "name": "Payment and consent decisions are correlated and auditable.",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "R-17",
+    "rule": "CPL-A1-01",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A1",
+    "message": "a requirement is met by a process, a capability or a service",
+    "name": "The bank uses version 2.3.3 consistently for consent and payment API resources.",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "R-18",
+    "rule": "CPL-A1-01",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A1",
+    "message": "a requirement is met by a process, a capability or a service",
+    "name": "A payment accepted for execution is not represented as completed at another…",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "R-19",
+    "rule": "CPL-A1-01",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A1",
+    "message": "a requirement is met by a process, a capability or a service",
+    "name": "Deployments have explicit segment boundaries, private persistence routes and…",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "R-20",
+    "rule": "CPL-A1-01",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A1",
+    "message": "a requirement is met by a process, a capability or a service",
+    "name": "A regulated deployment must support hybrid redirect and decoupled (CIBA)…",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "R-21",
+    "rule": "CPL-A1-01",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A1",
+    "message": "a requirement is met by a process, a capability or a service",
+    "name": "API request throttling (429) and participant identification follow the…",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "R-22",
+    "rule": "CPL-A1-01",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A1",
+    "message": "a requirement is met by a process, a capability or a service",
+    "name": "An unauthorised domestic payment consent is valid for 24 hours, and status…",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "R-23",
+    "rule": "CPL-A1-01",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A1",
+    "message": "a requirement is met by a process, a capability or a service",
+    "name": "A payment debtor-account read is only returned where DebtorAccountRelease is…",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "R-24",
+    "rule": "CPL-A1-01",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A1",
+    "message": "a process realises a capability, a value-stream stage, a service or a requirement — or is a step of a process",
+    "name": "Authenticate and authorise",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "PROC-AUTH",
+    "rule": "CPL-A1-02",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A1",
+    "message": "a process realises a capability, a value-stream stage, a service or a requirement — or is a step of a process",
+    "name": "Capture consent",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "PROC-CONSENT",
+    "rule": "CPL-A1-02",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A1",
+    "message": "a process realises a capability, a value-stream stage, a service or a requirement — or is a step of a process",
+    "name": "Post one debit",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "PROC-DEBIT",
+    "rule": "CPL-A1-02",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A1",
+    "message": "a process realises a capability, a value-stream stage, a service or a requirement — or is a step of a process",
+    "name": "Hand off for execution",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "PROC-HANDOFF",
+    "rule": "CPL-A1-02",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A1",
+    "message": "a process realises a capability, a value-stream stage, a service or a requirement — or is a step of a process",
+    "name": "Screen fraud",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "PROC-RISK",
+    "rule": "CPL-A1-02",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A1",
+    "message": "a process realises a capability, a value-stream stage, a service or a requirement — or is a step of a process",
+    "name": "Respond to status enquiries",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "PROC-STATUS",
+    "rule": "CPL-A1-02",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A1",
+    "message": "a process realises a capability, a value-stream stage, a service or a requirement — or is a step of a process",
+    "name": "Receive the payment",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "PROC-SUBMIT",
+    "rule": "CPL-A1-02",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A1",
+    "message": "a process realises a capability, a value-stream stage, a service or a requirement — or is a step of a process",
+    "name": "Validate data and account",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "PROC-VALIDATE",
+    "rule": "CPL-A1-02",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A1",
+    "message": "a channel serves an actor or a role",
+    "name": "Provider API channel",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "IF-TPP",
+    "rule": "CPL-A1-04",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A1",
+    "message": "a channel serves an actor or a role",
+    "name": "Redirected authorisation web channel",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "IF-WEB",
+    "rule": "CPL-A1-04",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A3",
+    "message": "an interface belongs to the component that offers it",
+    "name": "Payment Initiation API v2.3.3",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "IFC-PAYMENT-INITIATION",
+    "rule": "CPL-A3-01",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A3",
+    "message": "an API operation belongs to an interface",
+    "name": "Create domestic payment consent",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "API-CONSENT-CREATE",
+    "rule": "CPL-A3-03",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A3",
+    "message": "an API operation belongs to an interface",
+    "name": "Read domestic payment consent",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "API-CONSENT-READ",
+    "rule": "CPL-A3-03",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A3",
+    "message": "an API operation belongs to an interface",
+    "name": "Read payment debtor account",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "API-DEBTOR-READ",
+    "rule": "CPL-A3-03",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A3",
+    "message": "an API operation belongs to an interface",
+    "name": "Create domestic payment",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "API-PAYMENT-CREATE",
+    "rule": "CPL-A3-03",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A3",
+    "message": "an API operation belongs to an interface",
+    "name": "Read domestic payment",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "API-PAYMENT-READ",
+    "rule": "CPL-A3-03",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A3",
+    "message": "a data entity is used by a component, a function or an operation",
+    "name": "SecurityEventLog",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "DATA-AUDIT",
+    "rule": "CPL-A3-04",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A3",
+    "message": "a data entity is used by a component, a function or an operation",
+    "name": "ConsentLedger",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "DATA-CONSENT",
+    "rule": "CPL-A3-04",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A3",
+    "message": "a data entity is used by a component, a function or an operation",
+    "name": "IdempotencyRegistry",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "DATA-IDEMP",
+    "rule": "CPL-A3-04",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A3",
+    "message": "a data entity is used by a component, a function or an operation",
+    "name": "PaymentLedger",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "DATA-PAYMENT",
+    "rule": "CPL-A3-04",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A3",
+    "message": "a component has a deployment — an approved link",
+    "name": "Consent processing",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "APP-CONSENT",
+    "rule": "CPL-X-01",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A3",
+    "message": "a component has a deployment — an approved link",
+    "name": "API ingress",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "APP-EDGE",
+    "rule": "CPL-X-01",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A3",
+    "message": "a component has a deployment — an approved link",
+    "name": "Identity",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "APP-IDENT",
+    "rule": "CPL-X-01",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A3",
+    "message": "a component has a deployment — an approved link",
+    "name": "Account ledger",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "APP-LEDGER",
+    "rule": "CPL-X-01",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A3",
+    "message": "a component has a deployment — an approved link",
+    "name": "Notification service",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "APP-NOTIFY",
+    "rule": "CPL-X-01",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A3",
+    "message": "a component has a deployment — an approved link",
+    "name": "Outbound connector",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "APP-OUTBOUND",
+    "rule": "CPL-X-01",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A3",
+    "message": "a component has a deployment — an approved link",
+    "name": "Payments hub",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "APP-PAYHUB",
+    "rule": "CPL-X-01",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A3",
+    "message": "a component has a deployment — an approved link",
+    "name": "Fraud service",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "APP-RISK",
+    "rule": "CPL-X-01",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A3",
+    "message": "a data entity is stored somewhere — an approved link",
+    "name": "SecurityEventLog",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "DATA-AUDIT",
+    "rule": "CPL-X-02",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A3",
+    "message": "a data entity is stored somewhere — an approved link",
+    "name": "ConsentLedger",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "DATA-CONSENT",
+    "rule": "CPL-X-02",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A3",
+    "message": "a data entity is stored somewhere — an approved link",
+    "name": "IdempotencyRegistry",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "DATA-IDEMP",
+    "rule": "CPL-X-02",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A3",
+    "message": "a data entity is stored somewhere — an approved link",
+    "name": "PaymentLedger",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "DATA-PAYMENT",
+    "rule": "CPL-X-02",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A1",
+    "message": "an actor does something in the design, or is served by it",
+    "name": "Retail customer",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "ACTOR-CUSTOMER",
+    "rule": "CPL-A1-05",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A1",
+    "message": "an actor does something in the design, or is served by it",
+    "name": "Merchant",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "ACTOR-MERCHANT",
+    "rule": "CPL-A1-05",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A1",
+    "message": "an actor does something in the design, or is served by it",
+    "name": "Accredited third-party provider",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "ACTOR-TPP",
+    "rule": "CPL-A1-05",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A4",
+    "message": "a node sits in a network zone",
+    "name": "Three-node application compute",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "NODE-APP",
+    "rule": "CPL-A4-03",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A4",
+    "message": "a node sits in a network zone",
+    "name": "Database nodes",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "NODE-DATA",
+    "rule": "CPL-A4-03",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A4",
+    "message": "a node sits in a network zone",
+    "name": "Redundant API ingress",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "NODE-EDGE",
+    "rule": "CPL-A4-03",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A4",
+    "message": "a node sits in a network zone",
+    "name": "Ledger and execution integration",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "NODE-INT",
+    "rule": "CPL-A4-03",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A4",
+    "message": "a node sits in a network zone",
+    "name": "Identity and secrets",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "NODE-SEC",
+    "rule": "CPL-A4-03",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A4",
+    "message": "platform software runs on a node, or sits in a network zone",
+    "name": "Managed database",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "SYS-DB",
+    "rule": "CPL-A4-04",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A4",
+    "message": "platform software runs on a node, or sits in a network zone",
+    "name": "Managed key custody",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "SYS-KMS",
+    "rule": "CPL-A4-04",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A4",
+    "message": "platform software runs on a node, or sits in a network zone",
+    "name": "Durable events",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "SYS-MQ",
+    "rule": "CPL-A4-04",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A4",
+    "message": "platform software runs on a node, or sits in a network zone",
+    "name": "Audit and metrics",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "SYS-OBS",
+    "rule": "CPL-A4-04",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A4",
+    "message": "a deployment runs on a node or platform, or belongs to an environment",
+    "name": "APP-CONSENT — production",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "DEP-CONSENT",
+    "rule": "CPL-A4-05",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A4",
+    "message": "a deployment runs on a node or platform, or belongs to an environment",
+    "name": "APP-EDGE — production",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "DEP-EDGE",
+    "rule": "CPL-A4-05",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A4",
+    "message": "a deployment runs on a node or platform, or belongs to an environment",
+    "name": "APP-IDENT — production",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "DEP-IDENT",
+    "rule": "CPL-A4-05",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A4",
+    "message": "a deployment runs on a node or platform, or belongs to an environment",
+    "name": "APP-LEDGER — production",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "DEP-LEDGER",
+    "rule": "CPL-A4-05",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A4",
+    "message": "a deployment runs on a node or platform, or belongs to an environment",
+    "name": "APP-NOTIFY — production",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "DEP-NOTIFY",
+    "rule": "CPL-A4-05",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A4",
+    "message": "a deployment runs on a node or platform, or belongs to an environment",
+    "name": "APP-OUTBOUND — production",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "DEP-OUT",
+    "rule": "CPL-A4-05",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A4",
+    "message": "a deployment runs on a node or platform, or belongs to an environment",
+    "name": "APP-PAYHUB — production",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "DEP-PAYHUB",
+    "rule": "CPL-A4-05",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A4",
+    "message": "a deployment runs on a node or platform, or belongs to an environment",
+    "name": "APP-RISK — production",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "DEP-RISK",
+    "rule": "CPL-A4-05",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A1",
+    "message": "a product includes a service or a business object, or is part of a product",
+    "name": "Retail account",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "PROD-ACCOUNT",
+    "rule": "CPL-A1-06",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A3",
+    "message": "an application event is raised by a component or function, or triggers one — or realises a business event",
+    "name": "Durable handoff event",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "EVT-HANDOFF",
+    "rule": "CPL-A3-06",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A1",
+    "message": "a capability is realised by a process, is part of or has another capability, or is supported by a service domain",
+    "name": "Customer payment consent",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "CAP-CONSENT",
+    "rule": "CPL-A1-07",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A1",
+    "message": "a capability is realised by a process, is part of or has another capability, or is supported by a service domain",
+    "name": "Domestic payment initiation",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "CAP-PAY",
+    "rule": "CPL-A1-07",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A1",
+    "message": "a capability is realised by a process, is part of or has another capability, or is supported by a service domain",
+    "name": "Payment risk control",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "CAP-RISK",
+    "rule": "CPL-A1-07",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A1",
+    "message": "a role is assigned to something, or an actor is assigned to it, or it is served",
+    "name": "Bank — account servicing role",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "ROLE-BANK",
+    "rule": "CPL-A1-09",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A1",
+    "message": "a business service is realised by a process, serves someone, or is part of a product",
+    "name": "Consent authorisation service",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "SVC-AUTH",
+    "rule": "CPL-A1-10",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A1",
+    "message": "a business service is realised by a process, serves someone, or is part of a product",
+    "name": "Business initiation service",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "SVC-INIT",
+    "rule": "CPL-A1-10",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A1",
+    "message": "a value stream has its stages",
+    "name": "Merchant payment",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "VS-MERCHANT",
+    "rule": "CPL-A1-11",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A1",
+    "message": "a stage belongs to a value stream",
+    "name": "Consent",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "ST-CONSENT",
+    "rule": "CPL-A1-12",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A1",
+    "message": "a stage belongs to a value stream",
+    "name": "Status enquiry",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "ST-STATUS",
+    "rule": "CPL-A1-12",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A1",
+    "message": "a stage belongs to a value stream",
+    "name": "Payment submission",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "ST-SUBMIT",
+    "rule": "CPL-A1-12",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A3",
+    "message": "a field belongs to a data entity",
+    "name": "action",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "F-AUDIT-ACTION",
+    "rule": "CPL-A3-07",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A3",
+    "message": "a field belongs to a data entity",
+    "name": "actor_ref",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "F-AUDIT-ACTOR-REF",
+    "rule": "CPL-A3-07",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A3",
+    "message": "a field belongs to a data entity",
+    "name": "correlation_id",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "F-AUDIT-CORRELATION-ID",
+    "rule": "CPL-A3-07",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A3",
+    "message": "a field belongs to a data entity",
+    "name": "event_id",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "F-AUDIT-EVENT-ID",
+    "rule": "CPL-A3-07",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A3",
+    "message": "a field belongs to a data entity",
+    "name": "recorded_at",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "F-AUDIT-RECORDED-AT",
+    "rule": "CPL-A3-07",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A3",
+    "message": "a field belongs to a data entity",
+    "name": "amount",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "F-CONSENT-AMOUNT",
+    "rule": "CPL-A3-07",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A3",
+    "message": "a field belongs to a data entity",
+    "name": "consent_id",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "F-CONSENT-CONSENT-ID",
+    "rule": "CPL-A3-07",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A3",
+    "message": "a field belongs to a data entity",
+    "name": "creditor_account",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "F-CONSENT-CREDITOR-ACCOUNT",
+    "rule": "CPL-A3-07",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A3",
+    "message": "a field belongs to a data entity",
+    "name": "currency",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "F-CONSENT-CURRENCY",
+    "rule": "CPL-A3-07",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A3",
+    "message": "a field belongs to a data entity",
+    "name": "customer_id",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "F-CONSENT-CUSTOMER-ID",
+    "rule": "CPL-A3-07",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A3",
+    "message": "a field belongs to a data entity",
+    "name": "debtor_account",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "F-CONSENT-DEBTOR-ACCOUNT",
+    "rule": "CPL-A3-07",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A3",
+    "message": "a field belongs to a data entity",
+    "name": "end_to_end_identification",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "F-CONSENT-END-TO-END-IDENTIFICATION",
+    "rule": "CPL-A3-07",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A3",
+    "message": "a field belongs to a data entity",
+    "name": "expires_at",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "F-CONSENT-EXPIRES-AT",
+    "rule": "CPL-A3-07",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A3",
+    "message": "a field belongs to a data entity",
+    "name": "instruction_identification",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "F-CONSENT-INSTRUCTION-IDENTIFICATION",
+    "rule": "CPL-A3-07",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A3",
+    "message": "a field belongs to a data entity",
+    "name": "status",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "F-CONSENT-STATUS",
+    "rule": "CPL-A3-07",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A3",
+    "message": "a field belongs to a data entity",
+    "name": "third_party_id",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "F-CONSENT-THIRD-PARTY-ID",
+    "rule": "CPL-A3-07",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A3",
+    "message": "a field belongs to a data entity",
+    "name": "expires_at",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "F-IDEMP-EXPIRES-AT",
+    "rule": "CPL-A3-07",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A3",
+    "message": "a field belongs to a data entity",
+    "name": "key_hash",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "F-IDEMP-KEY-HASH",
+    "rule": "CPL-A3-07",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A3",
+    "message": "a field belongs to a data entity",
+    "name": "request_hash",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "F-IDEMP-REQUEST-HASH",
+    "rule": "CPL-A3-07",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A3",
+    "message": "a field belongs to a data entity",
+    "name": "resource_id",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "F-IDEMP-RESOURCE-ID",
+    "rule": "CPL-A3-07",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A3",
+    "message": "a field belongs to a data entity",
+    "name": "third_party_id",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "F-IDEMP-THIRD-PARTY-ID",
+    "rule": "CPL-A3-07",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A3",
+    "message": "a field belongs to a data entity",
+    "name": "amount",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "F-PAYMENT-AMOUNT",
+    "rule": "CPL-A3-07",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A3",
+    "message": "a field belongs to a data entity",
+    "name": "consent_id",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "F-PAYMENT-CONSENT-ID",
+    "rule": "CPL-A3-07",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A3",
+    "message": "a field belongs to a data entity",
+    "name": "created_at",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "F-PAYMENT-CREATED-AT",
+    "rule": "CPL-A3-07",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A3",
+    "message": "a field belongs to a data entity",
+    "name": "currency",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "F-PAYMENT-CURRENCY",
+    "rule": "CPL-A3-07",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A3",
+    "message": "a field belongs to a data entity",
+    "name": "handoff_id",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "F-PAYMENT-HANDOFF-ID",
+    "rule": "CPL-A3-07",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A3",
+    "message": "a field belongs to a data entity",
+    "name": "instruction_identification",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "F-PAYMENT-INSTRUCTION-IDENTIFICATION",
+    "rule": "CPL-A3-07",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A3",
+    "message": "a field belongs to a data entity",
+    "name": "ledger_posting_id",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "F-PAYMENT-LEDGER-POSTING-ID",
+    "rule": "CPL-A3-07",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A3",
+    "message": "a field belongs to a data entity",
+    "name": "payment_id",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "F-PAYMENT-PAYMENT-ID",
+    "rule": "CPL-A3-07",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A3",
+    "message": "a field belongs to a data entity",
+    "name": "payment_status",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "F-PAYMENT-PAYMENT-STATUS",
+    "rule": "CPL-A3-07",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A4",
+    "message": "an environment holds deployments or platforms",
+    "name": "Production",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "ENV-PROD",
+    "rule": "CPL-A4-07",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A4",
+    "message": "a location holds something",
+    "name": "NZ production location",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "LOC-NZ",
+    "rule": "CPL-A4-09",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A4",
+    "message": "a network zone holds something, or is inside a zone",
+    "name": "Application zone",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "ZONE-APP",
+    "rule": "CPL-A4-10",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A4",
+    "message": "a network zone holds something, or is inside a zone",
+    "name": "Data zone",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "ZONE-DATA",
+    "rule": "CPL-A4-10",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A4",
+    "message": "a network zone holds something, or is inside a zone",
+    "name": "Edge zone",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "ZONE-EDGE",
+    "rule": "CPL-A4-10",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A4",
+    "message": "a network zone holds something, or is inside a zone",
+    "name": "Integration zone",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "ZONE-INTEG",
+    "rule": "CPL-A4-10",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A4",
+    "message": "a network zone holds something, or is inside a zone",
+    "name": "Security zone",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "ZONE-SEC",
+    "rule": "CPL-A4-10",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A4",
+    "message": "a path joins the nodes at its ends",
+    "name": "Application to database path",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "PATH-DATA",
+    "rule": "CPL-A4-11",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A4",
+    "message": "a path joins the nodes at its ends",
+    "name": "External boundary path",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "PATH-EDGE",
+    "rule": "CPL-A4-11",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A4",
+    "message": "a path joins the nodes at its ends",
+    "name": "Payment handoff path",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "PATH-HANDOFF",
+    "rule": "CPL-A4-11",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "",
+    "layer": "A4",
+    "message": "a path joins the nodes at its ends",
+    "name": "Secret retrieval path",
+    "outcome": "compliant",
+    "parts": [],
+    "pattern": null,
+    "record": "PATH-KEY",
+    "rule": "CPL-A4-11",
+    "severity": "warning",
+    "standard": {
+     "id": "SDEM-COMPLETE",
+     "title": "A complete design: every record connected",
+     "version": "1.4"
+    }
+   },
+   {
+    "detail": "SD-PAYMENT-ORDER-INITIATION",
+    "layer": "A2",
+    "message": "Payment initiation: Payment Order Initiation (BIAN)",
+    "name": "Payment Order Initiation",
+    "outcome": "compliant",
+    "part": {
+     "id": "payment-order-initiation",
+     "kind": "role",
+     "label": "Payment Order Initiation (BIAN)"
+    },
+    "parts": [],
+    "pattern": {
+     "id": "PAT-PAYMENT-INITIATION",
+     "title": "Payment initiation",
+     "version": "1.0"
+    },
+    "record": "SD-PAYMENT-ORDER-INITIATION",
+    "rule": "PAT-PAYMENT-INITIATION/payment-order-initiation",
+    "severity": "warning",
+    "standard": null
+   },
+   {
+    "detail": "PROC-STATUS, PROC-SUBMIT",
+    "layer": "A2",
+    "message": "Payment initiation: Process that receives the payment",
+    "name": "Payment Order Initiation",
+    "outcome": "compliant",
+    "part": {
+     "id": "payment-process",
+     "kind": "role",
+     "label": "Process that receives the payment",
+     "reasoning": "the business step that takes the payment order — what the solution is for"
+    },
+    "parts": [],
+    "pattern": {
+     "id": "PAT-PAYMENT-INITIATION",
+     "title": "Payment initiation",
+     "version": "1.0"
+    },
+    "record": "SD-PAYMENT-ORDER-INITIATION",
+    "rule": "PAT-PAYMENT-INITIATION/payment-process",
+    "severity": "warning",
+    "standard": null
+   },
+   {
+    "detail": "APP-PAYHUB",
+    "layer": "A2",
+    "message": "Payment initiation: Component that handles the payment",
+    "name": "Payment Order Initiation",
+    "outcome": "compliant",
+    "part": {
+     "id": "payments-component",
+     "kind": "role",
+     "label": "Component that handles the payment",
+     "reasoning": "software realises the service domain; without it the payment is handled by nothing"
+    },
+    "parts": [],
+    "pattern": {
+     "id": "PAT-PAYMENT-INITIATION",
+     "title": "Payment initiation",
+     "version": "1.0"
+    },
+    "record": "SD-PAYMENT-ORDER-INITIATION",
+    "rule": "PAT-PAYMENT-INITIATION/payments-component",
+    "severity": "warning",
+    "standard": null
+   },
+   {
+    "detail": "DATA-CONSENT, DATA-IDEMP, DATA-PAYMENT",
+    "layer": "A2",
+    "message": "Payment initiation: Records of the consent, the payment and duplicate protection",
+    "name": "Payment Order Initiation",
+    "outcome": "compliant",
+    "part": {
+     "id": "payment-records",
+     "kind": "role",
+     "label": "Records of the consent, the payment and duplicate protection",
+     "reasoning": "a payment is made under a recorded consent, is itself recorded, and a repeated request must be recognised (idempotency) — three records"
+    },
+    "parts": [],
+    "pattern": {
+     "id": "PAT-PAYMENT-INITIATION",
+     "title": "Payment initiation",
+     "version": "1.0"
+    },
+    "record": "SD-PAYMENT-ORDER-INITIATION",
+    "rule": "PAT-PAYMENT-INITIATION/payment-records",
+    "severity": "warning",
+    "standard": null
+   },
+   {
+    "detail": "SYS-DB",
+    "layer": "A2",
+    "message": "Payment initiation: Database the records are stored in",
+    "name": "Payment Order Initiation",
+    "outcome": "compliant",
+    "part": {
+     "id": "database",
+     "kind": "role",
+     "label": "Database the records are stored in",
+     "reasoning": "the records are durable: they are stored on a platform"
+    },
+    "parts": [],
+    "pattern": {
+     "id": "PAT-PAYMENT-INITIATION",
+     "title": "Payment initiation",
+     "version": "1.0"
+    },
+    "record": "SD-PAYMENT-ORDER-INITIATION",
+    "rule": "PAT-PAYMENT-INITIATION/database",
+    "severity": "warning",
+    "standard": null
+   },
+   {
+    "detail": "SD-PARTY-AUTHENTICATION",
+    "layer": "A2",
+    "message": "Payment initiation: Party Authentication (BIAN)",
+    "name": "Payment Order Initiation",
+    "outcome": "compliant",
+    "part": {
+     "id": "party-authentication",
+     "kind": "role",
+     "label": "Party Authentication (BIAN)",
+     "reasoning": "the customer is authenticated and authorises the consent before any payment is taken"
+    },
+    "parts": [],
+    "pattern": {
+     "id": "PAT-PAYMENT-INITIATION",
+     "title": "Payment initiation",
+     "version": "1.0"
+    },
+    "record": "SD-PAYMENT-ORDER-INITIATION",
+    "rule": "PAT-PAYMENT-INITIATION/party-authentication",
+    "severity": "warning",
+    "standard": null
+   },
+   {
+    "detail": "PROC-AUTH",
+    "layer": "A2",
+    "message": "Payment initiation: Process that captures and authorises the consent",
+    "name": "Payment Order Initiation",
+    "outcome": "compliant",
+    "part": {
+     "id": "authorisation-process",
+     "kind": "role",
+     "label": "Process that captures and authorises the consent",
+     "reasoning": "the business step in which the customer agrees"
+    },
+    "parts": [],
+    "pattern": {
+     "id": "PAT-PAYMENT-INITIATION",
+     "title": "Payment initiation",
+     "version": "1.0"
+    },
+    "record": "SD-PAYMENT-ORDER-INITIATION",
+    "rule": "PAT-PAYMENT-INITIATION/authorisation-process",
+    "severity": "warning",
+    "standard": null
+   },
+   {
+    "detail": "SD-FRAUD-EVALUATION",
+    "layer": "A2",
+    "message": "Payment initiation: Fraud Evaluation (BIAN)",
+    "name": "Payment Order Initiation",
+    "outcome": "compliant",
+    "part": {
+     "id": "fraud-evaluation",
+     "kind": "role",
+     "label": "Fraud Evaluation (BIAN)",
+     "reasoning": "the payment is screened for fraud before the account is debited"
+    },
+    "parts": [],
+    "pattern": {
+     "id": "PAT-PAYMENT-INITIATION",
+     "title": "Payment initiation",
+     "version": "1.0"
+    },
+    "record": "SD-PAYMENT-ORDER-INITIATION",
+    "rule": "PAT-PAYMENT-INITIATION/fraud-evaluation",
+    "severity": "warning",
+    "standard": null
+   },
+   {
+    "detail": "PROC-RISK",
+    "layer": "A2",
+    "message": "Payment initiation: Process that screens the payment for fraud",
+    "name": "Payment Order Initiation",
+    "outcome": "compliant",
+    "part": {
+     "id": "fraud-process",
+     "kind": "role",
+     "label": "Process that screens the payment for fraud",
+     "reasoning": "the business step that screens the payment — it comes before the debit"
+    },
+    "parts": [],
+    "pattern": {
+     "id": "PAT-PAYMENT-INITIATION",
+     "title": "Payment initiation",
+     "version": "1.0"
+    },
+    "record": "SD-PAYMENT-ORDER-INITIATION",
+    "rule": "PAT-PAYMENT-INITIATION/fraud-process",
+    "severity": "warning",
+    "standard": null
+   },
+   {
+    "detail": "IFC-PAYMENT-INITIATION",
+    "layer": "A2",
+    "message": "Payment initiation: API payment providers call",
+    "name": "Payment Order Initiation",
+    "outcome": "compliant",
+    "part": {
+     "id": "api",
+     "kind": "role",
+     "label": "API payment providers call",
+     "reasoning": "payment initiation is offered to third parties over an internet-facing API"
+    },
+    "parts": [],
+    "pattern": {
+     "id": "PAT-PAYMENT-INITIATION",
+     "title": "Payment initiation",
+     "version": "1.0"
+    },
+    "record": "SD-PAYMENT-ORDER-INITIATION",
+    "rule": "PAT-PAYMENT-INITIATION/api",
+    "severity": "warning",
+    "standard": null
+   },
+   {
+    "detail": "API-CONSENT-CREATE, API-CONSENT-READ, API-DEBTOR-READ, API-PAYMENT-CREATE, API-PAYMENT-READ",
+    "layer": "A2",
+    "message": "Payment initiation: API operations: create and read a consent, create and read a payment",
+    "name": "Payment Order Initiation",
+    "outcome": "compliant",
+    "part": {
+     "id": "api-operations",
+     "kind": "role",
+     "label": "API operations: create and read a consent, create and read a payment",
+     "reasoning": "the least a payment initiation API offers"
+    },
+    "parts": [],
+    "pattern": {
+     "id": "PAT-PAYMENT-INITIATION",
+     "title": "Payment initiation",
+     "version": "1.0"
+    },
+    "record": "SD-PAYMENT-ORDER-INITIATION",
+    "rule": "PAT-PAYMENT-INITIATION/api-operations",
+    "severity": "warning",
+    "standard": null
+   },
+   {
+    "detail": "APP-EDGE",
+    "layer": "A2",
+    "message": "Payment initiation: Component that offers the API",
+    "name": "Payment Order Initiation",
+    "outcome": "compliant",
+    "part": {
+     "id": "api-component",
+     "kind": "role",
+     "label": "Component that offers the API",
+     "reasoning": "an interface belongs to the component that offers it — here the ingress"
+    },
+    "parts": [],
+    "pattern": {
+     "id": "PAT-PAYMENT-INITIATION",
+     "title": "Payment initiation",
+     "version": "1.0"
+    },
+    "record": "SD-PAYMENT-ORDER-INITIATION",
+    "rule": "PAT-PAYMENT-INITIATION/api-component",
+    "severity": "warning",
+    "standard": null
+   },
+   {
+    "detail": "DATA-AUDIT",
+    "layer": "A2",
+    "message": "Payment initiation: Audit record of decisions",
+    "name": "Payment Order Initiation",
+    "outcome": "compliant",
+    "part": {
+     "id": "audit-record",
+     "kind": "role",
+     "label": "Audit record of decisions",
+     "reasoning": "who was let in, and what was refused, is kept"
+    },
+    "parts": [],
+    "pattern": {
+     "id": "PAT-PAYMENT-INITIATION",
+     "title": "Payment initiation",
+     "version": "1.0"
+    },
+    "record": "SD-PAYMENT-ORDER-INITIATION",
+    "rule": "PAT-PAYMENT-INITIATION/audit-record",
+    "severity": "warning",
+    "standard": null
+   },
+   {
+    "detail": "NODE-EDGE",
+    "layer": "A2",
+    "message": "Payment initiation: Edge platform the API is exposed through",
+    "name": "Payment Order Initiation",
+    "outcome": "compliant",
+    "part": {
+     "id": "edge-platform",
+     "kind": "role",
+     "label": "Edge platform the API is exposed through",
+     "reasoning": "what faces the internet sits in a DMZ, not among the applications"
+    },
+    "parts": [],
+    "pattern": {
+     "id": "PAT-PAYMENT-INITIATION",
+     "title": "Payment initiation",
+     "version": "1.0"
+    },
+    "record": "SD-PAYMENT-ORDER-INITIATION",
+    "rule": "PAT-PAYMENT-INITIATION/edge-platform",
+    "severity": "warning",
+    "standard": null
+   },
+   {
+    "detail": "SYS-KMS",
+    "layer": "A2",
+    "message": "Payment initiation: Key or secret store",
+    "name": "Payment Order Initiation",
+    "outcome": "compliant",
+    "part": {
+     "id": "key-store",
+     "kind": "role",
+     "label": "Key or secret store",
+     "reasoning": "signing keys and client secrets are held apart from the applications that use them"
+    },
+    "parts": [],
+    "pattern": {
+     "id": "PAT-PAYMENT-INITIATION",
+     "title": "Payment initiation",
+     "version": "1.0"
+    },
+    "record": "SD-PAYMENT-ORDER-INITIATION",
+    "rule": "PAT-PAYMENT-INITIATION/key-store",
+    "severity": "warning",
+    "standard": null
+   },
+   {
+    "detail": "2 USES_DOMAIN link(s)",
+    "layer": "A2",
+    "message": "Payment initiation: uses",
+    "name": "Payment Order Initiation",
+    "outcome": "compliant",
+    "part": {
+     "id": "P1",
+     "kind": "connector",
+     "label": "uses"
+    },
+    "parts": [],
+    "pattern": {
+     "id": "PAT-PAYMENT-INITIATION",
+     "title": "Payment initiation",
+     "version": "1.0"
+    },
+    "record": "SD-PAYMENT-ORDER-INITIATION",
+    "rule": "PAT-PAYMENT-INITIATION/P1",
+    "severity": "warning",
+    "standard": null
+   },
+   {
+    "detail": "1 REALIZED_BY link(s)",
+    "layer": "A2",
+    "message": "Payment initiation: realised by",
+    "name": "Payment Order Initiation",
+    "outcome": "compliant",
+    "part": {
+     "id": "P2",
+     "kind": "connector",
+     "label": "realised by"
+    },
+    "parts": [],
+    "pattern": {
+     "id": "PAT-PAYMENT-INITIATION",
+     "title": "Payment initiation",
+     "version": "1.0"
+    },
+    "record": "SD-PAYMENT-ORDER-INITIATION",
+    "rule": "PAT-PAYMENT-INITIATION/P2",
+    "severity": "warning",
+    "standard": null
+   },
+   {
+    "detail": "3 access link(s)",
+    "layer": "A2",
+    "message": "Payment initiation: reads and writes",
+    "name": "Payment Order Initiation",
+    "outcome": "compliant",
+    "part": {
+     "id": "P3",
+     "kind": "connector",
+     "label": "reads and writes"
+    },
+    "parts": [],
+    "pattern": {
+     "id": "PAT-PAYMENT-INITIATION",
+     "title": "Payment initiation",
+     "version": "1.0"
+    },
+    "record": "SD-PAYMENT-ORDER-INITIATION",
+    "rule": "PAT-PAYMENT-INITIATION/P3",
+    "severity": "warning",
+    "standard": null
+   },
+   {
+    "detail": "3 STORED_IN link(s)",
+    "layer": "A2",
+    "message": "Payment initiation: stored in",
+    "name": "Payment Order Initiation",
+    "outcome": "compliant",
+    "part": {
+     "id": "P4",
+     "kind": "connector",
+     "label": "stored in"
+    },
+    "parts": [],
+    "pattern": {
+     "id": "PAT-PAYMENT-INITIATION",
+     "title": "Payment initiation",
+     "version": "1.0"
+    },
+    "record": "SD-PAYMENT-ORDER-INITIATION",
+    "rule": "PAT-PAYMENT-INITIATION/P4",
+    "severity": "warning",
+    "standard": null
+   },
+   {
+    "detail": "1 USES_DOMAIN link(s)",
+    "layer": "A2",
+    "message": "Payment initiation: uses",
+    "name": "Payment Order Initiation",
+    "outcome": "compliant",
+    "part": {
+     "id": "P5",
+     "kind": "connector",
+     "label": "uses"
+    },
+    "parts": [],
+    "pattern": {
+     "id": "PAT-PAYMENT-INITIATION",
+     "title": "Payment initiation",
+     "version": "1.0"
+    },
+    "record": "SD-PAYMENT-ORDER-INITIATION",
+    "rule": "PAT-PAYMENT-INITIATION/P5",
+    "severity": "warning",
+    "standard": null
+   },
+   {
+    "detail": "1 USES_DOMAIN link(s)",
+    "layer": "A2",
+    "message": "Payment initiation: uses",
+    "name": "Payment Order Initiation",
+    "outcome": "compliant",
+    "part": {
+     "id": "P6",
+     "kind": "connector",
+     "label": "uses"
+    },
+    "parts": [],
+    "pattern": {
+     "id": "PAT-PAYMENT-INITIATION",
+     "title": "Payment initiation",
+     "version": "1.0"
+    },
+    "record": "SD-PAYMENT-ORDER-INITIATION",
+    "rule": "PAT-PAYMENT-INITIATION/P6",
+    "severity": "warning",
+    "standard": null
+   },
+   {
+    "detail": "1 composition link(s)",
+    "layer": "A2",
+    "message": "Payment initiation: offers",
+    "name": "Payment Order Initiation",
+    "outcome": "compliant",
+    "part": {
+     "id": "P7",
+     "kind": "connector",
+     "label": "offers"
+    },
+    "parts": [],
+    "pattern": {
+     "id": "PAT-PAYMENT-INITIATION",
+     "title": "Payment initiation",
+     "version": "1.0"
+    },
+    "record": "SD-PAYMENT-ORDER-INITIATION",
+    "rule": "PAT-PAYMENT-INITIATION/P7",
+    "severity": "warning",
+    "standard": null
+   },
+   {
+    "detail": "5 composition link(s)",
+    "layer": "A2",
+    "message": "Payment initiation: has",
+    "name": "Payment Order Initiation",
+    "outcome": "compliant",
+    "part": {
+     "id": "P8",
+     "kind": "connector",
+     "label": "has"
+    },
+    "parts": [],
+    "pattern": {
+     "id": "PAT-PAYMENT-INITIATION",
+     "title": "Payment initiation",
+     "version": "1.0"
+    },
+    "record": "SD-PAYMENT-ORDER-INITIATION",
+    "rule": "PAT-PAYMENT-INITIATION/P8",
+    "severity": "warning",
+    "standard": null
+   },
+   {
+    "detail": "1 access link(s)",
+    "layer": "A2",
+    "message": "Payment initiation: writes",
+    "name": "Payment Order Initiation",
+    "outcome": "compliant",
+    "part": {
+     "id": "P9",
+     "kind": "connector",
+     "label": "writes"
+    },
+    "parts": [],
+    "pattern": {
+     "id": "PAT-PAYMENT-INITIATION",
+     "title": "Payment initiation",
+     "version": "1.0"
+    },
+    "record": "SD-PAYMENT-ORDER-INITIATION",
+    "rule": "PAT-PAYMENT-INITIATION/P9",
+    "severity": "warning",
+    "standard": null
+   },
+   {
+    "detail": "1 EXPOSED_THROUGH link(s)",
+    "layer": "A2",
+    "message": "Payment initiation: exposed through",
+    "name": "Payment Order Initiation",
+    "outcome": "compliant",
+    "part": {
+     "id": "P10",
+     "kind": "connector",
+     "label": "exposed through"
+    },
+    "parts": [],
+    "pattern": {
+     "id": "PAT-PAYMENT-INITIATION",
+     "title": "Payment initiation",
+     "version": "1.0"
+    },
+    "record": "SD-PAYMENT-ORDER-INITIATION",
+    "rule": "PAT-PAYMENT-INITIATION/P10",
+    "severity": "warning",
+    "standard": null
+   },
+   {
+    "detail": "SD-PAYMENT-ORDER-INITIATION",
+    "layer": "A2",
+    "message": "BIAN Transact — a transaction: Transact service domain (BIAN)",
+    "name": "Payment Order Initiation",
+    "outcome": "compliant",
+    "part": {
+     "id": "domain",
+     "kind": "role",
+     "label": "Transact service domain (BIAN)"
+    },
+    "parts": [],
+    "pattern": {
+     "id": "PAT-BIAN-TRANSACT",
+     "title": "BIAN Transact — a transaction",
+     "version": "1.0"
+    },
+    "record": "SD-PAYMENT-ORDER-INITIATION",
+    "rule": "PAT-BIAN-TRANSACT/domain",
+    "severity": "warning",
+    "standard": null
+   },
+   {
+    "detail": "CAP-PAY",
+    "layer": "A2",
+    "message": "BIAN Transact — a transaction: Business capability the domain supports",
+    "name": "Payment Order Initiation",
+    "outcome": "compliant",
+    "part": {
+     "id": "capability",
+     "kind": "role",
+     "label": "Business capability the domain supports",
+     "reasoning": "a service domain is there for a business capability; without one the design does not say what it is for"
+    },
+    "parts": [],
+    "pattern": {
+     "id": "PAT-BIAN-TRANSACT",
+     "title": "BIAN Transact — a transaction",
+     "version": "1.0"
+    },
+    "record": "SD-PAYMENT-ORDER-INITIATION",
+    "rule": "PAT-BIAN-TRANSACT/capability",
+    "severity": "warning",
+    "standard": null
+   },
+   {
+    "detail": "PROC-STATUS, PROC-SUBMIT",
+    "layer": "A2",
+    "message": "BIAN Transact — a transaction: Process that uses the domain",
+    "name": "Payment Order Initiation",
+    "outcome": "compliant",
+    "part": {
+     "id": "process",
+     "kind": "role",
+     "label": "Process that uses the domain",
+     "reasoning": "the business step in which the transaction is handled"
+    },
+    "parts": [],
+    "pattern": {
+     "id": "PAT-BIAN-TRANSACT",
+     "title": "BIAN Transact — a transaction",
+     "version": "1.0"
+    },
+    "record": "SD-PAYMENT-ORDER-INITIATION",
+    "rule": "PAT-BIAN-TRANSACT/process",
+    "severity": "warning",
+    "standard": null
+   },
+   {
+    "detail": "SG-PAYMENT-ORDER-INITIATION-COMPLIANCE, SG-PAYMENT-ORDER-INITIATION-CONFIRMATION, SG-PAYMENT-ORDER-INITIATION-ORDER-INITIATION, SG-PAYMENT-ORDER-INITIATION-PAYMENT-ORDER-INITIATION-TRANSACTION",
+    "layer": "A2",
+    "message": "BIAN Transact — a transaction: The domain's service groups (BIAN)",
+    "name": "Payment Order Initiation",
+    "outcome": "compliant",
+    "part": {
+     "id": "service-groups",
+     "kind": "role",
+     "label": "The domain's service groups (BIAN)",
+     "reasoning": "BIAN groups what the domain offers; its operations are reached through them"
+    },
+    "parts": [],
+    "pattern": {
+     "id": "PAT-BIAN-TRANSACT",
+     "title": "BIAN Transact — a transaction",
+     "version": "1.0"
+    },
+    "record": "SD-PAYMENT-ORDER-INITIATION",
+    "rule": "PAT-BIAN-TRANSACT/service-groups",
+    "severity": "warning",
+    "standard": null
+   },
+   {
+    "detail": "SO-PAYMENT-ORDER-INITIATION-EXCHANGE-ORDER-INITIATION, SO-PAYMENT-ORDER-INITIATION-INITIATE, SO-PAYMENT-ORDER-INITIATION-RETRIEVE, SO-PAYMENT-ORDER-INITIATION-RETRIEVE-COMPLIANCE, SO-PAYMENT-ORDER-INITIATION-RETRIEVE-CONFIRMATION, SO-PAYMENT-ORDER-INITIATION-RETRIEVE-ORDER-INITIATION, SO-PAYMENT-ORDER-INITIATION-UPDATE",
+    "layer": "A2",
+    "message": "BIAN Transact — a transaction: The domain's service operations (BIAN)",
+    "name": "Payment Order Initiation",
+    "outcome": "compliant",
+    "part": {
+     "id": "service-operations",
+     "kind": "role",
+     "label": "The domain's service operations (BIAN)",
+     "reasoning": "what BIAN says can be done with the transaction"
+    },
+    "parts": [],
+    "pattern": {
+     "id": "PAT-BIAN-TRANSACT",
+     "title": "BIAN Transact — a transaction",
+     "version": "1.0"
+    },
+    "record": "SD-PAYMENT-ORDER-INITIATION",
+    "rule": "PAT-BIAN-TRANSACT/service-operations",
+    "severity": "warning",
+    "standard": null
+   },
+   {
+    "detail": "API-PAYMENT-CREATE, API-PAYMENT-READ",
+    "layer": "A2",
+    "message": "BIAN Transact — a transaction: API operation that implements one of the domain's operations",
+    "name": "Payment Order Initiation",
+    "outcome": "compliant",
+    "part": {
+     "id": "api-operations",
+     "kind": "role",
+     "label": "API operation that implements one of the domain's operations",
+     "reasoning": "a domain no API implements is offered to nothing"
+    },
+    "parts": [],
+    "pattern": {
+     "id": "PAT-BIAN-TRANSACT",
+     "title": "BIAN Transact — a transaction",
+     "version": "1.0"
+    },
+    "record": "SD-PAYMENT-ORDER-INITIATION",
+    "rule": "PAT-BIAN-TRANSACT/api-operations",
+    "severity": "warning",
+    "standard": null
+   },
+   {
+    "detail": "APP-PAYHUB",
+    "layer": "A2",
+    "message": "BIAN Transact — a transaction: Component that realises the domain",
+    "name": "Payment Order Initiation",
+    "outcome": "compliant",
+    "part": {
+     "id": "component",
+     "kind": "role",
+     "label": "Component that realises the domain",
+     "reasoning": "software carries the domain; without it nothing does"
+    },
+    "parts": [],
+    "pattern": {
+     "id": "PAT-BIAN-TRANSACT",
+     "title": "BIAN Transact — a transaction",
+     "version": "1.0"
+    },
+    "record": "SD-PAYMENT-ORDER-INITIATION",
+    "rule": "PAT-BIAN-TRANSACT/component",
+    "severity": "warning",
+    "standard": null
+   },
+   {
+    "detail": "DATA-CONSENT, DATA-IDEMP, DATA-PAYMENT",
+    "layer": "A2",
+    "message": "BIAN Transact — a transaction: Record of the transaction",
+    "name": "Payment Order Initiation",
+    "outcome": "compliant",
+    "part": {
+     "id": "record",
+     "kind": "role",
+     "label": "Record of the transaction",
+     "reasoning": "the transaction is the domain's control record in BIAN — the design keeps it somewhere"
+    },
+    "parts": [],
+    "pattern": {
+     "id": "PAT-BIAN-TRANSACT",
+     "title": "BIAN Transact — a transaction",
+     "version": "1.0"
+    },
+    "record": "SD-PAYMENT-ORDER-INITIATION",
+    "rule": "PAT-BIAN-TRANSACT/record",
+    "severity": "warning",
+    "standard": null
+   },
+   {
+    "detail": "SYS-DB",
+    "layer": "A2",
+    "message": "BIAN Transact — a transaction: Platform the record is stored on",
+    "name": "Payment Order Initiation",
+    "outcome": "compliant",
+    "part": {
+     "id": "store",
+     "kind": "role",
+     "label": "Platform the record is stored on",
+     "reasoning": "a record is durable only on a platform"
+    },
+    "parts": [],
+    "pattern": {
+     "id": "PAT-BIAN-TRANSACT",
+     "title": "BIAN Transact — a transaction",
+     "version": "1.0"
+    },
+    "record": "SD-PAYMENT-ORDER-INITIATION",
+    "rule": "PAT-BIAN-TRANSACT/store",
+    "severity": "warning",
+    "standard": null
+   },
+   {
+    "detail": "DEP-PAYHUB",
+    "layer": "A2",
+    "message": "BIAN Transact — a transaction: Deployment of the component",
+    "name": "Payment Order Initiation",
+    "outcome": "compliant",
+    "part": {
+     "id": "deployment",
+     "kind": "role",
+     "label": "Deployment of the component",
+     "reasoning": "software that is deployed nowhere runs nowhere"
+    },
+    "parts": [],
+    "pattern": {
+     "id": "PAT-BIAN-TRANSACT",
+     "title": "BIAN Transact — a transaction",
+     "version": "1.0"
+    },
+    "record": "SD-PAYMENT-ORDER-INITIATION",
+    "rule": "PAT-BIAN-TRANSACT/deployment",
+    "severity": "warning",
+    "standard": null
+   },
+   {
+    "detail": "1 SUPPORTED_BY link(s)",
+    "layer": "A2",
+    "message": "BIAN Transact — a transaction: supported by",
+    "name": "Payment Order Initiation",
+    "outcome": "compliant",
+    "part": {
+     "id": "B1",
+     "kind": "connector",
+     "label": "supported by"
+    },
+    "parts": [],
+    "pattern": {
+     "id": "PAT-BIAN-TRANSACT",
+     "title": "BIAN Transact — a transaction",
+     "version": "1.0"
+    },
+    "record": "SD-PAYMENT-ORDER-INITIATION",
+    "rule": "PAT-BIAN-TRANSACT/B1",
+    "severity": "warning",
+    "standard": null
+   },
+   {
+    "detail": "2 USES_DOMAIN link(s)",
+    "layer": "A2",
+    "message": "BIAN Transact — a transaction: uses",
+    "name": "Payment Order Initiation",
+    "outcome": "compliant",
+    "part": {
+     "id": "B2",
+     "kind": "connector",
+     "label": "uses"
+    },
+    "parts": [],
+    "pattern": {
+     "id": "PAT-BIAN-TRANSACT",
+     "title": "BIAN Transact — a transaction",
+     "version": "1.0"
+    },
+    "record": "SD-PAYMENT-ORDER-INITIATION",
+    "rule": "PAT-BIAN-TRANSACT/B2",
+    "severity": "warning",
+    "standard": null
+   },
+   {
+    "detail": "1 REALIZED_BY link(s)",
+    "layer": "A2",
+    "message": "BIAN Transact — a transaction: realised by",
+    "name": "Payment Order Initiation",
+    "outcome": "compliant",
+    "part": {
+     "id": "B3",
+     "kind": "connector",
+     "label": "realised by"
+    },
+    "parts": [],
+    "pattern": {
+     "id": "PAT-BIAN-TRANSACT",
+     "title": "BIAN Transact — a transaction",
+     "version": "1.0"
+    },
+    "record": "SD-PAYMENT-ORDER-INITIATION",
+    "rule": "PAT-BIAN-TRANSACT/B3",
+    "severity": "warning",
+    "standard": null
+   },
+   {
+    "detail": "4 composition link(s)",
+    "layer": "A2",
+    "message": "BIAN Transact — a transaction: has",
+    "name": "Payment Order Initiation",
+    "outcome": "compliant",
+    "part": {
+     "id": "B4",
+     "kind": "connector",
+     "label": "has"
+    },
+    "parts": [],
+    "pattern": {
+     "id": "PAT-BIAN-TRANSACT",
+     "title": "BIAN Transact — a transaction",
+     "version": "1.0"
+    },
+    "record": "SD-PAYMENT-ORDER-INITIATION",
+    "rule": "PAT-BIAN-TRANSACT/B4",
+    "severity": "warning",
+    "standard": null
+   },
+   {
+    "detail": "7 composition link(s)",
+    "layer": "A2",
+    "message": "BIAN Transact — a transaction: has",
+    "name": "Payment Order Initiation",
+    "outcome": "compliant",
+    "part": {
+     "id": "B5",
+     "kind": "connector",
+     "label": "has"
+    },
+    "parts": [],
+    "pattern": {
+     "id": "PAT-BIAN-TRANSACT",
+     "title": "BIAN Transact — a transaction",
+     "version": "1.0"
+    },
+    "record": "SD-PAYMENT-ORDER-INITIATION",
+    "rule": "PAT-BIAN-TRANSACT/B5",
+    "severity": "warning",
+    "standard": null
+   },
+   {
+    "detail": "2 IMPLEMENTED_BY link(s)",
+    "layer": "A2",
+    "message": "BIAN Transact — a transaction: implemented by",
+    "name": "Payment Order Initiation",
+    "outcome": "compliant",
+    "part": {
+     "id": "B6",
+     "kind": "connector",
+     "label": "implemented by"
+    },
+    "parts": [],
+    "pattern": {
+     "id": "PAT-BIAN-TRANSACT",
+     "title": "BIAN Transact — a transaction",
+     "version": "1.0"
+    },
+    "record": "SD-PAYMENT-ORDER-INITIATION",
+    "rule": "PAT-BIAN-TRANSACT/B6",
+    "severity": "warning",
+    "standard": null
+   },
+   {
+    "detail": "3 access link(s)",
+    "layer": "A2",
+    "message": "BIAN Transact — a transaction: reads and writes",
+    "name": "Payment Order Initiation",
+    "outcome": "compliant",
+    "part": {
+     "id": "B7",
+     "kind": "connector",
+     "label": "reads and writes"
+    },
+    "parts": [],
+    "pattern": {
+     "id": "PAT-BIAN-TRANSACT",
+     "title": "BIAN Transact — a transaction",
+     "version": "1.0"
+    },
+    "record": "SD-PAYMENT-ORDER-INITIATION",
+    "rule": "PAT-BIAN-TRANSACT/B7",
+    "severity": "warning",
+    "standard": null
+   },
+   {
+    "detail": "3 STORED_IN link(s)",
+    "layer": "A2",
+    "message": "BIAN Transact — a transaction: stored in",
+    "name": "Payment Order Initiation",
+    "outcome": "compliant",
+    "part": {
+     "id": "B8",
+     "kind": "connector",
+     "label": "stored in"
+    },
+    "parts": [],
+    "pattern": {
+     "id": "PAT-BIAN-TRANSACT",
+     "title": "BIAN Transact — a transaction",
+     "version": "1.0"
+    },
+    "record": "SD-PAYMENT-ORDER-INITIATION",
+    "rule": "PAT-BIAN-TRANSACT/B8",
+    "severity": "warning",
+    "standard": null
+   },
+   {
+    "detail": "1 DEPLOYED_AS link(s)",
+    "layer": "A2",
+    "message": "BIAN Transact — a transaction: deployed as",
+    "name": "Payment Order Initiation",
+    "outcome": "compliant",
+    "part": {
+     "id": "B9",
+     "kind": "connector",
+     "label": "deployed as"
+    },
+    "parts": [],
+    "pattern": {
+     "id": "PAT-BIAN-TRANSACT",
+     "title": "BIAN Transact — a transaction",
+     "version": "1.0"
+    },
+    "record": "SD-PAYMENT-ORDER-INITIATION",
+    "rule": "PAT-BIAN-TRANSACT/B9",
+    "severity": "warning",
+    "standard": null
+   }
+  ],
+  "groups": [
+   {
+    "compliant": 19,
+    "exception_approved": 0,
+    "id": "PAT-BIAN-TRANSACT",
+    "kind": "pattern",
+    "non_compliant": 0,
+    "not_applicable": 0,
+    "title": "BIAN Transact — a transaction",
+    "unresolved": 0,
+    "version": "1.0"
+   },
+   {
+    "compliant": 25,
+    "exception_approved": 0,
+    "id": "PAT-PAYMENT-INITIATION",
+    "kind": "pattern",
+    "non_compliant": 0,
+    "not_applicable": 0,
+    "title": "Payment initiation",
+    "unresolved": 0,
+    "version": "1.0"
+   },
+   {
+    "compliant": 129,
+    "exception_approved": 0,
+    "id": "SDEM-COMPLETE",
+    "kind": "standard",
+    "non_compliant": 0,
+    "not_applicable": 0,
+    "title": "A complete design: every record connected",
+    "unresolved": 0,
+    "version": "1.4"
+   }
+  ],
+  "profile": {
+   "chain": [
+    "sdem"
+   ],
+   "name": "sdem",
+   "sha256": "48881d00157a8c08f0c23cf5914dc11a2a0db5cb0ecfa22b65e852aec0a345b5",
+   "version": 1
+  },
+  "profile_active": true,
+  "summary": {
+   "compliant": 173,
+   "exception_approved": 0,
+   "non_compliant": 0,
+   "not_applicable": 0,
+   "unresolved": 0
+  },
+  "workspace": "<tmp>/v3"
+ }
+}

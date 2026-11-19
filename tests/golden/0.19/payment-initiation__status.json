@@ -1,0 +1,111 @@
+{
+ "command": [
+  "status",
+  "--workspace",
+  "<tmp>/pi",
+  "--json"
+ ],
+ "exit": 0,
+ "output": {
+  "blocking": [],
+  "completeness": null,
+  "connections": {
+   "by_status": {
+    "approved": 20
+   },
+   "links": 20
+  },
+  "counts": {
+   "blocking": 0,
+   "unresolved": 0,
+   "warnings": 8
+  },
+  "layers": [
+   {
+    "level": "A1",
+    "records": 16,
+    "relationships": 16,
+    "title": "A1 Business"
+   },
+   {
+    "level": "A2",
+    "records": 48,
+    "relationships": 68,
+    "title": "A2 Service domain (BIAN)"
+   },
+   {
+    "level": "A3",
+    "records": 16,
+    "relationships": 19,
+    "title": "A3 Application"
+   },
+   {
+    "level": "A4",
+    "records": 20,
+    "relationships": 30,
+    "title": "A4 Technology"
+   }
+  ],
+  "missing_layers": [],
+  "name": "pi",
+  "next": [
+   {
+    "command": "sdem document --workspace <tmp>/pi --layer all",
+    "person_decides": false,
+    "who": "you, or an agent",
+    "why": "nothing blocks the design or waits on a person: write it up, or look at it all: sdem workbench --workspace <tmp>/pi"
+   }
+  ],
+  "patterns": [],
+  "patterns_available": [],
+  "sources": {
+   "links_without_source": 133,
+   "records_without_source": 85
+  },
+  "state": "clear",
+  "unresolved": [],
+  "warnings": [
+   {
+    "kind": "advice",
+    "layer": "A1",
+    "text": "A1: instance PRC-PAY-01: attribute 'triggered_by' refers to 'customer submits a payment', which is not a A1.BusinessEvent in this architecture dataset (LC-07)"
+   },
+   {
+    "kind": "advice",
+    "layer": "A1",
+    "text": "A1: instance PRC-PAY-02: attribute 'triggered_by' refers to 'instruction authorised', which is not a A1.BusinessEvent in this architecture dataset (LC-07)"
+   },
+   {
+    "kind": "advice",
+    "layer": "A2",
+    "text": "A2: instance BBO-PAY-INSTR: its field names and its field records disagree — no record for creditor_account_reference, currency, debtor_account_reference, payment_instruction_reference, payment_status, remittance_information, value_date (LC-24)"
+   },
+   {
+    "kind": "advice",
+    "layer": "A2",
+    "text": "A2: instance BBO-PARTY: its field names and its field records disagree — no record for party_name, party_reference, party_type — not in its list: party reference (LC-24)"
+   },
+   {
+    "kind": "advice",
+    "layer": "A3",
+    "text": "A3: instance EVT-PAY-STATUS: attribute 'event_source' refers to '/payments-hub', which is not a A3.ApplicationComponent in this architecture dataset (LC-07)"
+   },
+   {
+    "kind": "advice",
+    "layer": "A3",
+    "text": "A3: instance ENT-PAY-INSTR: is thin — its 11 field(s) are names only; give each as a record (DataAttribute, composed of ENT-PAY-INSTR) — sdem bian import --objects or sdem aid fills them (LC-23)"
+   },
+   {
+    "kind": "advice",
+    "layer": "A3",
+    "text": "A3: instance ENT-PAY-EVENT: is thin — its 4 field(s) are names only; give each as a record (DataAttribute, composed of ENT-PAY-EVENT) — sdem bian import --objects or sdem aid fills them (LC-23)"
+   },
+   {
+    "kind": "advice",
+    "layer": "A3",
+    "text": "A3: instance ENT-ACCOUNT-CACHE: is thin — its 5 field(s) are names only; give each as a record (DataAttribute, composed of ENT-ACCOUNT-CACHE) — sdem bian import --objects or sdem aid fills them (LC-23)"
+   }
+  ],
+  "workspace": "<tmp>/pi"
+ }
+}

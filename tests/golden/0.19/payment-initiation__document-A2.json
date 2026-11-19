@@ -1,0 +1,2378 @@
+{
+ "command": [
+  "document",
+  "--workspace",
+  "<tmp>/pi",
+  "--layer",
+  "A2",
+  "--json"
+ ],
+ "exit": 0,
+ "output": {
+  "fingerprint": "<volatile>",
+  "gaps": {
+   "no_connection": [
+    "BA-OPS-EXEC",
+    "BD-PAYMENTS",
+    "SD-PE",
+    "SD-PA",
+    "FP-FULFIL",
+    "FP-ASSESS",
+    "AT-PAY-INSTR",
+    "AT-PAY-TXN",
+    "AT-AUTH",
+    "CR-PI",
+    "CR-PA",
+    "CR-PE",
+    "SG-PI-1",
+    "SG-PI-2",
+    "SG-PA-1",
+    "SG-PE-1",
+    "SO-PI-06",
+    "SO-PA-01",
+    "SO-PA-02",
+    "SO-PA-03",
+    "SO-PA-04",
+    "SO-PA-05",
+    "SO-PA-06",
+    "SO-PA-07",
+    "SO-PE-01",
+    "SO-PE-02",
+    "SO-PE-03",
+    "BQ-VALIDATION",
+    "BQ-EXECUTION",
+    "BQ-PA-PASSWORD",
+    "BQ-PA-QUESTION",
+    "BQ-PA-DOCUMENT",
+    "BQ-PA-DEVICE",
+    "BQ-PA-BIOMETRIC",
+    "BQ-PA-BEHAVIOR",
+    "BQ-PE-CLEARING",
+    "BQ-PE-OUTBOUND",
+    "BBO-PARTY",
+    "BBOA-AMOUNT",
+    "BBOA-PARTY-REF"
+   ],
+   "placeholders": [
+    {
+     "fields": [
+      "input_attributes"
+     ],
+     "id": "SO-PA-07"
+    }
+   ],
+   "requirements_not_confirmed": [],
+   "unconfirmed": []
+  },
+  "layer": "A2",
+  "requirements": [
+   {
+    "category": "real_time",
+    "condition": {
+     "metric": "execution_time",
+     "operator": "<=",
+     "unit": "s",
+     "value": 2
+    },
+    "evidence": [
+     "service_level_agreement:SLA-PAY-001#s4"
+    ],
+    "id": "REQ-RT-01",
+    "name": "Real-time payment execution",
+    "statement": "Payment execution completes within 2 s of an authorised instruction.",
+    "status": "confirmed",
+    "subject": "SD-PE",
+    "subject_name": "Payment Execution (synthetic selection)"
+   }
+  ],
+  "sections": [
+   {
+    "definition": "Top-level grouping of the Service Landscape",
+    "records": [
+     {
+      "attribute_sources": {},
+      "attributes": {},
+      "connections": [],
+      "description": "BIAN's business area for the operational domains, payments among them (BIAN Service Landscape; the business area is not in SDEM's shipped Semantic API catalogue).",
+      "fields": [],
+      "id": "BA-OPS-EXEC",
+      "lifecycle_status": "active",
+      "links_in": [],
+      "links_out": [
+       {
+        "id": "BD-PAYMENTS",
+        "kind": "composition",
+        "name": "Payments (synthetic grouping)",
+        "source_id": null
+       }
+      ],
+      "name": "Operations and Execution",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A2.BusinessArea",
+      "version": "1.0"
+     }
+    ],
+    "title": "Business areas",
+    "type": "A2.BusinessArea"
+   },
+   {
+    "definition": "Coarse functional grouping within a Business Area",
+    "records": [
+     {
+      "attribute_sources": {},
+      "attributes": {},
+      "connections": [],
+      "description": "Synthetic stand-in for a BIAN payments business domain.",
+      "fields": [],
+      "id": "BD-PAYMENTS",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "BA-OPS-EXEC",
+        "kind": "composition",
+        "name": "Operations and Execution",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "SD-PI",
+        "kind": "composition",
+        "name": "Payment Initiation (synthetic selection)",
+        "source_id": null
+       },
+       {
+        "id": "SD-PE",
+        "kind": "composition",
+        "name": "Payment Execution (synthetic selection)",
+        "source_id": null
+       },
+       {
+        "id": "SD-PA",
+        "kind": "composition",
+        "name": "Party Authentication (synthetic selection)",
+        "source_id": null
+       }
+      ],
+      "name": "Payments (synthetic grouping)",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A2.BusinessDomain",
+      "version": "1.0"
+     }
+    ],
+    "title": "Business domains",
+    "type": "A2.BusinessDomain"
+   },
+   {
+    "definition": "A discrete functional scope of the bank and its responsibilities",
+    "records": [
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "adoption_status": "adopted",
+       "asset_type": "Payment Instruction (AT-PAY-INSTR)",
+       "conforms_to": [
+        "BIAN 14.0"
+       ],
+       "functional_pattern": "Fulfil (FP-FULFIL)",
+       "owner": "Payments Operations Officer (ROLE-PAY-OFFICER)"
+      },
+      "connections": [
+       {
+        "direction": "in",
+        "evidence": [
+         "business_architecture_document:BA-PAY-2026#s2",
+         "domain_scope_assessment:DSA-PAY-INIT-001"
+        ],
+        "id": "CAP-PAY-010",
+        "mapping_id": "PAY-001",
+        "name": "Initiate Payment",
+        "relationship": "SUPPORTED_BY",
+        "status": "approved"
+       },
+       {
+        "direction": "in",
+        "evidence": [
+         "process_model:PM-MAKE-PAYMENT-2026"
+        ],
+        "id": "PRC-PAY-01",
+        "mapping_id": "PAY-003",
+        "name": "Capture and validate payment instruction",
+        "relationship": "USES_DOMAIN",
+        "status": "approved"
+       },
+       {
+        "direction": "in",
+        "evidence": [
+         "process_model:PM-MAKE-PAYMENT-2026"
+        ],
+        "id": "PRC-PAY-02",
+        "mapping_id": "PAY-004",
+        "name": "Execute and confirm payment",
+        "relationship": "USES_DOMAIN",
+        "status": "approved"
+       },
+       {
+        "direction": "out",
+        "evidence": [
+         "application_architecture_document:AA-PAYHUB-HLD#s3"
+        ],
+        "id": "APP-PAY-HUB",
+        "mapping_id": "PAY-106",
+        "name": "Payments Hub",
+        "relationship": "REALIZED_BY",
+        "status": "approved"
+       }
+      ],
+      "description": "Synthetic stand-in for a BIAN payment-initiation Service Domain: captures, validates, authorises and hands over customer payment instructions.",
+      "fields": [],
+      "id": "SD-PI",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "BD-PAYMENTS",
+        "kind": "composition",
+        "name": "Payments (synthetic grouping)",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "AT-PAY-INSTR",
+        "kind": "association",
+        "name": "Payment Instruction",
+        "source_id": null
+       },
+       {
+        "id": "FP-FULFIL",
+        "kind": "association",
+        "name": "Fulfil",
+        "source_id": null
+       },
+       {
+        "id": "CR-PI",
+        "kind": "aggregation",
+        "name": "Payment Initiation Procedure",
+        "source_id": null
+       },
+       {
+        "id": "SG-PI-1",
+        "kind": "composition",
+        "name": "Instruction",
+        "source_id": null
+       },
+       {
+        "id": "SG-PI-2",
+        "kind": "composition",
+        "name": "Processing",
+        "source_id": null
+       },
+       {
+        "id": "SD-PE",
+        "kind": "flow",
+        "name": "Payment Execution (synthetic selection)",
+        "source_id": null
+       }
+      ],
+      "name": "Payment Initiation (synthetic selection)",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A2.ServiceDomain",
+      "version": "1.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "adoption_status": "partly adopted",
+       "asset_type": "Payment Transaction (AT-PAY-TXN)",
+       "functional_pattern": "Fulfil (FP-FULFIL)"
+      },
+      "connections": [],
+      "description": "Synthetic stand-in for a BIAN payment-execution Service Domain: executes authorised instructions through schemes.",
+      "fields": [],
+      "id": "SD-PE",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "BD-PAYMENTS",
+        "kind": "composition",
+        "name": "Payments (synthetic grouping)",
+        "source_id": null
+       },
+       {
+        "id": "SD-PI",
+        "kind": "flow",
+        "name": "Payment Initiation (synthetic selection)",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "AT-PAY-TXN",
+        "kind": "association",
+        "name": "Payment Transaction",
+        "source_id": null
+       },
+       {
+        "id": "FP-FULFIL",
+        "kind": "association",
+        "name": "Fulfil",
+        "source_id": null
+       },
+       {
+        "id": "CR-PE",
+        "kind": "aggregation",
+        "name": "Payment Execution Operating Session",
+        "source_id": null
+       },
+       {
+        "id": "SG-PE-1",
+        "kind": "composition",
+        "name": "Execution",
+        "source_id": null
+       }
+      ],
+      "name": "Payment Execution (synthetic selection)",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A2.ServiceDomain",
+      "version": "1.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "adoption_status": "planned",
+       "asset_type": "Authentication (AT-AUTH)",
+       "functional_pattern": "Assess (FP-ASSESS)"
+      },
+      "connections": [],
+      "description": "Synthetic stand-in for a BIAN party-authentication Service Domain: verifies a party's identity for a session or transaction.",
+      "fields": [],
+      "id": "SD-PA",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "BD-PAYMENTS",
+        "kind": "composition",
+        "name": "Payments (synthetic grouping)",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "AT-AUTH",
+        "kind": "association",
+        "name": "Authentication",
+        "source_id": null
+       },
+       {
+        "id": "FP-ASSESS",
+        "kind": "association",
+        "name": "Assess",
+        "source_id": null
+       },
+       {
+        "id": "CR-PA",
+        "kind": "aggregation",
+        "name": "Party Authentication Assessment",
+        "source_id": null
+       },
+       {
+        "id": "SG-PA-1",
+        "kind": "composition",
+        "name": "Party Authentication Assessment",
+        "source_id": null
+       }
+      ],
+      "name": "Party Authentication (synthetic selection)",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A2.ServiceDomain",
+      "version": "1.0"
+     }
+    ],
+    "title": "Service domains",
+    "type": "A2.ServiceDomain"
+   },
+   {
+    "definition": "The generic behaviour pattern a Service Domain applies",
+    "records": [
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "behavior_qualifier_type": "Features",
+       "generic_artefact": "Arrangement"
+      },
+      "connections": [],
+      "description": "Synthetic stand-in for a BIAN functional pattern: complete a request through a procedure.",
+      "fields": [],
+      "id": "FP-FULFIL",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SD-PI",
+        "kind": "association",
+        "name": "Payment Initiation (synthetic selection)",
+        "source_id": null
+       },
+       {
+        "id": "SD-PE",
+        "kind": "association",
+        "name": "Payment Execution (synthetic selection)",
+        "source_id": null
+       }
+      ],
+      "links_out": [],
+      "name": "Fulfil",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A2.FunctionalPattern",
+      "version": "1.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "behavior_qualifier_type": "Tests",
+       "generic_artefact": "Assessment"
+      },
+      "connections": [],
+      "description": "Synthetic stand-in: evaluate something and record the result.",
+      "fields": [],
+      "id": "FP-ASSESS",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SD-PA",
+        "kind": "association",
+        "name": "Party Authentication (synthetic selection)",
+        "source_id": null
+       }
+      ],
+      "links_out": [],
+      "name": "Assess",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A2.FunctionalPattern",
+      "version": "1.0"
+     }
+    ],
+    "title": "Functional patterns",
+    "type": "A2.FunctionalPattern"
+   },
+   {
+    "definition": "The class of asset a Service Domain manages through its lifecycle",
+    "records": [
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "aliases": [
+        "payment",
+        "instruction"
+       ]
+      },
+      "connections": [],
+      "description": "The customer payment instruction the domain fulfils.",
+      "fields": [],
+      "id": "AT-PAY-INSTR",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SD-PI",
+        "kind": "association",
+        "name": "Payment Initiation (synthetic selection)",
+        "source_id": null
+       }
+      ],
+      "links_out": [],
+      "name": "Payment Instruction",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A2.AssetType",
+      "version": "1.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "aliases": [
+        "payment",
+        "transaction",
+        "transfer"
+       ]
+      },
+      "connections": [],
+      "description": "The executed transfer.",
+      "fields": [],
+      "id": "AT-PAY-TXN",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SD-PE",
+        "kind": "association",
+        "name": "Payment Execution (synthetic selection)",
+        "source_id": null
+       }
+      ],
+      "links_out": [],
+      "name": "Payment Transaction",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A2.AssetType",
+      "version": "1.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "aliases": [
+        "authentication",
+        "login",
+        "credential"
+       ]
+      },
+      "connections": [],
+      "description": "An authentication of a party.",
+      "fields": [],
+      "id": "AT-AUTH",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SD-PA",
+        "kind": "association",
+        "name": "Party Authentication (synthetic selection)",
+        "source_id": null
+       }
+      ],
+      "links_out": [],
+      "name": "Authentication",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A2.AssetType",
+      "version": "1.0"
+     }
+    ],
+    "title": "Asset types",
+    "type": "A2.AssetType"
+   },
+   {
+    "definition": "Lifecycle and control information for a Service Domain's activity",
+    "records": [
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "attributes": [
+        "payment_instruction_reference",
+        "debtor_account_reference",
+        "creditor_account_reference",
+        "amount",
+        "currency",
+        "value_date",
+        "payment_status",
+        "authorisation_status",
+        "execution_reference",
+        "remittance_information"
+       ]
+      },
+      "connections": [],
+      "description": "Lifecycle record of one payment instruction from capture to hand-over.",
+      "fields": [],
+      "id": "CR-PI",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SD-PI",
+        "kind": "aggregation",
+        "name": "Payment Initiation (synthetic selection)",
+        "source_id": null
+       },
+       {
+        "id": "SO-PI-01",
+        "kind": "access",
+        "name": "Initiate Payment Instruction",
+        "source_id": null
+       },
+       {
+        "id": "SO-PI-02",
+        "kind": "access",
+        "name": "Evaluate Payment Instruction Validation",
+        "source_id": null
+       },
+       {
+        "id": "SO-PI-03",
+        "kind": "access",
+        "name": "Execute Payment Instruction Execution",
+        "source_id": null
+       },
+       {
+        "id": "SO-PI-04",
+        "kind": "access",
+        "name": "Retrieve Payment Instruction",
+        "source_id": null
+       },
+       {
+        "id": "SO-PI-05",
+        "kind": "access",
+        "name": "Update Payment Instruction",
+        "source_id": null
+       },
+       {
+        "id": "SO-PI-06",
+        "kind": "access",
+        "name": "Notify Payment Instruction",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "BQ-VALIDATION",
+        "kind": "composition",
+        "name": "Validation",
+        "source_id": null
+       },
+       {
+        "id": "BQ-EXECUTION",
+        "kind": "composition",
+        "name": "Execution",
+        "source_id": null
+       },
+       {
+        "id": "BBO-PAY-INSTR",
+        "kind": "association",
+        "name": "Payment Instruction",
+        "source_id": null
+       },
+       {
+        "id": "BBO-PARTY",
+        "kind": "association",
+        "name": "Party",
+        "source_id": null
+       }
+      ],
+      "name": "Payment Initiation Procedure",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A2.ControlRecord",
+      "version": "1.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "attributes": [
+        "CustomerReference",
+        "PartyReference",
+        "PartyAuthenticationAssessmentProfile",
+        "AuthenticationType",
+        "PartyAuthenticationConsolidationRecord",
+        "CustomerContactAuthenticationLevel",
+        "AuthorisationTokenReference",
+        "RefreshTokenReference"
+       ],
+       "conforms_to": [
+        "BIAN 14.0.0"
+       ]
+      },
+      "connections": [],
+      "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+      "fields": [],
+      "id": "CR-PA",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SD-PA",
+        "kind": "aggregation",
+        "name": "Party Authentication (synthetic selection)",
+        "source_id": null
+       },
+       {
+        "id": "SO-PA-01",
+        "kind": "access",
+        "name": "Party Authentication: Update",
+        "source_id": null
+       },
+       {
+        "id": "SO-PA-02",
+        "kind": "access",
+        "name": "Party Authentication: Evaluate",
+        "source_id": null
+       },
+       {
+        "id": "SO-PA-03",
+        "kind": "access",
+        "name": "Party Authentication: Exchange",
+        "source_id": null
+       },
+       {
+        "id": "SO-PA-04",
+        "kind": "access",
+        "name": "Party Authentication: Execute",
+        "source_id": null
+       },
+       {
+        "id": "SO-PA-05",
+        "kind": "access",
+        "name": "Party Authentication: Request",
+        "source_id": null
+       },
+       {
+        "id": "SO-PA-06",
+        "kind": "access",
+        "name": "Party Authentication: Grant",
+        "source_id": null
+       },
+       {
+        "id": "SO-PA-07",
+        "kind": "access",
+        "name": "Party Authentication: Retrieve",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "BQ-PA-PASSWORD",
+        "kind": "composition",
+        "name": "Password",
+        "source_id": null
+       },
+       {
+        "id": "BQ-PA-QUESTION",
+        "kind": "composition",
+        "name": "Question",
+        "source_id": null
+       },
+       {
+        "id": "BQ-PA-DOCUMENT",
+        "kind": "composition",
+        "name": "Document",
+        "source_id": null
+       },
+       {
+        "id": "BQ-PA-DEVICE",
+        "kind": "composition",
+        "name": "Device",
+        "source_id": null
+       },
+       {
+        "id": "BQ-PA-BIOMETRIC",
+        "kind": "composition",
+        "name": "Biometric",
+        "source_id": null
+       },
+       {
+        "id": "BQ-PA-BEHAVIOR",
+        "kind": "composition",
+        "name": "Behavior",
+        "source_id": null
+       }
+      ],
+      "name": "Party Authentication Assessment",
+      "provenance": "from the BIAN catalogue, release 14.0.0 (PartyAuthentication.yaml)",
+      "type": "A2.ControlRecord",
+      "version": "14.0.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "attributes": [
+        "execution_reference",
+        "payment_instruction_reference",
+        "amount",
+        "currency",
+        "settlement_date",
+        "execution_status"
+       ]
+      },
+      "connections": [],
+      "description": "Synthetic: the session in which payment instructions are executed, cleared and settled (modelled on BIAN 14.0.0 Payment Rail).",
+      "fields": [],
+      "id": "CR-PE",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SD-PE",
+        "kind": "aggregation",
+        "name": "Payment Execution (synthetic selection)",
+        "source_id": null
+       },
+       {
+        "id": "SO-PE-01",
+        "kind": "access",
+        "name": "Initiate Payment Execution",
+        "source_id": null
+       },
+       {
+        "id": "SO-PE-02",
+        "kind": "access",
+        "name": "Execute Payment Clearing and Settlement",
+        "source_id": null
+       },
+       {
+        "id": "SO-PE-03",
+        "kind": "access",
+        "name": "Retrieve Payment Execution",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "BQ-PE-CLEARING",
+        "kind": "composition",
+        "name": "Clearing and Settlement",
+        "source_id": null
+       },
+       {
+        "id": "BQ-PE-OUTBOUND",
+        "kind": "composition",
+        "name": "Outbound Transaction",
+        "source_id": null
+       }
+      ],
+      "name": "Payment Execution Operating Session",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A2.ControlRecord",
+      "version": "1.0"
+     }
+    ],
+    "title": "Control records",
+    "type": "A2.ControlRecord"
+   },
+   {
+    "definition": "A grouping of a Service Domain's operations",
+    "records": [
+     {
+      "attribute_sources": {},
+      "attributes": {},
+      "connections": [],
+      "description": "Operations that create and maintain the instruction.",
+      "fields": [],
+      "id": "SG-PI-1",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SD-PI",
+        "kind": "composition",
+        "name": "Payment Initiation (synthetic selection)",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "SO-PI-01",
+        "kind": "composition",
+        "name": "Initiate Payment Instruction",
+        "source_id": null
+       },
+       {
+        "id": "SO-PI-05",
+        "kind": "composition",
+        "name": "Update Payment Instruction",
+        "source_id": null
+       }
+      ],
+      "name": "Instruction",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A2.ServiceGroup",
+      "version": "1.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {},
+      "connections": [],
+      "description": "Operations that validate, execute and report.",
+      "fields": [],
+      "id": "SG-PI-2",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SD-PI",
+        "kind": "composition",
+        "name": "Payment Initiation (synthetic selection)",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "SO-PI-02",
+        "kind": "composition",
+        "name": "Evaluate Payment Instruction Validation",
+        "source_id": null
+       },
+       {
+        "id": "SO-PI-03",
+        "kind": "composition",
+        "name": "Execute Payment Instruction Execution",
+        "source_id": null
+       },
+       {
+        "id": "SO-PI-04",
+        "kind": "composition",
+        "name": "Retrieve Payment Instruction",
+        "source_id": null
+       },
+       {
+        "id": "SO-PI-06",
+        "kind": "composition",
+        "name": "Notify Payment Instruction",
+        "source_id": null
+       }
+      ],
+      "name": "Processing",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A2.ServiceGroup",
+      "version": "1.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "conforms_to": [
+        "BIAN 14.0.0"
+       ]
+      },
+      "connections": [],
+      "description": "The operations BIAN tags 'PartyAuthenticationAssessment' in Party Authentication.",
+      "fields": [],
+      "id": "SG-PA-1",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SD-PA",
+        "kind": "composition",
+        "name": "Party Authentication (synthetic selection)",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "SO-PA-01",
+        "kind": "composition",
+        "name": "Party Authentication: Update",
+        "source_id": null
+       },
+       {
+        "id": "SO-PA-02",
+        "kind": "composition",
+        "name": "Party Authentication: Evaluate",
+        "source_id": null
+       },
+       {
+        "id": "SO-PA-03",
+        "kind": "composition",
+        "name": "Party Authentication: Exchange",
+        "source_id": null
+       },
+       {
+        "id": "SO-PA-04",
+        "kind": "composition",
+        "name": "Party Authentication: Execute",
+        "source_id": null
+       },
+       {
+        "id": "SO-PA-05",
+        "kind": "composition",
+        "name": "Party Authentication: Request",
+        "source_id": null
+       },
+       {
+        "id": "SO-PA-06",
+        "kind": "composition",
+        "name": "Party Authentication: Grant",
+        "source_id": null
+       },
+       {
+        "id": "SO-PA-07",
+        "kind": "composition",
+        "name": "Party Authentication: Retrieve",
+        "source_id": null
+       }
+      ],
+      "name": "Party Authentication Assessment",
+      "provenance": "from the BIAN catalogue, release 14.0.0 (PartyAuthentication.yaml)",
+      "type": "A2.ServiceGroup",
+      "version": "14.0.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {},
+      "connections": [],
+      "description": "Synthetic: operations that execute and report a payment.",
+      "fields": [],
+      "id": "SG-PE-1",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SD-PE",
+        "kind": "composition",
+        "name": "Payment Execution (synthetic selection)",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "SO-PE-01",
+        "kind": "composition",
+        "name": "Initiate Payment Execution",
+        "source_id": null
+       },
+       {
+        "id": "SO-PE-02",
+        "kind": "composition",
+        "name": "Execute Payment Clearing and Settlement",
+        "source_id": null
+       },
+       {
+        "id": "SO-PE-03",
+        "kind": "composition",
+        "name": "Retrieve Payment Execution",
+        "source_id": null
+       }
+      ],
+      "name": "Execution",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A2.ServiceGroup",
+      "version": "1.0"
+     }
+    ],
+    "title": "Service groups",
+    "type": "A2.ServiceGroup"
+   },
+   {
+    "definition": "An operation a Service Domain exposes",
+    "records": [
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "action_term": "Initiate",
+       "input_attributes": [
+        "debtor_account_reference",
+        "creditor_account_reference",
+        "amount",
+        "currency",
+        "value_date",
+        "remittance_information"
+       ],
+       "output_attributes": [
+        "payment_instruction_reference",
+        "payment_status"
+       ]
+      },
+      "connections": [
+       {
+        "direction": "out",
+        "evidence": [
+         "api_contract:payments-api-v2.yaml#/paths/~1payment-instructions/post"
+        ],
+        "id": "API-PI-01",
+        "mapping_id": "PAY-101",
+        "name": "Create payment instruction",
+        "relationship": "IMPLEMENTED_BY",
+        "status": "approved"
+       }
+      ],
+      "description": "Create a new payment instruction procedure from the customer's details.",
+      "fields": [],
+      "id": "SO-PI-01",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SG-PI-1",
+        "kind": "composition",
+        "name": "Instruction",
+        "source_id": null
+       },
+       {
+        "id": "BS-CREDIT-TRANSFER",
+        "kind": "aggregation",
+        "name": "Customer credit transfer",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "CR-PI",
+        "kind": "access",
+        "name": "Payment Initiation Procedure",
+        "source_id": null
+       }
+      ],
+      "name": "Initiate Payment Instruction",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A2.ServiceOperation",
+      "version": "1.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "action_term": "Update",
+       "input_attributes": [
+        "payment_instruction_reference",
+        "amount",
+        "value_date",
+        "creditor_account_reference"
+       ],
+       "output_attributes": [
+        "payment_instruction_reference",
+        "payment_status"
+       ]
+      },
+      "connections": [
+       {
+        "direction": "out",
+        "evidence": [
+         "api_contract:payments-api-v2.yaml#/paths/~1payment-instructions~1{id}/patch"
+        ],
+        "id": "API-PI-05",
+        "mapping_id": "PAY-105",
+        "name": "Amend payment instruction",
+        "relationship": "IMPLEMENTED_BY",
+        "status": "approved"
+       }
+      ],
+      "description": "Amend an instruction before execution.",
+      "fields": [],
+      "id": "SO-PI-05",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SG-PI-1",
+        "kind": "composition",
+        "name": "Instruction",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "CR-PI",
+        "kind": "access",
+        "name": "Payment Initiation Procedure",
+        "source_id": null
+       }
+      ],
+      "name": "Update Payment Instruction",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A2.ServiceOperation",
+      "version": "1.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "action_term": "Evaluate",
+       "behavior_qualifier": "Validation",
+       "input_attributes": [
+        "payment_instruction_reference"
+       ],
+       "output_attributes": [
+        "authorisation_status",
+        "payment_status"
+       ]
+      },
+      "connections": [
+       {
+        "direction": "out",
+        "evidence": [
+         "api_contract:payments-api-v2.yaml#/paths/~1payment-instructions~1{id}~1validation/post"
+        ],
+        "id": "API-PI-02",
+        "mapping_id": "PAY-102",
+        "name": "Validate payment instruction",
+        "relationship": "IMPLEMENTED_BY",
+        "status": "approved"
+       }
+      ],
+      "description": "Validate the instruction and record the authorisation outcome.",
+      "fields": [],
+      "id": "SO-PI-02",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SG-PI-2",
+        "kind": "composition",
+        "name": "Processing",
+        "source_id": null
+       },
+       {
+        "id": "BS-CREDIT-TRANSFER",
+        "kind": "aggregation",
+        "name": "Customer credit transfer",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "CR-PI",
+        "kind": "access",
+        "name": "Payment Initiation Procedure",
+        "source_id": null
+       }
+      ],
+      "name": "Evaluate Payment Instruction Validation",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A2.ServiceOperation",
+      "version": "1.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "action_term": "Execute",
+       "behavior_qualifier": "Execution",
+       "input_attributes": [
+        "payment_instruction_reference"
+       ],
+       "output_attributes": [
+        "execution_reference",
+        "payment_status"
+       ]
+      },
+      "connections": [
+       {
+        "direction": "out",
+        "evidence": [
+         "api_contract:payments-api-v2.yaml#/paths/~1payment-instructions~1{id}~1execution/put"
+        ],
+        "id": "API-PI-03",
+        "mapping_id": "PAY-103",
+        "name": "Execute payment instruction",
+        "relationship": "IMPLEMENTED_BY",
+        "status": "approved"
+       }
+      ],
+      "description": "Hand the authorised instruction to execution.",
+      "fields": [],
+      "id": "SO-PI-03",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SG-PI-2",
+        "kind": "composition",
+        "name": "Processing",
+        "source_id": null
+       },
+       {
+        "id": "BS-CREDIT-TRANSFER",
+        "kind": "aggregation",
+        "name": "Customer credit transfer",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "CR-PI",
+        "kind": "access",
+        "name": "Payment Initiation Procedure",
+        "source_id": null
+       }
+      ],
+      "name": "Execute Payment Instruction Execution",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A2.ServiceOperation",
+      "version": "1.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "action_term": "Retrieve",
+       "input_attributes": [
+        "payment_instruction_reference"
+       ],
+       "output_attributes": [
+        "payment_status",
+        "execution_reference",
+        "authorisation_status"
+       ]
+      },
+      "connections": [
+       {
+        "direction": "out",
+        "evidence": [
+         "api_contract:payments-api-v2.yaml#/paths/~1payment-instructions~1{id}/post",
+         "application_architecture_document:ADR-PAY-017"
+        ],
+        "id": "API-PI-04",
+        "mapping_id": "PAY-104",
+        "name": "Get payment instruction",
+        "relationship": "IMPLEMENTED_BY",
+        "status": "approved"
+       }
+      ],
+      "description": "Return the current state of the instruction.",
+      "fields": [],
+      "id": "SO-PI-04",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SG-PI-2",
+        "kind": "composition",
+        "name": "Processing",
+        "source_id": null
+       },
+       {
+        "id": "BS-CREDIT-TRANSFER",
+        "kind": "aggregation",
+        "name": "Customer credit transfer",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "CR-PI",
+        "kind": "access",
+        "name": "Payment Initiation Procedure",
+        "source_id": null
+       }
+      ],
+      "name": "Retrieve Payment Instruction",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A2.ServiceOperation",
+      "version": "1.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "action_term": "Notify",
+       "input_attributes": [
+        "payment_instruction_reference"
+       ],
+       "output_attributes": [
+        "payment_status"
+       ]
+      },
+      "connections": [],
+      "description": "Notify an interested party of a change in the instruction's state.",
+      "fields": [],
+      "id": "SO-PI-06",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SG-PI-2",
+        "kind": "composition",
+        "name": "Processing",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "CR-PI",
+        "kind": "access",
+        "name": "Payment Initiation Procedure",
+        "source_id": null
+       }
+      ],
+      "name": "Notify Payment Instruction",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A2.ServiceOperation",
+      "version": "1.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "action_term": "Update",
+       "conforms_to": [
+        "BIAN 14.0.0"
+       ],
+       "http_method": "PUT",
+       "input_attributes": [
+        "CustomerReference",
+        "PartyReference",
+        "PartyAuthenticationAssessmentProfile",
+        "AuthenticationType",
+        "PartyAuthenticationConsolidationRecord",
+        "CustomerContactAuthenticationLevel",
+        "AuthorisationTokenReference",
+        "RefreshTokenReference"
+       ],
+       "output_attributes": [
+        "CustomerReference",
+        "PartyReference",
+        "PartyAuthenticationAssessmentProfile",
+        "AuthenticationType",
+        "PartyAuthenticationConsolidationRecord",
+        "CustomerContactAuthenticationLevel",
+        "AuthorisationTokenReference",
+        "RefreshTokenReference"
+       ]
+      },
+      "connections": [],
+      "description": "PUT /PartyAuthentication/{partyauthenticationid}/Update in BIAN's Semantic API 14.0.0.",
+      "fields": [],
+      "id": "SO-PA-01",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SG-PA-1",
+        "kind": "composition",
+        "name": "Party Authentication Assessment",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "CR-PA",
+        "kind": "access",
+        "name": "Party Authentication Assessment",
+        "source_id": null
+       }
+      ],
+      "name": "Party Authentication: Update",
+      "provenance": "from the BIAN catalogue, release 14.0.0 (PartyAuthentication.yaml)",
+      "type": "A2.ServiceOperation",
+      "version": "14.0.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "action_term": "Evaluate",
+       "conforms_to": [
+        "BIAN 14.0.0"
+       ],
+       "http_method": "POST",
+       "input_attributes": [
+        "CustomerReference",
+        "PartyReference",
+        "PartyAuthenticationAssessmentProfile",
+        "AuthenticationType",
+        "PartyAuthenticationConsolidationRecord",
+        "CustomerContactAuthenticationLevel",
+        "AuthorisationTokenReference",
+        "RefreshTokenReference"
+       ],
+       "output_attributes": [
+        "CustomerReference",
+        "PartyReference",
+        "PartyAuthenticationAssessmentProfile",
+        "AuthenticationType",
+        "PartyAuthenticationConsolidationRecord",
+        "CustomerContactAuthenticationLevel",
+        "AuthorisationTokenReference",
+        "RefreshTokenReference"
+       ]
+      },
+      "connections": [],
+      "description": "POST /PartyAuthentication/Evaluate in BIAN's Semantic API 14.0.0.",
+      "fields": [],
+      "id": "SO-PA-02",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SG-PA-1",
+        "kind": "composition",
+        "name": "Party Authentication Assessment",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "CR-PA",
+        "kind": "access",
+        "name": "Party Authentication Assessment",
+        "source_id": null
+       }
+      ],
+      "name": "Party Authentication: Evaluate",
+      "provenance": "from the BIAN catalogue, release 14.0.0 (PartyAuthentication.yaml)",
+      "type": "A2.ServiceOperation",
+      "version": "14.0.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "action_term": "Exchange",
+       "conforms_to": [
+        "BIAN 14.0.0"
+       ],
+       "http_method": "PUT",
+       "input_attributes": [
+        "CustomerReference",
+        "PartyReference",
+        "PartyAuthenticationAssessmentProfile",
+        "AuthenticationType",
+        "PartyAuthenticationConsolidationRecord",
+        "CustomerContactAuthenticationLevel",
+        "AuthorisationTokenReference",
+        "RefreshTokenReference"
+       ],
+       "output_attributes": [
+        "CustomerReference",
+        "PartyReference",
+        "PartyAuthenticationAssessmentProfile",
+        "AuthenticationType",
+        "PartyAuthenticationConsolidationRecord",
+        "CustomerContactAuthenticationLevel",
+        "AuthorisationTokenReference",
+        "RefreshTokenReference"
+       ]
+      },
+      "connections": [],
+      "description": "PUT /PartyAuthentication/{partyauthenticationid}/Exchange in BIAN's Semantic API 14.0.0.",
+      "fields": [],
+      "id": "SO-PA-03",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SG-PA-1",
+        "kind": "composition",
+        "name": "Party Authentication Assessment",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "CR-PA",
+        "kind": "access",
+        "name": "Party Authentication Assessment",
+        "source_id": null
+       }
+      ],
+      "name": "Party Authentication: Exchange",
+      "provenance": "from the BIAN catalogue, release 14.0.0 (PartyAuthentication.yaml)",
+      "type": "A2.ServiceOperation",
+      "version": "14.0.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "action_term": "Execute",
+       "conforms_to": [
+        "BIAN 14.0.0"
+       ],
+       "http_method": "PUT",
+       "input_attributes": [
+        "CustomerReference",
+        "PartyReference",
+        "PartyAuthenticationAssessmentProfile",
+        "AuthenticationType",
+        "PartyAuthenticationConsolidationRecord",
+        "CustomerContactAuthenticationLevel",
+        "AuthorisationTokenReference",
+        "RefreshTokenReference"
+       ],
+       "output_attributes": [
+        "CustomerReference",
+        "PartyReference",
+        "PartyAuthenticationAssessmentProfile",
+        "AuthenticationType",
+        "PartyAuthenticationConsolidationRecord",
+        "CustomerContactAuthenticationLevel",
+        "AuthorisationTokenReference",
+        "RefreshTokenReference"
+       ]
+      },
+      "connections": [],
+      "description": "PUT /PartyAuthentication/{partyauthenticationid}/Execute in BIAN's Semantic API 14.0.0.",
+      "fields": [],
+      "id": "SO-PA-04",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SG-PA-1",
+        "kind": "composition",
+        "name": "Party Authentication Assessment",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "CR-PA",
+        "kind": "access",
+        "name": "Party Authentication Assessment",
+        "source_id": null
+       }
+      ],
+      "name": "Party Authentication: Execute",
+      "provenance": "from the BIAN catalogue, release 14.0.0 (PartyAuthentication.yaml)",
+      "type": "A2.ServiceOperation",
+      "version": "14.0.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "action_term": "Request",
+       "conforms_to": [
+        "BIAN 14.0.0"
+       ],
+       "http_method": "PUT",
+       "input_attributes": [
+        "CustomerReference",
+        "PartyReference",
+        "PartyAuthenticationAssessmentProfile",
+        "AuthenticationType",
+        "PartyAuthenticationConsolidationRecord",
+        "CustomerContactAuthenticationLevel",
+        "AuthorisationTokenReference",
+        "RefreshTokenReference"
+       ],
+       "output_attributes": [
+        "CustomerReference",
+        "PartyReference",
+        "PartyAuthenticationAssessmentProfile",
+        "AuthenticationType",
+        "PartyAuthenticationConsolidationRecord",
+        "CustomerContactAuthenticationLevel",
+        "AuthorisationTokenReference",
+        "RefreshTokenReference"
+       ]
+      },
+      "connections": [],
+      "description": "PUT /PartyAuthentication/{partyauthenticationid}/Request in BIAN's Semantic API 14.0.0.",
+      "fields": [],
+      "id": "SO-PA-05",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SG-PA-1",
+        "kind": "composition",
+        "name": "Party Authentication Assessment",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "CR-PA",
+        "kind": "access",
+        "name": "Party Authentication Assessment",
+        "source_id": null
+       }
+      ],
+      "name": "Party Authentication: Request",
+      "provenance": "from the BIAN catalogue, release 14.0.0 (PartyAuthentication.yaml)",
+      "type": "A2.ServiceOperation",
+      "version": "14.0.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "action_term": "Grant",
+       "conforms_to": [
+        "BIAN 14.0.0"
+       ],
+       "http_method": "PUT",
+       "input_attributes": [
+        "CustomerReference",
+        "PartyReference",
+        "PartyAuthenticationAssessmentProfile",
+        "AuthenticationType",
+        "PartyAuthenticationConsolidationRecord",
+        "CustomerContactAuthenticationLevel",
+        "AuthorisationTokenReference",
+        "RefreshTokenReference"
+       ],
+       "output_attributes": [
+        "CustomerReference",
+        "PartyReference",
+        "PartyAuthenticationAssessmentProfile",
+        "AuthenticationType",
+        "PartyAuthenticationConsolidationRecord",
+        "CustomerContactAuthenticationLevel",
+        "AuthorisationTokenReference",
+        "RefreshTokenReference"
+       ]
+      },
+      "connections": [],
+      "description": "PUT /PartyAuthentication/{partyauthenticationid}/Grant in BIAN's Semantic API 14.0.0.",
+      "fields": [],
+      "id": "SO-PA-06",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SG-PA-1",
+        "kind": "composition",
+        "name": "Party Authentication Assessment",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "CR-PA",
+        "kind": "access",
+        "name": "Party Authentication Assessment",
+        "source_id": null
+       }
+      ],
+      "name": "Party Authentication: Grant",
+      "provenance": "from the BIAN catalogue, release 14.0.0 (PartyAuthentication.yaml)",
+      "type": "A2.ServiceOperation",
+      "version": "14.0.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "action_term": "Retrieve",
+       "conforms_to": [
+        "BIAN 14.0.0"
+       ],
+       "http_method": "GET",
+       "output_attributes": [
+        "CustomerReference",
+        "PartyReference",
+        "PartyAuthenticationAssessmentProfile",
+        "AuthenticationType",
+        "PartyAuthenticationConsolidationRecord",
+        "CustomerContactAuthenticationLevel",
+        "AuthorisationTokenReference",
+        "RefreshTokenReference"
+       ]
+      },
+      "connections": [],
+      "description": "GET /PartyAuthentication/{partyauthenticationid}/Retrieve in BIAN's Semantic API 14.0.0.",
+      "fields": [],
+      "id": "SO-PA-07",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SG-PA-1",
+        "kind": "composition",
+        "name": "Party Authentication Assessment",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "CR-PA",
+        "kind": "access",
+        "name": "Party Authentication Assessment",
+        "source_id": null
+       }
+      ],
+      "name": "Party Authentication: Retrieve",
+      "provenance": "from the BIAN catalogue, release 14.0.0 (PartyAuthentication.yaml)",
+      "type": "A2.ServiceOperation",
+      "version": "14.0.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "action_term": "Initiate",
+       "input_attributes": [
+        "payment_instruction_reference",
+        "amount",
+        "currency"
+       ],
+       "output_attributes": [
+        "execution_reference",
+        "execution_status"
+       ]
+      },
+      "connections": [],
+      "description": "Synthetic: initiate payment execution (in the style of BIAN 14.0.0 Payment Rail).",
+      "fields": [],
+      "id": "SO-PE-01",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SG-PE-1",
+        "kind": "composition",
+        "name": "Execution",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "CR-PE",
+        "kind": "access",
+        "name": "Payment Execution Operating Session",
+        "source_id": null
+       }
+      ],
+      "name": "Initiate Payment Execution",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A2.ServiceOperation",
+      "version": "1.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "action_term": "Execute",
+       "input_attributes": [
+        "execution_reference"
+       ],
+       "output_attributes": [
+        "execution_status",
+        "settlement_date"
+       ]
+      },
+      "connections": [],
+      "description": "Synthetic: execute payment clearing and settlement (in the style of BIAN 14.0.0 Payment Rail).",
+      "fields": [],
+      "id": "SO-PE-02",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SG-PE-1",
+        "kind": "composition",
+        "name": "Execution",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "CR-PE",
+        "kind": "access",
+        "name": "Payment Execution Operating Session",
+        "source_id": null
+       }
+      ],
+      "name": "Execute Payment Clearing and Settlement",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A2.ServiceOperation",
+      "version": "1.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "action_term": "Retrieve",
+       "input_attributes": [
+        "execution_reference"
+       ],
+       "output_attributes": [
+        "execution_status",
+        "settlement_date"
+       ]
+      },
+      "connections": [],
+      "description": "Synthetic: retrieve payment execution (in the style of BIAN 14.0.0 Payment Rail).",
+      "fields": [],
+      "id": "SO-PE-03",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SG-PE-1",
+        "kind": "composition",
+        "name": "Execution",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "CR-PE",
+        "kind": "access",
+        "name": "Payment Execution Operating Session",
+        "source_id": null
+       }
+      ],
+      "name": "Retrieve Payment Execution",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A2.ServiceOperation",
+      "version": "1.0"
+     }
+    ],
+    "title": "Service operations",
+    "type": "A2.ServiceOperation"
+   },
+   {
+    "definition": "A refinement of a Service Domain's generic behaviour",
+    "records": [
+     {
+      "attribute_sources": {},
+      "attributes": {},
+      "connections": [],
+      "description": "The validation and authorisation partition of the procedure.",
+      "fields": [],
+      "id": "BQ-VALIDATION",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "CR-PI",
+        "kind": "composition",
+        "name": "Payment Initiation Procedure",
+        "source_id": null
+       }
+      ],
+      "links_out": [],
+      "name": "Validation",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A2.BehaviorQualifier",
+      "version": "1.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {},
+      "connections": [],
+      "description": "The hand-over-to-execution partition of the procedure.",
+      "fields": [],
+      "id": "BQ-EXECUTION",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "CR-PI",
+        "kind": "composition",
+        "name": "Payment Initiation Procedure",
+        "source_id": null
+       }
+      ],
+      "links_out": [],
+      "name": "Execution",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A2.BehaviorQualifier",
+      "version": "1.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "conforms_to": [
+        "BIAN 14.0.0"
+       ]
+      },
+      "connections": [],
+      "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+      "fields": [],
+      "id": "BQ-PA-PASSWORD",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "CR-PA",
+        "kind": "composition",
+        "name": "Party Authentication Assessment",
+        "source_id": null
+       }
+      ],
+      "links_out": [],
+      "name": "Password",
+      "provenance": "from the BIAN catalogue, release 14.0.0 (PartyAuthentication.yaml)",
+      "type": "A2.BehaviorQualifier",
+      "version": "14.0.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "conforms_to": [
+        "BIAN 14.0.0"
+       ]
+      },
+      "connections": [],
+      "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+      "fields": [],
+      "id": "BQ-PA-QUESTION",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "CR-PA",
+        "kind": "composition",
+        "name": "Party Authentication Assessment",
+        "source_id": null
+       }
+      ],
+      "links_out": [],
+      "name": "Question",
+      "provenance": "from the BIAN catalogue, release 14.0.0 (PartyAuthentication.yaml)",
+      "type": "A2.BehaviorQualifier",
+      "version": "14.0.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "conforms_to": [
+        "BIAN 14.0.0"
+       ]
+      },
+      "connections": [],
+      "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+      "fields": [],
+      "id": "BQ-PA-DOCUMENT",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "CR-PA",
+        "kind": "composition",
+        "name": "Party Authentication Assessment",
+        "source_id": null
+       }
+      ],
+      "links_out": [],
+      "name": "Document",
+      "provenance": "from the BIAN catalogue, release 14.0.0 (PartyAuthentication.yaml)",
+      "type": "A2.BehaviorQualifier",
+      "version": "14.0.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "conforms_to": [
+        "BIAN 14.0.0"
+       ]
+      },
+      "connections": [],
+      "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+      "fields": [],
+      "id": "BQ-PA-DEVICE",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "CR-PA",
+        "kind": "composition",
+        "name": "Party Authentication Assessment",
+        "source_id": null
+       }
+      ],
+      "links_out": [],
+      "name": "Device",
+      "provenance": "from the BIAN catalogue, release 14.0.0 (PartyAuthentication.yaml)",
+      "type": "A2.BehaviorQualifier",
+      "version": "14.0.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "conforms_to": [
+        "BIAN 14.0.0"
+       ]
+      },
+      "connections": [],
+      "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+      "fields": [],
+      "id": "BQ-PA-BIOMETRIC",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "CR-PA",
+        "kind": "composition",
+        "name": "Party Authentication Assessment",
+        "source_id": null
+       }
+      ],
+      "links_out": [],
+      "name": "Biometric",
+      "provenance": "from the BIAN catalogue, release 14.0.0 (PartyAuthentication.yaml)",
+      "type": "A2.BehaviorQualifier",
+      "version": "14.0.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "conforms_to": [
+        "BIAN 14.0.0"
+       ]
+      },
+      "connections": [],
+      "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+      "fields": [],
+      "id": "BQ-PA-BEHAVIOR",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "CR-PA",
+        "kind": "composition",
+        "name": "Party Authentication Assessment",
+        "source_id": null
+       }
+      ],
+      "links_out": [],
+      "name": "Behavior",
+      "provenance": "from the BIAN catalogue, release 14.0.0 (PartyAuthentication.yaml)",
+      "type": "A2.BehaviorQualifier",
+      "version": "14.0.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {},
+      "connections": [],
+      "description": "Synthetic: clearing the payment and settling it between institutions.",
+      "fields": [],
+      "id": "BQ-PE-CLEARING",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "CR-PE",
+        "kind": "composition",
+        "name": "Payment Execution Operating Session",
+        "source_id": null
+       }
+      ],
+      "links_out": [],
+      "name": "Clearing and Settlement",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A2.BehaviorQualifier",
+      "version": "1.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {},
+      "connections": [],
+      "description": "Synthetic: sending the payment to the receiving institution.",
+      "fields": [],
+      "id": "BQ-PE-OUTBOUND",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "CR-PE",
+        "kind": "composition",
+        "name": "Payment Execution Operating Session",
+        "source_id": null
+       }
+      ],
+      "links_out": [],
+      "name": "Outbound Transaction",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A2.BehaviorQualifier",
+      "version": "1.0"
+     }
+    ],
+    "title": "Behavior qualifiers",
+    "type": "A2.BehaviorQualifier"
+   },
+   {
+    "definition": "An illustrative, non-prescriptive collaboration of Service Domain operations",
+    "records": [
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "operation_sequence": [
+        "Initiate Payment Instruction (SO-PI-01)",
+        "Evaluate Payment Instruction Validation (SO-PI-02)",
+        "Execute Payment Instruction Execution (SO-PI-03)",
+        "Retrieve Payment Instruction (SO-PI-04)"
+       ],
+       "trigger_event": "customer submits a credit transfer"
+      },
+      "connections": [
+       {
+        "direction": "in",
+        "evidence": [
+         "process_model:PM-MAKE-PAYMENT-2026",
+         "scenario_suitability_review:SCN-REVIEW-CT-001"
+        ],
+        "id": "VS-MAKE-PAYMENT",
+        "mapping_id": "PAY-002",
+        "name": "Make a Payment",
+        "relationship": "ALIGNED_TO",
+        "status": "approved"
+       }
+      ],
+      "description": "A customer initiates a credit transfer; it is validated, executed and its status reported.",
+      "fields": [],
+      "id": "BS-CREDIT-TRANSFER",
+      "lifecycle_status": "active",
+      "links_in": [],
+      "links_out": [
+       {
+        "id": "SO-PI-01",
+        "kind": "aggregation",
+        "name": "Initiate Payment Instruction",
+        "source_id": null
+       },
+       {
+        "id": "SO-PI-02",
+        "kind": "aggregation",
+        "name": "Evaluate Payment Instruction Validation",
+        "source_id": null
+       },
+       {
+        "id": "SO-PI-03",
+        "kind": "aggregation",
+        "name": "Execute Payment Instruction Execution",
+        "source_id": null
+       },
+       {
+        "id": "SO-PI-04",
+        "kind": "aggregation",
+        "name": "Retrieve Payment Instruction",
+        "source_id": null
+       }
+      ],
+      "name": "Customer credit transfer",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A2.BusinessScenario",
+      "version": "1.0"
+     }
+    ],
+    "title": "Business scenarios",
+    "type": "A2.BusinessScenario"
+   },
+   {
+    "definition": "A canonical business information concept",
+    "records": [
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "attributes": [
+        "payment_instruction_reference",
+        "debtor_account_reference",
+        "creditor_account_reference",
+        "amount",
+        "currency",
+        "value_date",
+        "remittance_information",
+        "payment_status"
+       ],
+       "personal_information": true
+      },
+      "connections": [
+       {
+        "direction": "in",
+        "evidence": [
+         "business_glossary:GL-PAY-2026#payment-instruction",
+         "object_alignment_review:OAR-PAY-001"
+        ],
+        "id": "BO-PAY-INSTR",
+        "mapping_id": "PAY-005",
+        "name": "Payment Instruction",
+        "relationship": "ALIGNED_TO",
+        "status": "approved"
+       },
+       {
+        "direction": "out",
+        "evidence": [
+         "data_model:DM-PAYHUB-7.1#payment_instruction"
+        ],
+        "id": "ENT-PAY-INSTR",
+        "mapping_id": "PAY-107",
+        "name": "payment_instruction",
+        "relationship": "MAPPED_TO",
+        "status": "approved"
+       }
+      ],
+      "description": "Canonical payment instruction object.",
+      "fields": [
+       {
+        "allowed_values": [],
+        "family": "inherited",
+        "id": "BBOA-AMOUNT",
+        "key": false,
+        "name": "amount",
+        "personal": false,
+        "refers_to": null,
+        "required": false,
+        "type": "amount"
+       }
+      ],
+      "id": "BBO-PAY-INSTR",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "CR-PI",
+        "kind": "association",
+        "name": "Payment Initiation Procedure",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "BBOA-AMOUNT",
+        "kind": "composition",
+        "name": "amount",
+        "source_id": null
+       }
+      ],
+      "name": "Payment Instruction",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A2.BusinessObject",
+      "version": "1.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "attributes": [
+        "party_reference",
+        "party_name",
+        "party_type"
+       ],
+       "personal_information": true
+      },
+      "connections": [],
+      "description": "Canonical party object.",
+      "fields": [
+       {
+        "allowed_values": [],
+        "family": "inherited",
+        "id": "BBOA-PARTY-REF",
+        "key": false,
+        "name": "party reference",
+        "personal": false,
+        "refers_to": null,
+        "required": false,
+        "type": "string"
+       }
+      ],
+      "id": "BBO-PARTY",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "CR-PI",
+        "kind": "association",
+        "name": "Payment Initiation Procedure",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "BBOA-PARTY-REF",
+        "kind": "composition",
+        "name": "party reference",
+        "source_id": null
+       }
+      ],
+      "name": "Party",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A2.BusinessObject",
+      "version": "1.0"
+     }
+    ],
+    "title": "Business objects",
+    "type": "A2.BusinessObject"
+   },
+   {
+    "definition": "A property of a Business Object",
+    "records": [
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "data_type": "amount",
+       "personal_information": false
+      },
+      "connections": [],
+      "description": "Monetary amount of the instruction.",
+      "fields": [],
+      "id": "BBOA-AMOUNT",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "BBO-PAY-INSTR",
+        "kind": "composition",
+        "name": "Payment Instruction",
+        "source_id": null
+       }
+      ],
+      "links_out": [],
+      "name": "amount",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A2.BusinessObjectAttribute",
+      "version": "1.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "data_type": "string",
+       "personal_information": false
+      },
+      "connections": [],
+      "description": "The reference that identifies the party (PartyReference in BIAN 14.0.0 Semantic APIs, e.g. Party Authentication).",
+      "fields": [],
+      "id": "BBOA-PARTY-REF",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "BBO-PARTY",
+        "kind": "composition",
+        "name": "Party",
+        "source_id": null
+       }
+      ],
+      "links_out": [],
+      "name": "party reference",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A2.BusinessObjectAttribute",
+      "version": "1.0"
+     }
+    ],
+    "title": "Business object attributes",
+    "type": "A2.BusinessObjectAttribute"
+   }
+  ],
+  "summary": {
+   "by_type": {
+    "Asset types": 3,
+    "Behavior qualifiers": 10,
+    "Business areas": 1,
+    "Business domains": 1,
+    "Business object attributes": 2,
+    "Business objects": 2,
+    "Business scenarios": 1,
+    "Control records": 3,
+    "Functional patterns": 2,
+    "Service domains": 3,
+    "Service groups": 4,
+    "Service operations": 16
+   },
+   "records": 48,
+   "unconfirmed": 0,
+   "with_approved_connection": 8
+  },
+  "title": "A2 BIAN Service Domain Architecture",
+  "workspace": "pi"
+ }
+}

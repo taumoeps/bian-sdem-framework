@@ -1,0 +1,1849 @@
+{
+ "command": [
+  "types",
+  "A1",
+  "--json"
+ ],
+ "exit": 0,
+ "output": {
+  "layer": "A1",
+  "types": [
+   {
+    "abstract": false,
+    "archimate": {
+     "element": "Business Process",
+     "from": "inherited from A1.BusinessProcess",
+     "layer": "business"
+    },
+    "attributes": [
+     {
+      "description": "A2 operations the activity calls",
+      "name": "invokes",
+      "refers_to": [
+       "A2.ServiceOperation"
+      ],
+      "required": false,
+      "type": "list<string>"
+     },
+     {
+      "description": "depth in the process hierarchy (1 = top)",
+      "name": "level",
+      "required": false,
+      "type": "integer"
+     },
+     {
+      "description": "the business event that starts it",
+      "name": "triggered_by",
+      "refers_to": [
+       "A1.BusinessEvent"
+      ],
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "the result it produces",
+      "name": "outcome",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "allowed_values": [
+       "high",
+       "medium",
+       "low"
+      ],
+      "description": "how critical the process is to the bank",
+      "name": "criticality",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "allowed_values": [
+       "continuous",
+       "daily",
+       "weekly",
+       "monthly",
+       "ad hoc"
+      ],
+      "description": "how often it runs",
+      "name": "frequency",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "allowed_values": [
+       "manual",
+       "partly automated",
+       "automated"
+      ],
+      "description": "how far it is automated",
+      "name": "automation_level",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "position of the step within its process",
+      "name": "sequence",
+      "required": false,
+      "type": "integer"
+     }
+    ],
+    "definition": "A fine-grained activity within a process",
+    "extends": [
+     "A1.BusinessProcess"
+    ],
+    "identifier": [
+     "name"
+    ],
+    "layer": "A1",
+    "link_types_to_other_layers": [
+     {
+      "direction": "out",
+      "evidence_needed": [
+       "process_model"
+      ],
+      "other_end": "A2.ServiceDomain",
+      "relationship": "USES_DOMAIN"
+     },
+     {
+      "direction": "out",
+      "evidence_needed": [
+       "process_model"
+      ],
+      "other_end": "A3.ApplicationService",
+      "relationship": "SERVED_BY"
+     },
+     {
+      "direction": "out",
+      "evidence_needed": [
+       "process_model"
+      ],
+      "other_end": "A3.ApplicationFunction",
+      "relationship": "AUTOMATED_BY"
+     }
+    ],
+    "links_in": [
+     {
+      "from": "A1.BusinessActivity",
+      "kind": "composition",
+      "rule": "RA1-26"
+     },
+     {
+      "from": "A1.BusinessActivity",
+      "kind": "flow",
+      "rule": "RA1-23"
+     },
+     {
+      "from": "A1.BusinessActivity",
+      "kind": "triggering",
+      "rule": "RA1-22"
+     },
+     {
+      "from": "A1.BusinessActor",
+      "kind": "assignment",
+      "rule": "RA1-38"
+     },
+     {
+      "from": "A1.BusinessActor",
+      "kind": "assignment",
+      "rule": "RA1-39"
+     },
+     {
+      "from": "A1.BusinessEvent",
+      "kind": "triggering",
+      "rule": "RA1-50"
+     },
+     {
+      "from": "A1.BusinessProcess",
+      "kind": "composition",
+      "rule": "RA1-24"
+     },
+     {
+      "from": "A1.BusinessProcess",
+      "kind": "composition",
+      "rule": "RA1-25"
+     },
+     {
+      "from": "A1.BusinessProcess",
+      "kind": "flow",
+      "rule": "RA1-15"
+     },
+     {
+      "from": "A1.BusinessProcess",
+      "kind": "triggering",
+      "rule": "RA1-14"
+     },
+     {
+      "from": "A1.BusinessRole",
+      "kind": "assignment",
+      "rule": "RA1-36"
+     },
+     {
+      "from": "A1.BusinessRole",
+      "kind": "assignment",
+      "rule": "RA1-37"
+     },
+     {
+      "from": "A1.BusinessService",
+      "kind": "serving",
+      "rule": "RA1-27"
+     },
+     {
+      "from": "A1.BusinessService",
+      "kind": "serving",
+      "rule": "RA1-28"
+     }
+    ],
+    "links_out": [
+     {
+      "kind": "access",
+      "rule": "RA1-12",
+      "to": "A1.BusinessObject"
+     },
+     {
+      "kind": "access",
+      "rule": "RA1-20",
+      "to": "A1.BusinessObject"
+     },
+     {
+      "kind": "composition",
+      "rule": "RA1-24",
+      "to": "A1.BusinessActivity"
+     },
+     {
+      "kind": "composition",
+      "rule": "RA1-26",
+      "to": "A1.BusinessActivity"
+     },
+     {
+      "kind": "composition",
+      "rule": "RA1-25",
+      "to": "A1.BusinessProcess"
+     },
+     {
+      "kind": "flow",
+      "rule": "RA1-23",
+      "to": "A1.BusinessActivity"
+     },
+     {
+      "kind": "flow",
+      "rule": "RA1-15",
+      "to": "A1.BusinessProcess"
+     },
+     {
+      "kind": "realization",
+      "rule": "RA1-08",
+      "to": "A1.BusinessCapability"
+     },
+     {
+      "kind": "realization",
+      "rule": "RA1-16",
+      "to": "A1.BusinessCapability"
+     },
+     {
+      "kind": "realization",
+      "rule": "RA1-13",
+      "to": "A1.BusinessRequirement"
+     },
+     {
+      "kind": "realization",
+      "rule": "RA1-21",
+      "to": "A1.BusinessRequirement"
+     },
+     {
+      "kind": "realization",
+      "rule": "RA1-11",
+      "to": "A1.BusinessService"
+     },
+     {
+      "kind": "realization",
+      "rule": "RA1-19",
+      "to": "A1.BusinessService"
+     },
+     {
+      "kind": "realization",
+      "rule": "RA1-09",
+      "to": "A1.ValueStream"
+     },
+     {
+      "kind": "realization",
+      "rule": "RA1-17",
+      "to": "A1.ValueStream"
+     },
+     {
+      "kind": "realization",
+      "rule": "RA1-10",
+      "to": "A1.ValueStreamStage"
+     },
+     {
+      "kind": "realization",
+      "rule": "RA1-18",
+      "to": "A1.ValueStreamStage"
+     },
+     {
+      "kind": "triggering",
+      "rule": "RA1-22",
+      "to": "A1.BusinessActivity"
+     },
+     {
+      "kind": "triggering",
+      "rule": "RA1-51",
+      "to": "A1.BusinessEvent"
+     },
+     {
+      "kind": "triggering",
+      "rule": "RA1-14",
+      "to": "A1.BusinessProcess"
+     }
+    ],
+    "organisation_rules": [],
+    "record_fields": {
+     "lifecycle_status": [
+      "planned",
+      "active",
+      "deprecated",
+      "retired"
+     ],
+     "optional": [
+      "description",
+      "attributes"
+     ],
+     "required": [
+      "id",
+      "type",
+      "version",
+      "name",
+      "lifecycle_status"
+     ]
+    },
+    "source": "SDEM · Business Activity",
+    "type": "A1.BusinessActivity"
+   },
+   {
+    "abstract": false,
+    "archimate": {
+     "element": "Business Actor",
+     "from": "SDEM",
+     "layer": "business"
+    },
+    "attributes": [
+     {
+      "allowed_values": [
+       "formal organisation",
+       "organisational unit",
+       "person"
+      ],
+      "description": "whether it is a formal organisation, a unit or a person",
+      "name": "actor_kind",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "whether it is outside the bank",
+      "name": "external",
+      "required": false,
+      "type": "boolean"
+     },
+     {
+      "description": "its category (e.g. regulator, partner, business line)",
+      "name": "classification",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "why the unit or organisation exists",
+      "name": "purpose",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "the site where it is based",
+      "name": "location",
+      "refers_to": [
+       "A4.Location"
+      ],
+      "required": false,
+      "type": "string"
+     }
+    ],
+    "definition": "An individual or organisation capable of business behaviour",
+    "extends": [],
+    "identifier": [
+     "name"
+    ],
+    "layer": "A1",
+    "link_types_to_other_layers": [
+     {
+      "direction": "out",
+      "evidence_needed": [
+       "process_model"
+      ],
+      "other_end": "A3.ApplicationService",
+      "relationship": "SERVED_BY"
+     }
+    ],
+    "links_in": [
+     {
+      "from": "A1.BusinessActor",
+      "kind": "aggregation",
+      "rule": "RA1-41"
+     },
+     {
+      "from": "A1.BusinessActor",
+      "kind": "composition",
+      "rule": "RA1-40"
+     },
+     {
+      "from": "A1.BusinessInterface",
+      "kind": "serving",
+      "rule": "RA1-55"
+     },
+     {
+      "from": "A1.BusinessService",
+      "kind": "serving",
+      "rule": "RA1-30"
+     }
+    ],
+    "links_out": [
+     {
+      "kind": "aggregation",
+      "rule": "RA1-41",
+      "to": "A1.BusinessActor"
+     },
+     {
+      "kind": "assignment",
+      "rule": "RA1-39",
+      "to": "A1.BusinessActivity"
+     },
+     {
+      "kind": "assignment",
+      "rule": "RA1-38",
+      "to": "A1.BusinessProcess"
+     },
+     {
+      "kind": "assignment",
+      "rule": "RA1-35",
+      "to": "A1.BusinessRole"
+     },
+     {
+      "kind": "composition",
+      "rule": "RA1-40",
+      "to": "A1.BusinessActor"
+     },
+     {
+      "kind": "composition",
+      "rule": "RA1-53",
+      "to": "A1.BusinessInterface"
+     }
+    ],
+    "organisation_rules": [],
+    "record_fields": {
+     "lifecycle_status": [
+      "planned",
+      "active",
+      "deprecated",
+      "retired"
+     ],
+     "optional": [
+      "description",
+      "attributes"
+     ],
+     "required": [
+      "id",
+      "type",
+      "version",
+      "name",
+      "lifecycle_status"
+     ]
+    },
+    "source": "ArchiMate 3.2 · Business Actor",
+    "type": "A1.BusinessActor"
+   },
+   {
+    "abstract": false,
+    "archimate": {
+     "element": "Capability",
+     "from": "SDEM",
+     "layer": "strategy"
+    },
+    "attributes": [
+     {
+      "description": "depth in the capability hierarchy (1 = top)",
+      "name": "level",
+      "required": false,
+      "type": "integer"
+     },
+     {
+      "allowed_values": [
+       "core",
+       "differentiating",
+       "supporting",
+       "commodity"
+      ],
+      "description": "how much the capability matters to strategy",
+      "name": "strategic_importance",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "current maturity, 1 (low) to 5 (high)",
+      "name": "maturity_current",
+      "required": false,
+      "type": "integer"
+     },
+     {
+      "description": "target maturity, 1 to 5",
+      "name": "maturity_target",
+      "required": false,
+      "type": "integer"
+     }
+    ],
+    "definition": "A business ability independent of how it is implemented",
+    "extends": [],
+    "identifier": [
+     "name"
+    ],
+    "layer": "A1",
+    "link_types_to_other_layers": [
+     {
+      "direction": "out",
+      "evidence_needed": [
+       "business_architecture_document",
+       "domain_scope_assessment"
+      ],
+      "other_end": "A2.ServiceDomain",
+      "relationship": "SUPPORTED_BY"
+     }
+    ],
+    "links_in": [
+     {
+      "from": "A1.BusinessActivity",
+      "kind": "realization",
+      "rule": "RA1-16"
+     },
+     {
+      "from": "A1.BusinessCapability",
+      "kind": "aggregation",
+      "rule": "RA1-02"
+     },
+     {
+      "from": "A1.BusinessCapability",
+      "kind": "composition",
+      "rule": "RA1-01"
+     },
+     {
+      "from": "A1.BusinessProcess",
+      "kind": "realization",
+      "rule": "RA1-08"
+     }
+    ],
+    "links_out": [
+     {
+      "kind": "aggregation",
+      "rule": "RA1-02",
+      "to": "A1.BusinessCapability"
+     },
+     {
+      "kind": "composition",
+      "rule": "RA1-01",
+      "to": "A1.BusinessCapability"
+     },
+     {
+      "kind": "realization",
+      "rule": "RA1-34",
+      "to": "A1.BusinessRequirement"
+     },
+     {
+      "kind": "serving",
+      "rule": "RA1-03",
+      "to": "A1.ValueStream"
+     },
+     {
+      "kind": "serving",
+      "rule": "RA1-04",
+      "to": "A1.ValueStreamStage"
+     }
+    ],
+    "organisation_rules": [],
+    "record_fields": {
+     "lifecycle_status": [
+      "planned",
+      "active",
+      "deprecated",
+      "retired"
+     ],
+     "optional": [
+      "description",
+      "attributes"
+     ],
+     "required": [
+      "id",
+      "type",
+      "version",
+      "name",
+      "lifecycle_status"
+     ]
+    },
+    "source": "BIAN BCM · Business Capability",
+    "type": "A1.BusinessCapability"
+   },
+   {
+    "abstract": false,
+    "archimate": {
+     "element": "Business Event",
+     "from": "SDEM",
+     "layer": "business"
+    },
+    "attributes": [
+     {
+      "allowed_values": [
+       "external",
+       "internal",
+       "time"
+      ],
+      "description": "whether the event comes from outside, from inside, or from time",
+      "name": "event_kind",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "when a time event happens, e.g. \"weekdays 16:00 local\" or a cron expression",
+      "name": "schedule",
+      "required": false,
+      "type": "string"
+     }
+    ],
+    "definition": "Something that happens and triggers business behaviour — an instruction received, a cut-off reached",
+    "extends": [],
+    "identifier": [
+     "name"
+    ],
+    "layer": "A1",
+    "link_types_to_other_layers": [
+     {
+      "direction": "out",
+      "evidence_needed": [
+       "event_design"
+      ],
+      "other_end": "A3.Event",
+      "relationship": "REALIZED_BY"
+     }
+    ],
+    "links_in": [
+     {
+      "from": "A1.BusinessProcess",
+      "kind": "triggering",
+      "rule": "RA1-51"
+     }
+    ],
+    "links_out": [
+     {
+      "kind": "access",
+      "rule": "RA1-52",
+      "to": "A1.BusinessObject"
+     },
+     {
+      "kind": "triggering",
+      "rule": "RA1-50",
+      "to": "A1.BusinessProcess"
+     }
+    ],
+    "organisation_rules": [],
+    "record_fields": {
+     "lifecycle_status": [
+      "planned",
+      "active",
+      "deprecated",
+      "retired"
+     ],
+     "optional": [
+      "description",
+      "attributes"
+     ],
+     "required": [
+      "id",
+      "type",
+      "version",
+      "name",
+      "lifecycle_status"
+     ]
+    },
+    "source": "ArchiMate 3.2 · Business Event",
+    "type": "A1.BusinessEvent"
+   },
+   {
+    "abstract": false,
+    "archimate": {
+     "element": "Business Interface",
+     "from": "SDEM",
+     "layer": "business"
+    },
+    "attributes": [
+     {
+      "allowed_values": [
+       "branch",
+       "contact_centre",
+       "web",
+       "mobile",
+       "api",
+       "file",
+       "partner"
+      ],
+      "description": "the kind of channel",
+      "name": "channel_kind",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "whether customers use the channel directly",
+      "name": "customer_facing",
+      "required": false,
+      "type": "boolean"
+     },
+     {
+      "description": "when the channel is open, e.g. \"24x7\" or \"business hours\"",
+      "name": "availability",
+      "required": false,
+      "type": "string"
+     }
+    ],
+    "definition": "A channel through which the business offers its services — a branch, a mobile app, an open-banking API, a file",
+    "extends": [],
+    "identifier": [
+     "name"
+    ],
+    "layer": "A1",
+    "link_types_to_other_layers": [
+     {
+      "direction": "out",
+      "evidence_needed": [
+       "application_architecture_document"
+      ],
+      "other_end": "A3.ApplicationInterface",
+      "relationship": "REALIZED_BY"
+     }
+    ],
+    "links_in": [
+     {
+      "from": "A1.BusinessActor",
+      "kind": "composition",
+      "rule": "RA1-53"
+     },
+     {
+      "from": "A1.BusinessRole",
+      "kind": "composition",
+      "rule": "RA1-54"
+     }
+    ],
+    "links_out": [
+     {
+      "kind": "association",
+      "rule": "RA1-57",
+      "to": "A1.BusinessService"
+     },
+     {
+      "kind": "serving",
+      "rule": "RA1-55",
+      "to": "A1.BusinessActor"
+     },
+     {
+      "kind": "serving",
+      "rule": "RA1-56",
+      "to": "A1.BusinessRole"
+     }
+    ],
+    "organisation_rules": [],
+    "record_fields": {
+     "lifecycle_status": [
+      "planned",
+      "active",
+      "deprecated",
+      "retired"
+     ],
+     "optional": [
+      "description",
+      "attributes"
+     ],
+     "required": [
+      "id",
+      "type",
+      "version",
+      "name",
+      "lifecycle_status"
+     ]
+    },
+    "source": "ArchiMate 3.2 · Business Interface",
+    "type": "A1.BusinessInterface"
+   },
+   {
+    "abstract": false,
+    "archimate": {
+     "element": "Business Object",
+     "from": "SDEM",
+     "layer": "business"
+    },
+    "attributes": [
+     {
+      "description": "glossary attribute names",
+      "name": "attributes",
+      "required": false,
+      "type": "list<string>"
+     },
+     {
+      "description": "glossary name → canonical attribute name",
+      "name": "field_aliases",
+      "required": false,
+      "type": "map<string,string>"
+     },
+     {
+      "description": "link to the agreed glossary definition",
+      "name": "glossary_uri",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "whether it holds information about an identifiable person",
+      "name": "personal_information",
+      "required": false,
+      "type": "boolean"
+     }
+    ],
+    "definition": "A business-level information concept",
+    "extends": [],
+    "identifier": [
+     "name"
+    ],
+    "layer": "A1",
+    "link_types_to_other_layers": [
+     {
+      "direction": "out",
+      "evidence_needed": [
+       "business_glossary",
+       "object_alignment_review"
+      ],
+      "other_end": "A2.BusinessObject",
+      "relationship": "ALIGNED_TO"
+     },
+     {
+      "direction": "out",
+      "evidence_needed": [
+       "data_model"
+      ],
+      "other_end": "A3.DataEntity",
+      "relationship": "MAPPED_TO"
+     }
+    ],
+    "links_in": [
+     {
+      "from": "A1.BusinessActivity",
+      "kind": "access",
+      "rule": "RA1-20"
+     },
+     {
+      "from": "A1.BusinessEvent",
+      "kind": "access",
+      "rule": "RA1-52"
+     },
+     {
+      "from": "A1.BusinessObject",
+      "kind": "aggregation",
+      "rule": "RA1-45"
+     },
+     {
+      "from": "A1.BusinessObject",
+      "kind": "association",
+      "rule": "RA1-49"
+     },
+     {
+      "from": "A1.BusinessObject",
+      "kind": "composition",
+      "rule": "RA1-44"
+     },
+     {
+      "from": "A1.BusinessObject",
+      "kind": "specialization",
+      "rule": "RA1-46"
+     },
+     {
+      "from": "A1.BusinessProcess",
+      "kind": "access",
+      "rule": "RA1-12"
+     },
+     {
+      "from": "A1.BusinessService",
+      "kind": "access",
+      "rule": "RA1-32"
+     },
+     {
+      "from": "A1.Product",
+      "kind": "aggregation",
+      "rule": "RA1-59"
+     }
+    ],
+    "links_out": [
+     {
+      "kind": "aggregation",
+      "rule": "RA1-45",
+      "to": "A1.BusinessObject"
+     },
+     {
+      "kind": "association",
+      "rule": "RA1-49",
+      "to": "A1.BusinessObject"
+     },
+     {
+      "kind": "composition",
+      "rule": "RA1-44",
+      "to": "A1.BusinessObject"
+     },
+     {
+      "kind": "specialization",
+      "rule": "RA1-46",
+      "to": "A1.BusinessObject"
+     }
+    ],
+    "organisation_rules": [],
+    "record_fields": {
+     "lifecycle_status": [
+      "planned",
+      "active",
+      "deprecated",
+      "retired"
+     ],
+     "optional": [
+      "description",
+      "attributes"
+     ],
+     "required": [
+      "id",
+      "type",
+      "version",
+      "name",
+      "lifecycle_status"
+     ]
+    },
+    "source": "ArchiMate 3.2 · Business Object",
+    "type": "A1.BusinessObject"
+   },
+   {
+    "abstract": false,
+    "archimate": {
+     "element": "Business Process",
+     "from": "SDEM",
+     "layer": "business"
+    },
+    "attributes": [
+     {
+      "description": "A2 operations the process steps call",
+      "name": "invokes",
+      "refers_to": [
+       "A2.ServiceOperation"
+      ],
+      "required": false,
+      "type": "list<string>"
+     },
+     {
+      "description": "depth in the process hierarchy (1 = top)",
+      "name": "level",
+      "required": false,
+      "type": "integer"
+     },
+     {
+      "description": "the business event that starts it",
+      "name": "triggered_by",
+      "refers_to": [
+       "A1.BusinessEvent"
+      ],
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "the result it produces",
+      "name": "outcome",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "allowed_values": [
+       "high",
+       "medium",
+       "low"
+      ],
+      "description": "how critical the process is to the bank",
+      "name": "criticality",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "allowed_values": [
+       "continuous",
+       "daily",
+       "weekly",
+       "monthly",
+       "ad hoc"
+      ],
+      "description": "how often it runs",
+      "name": "frequency",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "allowed_values": [
+       "manual",
+       "partly automated",
+       "automated"
+      ],
+      "description": "how far it is automated",
+      "name": "automation_level",
+      "required": false,
+      "type": "string"
+     }
+    ],
+    "definition": "Coordinated business behaviour",
+    "extends": [],
+    "identifier": [
+     "name"
+    ],
+    "layer": "A1",
+    "link_types_to_other_layers": [
+     {
+      "direction": "out",
+      "evidence_needed": [
+       "process_model"
+      ],
+      "other_end": "A2.ServiceDomain",
+      "relationship": "USES_DOMAIN"
+     },
+     {
+      "direction": "out",
+      "evidence_needed": [
+       "process_model"
+      ],
+      "other_end": "A3.ApplicationService",
+      "relationship": "SERVED_BY"
+     },
+     {
+      "direction": "out",
+      "evidence_needed": [
+       "process_model"
+      ],
+      "other_end": "A3.ApplicationFunction",
+      "relationship": "AUTOMATED_BY"
+     }
+    ],
+    "links_in": [
+     {
+      "from": "A1.BusinessActor",
+      "kind": "assignment",
+      "rule": "RA1-38"
+     },
+     {
+      "from": "A1.BusinessEvent",
+      "kind": "triggering",
+      "rule": "RA1-50"
+     },
+     {
+      "from": "A1.BusinessProcess",
+      "kind": "composition",
+      "rule": "RA1-25"
+     },
+     {
+      "from": "A1.BusinessProcess",
+      "kind": "flow",
+      "rule": "RA1-15"
+     },
+     {
+      "from": "A1.BusinessProcess",
+      "kind": "triggering",
+      "rule": "RA1-14"
+     },
+     {
+      "from": "A1.BusinessRole",
+      "kind": "assignment",
+      "rule": "RA1-36"
+     },
+     {
+      "from": "A1.BusinessService",
+      "kind": "serving",
+      "rule": "RA1-27"
+     }
+    ],
+    "links_out": [
+     {
+      "kind": "access",
+      "rule": "RA1-12",
+      "to": "A1.BusinessObject"
+     },
+     {
+      "kind": "composition",
+      "rule": "RA1-24",
+      "to": "A1.BusinessActivity"
+     },
+     {
+      "kind": "composition",
+      "rule": "RA1-25",
+      "to": "A1.BusinessProcess"
+     },
+     {
+      "kind": "flow",
+      "rule": "RA1-15",
+      "to": "A1.BusinessProcess"
+     },
+     {
+      "kind": "realization",
+      "rule": "RA1-08",
+      "to": "A1.BusinessCapability"
+     },
+     {
+      "kind": "realization",
+      "rule": "RA1-13",
+      "to": "A1.BusinessRequirement"
+     },
+     {
+      "kind": "realization",
+      "rule": "RA1-11",
+      "to": "A1.BusinessService"
+     },
+     {
+      "kind": "realization",
+      "rule": "RA1-09",
+      "to": "A1.ValueStream"
+     },
+     {
+      "kind": "realization",
+      "rule": "RA1-10",
+      "to": "A1.ValueStreamStage"
+     },
+     {
+      "kind": "triggering",
+      "rule": "RA1-51",
+      "to": "A1.BusinessEvent"
+     },
+     {
+      "kind": "triggering",
+      "rule": "RA1-14",
+      "to": "A1.BusinessProcess"
+     }
+    ],
+    "organisation_rules": [],
+    "record_fields": {
+     "lifecycle_status": [
+      "planned",
+      "active",
+      "deprecated",
+      "retired"
+     ],
+     "optional": [
+      "description",
+      "attributes"
+     ],
+     "required": [
+      "id",
+      "type",
+      "version",
+      "name",
+      "lifecycle_status"
+     ]
+    },
+    "source": "ArchiMate 3.2 · Business Process",
+    "type": "A1.BusinessProcess"
+   },
+   {
+    "abstract": false,
+    "archimate": {
+     "element": "Requirement",
+     "from": "SDEM",
+     "layer": "motivation"
+    },
+    "attributes": [
+     {
+      "description": "ids of the processes or activities the requirement constrains",
+      "name": "applies_to",
+      "refers_to": [
+       "A1.BusinessProcess",
+       "A1.BusinessActivity"
+      ],
+      "required": false,
+      "type": "list<string>"
+     },
+     {
+      "allowed_values": [
+       "requirement",
+       "constraint",
+       "principle"
+      ],
+      "description": "whether it is a requirement, a constraint or a principle",
+      "name": "requirement_kind",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "the regulation, policy or decision it comes from",
+      "name": "derived_from",
+      "required": false,
+      "type": "list<string>"
+     },
+     {
+      "allowed_values": [
+       "must",
+       "should",
+       "could",
+       "won't"
+      ],
+      "description": "how important it is to meet (must, should, could, won't)",
+      "name": "priority",
+      "required": false,
+      "type": "string"
+     }
+    ],
+    "definition": "An expressed architectural requirement",
+    "extends": [],
+    "identifier": [
+     "name"
+    ],
+    "layer": "A1",
+    "link_types_to_other_layers": [],
+    "links_in": [
+     {
+      "from": "A1.BusinessActivity",
+      "kind": "realization",
+      "rule": "RA1-21"
+     },
+     {
+      "from": "A1.BusinessCapability",
+      "kind": "realization",
+      "rule": "RA1-34"
+     },
+     {
+      "from": "A1.BusinessProcess",
+      "kind": "realization",
+      "rule": "RA1-13"
+     },
+     {
+      "from": "A1.BusinessRequirement",
+      "kind": "composition",
+      "rule": "RA1-47"
+     },
+     {
+      "from": "A1.BusinessRequirement",
+      "kind": "specialization",
+      "rule": "RA1-48"
+     },
+     {
+      "from": "A1.BusinessService",
+      "kind": "realization",
+      "rule": "RA1-33"
+     }
+    ],
+    "links_out": [
+     {
+      "kind": "composition",
+      "rule": "RA1-47",
+      "to": "A1.BusinessRequirement"
+     },
+     {
+      "kind": "specialization",
+      "rule": "RA1-48",
+      "to": "A1.BusinessRequirement"
+     }
+    ],
+    "organisation_rules": [],
+    "record_fields": {
+     "lifecycle_status": [
+      "planned",
+      "active",
+      "deprecated",
+      "retired"
+     ],
+     "optional": [
+      "description",
+      "attributes"
+     ],
+     "required": [
+      "id",
+      "type",
+      "version",
+      "name",
+      "lifecycle_status"
+     ]
+    },
+    "source": "ArchiMate 3.2 · Requirement",
+    "type": "A1.BusinessRequirement"
+   },
+   {
+    "abstract": false,
+    "archimate": {
+     "element": "Business Role",
+     "from": "SDEM",
+     "layer": "business"
+    },
+    "attributes": [
+     {
+      "allowed_values": [
+       "role",
+       "post"
+      ],
+      "description": "whether it is a generic role or a specific post",
+      "name": "role_kind",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "what the role is responsible for",
+      "name": "responsibilities",
+      "required": false,
+      "type": "string"
+     }
+    ],
+    "definition": "Responsibility for a class of business behaviour",
+    "extends": [],
+    "identifier": [
+     "name"
+    ],
+    "layer": "A1",
+    "link_types_to_other_layers": [
+     {
+      "direction": "out",
+      "evidence_needed": [
+       "process_model"
+      ],
+      "other_end": "A3.ApplicationService",
+      "relationship": "SERVED_BY"
+     }
+    ],
+    "links_in": [
+     {
+      "from": "A1.BusinessActor",
+      "kind": "assignment",
+      "rule": "RA1-35"
+     },
+     {
+      "from": "A1.BusinessInterface",
+      "kind": "serving",
+      "rule": "RA1-56"
+     },
+     {
+      "from": "A1.BusinessRole",
+      "kind": "aggregation",
+      "rule": "RA1-43"
+     },
+     {
+      "from": "A1.BusinessRole",
+      "kind": "composition",
+      "rule": "RA1-42"
+     },
+     {
+      "from": "A1.BusinessService",
+      "kind": "serving",
+      "rule": "RA1-29"
+     }
+    ],
+    "links_out": [
+     {
+      "kind": "aggregation",
+      "rule": "RA1-43",
+      "to": "A1.BusinessRole"
+     },
+     {
+      "kind": "assignment",
+      "rule": "RA1-37",
+      "to": "A1.BusinessActivity"
+     },
+     {
+      "kind": "assignment",
+      "rule": "RA1-36",
+      "to": "A1.BusinessProcess"
+     },
+     {
+      "kind": "composition",
+      "rule": "RA1-54",
+      "to": "A1.BusinessInterface"
+     },
+     {
+      "kind": "composition",
+      "rule": "RA1-42",
+      "to": "A1.BusinessRole"
+     }
+    ],
+    "organisation_rules": [],
+    "record_fields": {
+     "lifecycle_status": [
+      "planned",
+      "active",
+      "deprecated",
+      "retired"
+     ],
+     "optional": [
+      "description",
+      "attributes"
+     ],
+     "required": [
+      "id",
+      "type",
+      "version",
+      "name",
+      "lifecycle_status"
+     ]
+    },
+    "source": "ArchiMate 3.2 · Business Role",
+    "type": "A1.BusinessRole"
+   },
+   {
+    "abstract": false,
+    "archimate": {
+     "element": "Business Service",
+     "from": "SDEM",
+     "layer": "business"
+    },
+    "attributes": [
+     {
+      "description": "the business objects the service takes",
+      "name": "inputs",
+      "refers_to": [
+       "A1.BusinessObject"
+      ],
+      "required": false,
+      "type": "list<string>"
+     },
+     {
+      "description": "the business objects the service returns",
+      "name": "outputs",
+      "refers_to": [
+       "A1.BusinessObject"
+      ],
+      "required": false,
+      "type": "list<string>"
+     },
+     {
+      "description": "the actors or roles the service serves",
+      "name": "consumers",
+      "refers_to": [
+       "A1.BusinessActor",
+       "A1.BusinessRole"
+      ],
+      "required": false,
+      "type": "list<string>"
+     },
+     {
+      "description": "whether customers use it directly",
+      "name": "customer_facing",
+      "required": false,
+      "type": "boolean"
+     },
+     {
+      "description": "the channels the service is offered through",
+      "name": "channels",
+      "refers_to": [
+       "A1.BusinessInterface"
+      ],
+      "required": false,
+      "type": "list<string>"
+     },
+     {
+      "description": "the committed service level (e.g. \"same day\")",
+      "name": "service_level",
+      "required": false,
+      "type": "string"
+     }
+    ],
+    "definition": "Business behaviour exposed to consumers",
+    "extends": [],
+    "identifier": [
+     "name"
+    ],
+    "layer": "A1",
+    "link_types_to_other_layers": [
+     {
+      "direction": "out",
+      "evidence_needed": [
+       "application_architecture_document"
+      ],
+      "other_end": "A3.ApplicationService",
+      "relationship": "REALIZED_BY"
+     },
+     {
+      "direction": "out",
+      "evidence_needed": [
+       "application_architecture_document"
+      ],
+      "other_end": "A3.ApplicationComponent",
+      "relationship": "REALIZED_BY"
+     }
+    ],
+    "links_in": [
+     {
+      "from": "A1.BusinessActivity",
+      "kind": "realization",
+      "rule": "RA1-19"
+     },
+     {
+      "from": "A1.BusinessInterface",
+      "kind": "association",
+      "rule": "RA1-57"
+     },
+     {
+      "from": "A1.BusinessProcess",
+      "kind": "realization",
+      "rule": "RA1-11"
+     },
+     {
+      "from": "A1.BusinessService",
+      "kind": "composition",
+      "rule": "RA1-31"
+     },
+     {
+      "from": "A1.Product",
+      "kind": "aggregation",
+      "rule": "RA1-58"
+     }
+    ],
+    "links_out": [
+     {
+      "kind": "access",
+      "rule": "RA1-32",
+      "to": "A1.BusinessObject"
+     },
+     {
+      "kind": "composition",
+      "rule": "RA1-31",
+      "to": "A1.BusinessService"
+     },
+     {
+      "kind": "realization",
+      "rule": "RA1-33",
+      "to": "A1.BusinessRequirement"
+     },
+     {
+      "kind": "serving",
+      "rule": "RA1-28",
+      "to": "A1.BusinessActivity"
+     },
+     {
+      "kind": "serving",
+      "rule": "RA1-30",
+      "to": "A1.BusinessActor"
+     },
+     {
+      "kind": "serving",
+      "rule": "RA1-27",
+      "to": "A1.BusinessProcess"
+     },
+     {
+      "kind": "serving",
+      "rule": "RA1-29",
+      "to": "A1.BusinessRole"
+     }
+    ],
+    "organisation_rules": [],
+    "record_fields": {
+     "lifecycle_status": [
+      "planned",
+      "active",
+      "deprecated",
+      "retired"
+     ],
+     "optional": [
+      "description",
+      "attributes"
+     ],
+     "required": [
+      "id",
+      "type",
+      "version",
+      "name",
+      "lifecycle_status"
+     ]
+    },
+    "source": "ArchiMate 3.2 · Business Service",
+    "type": "A1.BusinessService"
+   },
+   {
+    "abstract": false,
+    "archimate": {
+     "element": "Product",
+     "from": "SDEM",
+     "layer": "business"
+    },
+    "attributes": [
+     {
+      "description": "the kind of product, e.g. account, card, payment, loan",
+      "name": "product_kind",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "the customer segment the product is for, e.g. retail, business, corporate",
+      "name": "segment",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "whether the product is subject to specific regulation",
+      "name": "regulated",
+      "required": false,
+      "type": "boolean"
+     }
+    ],
+    "definition": "A coherent offering to customers — an account, a card, a payment service — and the services and information it brings together",
+    "extends": [],
+    "identifier": [
+     "name"
+    ],
+    "layer": "A1",
+    "link_types_to_other_layers": [],
+    "links_in": [
+     {
+      "from": "A1.Product",
+      "kind": "composition",
+      "rule": "RA1-60"
+     }
+    ],
+    "links_out": [
+     {
+      "kind": "aggregation",
+      "rule": "RA1-59",
+      "to": "A1.BusinessObject"
+     },
+     {
+      "kind": "aggregation",
+      "rule": "RA1-58",
+      "to": "A1.BusinessService"
+     },
+     {
+      "kind": "composition",
+      "rule": "RA1-60",
+      "to": "A1.Product"
+     }
+    ],
+    "organisation_rules": [],
+    "record_fields": {
+     "lifecycle_status": [
+      "planned",
+      "active",
+      "deprecated",
+      "retired"
+     ],
+     "optional": [
+      "description",
+      "attributes"
+     ],
+     "required": [
+      "id",
+      "type",
+      "version",
+      "name",
+      "lifecycle_status"
+     ]
+    },
+    "source": "ArchiMate 3.2 · Product",
+    "type": "A1.Product"
+   },
+   {
+    "abstract": false,
+    "archimate": {
+     "element": "Value Stream",
+     "from": "SDEM",
+     "layer": "strategy"
+    },
+    "attributes": [
+     {
+      "description": "ordered ids of the stream's stages",
+      "name": "stages",
+      "refers_to": [
+       "A1.ValueStreamStage"
+      ],
+      "required": false,
+      "type": "list<string>"
+     },
+     {
+      "description": "who the value stream delivers value to",
+      "name": "stakeholder",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "the value the stream delivers",
+      "name": "value_proposition",
+      "required": false,
+      "type": "string"
+     }
+    ],
+    "definition": "The stages by which stakeholders receive value",
+    "extends": [],
+    "identifier": [
+     "name"
+    ],
+    "layer": "A1",
+    "link_types_to_other_layers": [
+     {
+      "direction": "out",
+      "evidence_needed": [
+       "process_model",
+       "scenario_suitability_review"
+      ],
+      "other_end": "A2.BusinessScenario",
+      "relationship": "ALIGNED_TO"
+     }
+    ],
+    "links_in": [
+     {
+      "from": "A1.BusinessActivity",
+      "kind": "realization",
+      "rule": "RA1-17"
+     },
+     {
+      "from": "A1.BusinessCapability",
+      "kind": "serving",
+      "rule": "RA1-03"
+     },
+     {
+      "from": "A1.BusinessProcess",
+      "kind": "realization",
+      "rule": "RA1-09"
+     }
+    ],
+    "links_out": [
+     {
+      "kind": "composition",
+      "rule": "RA1-05",
+      "to": "A1.ValueStreamStage"
+     }
+    ],
+    "organisation_rules": [],
+    "record_fields": {
+     "lifecycle_status": [
+      "planned",
+      "active",
+      "deprecated",
+      "retired"
+     ],
+     "optional": [
+      "description",
+      "attributes"
+     ],
+     "required": [
+      "id",
+      "type",
+      "version",
+      "name",
+      "lifecycle_status"
+     ]
+    },
+    "source": "ArchiMate 3.2 · Value Stream",
+    "type": "A1.ValueStream"
+   },
+   {
+    "abstract": false,
+    "archimate": {
+     "element": "Value Stream",
+     "from": "SDEM",
+     "layer": "strategy",
+     "why": "ArchiMate has no stage element; a stage is a value stream inside its value stream (composition)"
+    },
+    "attributes": [
+     {
+      "description": "condition for entering the stage",
+      "name": "entrance_criteria",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "condition for completing the stage",
+      "name": "exit_criteria",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "the value the stage adds",
+      "name": "value_item",
+      "required": false,
+      "type": "string"
+     }
+    ],
+    "definition": "One named segment of a value stream",
+    "extends": [],
+    "identifier": [
+     "name"
+    ],
+    "layer": "A1",
+    "link_types_to_other_layers": [
+     {
+      "direction": "out",
+      "evidence_needed": [
+       "process_model",
+       "scenario_suitability_review"
+      ],
+      "other_end": "A2.BusinessScenario",
+      "relationship": "ALIGNED_TO"
+     }
+    ],
+    "links_in": [
+     {
+      "from": "A1.BusinessActivity",
+      "kind": "realization",
+      "rule": "RA1-18"
+     },
+     {
+      "from": "A1.BusinessCapability",
+      "kind": "serving",
+      "rule": "RA1-04"
+     },
+     {
+      "from": "A1.BusinessProcess",
+      "kind": "realization",
+      "rule": "RA1-10"
+     },
+     {
+      "from": "A1.ValueStream",
+      "kind": "composition",
+      "rule": "RA1-05"
+     },
+     {
+      "from": "A1.ValueStreamStage",
+      "kind": "flow",
+      "rule": "RA1-07"
+     },
+     {
+      "from": "A1.ValueStreamStage",
+      "kind": "triggering",
+      "rule": "RA1-06"
+     }
+    ],
+    "links_out": [
+     {
+      "kind": "flow",
+      "rule": "RA1-07",
+      "to": "A1.ValueStreamStage"
+     },
+     {
+      "kind": "triggering",
+      "rule": "RA1-06",
+      "to": "A1.ValueStreamStage"
+     }
+    ],
+    "organisation_rules": [],
+    "record_fields": {
+     "lifecycle_status": [
+      "planned",
+      "active",
+      "deprecated",
+      "retired"
+     ],
+     "optional": [
+      "description",
+      "attributes"
+     ],
+     "required": [
+      "id",
+      "type",
+      "version",
+      "name",
+      "lifecycle_status"
+     ]
+    },
+    "source": "SDEM · Value Stream Stage",
+    "type": "A1.ValueStreamStage"
+   }
+  ]
+ }
+}

@@ -1,0 +1,197 @@
+{
+ "command": [
+  "bian",
+  "search",
+  "payment",
+  "order",
+  "--json"
+ ],
+ "exit": 0,
+ "output": {
+  "query": "payment order",
+  "results": [
+   {
+    "control_record": "Payment Order Initiation Transaction",
+    "id": "SD-PAYMENT-ORDER-INITIATION",
+    "matched": [
+     "order",
+     "paymen"
+    ],
+    "operations": [
+     {
+      "id": "SO-PAYMENT-ORDER-INITIATION-INITIATE",
+      "method": "POST",
+      "name": "Payment Order Initiation: Initiate",
+      "path": "/PaymentOrderInitiation/Initiate"
+     },
+     {
+      "id": "SO-PAYMENT-ORDER-INITIATION-RETRIEVE",
+      "method": "GET",
+      "name": "Payment Order Initiation: Retrieve",
+      "path": "/PaymentOrderInitiation/{paymentorderinitiationid}/Retrieve"
+     },
+     {
+      "id": "SO-PAYMENT-ORDER-INITIATION-UPDATE",
+      "method": "PUT",
+      "name": "Payment Order Initiation: Update",
+      "path": "/PaymentOrderInitiation/{paymentorderinitiationid}/Update"
+     },
+     {
+      "id": "SO-PAYMENT-ORDER-INITIATION-EXCHANGE-ORDER-INITIATION",
+      "method": "PUT",
+      "name": "Payment Order Initiation: Exchange Order Initiation",
+      "path": "/PaymentOrderInitiation/{paymentorderinitiationid}/OrderInitiation/{orderinitiationid}/Exchange"
+     },
+     {
+      "id": "SO-PAYMENT-ORDER-INITIATION-RETRIEVE-ORDER-INITIATION",
+      "method": "GET",
+      "name": "Payment Order Initiation: Retrieve Order Initiation",
+      "path": "/PaymentOrderInitiation/{paymentorderinitiationid}/OrderInitiation/{orderinitiationid}/Retrieve"
+     }
+    ],
+    "operations_total": 7,
+    "score": 10.99,
+    "service_domain": "Payment Order Initiation"
+   },
+   {
+    "control_record": "Standing Order Facility",
+    "id": "SD-STANDING-ORDER",
+    "matched": [
+     "order",
+     "paymen"
+    ],
+    "operations": [
+     {
+      "id": "SO-STANDING-ORDER-EXCHANGE-STANDING-ORDER-PAYMENT",
+      "method": "PUT",
+      "name": "Standing Order: Exchange Standing Order Payment",
+      "path": "/StandingOrder/{standingorderid}/StandingOrderPayment/{standingorderpaymentid}/Exchange"
+     },
+     {
+      "id": "SO-STANDING-ORDER-INITIATE-STANDING-ORDER-PAYMENT",
+      "method": "POST",
+      "name": "Standing Order: Initiate Standing Order Payment",
+      "path": "/StandingOrder/{standingorderid}/StandingOrderPayment/Initiate"
+     },
+     {
+      "id": "SO-STANDING-ORDER-RETRIEVE-STANDING-ORDER-PAYMENT",
+      "method": "GET",
+      "name": "Standing Order: Retrieve Standing Order Payment",
+      "path": "/StandingOrder/{standingorderid}/StandingOrderPayment/{standingorderpaymentid}/Retrieve"
+     },
+     {
+      "id": "SO-STANDING-ORDER-UPDATE-STANDING-ORDER-PAYMENT",
+      "method": "PUT",
+      "name": "Standing Order: Update Standing Order Payment",
+      "path": "/StandingOrder/{standingorderid}/StandingOrderPayment/{standingorderpaymentid}/Update"
+     },
+     {
+      "id": "SO-STANDING-ORDER-CONTROL",
+      "method": "PUT",
+      "name": "Standing Order: Control",
+      "path": "/StandingOrder/{standingorderid}/Control"
+     },
+     {
+      "id": "SO-STANDING-ORDER-EXCHANGE",
+      "method": "PUT",
+      "name": "Standing Order: Exchange",
+      "path": "/StandingOrder/{standingorderid}/Exchange"
+     }
+    ],
+    "operations_total": 11,
+    "score": 8.67,
+    "service_domain": "Standing Order"
+   },
+   {
+    "control_record": "Market Order Transaction",
+    "id": "SD-MARKET-ORDER",
+    "matched": [
+     "order"
+    ],
+    "operations": [
+     {
+      "id": "SO-MARKET-ORDER-INITIATE",
+      "method": "POST",
+      "name": "Market Order: Initiate",
+      "path": "/MarketOrder/Initiate"
+     },
+     {
+      "id": "SO-MARKET-ORDER-RETRIEVE",
+      "method": "GET",
+      "name": "Market Order: Retrieve",
+      "path": "/MarketOrder/{marketorderid}/Retrieve"
+     },
+     {
+      "id": "SO-MARKET-ORDER-UPDATE",
+      "method": "PUT",
+      "name": "Market Order: Update",
+      "path": "/MarketOrder/{marketorderid}/Update"
+     }
+    ],
+    "operations_total": 8,
+    "score": 6.34,
+    "service_domain": "Market Order"
+   },
+   {
+    "control_record": "Market Trade Transaction",
+    "id": "SD-MARKET-ORDER-EXECUTION",
+    "matched": [
+     "order"
+    ],
+    "operations": [],
+    "operations_total": 16,
+    "score": 6.34,
+    "service_domain": "Market Order Execution"
+   },
+   {
+    "control_record": "Securities Allocation Procedure",
+    "id": "SD-ORDER-ALLOCATION",
+    "matched": [
+     "order"
+    ],
+    "operations": [
+     {
+      "id": "SO-ORDER-ALLOCATION-EXCHANGE-APPLY-ORDER-ALLOCATION-RULES",
+      "method": "PUT",
+      "name": "Order Allocation: Exchange Apply Order Allocation Rules",
+      "path": "/OrderAllocation/{orderallocationid}/ApplyOrderAllocationRules/{applyorderallocationrulesid}/Exchange"
+     },
+     {
+      "id": "SO-ORDER-ALLOCATION-EXCHANGE-UPDATE-PARTIALLY-COMPLETED-MARKET-ORDER",
+      "method": "PUT",
+      "name": "Order Allocation: Exchange Update(Partially Completed)Market Order",
+      "path": "/OrderAllocation/{orderallocationid}/Update(PartiallyCompleted)MarketOrder/{update(partiallycompleted)marketorderid}/Exchange"
+     },
+     {
+      "id": "SO-ORDER-ALLOCATION-EXECUTE-APPLY-ORDER-ALLOCATION-RULES",
+      "method": "PUT",
+      "name": "Order Allocation: Execute Apply Order Allocation Rules",
+      "path": "/OrderAllocation/{orderallocationid}/ApplyOrderAllocationRules/{applyorderallocationrulesid}/Execute"
+     },
+     {
+      "id": "SO-ORDER-ALLOCATION-EXECUTE-UPDATE-PARTIALLY-COMPLETED-MARKET-ORDER",
+      "method": "PUT",
+      "name": "Order Allocation: Execute Update(Partially Completed)Market Order",
+      "path": "/OrderAllocation/{orderallocationid}/Update(PartiallyCompleted)MarketOrder/{update(partiallycompleted)marketorderid}/Execute"
+     },
+     {
+      "id": "SO-ORDER-ALLOCATION-INITIATE-APPLY-ORDER-ALLOCATION-RULES",
+      "method": "POST",
+      "name": "Order Allocation: Initiate Apply Order Allocation Rules",
+      "path": "/OrderAllocation/{orderallocationid}/ApplyOrderAllocationRules/Initiate"
+     },
+     {
+      "id": "SO-ORDER-ALLOCATION-INITIATE-UPDATE-PARTIALLY-COMPLETED-MARKET-ORDER",
+      "method": "POST",
+      "name": "Order Allocation: Initiate Update(Partially Completed)Market Order",
+      "path": "/OrderAllocation/{orderallocationid}/Update(PartiallyCompleted)MarketOrder/Initiate"
+     }
+    ],
+    "operations_total": 22,
+    "score": 6.34,
+    "service_domain": "Order Allocation"
+   }
+  ],
+  "words_bian_does_not_use": []
+ }
+}

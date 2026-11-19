@@ -1,0 +1,58 @@
+{
+ "command": [
+  "aid",
+  "--workspace",
+  "<tmp>/v3",
+  "--person",
+  "golden.check",
+  "--dry-run",
+  "--json"
+ ],
+ "exit": 0,
+ "output": {
+  "a4_connections": 0,
+  "a4_unresolved": [],
+  "added": {},
+  "at": "<volatile>",
+  "draft": {
+   "defaults": 0,
+   "domains_added": [],
+   "left_open": [],
+   "links": [],
+   "links_inferred": 0,
+   "parts_added": [],
+   "parts_to_name": [],
+   "patterns_consulted": [
+    {
+     "applies_to": "SD-PAYMENT-ORDER-INITIATION",
+     "id": "PAT-PAYMENT-INITIATION",
+     "included": true,
+     "title": "Payment initiation"
+    },
+    {
+     "applies_to": "SD-PAYMENT-ORDER-INITIATION",
+     "id": "PAT-BIAN-TRANSACT",
+     "included": true,
+     "title": "BIAN Transact — a transaction"
+    }
+   ]
+  },
+  "dry_run": true,
+  "exposure_unresolved": [],
+  "id": "AID-001",
+  "projection_ends": [
+   "not added — SD-CONSUMER-INVESTMENTS (Consumer Investments): only application names or descriptions point to it (the application layer points to it — S17 — fallback B: asset-type tokens ['security'] in API paths / entity names; evidence: name_token). If it belongs to this design, name its operations in a process's invokes, or add it: sdem bian add --workspace <ws> \"Consumer Investments\" --person <you>",
+   "not added — SD-CORPORATE-PAYROLL-SERVICES (Corporate Payroll Services): only application names or descriptions point to it (the application layer points to it — S17 — fallback B: asset-type tokens ['payment'] in API paths / entity names; evidence: name_token). If it belongs to this design, name its operations in a process's invokes, or add it: sdem bian add --workspace <ws> \"Corporate Payroll Services\" --person <you>",
+   "not added — SD-CUSTOMER-EVENT-HISTORY (Customer Event History): only application names or descriptions point to it (the application layer points to it — S17 — fallback B: asset-type tokens ['event'] in API paths / entity names; evidence: name_token). If it belongs to this design, name its operations in a process's invokes, or add it: sdem bian add --workspace <ws> \"Customer Event History\" --person <you>",
+   "middle gap: the business and application layers point to no common BIAN domain"
+  ],
+  "proposals": "aid/AID-001-proposals.json",
+  "proposed_connections": 0,
+  "requested_by": "golden.check",
+  "skipped_rejected": [],
+  "tables_not_inferred": [],
+  "would_write": [],
+  "zone_placements": 0,
+  "zones_unresolved": []
+ }
+}
