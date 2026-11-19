@@ -69,7 +69,7 @@ No record changes identity, so **step 1 needs no workspace migration**. Renumber
 - BX-11, BX-13: every existing workspace is on, with or without an A2 file (`--no-bian` too); `sdem new --core` is off; including `ext:bian` turns it on, excluding it turns it off.
 - BX-14: exclude and restore of `ext:bian` on a copy of the example.
 - BX-50, BX-51: the security extension on a core-only workspace and on the banking example.
-- The full suite (1,008 tests) unchanged.
+- The full suite unchanged.
 
 ## 8. Decisions (approved 2026-11-20)
 

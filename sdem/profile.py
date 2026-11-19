@@ -83,6 +83,9 @@ def pack(name):
     ext = name[len(EXT):]
     from . import extensions as _x
     prog = _x.find(ext)
+    if ext == 'bian' and prog:   # BP-10: an installed sdem-bian SDEM cannot use — the built-in BIAN instead, and `sdem extensions` says why
+        from . import parts
+        if (parts.package() or {}).get('refused'): prog = None
     if not prog and ext in BUILTIN:   # BX-01: a metamodel extension shipped inside SDEM (step 1 of 0.20: BIAN)
         _PACKS[name] = (DATA_ROOT / 'metamodel' / BUILTIN[ext]['pack_file'], {k: v for k, v in BUILTIN[ext].items() if k != 'pack_file'}); return _PACKS[name]
     if not prog: raise ProfileError(f"{name}: the profile includes the metamodel extension {ext!r}, but sdem-{ext} is not installed — install it into SDEM's environment (sdem extensions lists what is), or take it out of the profile")

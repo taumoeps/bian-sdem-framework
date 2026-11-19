@@ -46,9 +46,11 @@ class Metamodel:
             doc = json.loads((Path(mm_dir) / name).read_text(encoding='utf-8'))
             versions.add(doc['metamodel_version'])
             if name == parts.A2_FILE and not parts.bian_on(): continue   # BX-02, BX-13: BIAN's types belong to ext:bian
+            if name == parts.A2_FILE: doc = parts.metamodel_doc(doc)   # BP-02: the installed sdem-bian's, if any
             ents += doc['entities']
         rels = json.loads((Path(mm_dir) / 'level-relationships.json').read_text(encoding='utf-8'))
         versions.add(rels['metamodel_version'])
+        rels = {**rels, 'constraints': parts.splice(rels.get('constraints', []), parts.bian_constraint, lambda c: c.get('id'), 'within')}   # BP-02
         if not parts.bian_on():   # its within-layer rules too
             rels = {**rels, 'constraints': [c for c in rels.get('constraints', []) if c.get('level') != parts.A2 and not parts.a2(c.get('source_type')) and not parts.a2(c.get('target_type'))]}
         if len(versions) != 1:

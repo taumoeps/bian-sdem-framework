@@ -134,5 +134,64 @@ class PackLinkTypes(unittest.TestCase):   # BX-50: a pack's link type that requi
             P.deactivate(); shutil.rmtree(tmp, ignore_errors=True)
 
 
+
+def fake_bian(folder, sdem_range='>=0.0', mark=None):
+    """A stand-in for an installed sdem-bian (BP-01): its data folder written from SDEM's own (scripts/bian_package.py), optionally with a
+    mark in one A2 type, one link type and one inference rule — to see SDEM read the package, not its built-in copy."""
+    from sdem.parts import write_package_data
+    data = folder / 'sdem_bian_data'; write_package_data(data)
+    if mark:
+        for f, key in (('a2-service-domain.json', 'entities'), ('link-types.json', None), ('inference-rules.json', None)):
+            d = json.loads((data / f).read_text()); rows = d[key] if key else d
+            field = 'definition' if key else 'description'   # a type is shown by its definition (sdem types)
+            rows[0][field] = f"{mark} {rows[0].get(field, '')}"
+            (data / f).write_text(json.dumps(d))
+    man = {'name': 'bian', 'command': 'sdem-bian', 'version': '9.9.9', 'kind': ['metamodel'], 'sdem': sdem_range, 'bian_data': str(data),
+           'pack': str(ROOT / 'metamodel' / 'ext-bian-pack.json'), 'description': 'a test sdem-bian'}
+    body = f'import sys, json\nif "--manifest" in sys.argv: print(json.dumps({man!r}))\n'
+    if os.name == 'nt':
+        (folder / 'sdem-bian.py').write_text(body)
+        (folder / 'sdem-bian.cmd').write_text(f'@"{sys.executable}" "%~dp0sdem-bian.py" %*\r\n')
+    else:
+        prog = folder / 'sdem-bian'; prog.write_text(f'#!{sys.executable}\n' + body); prog.chmod(0o755)
+    return {**ENV, 'PATH': str(folder) + os.pathsep + os.environ.get('PATH', '')}
+
+
+class Package(unittest.TestCase):   # step 2: BIAN in its own package (docs/design/sdem-bian-package-spec.md, BP-01…BP-11)
+    def setUp(self): self.tmp = Path(tempfile.mkdtemp())
+
+    def tearDown(self): shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def test_with_the_package_every_answer_is_the_same_as_0_19(self):   # P1 with sdem-bian installed
+        env = fake_bian(self.tmp)
+        out = self.tmp / 'golden'
+        subprocess.run([sys.executable, str(ROOT / 'scripts' / 'golden' / 'capture.py'), str(out)], check=True, capture_output=True, env=env, cwd=ROOT)
+        gold = ROOT / 'tests' / 'golden' / '0.19'
+        self.assertEqual([n.name for n in sorted(gold.glob('*.json')) if not filecmp.cmp(n, out / n.name, shallow=False)], [])
+
+    def test_sdem_reads_the_packages_data(self):   # BP-02, BP-05: its types, link types, rules and catalogue — not the built-in copy
+        env = fake_bian(self.tmp, mark='FROM-THE-PACKAGE')
+        code = ("import json; from sdem import parts; from sdem.metamodel import Metamodel; from sdem.validate import load_registry; "
+                "from sdem.rules_engine import _rules; print(json.dumps([parts.package()['version'], str(parts.catalogue_dir()), "
+                "json.dumps(Metamodel.load().entities), json.dumps(load_registry()['relationships']), json.dumps(list(_rules().values()))]))")
+        r = subprocess.run([sys.executable, '-c', code], capture_output=True, text=True, env=env, cwd=ROOT)
+        v, cat, ents, links, rules = json.loads(r.stdout)
+        self.assertEqual(v, '9.9.9'); self.assertTrue(cat.startswith(str(self.tmp)))
+        for what in (ents, links, rules): self.assertIn('FROM-THE-PACKAGE', what)
+        self.assertIn('FROM-THE-PACKAGE', sdem('types', 'A2', '--json', env=env))   # and what a person sees
+        self.assertIn('bian', sdem('profile', 'include', 'ext:bian', '--workspace', core_workspace(self.tmp), '--person', 'bx.check', '--reason', 'r', env=env))
+
+    def test_a_package_that_does_not_support_this_sdem_is_not_used_and_said(self):   # BP-10, BP-05
+        env = fake_bian(self.tmp, sdem_range='<0.1', mark='FROM-THE-PACKAGE')
+        out = sdem('extensions', env=env)
+        self.assertIn('used instead of the installed sdem-bian', out); self.assertIn('supports SDEM <0.1', out)
+        self.assertNotIn('FROM-THE-PACKAGE', sdem('types', 'A2', '--json', env=env))
+
+    def test_without_the_package_the_built_in_copy(self):   # BP-10
+        from sdem import parts
+        self.assertIsNone(parts.package()) if not shutil.which('sdem-bian') else None
+        self.assertEqual(parts.catalogue_dir(), ROOT / 'bian') if not shutil.which('sdem-bian') else None
+
+
 if __name__ == '__main__':
     unittest.main()

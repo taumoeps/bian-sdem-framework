@@ -33,8 +33,8 @@ class InferenceError(ValueError):
 
 def installed_file(release):
     """The inference record that ships with SDEM for a BIAN release, or None."""
-    from .paths import DATA_ROOT
-    f = DATA_ROOT / 'bian' / f'inferences-{release}.json'
+    from .parts import catalogue_dir   # BP-02
+    f = catalogue_dir() / f'inferences-{release}.json'
     return f if f.exists() else None
 
 

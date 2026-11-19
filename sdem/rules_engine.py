@@ -37,6 +37,7 @@ def weakest(*classes):
 def _rules():
     from . import parts   # BX-02: inference rules that name an A2 type belong to ext:bian
     ms = json.loads((DATA_ROOT / 'metamodel' / 'relationship-rules.json').read_text(encoding='utf-8'))['mappings']
+    ms = parts.splice(ms, parts.bian_rule, lambda m: m['id'], 'rules')   # BP-02: the installed sdem-bian's, if any
     if not parts.bian_on(): ms = [m for m in ms if 'A2.' not in json.dumps(m)]
     return {m['id']: m for m in ms}
 

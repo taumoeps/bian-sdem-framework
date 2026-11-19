@@ -258,8 +258,8 @@ def read_release(folder):
 # ---------------------------------------------------------------- the base and packs (BB-*)
 def base_file():
     """The base BIAN that ships with SDEM — the newest bian/base-<release>.json (BB-S01, BB-S03)."""
-    from .paths import DATA_ROOT
-    found = sorted((DATA_ROOT / 'bian').glob('base-*.json'), key=lambda p: [int(x) if x.isdigit() else x for x in re.split(r'[.-]', p.stem)])
+    from .parts import catalogue_dir   # BP-02: the installed sdem-bian's catalogue, else SDEM's own
+    found = sorted(catalogue_dir().glob('base-*.json'), key=lambda p: [int(x) if x.isdigit() else x for x in re.split(r'[.-]', p.stem)])
     if not found: raise BianError('the base BIAN is not installed with this SDEM (bian/base-*.json) — import from a folder of BIAN files instead')
     return found[-1]
 

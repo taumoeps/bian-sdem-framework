@@ -94,7 +94,9 @@ def main(argv=None):
     built = [{'name': n, 'program': 'built into SDEM', 'manifest': {k: v for k, v in m.items() if k != 'pack_file'},
               **({'on': parts.bian_on(), 'why': parts.why(), **({'make_explicit': f'sdem profile include ext:{n} --workspace {a.estate} --person <you> --reason "…"'}
                  if parts.bian_on() and 'BX-11' in parts.why() else {})} if a.estate and n == 'bian' else {})}
-             for n, m in BUILTIN.items() if n not in {x['name'] for x in items}]   # BX-01: a built-in metamodel extension — an installed one of the same name takes its place
+             for n, m in BUILTIN.items() if n not in {x['name'] for x in items} or (parts.package() or {}).get('refused')]
+    for x in built:   # BP-10: an installed sdem-bian SDEM cannot use — said, and the built-in one is used
+        if (parts.package() or {}).get('refused'): x['manifest'] = {**x['manifest'], 'description': f"{x['manifest'].get('description', '')} — used instead of the installed sdem-bian: {parts.package()['refused']}"}   # BX-01: a built-in metamodel extension — an installed one of the same name takes its place
     if a.json:
         print(json.dumps({'count': len(items), 'items': items, 'built_in': built}, indent=2, ensure_ascii=False))
         return 0

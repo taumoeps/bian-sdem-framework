@@ -4,13 +4,13 @@ Synthetic data only — SDEM's own examples."""
 import json, os, re, shutil, subprocess, sys, tempfile
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[2]
-ENV = {**os.environ, 'PYTHONPATH': str(ROOT)}
+ROOT = Path(os.environ.get('SDEM_GOLDEN_ROOT') or Path(__file__).resolve().parents[2])   # SDEM_GOLDEN_ROOT: capture another checkout, e.g. v0.19.0 (BP-D5)
+ENV = {**os.environ, 'PYTHONPATH': str(ROOT), 'PYTHONIOENCODING': 'utf-8'}   # SDEM writes UTF-8 on every platform
 VOLATILE = re.compile(r'^(at|generated_at|written_at|recorded_at|started_at|ended_at|built_at|date|created|timestamp|now|as_of|run_id|id_run|fingerprint|duration_ms|seconds|elapsed)$')
 
 
 def sdem(*args, cwd=None):
-    r = subprocess.run([sys.executable, '-m', 'sdem', *map(str, args)], capture_output=True, text=True, env=ENV, cwd=cwd or ROOT)
+    r = subprocess.run([sys.executable, '-m', 'sdem', *map(str, args)], capture_output=True, text=True, encoding='utf-8', errors='replace', env=ENV, cwd=cwd or ROOT)
     return r.returncode, r.stdout, r.stderr
 
 
@@ -18,7 +18,10 @@ def norm(x, tmp):
     if isinstance(x, dict): return {k: ('<volatile>' if VOLATILE.match(k) else norm(v, tmp)) for k, v in x.items() if k != 'sdem'}
     if isinstance(x, list): return [norm(v, tmp) for v in x]
     if isinstance(x, str):
-        x = x.replace(str(tmp), '<tmp>').replace(str(ROOT), '<root>')
+        for p, tag in ((tmp, '<tmp>'), (ROOT, '<root>')):   # every spelling of the folder: as given, resolved, and with / (Windows)
+            for form in {str(p), str(Path(p).resolve()), os.path.realpath(p)}:
+                x = x.replace(form, tag).replace(form.replace('\\', '/'), tag)
+        if os.sep == '\\': x = re.sub(r'(<tmp>|<root>)([^\s"]*)', lambda m: m.group(1) + m.group(2).replace('\\', '/'), x)   # paths under them in / form
         return re.sub(r'GD-\d{8}T\d{6}-[0-9a-f]{6}', 'GD-<id>', re.sub(r'\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[^"\s]*', '<time>', x))
     return x
 
@@ -43,6 +46,9 @@ def capture(out):
         cases['trace/pi-A1'] = ('trace', 'A1', '--graph', tmp / 'payment-initiation-graph', '--json')
         cases['impact/pi-APP'] = ('impact', 'APP-PAY-HUB', '--change', 'retire', '--graph', tmp / 'payment-initiation-graph', '--json')
         cases['bian/search'] = ('bian', 'search', 'payment', 'order', '--json')
+        nb = tmp / 'nb'; sdem('new', '--workspace', nb, '--person', 'golden.check', '--no-bian')   # BP-D5: sdem bian add, before BIAN's code moves
+        cases['bian/add-pi'] = ('bian', 'add', 'Card Authorization', '--workspace', ws, '--person', 'golden.check', '--dry-run', '--json')
+        cases['bian/add-new'] = ('bian', 'add', 'Payment Rail', 'Party Reference Data Directory', '--workspace', nb, '--person', 'golden.check', '--dry-run', '--json')
         for d in ('card-fraud-alerts', 'digital-lending', 'legacy-core-ledger'):
             ex = ROOT / 'examples' / d
             files = sorted(str(p) for p in ex.glob('a[1-4]-*.json')) + [str(ex / 'mappings.json')]
@@ -52,7 +58,7 @@ def capture(out):
             try: body = norm(json.loads(so), tmp)
             except ValueError: body = {'text': norm(so.strip()[-4000:], tmp)}
             f = out / (key.replace('/', '__') + '.json')
-            f.write_text(json.dumps({'command': norm([str(a) for a in args], tmp), 'exit': code, 'output': body}, indent=1, sort_keys=True, ensure_ascii=False) + '\n', encoding='utf-8')
+            f.write_bytes((json.dumps({'command': norm([str(a) for a in args], tmp), 'exit': code, 'output': body}, indent=1, sort_keys=True, ensure_ascii=False) + '\n').encode('utf-8'))   # LF on every platform
         return sorted(cases)
     finally:
         shutil.rmtree(tmp, ignore_errors=True)

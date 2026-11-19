@@ -1,6 +1,6 @@
 # BIAN in its own package — step 2 of SDEM 0.20 (spec)
 
-> **Status: proposed (2026-11-20) — for the owner's approval of BP-D1…BP-D5 (§7).** Step 2 of the [0.20 plan](sdem-0.20-plan.md)
+> **Status: approved (2026-11-20) — the owner: "agree with recommendations" (BP-D1…BP-D5, §7); built (§8); BP-03 as built approved by the owner ("accept recommendation", decision BP-D6).** Step 2 of the [0.20 plan](sdem-0.20-plan.md)
 > (approved). Builds on step 1, [BIAN as a horizontal extension](sdem-bian-extension-spec.md) (BX-…), and the
 > [metamodel extensions](sdem-metamodel-extensions-spec.md) (MX-…). Proof: **P1** — the 30 golden answers byte-identical with the package
 > installed — and the core-only tests (BX-32) without it.
@@ -59,10 +59,33 @@ for step 3.
 
 ## 7. Decisions for the owner
 
-| # | Decision | Recommended |
+| # | Decision | Decided |
 |---|---|---|
 | BP-D1 | BIAN's data and its `sdem bian` commands move to `sdem-extensions/metamodel/bian` (BP-01…BP-03) | **yes** |
 | BP-D2 | The core's inference steps that name A2 types stay in the core until step 3 (BP-04) | **yes** — they are rewritten by step 3 anyway |
 | BP-D3 | The built-in BIAN stays as the fallback for all of 0.20 (BP-10) | **yes** — no 0.19 workspace breaks on upgrade |
 | BP-D4 | A test keeps the package and the fallback identical (BP-11) | **yes** |
 | BP-D5 | `bian add --dry-run` joins the golden set before the move, recaptured from `v0.19.0` | **yes** |
+| BP-D6 | BP-03 as built: the `sdem bian` code stays in SDEM and reads the package's data; it moves through step 3's interface, never by an exception to EXT-02 (§8) | **yes** (2026-11-20) |
+
+## 8. As built (2026-11-20, branch `release/0.20`)
+
+| Rules | Where |
+|---|---|
+| BP-01 | `sdem-extensions/metamodel/bian/` — `sdem-bian` 1.0.0.dev1: a manifest naming its data folder (`bian_data`) and its pack; CI `bian.yml` against SDEM `release/0.20` |
+| BP-02 | its data folder: `a2-service-domain.json` (15 types), `within-layer-rules.json` (23), `link-types.json` (10), `inference-rules.json` (46), `catalogue/` (BIAN 14, its inferences, licence). SDEM reads it in `parts.py` — `splice` puts each BIAN row from the package in SDEM's order (replaced by key; a new one after; a dropped one gone), `metamodel_doc`, `catalogue_dir` — used by the metamodel, the link registry, the rule set, `sdem bian`, the inference record and the workbench |
+| BP-05 | `parts.package()`: the installed `sdem-bian`, if it names a complete data folder and supports this SDEM |
+| BP-10 | not installed, or refused: SDEM's own copy; `sdem extensions` says *used instead of the installed sdem-bian: …*; `sdem profile include ext:bian` works either way |
+| BP-11 | `scripts/bian_package.py` writes the package's data from SDEM's; the package's test fails if they differ |
+| proof | **P1 with the package**: the 32 recorded answers identical to `v0.19.0` (a real install in a clean environment, and a stand-in package in SDEM's own tests); SDEM reads the package's data — a marked copy shows in the metamodel, the registry, the rules and `sdem types`; a package for another SDEM is not used and is said not to be |
+| BP-D5 | `bian add --dry-run` (two cases) joined the golden set, **captured from a `v0.19.0` checkout** — which also reproduced the 30 earlier answers byte for byte |
+
+### BP-03 — built differently, for the owner
+
+BP-03 said the `sdem bian` code (`bian.py`, `inferences.py`) moves into the package "as it is". It **was not moved**: the extension
+contract (**EXT-02**) lets an extension use SDEM only through its commands and documented files, and that code is built on SDEM's
+internals (the metamodel, conformance, the change-set writer). Moving it would make the package import SDEM's code, or copy it.
+
+As built: **the commands stay in SDEM and read the package's data**; `sdem-bian <command>` runs SDEM's `sdem bian <command>`. Everything
+BIAN *is* — its metamodel, rules and catalogue — lives in and versions with the package; what *runs* it is SDEM's, like the A2 inference
+steps (BP-04). Both get one interface in step 3, which renames every type anyway. **Approved by the owner (2026-11-20), BP-D6.**
