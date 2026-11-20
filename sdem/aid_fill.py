@@ -73,7 +73,7 @@ def fill(workspace, person, dry_run=False, now=None, complete_draft=False):
         return {**d, 'instances': keep, 'relationships': [r for r in d.get('relationships', []) if r['source'] in ids and r['target'] in ids
                                                           and not (isinstance(r.get('inferred'), dict) and r['inferred'].get('rule', '').startswith('AID-D') and r['inferred'].get('status') != 'confirmed')]}   # … nor from a link it inferred to complete the draft
     have = {lvl: e for lvl, d in docs.items() if lvl != _L('bian') for e in [evidence(d)] if e.get('instances')}
-    if not have: raise AidError(f'{ws}: nothing to infer from yet — write what you have first: any of {", ".join(f for l, f in DATASETS.items() if l != _L('bian'))}')
+    if not have: raise AidError(f'{ws}: nothing to infer from yet — write what you have first: any of {", ".join(f for l, f in DATASETS.items() if l != _L("bian"))}')
     from .new import catalogue as workspace_catalogue
     catalogue = workspace_catalogue(ws)   # WS-01: the workspace's own A2 plus the BIAN catalogue it uses — read, not copied
     pkg = project(have, catalogue, registry, either=True)   # AID-M02: for a person to review, keep what either side supports

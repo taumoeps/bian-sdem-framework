@@ -60,6 +60,20 @@ class NamesInCode(unittest.TestCase):   # step 3b: SDEM's code names layers and 
         bad = [f'{m}:{n} {s}' for m, n, s in _strings() if s[:1] in '\'"' and (s[1:-1] in names or re.fullmatch(r'A[1-4]\.', s[1:-1]))]
         self.assertEqual(bad, [], "write _T('<type id>') or _L('<layer id>') (sdem/identity.py) instead")
 
+    def test_no_f_string_nests_its_own_quote(self):
+        """Python 3.12 allows f'{_L('bian')}'; 3.10 and 3.11, which SDEM supports, do not (a syntax error) — the CI failure on 7587442."""
+        import io, tokenize
+        if not hasattr(tokenize, 'FSTRING_START'): self.skipTest('Python < 3.12 would not even compile such a module')
+        bad = []
+        for p in sorted((ROOT / 'sdem').rglob('*.py')):
+            stack = []
+            for t in tokenize.generate_tokens(io.StringIO(p.read_text(encoding='utf-8')).readline):
+                if t.type == tokenize.FSTRING_START: stack.append(t.string.lstrip('rRfFbB'))
+                elif t.type == tokenize.FSTRING_END: stack.pop()
+                elif t.type in (tokenize.STRING, tokenize.FSTRING_START) and stack and len(stack[-1]) == 1 and t.string.lstrip('rRfFbB').startswith(stack[-1]):
+                    bad.append(f'{p.name}:{t.start[0]}')
+        self.assertEqual(bad, [], 'use the other quote inside an f-string')
+
     def test_labels_and_messages_that_carry_a_code_only_go_down(self):
         """The ratchet: text that carries an A-number ('A1 Business', 'not an A2 dataset') is right while the stack is 0.19's; step 4
         computes it. A module may lower its count (then lower it here), never raise it."""
