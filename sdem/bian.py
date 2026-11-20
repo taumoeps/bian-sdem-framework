@@ -12,6 +12,7 @@ hold the operations, and the asset type and functional pattern the metamodel req
 Offline: it reads the base, a pack, or a folder you downloaded. BIAN's descriptions are left out unless you ask
 (--descriptions, from BIAN's files). Base BIAN: docs/design/sdem-bian-base-design.md.
 """
+from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 import argparse, csv, difflib, json, re, sys
 from collections import Counter
 from pathlib import Path
@@ -331,41 +332,41 @@ def build(domains, metamodel_version, descriptions=False, objects=False, pattern
             asset, pattern, how = inf['asset_type']['value'], inf['functional_pattern']['value'], 'inferred'
         if how == 'unknown':
             report['unknown'].append(d)
-            sd = add(rec(f'SD-{sd_key}', 'A2.ServiceDomain', d['name'], ver, d['description'] if descriptions else None,
+            sd = add(rec(f'SD-{sd_key}', _T('bian.ServiceDomain'), d['name'], ver, d['description'] if descriptions else None,
                          {'classification': 'unknown'}, canonical=f'BIAN-{sd_key}', source=src))
         else:
             pattern = pattern.upper()
             if pattern not in PATTERNS: raise BianError(f"{d['name']}: {pattern!r} is not a BIAN functional pattern ({', '.join(PATTERNS)})")
             if how == 'inferred': report['inferred'].append((d['name'], asset, pattern.title(), inf['id'], inf['asset_type']['confidence'], inf['functional_pattern']['confidence']))
             else: (report['from_table'] if how == 'given' else report['derived']).append((d['name'], asset, pattern.title()))
-            at = add(rec(f'AT-{_key(asset)}', 'A2.AssetType', asset, ver, f"Asset type of {d['name']} — {how} ({PATTERN_SOURCE if how == 'derived' else inf['id'] + ' in SDEM inference record' if how == 'inferred' else 'your table'}); confirm."))
-            fp = add(rec(f"FP-{_key(pattern)}", 'A2.FunctionalPattern', pattern.title(), ver,
+            at = add(rec(f'AT-{_key(asset)}', _T('bian.AssetType'), asset, ver, f"Asset type of {d['name']} — {how} ({PATTERN_SOURCE if how == 'derived' else inf['id'] + ' in SDEM inference record' if how == 'inferred' else 'your table'}); confirm."))
+            fp = add(rec(f"FP-{_key(pattern)}", _T('bian.FunctionalPattern'), pattern.title(), ver,
                          f'A BIAN functional pattern ({PATTERN_SOURCE}).', {'generic_artefact': PATTERNS[pattern]}))
-            sd = add(rec(f'SD-{sd_key}', 'A2.ServiceDomain', d['name'], ver, d['description'] if descriptions else None,
+            sd = add(rec(f'SD-{sd_key}', _T('bian.ServiceDomain'), d['name'], ver, d['description'] if descriptions else None,
                          {'asset_type': at, 'functional_pattern': fp, 'classification': how, **({'inference_ref': inf['id']} if how == 'inferred' else {})},
                          canonical=f'BIAN-{sd_key}', source=src))
             rels += [{'source': sd, 'kind': 'association', 'target': at}, {'source': sd, 'kind': 'association', 'target': fp}]
         cr = None
         if d['control_record']:
             cr_names.setdefault(d['control_record'], []).append(d['name'])
-            cr = add(rec(f'CR-{sd_key}', 'A2.ControlRecord', _words(d['control_record']), ver,
+            cr = add(rec(f'CR-{sd_key}', _T('bian.ControlRecord'), _words(d['control_record']), ver,
                          attrs={'attributes': d['control_record_fields']}, source=src))
             rels.append({'source': sd, 'kind': 'aggregation', 'target': cr})
         bq_ids = {}
         for q in d['qualifiers']:
-            bq_ids[q] = add(rec(f'BQ-{sd_key}-{_key(q)}', 'A2.BehaviorQualifier', f"{_words(q)} ({d['name']})", ver, source=src))
+            bq_ids[q] = add(rec(f'BQ-{sd_key}-{_key(q)}', _T('bian.BehaviorQualifier'), f"{_words(q)} ({d['name']})", ver, source=src))
             if cr: rels.append({'source': cr, 'kind': 'composition', 'target': bq_ids[q]})
         groups = {}
         for op in d['operations']:
             g = op['group'] or 'Operations'
             if g not in groups:
-                groups[g] = add(rec(f'SG-{sd_key}-{_key(g)}', 'A2.ServiceGroup', f"{d['name']} — {_words(g)}", ver,
+                groups[g] = add(rec(f'SG-{sd_key}-{_key(g)}', _T('bian.ServiceGroup'), f"{d['name']} — {_words(g)}", ver,
                                     f"The operations BIAN tags {g!r} in {d['name']}.", source=src))
                 rels.append({'source': sd, 'kind': 'composition', 'target': groups[g]})
             action = _words(op['operation_id']).split(' ')[0]
             attrs = {'action_term': action, 'http_method': op['method'], 'input_attributes': op['inputs'], 'output_attributes': op['outputs']}
             if op['qualifier']: attrs['behavior_qualifier'] = bq_ids[op['qualifier']]
-            so = add(rec(f"SO-{sd_key}-{_key(op['operation_id'])}", 'A2.ServiceOperation', f"{d['name']}: {_words(op['operation_id'])}", ver,
+            so = add(rec(f"SO-{sd_key}-{_key(op['operation_id'])}", _T('bian.ServiceOperation'), f"{d['name']}: {_words(op['operation_id'])}", ver,
                          f"{op['method']} {op['path']} in BIAN's Semantic API {ver}.", attrs, canonical=f"BIAN-{sd_key}-{_key(op['operation_id'])}", source=src))
             rels.append({'source': groups[g], 'kind': 'composition', 'target': so})
             if cr: rels.append({'source': so, 'kind': 'access', 'target': cr})
@@ -375,14 +376,14 @@ def build(domains, metamodel_version, descriptions=False, objects=False, pattern
             for name, fields in d['objects'].items():
                 if wanted is not None and name.lower() not in wanted: continue
                 if name == d['control_record'] or name.lower().endswith('typevalues') or name in DATATYPES: continue   # a BIAN data type is a type, not an object (IM-09)
-                bo = add(rec(f'BBO-{_key(name)}', 'A2.BusinessObject', _words(name), ver, attrs={'attributes': fields},
+                bo = add(rec(f'BBO-{_key(name)}', _T('bian.BusinessObject'), _words(name), ver, attrs={'attributes': fields},
                              canonical=f'BIAN-BO-{_key(name)}', source=src))
                 for f in (d.get('object_fields') or {}).get(name, []):   # IM-09: each field a typed record; references become links (IM-03)
                     a = {'data_type': f['data_type'], 'required': f['required'],
                          'multiplicity': ('1..n' if f['required'] else '0..n') if f['many'] else ('1' if f['required'] else '0..1')}
                     if f['allowed_values']: a['allowed_values'] = f['allowed_values']
                     if f['identifier']: a['identifier'] = True
-                    boa = add(rec(f'BBOA-{_key(name)}-{_key(f["name"])}', 'A2.BusinessObjectAttribute', f['name'], ver, attrs=a, source=src))
+                    boa = add(rec(f'BBOA-{_key(name)}-{_key(f["name"])}', _T('bian.BusinessObjectAttribute'), f['name'], ver, attrs=a, source=src))
                     rels.append({'source': bo, 'kind': 'composition', 'target': boa})
                     ref = f['refers_to']
                     if ref and ref != d['control_record'] and ref in d['objects'] and not ref.lower().endswith('typevalues') and (wanted is None or ref.lower() in wanted):
@@ -401,7 +402,7 @@ def build(domains, metamodel_version, descriptions=False, objects=False, pattern
     for r in rels:
         k = (r['source'], r['kind'], r['target'])
         if k not in seen: seen.add(k); uniq.append(r)
-    dataset = {'level': 'A2', 'model_id': f'bian-semantic-api-{release}', 'model_version': release, 'metamodel_version': metamodel_version,
+    dataset = {'level': _L('bian'), 'model_id': f'bian-semantic-api-{release}', 'model_version': release, 'metamodel_version': metamodel_version,
                'source_system': f'BIAN-SEMANTIC-API-{release}', 'instances': list(inst.values()), 'relationships': uniq}
     return dataset, report
 
@@ -494,7 +495,7 @@ def update_estates(estates, a2_file, person, dry_run=False, now=None):
     from .validate import is_person
     if not is_person(person): raise BianError(f"--person {person!r}: updating a workspace's BIAN layer is a person's decision — give your own name")
     new = json.loads(Path(a2_file).read_text(encoding='utf-8'))
-    if new.get('level') != 'A2': raise BianError(f'{a2_file}: not an A2 dataset (level {new.get("level")!r})')
+    if new.get('level') != _L('bian'): raise BianError(f'{a2_file}: not an A2 dataset (level {new.get("level")!r})')
     new_by = {i['id']: i for i in new.get('instances', [])}
     plans, refused = [], []
     for est in estates:
@@ -537,15 +538,15 @@ def release_impact(estate, shared):
     from .connect import estate_docs
     est = Path(estate); docs, reg = estate_docs(est)
     own = docs.get('a2-service-domain.json') or {'instances': [], 'relationships': []}
-    held = {i['name'] for i in own.get('instances', []) if i['type'] == 'A2.ServiceDomain'}
+    held = {i['name'] for i in own.get('instances', []) if i['type'] == _T('bian.ServiceDomain')}
     fresh = refresh_layer(own, shared, held) if held else own
     old_by, new_by = {i['id']: i for i in own.get('instances', [])}, {i['id']: i for i in fresh.get('instances', [])}
-    shared_names = {i['name'] for i in shared.get('instances', []) if i['type'] == 'A2.ServiceDomain'}
+    shared_names = {i['name'] for i in shared.get('instances', []) if i['type'] == _T('bian.ServiceDomain')}
     strip = lambda i: {k: v for k, v in i.items() if k not in ('version',)}
     changes = {'dropped': sorted(set(old_by) - set(new_by)),
                'renamed': sorted(i for i in set(old_by) & set(new_by) if old_by[i]['name'] != new_by[i]['name']),
                'changed': sorted(i for i in set(old_by) & set(new_by) if old_by[i]['name'] == new_by[i]['name'] and strip(old_by[i]) != strip(new_by[i])),
-               'not_in_release': sorted(i for i, r in old_by.items() if r['type'] == 'A2.ServiceDomain' and r['name'] not in shared_names)}
+               'not_in_release': sorted(i for i, r in old_by.items() if r['type'] == _T('bian.ServiceDomain') and r['name'] not in shared_names)}
     watch = {i for v in changes.values() for i in v}
     req = json.loads((est / 'requirements.json').read_text(encoding='utf-8')) if (est / 'requirements.json').exists() else {'requirements': []}
     def named(v, rid): return v == rid or (isinstance(v, list) and rid in v) or (isinstance(v, dict) and rid in v.values())
@@ -623,7 +624,7 @@ def reach(dataset, names):
         if isinstance(x, dict): return [y for v in x.values() for y in refs(v)]
         if isinstance(x, list): return [y for v in x for y in refs(v)]
         return [x] if isinstance(x, str) and x in by else []
-    keep, todo = set(), [i['id'] for i in dataset['instances'] if i['type'] == 'A2.ServiceDomain' and i['name'] in names]
+    keep, todo = set(), [i['id'] for i in dataset['instances'] if i['type'] == _T('bian.ServiceDomain') and i['name'] in names]
     while todo:
         x = todo.pop()
         if x in keep or x not in by: continue
@@ -635,7 +636,7 @@ def refresh_layer(own, shared, names):
     """The service domains `names` and their parts as `shared` now has them; a domain the shared layer no longer has is kept as it
     is (reported by the caller); the workspace's other records are kept; marks on a record (inferred, confirmed) are kept (WS-04)."""
     by = {i['id']: i for i in shared['instances']}
-    in_shared = {i['name'] for i in shared['instances'] if i['type'] == 'A2.ServiceDomain'}
+    in_shared = {i['name'] for i in shared['instances'] if i['type'] == _T('bian.ServiceDomain')}
     keep = reach(shared, names & in_shared)
     mine = {i['id']: i for i in own['instances']}
     kept_own = reach(own, names - in_shared)
@@ -769,14 +770,14 @@ def main(argv=None):
         if not a.dry_run:
             rec_path = ws / 'workspace.json'
             rec = json.loads(rec_path.read_text(encoding='utf-8')) if rec_path.exists() else {'format': 'sdem-workspace/1', 'name': ws.name}
-            held = sorted(i['name'] for i in dataset['instances'] if i['type'] == 'A2.ServiceDomain')
+            held = sorted(i['name'] for i in dataset['instances'] if i['type'] == _T('bian.ServiceDomain'))
             rec['bian'] = {**rec.get('bian', {}), 'release': dataset['model_version'], 'selection': 'all' if a.all else 'relevant' if a.add else 'custom',
                            'service_domains': len(held), **({} if a.all else {'chosen': held}), 'changed_by': a.person, 'update': c.get('id')}
             from .files import write_json
             write_json(rec_path, rec)
         if a.json: print(json.dumps(c, indent=2)); return 0
         verb = ('would add' if a.dry_run else 'added') + f" {len(chosen)} service domain(s)" if a.add else ('would set' if a.dry_run else 'set') + ' the BIAN layer to exactly the domains chosen'
-        print(f"{ws}: {verb} — now {sum(1 for i in dataset['instances'] if i['type'] == 'A2.ServiceDomain')} service domain(s)" + (f" ({c['id']})" if c.get('id') else '')
+        print(f"{ws}: {verb} — now {sum(1 for i in dataset['instances'] if i['type'] == _T('bian.ServiceDomain'))} service domain(s)" + (f" ({c['id']})" if c.get('id') else '')
               + f" — added {len(c['added'])}, dropped {len(c['dropped'])} records; checked" + ('' if a.dry_run else '. Next: commit on a branch and open a pull request.'))
         return 0
     if a.cmd == 'search':   # TS-04
@@ -804,7 +805,7 @@ def main(argv=None):
         estates = [Path(a.estate)] if a.estate else sorted(p for p in Path(a.root).iterdir() if (p / 'mappings.json').exists())
         if not estates: raise BianError(f'{a.root}: no workspaces in it (folders with a mappings.json)')
         shared = json.loads(Path(a.a2).read_text(encoding='utf-8'))
-        if shared.get('level') != 'A2': raise BianError(f'{a.a2}: not an A2 dataset (level {shared.get("level")!r})')
+        if shared.get('level') != _L('bian'): raise BianError(f'{a.a2}: not an A2 dataset (level {shared.get("level")!r})')
         res = [release_impact(e, shared) for e in estates]
         if a.json: print(json.dumps({'workspaces': res}, indent=2, ensure_ascii=False)); return 0
         for r in res:
@@ -820,16 +821,16 @@ def main(argv=None):
         estates = [Path(a.estate)] if a.estate else sorted(p for p in Path(a.root).iterdir() if (p / 'mappings.json').exists())
         if not estates: raise BianError(f'{a.root}: no workspaces in it (folders with a mappings.json)')
         shared = json.loads(Path(a.a2).read_text(encoding='utf-8'))
-        if shared.get('level') != 'A2': raise BianError(f'{a.a2}: not an A2 dataset (level {shared.get("level")!r})')
+        if shared.get('level') != _L('bian'): raise BianError(f'{a.a2}: not an A2 dataset (level {shared.get("level")!r})')
         from .validate import is_person
         if not is_person(a.person): raise BianError(f"--person {a.person!r}: updating a workspace's BIAN layer is a person's decision — give your own name")
         import tempfile
         plans = []
         for e in estates:   # WS-04: each workspace refreshes the service domains it holds — nothing else is brought in
             own = json.loads((e / 'a2-service-domain.json').read_text(encoding='utf-8')) if (e / 'a2-service-domain.json').exists() else None
-            held = {i['name'] for i in (own or {}).get('instances', []) if i['type'] == 'A2.ServiceDomain'}
+            held = {i['name'] for i in (own or {}).get('instances', []) if i['type'] == _T('bian.ServiceDomain')}
             if not held: print(f"{e}: holds no BIAN service domains — nothing to refresh (sdem aid brings in the ones its design needs)"); continue
-            gone = sorted(held - {i['name'] for i in shared['instances'] if i['type'] == 'A2.ServiceDomain'})
+            gone = sorted(held - {i['name'] for i in shared['instances'] if i['type'] == _T('bian.ServiceDomain')})
             if gone: print(f"{e}: {len(gone)} service domain(s) it holds are not in the shared layer — kept as they are: {', '.join(gone)}")
             fresh = refresh_layer(own, shared, held)
             tmp = Path(tempfile.mkdtemp()) / 'a2-service-domain.json'; tmp.write_text(json.dumps(fresh), encoding='utf-8')

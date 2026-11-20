@@ -13,10 +13,11 @@ Zone placements (metamodel 0.11.0; AID-Z01…Z04): each A4 shape in no zone is p
 signals (metamodel/hosting-signals.json) or the organisation's default, the DMZ when internet facing — as a link marked inferred. Confirm or
 reject it by the shape's id: `sdem aid confirm INF-K8S-PROD --workspace … --person …`.
 """
+from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 import argparse, copy, datetime, json, re, sys
 from pathlib import Path
 
-DATASETS = {'A1': 'a1-business.json', 'A2': 'a2-service-domain.json', 'A3': 'a3-application.json', 'A4': 'a4-technology.json'}
+DATASETS = {_L('business'): 'a1-business.json', _L('bian'): 'a2-service-domain.json', _L('application'): 'a3-application.json', _L('technology'): 'a4-technology.json'}
 FOLDER = 'aid'
 
 
@@ -71,8 +72,8 @@ def fill(workspace, person, dry_run=False, now=None, complete_draft=False):
         keep = [i for i in d['instances'] if not is_inferred(i, confirmed=False)]; ids = {i['id'] for i in keep}
         return {**d, 'instances': keep, 'relationships': [r for r in d.get('relationships', []) if r['source'] in ids and r['target'] in ids
                                                           and not (isinstance(r.get('inferred'), dict) and r['inferred'].get('rule', '').startswith('AID-D') and r['inferred'].get('status') != 'confirmed')]}   # … nor from a link it inferred to complete the draft
-    have = {lvl: e for lvl, d in docs.items() if lvl != 'A2' for e in [evidence(d)] if e.get('instances')}
-    if not have: raise AidError(f'{ws}: nothing to infer from yet — write what you have first: any of {", ".join(f for l, f in DATASETS.items() if l != "A2")}')
+    have = {lvl: e for lvl, d in docs.items() if lvl != _L('bian') for e in [evidence(d)] if e.get('instances')}
+    if not have: raise AidError(f'{ws}: nothing to infer from yet — write what you have first: any of {", ".join(f for l, f in DATASETS.items() if l != _L('bian'))}')
     from .new import catalogue as workspace_catalogue
     catalogue = workspace_catalogue(ws)   # WS-01: the workspace's own A2 plus the BIAN catalogue it uses — read, not copied
     pkg = project(have, catalogue, registry, either=True)   # AID-M02: for a person to review, keep what either side supports
@@ -92,7 +93,7 @@ def fill(workspace, person, dry_run=False, now=None, complete_draft=False):
             if nid in present or nid in rejected: continue
             rec = _ids(copy.deepcopy(inst)); pj = rec.pop('projection', {}) or {}
             rec['id'] = nid
-            if lvl != 'A2':   # BIAN records keep BIAN's names; what SDEM built is named as inferred
+            if lvl != _L('bian'):   # BIAN records keep BIAN's names; what SDEM built is named as inferred
                 rec['name'] = re.sub(r'\s*\(projected\)', '', rec['name']).rstrip() + ' (inferred)'   # e.g. 'Payment Rail service — deployment (inferred)'
                 if rec.get('description'): rec['description'] = re.sub(r'^Projected:', 'Inferred:', rec['description'])
             rec.setdefault('attributes', {})['inferred'] = {
@@ -106,23 +107,23 @@ def fill(workspace, person, dry_run=False, now=None, complete_draft=False):
             if key not in have_rels and r['source'] in present and r['target'] in present:
                 doc.setdefault('relationships', []).append(r); have_rels.add(key)
     zone_unresolved, placements, connections, conn_unresolved, exposure_unresolved = [], 0, 0, [], []
-    if after.get('A4', {}).get('instances'):   # AID-Z01…Z04: each A4 shape in no zone gets a proposed zone, marked inferred, for a person to decide (H2, H5)
+    if after.get(_L('technology'), {}).get('instances'):   # AID-Z01…Z04: each A4 shape in no zone gets a proposed zone, marked inferred, for a person to decide (H2, H5)
         from .hosting import propose
         from .metamodel import Metamodel
         zrej = {r['id'] for r in _rejected(ws)['rejected'] if '@' in r['id']}
-        new_zones, links, zone_unresolved = propose(after['A4'], Metamodel.load(), run, person.strip(), now, zrej, stem)
+        new_zones, links, zone_unresolved = propose(after[_L('technology')], Metamodel.load(), run, person.strip(), now, zrej, stem)
         for z in new_zones:
             if z['id'] not in present and z['id'] not in rejected:
-                after['A4']['instances'].append(z); present.add(z['id']); added.setdefault('A4', []).append(z['id'])
-        have = {(r['source'], r['kind'], r['target']) for r in after['A4'].get('relationships', [])}
+                after[_L('technology')]['instances'].append(z); present.add(z['id']); added.setdefault(_L('technology'), []).append(z['id'])
+        have = {(r['source'], r['kind'], r['target']) for r in after[_L('technology')].get('relationships', [])}
         for r in links:
             if (r['source'], r['kind'], r['target']) not in have and r['source'] in present:
-                after['A4'].setdefault('relationships', []).append(r); placements += 1 if r.get('inferred') else 0
+                after[_L('technology')].setdefault('relationships', []).append(r); placements += 1 if r.get('inferred') else 0
         from .a4_connect import propose_connections   # AID-C01…C06 (X6): at A4 every shape is connected — proposed, marked inferred
         crej = {r['id'] for r in _rejected(ws)['rejected'] if '|' in r['id']}
-        clinks, conn_unresolved = propose_connections(after.get('A3') or {}, after['A4'], registry.get('mappings', []), Metamodel.load(), run, person.strip(), now, crej)
-        after['A4'].setdefault('relationships', []).extend(clinks); placements += len(clinks); connections = len(clinks)
-        if placements and 'A4' not in added: added['A4'] = []
+        clinks, conn_unresolved = propose_connections(after.get(_L('application')) or {}, after[_L('technology')], registry.get('mappings', []), Metamodel.load(), run, person.strip(), now, crej)
+        after[_L('technology')].setdefault('relationships', []).extend(clinks); placements += len(clinks); connections = len(clinks)
+        if placements and _L('technology') not in added: added[_L('technology')] = []
     from . import profile as _prof   # the workspace's profile is active (catalogue() above): its standards and patterns are asked first
     dmark = lambda rule, why, frm, **k: {'by': 'sdem aid', 'run': run, 'at': now, 'requested_by': person.strip(), 'step': 'draft', 'rule': rule,
                                          'source': 'docs/design/sdem-completeness-design.md stage 4', 'reasoning': why, 'from': frm, **k}
@@ -142,10 +143,10 @@ def fill(workspace, person, dry_run=False, now=None, complete_draft=False):
         earlier_maps = [(m['source']['id'], m['relationship'], m['target']['id']) for f in (runs.glob('AID-*-proposals.json') if runs.exists() else []) for m in _j(f).get('mappings', [])]
         drecs, dlinks, domain_uses, domains_added = pattern_domains(after, catalogue, live_maps + earlier_maps, _MMd.load(), structs, dmark, rejected)
         if drecs:
-            a2doc = after.setdefault('A2', {'level': 'A2', 'model_id': f'{stem}-A2', 'model_version': now[:10], 'metamodel_version': _MMd.load().version,
+            a2doc = after.setdefault(_L('bian'), {'level': _L('bian'), 'model_id': f'{stem}-A2', 'model_version': now[:10], 'metamodel_version': _MMd.load().version,
                                             'source_system': 'SDEM-AID', 'instances': [], 'relationships': []})
             for r in drecs:
-                if r['id'] not in present: a2doc['instances'].append(r); present.add(r['id']); added.setdefault('A2', []).append(r['id'])
+                if r['id'] not in present: a2doc['instances'].append(r); present.add(r['id']); added.setdefault(_L('bian'), []).append(r['id'])
             a2doc.setdefault('relationships', []).extend(dlinks)
         domain_uses = [(*u, 'AID-D05') for u in domain_uses]
         from .aid_complete import pattern_parts   # AID-D06: a part a pattern requires and the design has nothing of — a planned record, marked inferred
@@ -175,12 +176,12 @@ def fill(workspace, person, dry_run=False, now=None, complete_draft=False):
                           'rationale': re.sub(r'^PROJECTED DESIGN, not a mapping:\s*', 'Inferred by sdem aid: ', link.get('rationale', '')),
                           'baseline_id': run, 'created_by': 'sdem aid'})
     not_stored = []
-    if after.get('A2'):   # AID-I01…I04 (metamodel 0.15.0, IM-10): a data entity with its fields for each typed business object — inferred, proposed
+    if after.get(_L('bian')):   # AID-I01…I04 (metamodel 0.15.0, IM-10): a data entity with its fields for each typed business object — inferred, proposed
         from .aid_info import propose_information
         mark = lambda rule, why, frm: {'by': 'sdem aid', 'run': run, 'at': now, 'requested_by': person.strip(), 'step': 'information', 'rule': rule,
                                        'source': 'docs/design/sdem-full-design-metamodel-design.md IM-10', 'reasoning': why, 'confidence': 'low',
                                        'evidence_class': 'attribute_join', 'from': frm}
-        a3doc = after.setdefault('A3', {'level': 'A3', 'model_id': f'{stem}-A3', 'model_version': now[:10], 'metamodel_version': after['A2'].get('metamodel_version'),
+        a3doc = after.setdefault(_L('application'), {'level': _L('application'), 'model_id': f'{stem}-A3', 'model_version': now[:10], 'metamodel_version': after[_L('bian')].get('metamodel_version'),
                                          'source_system': 'SDEM-AID', 'instances': [], 'relationships': []})
         from .aid_links import match_existing   # AID-K02 first: an object an existing table stores is not given a new one
         from .metamodel import Metamodel as _MMk
@@ -189,23 +190,23 @@ def fill(workspace, person, dry_run=False, now=None, complete_draft=False):
                 proposals.append({'mapping_id': f'{run}-P{len(proposals) + 1:03d}', 'source': end({'id': src, 'type': by_id[src]['type'], 'version': by_id[src]['version']}), 'relationship': rel,
                                   'target': {'id': tgt, 'type': by_id[tgt]['type'], 'version': by_id[tgt]['version']}, 'status': 'proposed', 'confidence': conf,
                                   'evidence': [f'engine_rationale:{run} {rule}'], 'rationale': f'Inferred by sdem aid ({rule}): {why}', 'baseline_id': run, 'created_by': 'sdem aid'})
-        iinst, irels, ilinks, not_stored = propose_information(after['A2'], a3doc, registry.get('mappings', []) + earlier + proposals, mark, rejected, lambda r: is_inferred(r, confirmed=False))
+        iinst, irels, ilinks, not_stored = propose_information(after[_L('bian')], a3doc, registry.get('mappings', []) + earlier + proposals, mark, rejected, lambda r: is_inferred(r, confirmed=False))
         for rec in iinst:
             if rec['id'] in present: continue
-            a3doc['instances'].append(rec); present.add(rec['id']); by_id[rec['id']] = rec; added.setdefault('A3', []).append(rec['id'])
+            a3doc['instances'].append(rec); present.add(rec['id']); by_id[rec['id']] = rec; added.setdefault(_L('application'), []).append(rec['id'])
         a3doc.setdefault('relationships', []).extend(r for r in irels if r['source'] in present and r['target'] in present)
         from .aid_info import propose_access   # AID-I07: a table nobody accesses, accessed by the component realising its object's domain (inferred)
         from .metamodel import Metamodel as _MMi
         acc = propose_access(after, registry.get('mappings', []) + proposals, _MMi.load(), mark)
         if acc:
-            a3doc['relationships'].extend(acc); added.setdefault('A3', [])
+            a3doc['relationships'].extend(acc); added.setdefault(_L('application'), [])
         for src, rel, tgt, why in ilinks:
             if src not in by_id or tgt not in by_id or (src, rel, tgt) in approved: continue
             proposals.append({'mapping_id': f'{run}-P{len(proposals) + 1:03d}', 'source': end({'id': src, 'type': by_id[src]['type'], 'version': by_id[src]['version']}),
                               'relationship': rel, 'target': {'id': tgt, 'type': by_id[tgt]['type'], 'version': by_id[tgt]['version']}, 'status': 'proposed',
                               'confidence': 'low', 'evidence': [f'engine_rationale:{run} AID-I03'], 'rationale': f'Inferred by sdem aid: {why} — approve with data_model evidence',
                               'baseline_id': run, 'created_by': 'sdem aid'})
-    if after.get('A3') or after.get('A4'):   # AID-A01…A03 (metamodel 0.16.0, AT-01): the links attributes imply — proposed; a path's ends, inferred
+    if after.get(_L('application')) or after.get(_L('technology')):   # AID-A01…A03 (metamodel 0.16.0, AT-01): the links attributes imply — proposed; a path's ends, inferred
         from .aid_attr import propose_links, path_ends
         from .metamodel import Metamodel as _MMa
         _mm = _MMa.load()
@@ -219,12 +220,12 @@ def fill(workspace, person, dry_run=False, now=None, complete_draft=False):
                               'target': {'id': tgt, 'type': t_['type'], 'version': t_['version']}, 'status': 'proposed', 'confidence': 'high',
                               'evidence': [f'engine_rationale:{run} {why.split("(")[-1].rstrip(")")}'], 'rationale': f'Inferred by sdem aid from an attribute: {why} — approve with deployment_design evidence',
                               'baseline_id': run, 'created_by': 'sdem aid'})
-        if after.get('A4'):
-            ends = path_ends(after['A4'], _mm, amark)
+        if after.get(_L('technology')):
+            ends = path_ends(after[_L('technology')], _mm, amark)
             if ends:
-                after['A4'].setdefault('relationships', []).extend(ends); placements += len(ends); connections += len(ends)
-                if 'A4' not in added: added['A4'] = []
-    if after.get('A1') or after.get('A2'):   # AID-L01…L05, AID-K01 (the owner's approvals 2, 2b, 2026-11-16): direct A1->A3 links and field matches, proposed
+                after[_L('technology')].setdefault('relationships', []).extend(ends); placements += len(ends); connections += len(ends)
+                if _L('technology') not in added: added[_L('technology')] = []
+    if after.get(_L('business')) or after.get(_L('bian')):   # AID-L01…L05, AID-K01 (the owner's approvals 2, 2b, 2026-11-16): direct A1->A3 links and field matches, proposed
         from .aid_links import propose_direct, propose_fields
         from .metamodel import Metamodel as _MMl
         _mml = _MMl.load()
@@ -236,12 +237,12 @@ def fill(workspace, person, dry_run=False, now=None, complete_draft=False):
                                   'target': {'id': tgt, 'type': t_['type'], 'version': t_['version']}, 'status': 'proposed', 'confidence': conf,
                                   'evidence': [f'engine_rationale:{run} {rule}'], 'rationale': f'Inferred by sdem aid ({rule}): {why}',
                                   'baseline_id': run, 'created_by': 'sdem aid'})
-    if after.get('A3') and after.get('A4'):   # AID-X01: an internet-facing interface EXPOSED_THROUGH the one edge platform — for a person to approve
+    if after.get(_L('application')) and after.get(_L('technology')):   # AID-X01: an internet-facing interface EXPOSED_THROUGH the one edge platform — for a person to approve
         from .a4_connect import propose_exposure
         from .metamodel import Metamodel as _MM
-        pairs, exposure_unresolved = propose_exposure(after['A3'], after['A4'], registry.get('mappings', []) + proposals, _MM.load())
+        pairs, exposure_unresolved = propose_exposure(after[_L('application')], after[_L('technology')], registry.get('mappings', []) + proposals, _MM.load())
         from .a4_connect import propose_builds   # AID-X02: an application BUILT_AS its artifact — for a person to approve
-        for comp, art, why in propose_builds(after['A3'], after['A4'], registry.get('mappings', []) + proposals, _MM.load()):
+        for comp, art, why in propose_builds(after[_L('application')], after[_L('technology')], registry.get('mappings', []) + proposals, _MM.load()):
             s_, t_ = by_id[comp], by_id[art]
             proposals.append({'mapping_id': f'{run}-P{len(proposals) + 1:03d}', 'source': {'id': comp, 'type': s_['type'], 'version': s_['version']}, 'relationship': 'BUILT_AS',
                               'target': {'id': art, 'type': t_['type'], 'version': t_['version']}, 'status': 'proposed', 'confidence': 'medium',
@@ -323,7 +324,7 @@ def decide(workspace, ids, person, action, reason='', all_=False, now=None):
         for r in d.get('relationships', []):
             if marked(r):
                 home[id(r)] = lvl
-                for end in ((r['source'], r['target']) if lvl == 'A4' else ()) + (f"{r['source']}|{r['kind']}|{r['target']}",): placed.setdefault(end, []).append(r)
+                for end in ((r['source'], r['target']) if lvl == _L('technology') else ()) + (f"{r['source']}|{r['kind']}|{r['target']}",): placed.setdefault(end, []).append(r)
     chosen = sorted(set(inferred) | {k for k in placed if '|' not in k}) if all_ else list(ids)
     if not chosen: raise AidError('nothing to do — give the ids (see `sdem check` or the dashboard), or --all')
     missing = [i for i in chosen if i not in inferred and i not in placed]
@@ -343,7 +344,7 @@ def decide(workspace, ids, person, action, reason='', all_=False, now=None):
     def froms(rec): return {x.strip() for x in str(rec['attributes']['inferred'].get('from', '')).split(',') if x.strip()}
     if action == 'confirm' and chosen:
         chosen = list(chosen) + [i for i, (lvl, r) in every.items()   # a BIAN service domain is confirmed with its parts (operations, control record …)
-                                 if lvl == 'A2' and i not in chosen and froms(r) and froms(r) <= {c for c in chosen if every.get(c, ('', {}))[0] == 'A2'}]
+                                 if lvl == _L('bian') and i not in chosen and froms(r) and froms(r) <= {c for c in chosen if every.get(c, ('', {}))[0] == _L('bian')}]
         for i in chosen:
             lvl, rec = every[i]
             if is_inferred(rec, confirmed=True): continue

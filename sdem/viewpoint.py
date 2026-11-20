@@ -1,6 +1,7 @@
 """`sdem viewpoint` — the viewpoints SDEM defines, as data (docs/design/sdem-architecture-viewpoint-spec.md §10, ARV-18…ARV-22): which
 records each plate draws (a type's subtypes too, ARV-19), how they group, which links connect them, what is left out and why, and the
 layout each plate uses (named, not encoded — ARV-20). Viewers (DESNRE's 3D view and the Design document's figures) draw from them."""
+from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 import argparse, json, sys
 from .paths import DATA_ROOT
 
@@ -33,11 +34,11 @@ def check(mm, d):
         covered = {t for t in here}
         missing = [t for t, e in mm.entities.items() if e.get('level') == layer and t.count('.') == 1 and not e.get('abstract') and t not in covered
                    and not any(a in covered for a in mm.ancestors(t))]
-        if layer != 'A3': out += [f"{p['code']}: {t} is neither drawn nor named as left out (ARV-05)" for t in missing]
-    a3 = [p for p in d.get('plates', []) if p['code'].startswith('A3')]
+        if layer != _L('application'): out += [f"{p['code']}: {t} is neither drawn nor named as left out (ARV-05)" for t in missing]
+    a3 = [p for p in d.get('plates', []) if p['code'].startswith(_L('application'))]
     if a3:   # A3 is drawn on two plates: together they cover the layer
         cov = {t for p in a3 for t in list(p.get('shapes', [])) + [g['type'] for g in p.get('groupings', [])] + [t for lo in p.get('left_out', []) for t in lo['types']]}
-        out += [f'A3: {t} is neither drawn nor named as left out (ARV-05)' for t, e in mm.entities.items() if e.get('level') == 'A3' and t.count('.') == 1 and not e.get('abstract') and t not in cov]
+        out += [f'A3: {t} is neither drawn nor named as left out (ARV-05)' for t, e in mm.entities.items() if e.get('level') == _L('application') and t.count('.') == 1 and not e.get('abstract') and t not in cov]
     out += [f'between plates: {r} is not a relationship SDEM knows' for r in d.get('between_plates', []) if r not in notation()['cross_layer']]
     return out
 

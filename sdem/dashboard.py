@@ -4,6 +4,7 @@ Everything is computed here, with the same functions the CLI uses (checks, the r
 AID gaps, controls); the page only displays the results and shows the exact `sdem` command for every action. No server,
 no network, no AI. Regenerate after a change.
 """
+from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 import argparse, collections, datetime, html, json, re, sys
 from pathlib import Path
 
@@ -11,7 +12,7 @@ from .store import GraphReader, stale_inputs
 
 from .paths import DATA_ROOT as ROOT, repo_path
 from .layers import DATASET_FILES as FILES, titled   # LR-09
-LEVEL_NAMES = titled({'A1': 'A1 Business', 'A2': 'A2 Service domain (BIAN)', 'A3': 'A3 Application', 'A4': 'A4 Technology'})
+LEVEL_NAMES = titled({_L('business'): 'A1 Business', _L('bian'): 'A2 Service domain (BIAN)', _L('application'): 'A3 Application', _L('technology'): 'A4 Technology'})
 KINDS = ('modify', 'rehost', 'replace', 'retire')
 
 

@@ -7,6 +7,7 @@ or the gap(s) where the implementation differs; sections the high-level spec doe
 Catalogue alignment (§5) is computed by reading the high-level spec's own tables, not asserted.
 Usage: python -m sdem.metamodel_spec [--check]
 """
+from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 import argparse, glob, hashlib, json, re
 from collections import Counter
 from pathlib import Path
@@ -18,8 +19,8 @@ HIGH = DOCS / 'design' / 'architecture-metamodel-high-level-spec.md'
 OUT = DOCS / 'design' / 'architecture-metamodel-detail-level-spec.md'
 PUML = DOCS / 'design' / 'architecture-metamodel-detail-level-spec.puml'
 MM = ROOT / 'metamodel'
-LEVELS = (('A1', 'a1-business.json', 'A1 Business'), ('A2', 'a2-service-domain.json', 'A2 Service Domain (BIAN)'),
-          ('A3', 'a3-application.json', 'A3 Application'), ('A4', 'a4-technology.json', 'A4 Technology'))
+LEVELS = ((_L('business'), 'a1-business.json', 'A1 Business'), (_L('bian'), 'a2-service-domain.json', 'A2 Service Domain (BIAN)'),
+          (_L('application'), 'a3-application.json', 'A3 Application'), (_L('technology'), 'a4-technology.json', 'A4 Technology'))
 
 
 def _j(p): return json.loads(Path(p).read_text(encoding='utf-8'))
@@ -147,7 +148,7 @@ def render():
     mism = []
     for lvl, f, name in LEVELS:
         es_ = [e for l, e in ents if l == lvl]
-        title = name if lvl != 'A4' else name + ' (high-level: "Infrastructure") — ' + st('G-04')
+        title = name if lvl != _L('technology') else name + ' (high-level: "Infrastructure") — ' + st('G-04')
         out += ['', f'### 5.{lvl[1]} {title} ({len(es_)})', '', '| Type | Kind | Definition | definition_source | alignment_kind | evidence_status | Confidence | Alignment |', '|---|---|---|---|---|---|---|---|']
         for e in es_:
             kind = 'artefact' if e.get('artefact') else 'abstract' if e.get('abstract') else ('extends `' + e['extends'] + '`' if e.get('extends') else 'concrete')
@@ -158,7 +159,7 @@ def render():
                 bad = []
                 if h[0] and h[0] != e['definition_source'].replace('sdmm_', 'sdem_'): bad.append(f"source {h[0]} → {e['definition_source']}")
                 if h[1] and h[1] in ('exact', 'specialization', 'related', 'conceptual', 'none', 'composite') and h[1] != e.get('alignment_kind'): bad.append(f"alignment {h[1]} → {e.get('alignment_kind')}")
-                if bad: mism.append(e['type']); verdict = '; '.join(bad) + (' — ' + st('G-03') if e['type'] == 'A4.Deployment' else '')
+                if bad: mism.append(e['type']); verdict = '; '.join(bad) + (' — ' + st('G-03') if e['type'] == _T('technology.Deployment') else '')
                 else: verdict = '✓'
             out.append(f"| `{e['type']}` | {kind} | {e['definition']} | `{e['definition_source']}` | `{e.get('alignment_kind')}` | `{e['evidence_status']}` | {e['confidence']} | {verdict} |")
     out += ['', f"Catalogue check: {len(hl)} entity rows read from high-level §5; {len(mism)} {'differs' if len(mism) == 1 else 'differ'} ({', '.join(mism) or 'none'}). Dropped from core per high-level §5.3 and absent here: `A3.Application`, `A3.Integration` — aligned. The example-cloud types moved to profiles do not exist — {st('G-08')}."]
@@ -266,7 +267,7 @@ def render_diagram():
     out = ['@startuml architecture-metamodel-detail-level-spec', '!pragma layout smetana', 'skinparam shadowing false', 'skinparam defaultFontSize 11',
            'skinparam rectangleBorderColor #546E7A', 'skinparam packageBorderColor #90A4AE', 'skinparam packageBackgroundColor #FAFAFA', 'skinparam noteBackgroundColor #FFF8E1', 'skinparam noteBorderColor #FFB300',
            'title SDEM Architecture Metamodel — detail-level specification (governing)\\nfollows the high-level spec section by section; generated from the records — python -m sdem.metamodel_spec', '']
-    titles = {'A1': 'A1 Business', 'A2': 'A2 Service Domain (BIAN)', 'A3': 'A3 Application', 'A4': 'A4 Technology  [high-level: Infrastructure — ' + gtag('G-04') + ']'}
+    titles = {_L('business'): 'A1 Business', _L('bian'): 'A2 Service Domain (BIAN)', _L('application'): 'A3 Application', _L('technology'): 'A4 Technology  [high-level: Infrastructure — ' + gtag('G-04') + ']'}
     for lvl, _, _ in LEVELS:
         out.append(f'package "{titles[lvl]}  —  detail §5.{lvl[1]}, within-level rows: {byl[lvl]} (§6.1, {gtag("G-01")})" as P{lvl} {{')
         for l, e in ents:
@@ -281,7 +282,7 @@ def render_diagram():
     for x in rt:
         out.append(f"{a(x['source_type'])} -[#1565C0,bold]-> {a(x['target_type'])} : **{x['relationship']}**\\n{x['authority']}")
     conf = sum(1 for _, e in ents if e['evidence_status'] == 'confirmed_in_official_source')
-    dep = next(e for _, e in ents if e['type'] == 'A4.Deployment')
+    dep = next(e for _, e in ents if e['type'] == _T('technology.Deployment'))
     out += ['', f'note "**{gtag("G-03")}**\\nhigh-level: composite\\nimplemented: {dep.get("alignment_kind")}" as N_G03', 'N_G03 .. a4_deployment', '',
             f'note "**{gtag("G-02")}**\\n{conf} ArchiMate-derived entities say\\nconfirmed in official source\\nwithout a verification record\\n(high-level §3, §9)" as N_G02', 'N_G02 .. a3_applicationcomponent', '',
             'package "Relationship Registry — record format (detail §4, §6.2)" as PREG {',

@@ -4,14 +4,15 @@ The templates (`viewpoints.json`) are data: which metamodel types, in which rows
 drawn. The layout is computed here, deterministically (DG-05); the SVG carries its own styles and loads nothing (DG-06). Only records
 and stored links are drawn — links inside a layer, and approved connections between layers (DG-03); what has no link is said (DG-04).
 """
+from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 import argparse, hashlib, html, json, sys
 from pathlib import Path
 
 TEMPLATES_FILE = Path(__file__).with_name('viewpoints.json')
-FILES = {'A1': 'a1-business.json', 'A2': 'a2-service-domain.json', 'A3': 'a3-application.json', 'A4': 'a4-technology.json'}
+FILES = {_L('business'): 'a1-business.json', _L('bian'): 'a2-service-domain.json', _L('application'): 'a3-application.json', _L('technology'): 'a4-technology.json'}
 NEST = ('composition', 'aggregation')
 LEAF_W, LEAF_H, PAD, GAP, TITLE, CH, LEFT, MAXROW = 172, 58, 14, 16, 34, 96, 150, 4
-LAYER_CLASS = {'A1': 'bus', 'A2': 'bian', 'A3': 'app', 'A4': 'tec'}
+LAYER_CLASS = {_L('business'): 'bus', _L('bian'): 'bian', _L('application'): 'app', _L('technology'): 'tec'}
 e = html.escape
 
 
@@ -112,7 +113,7 @@ def _zones_build(D, T, nt, focus=None):
     from .zone_layout import layout, LayoutError
     from .metamodel import Metamodel
     mm = Metamodel.load()
-    a4 = {i: r for i, r in D.rec.items() if r['layer'] == 'A4'}
+    a4 = {i: r for i, r in D.rec.items() if r['layer'] == _L('technology')}
     doc = {'instances': [{k: v for k, v in r.items() if k not in ('layer', 't')} for r in a4.values()],
            'relationships': [r for r in D.rels if r['source'] in a4 and r['target'] in a4]}
     try: lay = layout(doc, mm, environment='all')
@@ -145,14 +146,14 @@ def build(D, tid, focus=None):
     """The diagram for one template: {'template', 'svg', 'notes', 'elements', 'lines', 'missing_layers'} (DG-01…DG-12)."""
     T, nt = template(tid), templates()['notation']
     if T.get('layout') == 'zones':
-        z, notes = _zones_build(D, T, nt, focus) if 'A4' in D.present else (None, ['The workspace has no A4 dataset (a4-technology.json), so this view is empty.'])
+        z, notes = _zones_build(D, T, nt, focus) if _L('technology') in D.present else (None, ['The workspace has no A4 dataset (a4-technology.json), so this view is empty.'])
         drawn = z['drawn'] if z else {}
         edges = _route(D, T, nt, drawn) if drawn else []
         uid = hashlib.sha1(f'{tid}|{focus}'.encode()).hexdigest()[:6]
         svg = _svg(D, T, drawn, edges, [], z['W'] if z else 700, z['H'] if z else 160, uid, groups=z['groups'] if z else (), arrows=z['arrows'] if z else ())
         if z and z['lay']['left_out']: notes.append(f"{len(z['lay']['left_out'])} retired record(s) are not drawn: {', '.join(z['lay']['left_out'])}.")
         return {'template': tid, 'code': T['code'], 'name': T['name'], 'viewpoint': T['viewpoint'], 'layer': T['layer'], 'focus': focus,
-                'svg': svg, 'notes': notes, 'missing_layers': [] if 'A4' in D.present else ['A4'], 'elements': list(drawn),
+                'svg': svg, 'notes': notes, 'missing_layers': [] if _L('technology') in D.present else [_L('technology')], 'elements': list(drawn),
                 'lines': [{'source': x['s'], 'target': x['t'], 'line': x['style'], 'label': x['label'], 'stands_for': x['refs']} for x in edges]}
     keep = _focus_set(D, focus) if focus else None
     rows, drawn, missing = [], {}, []

@@ -17,6 +17,7 @@ real until a person confirms it. The rules are in metamodel/transform-rules.json
   sdem transform run EXPORT_DIR -o OUT [--known …]       candidate datasets, extraction.json, design-index.json, report
   then: review the report, `sdem load` the entities you keep (docs/design/sdem-load-design.md)
 """
+from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 import argparse, base64, collections, csv, datetime, hashlib, io, json, os, re, sys, urllib.parse, zlib
 import xml.etree.ElementTree as ET
 from html.parser import HTMLParser
@@ -26,7 +27,7 @@ from .metamodel import Metamodel
 from .paths import DATA_ROOT
 
 RULES = DATA_ROOT / 'metamodel' / 'transform-rules.json'
-DATASETS = {'A1': 'a1-business.json', 'A2': 'a2-service-domain.json', 'A3': 'a3-application.json', 'A4': 'a4-technology.json'}
+DATASETS = {_L('business'): 'a1-business.json', _L('bian'): 'a2-service-domain.json', _L('application'): 'a3-application.json', _L('technology'): 'a4-technology.json'}
 RANK = {'low': 1, 'medium': 2, 'high': 3}
 SOURCE_SYSTEM = 'CONFLUENCE-EXTRACT'
 IMAGE_EXT = ('.png', '.jpg', '.jpeg', '.gif', '.bmp', '.svg', '.webp')
@@ -736,7 +737,7 @@ class Extraction:
     def record(self, etype, name, page, where, rule, how, reasoning, description='', lifecycle=None, attributes=None):
         name = clean(name)
         if not name or not self.mm.known(etype) or self.mm.is_abstract(etype): return None
-        if etype.startswith('A2.'):  # CTL-24: BIAN elements come from a BIAN source only — a document's mention is a hint for a link, never an entity
+        if etype.startswith((_L('bian') + '.')):  # CTL-24: BIAN elements come from a BIAN source only — a document's mention is a hint for a link, never an entity
             k = self.known.get(norm(name))
             m = {'name': name, 'type': etype, 'page_id': page['page_id'], 'page_title': page['title'], 'where': where,
                  'existing_id': k[0] if k else None, 'why': 'names a BIAN element; A2 entities come from a BIAN source only (CTL-24) — link to it with sdem link after adoption'}
@@ -1296,7 +1297,7 @@ class Extraction:
     # ---- outputs
     def datasets(self, model_id):
         out = {}
-        for lvl in ('A1', 'A2', 'A3', 'A4'):
+        for lvl in (_L('business'), _L('bian'), _L('application'), _L('technology')):
             recs = sorted((r for r in self.records.values() if r['type'][:2] == lvl), key=lambda r: r['id'])
             if not recs: continue
             ids = {r['id'] for r in recs}
@@ -1440,7 +1441,7 @@ def report(x, meta, records, links, issues, idx, cov=None):
             L.append(f"| {v['title']} (`{v['file']}`) | {v['captured']} | {v['not_captured']} | {v['skipped']} | {v['percent']}% |")
         L.append('')
     L.append('## Check (`sdem check` on the candidate datasets)\n')
-    for lvl in ('A1', 'A2', 'A3', 'A4'):
+    for lvl in (_L('business'), _L('bian'), _L('application'), _L('technology')):
         if lvl in issues:
             e, w = issues[lvl], issues[lvl + ' advice']
             L.append(f"- **{lvl}**: {'no errors' if not e else str(len(e)) + ' error(s)'}" + (f', {len(w)} advice' if w else ''))

@@ -5,6 +5,7 @@
   · the zone connections SDEM works out from the zone structure (ZC-01…ZC-04) — never records;
   · zone placements proposed for a person to decide (AID-Z01…AID-Z04), each marked inferred with the signals it read.
 """
+from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 import json, re
 from functools import lru_cache
 from pathlib import Path
@@ -13,8 +14,8 @@ from .metamodel import ROOT
 
 SIGNALS_FILE = ROOT / 'metamodel' / 'hosting-signals.json'
 RANK = {'low': 1, 'medium': 2, 'high': 3}
-PLATFORMS = ('A4.Node', 'A4.Device', 'A4.SystemSoftware')
-ZONE = 'A4.NetworkZone'
+PLATFORMS = (_T('technology.Node'), _T('technology.Device'), _T('technology.SystemSoftware'))
+ZONE = _T('technology.NetworkZone')
 DEFAULT_TEMPLATES = {'cloud': ['cloud', ['dmz', 'internal']], 'on_premises': ['on_premises', ['dmz', 'internal']], 'hybrid': ['cloud', 'on_premises']}
 
 
@@ -45,7 +46,7 @@ def evidence(rec, doc, mm, signals=None):
     """The signals a shape carries: [{id, points_to, confidence, read}] — what was read, so the proposal can cite it (HS-01…HS-13)."""
     signals = signals if signals is not None else policy()['signals']
     at = rec.get('attributes') or {}
-    envs = [i for i in doc.get('instances', []) if i['type'] == 'A4.DeploymentEnvironment'
+    envs = [i for i in doc.get('instances', []) if i['type'] == _T('technology.DeploymentEnvironment')
             and any(r['source'] == i['id'] and r['target'] == rec['id'] and r['kind'] == 'aggregation' for r in doc.get('relationships', []))]
     out = []
     for s in signals:
@@ -165,8 +166,8 @@ def propose(doc, mm, run, person, now, rejected=(), stem=None):
     shapes, parent, _ = zones_of(doc, mm)
     local = {i['id']: i for i in doc.get('instances', [])}
     hosted = {r['target'] for r in doc.get('relationships', []) if r['kind'] in ('assignment', 'composition', 'aggregation', 'realization')
-              and r['source'] in local and r['target'] in local and not mm.is_a(local[r['source']]['type'], 'A4.CommunicationNetwork') and not mm.is_a(local[r['source']]['type'], ZONE)
-              and local[r['source']]['type'] != 'A4.DeploymentEnvironment'}   # AID-Z04: in its host's zone
+              and r['source'] in local and r['target'] in local and not mm.is_a(local[r['source']]['type'], _T('technology.CommunicationNetwork')) and not mm.is_a(local[r['source']]['type'], ZONE)
+              and local[r['source']]['type'] != _T('technology.DeploymentEnvironment')}   # AID-Z04: in its host's zone
     hosted |= {i['id'] for i in local.values() if (i.get('attributes') or {}).get('platform_id') in local}   # AID-Z05: a deployment is in the zone of the platform it names, before the link exists
     zones = {i['id']: (i.get('attributes') or {}) for i in local.values() if mm.is_a(i['type'], ZONE)}
     stem = re.sub(r'[^A-Z0-9]+', '-', (stem or doc.get('model_id') or 'WS').upper()).strip('-')[:24] or 'WS'

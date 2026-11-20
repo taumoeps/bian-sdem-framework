@@ -24,6 +24,7 @@ AID-K01  FIELD_MAPPED_TO: for a business object MAPPED_TO a data entity, each co
          whose name says the same thing (words, with a few banking synonyms), of a type the column can hold, preferring the object's own
          fields over those BIAN repeats from parent objects (its family, fix 3) — one clear best only.
 """
+from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 import re
 
 SYN = {'identification': 'ref', 'identifier': 'ref', 'reference': 'ref', 'id': 'ref', 'ref': 'ref', 'from': 'debtor', 'source': 'debtor',
@@ -77,37 +78,37 @@ def propose_direct(docs, mappings, mm):
         seen.add(c); return {c} | set().union(*[with_parts(p, seen) for p in parts.get(c, ())]) if parts.get(c) else {c}
     realises = {}   # component or function → application services it realises
     for s, k, t in rels:
-        if k == 'realization' and isa(t, 'A3.ApplicationService'): realises.setdefault(s, set()).add(t)
+        if k == 'realization' and isa(t, _T('application.ApplicationService')): realises.setdefault(s, set()).add(t)
     served = {}     # AID-L01
     for p, sd in link('USES_DOMAIN'):
-        if not isa(p, 'A1.BusinessProcess'): continue
+        if not isa(p, _T('business.BusinessProcess')): continue
         svcs = set()
         for d, comp in link('REALIZED_BY'):
-            if d == sd and isa(comp, 'A3.ApplicationComponent'):
+            if d == sd and isa(comp, _T('application.ApplicationComponent')):
                 for c in with_parts(comp): svcs |= realises.get(c, set())
         if len(svcs) == 1:
             svc = next(iter(svcs)); served.setdefault(p, set()).add(svc)
             add(p, 'SERVED_BY', svc, 'AID-L01', f'{p} uses {sd}, realised by {next(c for d, c in link("REALIZED_BY") if d == sd)}, which provides {svc}', 0.6)
             for a, k, t in rels:
-                if k == 'assignment' and t == p and (isa(a, 'A1.BusinessActor') or isa(a, 'A1.BusinessRole')):
+                if k == 'assignment' and t == p and (isa(a, _T('business.BusinessActor')) or isa(a, _T('business.BusinessRole'))):
                     add(a, 'SERVED_BY', svc, 'AID-L01', f'{a} performs {p}, which {svc} serves', 0.4)
     for p, svc in link('SERVED_BY'):
-        if isa(p, 'A1.BusinessProcess') and isa(svc, 'A3.ApplicationService'): served.setdefault(p, set()).add(svc)
+        if isa(p, _T('business.BusinessProcess')) and isa(svc, _T('application.ApplicationService')): served.setdefault(p, set()).add(svc)
     for s, rel, t, *_ in out:
-        if rel == 'SERVED_BY' and isa(s, 'A1.BusinessProcess'): served.setdefault(s, set()).add(t)
+        if rel == 'SERVED_BY' and isa(s, _T('business.BusinessProcess')): served.setdefault(s, set()).add(t)
     impl = dict(link('IMPLEMENTED_BY'))   # AID-L02
-    iface_of = {t: s for s, k, t in rels if k == 'composition' and isa(s, 'A3.ApplicationInterface') and isa(t, 'A3.APIOperation')}
+    iface_of = {t: s for s, k, t in rels if k == 'composition' and isa(s, _T('application.ApplicationInterface')) and isa(t, _T('application.APIOperation'))}
     assigned = {}
     for s, k, t in rels:
-        if k == 'assignment' and isa(s, 'A3.ApplicationInterface') and isa(t, 'A3.ApplicationService'): assigned.setdefault(s, set()).add(t)
+        if k == 'assignment' and isa(s, _T('application.ApplicationInterface')) and isa(t, _T('application.ApplicationService')): assigned.setdefault(s, set()).add(t)
     funcs_of = {}
     for s, k, t in rels:
-        if k == 'realization' and isa(s, 'A3.ApplicationFunction') and isa(t, 'A3.ApplicationService'): funcs_of.setdefault(t, set()).add(s)
+        if k == 'realization' and isa(s, _T('application.ApplicationFunction')) and isa(t, _T('application.ApplicationService')): funcs_of.setdefault(t, set()).add(s)
     acts = {}
     for s, k, t in rels:
-        if k == 'composition' and isa(s, 'A1.BusinessProcess') and isa(t, 'A1.BusinessActivity'): acts.setdefault(s, set()).add(t)
+        if k == 'composition' and isa(s, _T('business.BusinessProcess')) and isa(t, _T('business.BusinessActivity')): acts.setdefault(s, set()).add(t)
     for p, rec in every.items():
-        if not isa(p, 'A1.BusinessProcess') or isa(p, 'A1.BusinessActivity'): continue
+        if not isa(p, _T('business.BusinessProcess')) or isa(p, _T('business.BusinessActivity')): continue
         ops = set((rec.get('attributes') or {}).get('invokes') or [])
         for a in acts.get(p, ()): ops |= set((every[a].get('attributes') or {}).get('invokes') or [])
         fs = set()
@@ -119,17 +120,17 @@ def propose_direct(docs, mappings, mm):
         if len(fs) == 1:
             f = next(iter(fs)); add(p, 'AUTOMATED_BY', f, 'AID-L02', f'{p} invokes BIAN operations implemented by APIs of a service that {f} realises', 0.4)
     for p, k, bs in rels:   # AID-L03
-        if k == 'realization' and isa(p, 'A1.BusinessProcess') and isa(bs, 'A1.BusinessService') and len(served.get(p, ())) == 1:
+        if k == 'realization' and isa(p, _T('business.BusinessProcess')) and isa(bs, _T('business.BusinessService')) and len(served.get(p, ())) == 1:
             svc = next(iter(served[p])); add(bs, 'REALIZED_BY', svc, 'AID-L03', f'{p} realises {bs} and is served by {svc}', 0.6)
     comps_of = {}   # AID-L04
     for c, svcs in realises.items():
         for s_ in svcs: comps_of.setdefault(s_, set()).add(c)
     raised = {}
     for s, k, t in rels:
-        if k == 'triggering' and isa(t, 'A3.Event'): raised.setdefault(s, set()).add(t)
+        if k == 'triggering' and isa(t, _T('application.Event')): raised.setdefault(s, set()).add(t)
     for a, k, b in rels:
         if k != 'triggering': continue
-        ev, p = (b, a) if isa(b, 'A1.BusinessEvent') and isa(a, 'A1.BusinessProcess') else (None, None)   # an event the process raises — its software raises the matching one
+        ev, p = (b, a) if isa(b, _T('business.BusinessEvent')) and isa(a, _T('business.BusinessProcess')) else (None, None)   # an event the process raises — its software raises the matching one
         if not ev: continue
         cands = set()
         for svc in served.get(p, ()):
@@ -139,38 +140,38 @@ def propose_direct(docs, mappings, mm):
             e = next(iter(cands)); add(ev, 'REALIZED_BY', e, 'AID-L04', f'{p} raises {ev}, and the component serving {p} raises only {e}', 0.4)
     realized = {}   # AID-L05
     for bs, svc in link('REALIZED_BY'):
-        if isa(bs, 'A1.BusinessService'): realized.setdefault(bs, set()).add(svc)
+        if isa(bs, _T('business.BusinessService')): realized.setdefault(bs, set()).add(svc)
     for s, rel, t, *_ in out:
-        if rel == 'REALIZED_BY' and isa(s, 'A1.BusinessService'): realized.setdefault(s, set()).add(t)
+        if rel == 'REALIZED_BY' and isa(s, _T('business.BusinessService')): realized.setdefault(s, set()).add(t)
     for ch, k, bs in rels:
-        if k != 'association' or not isa(ch, 'A1.BusinessInterface') or not isa(bs, 'A1.BusinessService'): continue
+        if k != 'association' or not isa(ch, _T('business.BusinessInterface')) or not isa(bs, _T('business.BusinessService')): continue
         if (every[ch].get('attributes') or {}).get('channel_kind') != 'api': continue
         ifs = {i for svc in realized.get(bs, ()) for i, svcs in assigned.items() if svc in svcs}
         if len(ifs) == 1:
             i = next(iter(ifs)); add(ch, 'REALIZED_BY', i, 'AID-L05', f'{ch} is an API channel for {bs}, delivered through {i}', 0.6)
     for svc, rec in every.items():   # AID-L06: an application service's platform services (consumes) serve the one component that realises it
-        if not isa(svc, 'A3.ApplicationService'): continue
-        comps = {c for c, svcs in realises.items() if svc in svcs and isa(c, 'A3.ApplicationComponent')}
+        if not isa(svc, _T('application.ApplicationService')): continue
+        comps = {c for c, svcs in realises.items() if svc in svcs and isa(c, _T('application.ApplicationComponent'))}
         if len(comps) != 1: continue
         c = next(iter(comps))
         for ts in (rec.get('attributes') or {}).get('consumes') or []:
-            if isa(ts, 'A4.TechnologyService'): add(c, 'SERVED_BY', ts, 'AID-L06', f'{svc} uses {ts} (consumes), and only {c} realises {svc}', 0.6)
+            if isa(ts, _T('technology.TechnologyService')): add(c, 'SERVED_BY', ts, 'AID-L06', f'{svc} uses {ts} (consumes), and only {c} realises {svc}', 0.6)
     # AID-I05: an A1 business object ALIGNED_TO the BIAN business object of the same name, when exactly one has it
     norm = lambda n: ''.join(words(n))
     bians = {}
     for x, r in every.items():
-        if isa(x, 'A2.BusinessObject'): bians.setdefault(norm(r.get('name', '')), []).append(x)
+        if isa(x, _T('bian.BusinessObject')): bians.setdefault(norm(r.get('name', '')), []).append(x)
     for x, r in every.items():
-        if isa(x, 'A1.BusinessObject'):
+        if isa(x, _T('business.BusinessObject')):
             same = bians.get(norm(r.get('name', '')), [])
             if len(same) == 1: add(x, 'ALIGNED_TO', same[0], 'AID-I05', f"{r.get('name')} is BIAN's {every[same[0]].get('name')} (the same name)", 0.6)
     # AID-I06: an inferred data entity is STORED_IN the one database the design's other entities are stored in
-    stores = {t for s_, t in link('STORED_IN') if isa(s_, 'A3.DataEntity')}
+    stores = {t for s_, t in link('STORED_IN') if isa(s_, _T('application.DataEntity'))}
     if len(stores) == 1:
         db = next(iter(stores))
         for x, r in every.items():
             inf = (r.get('attributes') or {}).get('inferred')
-            if isa(x, 'A3.DataEntity') and isinstance(inf, dict) and inf.get('status') == 'confirmed' and not any(s_ == x for s_, _ in link('STORED_IN')):   # only a table the person kept
+            if isa(x, _T('application.DataEntity')) and isinstance(inf, dict) and inf.get('status') == 'confirmed' and not any(s_ == x for s_, _ in link('STORED_IN')):   # only a table the person kept
                 add(x, 'STORED_IN', db, 'AID-I06', f'every other table of the design is stored in {db}', 0.4)
     return out
 
@@ -180,14 +181,14 @@ def propose_fields(docs, mappings, mm):
     every, rels = _idx(docs)
     fields = {}
     for s, k, t in rels:
-        if k == 'composition' and t in every and (mm.is_a(every[t]['type'], 'A2.BusinessObjectAttribute') or mm.is_a(every[t]['type'], 'A3.DataAttribute')):
+        if k == 'composition' and t in every and (mm.is_a(every[t]['type'], _T('bian.BusinessObjectAttribute')) or mm.is_a(every[t]['type'], _T('application.DataAttribute'))):
             fields.setdefault(s, []).append(every[t])
     done = {m['target']['id'] for m in mappings if m['relationship'] == 'FIELD_MAPPED_TO' and m.get('status') != 'rejected'}
     out = []
     for m in mappings:
         if m['relationship'] != 'MAPPED_TO' or m.get('status') not in ('approved', 'proposed'): continue
         bo, ent = m['source']['id'], m['target']['id']
-        if bo not in every or not mm.is_a(every[bo]['type'], 'A2.BusinessObject'): continue
+        if bo not in every or not mm.is_a(every[bo]['type'], _T('bian.BusinessObject')): continue
         bofs, cols = fields.get(bo, []), fields.get(ent, [])
         drop = set(words(every[bo]['name'])); used = set()
         for col in cols:
@@ -219,12 +220,12 @@ def match_existing(docs, mappings, mm):
     every, rels = _idx(docs)
     fields = {}
     for s_, k, t in rels:
-        if k == 'composition' and t in every and (mm.is_a(every[t]['type'], 'A2.BusinessObjectAttribute') or mm.is_a(every[t]['type'], 'A3.DataAttribute')):
+        if k == 'composition' and t in every and (mm.is_a(every[t]['type'], _T('bian.BusinessObjectAttribute')) or mm.is_a(every[t]['type'], _T('application.DataAttribute'))):
             fields.setdefault(s_, []).append(every[t])
     mapped = {(m['source']['id'], m['target']['id']) for m in mappings if m['relationship'] == 'MAPPED_TO' and m.get('status') != 'rejected'}
     has_map = {a for a, _ in mapped}
-    ents = [e for e in every.values() if mm.is_a(e['type'], 'A3.DataEntity') and not (e.get('attributes') or {}).get('inferred') and fields.get(e['id'])]
-    objs = [o for o in every.values() if mm.is_a(o['type'], 'A2.BusinessObject') and fields.get(o['id']) and o['id'] not in has_map]
+    ents = [e for e in every.values() if mm.is_a(e['type'], _T('application.DataEntity')) and not (e.get('attributes') or {}).get('inferred') and fields.get(e['id'])]
+    objs = [o for o in every.values() if mm.is_a(o['type'], _T('bian.BusinessObject')) and fields.get(o['id']) and o['id'] not in has_map]
     best = {}   # each object to its one best table; each table to its one best object
     for e in ents:
         cols = [concepts(c['name']) for c in fields[e['id']]]

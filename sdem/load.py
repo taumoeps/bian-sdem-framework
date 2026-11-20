@@ -7,6 +7,7 @@ architect has reviewed them, into an SDEM workspace — selected, checked before
 Links between architectures are not loaded: `sdem link` proposes them from the loaded data and a person approves them.
 Unreviewed candidates never enter a knowledge graph: `sdem build` refuses them (CTL-23); this is the only way in.
 """
+from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 import argparse, collections, copy, datetime, json, re, sys
 from pathlib import Path
 
@@ -109,9 +110,9 @@ def plan(estate, ds, keep, a2=None, mm=None, today=None):
         res['loaded'][lvl] = [i['id'] for i in new_i]; res['links'] += len(new_r)
     if a2:
         d = _j(a2)
-        if d.get('level') != 'A2': raise LoadError(f'--a2 {a2}: not an A2 dataset')
-        if 'A2' in current: res['notes'].append('the workspace already has an A2 dataset — kept, --a2 not used')
-        else: after['A2'] = changed['A2'] = d; res['a2_added'] = str(a2)
+        if d.get('level') != _L('bian'): raise LoadError(f'--a2 {a2}: not an A2 dataset')
+        if _L('bian') in current: res['notes'].append('the workspace already has an A2 dataset — kept, --a2 not used')
+        else: after[_L('bian')] = changed[_L('bian')] = d; res['a2_added'] = str(a2)
     registry = _j(estate / 'mappings.json') if (estate / 'mappings.json').exists() else {**copy.deepcopy(EMPTY_REGISTRY), 'metamodel_version': mm.version}
     fg = FederatedGraph([LevelGraph(d, mm) for d in after.values()], [registry], mm)
     report = fg.check()

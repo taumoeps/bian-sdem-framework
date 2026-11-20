@@ -5,6 +5,7 @@ attributes with kinds, allowed values and references (metamodel/entity-attribute
 with cardinality (metamodel/level-relationships.json) and the relationship type catalogue (schema/relationship-types.json).
 It also measures the example workspaces against the model. Regenerate with `python -m sdem.logical`; the tests check it.
 """
+from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 from pathlib import Path
 from collections import Counter
 import argparse, glob, json
@@ -13,7 +14,7 @@ from sdem.terms import apply as _terms
 
 ROOT = MM_DIR.parent
 DOC = ROOT / 'docs' / 'reference' / 'logical-data-model.md'
-NAMES = {'A1': 'A1 Business Architecture', 'A2': 'A2 Service Domain Architecture', 'A3': 'A3 Application Architecture', 'A4': 'A4 Technology Architecture'}
+NAMES = {_L('business'): 'A1 Business Architecture', _L('bian'): 'A2 Service Domain Architecture', _L('application'): 'A3 Application Architecture', _L('technology'): 'A4 Technology Architecture'}
 LEFT = {'1..1': '||', '0..1': '|o', '0..*': '}o', '1..*': '}|'}
 RIGHT = {'1..1': '||', '0..1': 'o|', '0..*': 'o{', '1..*': '|{'}
 TY = {'string': str, 'list<string>': list, 'map<string,string>': dict, 'integer': int, 'boolean': bool, 'date': str}
@@ -96,7 +97,7 @@ def render():
             '- **Fields** — the entity\'s own fields. *Required* fields must be present. A field that **refers to** another entity holds that entity\'s `id`; when it points into another architecture it is a *join key* the inference engine uses, not a link in the graph.',
             '- **Links** — the relationships allowed with other entities in the same architecture, with how many are allowed on each side.', '']
     n = 0
-    for lvl in ('A1', 'A2', 'A3', 'A4'):
+    for lvl in (_L('business'), _L('bian'), _L('application'), _L('technology')):
         n += 1
         le = [e for e in ents if e['level'] == lvl]
         rows = [c for c in lr['constraints'] if c['level'] == lvl]

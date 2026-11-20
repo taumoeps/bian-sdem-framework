@@ -6,13 +6,14 @@ architecture and type; highlight a record's trace down (towards A4) or up (towar
 With a projection package (AID-O06), projected records and links are drawn dashed and labelled PROJECTED with their
 confidence; their details show the projection provenance. Real records are never changed.
 """
+from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 import html, json
 from pathlib import Path
 
 from .store import GraphReader
 
 from .layers import CODES as LEVELS, titled   # LR-09: one band per layer, the profile's too
-NAMES = titled({'A1': 'A1 Business', 'A2': 'A2 Service Domain (BIAN)', 'A3': 'A3 Application', 'A4': 'A4 Technology'})
+NAMES = titled({_L('business'): 'A1 Business', _L('bian'): 'A2 Service Domain (BIAN)', _L('application'): 'A3 Application', _L('technology'): 'A4 Technology'})
 BOX_W, BOX_H, STEP_X, STEP_Y, PAD_X, BAND_GAP, PER_ROW = 168, 38, 184, 56, 170, 46, 8
 
 
@@ -32,7 +33,7 @@ def layout(reader, pkg=None):
     """Deterministic positions: per band, records grouped by entity type in catalogue order, wrapped PER_ROW to a row."""
     order = {t: n for n, t in enumerate(reader.mm.entities)}
     nodes, bands, y = [], [], 30; extra = _projected(pkg, reader); zones, width = [], PAD_X + PER_ROW * STEP_X
-    lays = {l: x for l, x in (('A1', _containment(reader, 'A1')), ('A2', _containment(reader, 'A2')), ('A3', _containment(reader, 'A3')), ('A4', _zone_layout(reader))) if x}   # A1–A3 by what owns what; A4 by zone
+    lays = {l: x for l, x in ((_L('business'), _containment(reader, _L('business'))), (_L('bian'), _containment(reader, _L('bian'))), (_L('application'), _containment(reader, _L('application'))), (_L('technology'), _zone_layout(reader))) if x}   # A1–A3 by what owns what; A4 by zone
     for zl in lays.values():   # the band's width must hold the busiest region's shapes side by side
         gaps = [abs(a['at'][0] - b['at'][0]) for a in zl['shapes'] for b in zl['shapes'] if a is not b and abs(a['at'][1] - b['at'][1]) < 0.03 and a['at'][0] != b['at'][0]]
         if gaps: width = max(width, min(6000, int((BOX_W + 16) / min(gaps)) + 40))   # the closest pair on one row stays a box apart
@@ -55,7 +56,7 @@ def layout(reader, pkg=None):
                 nodes.append({'k': r['key'], 'id': r['id'], 'v': r['version'], 'name': r['name'], 'type': r['type'], 'lvl': lvl,
                               'x': X(at[r['id']][0]) - BOX_W / 2, 'y': Y(at[r['id']][1]) - BOX_H / 2,
                               'meta': {k: r[k] for k in ('lifecycle_status', 'canonical_id', 'description', 'definition_uri') if k in r}, 'attrs': r.get('attributes', {})})
-            bands.append({'lvl': lvl, 'label': NAMES[lvl] + (' — by network zone' if lvl == 'A4' else ' — by what owns what'), 'y': y, 'h': h}); y += h + BAND_GAP
+            bands.append({'lvl': lvl, 'label': NAMES[lvl] + (' — by network zone' if lvl == _L('technology') else ' — by what owns what'), 'y': y, 'h': h}); y += h + BAND_GAP
             continue
         rows = (len(recs) + PER_ROW - 1) // PER_ROW; top = y
         for n, r in enumerate(recs):
@@ -69,9 +70,9 @@ def layout(reader, pkg=None):
     keyof = {(n['lvl'], n['id']): n['k'] for n in nodes}
     edges = [{'s': keyof[(e['level'], e['source'])], 't': keyof[(e['level'], e['target'])], 'rel': e['kind'], 'scope': 'w'}
              for e in reader.edges('within-level') if (e['level'], e['source']) in keyof and (e['level'], e['target']) in keyof]
-    if lays.get('A4'):   # PL-01: a path is the line between the two nodes it connects
-        edges += [{'s': keyof[('A4', p_['from'])], 't': keyof[('A4', p_['to'])], 'rel': f"path · {p_['name']}" + (f" · {p_['protocol']}" if p_.get('protocol') else ''), 'scope': 'w'}
-                  for p_ in lays['A4'].get('paths', []) if ('A4', p_['from']) in keyof and ('A4', p_['to']) in keyof]
+    if lays.get(_L('technology')):   # PL-01: a path is the line between the two nodes it connects
+        edges += [{'s': keyof[(_L('technology'), p_['from'])], 't': keyof[(_L('technology'), p_['to'])], 'rel': f"path · {p_['name']}" + (f" · {p_['protocol']}" if p_.get('protocol') else ''), 'scope': 'w'}
+                  for p_ in lays[_L('technology')].get('paths', []) if (_L('technology'), p_['from']) in keyof and (_L('technology'), p_['to']) in keyof]
     drawn = {n['k'] for n in nodes}
     for e in reader.edges('cross-level'):
         s = reader.node(reader.mm.level(e['source']['type']) or '', e['source']['id'], e['source']['version'])
@@ -97,10 +98,10 @@ def _containment(reader, lvl):
 def _zone_layout(reader):
     """The deployment-zones layout of the store's A4, or None (no zones, or a projection's extra records)."""
     from .zone_layout import layout, LayoutError
-    a4 = list(reader.nodes(level='A4'))
-    if not any(reader.mm.is_a(n['type'], 'A4.NetworkZone') for n in a4): return None
+    a4 = list(reader.nodes(level=_L('technology')))
+    if not any(reader.mm.is_a(n['type'], _T('technology.NetworkZone')) for n in a4): return None
     doc = {'instances': [{'id': n['id'], 'type': n['type'], 'name': n['name'], 'attributes': n.get('attributes', {})} for n in a4],
-           'relationships': [{'source': e['source'], 'kind': e['kind'], 'target': e['target']} for e in reader.edges('within-level') if e['level'] == 'A4']}
+           'relationships': [{'source': e['source'], 'kind': e['kind'], 'target': e['target']} for e in reader.edges('within-level') if e['level'] == _L('technology')]}
     try: return layout(doc, reader.mm, environment='all')
     except LayoutError: return None
 

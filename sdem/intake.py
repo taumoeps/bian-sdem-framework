@@ -9,11 +9,12 @@ between layers suggested, what the design does not state, the author's checklist
 The second form does, in the one order (the skill sdem-complete-draft), what took eight commands and a memory for their order. It
 approves, confirms and rejects nothing: it ends with the report of what is the person's to decide, weakest first.
 """
+from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 import argparse, difflib, json, shutil, sys, tempfile
 from pathlib import Path
 
-LAYERS = {'A1': 'a1-business.json', 'A3': 'a3-application.json', 'A4': 'a4-technology.json'}
-AGENTS = {'A1': 'sdem-a1-business', 'A3': 'sdem-a3-application', 'A4': 'sdem-a4-technology'}
+LAYERS = {_L('business'): 'a1-business.json', _L('application'): 'a3-application.json', _L('technology'): 'a4-technology.json'}
+AGENTS = {_L('business'): 'sdem-a1-business', _L('application'): 'sdem-a3-application', _L('technology'): 'sdem-a4-technology'}
 BIAN, SUGG, NOTS, DECS = 'BIAN-DOMAINS.json', 'CROSS-LAYER-SUGGESTIONS.json', 'NOT-STATED.json', 'DECISIONS.json'
 CHECKER = 'intake.check'   # the name the throw-away workspace of a check is started under — nothing of it is kept
 
@@ -57,11 +58,11 @@ def _bian_catalogue():
     for r in cat.get('relationships', []): kids.setdefault(r['source'], []).append(r['target'])
     out = {}
     for i in cat['instances']:
-        if i['type'] != 'A2.ServiceDomain': continue
+        if i['type'] != _T('bian.ServiceDomain'): continue
         ops = {}
         for g in kids.get(i['id'], []):
             for o in kids.get(g, []):
-                if o in by and by[o]['type'] == 'A2.ServiceOperation': ops[by[o]['name'].split(': ', 1)[-1]] = o
+                if o in by and by[o]['type'] == _T('bian.ServiceOperation'): ops[by[o]['name'].split(': ', 1)[-1]] = o
         out[i['name']] = {'id': i['id'], 'operations': ops}
     return out
 
@@ -72,15 +73,15 @@ def _invokes(ws, tmp, ops, person):
     for o in ops:
         for u in o['used_by']: uses.setdefault(u, []).append(o['id'])
     if not uses: return
-    a1 = json.loads((Path(ws) / LAYERS['A1']).read_text(encoding='utf-8')); changes = []
+    a1 = json.loads((Path(ws) / LAYERS[_L('business')]).read_text(encoding='utf-8')); changes = []
     for i in a1['instances']:
         if i['id'] in uses:
             i = json.loads(json.dumps(i)); at = i.setdefault('attributes', {})
             at['invokes'] = sorted(set(at.get('invokes') or []) | set(uses[i['id']])); changes.append({'op': 'update', 'kind': 'modify', 'record': i})
     if not changes: return
     cs = Path(tmp) / 'cs-invokes.json'
-    cs.write_text(json.dumps({'layer': 'A1', 'reason': f"{BIAN}: the BIAN operations each process uses, by their id in the BIAN release", 'changes': changes, 'relationships': {'add': [], 'remove': []}}), encoding='utf-8')
-    _must('change', 'propose', cs, '--workspace', ws, '--agent', AGENTS['A1'], '--person', person, what='recording the BIAN operations the processes use')
+    cs.write_text(json.dumps({'layer': _L('business'), 'reason': f"{BIAN}: the BIAN operations each process uses, by their id in the BIAN release", 'changes': changes, 'relationships': {'add': [], 'remove': []}}), encoding='utf-8')
+    _must('change', 'propose', cs, '--workspace', ws, '--agent', AGENTS[_L('business')], '--person', person, what='recording the BIAN operations the processes use')
 
 
 def check(pkg, allow_gaps=False):
@@ -136,17 +137,17 @@ def check(pkg, allow_gaps=False):
             if sd not in [d.get('name') if isinstance(d, dict) else d for d in bian.get('service_domains') or []]: errors.append({'file': BIAN, 'message': f"operation {n!r}: {sd!r} is not a BIAN service domain"})
         users = []
         for u in x.get('used_by') or []:
-            if u in recs and mm.known(recs[u].get('type', '')) and mm.is_a(recs[u]['type'], 'A1.BusinessProcess'): users.append(u)
+            if u in recs and mm.known(recs[u].get('type', '')) and mm.is_a(recs[u]['type'], _T('business.BusinessProcess')): users.append(u)
             else: errors.append({'file': BIAN, 'message': f"used_by {u} is not a record of a business process or activity in a1-business.json"})
         if oid: ops.append({'service_domain': sd, 'name': n, 'id': oid, 'used_by': users})
 
     def end(x):   # a suggestion's end: a record of the package, or a BIAN domain or operation the package names
         if x in recs: return x, recs[x].get('type', '')
-        if x in cat and x in domains: return cat[x]['id'], 'A2.ServiceDomain'
+        if x in cat and x in domains: return cat[x]['id'], _T('bian.ServiceDomain')
         for n in domains:
-            if x == cat[n]['id']: return x, 'A2.ServiceDomain'
-            if x in cat[n]['operations'].values(): return x, 'A2.ServiceOperation'
-            if isinstance(x, str) and x.startswith(n + ': ') and x[len(n) + 2:] in cat[n]['operations']: return cat[n]['operations'][x[len(n) + 2:]], 'A2.ServiceOperation'
+            if x == cat[n]['id']: return x, _T('bian.ServiceDomain')
+            if x in cat[n]['operations'].values(): return x, _T('bian.ServiceOperation')
+            if isinstance(x, str) and x.startswith(n + ': ') and x[len(n) + 2:] in cat[n]['operations']: return cat[n]['operations'][x[len(n) + 2:]], _T('bian.ServiceOperation')
         return None, None
     good = []
     for x in sugg.get('suggestions') or []:
@@ -232,7 +233,7 @@ def _how(pid, part):
         S = d['structure']; roles = {r['id']: r for r in S['roles']}; r = roles.get(part)
         if not r: return ''
         c = next((c for c in S.get('connectors', []) if part in (c['from'], c['to'])), None)
-        if r['type'].startswith('A2.') and (r.get('when') or {}).get('name'): what = f" — to fix: name the BIAN service domain \"{r['when']['name']}\" in {BIAN}"
+        if r['type'].startswith((_L('bian') + '.')) and (r.get('when') or {}).get('name'): what = f" — to fix: name the BIAN service domain \"{r['when']['name']}\" in {BIAN}"
         else: what = f" — to fix: a {r['type']}" + (' where ' + ' and '.join(f'{k} = {v}' for k, v in r['when'].items()) if r.get('when') else '') + (f" (at least {r['min']})" if r.get('min', 1) > 1 else '')
         if c:
             a, b = roles[c['from']], roles[c['to']]
@@ -322,7 +323,7 @@ def load(pkg, workspace, person, dry_run=False, allow_gaps=False, accept=False, 
             release = (json.loads((Path(pkg) / BIAN).read_text(encoding='utf-8')).get('release') or '') if (Path(pkg) / BIAN).exists() else ''
             for m in allp:
                 kinds = next((q['required_evidence'] for q in reg if q['relationship'] == m['relationship'] and mmb.is_a(m['source']['type'], q['source_type']) and mmb.is_a(m['target']['type'], q['target_type'])), [])
-                bian_end = m['source']['type'].startswith('A2.') or m['target']['type'].startswith('A2.')
+                bian_end = m['source']['type'].startswith((_L('bian') + '.')) or m['target']['type'].startswith((_L('bian') + '.'))
                 ev = [x for k in kinds + (['bian_alignment_guidance'] if bian_end else []) for x in ('--evidence', f"{k}:design.md#{m['_section'] or ''}")]
                 _must('approve', m['mapping_id'], '--proposals', pf, '--workspace', ws, '--reviewer', person, *ev, *(['--bian-release', release or '14.0.0'] if bian_end else []),
                       what=f"accepting {m['source']['id']} {m['relationship']} {m['target']['id']} as authored")

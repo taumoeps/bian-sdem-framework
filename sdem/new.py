@@ -15,6 +15,7 @@ that base, so the organisation's types, attributes and rules apply from the star
   sdem new --organisation bank-xyz --person jane.architect
   sdem new --workspace workspaces/ledger --organisation bank-xyz --person jane.architect
 """
+from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 import argparse, datetime, json, re, sys
 from pathlib import Path
 
@@ -162,15 +163,15 @@ def plan(workspace, person, bian_file=None, today=None, no_bian=False, core_only
         source = 'none — business does not connect to applications until a BIAN layer is added (sdem bian add)'
     elif bian_file:   # started with exactly this BIAN layer
         a2 = json.loads(shared.read_text(encoding='utf-8'))
-        if a2.get('level') != 'A2': raise NewError(f'{shared}: not an A2 dataset (level {a2.get("level")!r})')
+        if a2.get('level') != _L('bian'): raise NewError(f'{shared}: not an A2 dataset (level {a2.get("level")!r})')
         source, catalogue = f'the BIAN layer {shared.as_posix()}', shared.as_posix()   # recorded with / on every platform
     else:             # WS-01: the catalogue is read, not copied; A2 holds only the domains the design needs
-        a2 = {'level': 'A2', 'model_id': f'{stem}-A2', 'model_version': today, 'metamodel_version': mm.version, 'source_system': SYSTEM,
+        a2 = {'level': _L('bian'), 'model_id': f'{stem}-A2', 'model_version': today, 'metamodel_version': mm.version, 'source_system': SYSTEM,
               'instances': [], 'relationships': []}
         catalogue = SHARED.as_posix() if SHARED.exists() else 'base'
         source = 'sdem aid brings in the service domains your design needs, from ' + (f'your shared BIAN layer {SHARED}' if SHARED.exists() else 'the base BIAN that ships with SDEM')
     docs = {f: ({'level': lvl, 'model_id': f'{stem}-{lvl}', 'model_version': today, 'metamodel_version': mm.version, 'source_system': SYSTEM,
-                 'instances': [], 'relationships': []} if lvl != 'A2' else a2) for lvl, f in DATASETS.items() if lvl != 'A2' or a2}
+                 'instances': [], 'relationships': []} if lvl != _L('bian') else a2) for lvl, f in DATASETS.items() if lvl != _L('bian') or a2}
     registry = {**EMPTY_REGISTRY, 'metamodel_version': mm.version}
     extra = {}
     if hosting:   # WS-12: the template's network zones, the person's choice (PR-32) — without it, sdem aid proposes zones from the default
@@ -192,12 +193,12 @@ def plan(workspace, person, bian_file=None, today=None, no_bian=False, core_only
         from .requirements import check as rcheck
         errors += [f'requirements.json: {x}' for x in rcheck(extra['requirements.json'], {d['level']: d for d in docs.values()})]
     if errors: raise NewError('the new workspace would not pass its checks — nothing written:\n  ' + '\n  '.join(errors[:10]))
-    sds = sum(1 for i in (a2 or {}).get('instances', []) if i['type'] == 'A2.ServiceDomain')
+    sds = sum(1 for i in (a2 or {}).get('instances', []) if i['type'] == _T('bian.ServiceDomain'))
     record = {'format': FORMAT, 'name': ws.name, 'created': today, 'created_by': person.strip(),
               **({'core_only': True} if core_only else {}),
               'bian': {'catalogue': catalogue, 'source': source, 'selection': 'none' if no_bian else 'given' if bian_file else 'relevant',
                        'service_domains': sds}}
-    if hosting: record['hosting'] = {'template': hosting, 'zones': [z['id'] for z in docs['a4-technology.json']['instances'] if z['type'] == 'A4.NetworkZone']}
+    if hosting: record['hosting'] = {'template': hosting, 'zones': [z['id'] for z in docs['a4-technology.json']['instances'] if z['type'] == _T('technology.NetworkZone')]}
     if from_dir: record['baseline'] = {'from': label or Path(from_dir).as_posix(), 'files': sorted(list(docs) + ['mappings.json'] + list(extra))}
     if profile_file:   # PR-07, LR-03: the baseline's profile, or the one given with --profile; its layers' files are among docs
         from . import profile as _p
@@ -294,7 +295,7 @@ def main(argv=None):
         else:
             print(f"{'would start' if a.dry_run else 'started'} {a.estate}: "
                   + (f"A1, A3, A4 empty; A2 {b_['service_domains']} service domains from {b_['source']}" if a.bian else f"all {len(docs)} layers empty; BIAN: {b_['source']}")
-                  + (f"; profile {record['profile']['name']} ({', '.join(d['level'] for d in docs.values() if d['level'] not in ('A1', 'A2', 'A3', 'A4')) or 'no extra layers'})" if record.get('profile') else '')
+                  + (f"; profile {record['profile']['name']} ({', '.join(d['level'] for d in docs.values() if d['level'] not in (_L('business'), _L('bian'), _L('application'), _L('technology'))) or 'no extra layers'})" if record.get('profile') else '')
                   + (f"; network zones from the {a.hosting} template: {', '.join(record['hosting']['zones'])}" if a.hosting else '')
                   + '; no connections yet — checked')
     if a.dry_run: return 0
@@ -390,7 +391,7 @@ def catalogue(workspace):
     if src is None: cat = None
     elif src == 'base' or not Path(src).exists(): cat, _ = base_layer()
     else: cat = json.loads(Path(src).read_text(encoding='utf-8'))
-    own = json.loads((ws / DATASETS['A2']).read_text(encoding='utf-8')) if (ws / DATASETS['A2']).exists() else None
+    own = json.loads((ws / DATASETS[_L('bian')]).read_text(encoding='utf-8')) if (ws / DATASETS[_L('bian')]).exists() else None
     if not cat: return own
     if not own or not own.get('instances'): return cat
     have = {i['id'] for i in own['instances']}

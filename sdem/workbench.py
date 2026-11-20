@@ -7,11 +7,12 @@ One engine, the page only shows (UX-P01): every fact comes from SDEM's own funct
 review, trace, impact, matrices, changes), `sdem document` (UX-D), the metamodel and its rules, the change events' status.
 The page's script only selects, filters and navigates. Self-contained: no external file, script or call (UX-P02).
 """
+from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 import argparse, json, sys
 from pathlib import Path
 
 TEMPLATE = Path(__file__).with_name('workbench.html')
-CORE = ('A1', 'A2', 'A3', 'A4')
+CORE = (_L('business'), _L('bian'), _L('application'), _L('technology'))
 
 
 def _j(p, default=None):

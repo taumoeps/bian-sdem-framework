@@ -31,6 +31,7 @@ def _index():
     return code, layer_of_code, by_id, by_old
 
 
+@lru_cache(maxsize=None)   # called in the engines' loops; the stack is fixed in step 3 — step 4 clears it when it changes
 def layer(layer_id):
     """The A-code a person reads for a layer id: layer('application') → 'A3'."""
     code = _index()[0]
@@ -44,6 +45,7 @@ def layer_id(code_or_id):
     return code_or_id if code_or_id in code else of_code.get(code_or_id)
 
 
+@lru_cache(maxsize=None)   # called in the engines' loops; the stack is fixed in step 3 — step 4 clears it when it changes
 def T(type_id):
     """The type name a person reads (and SDEM's records hold in 0.20) for a type id: T('application.ApplicationComponent') → 'A3.ApplicationComponent'."""
     by_id = _index()[2]

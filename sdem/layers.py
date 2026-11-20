@@ -7,12 +7,13 @@ requirements, change sets, the dashboards — reads the layers from here, so a p
 
 The collections below are *live*: they reflect the active profile at the moment they are read (FILES, CODES, AGENTS).
 """
+from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 from collections.abc import Mapping, Sequence
 
-CORE = (('A1', 'a1-business.json', 'A1 Business', 'sdem-a1-business'),
-        ('A2', 'a2-service-domain.json', 'A2 BIAN', 'sdem-a2-bian'),
-        ('A3', 'a3-application.json', 'A3 Application', 'sdem-a3-application'),
-        ('A4', 'a4-technology.json', 'A4 Technology', 'sdem-a4-technology'))
+CORE = ((_L('business'), 'a1-business.json', 'A1 Business', 'sdem-a1-business'),
+        (_L('bian'), 'a2-service-domain.json', 'A2 BIAN', 'sdem-a2-bian'),
+        (_L('application'), 'a3-application.json', 'A3 Application', 'sdem-a3-application'),
+        (_L('technology'), 'a4-technology.json', 'A4 Technology', 'sdem-a4-technology'))
 CORE_CODES = tuple(c[0] for c in CORE)
 RESERVED_FILES = {c[1] for c in CORE} | {'mappings.json', 'requirements.json', 'workspace.json', 'sdem-ledger.json', 'sdem-profile.json', 'governance.json'}
 
@@ -60,7 +61,7 @@ def adjacent(upper, lower):
 
 
 def graph_file(code):
-    core = {'A1': 'a1-business.graph.json', 'A2': 'a2-service-domain.graph.json', 'A3': 'a3-application.graph.json', 'A4': 'a4-technology.graph.json'}
+    core = {_L('business'): 'a1-business.graph.json', _L('bian'): 'a2-service-domain.graph.json', _L('application'): 'a3-application.graph.json', _L('technology'): 'a4-technology.graph.json'}
     return core.get(code) or f'{code.lower()}.graph.json'
 
 

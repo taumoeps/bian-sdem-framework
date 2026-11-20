@@ -12,6 +12,7 @@ and whether it was validated against sealed answers in the use-case runs.
 `python -m sdem.confidence` reapplies the rule to the records and reports every change; `--check` fails if any record
 disagrees with the rule.
 """
+from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 from pathlib import Path
 import argparse, glob, json, re
 from collections import Counter
@@ -60,13 +61,13 @@ def attribute(a, val):
         return 'high', f'defined by a public standard ({src}) and checked'
     if src == 'ArchiMate concept': return 'medium', 'built on a standard concept (confirmed by the Archi oracle) as SDEM chose to model it'
     if src in ('BIAN', 'OpenAPI'):
-        if a['entity'] == 'A3.APIOperation' and a['name'] == 'payload_fields':
+        if a['entity'] == _T('application.APIOperation') and a['name'] == 'payload_fields':
             return 'medium', 'OpenAPI defines payload schemas; SDEM flattens them to field names'
         return 'high', f'defined by a public standard ({src}) and checked'
     if src == 'ArchiMate relationship': return 'medium', 'standard relationship (confirmed by the Archi oracle) recorded on the entity as SDEM chose'
     if src == 'institution': return 'medium', 'institution data under an SDEM convention'
     if src == 'TOGAF': return ('medium', 'login-gated TOGAF source; validated against sealed answers') if tested else ('low', 'login-gated TOGAF source; not validated')
-    if a['entity'] in ('A4.Deployment',) or a['entity'] == 'A3.DataEntity' and a['name'] == 'attributes' or a['name'] in ('lifecycle_states', 'deployed_as'):
+    if a['entity'] in (_T('technology.Deployment'),) or a['entity'] == _T('application.DataEntity') and a['name'] == 'attributes' or a['name'] in ('lifecycle_states', 'deployed_as'):
         return 'medium', 'SDEM field built on a standard concept'
     return ('medium', 'SDEM field with no standard concept; validated against sealed answers') if tested else ('low', 'SDEM field with no standard concept; not validated')
 

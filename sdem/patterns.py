@@ -10,6 +10,7 @@ The structure is usually drawn, not written: `sdem pattern extract` reads the or
 PlantUML or Mermaid — with the standard library only, and writes a DRAFT pattern file and a report; a person approves it (PR-30).
 `sdem pattern draw` draws the pattern, and over a workspace's design, which part is there and which is missing (PR-25).
 """
+from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 import argparse, base64, html, json, re, sys, urllib.parse, zipfile, zlib
 import xml.etree.ElementTree as ET
 from pathlib import Path
@@ -181,10 +182,10 @@ def evaluate(datasets, maps, mm, structures, exceptions=(), as_of=None):
     as_of = as_of or today()
     recs = {i['id']: (l, i) for l, d in datasets.items() for i in d.get('instances', [])}
     placed, zkind = {}, {}   # PR-13a: each A4 shape's zones, innermost first, and each zone's kind — from the zone records (RA4-38)
-    if datasets.get('A4'):
+    if datasets.get(_L('technology')):
         from .conformance import zones_of
-        shapes, zparent, _ = zones_of(datasets['A4'], mm)
-        zkind = {i['id']: (i.get('attributes') or {}).get('zone_kind') for i in datasets['A4'].get('instances', []) if mm.is_a(i['type'], 'A4.NetworkZone')}
+        shapes, zparent, _ = zones_of(datasets[_L('technology')], mm)
+        zkind = {i['id']: (i.get('attributes') or {}).get('zone_kind') for i in datasets[_L('technology')].get('instances', []) if mm.is_a(i['type'], _T('technology.NetworkZone'))}
         for x, zs in shapes.items():
             chain, q = [], (zs or [None])[0]
             while q: chain.append(q); q = zparent.get(q)
@@ -194,7 +195,7 @@ def evaluate(datasets, maps, mm, structures, exceptions=(), as_of=None):
         for r in d.get('relationships', []):
             inside.setdefault((r['source'], r['kind'], 'out'), []).append(r['target']); inside.setdefault((r['target'], r['kind'], 'in'), []).append(r['source'])
             src, tgt = recs.get(r['source']), recs.get(r['target'])
-            if r['kind'] == 'aggregation' and src and tgt and mm.is_a(src[1]['type'], 'A4.NetworkZone') and not mm.is_a(tgt[1]['type'], 'A4.CommunicationNetwork'):
+            if r['kind'] == 'aggregation' and src and tgt and mm.is_a(src[1]['type'], _T('technology.NetworkZone')) and not mm.is_a(tgt[1]['type'], _T('technology.CommunicationNetwork')):
                 # metamodel 0.10.0 (Z1): a shape a network zone holds (RA4-38) is connected to that network — as RA4-37's association
                 inside.setdefault((r['target'], 'association', 'out'), []).append(r['source']); inside.setdefault((r['source'], 'association', 'in'), []).append(r['target'])
     for s, rel, t in maps:
@@ -254,7 +255,7 @@ def evaluate(datasets, maps, mm, structures, exceptions=(), as_of=None):
                     at = recs[x][1].get('attributes') or {}
                     miss = [n for n in r.get('require', []) if _unknown(at, n)]
                     if miss: fails.append(f"{x}: missing {', '.join(miss)}")
-                    if z and z.get('zone_kind') and recs[x][0] == 'A4' and (not z.get('entity') or mm.is_a(recs[x][1]['type'], z['entity'])):   # PR-13a
+                    if z and z.get('zone_kind') and recs[x][0] == _L('technology') and (not z.get('entity') or mm.is_a(recs[x][1]['type'], z['entity'])):   # PR-13a
                         chain = placed.get(x) or []
                         if not chain: unknown.append(f"{x}: in no network zone — where it sits is not known ({z.get('label') or z['id']}, LC-16)")
                         elif z['zone_kind'] not in {zkind.get(q) for q in chain}:
@@ -751,7 +752,7 @@ STATUS_CSS = """.sdv .pt-ok>.dv-box{stroke:#2e7d32;stroke-width:2.6}.sdv .pt-bad
 
 
 def _auto_layout(S, level_of):
-    order = ['A1', 'A2', 'A3', 'A4']
+    order = [_L('business'), _L('bian'), _L('application'), _L('technology')]
     levels = sorted({level_of(r['type']) for r in S['roles']}, key=lambda l: (order.index(l) if l in order else 9, l))
     L, Z, y = {}, {}, 30
     for lvl in levels:
@@ -834,7 +835,7 @@ def draw(st, level_of, status=None, binding=None, names=None, uid='p'):
         mult = '' if (lo, hi) == (1, 1) else ' (optional)' if (lo, hi) == (0, 1) else f" ({lo}..{'n' if hi is None else hi})"
         name = r.get('label', r['id']) + mult + (' ◆' if r['id'] == S.get('anchor') else '')
         sub = ', '.join(got) if got else (r['type'] if binding is None else ('optional — none' if r.get('min', 1) == 0 else 'missing'))
-        n = {'id': r['id'], 'x': x, 'y': y, 'w': w, 'h': h, 'kids': [], 'r': {'t': r['type'], 'type': r['type'], 'layer': level_of(r['type']) if level_of(r['type']) in ('A1', 'A2', 'A3', 'A4') else 'A3', 'name': name}}
+        n = {'id': r['id'], 'x': x, 'y': y, 'w': w, 'h': h, 'kids': [], 'r': {'t': r['type'], 'type': r['type'], 'layer': level_of(r['type']) if level_of(r['type']) in (_L('business'), _L('bian'), _L('application'), _L('technology')) else _L('application'), 'name': name}}
         svg = _shape(n, None).replace(f'>{e(r["id"])}</text>', f'>{e(sub)}</text>', 1)
         stt = (status or {}).get(r['id'])
         cls = {'compliant': 'pt-ok', 'non_compliant': 'pt-missing' if binding is not None and not got else 'pt-bad', 'unresolved': 'pt-unres', 'exception_approved': 'pt-unres'}.get(stt, 'pt-opt' if r.get('min', 1) == 0 else '')
@@ -872,7 +873,7 @@ def _profile_for(a):
 def _level_of(merged, base_mm):
     lv = {t: d['level'] for t, d in base_mm.entities.items()}
     for t in merged.get('types', []): lv[t['type']] = lv.get(t.get('extends')) or t['type'].split('.')[1]
-    return lambda t: lv.get(t, t.split('.')[-2] if t.count('.') >= 2 else 'A3')
+    return lambda t: lv.get(t, t.split('.')[-2] if t.count('.') >= 2 else _L('application'))
 
 
 def main(argv=None):

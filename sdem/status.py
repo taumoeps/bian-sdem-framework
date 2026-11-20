@@ -11,6 +11,7 @@ One read-only view over what SDEM already works out — the checks (`sdem check`
 and the next commands, in order, each saying who runs it — a person's decision is marked and never run for them. No score and no
 rules of its own: every item comes from the engine that owns it. Writes nothing.
 """
+from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 import argparse, json, sys
 from pathlib import Path
 
@@ -85,7 +86,7 @@ def collect(ws):
         step(f'sdem approve <id> --proposals work/links/proposals.json --workspace {w} --reviewer <you> --evidence <kind>:<ref>', 'approve each link with its evidence', True)
     if h['events_to_plan']: step(f"sdem work plan --event {h['events_to_plan'][0]['id']} --workspace {w} --agent sdem-orchestrator --person <you>", 'plan the validated change', True)
     have = {x['level'] for x in h['layers']}; gone = [m['level'] for m in h['missing_layers']]
-    if 'A1' in have and gone and not h['unconfirmed_inferred']:
+    if _L('business') in have and gone and not h['unconfirmed_inferred']:
         step(f'sdem aid --workspace {w} --person <you> --dry-run', f"infer what is missing ({', '.join(gone)}) from the business design — every record marked inferred until a person confirms it; then without --dry-run when the person agrees")
     if not blocking and not unresolved and not (complete and (complete['gaps'] or complete.get('inferred_to_confirm'))) and not any(p['open'] for p in pats): step(f'sdem document --workspace {w} --layer all', 'nothing blocks the design or waits on a person: write it up, or look at it all: sdem workbench --workspace ' + w)
 

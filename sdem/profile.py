@@ -17,6 +17,7 @@ The merged metamodel is what every command sees once the profile is active. A pr
 works on (`--workspace`, the datasets' folder, or the graph store it was built into — a store keeps the profile it was built with).
 `sdem profile check` checks a profile; `sdem profile show` prints the merged result; `sdem profile example` writes a synthetic one.
 """
+from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 import argparse, copy, hashlib, json, re, sys
 from pathlib import Path
 
@@ -28,7 +29,7 @@ STANDARD_FORMAT, PATTERN_FORMAT = 'sdem-standard/1', 'sdem-pattern/1'   # files 
 EXCEPTIONS_FILE = 'exceptions.json'                                     # a workspace's granted exceptions (PR-18)
 PRIVATE = ('chain', 'included', '_issues', '_origin', 'aspects')                   # kept with the merged profile, not part of its content
 SCHEMA = DATA_ROOT / 'schema' / 'profile.schema.json'
-LEVELS = ('A1', 'A2', 'A3', 'A4')
+LEVELS = (_L('business'), _L('bian'), _L('application'), _L('technology'))
 ATTR_TYPES = ('string', 'integer', 'number', 'boolean', 'date', 'enum', 'list<string>', 'map<string,string>')
 MAP_KINDS = ('shapes', 'connectors', 'zones')   # PR-28: the diagram mapping table — the organisation's shapes, connector labels and zones
 LISTS = ('layers', 'types', 'attributes', 'rules', 'link_kinds', 'link_types', 'requirement_categories')   # what a profile adds to its base
@@ -72,7 +73,7 @@ def shipped(name):
 _PACKS = {}
 
 
-BUILTIN = {'bian': {'name': 'bian', 'version': '1.0.0', 'kind': ['metamodel'], 'scope': {'within': ['A2']}, 'builtin': True, 'pack_file': 'ext-bian-pack.json',
+BUILTIN = {'bian': {'name': 'bian', 'version': '1.0.0', 'kind': ['metamodel'], 'scope': {'within': [_L('bian')]}, 'builtin': True, 'pack_file': 'ext-bian-pack.json',
                    'description': 'BIAN Service Domain Architecture — the A2 layer, its types, link types and inference rules (banking; built in, BX-01)'}}
 
 
@@ -626,36 +627,36 @@ def record():
 EXAMPLE_BASE = {
     'format': FORMAT, 'name': 'bank-base', 'version': 1,
     'description': "A made-up bank's standard specification on top of SDEM — the base every team's profile extends (synthetic; not a real organisation's).",
-    'names': {'layers': {'A1': 'L1 Business', 'A2': 'L2 Service Domains', 'A3': 'L3 Applications', 'A4': 'L4 Technology'},
-              'types': {'A3.ApplicationComponent': 'Application', 'A4.SystemSoftware': 'Platform'}},
+    'names': {'layers': {_L('business'): 'L1 Business', _L('bian'): 'L2 Service Domains', _L('application'): 'L3 Applications', _L('technology'): 'L4 Technology'},
+              'types': {_T('application.ApplicationComponent'): 'Application', _T('technology.SystemSoftware'): 'Platform'}},
     'types': [
-        {'type': 'BANK.A3.PaymentsMicroservice', 'extends': 'A3.ApplicationComponent', 'name': 'Payments microservice',
+        {'type': 'BANK.A3.PaymentsMicroservice', 'extends': _T('application.ApplicationComponent'), 'name': 'Payments microservice',
          'definition': 'An independently deployable payments service owned by one team', 'source': 'bank application standard §4.2'},
-        {'type': 'BANK.A1.ControlFunction', 'extends': 'A1.BusinessCapability', 'name': 'Control function',
+        {'type': 'BANK.A1.ControlFunction', 'extends': _T('business.BusinessCapability'), 'name': 'Control function',
          'definition': 'A capability whose purpose is a regulatory or risk control', 'source': 'bank capability model §2'}],
     'attributes': [
-        {'entity': 'A3.ApplicationComponent', 'name': 'risk_tier', 'type': 'enum', 'values': ['1', '2', '3'], 'required': True, 'description': 'the application risk tier (1 highest)'},
-        {'entity': 'A3.ApplicationComponent', 'name': 'cost_centre', 'type': 'string', 'required': False, 'description': 'the cost centre that pays for it'},
+        {'entity': _T('application.ApplicationComponent'), 'name': 'risk_tier', 'type': 'enum', 'values': ['1', '2', '3'], 'required': True, 'description': 'the application risk tier (1 highest)'},
+        {'entity': _T('application.ApplicationComponent'), 'name': 'cost_centre', 'type': 'string', 'required': False, 'description': 'the cost centre that pays for it'},
         {'entity': 'BANK.A3.PaymentsMicroservice', 'name': 'owning_team', 'type': 'string', 'required': True, 'description': 'the team that owns the service'},
-        {'entity': 'A1.BusinessRequirement', 'name': 'requirement_class', 'type': 'enum', 'values': ['functional', 'non_functional'], 'required': True,
+        {'entity': _T('business.BusinessRequirement'), 'name': 'requirement_class', 'type': 'enum', 'values': ['functional', 'non_functional'], 'required': True,
          'description': "functional (what the business must be able to do) or non-functional (how well — measured in requirements.json); SDEM's own requirement_kind stays ArchiMate's requirement / constraint / principle"},
-        {'entity': 'A1.BusinessRequirement', 'name': 'regulatory_reference', 'type': 'string', 'required': False, 'description': 'the regulation or policy clause it comes from'},
-        {'entity': 'A4.InfrastructureComponent', 'name': 'environment', 'type': 'enum', 'values': ['production', 'non_production'], 'required': False, 'description': 'production or not'},
-        {'entity': 'A4.InfrastructureComponent', 'name': 'dr_tier', 'type': 'enum', 'values': ['1', '2', '3'], 'required': False, 'description': 'the disaster recovery tier (1: hot standby)'},
-        {'entity': 'A4.InfrastructureComponent', 'name': 'dr_region', 'type': 'string', 'required': False, 'description': 'the region it runs in, for DR separation'},
-        {'entity': 'A4.InfrastructureComponent', 'name': 'replication_mode', 'type': 'enum', 'values': ['sync', 'async', 'none'], 'required': False, 'description': 'how its data reaches the DR pair'},
-        {'entity': 'A4.InfrastructureComponent', 'name': 'failover_tested_on', 'type': 'date', 'required': False, 'description': 'the last successful failover test'}],
-    'rules': [{'id': 'BANK-R01', 'entity': 'A3.ApplicationComponent', 'require': ['owner', 'risk_tier'], 'message': 'every application names its owner and risk tier (bank application standard §3)'},
-              {'id': 'BANK-DR01', 'entity': 'A4.InfrastructureComponent', 'when': {'environment': 'production'}, 'require': ['dr_tier', 'dr_region', 'replication_mode'],
+        {'entity': _T('business.BusinessRequirement'), 'name': 'regulatory_reference', 'type': 'string', 'required': False, 'description': 'the regulation or policy clause it comes from'},
+        {'entity': _T('technology.InfrastructureComponent'), 'name': 'environment', 'type': 'enum', 'values': ['production', 'non_production'], 'required': False, 'description': 'production or not'},
+        {'entity': _T('technology.InfrastructureComponent'), 'name': 'dr_tier', 'type': 'enum', 'values': ['1', '2', '3'], 'required': False, 'description': 'the disaster recovery tier (1: hot standby)'},
+        {'entity': _T('technology.InfrastructureComponent'), 'name': 'dr_region', 'type': 'string', 'required': False, 'description': 'the region it runs in, for DR separation'},
+        {'entity': _T('technology.InfrastructureComponent'), 'name': 'replication_mode', 'type': 'enum', 'values': ['sync', 'async', 'none'], 'required': False, 'description': 'how its data reaches the DR pair'},
+        {'entity': _T('technology.InfrastructureComponent'), 'name': 'failover_tested_on', 'type': 'date', 'required': False, 'description': 'the last successful failover test'}],
+    'rules': [{'id': 'BANK-R01', 'entity': _T('application.ApplicationComponent'), 'require': ['owner', 'risk_tier'], 'message': 'every application names its owner and risk tier (bank application standard §3)'},
+              {'id': 'BANK-DR01', 'entity': _T('technology.InfrastructureComponent'), 'when': {'environment': 'production'}, 'require': ['dr_tier', 'dr_region', 'replication_mode'],
                'message': 'every production platform states its DR tier, region and replication (bank resilience standard §5)'},
-              {'id': 'BANK-DR02', 'entity': 'A4.InfrastructureComponent', 'when': {'environment': 'production', 'dr_tier': ['1', '2']}, 'link': {'kind': 'dr_pair_of', 'min': 1},
+              {'id': 'BANK-DR02', 'entity': _T('technology.InfrastructureComponent'), 'when': {'environment': 'production', 'dr_tier': ['1', '2']}, 'link': {'kind': 'dr_pair_of', 'min': 1},
                'message': 'a tier 1 or 2 production platform has a DR pair (bank resilience standard §5.2)'},
-              {'id': 'BANK-DR03', 'entity': 'A4.InfrastructureComponent', 'compare': {'kind': 'dr_pair_of', 'attribute': 'dr_region', 'must': 'differ'},
+              {'id': 'BANK-DR03', 'entity': _T('technology.InfrastructureComponent'), 'compare': {'kind': 'dr_pair_of', 'attribute': 'dr_region', 'must': 'differ'},
                'message': 'a platform and its DR pair run in different regions (bank resilience standard §5.3)'}],
     'requirement_categories': [{'id': 'operational_resilience', 'description': 'tolerance for disruption of a critical operation (synthetic)'}],
-    'link_kinds': [{'kind': 'dr_pair_of', 'maps_to': 'association', 'source_type': 'A4.InfrastructureComponent', 'target_type': 'A4.InfrastructureComponent',
+    'link_kinds': [{'kind': 'dr_pair_of', 'maps_to': 'association', 'source_type': _T('technology.InfrastructureComponent'), 'target_type': _T('technology.InfrastructureComponent'),
                     'description': 'a platform and the platform it fails over to'},
-                   {'kind': 'operated_by', 'maps_to': 'assignment', 'source_type': 'A4.InfrastructureComponent', 'target_type': 'A4.InfrastructureComponent',
+                   {'kind': 'operated_by', 'maps_to': 'assignment', 'source_type': _T('technology.InfrastructureComponent'), 'target_type': _T('technology.InfrastructureComponent'),
                     'description': 'an infrastructure component is operated by a management platform'}]}
 
 EXAMPLE_TEAM = {
@@ -669,32 +670,32 @@ EXAMPLE_TEAM = {
 EXAMPLE_SECURITY = {
     'format': STANDARD_FORMAT, 'description': "A made-up bank's API security standard (synthetic; not a real organisation's).",
     'standard': {'id': 'SEC-API', 'title': 'API security standard', 'version': '3.1', 'owner': 'security architecture', 'source': 'synthetic example', 'effective_from': '2026-01-01'},
-    'attributes': [{'entity': 'A3.ApplicationComponent', 'name': 'exposure', 'type': 'enum', 'values': ['internal', 'partner', 'external'], 'description': 'who may call it'},
-                   {'entity': 'A3.ApplicationComponent', 'name': 'authentication', 'type': 'enum', 'values': ['none', 'api-key', 'oauth2-mtls', 'oauth2-pkjwt'], 'description': 'how callers are authenticated'}],
-    'rules': [{'id': 'SEC-API-01', 'entity': 'A3.ApplicationComponent', 'when': {'exposure': ['partner', 'external']}, 'require': ['authentication'],
+    'attributes': [{'entity': _T('application.ApplicationComponent'), 'name': 'exposure', 'type': 'enum', 'values': ['internal', 'partner', 'external'], 'description': 'who may call it'},
+                   {'entity': _T('application.ApplicationComponent'), 'name': 'authentication', 'type': 'enum', 'values': ['none', 'api-key', 'oauth2-mtls', 'oauth2-pkjwt'], 'description': 'how callers are authenticated'}],
+    'rules': [{'id': 'SEC-API-01', 'entity': _T('application.ApplicationComponent'), 'when': {'exposure': ['partner', 'external']}, 'require': ['authentication'],
                'message': 'an application called from outside the bank authenticates its callers (API security standard §2)'},
-              {'id': 'SEC-API-02', 'entity': 'A3.ApplicationComponent', 'when': {'exposure': 'external'}, 'check': {'attribute': 'authentication', 'op': 'in', 'value': ['oauth2-mtls', 'oauth2-pkjwt']},
+              {'id': 'SEC-API-02', 'entity': _T('application.ApplicationComponent'), 'when': {'exposure': 'external'}, 'check': {'attribute': 'authentication', 'op': 'in', 'value': ['oauth2-mtls', 'oauth2-pkjwt']},
                'message': 'an externally exposed application uses OAuth 2 with mTLS or private-key JWT (API security standard §2.3)'}]}
 EXAMPLE_NETWORK = {
     'format': STANDARD_FORMAT, 'description': "A made-up bank's network standard (synthetic).",
     'standard': {'id': 'NET', 'title': 'Network zoning and transport standard', 'version': '2.0', 'owner': 'network architecture', 'source': 'synthetic example', 'effective_from': '2026-01-01'},
-    'attributes': [{'entity': 'A4.InfrastructureComponent', 'name': 'network_zone', 'type': 'enum', 'values': ['restricted', 'internal', 'dmz'], 'description': 'the network zone it sits in'},
-                   {'entity': 'A4.InfrastructureComponent', 'name': 'monitoring', 'type': 'boolean', 'description': 'monitored by the bank\'s security operations'},
-                   {'entity': 'A4.InfrastructureComponent', 'name': 'encryption_in_transit', 'type': 'enum', 'values': ['none', 'tls1.2', 'tls1.3'], 'description': 'transport encryption'}],
-    'rules': [{'id': 'NET-07', 'entity': 'A3.ApplicationComponent', 'when': {'risk_tier': '1'}, 'across': {'relationship': 'DEPLOYED_ON'},
+    'attributes': [{'entity': _T('technology.InfrastructureComponent'), 'name': 'network_zone', 'type': 'enum', 'values': ['restricted', 'internal', 'dmz'], 'description': 'the network zone it sits in'},
+                   {'entity': _T('technology.InfrastructureComponent'), 'name': 'monitoring', 'type': 'boolean', 'description': 'monitored by the bank\'s security operations'},
+                   {'entity': _T('technology.InfrastructureComponent'), 'name': 'encryption_in_transit', 'type': 'enum', 'values': ['none', 'tls1.2', 'tls1.3'], 'description': 'transport encryption'}],
+    'rules': [{'id': 'NET-07', 'entity': _T('application.ApplicationComponent'), 'when': {'risk_tier': '1'}, 'across': {'relationship': 'DEPLOYED_ON'},
                'check': {'attribute': 'network_zone', 'op': 'in', 'value': ['restricted']},
                'message': 'a tier 1 application runs only in the restricted zone (network standard §7)'},
-              {'id': 'NET-09', 'entity': 'A4.InfrastructureComponent', 'when': {'environment': 'production'}, 'check': {'attribute': 'encryption_in_transit', 'op': 'in', 'value': ['tls1.2', 'tls1.3']},
+              {'id': 'NET-09', 'entity': _T('technology.InfrastructureComponent'), 'when': {'environment': 'production'}, 'check': {'attribute': 'encryption_in_transit', 'op': 'in', 'value': ['tls1.2', 'tls1.3']},
                'severity': 'warning', 'message': 'production platforms encrypt traffic in transit (network standard §9)'}]}
 EXAMPLE_TECHNOLOGY = {
     'format': STANDARD_FORMAT, 'description': "A made-up bank's technology lifecycle standard (synthetic).",
     'standard': {'id': 'TECH-LC', 'title': 'Technology lifecycle standard', 'version': '1.4', 'owner': 'technology architecture', 'source': 'synthetic example', 'effective_from': '2026-01-01'},
-    'rules': [{'id': 'TECH-LC-01', 'entity': 'A4.SystemSoftware', 'when': {'lifecycle_status': 'active'}, 'check': {'attribute': 'end_of_support', 'op': 'after', 'value': 'today+180d'},
+    'rules': [{'id': 'TECH-LC-01', 'entity': _T('technology.SystemSoftware'), 'when': {'lifecycle_status': 'active'}, 'check': {'attribute': 'end_of_support', 'op': 'after', 'value': 'today+180d'},
                'severity': 'warning', 'message': 'software in use has at least six months of vendor support left (technology lifecycle standard §3)'}]}
 EXAMPLE_PATTERN = {
     'format': PATTERN_FORMAT, 'description': "A made-up bank's reference architecture: secure API integration (synthetic).",
     'pattern': {'id': 'PAT-SECURE-API', 'title': 'Secure API integration', 'version': '2.0', 'owner': 'enterprise architecture', 'source': 'synthetic example',
-                'applies_when': {'entity': 'A3.ApplicationComponent', 'when': {'exposure': 'external'}}},
+                'applies_when': {'entity': _T('application.ApplicationComponent'), 'when': {'exposure': 'external'}}},
     'requires': [{'id': 'PAT-SECURE-API-1', 'rule': 'SEC-API-01'},
                  {'id': 'PAT-SECURE-API-2', 'rule': 'SEC-API-02'},
                  {'id': 'PAT-SECURE-API-3', 'within': {'kind': 'composition', 'direction': 'in', 'to': 'BANK.A3.APIGateway', 'min': 1},
@@ -707,15 +708,15 @@ EXAMPLE_STANDARDS_PROFILE = {
     'format': FORMAT, 'name': 'bank-with-standards', 'version': 1, 'extends': 'bank-base.json',
     'description': "A team profile that takes the made-up bank's standards and its secure API pattern (synthetic).",
     'includes': ['standards/example-security.json', 'standards/example-network.json', 'standards/example-technology.json', 'patterns/example-secure-api.json'],
-    'types': [{'type': 'BANK.A3.APIGateway', 'extends': 'A3.ApplicationComponent', 'name': 'API gateway', 'definition': "The bank's API gateway, which fronts external APIs", 'source': 'synthetic example'}],
+    'types': [{'type': 'BANK.A3.APIGateway', 'extends': _T('application.ApplicationComponent'), 'name': 'API gateway', 'definition': "The bank's API gateway, which fronts external APIs", 'source': 'synthetic example'}],
     'diagram_map': {   # PR-28: how sdem pattern extract reads the bank's pattern diagrams (examples/profiles/patterns/diagrams/)
         'shapes': [{'label': 'API Gateway', 'type': 'BANK.A3.APIGateway'}, {'stereotype': 'gateway', 'type': 'BANK.A3.APIGateway'},
-                   {'label': 'Application', 'type': 'A3.ApplicationComponent'}, {'label': 'Container platform', 'type': 'A4.SystemSoftware'},
-                   {'label': 'Private network', 'type': 'A4.CommunicationNetwork'}, {'label': 'Secrets service', 'type': 'A4.TechnologyService'}],
+                   {'label': 'Application', 'type': _T('application.ApplicationComponent')}, {'label': 'Container platform', 'type': _T('technology.SystemSoftware')},
+                   {'label': 'Private network', 'type': _T('technology.CommunicationNetwork')}, {'label': 'Secrets service', 'type': _T('technology.TechnologyService')}],
         'connectors': [{'label': 'routes requests to', 'kind': 'flow'}, {'label': 'deployed on', 'relationship': 'DEPLOYED_ON'},
                        {'label': 'connected to', 'kind': 'association'}, {'label': 'serves', 'kind': 'serving'}],
-        'zones': [{'label': 'Restricted zone', 'entity': 'A4.InfrastructureComponent', 'check': {'attribute': 'network_zone', 'op': 'in', 'value': ['restricted']}},
-                  {'label': 'DMZ', 'entity': 'A4.InfrastructureComponent', 'check': {'attribute': 'network_zone', 'op': 'in', 'value': ['dmz']}}]}}
+        'zones': [{'label': 'Restricted zone', 'entity': _T('technology.InfrastructureComponent'), 'check': {'attribute': 'network_zone', 'op': 'in', 'value': ['restricted']}},
+                  {'label': 'DMZ', 'entity': _T('technology.InfrastructureComponent'), 'check': {'attribute': 'network_zone', 'op': 'in', 'value': ['dmz']}}]}}
 
 
 def adopt(a):
@@ -1039,9 +1040,9 @@ EXAMPLE_LAYERS = {
                    {'entity': 'BANK.A0.Outcome', 'name': 'target_date', 'type': 'date', 'required': False, 'description': 'when the outcome is due'}],
     'link_kinds': [{'kind': 'realization', 'maps_to': 'realization', 'source_type': 'BANK.A0.Outcome', 'target_type': 'BANK.A0.Goal', 'description': 'an outcome realises a goal'},
                    {'kind': 'composition', 'maps_to': 'composition', 'source_type': 'BANK.A5.Facility', 'target_type': 'BANK.A5.Equipment', 'description': 'a facility contains equipment'}],
-    'link_types': [{'source_type': 'BANK.A0.Outcome', 'relationship': 'REALIZED_BY', 'target_type': 'A1.BusinessCapability', 'required_evidence': ['strategy_document'],
+    'link_types': [{'source_type': 'BANK.A0.Outcome', 'relationship': 'REALIZED_BY', 'target_type': _T('business.BusinessCapability'), 'required_evidence': ['strategy_document'],
                     'description': 'the capability realises the outcome', 'source': 'ArchiMate 3.2 ch. 7 (a capability realises an outcome)'},
-                   {'source_type': 'A4.InfrastructureComponent', 'relationship': 'HOUSED_IN', 'target_type': 'BANK.A5.Facility', 'required_evidence': ['site_register'],
+                   {'source_type': _T('technology.InfrastructureComponent'), 'relationship': 'HOUSED_IN', 'target_type': 'BANK.A5.Facility', 'required_evidence': ['site_register'],
                     'description': 'the platform runs in the facility', 'source': 'ArchiMate 3.2 ch. 11 (a node is assigned to a facility)'}]}
 
 

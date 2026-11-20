@@ -6,10 +6,11 @@
   · AID-C01…C06 — a connection for every A4 shape linked to nothing (LC-21): each a link marked inferred, with the rule, what it read and
     how sure, for a person to confirm or reject by the shape's id. A shape no rule reaches is unresolved, never guessed.
 """
+from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 import re
 
-PLATFORMS = ('A4.Node', 'A4.Device', 'A4.SystemSoftware')
-NOT_SHAPES = ('A4.CommunicationNetwork', 'A4.NetworkZone', 'A4.DeploymentEnvironment', 'A4.Path', 'A4.Location')   # a location is a place (0.17.0)
+PLATFORMS = (_T('technology.Node'), _T('technology.Device'), _T('technology.SystemSoftware'))
+NOT_SHAPES = (_T('technology.CommunicationNetwork'), _T('technology.NetworkZone'), _T('technology.DeploymentEnvironment'), _T('technology.Path'), _T('technology.Location'))   # a location is a place (0.17.0)
 DATABASE = re.compile(r'postgres|mysql|oracle|sql server|database|\bdb2?\b|redis|mongo|cassandra', re.I)
 
 
@@ -35,7 +36,7 @@ def propose_exposure(a3, a4, maps, mm):
     edge = [i['id'] for i in a4.get('instances', []) if any(mm.is_a(i['type'], t) for t in PLATFORMS) and (i.get('attributes') or {}).get('internet_facing') is True]
     out, unresolved = [], []
     for i in a3.get('instances', []):
-        if not mm.is_a(i['type'], 'A3.ApplicationInterface') or (i.get('attributes') or {}).get('internet_facing') is not True or i['id'] in have: continue
+        if not mm.is_a(i['type'], _T('application.ApplicationInterface')) or (i.get('attributes') or {}).get('internet_facing') is not True or i['id'] in have: continue
         if len(edge) == 1: out.append((i['id'], edge[0], f"{i['id']} is internet facing and {edge[0]} is the one internet-facing edge platform"))
         else: unresolved.append({'id': i['id'], 'candidates': edge})
     return out, unresolved
@@ -45,8 +46,8 @@ def propose_builds(a3, a4, maps, mm):
     """AID-X02 (metamodel 0.14.0): an application BUILT_AS an artifact — from what the records say: the artifact names its application
     (`of_component`), the application names its artifact (`built_as`), or the artifact is in a deployment of that application (RA4-35 with
     an approved DEPLOYED_AS). Returns [(component, artifact, why)] — each for a person to approve with build_pipeline evidence."""
-    comps = {i['id'] for i in a3.get('instances', []) if mm.is_a(i['type'], 'A3.ApplicationComponent')}
-    arts = {i['id']: i for i in a4.get('instances', []) if mm.is_a(i['type'], 'A4.Artifact') and i.get('lifecycle_status') != 'retired'}
+    comps = {i['id'] for i in a3.get('instances', []) if mm.is_a(i['type'], _T('application.ApplicationComponent'))}
+    arts = {i['id']: i for i in a4.get('instances', []) if mm.is_a(i['type'], _T('technology.Artifact')) and i.get('lifecycle_status') != 'retired'}
     have = {((m.get('source') or {}).get('id'), (m.get('target') or {}).get('id')) for m in maps if m.get('relationship') == 'BUILT_AS'}
     as_list = lambda v: v if isinstance(v, list) else ([v] if v else [])
     out = {}
@@ -77,13 +78,13 @@ def propose_connections(a3, a4, maps, mm, run, person, now, rejected=()):
         return z
     hosts = {}   # platform -> deployments it runs (assignment)
     for r in rels:
-        if r['kind'] == 'assignment' and r['source'] in typ and r['target'] in typ and any(mm.is_a(typ[r['source']], t) for t in PLATFORMS) and typ[r['target']] == 'A4.Deployment':
+        if r['kind'] == 'assignment' and r['source'] in typ and r['target'] in typ and any(mm.is_a(typ[r['source']], t) for t in PLATFORMS) and typ[r['target']] == _T('technology.Deployment'):
             hosts.setdefault(r['source'], []).append(r['target'])
     env_of = {}
     for r in rels:
-        if r['kind'] == 'aggregation' and typ.get(r['source']) == 'A4.DeploymentEnvironment': env_of.setdefault(r['target'], set()).add(r['source'])
+        if r['kind'] == 'aggregation' and typ.get(r['source']) == _T('technology.DeploymentEnvironment'): env_of.setdefault(r['target'], set()).add(r['source'])
     deployed_as = _approved(maps, 'DEPLOYED_AS'); deployed_on = _approved(maps, 'DEPLOYED_ON'); exposed = _approved(maps, 'EXPOSED_THROUGH')
-    env_name = {i['id']: (i.get('name') or '').lower() for i in a4.get('instances', []) if i['type'] == 'A4.DeploymentEnvironment'}
+    env_name = {i['id']: (i.get('name') or '').lower() for i in a4.get('instances', []) if i['type'] == _T('technology.DeploymentEnvironment')}
     offers = {r['target']: r['source'] for r in (a3 or {}).get('relationships', []) if r['kind'] == 'composition'}   # interface -> the application composing it
     links, unresolved = [], []
     def mark(rule, src, conf, why):
@@ -93,11 +94,11 @@ def propose_connections(a3, a4, maps, mm, run, person, now, rejected=()):
         links.append({'source': s, 'kind': k, 'target': t, 'inferred': mark(rule, src, conf, why)})
     running = lambda: sorted({p for p, ds in hosts.items() if ds} | {p for _, p in deployed_on if p in typ})   # runs a deployment, or an application component (DEPLOYED_ON)
     run_by = {d for ds in hosts.values() for d in ds}
-    todo = set(lone(a4, mm)) | {x for x, t in typ.items() if t == 'A4.Deployment' and x not in run_by}   # AID-C01: a deployment no platform runs
-    for x in sorted(todo, key=lambda x: (typ[x] != 'A4.Deployment', x)):   # deployments first: they make platforms hosts for the rules after
+    todo = set(lone(a4, mm)) | {x for x, t in typ.items() if t == _T('technology.Deployment') and x not in run_by}   # AID-C01: a deployment no platform runs
+    for x in sorted(todo, key=lambda x: (typ[x] != _T('technology.Deployment'), x)):   # deployments first: they make platforms hosts for the rules after
         t, name = typ[x], recs[x].get('name', '')
-        if t != 'A4.Deployment' and any(x in (l['source'], l['target']) for l in links): continue   # a rule already connected it (e.g. as a deployment's platform)
-        if t == 'A4.Deployment':   # AID-C01
+        if t != _T('technology.Deployment') and any(x in (l['source'], l['target']) for l in links): continue   # a rule already connected it (e.g. as a deployment's platform)
+        if t == _T('technology.Deployment'):   # AID-C01
             named = (recs[x].get('attributes') or {}).get('platform_id')
             if named in typ and any(mm.is_a(typ[named], p) for p in PLATFORMS):   # the deployment record names its platform
                 add(named, 'assignment', x, 'AID-C01', f'{x} names its platform: platform_id {named}', 'high', 'the deployment runs on the platform its record names')
@@ -117,7 +118,7 @@ def propose_connections(a3, a4, maps, mm, run, person, now, rejected=()):
                 for d in (prod or deps): add(x, 'association', d, 'AID-C06', f"{', '.join(ifcs)} EXPOSED_THROUGH {x}; {', '.join(sorted(apps))} composes it and is DEPLOYED_AS {d} (approved)", 'high', 'an edge platform fronts the deployment of the application whose interface it exposes')
                 continue
         if any(mm.is_a(t, p) for p in PLATFORMS) and DATABASE.search(name):   # AID-C02
-            api_ops = {i['id'] for i in a3.get('instances', []) if mm.is_a(i['type'], 'A3.APIOperation')}
+            api_ops = {i['id'] for i in a3.get('instances', []) if mm.is_a(i['type'], _T('application.APIOperation'))}
             held = lambda v: x in (v if isinstance(v, list) else [v])   # stored_in names one platform or several
             users = {c for e in [i for i in a3.get('instances', []) if held((i.get('attributes') or {}).get('stored_in'))]
                      for c in [r['source'] for r in a3.get('relationships', []) if r['target'] == e['id'] and r['kind'] == 'access' and r['source'] not in api_ops]}   # an API operation's access is its contract, not a component using the data: the one that only exposes the API is not a user (F13)
@@ -137,13 +138,13 @@ def propose_connections(a3, a4, maps, mm, run, person, now, rejected=()):
             if near:
                 for p in near: add(p, 'association', x, 'AID-C02', f'{p} runs deployments or applications in {zone_of(x)}, the zone {x} is in', 'low', 'a database in the same zone as the platforms that run the deployments')
                 continue
-        if t == 'A4.TechnologyService':   # AID-C03
+        if t == _T('technology.TechnologyService'):   # AID-C03
             z = zone_of(x)
             near = [p for p in running() if z and zone_of(p) == z] or [p for p in running() if z and top(zone_of(p)) == top(z)]
             if near:
                 for p in near: add(x, 'serving', p, 'AID-C03', f'{p} runs deployments or applications in the zone {x} is in ({z})', 'low', 'a technology service serves the platforms in its zone')
                 continue
-        if t == 'A4.Artifact':   # AID-C04
+        if t == _T('technology.Artifact'):   # AID-C04
             words = {w for w in re.findall(r'[a-z0-9]+', name.lower()) if len(w) >= 4}
             cand = sorted({p for p, ds in hosts.items() for d in ds if words & {w for w in re.findall(r'[a-z0-9]+', recs.get(d, {}).get('name', '').lower()) if len(w) >= 4}})
             if len(cand) == 1:

@@ -14,6 +14,7 @@ Controls: CTL-19 layer ownership (a change set changes one declared layer; an ag
 registry), CTL-20 change provenance (agent and person on every change set and work-item step). A change set lands only
 if the workspace's checks show no new error (the metamodel, CTL-01…17).
 """
+from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 import copy, datetime, json, re, subprocess
 from pathlib import Path
 
@@ -148,7 +149,7 @@ class Estate:
                 raise CoordinationError(f"CTL-19: change {n}: {rid} has type {rec.get('type')} — not a {layer} record")
             if op == 'add':
                 if rid in ids_anywhere: raise CoordinationError(f'change {n}: {rid} already exists — use update')
-                if layer == 'A2':
+                if layer == _L('bian'):
                     if cat is None: raise CoordinationError('CTL-19: an A2 change set that adds records needs --catalogue (BIAN elements come only from the catalogue)')
                     src = cat.get(rid)
                     if not src or (rec.get('canonical_id') and src.get('canonical_id') != rec['canonical_id']):

@@ -21,6 +21,7 @@ Warnings (the architecture dataset is usable but incomplete or dated):
   Flat zones (ZF-01…ZF-06): where a workspace has no level-0 zone, a level-1 or level-2 zone may stand with no parent, and several may be internal.
 LC-01…LC-03 and LC-11 are checked by the graph loader and the registry validator; LC-12 by sdem-diff.
 """
+from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 import json, re
 from collections import Counter
 from functools import lru_cache
@@ -66,8 +67,8 @@ def natural(v):
     return ' '.join(re.sub(r'[^0-9a-z]+', ' ', v.casefold()).split()) if isinstance(v, str) else v
 
 
-OWNERS = {'owning interface': 'A3.ApplicationInterface', 'owning service domain': 'A2.ServiceDomain',
-          'owning business object': 'A2.BusinessObject', 'owning data entity': 'A3.DataEntity'}   # a field is named within its object or entity (0.17.0)   # identifier keys held as a whole-part link, not an attribute
+OWNERS = {'owning interface': _T('application.ApplicationInterface'), 'owning service domain': _T('bian.ServiceDomain'),
+          'owning business object': _T('bian.BusinessObject'), 'owning data entity': _T('application.DataEntity')}   # a field is named within its object or entity (0.17.0)   # identifier keys held as a whole-part link, not an attribute
 
 
 def owner_of(iid, want, mm, local, parents, depth=4):
@@ -247,9 +248,9 @@ def check_level(doc, mm, estate_index=None):
     return errors, warnings, n
 
 
-PLATFORM, NETWORK, ZONE = 'A4.InfrastructureComponent', 'A4.CommunicationNetwork', 'A4.NetworkZone'
+PLATFORM, NETWORK, ZONE = _T('technology.InfrastructureComponent'), _T('technology.CommunicationNetwork'), _T('technology.NetworkZone')
 ZONE_KINDS = {0: ('on_premises', 'cloud'), 1: ('internal', 'dmz'), 2: ('private',)}
-UNPLACED = ('A4.CommunicationNetwork', 'A4.NetworkZone', 'A4.DeploymentEnvironment', 'A4.Path', 'A4.Location')   # networks, zones, environments (they group deployments: Z2) and paths are not placed
+UNPLACED = (_T('technology.CommunicationNetwork'), _T('technology.NetworkZone'), _T('technology.DeploymentEnvironment'), _T('technology.Path'), _T('technology.Location'))   # networks, zones, environments (they group deployments: Z2) and paths are not placed
 
 
 def zones_of(doc, mm, local=None):
@@ -265,7 +266,7 @@ def zones_of(doc, mm, local=None):
             if k == 'aggregation' and not mm.is_a(local[b], NETWORK): direct.setdefault(b, []).append(a)
             elif k == 'composition' and mm.is_a(local[b], ZONE): parent[b] = a
             continue
-        if mm.is_a(local[a], NETWORK) or mm.is_a(local[b], NETWORK) or mm.is_a(local[b], ZONE) or mm.is_a(local[a], 'A4.DeploymentEnvironment') or mm.is_a(local[a], 'A4.Location') or mm.is_a(local[b], 'A4.Location'): continue   # a location holds things; it does not host them (0.17.0)
+        if mm.is_a(local[a], NETWORK) or mm.is_a(local[b], NETWORK) or mm.is_a(local[b], ZONE) or mm.is_a(local[a], _T('technology.DeploymentEnvironment')) or mm.is_a(local[a], _T('technology.Location')) or mm.is_a(local[b], _T('technology.Location')): continue   # a location holds things; it does not host them (0.17.0)
         if k in ('assignment', 'composition', 'aggregation', 'realization'): hosts.setdefault(b, []).append(a)   # b runs on, or is part of, a
     def find(x, seen):
         if direct.get(x): return direct[x]
@@ -280,7 +281,7 @@ def zones_of(doc, mm, local=None):
 
 def zone_checks(doc, mm, local, byid, errors, warnings, n):
     """LC-16 every shape in one zone (warning) · LC-17 the zone structure holds (error) · LC-18 internet-facing shapes in a DMZ (warning)."""
-    if doc.get('level') != 'A4': return
+    if doc.get('level') != _L('technology'): return
     zones = {x: (byid[x].get('attributes') or {}) for x, t in local.items() if mm.is_a(t, ZONE)}
     shapes, parent, direct = zones_of(doc, mm, local)
     if not zones:
@@ -378,19 +379,19 @@ def on_network(doc, mm, local, byid, warnings, n):
     """LC-15 (metamodel 0.9.0): a platform that hosts something — a deployment, an artifact or system software assigned to it — or
     that a deployment environment groups is on at least one communication network, its own or that of the node it runs on.
     A warning: a design may not have recorded its networks yet."""
-    if doc.get('level') != 'A4': return
+    if doc.get('level') != _L('technology'): return
     nets = networks_of(doc, mm, local)
     why = {}
     for r in doc.get('relationships', []):
         a, b, k = r['source'], r['target'], r['kind']
         if a not in local or b not in local: continue
-        if k == 'assignment' and a in nets and any(mm.is_a(local[b], t) for t in ('A4.Deployment', 'A4.Artifact', 'A4.SystemSoftware')):
+        if k == 'assignment' and a in nets and any(mm.is_a(local[b], t) for t in (_T('technology.Deployment'), _T('technology.Artifact'), _T('technology.SystemSoftware'))):
             why.setdefault(a, f'hosts {b}')
-        if k == 'aggregation' and b in nets and mm.is_a(local[a], 'A4.DeploymentEnvironment'):
+        if k == 'aggregation' and b in nets and mm.is_a(local[a], _T('technology.DeploymentEnvironment')):
             why.setdefault(b, f'is in environment {a}')
     for p, reason in sorted(why.items()):
         if (byid.get(p) or {}).get('lifecycle_status') == 'retired': continue
-        if not any(mm.is_a(local[p], t) for t in ('A4.Node', 'A4.Device', 'A4.SystemSoftware')): continue   # a deployment is on its platform's network
+        if not any(mm.is_a(local[p], t) for t in (_T('technology.Node'), _T('technology.Device'), _T('technology.SystemSoftware'))): continue   # a deployment is on its platform's network
         n['LC-15 checked'] += 1
         if not nets[p]:
             n['LC-15 failed'] += 1

@@ -14,64 +14,65 @@ A4 is drawn by its network zones (sdem/zone_layout.py). A1–A3 are drawn by eac
 
   sdem layout --layer A2 --workspace examples/payment-initiation
 """
+from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 import argparse, json, sys
 from pathlib import Path
 
 # the primary hierarchy of each layer: (parent type, link kind, child type) in order of precedence, and the groups by kind (C3, C4)
 HIERARCHY = {
-    'A2': {
-        'nest': [('A2.BusinessArea', 'composition', 'A2.BusinessDomain'), ('A2.BusinessDomain', 'composition', 'A2.ServiceDomain'),
-                 ('A2.ServiceDomain', 'composition', 'A2.ServiceGroup'), ('A2.ServiceDomain', 'aggregation', 'A2.ControlRecord'),
-                 ('A2.ServiceGroup', 'composition', 'A2.ServiceOperation'), ('A2.ControlRecord', 'composition', 'A2.BehaviorQualifier'),
-                 ('A2.BOMModel', 'aggregation', 'A2.BusinessObject'), ('A2.BusinessObject', 'composition', 'A2.BusinessObjectAttribute')],
-        'containers': ['A2.BusinessArea', 'A2.BusinessDomain', 'A2.ServiceDomain', 'A2.ServiceGroup', 'A2.ControlRecord', 'A2.BOMModel', 'A2.BusinessObject'],
-        'kinds': {'A2.BusinessArea': 'Business area', 'A2.BusinessDomain': 'Business domain', 'A2.ServiceDomain': 'Service domain',
-                  'A2.ServiceGroup': 'Service group', 'A2.ControlRecord': 'Control record', 'A2.BOMModel': 'Business object model',
-                  'A2.BusinessObject': 'Business object'},
-        'groups': [('Business scenarios', ['A2.BusinessScenario']),
-                   ('Business object model', ['A2.BOMModel', 'A2.BusinessObject', 'A2.BusinessObjectAttribute']),
-                   ('Asset types and patterns', ['A2.AssetType', 'A2.FunctionalPattern']),
-                   ('Semantic APIs', ['A2.SemanticAPI'])],
+    _L('bian'): {
+        'nest': [(_T('bian.BusinessArea'), 'composition', _T('bian.BusinessDomain')), (_T('bian.BusinessDomain'), 'composition', _T('bian.ServiceDomain')),
+                 (_T('bian.ServiceDomain'), 'composition', _T('bian.ServiceGroup')), (_T('bian.ServiceDomain'), 'aggregation', _T('bian.ControlRecord')),
+                 (_T('bian.ServiceGroup'), 'composition', _T('bian.ServiceOperation')), (_T('bian.ControlRecord'), 'composition', _T('bian.BehaviorQualifier')),
+                 (_T('bian.BOMModel'), 'aggregation', _T('bian.BusinessObject')), (_T('bian.BusinessObject'), 'composition', _T('bian.BusinessObjectAttribute'))],
+        'containers': [_T('bian.BusinessArea'), _T('bian.BusinessDomain'), _T('bian.ServiceDomain'), _T('bian.ServiceGroup'), _T('bian.ControlRecord'), _T('bian.BOMModel'), _T('bian.BusinessObject')],
+        'kinds': {_T('bian.BusinessArea'): 'Business area', _T('bian.BusinessDomain'): 'Business domain', _T('bian.ServiceDomain'): 'Service domain',
+                  _T('bian.ServiceGroup'): 'Service group', _T('bian.ControlRecord'): 'Control record', _T('bian.BOMModel'): 'Business object model',
+                  _T('bian.BusinessObject'): 'Business object'},
+        'groups': [('Business scenarios', [_T('bian.BusinessScenario')]),
+                   ('Business object model', [_T('bian.BOMModel'), _T('bian.BusinessObject'), _T('bian.BusinessObjectAttribute')]),
+                   ('Asset types and patterns', [_T('bian.AssetType'), _T('bian.FunctionalPattern')]),
+                   ('Semantic APIs', [_T('bian.SemanticAPI')])],
         'not_in': 'Not in the service landscape',
-        'skip': ['A2.BusinessObjectAttribute'],   # metamodel 0.15.0 (TL-03): a business object's fields are not shapes — BIAN 14.0.0 gives hundreds
+        'skip': [_T('bian.BusinessObjectAttribute')],   # metamodel 0.15.0 (TL-03): a business object's fields are not shapes — BIAN 14.0.0 gives hundreds
     },
-    'A1': {   # the capability map (ArchiMate Capability Map viewpoint; TOGAF, BIZBOK)
-        'nest': [('A1.BusinessCapability', 'composition', 'A1.BusinessCapability'), ('A1.BusinessCapability', 'aggregation', 'A1.BusinessCapability'),
-                 ('A1.BusinessProcess', 'composition', 'A1.BusinessProcess'), ('A1.BusinessProcess', 'composition', 'A1.BusinessActivity'),
-                 ('A1.BusinessActivity', 'composition', 'A1.BusinessActivity'),
-                 ('A1.BusinessCapability', 'realization', 'A1.BusinessProcess', 'up'), ('A1.BusinessCapability', 'realization', 'A1.BusinessActivity', 'up'),
-                 ('A1.ValueStream', 'composition', 'A1.ValueStreamStage'),
-                 ('A1.BusinessActor', 'composition', 'A1.BusinessActor'), ('A1.BusinessActor', 'aggregation', 'A1.BusinessActor'),
-                 ('A1.BusinessRole', 'composition', 'A1.BusinessRole'), ('A1.BusinessRole', 'aggregation', 'A1.BusinessRole'),
-                 ('A1.BusinessObject', 'composition', 'A1.BusinessObject'), ('A1.BusinessObject', 'aggregation', 'A1.BusinessObject'),
-                 ('A1.BusinessService', 'composition', 'A1.BusinessService'), ('A1.BusinessRequirement', 'composition', 'A1.BusinessRequirement'),
-                 ('A1.Product', 'composition', 'A1.Product'), ('A1.Product', 'aggregation', 'A1.BusinessService')],   # metamodel 0.17.0: a product holds its services
-        'containers': ['A1.BusinessCapability', 'A1.BusinessProcess', 'A1.ValueStream', 'A1.Product'],
-        'kinds': {'A1.BusinessCapability': 'Capability', 'A1.BusinessProcess': 'Process', 'A1.BusinessActivity': 'Activity', 'A1.ValueStream': 'Value stream', 'A1.Product': 'Product'},
-        'groups': [('Products', ['A1.Product']), ('Value streams', ['A1.ValueStream', 'A1.ValueStreamStage']), ('Events', ['A1.BusinessEvent']), ('Channels', ['A1.BusinessInterface']),
-                   ('Actors and roles', ['A1.BusinessActor', 'A1.BusinessRole']),
-                   ('Business objects', ['A1.BusinessObject']),
-                   ('Business services', ['A1.BusinessService']),
-                   ('Requirements', ['A1.BusinessRequirement'])],
+    _L('business'): {   # the capability map (ArchiMate Capability Map viewpoint; TOGAF, BIZBOK)
+        'nest': [(_T('business.BusinessCapability'), 'composition', _T('business.BusinessCapability')), (_T('business.BusinessCapability'), 'aggregation', _T('business.BusinessCapability')),
+                 (_T('business.BusinessProcess'), 'composition', _T('business.BusinessProcess')), (_T('business.BusinessProcess'), 'composition', _T('business.BusinessActivity')),
+                 (_T('business.BusinessActivity'), 'composition', _T('business.BusinessActivity')),
+                 (_T('business.BusinessCapability'), 'realization', _T('business.BusinessProcess'), 'up'), (_T('business.BusinessCapability'), 'realization', _T('business.BusinessActivity'), 'up'),
+                 (_T('business.ValueStream'), 'composition', _T('business.ValueStreamStage')),
+                 (_T('business.BusinessActor'), 'composition', _T('business.BusinessActor')), (_T('business.BusinessActor'), 'aggregation', _T('business.BusinessActor')),
+                 (_T('business.BusinessRole'), 'composition', _T('business.BusinessRole')), (_T('business.BusinessRole'), 'aggregation', _T('business.BusinessRole')),
+                 (_T('business.BusinessObject'), 'composition', _T('business.BusinessObject')), (_T('business.BusinessObject'), 'aggregation', _T('business.BusinessObject')),
+                 (_T('business.BusinessService'), 'composition', _T('business.BusinessService')), (_T('business.BusinessRequirement'), 'composition', _T('business.BusinessRequirement')),
+                 (_T('business.Product'), 'composition', _T('business.Product')), (_T('business.Product'), 'aggregation', _T('business.BusinessService'))],   # metamodel 0.17.0: a product holds its services
+        'containers': [_T('business.BusinessCapability'), _T('business.BusinessProcess'), _T('business.ValueStream'), _T('business.Product')],
+        'kinds': {_T('business.BusinessCapability'): 'Capability', _T('business.BusinessProcess'): 'Process', _T('business.BusinessActivity'): 'Activity', _T('business.ValueStream'): 'Value stream', _T('business.Product'): 'Product'},
+        'groups': [('Products', [_T('business.Product')]), ('Value streams', [_T('business.ValueStream'), _T('business.ValueStreamStage')]), ('Events', [_T('business.BusinessEvent')]), ('Channels', [_T('business.BusinessInterface')]),
+                   ('Actors and roles', [_T('business.BusinessActor'), _T('business.BusinessRole')]),
+                   ('Business objects', [_T('business.BusinessObject')]),
+                   ('Business services', [_T('business.BusinessService')]),
+                   ('Requirements', [_T('business.BusinessRequirement')])],
         'not_in': 'Not in the capability map',
     },
-    'A3': {   # the application structure (ArchiMate Application Structure viewpoint; TOGAF)
-        'nest': [('A3.SolutionBuildingBlock', 'composition', 'A3.SolutionBuildingBlock'), ('A3.SolutionBuildingBlock', 'aggregation', 'A3.ApplicationComponent'),
-                 ('A3.ApplicationComponent', 'composition', 'A3.ApplicationComponent'), ('A3.ApplicationComponent', 'aggregation', 'A3.ApplicationComponent'),
-                 ('A3.ApplicationComponent', 'composition', 'A3.ApplicationInterface'), ('A3.ApplicationComponent', 'assignment', 'A3.ApplicationFunction'),
-                 ('A3.ApplicationComponent', 'realization', 'A3.ApplicationService'), ('A3.ApplicationFunction', 'composition', 'A3.ApplicationFunction'),
-                 ('A3.ApplicationFunction', 'realization', 'A3.ApplicationService'),
-                 ('A3.ApplicationInterface', 'composition', 'A3.APIOperation'), ('A3.ApplicationComponent', 'composition', 'A3.APIOperation'),
-                 ('A3.DataEntity', 'composition', 'A3.DataEntity'), ('A3.DataEntity', 'aggregation', 'A3.DataEntity')],
-        'containers': ['A3.SolutionBuildingBlock', 'A3.ApplicationComponent', 'A3.ApplicationInterface', 'A3.ApplicationFunction'],
-        'always': ['A3.SolutionBuildingBlock'],
-        'kinds': {'A3.SolutionBuildingBlock': 'Solution building block', 'A3.ApplicationComponent': 'Application', 'A3.ApplicationInterface': 'Interface',
-                  'A3.ApplicationFunction': 'Function'},
-        'groups': [('Data entities', ['A3.DataEntity']), ('Events', ['A3.Event']),
-                   ('Applications', ['A3.ApplicationComponent']), ('Services', ['A3.ApplicationService']), ('Interfaces', ['A3.ApplicationInterface']),
-                   ('Functions', ['A3.ApplicationFunction'])],
+    _L('application'): {   # the application structure (ArchiMate Application Structure viewpoint; TOGAF)
+        'nest': [(_T('application.SolutionBuildingBlock'), 'composition', _T('application.SolutionBuildingBlock')), (_T('application.SolutionBuildingBlock'), 'aggregation', _T('application.ApplicationComponent')),
+                 (_T('application.ApplicationComponent'), 'composition', _T('application.ApplicationComponent')), (_T('application.ApplicationComponent'), 'aggregation', _T('application.ApplicationComponent')),
+                 (_T('application.ApplicationComponent'), 'composition', _T('application.ApplicationInterface')), (_T('application.ApplicationComponent'), 'assignment', _T('application.ApplicationFunction')),
+                 (_T('application.ApplicationComponent'), 'realization', _T('application.ApplicationService')), (_T('application.ApplicationFunction'), 'composition', _T('application.ApplicationFunction')),
+                 (_T('application.ApplicationFunction'), 'realization', _T('application.ApplicationService')),
+                 (_T('application.ApplicationInterface'), 'composition', _T('application.APIOperation')), (_T('application.ApplicationComponent'), 'composition', _T('application.APIOperation')),
+                 (_T('application.DataEntity'), 'composition', _T('application.DataEntity')), (_T('application.DataEntity'), 'aggregation', _T('application.DataEntity'))],
+        'containers': [_T('application.SolutionBuildingBlock'), _T('application.ApplicationComponent'), _T('application.ApplicationInterface'), _T('application.ApplicationFunction')],
+        'always': [_T('application.SolutionBuildingBlock')],
+        'kinds': {_T('application.SolutionBuildingBlock'): 'Solution building block', _T('application.ApplicationComponent'): 'Application', _T('application.ApplicationInterface'): 'Interface',
+                  _T('application.ApplicationFunction'): 'Function'},
+        'groups': [('Data entities', [_T('application.DataEntity')]), ('Events', [_T('application.Event')]),
+                   ('Applications', [_T('application.ApplicationComponent')]), ('Services', [_T('application.ApplicationService')]), ('Interfaces', [_T('application.ApplicationInterface')]),
+                   ('Functions', [_T('application.ApplicationFunction')])],
         'not_in': 'Not in the application structure',
-        'skip': ['A3.DataAttribute'],   # metamodel 0.15.0 (TL-03): a data entity's fields are not shapes — documents and the workbench show them with their entity
+        'skip': [_T('application.DataAttribute')],   # metamodel 0.15.0 (TL-03): a data entity's fields are not shapes — documents and the workbench show them with their entity
     },
 }
 
@@ -84,7 +85,7 @@ def layout(doc, layer, mm=None):
     """The containment layout of one layer's document — JSON-ready, coordinates as fractions of the plate (as sdem/zone_layout.py)."""
     from .metamodel import Metamodel
     mm = mm or Metamodel.load()
-    if layer == 'A4':
+    if layer == _L('technology'):
         from .zone_layout import layout as zl
         return zl(doc, mm)
     H = HIERARCHY.get(layer)
@@ -228,10 +229,10 @@ def layout(doc, layer, mm=None):
              for r in doc.get('relationships', []) if r['source'] in pos and r['target'] in pos]
     # C5: service domain ↔ service domain when a business scenario aggregates operations of both — derived (potential), never stored
     def domain(x):
-        while x and not is_(x, 'A2.ServiceDomain'): x = parent.get(x)
+        while x and not is_(x, _T('bian.ServiceDomain')): x = parent.get(x)
         return x
     conns, seen = [], set()
-    for sc in [x for x in recs if layer == 'A2' and is_(x, 'A2.BusinessScenario')]:
+    for sc in [x for x in recs if layer == _L('bian') and is_(x, _T('bian.BusinessScenario'))]:
         sds = sorted({domain(r['target']) for r in doc.get('relationships', []) if r['source'] == sc and r['kind'] == 'aggregation'} - {None})
         for i, a in enumerate(sds):
             for b in sds[i + 1:]:
@@ -241,13 +242,13 @@ def layout(doc, layer, mm=None):
             'connections': conns, 'left_out': [], 'fit': round(fit, 4)}
 
 
-FILES = {'A1': 'a1-business.json', 'A2': 'a2-service-domain.json', 'A3': 'a3-application.json', 'A4': 'a4-technology.json'}
+FILES = {_L('business'): 'a1-business.json', _L('bian'): 'a2-service-domain.json', _L('application'): 'a3-application.json', _L('technology'): 'a4-technology.json'}
 
 
 def load(workspace, layer, environment='production'):
     f = Path(workspace) / FILES.get(layer, '')
     if layer not in FILES or not f.exists(): raise ContainmentError(f'{workspace}: no {FILES.get(layer, layer)} — nothing to lay out')
-    if layer == 'A4':
+    if layer == _L('technology'):
         from .zone_layout import load as zl
         return zl(workspace, environment)
     return layout(json.loads(f.read_text(encoding='utf-8')), layer)
@@ -266,7 +267,7 @@ def main(argv=None):
     try: lay = load(a.estate, a.layer, a.environment)
     except (ContainmentError, ValueError) as e: print(f'ERROR: {e}', file=sys.stderr); return 2
     if a.json: print(json.dumps(lay, indent=2)); return 0
-    print(f"{a.layer} drawn {'by network zone' if a.layer == 'A4' else 'by what owns what'} — {len(lay['zones'])} region(s), {len(lay['shapes'])} record(s)")
+    print(f"{a.layer} drawn {'by network zone' if a.layer == _L('technology') else 'by what owns what'} — {len(lay['zones'])} region(s), {len(lay['shapes'])} record(s)")
     for z in lay['zones']:
         held = [s['id'] for s in lay['shapes'] if s['zone'] == z['id'] and s['id'] != (z.get('record') or '')]
         print(f"{'  ' * (z['level'] or 0)}{z['label']}" + (f"  — {', '.join(held)}" if held else ''))

@@ -5,13 +5,14 @@ Writes a small offline site: <out>/index.html (home) and <out>/workspaces/<name>
 link back home). Everything is computed here with SDEM's own functions — the generated-file checks and the engine's
 acceptance cases run live at generation — and the pages only display it. No server, no network, no AI.
 """
+from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 import argparse, contextlib, datetime, glob, html, io, json, re, sys
 from pathlib import Path
 
 from .metamodel import Metamodel
 
 from .paths import DATA_ROOT as ROOT, repo_path, version as _version
-LEVELS = {'A1': 'A1 Business', 'A2': 'A2 Service domain (BIAN)', 'A3': 'A3 Application', 'A4': 'A4 Technology'}
+LEVELS = {_L('business'): 'A1 Business', _L('bian'): 'A2 Service domain (BIAN)', _L('application'): 'A3 Application', _L('technology'): 'A4 Technology'}
 DATASETS = ('a1-business.json', 'a2-service-domain.json', 'a3-application.json', 'a4-technology.json')
 BOX_W, BOX_H, STEP_X, STEP_Y, PER_ROW, PAD = 196, 36, 210, 50, 6, 20
 
@@ -161,7 +162,7 @@ def components(m, h, workspaces):
     add('bian', 'BIAN Reference Architecture Repository', 'domains · operations · business objects', 'partial', 517, 20,
         'The BIAN service landscape SDEM anchors to: every A2 element and every BIAN identity comes from here, never invented (CTL-17).',
         ['each workspace\'s a2-service-domain.json (synthetic, made-up BIAN content)', 'the AID test catalogue (merged by BIAN canonical id)'],
-        [f"{ents['A2']} BIAN entity types in the metamodel", f"{recs['A2']} A2 records across the workspaces"], 'A licensed BIAN catalogue with real BIAN ids — roadmap v0.15', ['entities'])
+        [f"{ents[_L('bian')]} BIAN entity types in the metamodel", f"{recs[_L('bian')]} A2 records across the workspaces"], 'A licensed BIAN catalogue with real BIAN ids — roadmap v0.15', ['entities'])
     add('history', 'Historical Design Repository', 'past designs · decisions · baselines', 'partial', 40, 20,
         'Earlier designs, diagrams and decisions kept unchanged and referenceable beside new BIAN-aligned designs (original design §9, acceptance criteria 6 and 10). Built: sdem transform turns an export of past designs (Confluence, any folder layout) into candidate architecture entities with rules — tables, draw.io and PlantUML diagrams, known names in the text, text in pictures by on-device OCR — each with its source, plus an index of every design; a person reviews, then sdem load puts the kept entities into a workspace (checked, recorded; CTL-23 keeps candidates out of any graph).',
         ['sdem transform inspect · sdem transform run · sdem load', 'metamodel/transform-rules.json (tune without code)', 'docs/design/sdem-transform-design.md', 'graph store baselines (sdem baseline)'],

@@ -5,6 +5,7 @@ relationship-rules.json, export-conventions.json, impact-rules.json) plus a numb
 names the record rows it derives from and the use-case runs that validated it (from the inference logs), so the
 document cannot say more than the records and the runs support. Regenerate with `python -m sdem.spec`; CI checks it.
 """
+from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 from pathlib import Path
 from collections import Counter, defaultdict
 import argparse, glob, json, re
@@ -13,7 +14,7 @@ from sdem.terms import apply as _terms
 
 ROOT = MM_DIR.parent
 DOC = ROOT / 'docs' / 'design' / 'relationship-rules-spec.md'
-LEVEL_NAMES = {'A1': 'A1 Business Architecture', 'A2': 'A2 Service Domain Architecture', 'A3': 'A3 Application Architecture', 'A4': 'A4 Technology Architecture'}
+LEVEL_NAMES = {_L('business'): 'A1 Business Architecture', _L('bian'): 'A2 Service Domain Architecture', _L('application'): 'A3 Application Architecture', _L('technology'): 'A4 Technology Architecture'}
 
 
 def _load(p):
@@ -73,7 +74,7 @@ def render():
         prov['BIAN' if 'BIAN' in std else 'ArchiMate' if 'ArchiMate' in std or 'AM' in std else 'TOGAF' if 'TOGAF' in std else 'SDEM extension'] += 1
     out += ['## 2. Vocabulary — the entity catalogue', '', f"{len(ents)} entities across four levels (`metamodel/a1…a4-*.json`), each with public provenance (README › *Reference architecture provenance*). By standard: " + ', '.join(f"{k} {v}" for k, v in prov.most_common()) + '. **The entity ID is its type string** (e.g. `A3.ApplicationComponent`); every mapping, relationship row and architecture dataset instance refers to it by that string.', '',
             '| ID | Level | Kind | Extends | Reference concept |', '|---|---|---|---|---|']
-    for l in ('A1', 'A2', 'A3', 'A4'):
+    for l in (_L('business'), _L('bian'), _L('application'), _L('technology')):
         for t, e in ents.items():
             if e['level'] != l: continue
             kind = 'abstract' if e.get('abstract') else 'artefact' if e.get('artefact') else 'concrete'
@@ -84,12 +85,12 @@ def render():
     # ---- 3 within-level
     byl = Counter(c['level'] for c in lr['constraints']); vc = Counter(c['verification'] for c in lr['constraints'])
     out += ['## 3. Within-level structure — what an architecture dataset may contain', '',
-            f"{len(lr['constraints'])} constraint rows (`metamodel/level-relationships.json`, documented row by row in `docs/reference/relationships-planning.md`): " + ', '.join(f"{LEVEL_NAMES[l]} {byl[l]}" for l in ('A1', 'A2', 'A3', 'A4')) + f". Verification: " + ', '.join(f"{k} {v}" for k, v in vc.most_common()) + '. Association is permitted between any two entities of one level. The 12 catalogue inheritance links are listed there as `X` rows.', '',
+            f"{len(lr['constraints'])} constraint rows (`metamodel/level-relationships.json`, documented row by row in `docs/reference/relationships-planning.md`): " + ', '.join(f"{LEVEL_NAMES[l]} {byl[l]}" for l in (_L('business'), _L('bian'), _L('application'), _L('technology'))) + f". Verification: " + ', '.join(f"{k} {v}" for k, v in vc.most_common()) + '. Association is permitted between any two entities of one level. The 12 catalogue inheritance links are listed there as `X` rows.', '',
             '| Level | Derived from | Rows | The structure in one line |', '|---|---|---|---|',
-            '| A1 | ArchiMate 3.2 ch. 6–8 | ' + str(byl['A1']) + ' | capabilities serve value streams; processes (and activities, is-a process) realise capabilities, value streams, services and requirements, access objects, compose activities; actors assigned to roles assigned to processes |',
-            '| A2 | BIAN Service Landscape metamodel (B02–B15) | ' + str(byl['A2']) + ' | area ⊃ domain ⊃ Service Domain; a domain has an asset type, a functional pattern, a control record and service groups of operations; operations act on the control record and may be qualified; scenarios sequence operations; objects type the control record |',
-            '| A3 | ArchiMate 3.2 ch. 9; TOGAF (SBB) | ' + str(byl['A3']) + ' | a component composes interfaces (which compose API operations) and sub-components, is assigned to functions, realises services; interfaces are assigned to services; behaviour accesses data entities and triggers events; a solution building block aggregates components |',
-            '| A4 | ArchiMate 3.2 ch. 10; SDEM deployment extensions | ' + str(byl['A4']) + ' | nodes compose nodes and interfaces, aggregate devices, are assigned system software, artifacts and deployments, realise technology services; interfaces are assigned to services; networks realise paths; environments aggregate deployments and platform elements |', '',
+            '| A1 | ArchiMate 3.2 ch. 6–8 | ' + str(byl[_L('business')]) + ' | capabilities serve value streams; processes (and activities, is-a process) realise capabilities, value streams, services and requirements, access objects, compose activities; actors assigned to roles assigned to processes |',
+            '| A2 | BIAN Service Landscape metamodel (B02–B15) | ' + str(byl[_L('bian')]) + ' | area ⊃ domain ⊃ Service Domain; a domain has an asset type, a functional pattern, a control record and service groups of operations; operations act on the control record and may be qualified; scenarios sequence operations; objects type the control record |',
+            '| A3 | ArchiMate 3.2 ch. 9; TOGAF (SBB) | ' + str(byl[_L('application')]) + ' | a component composes interfaces (which compose API operations) and sub-components, is assigned to functions, realises services; interfaces are assigned to services; behaviour accesses data entities and triggers events; a solution building block aggregates components |',
+            '| A4 | ArchiMate 3.2 ch. 10; SDEM deployment extensions | ' + str(byl[_L('technology')]) + ' | nodes compose nodes and interfaces, aggregate devices, are assigned system software, artifacts and deployments, realise technology services; interfaces are assigned to services; networks realise paths; environments aggregate deployments and platform elements |', '',
             '### 3.1 All within-level rows', '', 'Full description, source, reasoning, inference and confidence per row: `docs/reference/relationships-planning.md`.', '',
             '| ID | Official | Source | Kind | Target | Verification |', '|---|---|---|---|---|---|']
     for c in lr['constraints']:

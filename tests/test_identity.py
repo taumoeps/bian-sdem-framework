@@ -42,5 +42,33 @@ class IdentityTests(unittest.TestCase):
         self.assertEqual(json.loads(r.stdout)['type'], 'A4.Node')
 
 
+
+def _strings():
+    """Every string in SDEM's code that is not a docstring: (module, line, token)."""
+    import io, tokenize
+    for p in sorted((ROOT / 'sdem').glob('*.py')):
+        if p.name in ('identity.py', 'paths.py'): continue
+        for t in tokenize.generate_tokens(io.StringIO(p.read_text(encoding='utf-8')).readline):
+            if t.type in (tokenize.STRING, getattr(tokenize, 'FSTRING_MIDDLE', -1)) and not t.string.startswith(('"""', "'''")):
+                yield p.name, t.start[0], t.string
+
+
+class NamesInCode(unittest.TestCase):   # step 3b: SDEM's code names layers and types by id (spec §7)
+    def test_no_type_name_layer_code_or_prefix_is_written_in_the_code(self):
+        import re
+        names = {x['name_0_19'] for x in identity.table()['types']} | {l['code_0_19'] for l in identity.table()['layers']}
+        bad = [f'{m}:{n} {s}' for m, n, s in _strings() if s[:1] in '\'"' and (s[1:-1] in names or re.fullmatch(r'A[1-4]\.', s[1:-1]))]
+        self.assertEqual(bad, [], "write _T('<type id>') or _L('<layer id>') (sdem/identity.py) instead")
+
+    def test_labels_and_messages_that_carry_a_code_only_go_down(self):
+        """The ratchet: text that carries an A-number ('A1 Business', 'not an A2 dataset') is right while the stack is 0.19's; step 4
+        computes it. A module may lower its count (then lower it here), never raise it."""
+        import collections, re
+        pat = re.compile(r'\bA[1-4](\.[A-Za-z]|\b)')
+        now = collections.Counter(m for m, _, s in _strings() if pat.search(s))
+        base = json.loads((ROOT / 'tests' / 'data' / 'identity-text-baseline.json').read_text())
+        self.assertEqual({m: (c, base.get(m, 0)) for m, c in now.items() if c > base.get(m, 0)}, {}, 'new text with an A-number: compute it (identity.layer) instead')
+
+
 if __name__ == '__main__':
     unittest.main()

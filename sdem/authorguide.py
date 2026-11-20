@@ -6,6 +6,7 @@ this version's. Printed by `sdem types authoring`; kept as docs/reference/author
   python -m sdem.authorguide            # write docs/reference/authoring-guide.md
   python -m sdem.authorguide --check    # is it current?
 """
+from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 import argparse, json
 from pathlib import Path
 
@@ -131,7 +132,7 @@ def _vocabulary(mm):
     cross = {}
     for layer in layers():
         code = layer['code']
-        if code not in ('A1', 'A3', 'A4'): continue
+        if code not in (_L('business'), _L('application'), _L('technology')): continue
         L += [f"### {layer['name']} — `{layer['file']}`", '']
         for t, e in sorted(mm.entities.items()):
             if e['level'] != code or e.get('artefact'): continue

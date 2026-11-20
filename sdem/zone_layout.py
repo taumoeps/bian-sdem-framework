@@ -17,9 +17,10 @@ hero). The rules, which the owner set while reviewing the 3D view:
 
 Coordinates are fractions of the plate: x left → right, y far → near, both 0…1.
 """
+from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 import json
 
-UNPLACED = ('A4.CommunicationNetwork', 'A4.NetworkZone', 'A4.DeploymentEnvironment', 'A4.Path', 'A4.Location')   # a location is a place, not a shape (0.17.0)
+UNPLACED = (_T('technology.CommunicationNetwork'), _T('technology.NetworkZone'), _T('technology.DeploymentEnvironment'), _T('technology.Path'), _T('technology.Location'))   # a location is a place, not a shape (0.17.0)
 _X0, _X1, _Z0, _Z1 = -2.8, 2.8, -2.7, 2.7   # the working plate; the constants below are tuned to it
 
 
@@ -32,7 +33,7 @@ def only_environment(doc, keep):
     `keep` matches an environment's name or its environment_kind (case-insensitive); 'all' keeps everything. Returns (doc, dropped ids)."""
     if not keep or keep.lower() == 'all': return doc, set()
     recs = {r['id']: r for r in doc.get('instances', [])}; rels = doc.get('relationships', [])
-    envs = [r for r in recs.values() if r['type'] == 'A4.DeploymentEnvironment']
+    envs = [r for r in recs.values() if r['type'] == _T('technology.DeploymentEnvironment')]
     if not envs: return doc, set()
     match = lambda e: keep.lower() in (e['name'].lower(), str((e.get('attributes') or {}).get('environment_kind', '')).lower())
     kept_envs = {e['id'] for e in envs if match(e)}
@@ -54,7 +55,7 @@ def _place(recs, rels, x0=_X0, x1=_X1, z0=_Z0, z1=_Z1, in_heading=frozenset()):
     """The layout in plate units: ({id: (x, z)}, regions, links shown by position, zone pairs side by side, {shape: innermost zone})."""
     typ = {r['id']: r['type'] for r in recs}; name = {r['id']: r['name'] for r in recs}
     at = {r['id']: (r.get('attributes') or {}) for r in recs}
-    zones_ = [r['id'] for r in recs if r['type'] == 'A4.NetworkZone']
+    zones_ = [r['id'] for r in recs if r['type'] == _T('technology.NetworkZone')]
     parent, direct, hosts, implied = {}, {}, {}, set()
     for r in rels:
         a, b, k = r['source'], r['target'], r['kind']
@@ -86,19 +87,19 @@ def _place(recs, rels, x0=_X0, x1=_X1, z0=_Z0, z1=_Z1, in_heading=frozenset()):
         for x in xs:
             for q in stack(x): zone_of.setdefault(q, z)
     heading_of = {}
-    as_line = {r['id'] for r in recs if r['type'] == 'A4.Path' and all((r.get('attributes') or {}).get(k) in zone_of for k in ('from', 'to'))
+    as_line = {r['id'] for r in recs if r['type'] == _T('technology.Path') and all((r.get('attributes') or {}).get(k) in zone_of for k in ('from', 'to'))
                and (r.get('attributes') or {}).get('from') != (r.get('attributes') or {}).get('to')}
     def chain(z):
         out = []
         while z: out.append(z); z = parent.get(z)
         return out
     for r in recs:   # an environment, a network or a path is not deployed: drawn in the smallest zone holding everything it groups or connects
-        if r['type'] not in ('A4.DeploymentEnvironment', 'A4.CommunicationNetwork', 'A4.Path'): continue
+        if r['type'] not in (_T('technology.DeploymentEnvironment'), _T('technology.CommunicationNetwork'), _T('technology.Path')): continue
         if r['id'] in as_line: continue   # PL-01: a path between two drawn nodes is the line between them, not a shape
         heading = r['id'] in in_heading
         ends = (r.get('attributes') or {})
         members = [x['target'] for x in rels if x['source'] == r['id'] and x['kind'] == 'aggregation' and x['target'] in zone_of]
-        if r['type'] != 'A4.DeploymentEnvironment':
+        if r['type'] != _T('technology.DeploymentEnvironment'):
             members += [x['source'] if x['target'] == r['id'] else x['target'] for x in rels if r['id'] in (x['source'], x['target'])
                         and x['kind'] in ('association', 'aggregation', 'composition') and (x['target'] if x['source'] == r['id'] else x['source']) in zone_of]
             members += [ends[k] for k in ('from', 'to') if ends.get(k) in zone_of]
@@ -149,7 +150,7 @@ def _place(recs, rels, x0=_X0, x1=_X1, z0=_Z0, z1=_Z1, in_heading=frozenset()):
     tops = sorted([z for z in zones_ if z not in parent], key=lambda z: (at[z].get('zone_kind') != 'cloud', z))
     def weight(z):
         return max(1, len(direct.get(z, []))) + sum(weight(k) for k in kids[z])
-    rest = [r['id'] for r in recs if r['type'] != 'A4.NetworkZone' and r['id'] not in zone_of and not any(r['id'] in v for v in direct.values())
+    rest = [r['id'] for r in recs if r['type'] != _T('technology.NetworkZone') and r['id'] not in zone_of and not any(r['id'] in v for v in direct.values())
             and r['id'] not in as_line and r['id'] not in in_heading]   # ZL-01: no strip kept for what is drawn as a line or a heading
     zb_top = z1 - (0.6 if rest else 0)
     raw = [weight(t) / (sum(weight(u) for u in tops) or 1) for t in tops]
@@ -158,7 +159,7 @@ def _place(recs, rels, x0=_X0, x1=_X1, z0=_Z0, z1=_Z1, in_heading=frozenset()):
     for i, t in enumerate(tops):
         xb = xa + (x1 - x0) * share[i]
         place(t, xa + (0.17 if i else 0), z0, xb - (0.17 if i < len(tops) - 1 else 0), zb_top); xa = xb
-    rest = [r['id'] for r in recs if r['id'] not in pos and r['type'] != 'A4.NetworkZone' and r['id'] not in as_line and r['id'] not in in_heading]
+    rest = [r['id'] for r in recs if r['id'] not in pos and r['type'] != _T('technology.NetworkZone') and r['id'] not in as_line and r['id'] not in in_heading]
     if rest:   # only what no zone holds, even through its host (LC-16 names it)
         lone = [q for q in rest if q not in spanning]
         label = 'Not in a zone' if not spanning & set(rest) else 'Across zones' if not lone else 'Not in a zone · across zones'
@@ -186,11 +187,11 @@ def layout(doc, mm=None, environment='production', headings=False):
         dropped |= gone
         doc = {**doc, 'instances': [i for i in doc['instances'] if i['id'] not in gone],
                'relationships': [r for r in doc.get('relationships', []) if r['source'] not in gone and r['target'] not in gone]}
-    recs = [r for r in doc.get('instances', []) if r['type'] != 'A4.Location']; rels = doc.get('relationships', [])   # a location is a place, not a shape (0.17.0)
-    if not any(r['type'] == 'A4.NetworkZone' for r in recs):
+    recs = [r for r in doc.get('instances', []) if r['type'] != _T('technology.Location')]; rels = doc.get('relationships', [])   # a location is a place, not a shape (0.17.0)
+    if not any(r['type'] == _T('technology.NetworkZone') for r in recs):
         raise LayoutError('no network zones recorded — place each shape in a zone first (RA4-38, LC-16; sdem aid proposes them)')
     # ZL-03 (headings=True, as DESNRE draws A4): a network is shown by its zone's heading (its address range), and the one environment drawn is not a shape
-    hide = {r['id'] for r in recs if r['type'] == 'A4.CommunicationNetwork' or (r['type'] == 'A4.DeploymentEnvironment' and (environment or 'all').lower() != 'all')} if headings else set()
+    hide = {r['id'] for r in recs if r['type'] == _T('technology.CommunicationNetwork') or (r['type'] == _T('technology.DeploymentEnvironment') and (environment or 'all').lower() != 'all')} if headings else set()
     pos, regions, implied, inner_zone, name, at, as_line, heading_of = _place(recs, rels, in_heading=frozenset(hide))
     u = lambda x: round((x - _X0) / (_X1 - _X0), 4); v = lambda z: round((z - _Z0) / (_Z1 - _Z0), 4)
     rect = lambda r: [u(r[0]), v(r[1]), u(r[2]), v(r[3])]
@@ -201,10 +202,10 @@ def layout(doc, mm=None, environment='production', headings=False):
               'level': at[g['id']].get('zone_level'), 'kind': at[g['id']].get('zone_kind'), 'part_of': parent.get(g['id']), 'rect': rect(g['rect'])}
              for g in regions if g['kind'] == 'zone']
     for z in zones:   # ZL-03: a network's address range in its zone's heading
-        rng = [v for q, zz in heading_of.items() if zz == z['id'] and typ.get(q) == 'A4.CommunicationNetwork'
+        rng = [v for q, zz in heading_of.items() if zz == z['id'] and typ.get(q) == _T('technology.CommunicationNetwork')
                for v in ((at[q].get('address_range') if isinstance(at[q].get('address_range'), list) else [at[q]['address_range']]) if at[q].get('address_range') else [])]
         if rng: z['label'] += ' · ' + ', '.join(rng)
-    locs = {i['id']: i['name'] for i in doc.get('instances', []) if i['type'] == 'A4.Location'}
+    locs = {i['id']: i['name'] for i in doc.get('instances', []) if i['type'] == _T('technology.Location')}
     place_of = {r['target']: r['source'] for r in rels if r['kind'] == 'aggregation' and r['source'] in locs}
     place_of.update({x: at[x]['location'] for x in at if at[x].get('location') in locs})
     top_of = lambda q: (lambda zz: (lambda f: f(f, zz))(lambda f, y: y if not parent.get(y) else f(f, parent[y])))(inner_zone.get(q))

@@ -2,13 +2,14 @@
 one relationship per enforceable constraint row (relationship name = row ID), and a valid value for every required
 attribute (taken from the attribute record). Every row the record allows is thereby exercised on committed data and
 accepted by sdem check, including the data-model conformance rules."""
+from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 from pathlib import Path
 import argparse, json
 from sdem.metamodel import Metamodel, MM_DIR
 from sdem.conformance import definitions
 
 OUT = MM_DIR.parent / 'examples' / 'reference-structure'
-FILES = {"A1": "a1-business.json", "A2": "a2-service-domain.json", "A3": "a3-application.json", "A4": "a4-technology.json"}
+FILES = {_L('business'): "a1-business.json", _L('bian'): "a2-service-domain.json", _L('application'): "a3-application.json", _L('technology'): "a4-technology.json"}
 
 
 PLACEHOLDER = {'integer': 1, 'boolean': False, 'date': '2026-01-01', 'map<string,string>': {}}
@@ -26,7 +27,7 @@ def required_values(mm, etype, short, n=1):
             v = f"RS-{short(t)}-{n}"  # instance n refers to the nth target, so natural keys built from references stay distinct
         else: v = PLACEHOLDER.get(a['type'], 'structure')
         out[k] = [v] if a['type'] == 'list<string>' and not isinstance(v, list) else v
-    if etype == 'A4.NetworkZone': out.update(zone_level=n - 1, zone_kind=('cloud', 'internal')[n - 1])   # a cloud zone made of an internal zone (RA4-39, LC-17)
+    if etype == _T('technology.NetworkZone'): out.update(zone_level=n - 1, zone_kind=('cloud', 'internal')[n - 1])   # a cloud zone made of an internal zone (RA4-39, LC-17)
     return out
 
 
@@ -43,12 +44,12 @@ def render(metamodel=None, level_rels=None):
         concrete = lambda want: want if want in ents else next(t for t in sorted(ents) if mm.is_a(t, want))   # a row may name a parent type (RA4-37)
         rels = [{"source": f"RS-{short(concrete(c['source_type']))}-1", "kind": c['kind'], "target": f"RS-{short(concrete(c['target_type']))}-{2 if c['source_type'] == c['target_type'] else 1}", "name": c['id']}
                 for c in lr['constraints'] if c['level'] == lvl and c.get('enforceable') is not False]
-        if lvl == 'A4':   # A4 is the physical deployment: a second instance no row reaches is linked too (LC-21), by its type's first row
+        if lvl == _L('technology'):   # A4 is the physical deployment: a second instance no row reaches is linked too (LC-21), by its type's first row
             used = {x for r in rels for x in (r['source'], r['target'])}
             rows = [c for c in lr['constraints'] if c['level'] == lvl and c.get('enforceable') is not False]
             for t in ents:
                 me = f"RS-{short(t)}-2"
-                if me in used or any(mm.is_a(t, u) for u in ('A4.CommunicationNetwork', 'A4.DeploymentEnvironment', 'A4.Path', 'A4.NetworkZone')): continue
+                if me in used or any(mm.is_a(t, u) for u in (_T('technology.CommunicationNetwork'), _T('technology.DeploymentEnvironment'), _T('technology.Path'), _T('technology.NetworkZone'))): continue
                 c = next((c for c in rows if concrete(c['source_type']) == t), None) or next((c for c in rows if concrete(c['target_type']) == t), None)
                 if c and concrete(c['source_type']) == t: rels.append({"source": me, "kind": c['kind'], "target": f"RS-{short(concrete(c['target_type']))}-1", "name": c['id']})
                 elif c: rels.append({"source": f"RS-{short(concrete(c['source_type']))}-1", "kind": c['kind'], "target": me, "name": c['id']})

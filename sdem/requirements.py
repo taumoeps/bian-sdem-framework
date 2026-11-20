@@ -15,6 +15,7 @@ each with evidence. A requirement no measurement speaks to is *not evaluable*, n
 
   sdem requirements list|show|check|trace|evaluate|propose|confirm|retire|measure
 """
+from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 import argparse, datetime, hashlib, json, re, sys
 from pathlib import Path
 
@@ -89,7 +90,7 @@ def check(reg, datasets):
         for x in [r['subject']] + r.get('allocated_to', []):
             if x not in ids: issues.append(f"{r['id']}: {x} is not a record of this workspace")
         for x in r.get('derived_from', []):
-            if x not in reqs and (ids.get(x) or {}).get('type') != 'A1.BusinessRequirement':
+            if x not in reqs and (ids.get(x) or {}).get('type') != _T('business.BusinessRequirement'):
                 issues.append(f"{r['id']}: derived from {x} — neither a requirement here nor an A1.BusinessRequirement record")
         h = r['history'][-1]
         if (h['version'], h['status']) != (r['version'], r['status']): issues.append(f"{r['id']}: its history ends at version {h['version']} {h['status']}, not {r['version']} {r['status']}")
@@ -220,9 +221,9 @@ def analyse(workspace, fg, impact_records, changed, kind, subs, coverage):
         meas = reg.get('measurements', [])
         for req, why in in_scope(reg, affected, set(changed)):
             e = evaluate_one(req, meas, subs, cls); e['in_scope_because'] = why; out['requirements'].append(e)
-        a1req = {i['id'] for d in fg.levels.values() for i in d.instances.values() if i['type'] == 'A1.BusinessRequirement'}
+        a1req = {i['id'] for d in fg.levels.values() for i in d.instances.values() if i['type'] == _T('business.BusinessRequirement')}
         out['obligations'] = sorted({x for e in out['requirements'] for r in reg['requirements'] if r['id'] == e['requirement'] for x in r.get('derived_from', []) if x in a1req}
-                                    | {e['requirement'] for e in out['requirements'] if e['owner_layer'] == 'A1'})
+                                    | {e['requirement'] for e in out['requirements'] if e['owner_layer'] == _L('business')})
     for l in LEVELS:
         mine = [e for e in out['requirements'] if e['owner_layer'] == l]
         reached = (coverage.get(l) or {}).get('reached') or any(level(x) == l for x in affected)

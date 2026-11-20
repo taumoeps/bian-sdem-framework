@@ -4,6 +4,7 @@ Generated from schema/level-model.schema.json, schema/relationship-registry.sche
 schema/impact-rules.json, metamodel/level-relationships.json and the entity catalogue, plus the identity,
 versioning, query and load requirements written here. Regenerate with `python -m sdem.kgspec`; CI checks it.
 """
+from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 from pathlib import Path
 from collections import Counter
 import argparse, json
@@ -12,9 +13,9 @@ from sdem.terms import apply as _terms
 
 ROOT = MM_DIR.parent
 DOC = ROOT / 'docs' / 'design' / 'knowledge-graph-spec.md'
-LEVEL_NAMES = {'A1': 'A1 Business Architecture', 'A2': 'A2 Service Domain Architecture', 'A3': 'A3 Application Architecture', 'A4': 'A4 Technology Architecture'}
-OWNER = {'A1': 'business architecture', 'A2': 'BIAN alignment (enterprise architecture)', 'A3': 'application architecture', 'A4': 'infrastructure / platform engineering'}
-SOURCE = {'A1': 'EA tool — capability, value-stream and process models', 'A2': 'BIAN workbench / the bank\'s BIAN alignment', 'A3': 'application portfolio, API catalogue, data models', 'A4': 'CMDB, deployment manifests'}
+LEVEL_NAMES = {_L('business'): 'A1 Business Architecture', _L('bian'): 'A2 Service Domain Architecture', _L('application'): 'A3 Application Architecture', _L('technology'): 'A4 Technology Architecture'}
+OWNER = {_L('business'): 'business architecture', _L('bian'): 'BIAN alignment (enterprise architecture)', _L('application'): 'application architecture', _L('technology'): 'infrastructure / platform engineering'}
+SOURCE = {_L('business'): 'EA tool — capability, value-stream and process models', _L('bian'): 'BIAN workbench / the bank\'s BIAN alignment', _L('application'): 'application portfolio, API catalogue, data models', _L('technology'): 'CMDB, deployment manifests'}
 
 
 def _j(p): return json.loads(Path(p).read_text(encoding='utf-8'))
@@ -55,7 +56,7 @@ def render():
             '    L1 -.->|reads entities + changes| ENG', '    L2 -.-> ENG', '    L3 -.-> ENG', '    L4 -.-> ENG', '    FED -.->|reads approved edges| ENG',
             '    L1 -.->|entity references| FED', '    L2 -.-> FED', '    L3 -.-> FED', '    L4 -.-> FED', '    MD -->|approved edges| FED', '    FED --> Q', '```', '',
             '| Graph | Holds | Owner | Source | Built from |', '|---|---|---|---|---|']
-    for l in ('A1', 'A2', 'A3', 'A4'):
+    for l in (_L('business'), _L('bian'), _L('application'), _L('technology')):
         out.append(f"| {LEVEL_NAMES[l]} local graph | the level's entity instances and the links inside the level | {OWNER[l]} | {SOURCE[l]} | one architecture dataset (`schema/level-model.schema.json`) |")
     out += ['| Federated graph | approved cross-level edges, and references to their ends in the local graphs | enterprise architecture | the mapping set | the mapping set (`schema/relationship-registry.schema.json`) joined to the four local graphs |', '']
     req('A', 'Hold each level in its own local graph, loaded only from that level\'s architecture dataset; a change in one level never requires reloading another.', 'level-model.schema.json; `LevelGraph`', 'built (in memory; persisted by the graph store, `sdem build`)')
@@ -77,7 +78,7 @@ def render():
     out += ['', '### 2.3 Node and edge types per level', '']
     byl = Counter(c['level'] for c in lr['constraints'])
     out += ['| Level | Node types (concrete) | Edge rows | Join-key properties |', '|---|---|---|---|']
-    for l in ('A1', 'A2', 'A3', 'A4'):
+    for l in (_L('business'), _L('bian'), _L('application'), _L('technology')):
         nodes = [t.split('.')[1] for t, e in mm.entities.items() if e['level'] == l and not e.get('abstract') and not e.get('artefact')]
         keys = sorted({f"{ent.split('.')[1]}.{k}" for ent, ks in conv['conventions'].items() if ent.startswith(l) for k in ks})
         out.append(f"| {LEVEL_NAMES[l]} | {len(nodes)}: {', '.join(nodes)} | {byl[l]} (`R{l}-01` …) | {', '.join(keys)} |")

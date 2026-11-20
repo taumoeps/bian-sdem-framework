@@ -3,6 +3,7 @@
 No third-party dependencies. The schema subset covers only the keywords used in
 schema/relationship-registry.schema.json; `check_schema` is not a general JSON Schema engine.
 """
+from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 from pathlib import Path
 import argparse, json, re, sys
 from sdem.metamodel import Metamodel
@@ -160,7 +161,7 @@ def validate_registry(registry, metamodel=None):
         src, tgt = level_of(rule.get('source_type'), registry), level_of(rule.get('target_type'), registry)
         if src not in levels or tgt not in levels:
             issues.append(f'{prefix}: source/target types must be prefixed with a level code {levels}')
-        elif levels.index(tgt) - levels.index(src) != 1 and not (rule.get('skips_level') is True and (src, tgt) == ('A1', 'A3') and rule.get('skips_level_reasoning')):
+        elif levels.index(tgt) - levels.index(src) != 1 and not (rule.get('skips_level') is True and (src, tgt) == (_L('business'), _L('application')) and rule.get('skips_level_reasoning')):
             # KG-F-03, with the owner's decision D9 (2026-11-16): adjacent layers only — except a link type marked skips_level, A1 → A3, with its reason
             issues.append(f'{prefix}: cross-level edges must point from A(n) to A(n+1)' + (' — only a link type marked skips_level, from A1 to A3, with its reason, may skip a layer (D9)' if rule.get('skips_level') else ''))
         for key in ('source_type', 'target_type'):
@@ -227,7 +228,7 @@ def validate(payload, registry=None, schema=None, resolver=None, entity_resolver
     ids = [m.get('mapping_id') for m in mappings if isinstance(m.get('mapping_id'), str) and m['mapping_id']]
     id_set = set(ids)
     successors = {m['previous_mapping_id'] for m in mappings if isinstance(m.get('previous_mapping_id'), str)}
-    bian_level = registry.get('bian_level', 'A2')
+    bian_level = registry.get('bian_level', _L('bian'))
     for pos, mapping in enumerate(mappings, 1):
         mid = mapping.get('mapping_id')
         prefix = f"mapping #{pos}" + (f" ({mid})" if mid else '')

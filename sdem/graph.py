@@ -4,6 +4,7 @@ Structural logic only. A level graph holds an institution's instances and within
 the federated graph resolves mapping endpoints against them, traces chains with names, and classifies
 impact by rule. Nothing here decides whether a mapping is right.
 """
+from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 from pathlib import Path
 import argparse, json, re, sys
 from sdem.metamodel import Metamodel, MM_DIR, PROJECTED_PREFIXES, is_projection_dataset
@@ -146,13 +147,13 @@ class FederatedGraph:
             issues = validate(d, self.registry, load_schema(), entity_resolver=self, warnings=warnings, metamodel=self.mm)
             report[f'mappings #{n}'] = issues
         lone = self.unconnected()   # LC-21: an A4 shape linked to nothing — inside the layer (its zone aside) or across layers
-        if lone: self.warnings.setdefault(f"level A4 ({self.levels['A4'].doc['model_id']})", []).extend(lone)
+        if lone: self.warnings.setdefault(f"level A4 ({self.levels[_L('technology')].doc['model_id']})", []).extend(lone)
         unexposed = self.unexposed()   # LC-22: an internet-facing interface exposed through nothing
-        if unexposed: self.warnings.setdefault(f"level A3 ({self.levels['A3'].doc['model_id']})", []).extend(unexposed)
-        if 'A3' in self.levels:   # LC-28: an attribute and the approved links of the same meaning disagree (metamodel 0.16.0, AT-01)
+        if unexposed: self.warnings.setdefault(f"level A3 ({self.levels[_L('application')].doc['model_id']})", []).extend(unexposed)
+        if _L('application') in self.levels:   # LC-28: an attribute and the approved links of the same meaning disagree (metamodel 0.16.0, AT-01)
             from .aid_attr import disagreements
             dis = disagreements({l: g.doc for l, g in self.levels.items()}, [m for d in self.mapping_docs for m in d.get('mappings', [])], self.mm)
-            if dis: self.warnings.setdefault(f"level A3 ({self.levels['A3'].doc['model_id']})", []).extend(dis)
+            if dis: self.warnings.setdefault(f"level A3 ({self.levels[_L('application')].doc['model_id']})", []).extend(dis)
         for lvl, found in self.information_model().items():   # LC-23 … LC-27: the information model (metamodel 0.15.0, IM-08)
             if found: self.warnings.setdefault(f"level {lvl} ({self.levels[lvl].doc['model_id']})", []).extend(found)
         from . import profile as _p
@@ -214,7 +215,7 @@ class FederatedGraph:
                 if r['kind'] in ('composition', 'aggregation'):
                     if direction == 'down' and r['target'] == iid: hops.append(r['source'])
                     if direction == 'up' and r['source'] == iid: hops.append(r['target'])
-                elif r['kind'] == 'realization' and self.mm.is_a((self.instance(r['target']) or {}).get('type', ''), 'A1.BusinessRequirement'):
+                elif r['kind'] == 'realization' and self.mm.is_a((self.instance(r['target']) or {}).get('type', ''), _T('business.BusinessRequirement')):
                     # a requirement is realised by a capability, process or service (ArchiMate 3.2 ch. 6): downstream from the requirement
                     # continues through what realises it; upstream from the realiser reaches the requirement
                     if direction == 'down' and r['target'] == iid: hops.append(r['source'])
@@ -225,7 +226,7 @@ class FederatedGraph:
         """LC-21 (warning): an A4 shape — not a network, zone, path or environment, and not retired — with no link inside A4 other than
         its zone placement. A4 is the physical deployment: a connection to another layer does not count (sdem/a4_connect.py lone).
         An internet-facing shape fronts nothing; any other is connected to nothing. sdem aid proposes connections (AID-C01…C06)."""
-        g = self.levels.get('A4')
+        g = self.levels.get(_L('technology'))
         if not g: return []
         from .a4_connect import lone
         facing = {i['id'] for i in g.doc.get('instances', []) if (i.get('attributes') or {}).get('internet_facing') is True}
@@ -236,11 +237,11 @@ class FederatedGraph:
     def unexposed(self):
         """LC-22 (warning; metamodel 0.12.0): an A3 interface marked internet facing with no EXPOSED_THROUGH connection (any status) —
         something says it is reached from the internet, but nothing says through what."""
-        g = self.levels.get('A3')
+        g = self.levels.get(_L('application'))
         if not g: return []
         through = {(m.get('source') or {}).get('id') for d in self.mapping_docs for m in d.get('mappings', []) if m.get('relationship') == 'EXPOSED_THROUGH'}
         return [f"instance {i['id']}: is internet facing but exposed through nothing — propose EXPOSED_THROUGH an edge platform in a DMZ (sdem aid, AID-X01) (LC-22)"
-                for i in g.doc.get('instances', []) if self.mm.is_a(i['type'], 'A3.ApplicationInterface')
+                for i in g.doc.get('instances', []) if self.mm.is_a(i['type'], _T('application.ApplicationInterface'))
                 and (i.get('attributes') or {}).get('internet_facing') is True and i['id'] not in through]
 
     def information_model(self):
@@ -249,7 +250,7 @@ class FederatedGraph:
         disagree · LC-25 a system-of-record entity with field records but no primary key · LC-26 a foreign key to an entity with no
         primary key · LC-27 a FIELD_MAPPED_TO between incompatible types. Old data is reported, never refused (FD-P2)."""
         out = {}
-        FIELD = {'A2': ('A2.BusinessObject', 'A2.BusinessObjectAttribute'), 'A3': ('A3.DataEntity', 'A3.DataAttribute')}
+        FIELD = {_L('bian'): (_T('bian.BusinessObject'), _T('bian.BusinessObjectAttribute')), _L('application'): (_T('application.DataEntity'), _T('application.DataAttribute'))}
         recs = {}
         for lvl, (whole, part) in FIELD.items():
             g = self.levels.get(lvl)
@@ -271,13 +272,13 @@ class FederatedGraph:
                     if names and set(names) != rn:
                         miss, extra = sorted(set(names) - rn), sorted(rn - set(names))
                         found.append(f"instance {i['id']}: its field names and its field records disagree" + (f" — no record for {', '.join(miss)}" if miss else '') + (f" — not in its list: {', '.join(extra)}" if extra else '') + ' (LC-24)')
-                    if lvl == 'A3' and (i.get('attributes') or {}).get('system_of_record') is True and not any((f.get('attributes') or {}).get('primary_key') is True for f in have):
+                    if lvl == _L('application') and (i.get('attributes') or {}).get('system_of_record') is True and not any((f.get('attributes') or {}).get('primary_key') is True for f in have):
                         found.append(f"instance {i['id']}: is a system of record but none of its fields is a primary key (LC-25)")
-            if lvl == 'A3':
+            if lvl == _L('application'):
                 pk = {e for e, fs in fields.items() if any((f.get('attributes') or {}).get('primary_key') is True for f in fs)}
                 for r in g.doc.get('relationships', []):
-                    if r.get('kind') == 'association' and r['source'] in inst and r['target'] in inst and self.mm.is_a(inst[r['source']]['type'], 'A3.DataAttribute') \
-                            and self.mm.is_a(inst[r['target']]['type'], 'A3.DataEntity') and r['target'] not in pk:
+                    if r.get('kind') == 'association' and r['source'] in inst and r['target'] in inst and self.mm.is_a(inst[r['source']]['type'], _T('application.DataAttribute')) \
+                            and self.mm.is_a(inst[r['target']]['type'], _T('application.DataEntity')) and r['target'] not in pk:
                         found.append(f"instance {r['source']}: is a foreign key to {r['target']}, which has no primary key (LC-26)")
             out[lvl] = found
         COMPAT = {'integer': ('int', 'integer', 'smallint', 'bigint', 'number', 'numeric'), 'decimal': ('numeric', 'decimal', 'number', 'float', 'double', 'real', 'money'),
@@ -290,7 +291,7 @@ class FederatedGraph:
                 if not (s_ and t_): continue
                 lt = str((s_.get('attributes') or {}).get('data_type') or '').lower(); pt = str((t_.get('attributes') or {}).get('physical_type') or '').lower()
                 if lt in COMPAT and pt and not pt.startswith(COMPAT[lt]):
-                    out.setdefault('A3', []).append(f"instance {t_['id']}: holds {s_['id']} ({lt}) as {pt} — the types do not match (LC-27)")
+                    out.setdefault(_L('application'), []).append(f"instance {t_['id']}: holds {s_['id']} ({lt}) as {pt} — the types do not match (LC-27)")
         # LC-29 (warning; the public twin's first run, F7): a column whose physical type cannot hold what its name says — read from the
         # last word(s) of the name only, and only where the type family is unmistakable. Never a refusal (FD-P2).
         FAMILY = (('time', ('date', 'time', 'timestamp')), ('boolean', ('bool', 'bit')), ('number', ('numeric', 'decimal', 'number', 'money', 'int', 'bigint', 'smallint', 'float', 'double', 'real')),
@@ -301,9 +302,9 @@ class FederatedGraph:
         ROLE = (('an amount', ('amount', 'balance', 'price', 'total'), {'number'}), ('a currency code', ('currency',), {'text'}),
                 ('a date or time', ('at', 'date', 'time', 'timestamp', 'datetime'), {'time'}),
                 ('an identifier', ('id', 'identifier', 'identification', 'reference', 'ref', 'key', 'hash'), {'text', 'whole number'}))
-        g3 = self.levels.get('A3')
+        g3 = self.levels.get(_L('application'))
         for i in (g3.doc.get('instances', []) if g3 else []):
-            if not self.mm.is_a(i['type'], 'A3.DataAttribute') or i.get('lifecycle_status') == 'retired': continue
+            if not self.mm.is_a(i['type'], _T('application.DataAttribute')) or i.get('lifecycle_status') == 'retired': continue
             pt = str((i.get('attributes') or {}).get('physical_type') or ''); fam = family(pt)
             if not fam: continue
             last = re.split(r'[^a-z0-9]+', re.sub(r'(?<=[a-z0-9])(?=[A-Z])', '_', str(i.get('name', ''))).lower())
@@ -313,7 +314,7 @@ class FederatedGraph:
             what, _, ok = role
             whole = fam == 'number' and not re.search(r'\(\s*\d+\s*,\s*[1-9]', pt) and not pt.lower().startswith(('float', 'double', 'real', 'money'))
             if fam in ok or ('whole number' in ok and whole): continue
-            out.setdefault('A3', []).append(f"instance {i['id']}: is named as {what} ({i.get('name')}) but its type is {pt} — check the type, or the name (LC-29)")
+            out.setdefault(_L('application'), []).append(f"instance {i['id']}: is named as {what} ({i.get('name')}) but its type is {pt} — check the type, or the name (LC-29)")
         return {k: v for k, v in out.items() if v and k in self.levels}
 
     def network_edges(self):
@@ -327,19 +328,19 @@ class FederatedGraph:
             out.append({'mapping_id': row, 'relationship': 'CONNECTED_TO', 'status': 'structural', 'baseline_id': None,
                         'source': {'id': a, 'type': ia.get('type'), 'version': ia.get('version')}, 'target': {'id': b, 'type': ib.get('type'), 'version': ib.get('version')}})
         for g in self.levels.values():   # network zones (0.10.0): a shape a zone holds depends on it, and a zone on the zone it is part of
-            if g.doc.get('level') != 'A4': continue
+            if g.doc.get('level') != _L('technology'): continue
             _, parent, direct = zones_of(g.doc, self.mm)
             for x, zs in direct.items():
-                if not any(self.mm.is_a((self.instance(x) or {}).get('type', ''), t) for t in ('A4.Node', 'A4.Device', 'A4.SystemSoftware')):
+                if not any(self.mm.is_a((self.instance(x) or {}).get('type', ''), t) for t in (_T('technology.Node'), _T('technology.Device'), _T('technology.SystemSoftware'))):
                     for z in zs: hop(x, z, 'RA4-38')   # a platform's zone is added below, as its network
             for z, p in parent.items(): hop(z, p, 'RA4-39')
         for g in self.levels.values():
-            if g.doc.get('level') != 'A4': continue
+            if g.doc.get('level') != _L('technology'): continue
             for p, nets in networks_of(g.doc, self.mm).items():
                 ip = self.instance(p) or {}
-                if not any(self.mm.is_a(ip.get('type', ''), t) for t in ('A4.Node', 'A4.Device', 'A4.SystemSoftware')): continue   # a deployment reaches it through its platform
+                if not any(self.mm.is_a(ip.get('type', ''), t) for t in (_T('technology.Node'), _T('technology.Device'), _T('technology.SystemSoftware'))): continue   # a deployment reaches it through its platform
                 for x in nets:
-                    hop(p, x, 'RA4-38' if self.mm.is_a((self.instance(x) or {}).get('type', ''), 'A4.NetworkZone') else 'RA4-37')
+                    hop(p, x, 'RA4-38' if self.mm.is_a((self.instance(x) or {}).get('type', ''), _T('technology.NetworkZone')) else 'RA4-37')
         return out
 
     def trace(self, start, direction='down', statuses=('approved',), follow_composition=False):
@@ -544,7 +545,7 @@ def write_level_csv(results, path):
             for o in res['orphans']: w.writerow([res['direction'], res['level'], o['id'], o['name'], '', '', '', 'gap: connected to nothing'])
 
 
-_LAYER = {'A1': 'A1 Business', 'A2': 'A2 BIAN', 'A3': 'A3 Application', 'A4': 'A4 Technology'}
+_LAYER = {_L('business'): 'A1 Business', _L('bian'): 'A2 BIAN', _L('application'): 'A3 Application', _L('technology'): 'A4 Technology'}
 
 
 class _Layers(dict):

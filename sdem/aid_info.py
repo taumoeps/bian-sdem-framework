@@ -12,6 +12,7 @@ AID-I08  Where the workspace has applications, a table is inferred for a BIAN ob
          service domain whose control record works on the object — otherwise nothing here would store it, and SDEM says so instead (found in the
          public twin's first run, F4: a 27-field table for Party Authentication that the design never had).
 """
+from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 import re
 
 TYPES = {'string': 'varchar(140)', 'text': 'text', 'integer': 'integer', 'decimal': 'numeric(18,6)', 'amount': 'numeric(18,2)',
@@ -35,10 +36,10 @@ def propose_information(a2, a3, mappings, mark, rejected=frozenset(), is_inferre
     a3i = {i['id']: i for i in (a3 or {}).get('instances', [])}
     fields = {}
     for r in (a2 or {}).get('relationships', []):
-        if r.get('kind') == 'composition' and r['source'] in a2i and a2i.get(r['target'], {}).get('type') == 'A2.BusinessObjectAttribute':
+        if r.get('kind') == 'composition' and r['source'] in a2i and a2i.get(r['target'], {}).get('type') == _T('bian.BusinessObjectAttribute'):
             fields.setdefault(r['source'], []).append(a2i[r['target']])
     refers = {r['source']: r['target'] for r in (a2 or {}).get('relationships', [])
-              if r.get('kind') == 'association' and a2i.get(r['source'], {}).get('type') == 'A2.BusinessObjectAttribute'}
+              if r.get('kind') == 'association' and a2i.get(r['source'], {}).get('type') == _T('bian.BusinessObjectAttribute')}
     mapped = {}
     for m in mappings:
         if m.get('relationship') == 'MAPPED_TO' and m.get('status') != 'rejected':
@@ -46,18 +47,18 @@ def propose_information(a2, a3, mappings, mark, rejected=frozenset(), is_inferre
     entity_of = dict(mapped)
     # AID-I08: which service domains work on each object (domain aggregates control record; control record is associated with the object), and which are realised here
     typ2 = {i: r.get('type') for i, r in a2i.items()}
-    sd_of = {r['target']: r['source'] for r in (a2 or {}).get('relationships', []) if r.get('kind') == 'aggregation' and typ2.get(r['source']) == 'A2.ServiceDomain'}
+    sd_of = {r['target']: r['source'] for r in (a2 or {}).get('relationships', []) if r.get('kind') == 'aggregation' and typ2.get(r['source']) == _T('bian.ServiceDomain')}
     domains = {}
     for r in (a2 or {}).get('relationships', []):
-        if r.get('kind') == 'association' and typ2.get(r['source']) == 'A2.ControlRecord' and r['source'] in sd_of: domains.setdefault(r['target'], set()).add(sd_of[r['source']])
+        if r.get('kind') == 'association' and typ2.get(r['source']) == _T('bian.ControlRecord') and r['source'] in sd_of: domains.setdefault(r['target'], set()).add(sd_of[r['source']])
     realised = {m['source']['id'] for m in mappings if m.get('relationship') == 'REALIZED_BY' and m.get('status') != 'rejected'}
-    has_apps = any(i.get('type') == 'A3.ApplicationComponent' and not is_inferred(i) for i in a3i.values())
+    has_apps = any(i.get('type') == _T('application.ApplicationComponent') and not is_inferred(i) for i in a3i.values())
     skipped = []
     declined = {}   # RJ-04: a person rejected the object's mapping — where it is stored is theirs to say; nothing is inferred in its place
     for m in mappings:
         if m.get('relationship') == 'MAPPED_TO' and m.get('status') == 'rejected': declined.setdefault(m['source']['id'], m['target']['id'])
     for bo, fs in fields.items():   # AID-I01: the entities first, so a foreign key can point at one inferred in the same run
-        if bo in mapped or a2i[bo].get('type') != 'A2.BusinessObject': continue
+        if bo in mapped or a2i[bo].get('type') != _T('bian.BusinessObject'): continue
         if bo in declined:
             skipped.append({'id': bo, 'name': a2i[bo].get('name', bo), 'domains': sorted(domains.get(bo, ())), 'why': f'a person rejected its mapping to {declined[bo]} (RJ-04)'}); continue
         if has_apps and domains.get(bo) and not (domains[bo] & realised):
@@ -70,7 +71,7 @@ def propose_information(a2, a3, mappings, mark, rejected=frozenset(), is_inferre
         o, eid = a2i[bo], entity_of[bo]
         if eid not in a3i:
             names = [_snake(f['name']) for f in fs]
-            inst.append({'id': eid, 'type': 'A3.DataEntity', 'version': '1', 'name': f"{_snake(o['name'])} (inferred)", 'lifecycle_status': 'planned',
+            inst.append({'id': eid, 'type': _T('application.DataEntity'), 'version': '1', 'name': f"{_snake(o['name'])} (inferred)", 'lifecycle_status': 'planned',
                          'description': f"Inferred: the data entity that stores the business object {o['name']} ({bo}).",
                          'attributes': {'attributes': names, 'inferred': mark('AID-I01', f"one data entity per business object with typed fields — {o['name']} has {len(fs)}", bo)}})
             rels_from = []
@@ -84,7 +85,7 @@ def propose_information(a2, a3, mappings, mark, rejected=frozenset(), is_inferre
                 if a.get('allowed_values'): fa['allowed_values'] = list(a['allowed_values'])
                 if a.get('personal_information') is not None: fa['personal_information'] = a['personal_information']
                 fa['inferred'] = mark('AID-I01', f"the field {f['name']} ({lt}) as {fa['physical_type']}" + (', the primary key' if fa.get('primary_key') else ''), f['id'])
-                inst.append({'id': fid, 'type': 'A3.DataAttribute', 'version': '1', 'name': _snake(f['name']), 'lifecycle_status': 'planned', 'attributes': fa})
+                inst.append({'id': fid, 'type': _T('application.DataAttribute'), 'version': '1', 'name': _snake(f['name']), 'lifecycle_status': 'planned', 'attributes': fa})
                 rels.append({'source': eid, 'kind': 'composition', 'target': fid})
                 target = entity_of.get(refers.get(f['id']))
                 if target and target != eid:   # AID-I02: a reference becomes a foreign key
@@ -98,7 +99,7 @@ def propose_information(a2, a3, mappings, mark, rejected=frozenset(), is_inferre
 def propose_access(docs, mappings, mm, mark):
     """AID-I07 (found in v2: inferred tables nobody used): a data entity no component accesses is accessed by the one component that realises
     the BIAN service domain whose control record is associated with the business object the entity stores. A link inside A3, marked inferred."""
-    a2, a3 = docs.get('A2') or {}, docs.get('A3') or {}
+    a2, a3 = docs.get(_L('bian')) or {}, docs.get(_L('application')) or {}
     i3 = {i['id']: i for i in a3.get('instances', [])}
     accessed = {r['target'] for r in a3.get('relationships', []) if r.get('kind') == 'access'}
     live = [m for m in mappings if m.get('status') in ('approved', 'proposed')]
@@ -107,7 +108,7 @@ def propose_access(docs, mappings, mm, mark):
         if m['relationship'] == 'MAPPED_TO': stores.setdefault(m['target']['id'], set()).add(m['source']['id'])
     realised = {}
     for m in live:
-        if m['relationship'] == 'REALIZED_BY' and mm.is_a(m['source'].get('type') or '', 'A2.ServiceDomain'):
+        if m['relationship'] == 'REALIZED_BY' and mm.is_a(m['source'].get('type') or '', _T('bian.ServiceDomain')):
             realised.setdefault(m['source']['id'], set()).add(m['target']['id'])
     cr_of = {}
     for r in a2.get('relationships', []):
@@ -115,7 +116,7 @@ def propose_access(docs, mappings, mm, mark):
     sd_of = {r['target']: r['source'] for r in a2.get('relationships', []) if r.get('kind') == 'aggregation'}
     out = []
     for e, rec in i3.items():
-        if not mm.is_a(rec['type'], 'A3.DataEntity') or e in accessed: continue
+        if not mm.is_a(rec['type'], _T('application.DataEntity')) or e in accessed: continue
         comps = {c for bo in stores.get(e, ()) for cr in cr_of.get(bo, ()) for c in realised.get(sd_of.get(cr), ())}
         if len(comps) == 1:
             c = next(iter(comps))

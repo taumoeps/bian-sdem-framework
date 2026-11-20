@@ -3,6 +3,7 @@
 The JSON is the record of every within-level entity connection (constraint rows per level, plus catalogue
 inheritance); the document is a projection of it, checked current by the test suite.
 """
+from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 from pathlib import Path
 import argparse, json
 from sdem.metamodel import MM_DIR
@@ -10,9 +11,9 @@ from sdem.terms import apply as _terms
 
 LEVEL_RELS = MM_DIR / 'level-relationships.json'
 DOC = MM_DIR.parent / 'docs' / 'reference' / 'relationships-planning.md'
-LEVEL_NAMES = {'A1': 'A1 Business Architecture', 'A2': 'A2 Service Domain Architecture', 'A3': 'A3 Application Architecture', 'A4': 'A4 Technology Architecture'}
-LEVEL_SOURCE = {'A1': 'ArchiMate 3.2 chapters 6 (Motivation), 7 (Strategy) and 8 (Business)', 'A2': "BIAN Service Landscape 14 metamodel, Control Record Model, Business Object Model and the Semantic API Practitioner Guide",
-                'A3': 'ArchiMate 3.2 chapter 9 (Application) and TOGAF 10 (Solution Building Block); SDEM extension rows for API operations', 'A4': 'ArchiMate 3.2 chapter 10 (Technology); SDEM extension rows for Deployment and Deployment Environment'}
+LEVEL_NAMES = {_L('business'): 'A1 Business Architecture', _L('bian'): 'A2 Service Domain Architecture', _L('application'): 'A3 Application Architecture', _L('technology'): 'A4 Technology Architecture'}
+LEVEL_SOURCE = {_L('business'): 'ArchiMate 3.2 chapters 6 (Motivation), 7 (Strategy) and 8 (Business)', _L('bian'): "BIAN Service Landscape 14 metamodel, Control Record Model, Business Object Model and the Semantic API Practitioner Guide",
+                _L('application'): 'ArchiMate 3.2 chapter 9 (Application) and TOGAF 10 (Solution Building Block); SDEM extension rows for API operations', _L('technology'): 'ArchiMate 3.2 chapter 10 (Technology); SDEM extension rows for Deployment and Deployment Environment'}
 
 
 def load(path=LEVEL_RELS):
@@ -32,19 +33,19 @@ def render(lr=None):
            '**Confidence and verification.** Confidence follows the single rule applied to every layer of the model (`sdem/confidence.py`): **high** — defined by a public standard and checked (BIAN public material, or a relationship confirmed by the Archi oracle); **medium** — follows from an SDEM extension built on a standard concept, or rests on a login-gated source exercised by the coverage cases; **low** — an SDEM reading with no standard relationship, not validated. Verification: `verified` = checked on BIAN\'s public pages; `verified_against_archi` = confirmed by the open-source Archi relationship matrix (cited by commit below); `sdem_definition` follows from an SDEM extension entity; `sdem_reading` is SDEM\'s reading of a public BIAN page that states no explicit relationship; `unverified_togaf` has no public oracle. The A1/A3/A4 tables also show the *inference confidence* recorded before the oracle test.', '']
     tally = Counter((c['level'], c['confidence']) for c in rows)
     out += ['## Summary', '', '| Level | Reference source | Rows | high | medium | low |', '|---|---|---|---|---|---|']
-    for l in ('A1', 'A2', 'A3', 'A4'):
+    for l in (_L('business'), _L('bian'), _L('application'), _L('technology')):
         n = sum(1 for c in rows if c['level'] == l)
         out.append(f"| {LEVEL_NAMES[l]} | {LEVEL_SOURCE[l]} | {n} | {tally[(l, 'high')]} | {tally[(l, 'medium')]} | {tally[(l, 'low')]} |")
     out.append(f"| **Total** | | **{len(rows)}** | {sum(v for (l, c), v in tally.items() if c == 'high')} | {sum(v for (l, c), v in tally.items() if c == 'medium')} | {sum(v for (l, c), v in tally.items() if c == 'low')} |")
     out.append('')
-    for l in ('A1', 'A2', 'A3', 'A4'):
+    for l in (_L('business'), _L('bian'), _L('application'), _L('technology')):
         out += [f'## {LEVEL_NAMES[l]}', '', f'Reference: {LEVEL_SOURCE[l]}.', '',
-                ('| ID | Official | Source entity | Kind | Target entity | Description | Reference source | Reasoning | Confidence | Verification |' if l == 'A2' else
+                ('| ID | Official | Source entity | Kind | Target entity | Description | Reference source | Reasoning | Confidence | Verification |' if l == _L('bian') else
                  '| ID | Source entity | Kind | Target entity | Description | ArchiMate concepts | Inferred pattern | Inference reasoning | Inference conf. | Independent test | Verification |'),
-                ('|---|---|---|---|---|---|---|---|---|---|' if l == 'A2' else '|---|---|---|---|---|---|---|---|---|---|---|')]
+                ('|---|---|---|---|---|---|---|---|---|---|' if l == _L('bian') else '|---|---|---|---|---|---|---|---|---|---|---|')]
         for c in rows:
             if c['level'] != l: continue
-            if l == 'A2':
+            if l == _L('bian'):
                 out.append(f"| {c['id']} | {c.get('official_id') or '—'} | {c['source_type']} | {c['kind']} | {c['target_type']} | {c['description']} | {c['reference_source']} | {c['reasoning']} | {c['confidence']} | {c['verification']} |")
             else:
                 i = c['inference']

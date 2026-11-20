@@ -2,6 +2,7 @@
 
 The catalogue is the public vocabulary (metamodel/*.json). It holds no institutional content.
 """
+from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 from pathlib import Path
 import json
 
@@ -100,7 +101,7 @@ class Metamodel:
         ok = any(c['level'] == level and self.is_a(source_type, c['source_type']) and c['kind'] == kind and self.is_a(target_type, c['target_type'])
                  for c in self.relationships['constraints'])
         if not ok:
-            basis = 'BIAN structure' if level == 'A2' else 'ArchiMate 3.2 / TOGAF'
+            basis = 'BIAN structure' if level == _L('bian') else 'ArchiMate 3.2 / TOGAF'
             return f'{level} relationship {source_type} -{kind}-> {target_type} does not match the {basis} constraints (metamodel/level-relationships.json)'
         return None
 

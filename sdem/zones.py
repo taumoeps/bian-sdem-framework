@@ -8,6 +8,7 @@ Read-only. The zone connections are worked out from the zone structure — never
   sdem zones --workspace examples/payment-initiation
   sdem zones path INF-APIGW-PAY INF-PG-PAY-PROD --workspace examples/payment-initiation
 """
+from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 import argparse, json, sys
 from pathlib import Path
 
@@ -27,7 +28,7 @@ def collect(workspace):
     zones = [{'id': z, 'name': byid[z]['name'], 'level': (byid[z].get('attributes') or {}).get('zone_level'), 'kind': (byid[z].get('attributes') or {}).get('zone_kind'),
               'part_of': parent.get(z), 'holds': sorted(direct.get(z, [])),
               'inferred': isinstance((byid[z].get('attributes') or {}).get('inferred'), dict)}
-             for z, i in byid.items() if mm.is_a(i['type'], 'A4.NetworkZone')]
+             for z, i in byid.items() if mm.is_a(i['type'], _T('technology.NetworkZone'))]
     marks = {(r['source'], r['target']): r['inferred'] for r in doc.get('relationships', []) if isinstance(r.get('inferred'), dict)}
     placed = [{'shape': x, 'zone': zs[0] if zs else None, 'how': ('directly' if x in {y for v in direct.values() for y in v} else 'through its host') if zs else 'in no zone',
                **({'inferred': marks[(zs[0], x)]} if zs and (zs[0], x) in marks else {})} for x, zs in sorted(shapes.items())]
@@ -64,7 +65,7 @@ def cut(workspace, a, b):
         one = within(inner); two = None   # the inner zone against everything else
     else:
         one, two = within(a), within(b)
-    zone_ids = {i['id'] for i in doc.get('instances', []) if mm.is_a(i['type'], 'A4.NetworkZone')}
+    zone_ids = {i['id'] for i in doc.get('instances', []) if mm.is_a(i['type'], _T('technology.NetworkZone'))}
     where = {x: zs[0] for x, zs in shapes.items() if zs}
     def across(x, y):
         if two is None: return (x in one) != (y in one)
@@ -89,7 +90,7 @@ def cut(workspace, a, b):
 
 def flat_note(doc, mm):
     """ZF-04: said when the workspace's zones are flat — SDEM works out no connection between zones that have no structure to read."""
-    zs = [(i.get('attributes') or {}) for i in doc.get('instances', []) if mm.is_a(i['type'], 'A4.NetworkZone')]
+    zs = [(i.get('attributes') or {}) for i in doc.get('instances', []) if mm.is_a(i['type'], _T('technology.NetworkZone'))]
     if not zs or any(z.get('zone_level') == 0 for z in zs): return ''
     return 'the zones here are flat (no on-premises or cloud zone): no connection between them is worked out — they are what the design\'s paths say (ZF-04)'
 

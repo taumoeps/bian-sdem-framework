@@ -4,9 +4,10 @@ types, within-layer rules, the link types and inference rules that touch it — 
 Off (BX-13) only where a person chose it — `sdem new --core`, or `sdem profile exclude ext:bian` — recorded in workspace.json
 (`core_only`); including `ext:bian` turns it on again. Every other workspace is on, as in 0.19 — with an A2 file or without one (AID
 brings service domains in from the catalogue) — and so is the work outside a workspace (BX-10…BX-12)."""
+from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 from pathlib import Path
 
-A2, A2_FILE, EXT_BIAN = 'A2', 'a2-service-domain.json', 'ext:bian'
+A2, A2_FILE, EXT_BIAN = _L('bian'), 'a2-service-domain.json', 'ext:bian'
 _STATE = {'bian': True, 'why': 'no workspace (BX-12)'}
 
 
@@ -16,7 +17,7 @@ def bian_on(): return _STATE['bian']
 def why(): return _STATE['why']
 
 
-def a2(t): return str(t or '').startswith('A2.')
+def a2(t): return str(t or '').startswith((_L('bian') + '.'))
 
 
 def _set(on, why):
@@ -68,7 +69,7 @@ def bian_link(r): return a2(r.get('source_type')) or a2(r.get('target_type'))
 
 def bian_rule(m):
     import json
-    return 'A2.' in json.dumps(m)
+    return (_L('bian') + '.') in json.dumps(m)
 
 
 def builtin_data():

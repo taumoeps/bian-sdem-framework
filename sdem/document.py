@@ -7,11 +7,12 @@ every record says where it came from (a document section, a past design, AID's i
 person's change set). Markdown for people and agents (an agent can pour it into a Word template); HTML for the
 workbench; JSON for anything else.
 """
+from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 import argparse, hashlib, html, json, re, sys
 from pathlib import Path
 
-LAYER_TITLES = {'A1': 'A1 Business Architecture', 'A2': 'A2 BIAN Service Domain Architecture',
-                'A3': 'A3 Application Architecture', 'A4': 'A4 Technology Architecture'}
+LAYER_TITLES = {_L('business'): 'A1 Business Architecture', _L('bian'): 'A2 BIAN Service Domain Architecture',
+                _L('application'): 'A3 Application Architecture', _L('technology'): 'A4 Technology Architecture'}
 PLACEHOLDER = re.compile(r'\b(TBD|PLACEHOLDER|TODO)\b', re.I)
 SKIP_ATTRS = {'inferred', 'source_id', 'sources'}   # shown as provenance instead
 
@@ -121,13 +122,13 @@ def document(ws, layer):
         out = []
         for x in rels:
             f = byid.get(x['target'])
-            if x['source'] != rid or x['kind'] != 'composition' or not f or not (mm.is_a(f['type'], 'A2.BusinessObjectAttribute') or mm.is_a(f['type'], 'A3.DataAttribute')): continue
+            if x['source'] != rid or x['kind'] != 'composition' or not f or not (mm.is_a(f['type'], _T('bian.BusinessObjectAttribute')) or mm.is_a(f['type'], _T('application.DataAttribute'))): continue
             a = f.get('attributes') or {}
             ref = next((names.get(y['target'], y['target']) for y in rels if y['source'] == f['id'] and y['kind'] == 'association'), None)
             out.append({'id': f['id'], 'name': f.get('name') or f['id'], 'type': a.get('physical_type') or a.get('data_type') or '—',
                         'key': bool(a.get('primary_key') or a.get('identifier')), 'required': bool(a.get('required')), 'refers_to': ref,
                         'allowed_values': a.get('allowed_values') or [], 'personal': a.get('personal_information') is True,
-                        'family': (_family(f.get('name', ''), byid[rid].get('name', '')) if mm.is_a(f['type'], 'A2.BusinessObjectAttribute') else None)})
+                        'family': (_family(f.get('name', ''), byid[rid].get('name', '')) if mm.is_a(f['type'], _T('bian.BusinessObjectAttribute')) else None)})
         return out
 
     sections, gaps = [], {'unconfirmed': [], 'no_connection': [], 'placeholders': [], 'requirements_not_confirmed': []}

@@ -10,6 +10,7 @@ that asked for it, for a person to confirm or reject. Rules, deterministic and r
   AID-D05  a BIAN service domain a pattern names and the design lacks, from the catalogue; and the one process whose name says it uses it
 (AID-D04 — a person confirms or rejects an inferred link by naming it — is in sdem/aid_fill.py.)
 """
+from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 import copy, re
 
 SMALL = {'the', 'and', 'for', 'with', 'from', 'that', 'this', 'into', 'are'}
@@ -135,9 +136,9 @@ def pattern_domains(docs, catalogue, maps, mm, structures, mark, rejected=()):
     using it. Returns ([A2 record], [A2 link], [(process, 'USES_DOMAIN', domain, why)], [domain id added])."""
     from .profile import applies
     from .bian import reach
-    a2 = docs.get('A2') or {'instances': [], 'relationships': []}
+    a2 = docs.get(_L('bian')) or {'instances': [], 'relationships': []}
     recs = {i['id']: (l, i) for l, d in docs.items() for i in d.get('instances', [])}
-    have = {i['name']: i['id'] for i in a2['instances'] if i['type'] == 'A2.ServiceDomain'}
+    have = {i['name']: i['id'] for i in a2['instances'] if i['type'] == _T('bian.ServiceDomain')}
     new, links, uses, added = [], [], [], []
     live = {(s, r, t) for s, r, t in maps}
     for st in structures:
@@ -146,11 +147,11 @@ def pattern_domains(docs, catalogue, maps, mm, structures, mark, rejected=()):
         if not anchors: continue
         for role in S['roles']:
             name = (role.get('when') or {}).get('name')
-            if not (role.get('anywhere') and role['type'] == 'A2.ServiceDomain' and isinstance(name, str)): continue
+            if not (role.get('anywhere') and role['type'] == _T('bian.ServiceDomain') and isinstance(name, str)): continue
             asked = f"{pat['id']}/{role['id']}"
             if name not in have and catalogue:
                 keep = reach(catalogue, {name}); by = {i['id']: i for i in catalogue['instances']}
-                sd = next((i for i in keep if by[i]['type'] == 'A2.ServiceDomain'), None)
+                sd = next((i for i in keep if by[i]['type'] == _T('bian.ServiceDomain')), None)
                 if not sd or sd in rejected: continue
                 for i in sorted(keep):
                     if i in recs or any(n['id'] == i for n in new): continue
@@ -163,7 +164,7 @@ def pattern_domains(docs, catalogue, maps, mm, structures, mark, rejected=()):
                 have[name] = sd; added.append(sd)
             sd = have.get(name)
             if not sd or any(r == 'USES_DOMAIN' and t == sd for _, r, t in live): continue
-            procs = [(i, r) for i, (l, r) in recs.items() if mm.known(r['type']) and mm.is_a(r['type'], 'A1.BusinessProcess') and not _unconfirmed(r)]
+            procs = [(i, r) for i, (l, r) in recs.items() if mm.known(r['type']) and mm.is_a(r['type'], _T('business.BusinessProcess')) and not _unconfirmed(r)]
             others = set().union(*[words(n) for n in have if n != name] or [set()])
             hits = {}
             for w in words(name) - others:
@@ -214,7 +215,7 @@ def pattern_parts(docs, maps, mm, structures, mark, rejected=()):
                 c, a = (conn[via[b][0]], via[b][1]) if b in via else (None, None)
                 if not (role.get('anywhere') or (a and bound.get(a))): continue
                 t = role['type']; layer = t.split('.')[0]
-                if layer not in ('A1', 'A3', 'A4') or not mm.known(t) or mm.is_abstract(t) or any(mm.known(k) and mm.is_a(k, t) for k in kinds): bound[b] = bound.get(b) or []; continue
+                if layer not in (_L('business'), _L('application'), _L('technology')) or not mm.known(t) or mm.is_abstract(t) or any(mm.known(k) and mm.is_a(k, t) for k in kinds): bound[b] = bound.get(b) or []; continue
                 want = max(role.get('min', 1), 1); made = []
                 for n in range(1, want + 1):
                     rid = f"AID-{pid}-{b.upper()}" + (f'-{n}' if want > 1 else '')
