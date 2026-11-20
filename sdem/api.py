@@ -26,7 +26,7 @@ _EXPORTS = {
     'catalogue_dir': ('parts', 'catalogue_dir'), 'LevelGraph': ('graph', 'LevelGraph'), 'estate_index': ('graph', 'estate_index'),
     'Batch': ('files', 'Batch'), 'write_json': ('files', 'write_json'), 'write_text': ('files', 'write_text'), 'relink': ('docmap', 'relink'),
     'is_person': ('validate', 'is_person'),
-    'export_019': ('migrate20', 'export_019'), 'view_019': ('identity', 'view_019'),   # DL-23: a 0.20 workspace for a consumer built on 0.19's form
+    'export_019': ('migrate20', 'export_019'), 'layers_in_use': ('identity', 'layers_in_use'), 'view_019': ('identity', 'view_019'),   # DL-23: a 0.20 workspace for a consumer built on 0.19's form
     'load': ('identity', 'load'), 'loads': ('identity', 'loads'), 'for_file': ('identity', 'for_file'),   # DL-11: a design's files, read and written
 }
 _MODULES = {'profile', 'parts'}   # whole modules an extension may use: the profile (activate, include) and BIAN's on-or-off (parts)

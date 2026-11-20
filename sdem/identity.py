@@ -345,3 +345,13 @@ def _walk_text(x, key=None):
     if isinstance(x, list): return [_walk_text(v, key) for v in x]
     if isinstance(x, str) and ' ' in x and key not in LAYER_KEYS: return text_019(x)   # prose only: a value with a space in it
     return x
+
+
+def layers_in_use(workspace=None):
+    """The layers of the work at hand (or of `workspace`), top to bottom, as a person reads them: [{'id', 'code', 'name'}] — what a
+    viewer (DESNRE) labels its plates with (DL-06, DL-23)."""
+    if workspace is not None:
+        from . import profile as _p
+        _p.activate_from(workspace)
+    rows = {l['id']: l for l in table()['layers']}
+    return [{'id': i, 'code': layer(i), 'name': rows[i]['name']} for i in stack()]
