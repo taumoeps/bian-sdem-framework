@@ -15,7 +15,7 @@ from sdem.terms import apply as _terms
 
 ROOT = MM_DIR.parent
 DOC = ROOT / 'docs' / 'design' / 'relationship-rules-spec.md'
-LEVEL_NAMES = _live(lambda: {_L('business'): f'{_L("business")} Business Architecture', _L('bian'): f'{_L("bian")} Service Domain Architecture', _L('application'): f'{_L("application")} Application Architecture', _L('technology'): f'{_L("technology")} Technology Architecture'})
+LEVEL_NAMES = _live(lambda: {_L('business'): f'{_L("business")} Business Architecture', _L('bian'): f'{_L("bian")} Service Domain Architecture', _L('data'): f'{_L("data")} Data Architecture', _L('application'): f'{_L("application")} Application Architecture', _L('technology'): f'{_L("technology")} Technology Architecture'})
 
 
 def _load(p):
@@ -75,7 +75,7 @@ def render():
         prov['BIAN' if 'BIAN' in std else 'ArchiMate' if 'ArchiMate' in std or 'AM' in std else 'TOGAF' if 'TOGAF' in std else 'SDEM extension'] += 1
     out += ['## 2. Vocabulary — the entity catalogue', '', f"{len(ents)} entities across four levels (`metamodel/a1…a4-*.json`), each with public provenance (README › *Reference architecture provenance*). By standard: " + ', '.join(f"{k} {v}" for k, v in prov.most_common()) + f'. **The entity ID is its type string** (e.g. `{_T("application.ApplicationComponent")}`); every mapping, relationship row and architecture dataset instance refers to it by that string.', '',
             '| ID | Level | Kind | Extends | Reference concept |', '|---|---|---|---|---|']
-    for l in (_L('business'), _L('bian'), _L('application'), _L('technology')):
+    for l in tuple(dict.fromkeys((_L('business'), _L('bian'), _L('data'), _L('application'), _L('technology')))):
         for t, e in ents.items():
             if e['level'] != l: continue
             kind = 'abstract' if e.get('abstract') else 'artefact' if e.get('artefact') else 'concrete'
@@ -86,7 +86,7 @@ def render():
     # ---- 3 within-level
     byl = Counter(c['level'] for c in lr['constraints']); vc = Counter(c['verification'] for c in lr['constraints'])
     out += ['## 3. Within-level structure — what an architecture dataset may contain', '',
-            f"{len(lr['constraints'])} constraint rows (`metamodel/level-relationships.json`, documented row by row in `docs/reference/relationships-planning.md`): " + ', '.join(f"{LEVEL_NAMES[l]} {byl[l]}" for l in (_L('business'), _L('bian'), _L('application'), _L('technology'))) + f". Verification: " + ', '.join(f"{k} {v}" for k, v in vc.most_common()) + '. Association is permitted between any two entities of one level. The 12 catalogue inheritance links are listed there as `X` rows.', '',
+            f"{len(lr['constraints'])} constraint rows (`metamodel/level-relationships.json`, documented row by row in `docs/reference/relationships-planning.md`): " + ', '.join(f"{LEVEL_NAMES[l]} {byl[l]}" for l in tuple(dict.fromkeys((_L('business'), _L('bian'), _L('data'), _L('application'), _L('technology'))))) + f". Verification: " + ', '.join(f"{k} {v}" for k, v in vc.most_common()) + '. Association is permitted between any two entities of one level. The 12 catalogue inheritance links are listed there as `X` rows.', '',
             '| Level | Derived from | Rows | The structure in one line |', '|---|---|---|---|',
             f'| {_L("business")} | ArchiMate 3.2 ch. 6–8 | ' + str(byl[_L('business')]) + ' | capabilities serve value streams; processes (and activities, is-a process) realise capabilities, value streams, services and requirements, access objects, compose activities; actors assigned to roles assigned to processes |',
             f'| {_L("bian")} | BIAN Service Landscape metamodel (B02–B15) | ' + str(byl[_L('bian')]) + ' | area ⊃ domain ⊃ Service Domain; a domain has an asset type, a functional pattern, a control record and service groups of operations; operations act on the control record and may be qualified; scenarios sequence operations; objects type the control record |',

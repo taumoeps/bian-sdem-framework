@@ -12,8 +12,9 @@ from sdem.terms import apply as _terms
 
 LEVEL_RELS = MM_DIR / 'level-relationships.json'
 DOC = MM_DIR.parent / 'docs' / 'reference' / 'relationships-planning.md'
-LEVEL_NAMES = _live(lambda: {_L('business'): f'{_L("business")} Business Architecture', _L('bian'): f'{_L("bian")} Service Domain Architecture', _L('application'): f'{_L("application")} Application Architecture', _L('technology'): f'{_L("technology")} Technology Architecture'})
+LEVEL_NAMES = _live(lambda: {_L('business'): f'{_L("business")} Business Architecture', _L('bian'): f'{_L("bian")} Service Domain Architecture', _L('data'): f'{_L("data")} Data Architecture', _L('application'): f'{_L("application")} Application Architecture', _L('technology'): f'{_L("technology")} Technology Architecture'})
 LEVEL_SOURCE = _live(lambda: {_L('business'): 'ArchiMate 3.2 chapters 6 (Motivation), 7 (Strategy) and 8 (Business)', _L('bian'): "BIAN Service Landscape 14 metamodel, Control Record Model, Business Object Model and the Semantic API Practitioner Guide",
+                _L('data'): 'ArchiMate 3.2 chapter 9 (data objects) and TOGAF 10 Data Architecture',   # DL-01
                 _L('application'): 'ArchiMate 3.2 chapter 9 (Application) and TOGAF 10 (Solution Building Block); SDEM extension rows for API operations', _L('technology'): 'ArchiMate 3.2 chapter 10 (Technology); SDEM extension rows for Deployment and Deployment Environment'})
 
 
@@ -34,12 +35,12 @@ def render(lr=None):
            f'**Confidence and verification.** Confidence follows the single rule applied to every layer of the model (`sdem/confidence.py`): **high** — defined by a public standard and checked (BIAN public material, or a relationship confirmed by the Archi oracle); **medium** — follows from an SDEM extension built on a standard concept, or rests on a login-gated source exercised by the coverage cases; **low** — an SDEM reading with no standard relationship, not validated. Verification: `verified` = checked on BIAN\'s public pages; `verified_against_archi` = confirmed by the open-source Archi relationship matrix (cited by commit below); `sdem_definition` follows from an SDEM extension entity; `sdem_reading` is SDEM\'s reading of a public BIAN page that states no explicit relationship; `unverified_togaf` has no public oracle. The {_L("business")}/{_L("application")}/{_L("technology")} tables also show the *inference confidence* recorded before the oracle test.', '']
     tally = Counter((c['level'], c['confidence']) for c in rows)
     out += ['## Summary', '', '| Level | Reference source | Rows | high | medium | low |', '|---|---|---|---|---|---|']
-    for l in (_L('business'), _L('bian'), _L('application'), _L('technology')):
+    for l in tuple(dict.fromkeys((_L('business'), _L('bian'), _L('data'), _L('application'), _L('technology')))):
         n = sum(1 for c in rows if c['level'] == l)
         out.append(f"| {LEVEL_NAMES[l]} | {LEVEL_SOURCE[l]} | {n} | {tally[(l, 'high')]} | {tally[(l, 'medium')]} | {tally[(l, 'low')]} |")
     out.append(f"| **Total** | | **{len(rows)}** | {sum(v for (l, c), v in tally.items() if c == 'high')} | {sum(v for (l, c), v in tally.items() if c == 'medium')} | {sum(v for (l, c), v in tally.items() if c == 'low')} |")
     out.append('')
-    for l in (_L('business'), _L('bian'), _L('application'), _L('technology')):
+    for l in tuple(dict.fromkeys((_L('business'), _L('bian'), _L('data'), _L('application'), _L('technology')))):
         out += [f'## {LEVEL_NAMES[l]}', '', f'Reference: {LEVEL_SOURCE[l]}.', '',
                 ('| ID | Official | Source entity | Kind | Target entity | Description | Reference source | Reasoning | Confidence | Verification |' if l == _L('bian') else
                  '| ID | Source entity | Kind | Target entity | Description | ArchiMate concepts | Inferred pattern | Inference reasoning | Inference conf. | Independent test | Verification |'),

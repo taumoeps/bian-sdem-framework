@@ -58,6 +58,8 @@ def changed():
     import sys   # every cache built on the names: the conformance model (attributes by type) too
     c = sys.modules.get(__package__ + '.conformance')
     if c is not None and hasattr(getattr(c, 'model', None), 'cache_clear'): c.model.cache_clear()
+    p = sys.modules.get(__package__ + '.profile')   # DL-25: the active profile numbered for the layers now in use
+    if p is not None and getattr(p, 'ACTIVE', None) is not None: p._renumbered(p.ACTIVE)
 
 
 @lru_cache(maxsize=None)
@@ -177,15 +179,35 @@ def stored_layer(code, ids):
     return lid if ids else (code_of[lid] or lid)
 
 
-def _walk(x, f, fl, key=None):
-    if isinstance(x, (dict, _Mapping)): return {f(k) if isinstance(k, str) else k: _walk(v, f, fl, k) for k, v in x.items()}   # a live table too
-    if isinstance(x, (list, tuple, _Sequence)) and not isinstance(x, str): return [_walk(v, f, fl, key) for v in x]
-    if isinstance(x, str): return fl(x) if key in LAYER_KEYS else f(x)
+COORD_KEYS = LAYER_KEYS | {'layer', 'changed_layer'}   # in a coordination record (change set, event, work item) 'layer' is SDEM's — no ArchiMate there
+
+
+def _keys(path):
+    from pathlib import Path
+    return COORD_KEYS if path is not None and 'coordination' in Path(path).parts else LAYER_KEYS
+
+
+def _walk(x, f, fl, key=None, keys=LAYER_KEYS):
+    if isinstance(x, (dict, _Mapping)): return {f(k) if isinstance(k, str) else k: _walk(v, f, fl, k, keys) for k, v in x.items()}   # a live table too
+    if isinstance(x, (list, tuple, _Sequence)) and not isinstance(x, str): return [_walk(v, f, fl, key, keys) for v in x]
+    if isinstance(x, str): return fl(x) if key in keys else f(x)
     return x
 
 
-def read_names(doc, legacy=False):
-    doc = _walk(doc, lambda s: display(s, legacy), lambda s: display_layer(s, legacy))
+def _own_numbering():
+    """DL-25: an organisation profile's own layers renumbered for the layers in use — {profile code: code here} (A5 → A6 beside
+    Technology's A5). A file stores the profile's code, which does not change; SDEM reads and shows the code here."""
+    import sys
+    p = sys.modules.get(__package__ + '.profile')
+    num = ((getattr(p, 'ACTIVE', None) or {}).get('_numbering') or {}) if p else {}
+    core = _index()[1]   # 0.19's core codes: a migrated file names its core layers by id, never by these
+    return {k: v for k, v in num.items() if k not in core and k != v}
+
+
+def read_names(doc, legacy=False, keys=LAYER_KEYS):
+    own = {} if legacy else _own_numbering()
+    fl = (lambda s: own[s] if isinstance(s, str) and s in own else display_layer(s, legacy)) if own else (lambda s: display_layer(s, legacy))   # the file's own value: a migrated file names core layers by id
+    doc = _walk(doc, lambda s: display(s, legacy), fl, keys=keys)
     return _layer_keys(doc)
 
 
@@ -196,7 +218,9 @@ def _layer_keys(x):
     return x
 
 
-def store_names(doc, ids): return _walk(doc, lambda s: stored(s, ids), lambda s: stored_layer(s, ids))
+def store_names(doc, ids, keys=LAYER_KEYS):
+    back = {v: k for k, v in _own_numbering().items()} if ids else {}   # DL-25: an own layer's file keeps its profile code
+    return _walk(doc, lambda s: stored(s, ids), (lambda s: back[s] if isinstance(s, str) and s in back else stored_layer(s, ids)) if back else (lambda s: stored_layer(s, ids)), keys=keys)
 
 
 def _derived(path):
@@ -228,7 +252,7 @@ def load(path):
     from pathlib import Path
     doc = json.loads(Path(path).read_text(encoding='utf-8'))
     if _derived(path): return doc
-    doc = read_names(doc, legacy=not stores_ids(path))
+    doc = read_names(doc, legacy=not stores_ids(path), keys=_keys(path))
     if Path(path).parent.name in ('metamodel', 'schema', 'standards') and _moved():   # DL-07: SDEM's own prose names layers by 0.19's numbers
         doc = _walk_text(doc)
     if Path(path).parent.name == 'standards':   # DL-04: SDEM's standards as a workspace in the 0.20 form reads them
@@ -239,14 +263,14 @@ def load(path):
 
 def for_file(path, obj):
     """What to write to `path`: obj with the names the file's workspace stores (ids or 0.19's)."""
-    return obj if _derived(path) else store_names(obj, stores_ids(path))
+    return obj if _derived(path) else store_names(obj, stores_ids(path), keys=_keys(path))
 
 
 def loads(text, path=None):
     """JSON text of a design file (read by its caller, e.g. to take its checksum), its names as a person reads them now (DL-11)."""
     doc = json.loads(text)
     if path is None: return read_names(doc)
-    return doc if _derived(path) else read_names(doc, legacy=not stores_ids(path))
+    return doc if _derived(path) else read_names(doc, legacy=not stores_ids(path), keys=_keys(path))
 
 
 
@@ -313,6 +337,17 @@ class view_019:
         self._was = _VIEW_019[0]; _VIEW_019[0] = True; changed(); return self
     def __exit__(self, *exc):
         _VIEW_019[0] = self._was; changed(); return False
+
+
+class outside_view:
+    """Step out of view_019 for a moment — to record what an engine wrote in the workspace's own numbering (its change sets, CTL-20)."""
+    def __enter__(self):
+        self._was = _VIEW_019[0]
+        if self._was: _VIEW_019[0] = False; changed()
+        return self
+    def __exit__(self, *exc):
+        if self._was: _VIEW_019[0] = True; changed()
+        return False
 
 
 

@@ -5,7 +5,8 @@ import json, os, shutil, subprocess, sys, tempfile, unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT))
+sys.path.insert(0, str(ROOT)); sys.path.insert(0, str(Path(__file__).resolve().parent))
+from forms import migrated   # noqa: E402 — a layer's number in either form
 
 
 def sdem(*args, cwd):
@@ -50,19 +51,19 @@ class CompletenessTests(unittest.TestCase):
 
     def test_a_gap_is_a_decision_to_take_never_a_failed_check(self):   # CPL-04
         self.new()
-        self.propose(CS('A3', [R('APP-LEDGER', 'A3.ApplicationComponent', 'Account ledger'), R('API-LEDGER', 'A3.ApplicationInterface', 'Ledger internal API'),
+        self.propose(CS('application', [R('APP-LEDGER', 'A3.ApplicationComponent', 'Account ledger'), R('API-LEDGER', 'A3.ApplicationInterface', 'Ledger internal API'),
                                R('API-RISK', 'A3.ApplicationInterface', 'Risk internal API', status='active'), R('API-OK', 'A3.ApplicationInterface', 'Posting API')],
                         [('APP-LEDGER', 'composition', 'API-OK')]), 'sdem-a3-application')
         code, out, err = sdem('check', '--workspace', self.ws, cwd=self.tmp)
         self.assertEqual(code, 0, out + err)                                   # sdem check: is the design wrong? — a gap is not, so it never fails
-        self.assertNotIn('API-LEDGER: CPL-', out); self.assertIn('WARN: level A3 (WS-A3): instance API-RISK: CPL-A3-01', out)   # planned: silent · active: a warning
+        self.assertNotIn('API-LEDGER: CPL-', out); self.assertIn(f"WARN: level {'A4' if migrated(self.ws) else 'A3'} (WS-A3): instance API-RISK: CPL-A3-01", out)   # Application's number; the rule id stays   # planned: silent · active: a warning
         c = json.loads(sdem('comply', '--workspace', self.ws, '--json', cwd=self.tmp)[1])
         got = {(f['record'], f['outcome']) for f in c['findings'] if f['rule'] == 'CPL-A3-01'}
         self.assertEqual(got, {('API-LEDGER', 'unresolved'), ('API-RISK', 'non_compliant'), ('API-OK', 'compliant')})   # planned: to do · active: not met (a warning)
 
     def test_status_says_it_in_one_line(self):   # CPL-05
         self.new()
-        self.propose(CS('A3', [R('APP-LEDGER', 'A3.ApplicationComponent', 'Account ledger'), R('API-LEDGER', 'A3.ApplicationInterface', 'Ledger internal API'),
+        self.propose(CS('application', [R('APP-LEDGER', 'A3.ApplicationComponent', 'Account ledger'), R('API-LEDGER', 'A3.ApplicationInterface', 'Ledger internal API'),
                                R('API-RISK', 'A3.ApplicationInterface', 'Risk internal API'), R('API-OK', 'A3.ApplicationInterface', 'Posting API')],
                         [('APP-LEDGER', 'composition', 'API-OK')]), 'sdem-a3-application')
         s = json.loads(sdem('status', '--workspace', self.ws, '--json', cwd=self.tmp)[1])
@@ -74,7 +75,7 @@ class CompletenessTests(unittest.TestCase):
 
     def test_status_says_it_once_for_active_records_too(self):   # CPL-05 — found loading a design through sdem transform: its records are active, and each gap was also a warning line
         self.new()
-        self.propose(CS('A3', [R('APP-LEDGER', 'A3.ApplicationComponent', 'Account ledger', status='active'), R('API-ONE', 'A3.ApplicationInterface', 'One', status='active'),
+        self.propose(CS('application', [R('APP-LEDGER', 'A3.ApplicationComponent', 'Account ledger', status='active'), R('API-ONE', 'A3.ApplicationInterface', 'One', status='active'),
                                R('API-TWO', 'A3.ApplicationInterface', 'Two', status='active')]), 'sdem-a3-application')
         s = json.loads(sdem('status', '--workspace', self.ws, '--json', cwd=self.tmp)[1])
         self.assertEqual(s['completeness']['by_rule'][0]['records'], ['API-ONE', 'API-TWO'])
@@ -83,10 +84,10 @@ class CompletenessTests(unittest.TestCase):
 
     def test_at_least_one_of_several_links(self):   # PR-35, CPL-07: an actor, an image
         self.new()
-        self.propose(CS('A1', [R('ACTOR-MERCHANT', 'A1.BusinessActor', 'Merchant'), R('ACTOR-CUSTOMER', 'A1.BusinessActor', 'Customer'), R('ACTOR-TPP', 'A1.BusinessActor', 'Provider'),
+        self.propose(CS('business', [R('ACTOR-MERCHANT', 'A1.BusinessActor', 'Merchant'), R('ACTOR-CUSTOMER', 'A1.BusinessActor', 'Customer'), R('ACTOR-TPP', 'A1.BusinessActor', 'Provider'),
                                R('ROLE-PAYER', 'A1.BusinessRole', 'Payer'), R('IF-WEB', 'A1.BusinessInterface', 'Web channel', channel_kind='web')],
                         [('ACTOR-CUSTOMER', 'assignment', 'ROLE-PAYER'), ('IF-WEB', 'serving', 'ACTOR-TPP')]), 'sdem-a1-business')
-        self.propose(CS('A4', [R('ART-A', 'A4.Artifact', 'hub image'), R('ART-B', 'A4.Artifact', 'api image'), R('NODE-1', 'A4.Node', 'compute')], [('NODE-1', 'assignment', 'ART-B')]), 'sdem-a4-technology')
+        self.propose(CS('technology', [R('ART-A', 'A4.Artifact', 'hub image'), R('ART-B', 'A4.Artifact', 'api image'), R('NODE-1', 'A4.Node', 'compute')], [('NODE-1', 'assignment', 'ART-B')]), 'sdem-a4-technology')
         c = json.loads(sdem('comply', '--workspace', self.ws, '--json', cwd=self.tmp)[1])
         got = {(f['rule'], f['record']): f['outcome'] for f in c['findings'] if f['rule'] in ('CPL-A1-05', 'CPL-A4-02')}
         self.assertEqual(got, {('CPL-A1-05', 'ACTOR-MERCHANT'): 'unresolved', ('CPL-A1-05', 'ACTOR-CUSTOMER'): 'compliant', ('CPL-A1-05', 'ACTOR-TPP'): 'compliant',
@@ -103,9 +104,9 @@ class CompletenessTests(unittest.TestCase):
 
     def test_a_product_and_an_application_event_are_checked_too(self):   # CPL-20 — found in the picture of a design SDEM had called 100% connected
         self.new()
-        self.propose(CS('A1', [R('PROD-A', 'A1.Product', 'Account'), R('PROD-B', 'A1.Product', 'Other'), R('SVC-1', 'A1.BusinessService', 'Service'), R('PROC-1', 'A1.BusinessProcess', 'Do it')],
+        self.propose(CS('business', [R('PROD-A', 'A1.Product', 'Account'), R('PROD-B', 'A1.Product', 'Other'), R('SVC-1', 'A1.BusinessService', 'Service'), R('PROC-1', 'A1.BusinessProcess', 'Do it')],
                         [('PROD-A', 'aggregation', 'SVC-1'), ('PROC-1', 'realization', 'SVC-1')]), 'sdem-a1-business')
-        self.propose(CS('A3', [R('APP-1', 'A3.ApplicationComponent', 'App'), R('EVT-A', 'A3.Event', 'Raised'), R('EVT-B', 'A3.Event', 'Orphan')], [('APP-1', 'triggering', 'EVT-A')]), 'sdem-a3-application')
+        self.propose(CS('application', [R('APP-1', 'A3.ApplicationComponent', 'App'), R('EVT-A', 'A3.Event', 'Raised'), R('EVT-B', 'A3.Event', 'Orphan')], [('APP-1', 'triggering', 'EVT-A')]), 'sdem-a3-application')
         c = json.loads(sdem('comply', '--workspace', self.ws, '--json', cwd=self.tmp)[1])
         got = {(f['rule'], f['record']): f['outcome'] for f in c['findings'] if f['rule'] in ('CPL-A1-06', 'CPL-A3-06')}
         self.assertEqual(got, {('CPL-A1-06', 'PROD-A'): 'compliant', ('CPL-A1-06', 'PROD-B'): 'unresolved', ('CPL-A3-06', 'EVT-A'): 'compliant', ('CPL-A3-06', 'EVT-B'): 'unresolved'})

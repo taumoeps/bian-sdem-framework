@@ -13,7 +13,7 @@ from .store import GraphReader, stale_inputs
 
 from .paths import DATA_ROOT as ROOT, repo_path
 from .layers import DATASET_FILES as FILES, titled   # LR-09
-LEVEL_NAMES = _live(lambda: titled({_L('business'): f'{_L("business")} Business', _L('bian'): f'{_L("bian")} Service domain (BIAN)', _L('application'): f'{_L("application")} Application', _L('technology'): f'{_L("technology")} Technology'}))
+LEVEL_NAMES = _live(lambda: titled({_L('business'): f'{_L("business")} Business', _L('bian'): f'{_L("bian")} Service domain (BIAN)', _L('data'): f'{_L("data")} Data', _L('application'): f'{_L("application")} Application', _L('technology'): f'{_L("technology")} Technology'}))
 KINDS = ('modify', 'rehost', 'replace', 'retire')
 
 
@@ -63,7 +63,9 @@ def collect(estate, proposals=None, projection=None, catalogue=None, graph=None,
     from .agents import Estate, check_coordination, CoordinationError
     from .cli import _rule_of
     from .matrix import matrices
-    estate = Path(estate); files = [str(estate / f) for f in FILES if (estate / f).exists()] + [str(estate / 'mappings.json')]
+    estate = Path(estate)
+    from . import profile as _p; _p.activate_from(estate)   # DL-10: this workspace's form and profile — sdem home shows several, in either form
+    files = [str(estate / f) for f in FILES if (estate / f).exists()] + [str(estate / 'mappings.json')]
     present = {lvl for lvl, f in zip(LEVEL_NAMES, FILES) if (estate / f).exists()}
     reader = GraphReader.from_exports(files); fg = reader.fg; mm = reader.mm
     report = fg.check(); warns = fg.warnings

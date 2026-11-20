@@ -174,9 +174,9 @@ open work/sdem/index.html                                                       
 11. **A proposed connection versus an approved one.** Every connection in the example is already **approved** — a person approved it, with evidence; the graph draws only approved connections. To see a **proposal**, add one synthetic application through a change set (the governed way to change the workspace) and let the rules engine propose its connection:
     ```bash
     cat > new-app.json <<'EOF'
-    {"layer": "A3", "reason": "a new notifications service (synthetic)", "changes": [{"op": "add", "record": {"id": "APP-PAY-NOTIFY", "type": "A3.ApplicationComponent", "version": "1.0", "name": "Payment Notifications", "lifecycle_status": "planned", "attributes": {"deployed_on": ["INF-K8S-PAY-PROD"]}}}]}
+    {"layer": "application", "reason": "a new notifications service (synthetic)", "changes": [{"op": "add", "record": {"id": "APP-PAY-NOTIFY", "type": "A3.ApplicationComponent", "version": "1.0", "name": "Payment Notifications", "lifecycle_status": "planned", "attributes": {"deployed_on": ["INF-K8S-PAY-PROD"]}}}]}
     EOF
-    sdem change propose new-app.json --workspace workspaces/payments --agent architect --person <you>
+    sdem change propose new-app.json --workspace workspaces/payments --agent architect --person <you>   # "layer" names the layer by its id — the same before and after sdem migrate --to 0.20
     sdem link --workspace workspaces/payments --out workspaces/payments/links
     sdem dashboard --workspace workspaces/payments
     ```

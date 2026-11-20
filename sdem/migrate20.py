@@ -54,7 +54,46 @@ def to_019(folder):
     return docs, reg, access
 
 
-def plan(ws, person, today=None, access=None):
+def _keep_chain(ws, person):
+    """CTL-20, AG-S08: every layer file with change sets was rewritten in ids — the rewrite is recorded as a change set the person adopts,
+    so the chain of change sets stays whole. Layers without change sets are not touched (nothing to keep whole)."""
+    if not (ws / 'coordination' / 'change-sets').exists(): return []
+    from .agents import Estate, CoordinationError
+    from .layers import FILES
+    est = Estate(ws); done = []
+    for code in list(FILES):
+        if not est._last_change_set(code): continue
+        try: est.adopt(code, person, 'sdem migrate --to 0.20: the layer file rewritten in the 0.20 form — its names stored as ids, Data its own layer (DL-11, DL-12); no record changed in meaning'); done.append(code)
+        except CoordinationError as e:
+            if 'has not changed' not in str(e): raise Migrate20Error(f'recording the migration of layer {code} as a change set: {e}')
+    return done
+
+
+def _ledger(ws):
+    from .files import LEDGER
+    try: return (json.loads((ws / LEDGER).read_text(encoding='utf-8')).get('files') or {}) if (ws / LEDGER).exists() else {}
+    except ValueError: return {}
+
+
+def _carry_ledger(ws, renamed, old_entries):
+    """AF-07: the ledger names the files as they are now — each renamed file keeps its entry's author and note, and says it was migrated;
+    the old names leave the ledger with the files (a baseline from sdem new --from stays the baseline)."""
+    from .files import LEDGER, write_text, dumps
+    f = ws / LEDGER
+    if not f.exists(): return
+    try: led = json.loads(f.read_text(encoding='utf-8'))
+    except ValueError: return
+    files = led.get('files') or {}
+    for pair in renamed:
+        old, new = [Path(x.strip()).name for x in pair.split('→')]
+        files.pop(old, None)
+        e = old_entries.get(old)
+        if e and new in files:   # its new content's fingerprint, its author as before
+            files[new] = {**files[new], 'by': e.get('by'), 'note': ((e['note'] + '; ') if e.get('note') else '') + f'{old} until sdem migrate --to 0.20'}
+    led['files'] = dict(sorted(files.items())); write_text(f, dumps(led))
+
+
+def plan(ws, person, today=None, access=None, approve_access=True):
     """{relative path: new document} for every file the migration writes, the old paths it removes, and what it did."""
     from . import profile as _p, parts
     from .identity import load, store_names, _ids_folder
@@ -64,7 +103,8 @@ def plan(ws, person, today=None, access=None):
     _p.activate_from(ws)   # the 0.19 form: its names and codes read as 0.19 wrote them
     if parts.migrated(): raise Migrate20Error(f'{ws}: already in the 0.20 form')
     today = today or datetime.date.today().isoformat()
-    docs = {p.relative_to(ws).as_posix(): store_names(load(p), True) for p in _design_files(ws)}   # DL-11: ids, whatever the stack
+    from .identity import _keys
+    docs = {p.relative_to(ws).as_posix(): store_names(load(p), True, keys=_keys(p)) for p in _design_files(ws)}   # DL-11: ids, whatever the stack — a coordination record's layer too
     out, removed, did = {}, [], {'renamed': [], 'data_records': 0, 'data_links': 0, 'access_links': 0}
     for rel, d in docs.items():
         name = Path(rel).name
@@ -86,7 +126,7 @@ def plan(ws, person, today=None, access=None):
         if odd:
             raise Migrate20Error('links between an application element and a data entity that are not access cannot move between the layers: '
                                  + '; '.join(f"{r.get('source')} {r.get('kind')} {r.get('target')}" for r in odd[:5]))
-        if data_ids:
+        if True:   # DL-01: the Data layer is in use in a migrated workspace — its file is there, empty when no record is data yet
             data = {'level': 'data', 'model_id': f"{app.get('model_id', 'workspace')}-data", 'model_version': app.get('model_version'),
                     'metamodel_version': app.get('metamodel_version'), 'source_system': app.get('source_system'),
                     'instances': [i for i in app['instances'] if i['id'] in data_ids], 'relationships': inside}
@@ -106,10 +146,12 @@ def plan(ws, person, today=None, access=None):
             base = (collections.Counter(m.get('baseline_id') for m in maps.get('mappings', []) if m.get('baseline_id')).most_common(1) or [('MIGRATION-0.20', 0)])[0][0]
             new = [{'mapping_id': f'MIG-020-{k:03d}', 'source': {'id': r['target'], 'type': typ[r['target']], 'version': ver.get(r['target'], '1.0')},
                     'relationship': 'ACCESSED_BY', 'target': {'id': r['source'], 'type': typ[r['source']], 'version': ver.get(r['source'], '1.0')},
-                    'perspective': 'information', 'status': 'approved', 'evidence': [EVIDENCE],
-                    'rationale': (f"Approved by the migration to 0.20 (sdem migrate --to 0.20, {person}, {today}): an access link inside the Application layer "
-                                  f"of SDEM 0.19, now between the Data and Application layers (DL-04, DL-13)" + (f"; as stated in {r['source_id']}" if r.get('source_id') else '')),
-                    'baseline_id': base, 'reviewer_id': person, 'approved_at': today}
+                    'perspective': 'information', 'status': 'approved' if approve_access else 'proposed', 'evidence': [EVIDENCE],
+                    'rationale': ((f"Approved by the migration to 0.20 (sdem migrate --to 0.20, {person}, {today}): " if approve_access else
+                                   f"Proposed by the migration to 0.20 ({today}) for a person to approve — a design just taken in, which nobody has reviewed (DL-26): ")
+                                  + "an access link inside the Application layer of SDEM 0.19, now between the Data and Application layers (DL-04, DL-13)"
+                                  + (f"; as stated in {r['source_id']}" if r.get('source_id') else '')),
+                    'baseline_id': base, **({'reviewer_id': person, 'approved_at': today} if approve_access else {'created_by': 'sdem migrate --to 0.20'})}
                    for k, r in enumerate(accesses, start=n + 1)]
             out['mappings.json'] = {**maps, 'mappings': list(maps.get('mappings', [])) + new}
             did['access_links'] = len(new)
@@ -118,13 +160,13 @@ def plan(ws, person, today=None, access=None):
     return out, removed, did
 
 
-def migrate(ws, person, dry_run=False, today=None, access=None, keep_backup=True):
+def migrate(ws, person, dry_run=False, today=None, access=None, keep_backup=True, approve_access=True):
     """DL-12: plan, back up, write, check — restore the backup if the check does not pass. `access`: a baseline's ACCESSED_BY links to
     keep as they were (sdem new); keep_backup=False for a workspace just made, which has nothing to go back to."""
     from . import parts, profile as _p
     from .identity import changed
     ws = Path(ws)
-    out, removed, did = plan(ws, person, today, access=access)
+    out, removed, did = plan(ws, person, today, access=access, approve_access=approve_access)
     res = {'workspace': str(ws), 'to': '0.20', **did, 'files_written': sorted(out), 'files_removed': sorted(removed), 'backup': str(ws / BACKUP)}
     if dry_run: return {**res, 'dry_run': True}
     bk = ws / BACKUP
@@ -137,8 +179,11 @@ def migrate(ws, person, dry_run=False, today=None, access=None, keep_backup=True
         for rel, d in out.items(): write_text(ws / rel, dumps(d))   # already in ids: written as they are
         for rel in removed: (ws / rel).unlink()
         changed(); _p.activate_from(ws)   # the new form
-        from .files import record, TRACKED
+        from .files import record, TRACKED, LEDGER
+        old = _ledger(ws)
         record([ws / f for f in out if Path(f).name in TRACKED])
+        _carry_ledger(ws, did['renamed'], old)   # who made each file, and what it was called, stays known (AF-07, GV-05)
+        res['chain'] = _keep_chain(ws, person)   # before the check: the chain of change sets is part of what it checks
         from .cli import main as sdem
         import contextlib, io
         buf = io.StringIO()

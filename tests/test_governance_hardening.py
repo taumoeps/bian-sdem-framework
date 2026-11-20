@@ -9,6 +9,9 @@ sys.path.insert(0, str(ROOT))
 from sdem import agents, governance, requirements as R  # noqa: E402
 
 PAY = ROOT / 'examples' / 'payment-initiation'
+PAY20 = ROOT / 'examples' / '0.20' / 'payment-initiation'   # the same design in SDEM 0.20's form
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from forms import lf, migrated   # noqa: E402 — a layer's file in either form
 REHOST = ROOT / '.github' / 'skills' / 'sdem-change-sets' / 'example-a4-rehost.json'
 AGENT = {'A1': 'sdem-a1-business', 'A2': 'sdem-a2-bian', 'A3': 'sdem-a3-application', 'A4': 'sdem-a4-technology'}
 ORCH, P, HUMAN = 'sdem-orchestrator', 'steven.human', 'steven@example.org'
@@ -210,26 +213,29 @@ class TestE_WorkspaceBaseline(Base):
         self.assertEqual(sdem('check', '--workspace', nw, '--require-recorded', '--json')[1]['ok'], True)   # the ledger matches the baseline
         rec = json.loads((nw / 'workspace.json').read_text()); self.assertIn('requirements.json', rec['baseline']['files'])
         self.assertEqual([g['kind'] for g in governance.decisions(nw)], ['establish_baseline'])
-        self.assertIn('baseline', json.loads((nw / 'sdem-ledger.json').read_text())['files']['a3-application.json']['by'])
+        self.assertIn('baseline', json.loads((nw / 'sdem-ledger.json').read_text())['files'][lf(nw, 'application').name]['by'])
         code, d = sdem('new', '--workspace', nw, '--person', P, '--from', PAY, ok=(2,))                    # never re-baselined
-        a3 = json.loads((nw / 'a3-application.json').read_text()); a3['instances'][0]['name'] += ' (edited)'; (nw / 'a3-application.json').write_text(json.dumps(a3))
+        a3 = json.loads(lf(nw, 'application').read_text()); a3['instances'][0]['name'] += ' (edited)'; lf(nw, 'application').write_text(json.dumps(a3))
         code, d = sdem('check', '--workspace', nw, '--require-recorded', '--json', ok=(1,))
-        self.assertEqual([u['file'] for u in d['unrecorded_edits']], ['a3-application.json'])
+        self.assertEqual([u['file'] for u in d['unrecorded_edits']], [lf(nw, 'application').name])
 
     def test_reconciling_a_copied_workspace_keeps_its_history(self):
         nw = self.tmp / 'phaseb'
         sdem('new', '--workspace', nw, '--person', P, '--json')                                           # empty layers in the ledger
-        for f in ('a1-business.json', 'a2-service-domain.json', 'a3-application.json', 'a4-technology.json', 'mappings.json'):
-            shutil.copy(PAY / f, nw / f)                                                                 # copied in by hand, as in Phase B
-        e = agents.Estate(nw); e.propose(json.loads(REHOST.read_text()), AGENT['A4'], P)                 # CS-001 / CE-001
+        m = migrated(nw); ids = ('business', 'bian', 'data', 'application') if m else ('business', 'bian', 'application')   # SDEM 0.20: Data its own layer
+        copied = sorted({lf(nw, i).name for i in ids})
+        for f in copied + [lf(nw, 'technology').name, 'mappings.json']:
+            shutil.copy((PAY20 if m else PAY) / f, nw / f)                                               # copied in by hand, as in Phase B
+        rehost = {**json.loads(REHOST.read_text()), 'layer': 'technology'}                               # the layer by its id: the same in either form (DL-25)
+        e = agents.Estate(nw); e.propose(rehost, AGENT['A4'], P)                                         # CS-001 / CE-001
         code, d = sdem('check', '--workspace', nw, '--json')
-        self.assertEqual(sorted(u['file'] for u in d['unrecorded_edits']), ['a1-business.json', 'a2-service-domain.json', 'a3-application.json', 'mappings.json'])
-        for layer in ('A1', 'A2', 'A3', 'registry'):
+        self.assertEqual(sorted(u['file'] for u in d['unrecorded_edits']), sorted(copied + ['mappings.json']))
+        codes = ({'business': 'A1', 'bian': 'A2', 'data': 'A3', 'application': 'A4'} if m else {'business': 'A1', 'bian': 'A2', 'application': 'A3'})
+        for layer in [codes[i] for i in ids] + ['registry']:
             sdem('change', 'adopt', '--workspace', nw, '--layer', layer, '--person', P, '--reason', 'baseline copied in before the ledger knew it', '--json')
         self.assertEqual(sdem('check', '--workspace', nw, '--require-recorded', '--json')[1]['ok'], True)
         self.assertTrue((nw / 'coordination' / 'change-sets' / 'CS-001.json').exists())                    # history preserved
-        self.assertEqual(sorted(g['subject'] for g in governance.decisions(nw) if g['kind'] == 'adopt_edit'),
-                         ['a1-business.json', 'a2-service-domain.json', 'a3-application.json', 'mappings.json'])
+        self.assertEqual(sorted(g['subject'] for g in governance.decisions(nw) if g['kind'] == 'adopt_edit'), sorted(copied + ['mappings.json']))
         code, d = sdem('change', 'adopt', '--workspace', nw, '--layer', 'registry', '--person', 'sdem-a4-technology', '--reason', 'x', '--json', ok=(1, 2))
         self.assertEqual(d['error']['code'], 'needs_person')
 

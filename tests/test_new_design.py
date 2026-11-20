@@ -6,6 +6,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 ENV = {**os.environ, 'PYTHONPATH': str(ROOT) + os.pathsep + os.environ.get('PYTHONPATH', '')}
 SKILL = ROOT / '.github' / 'skills' / 'sdem-new-design'
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from forms import lf, migrated   # noqa: E402 — a layer's file in either form
 
 
 def sdem(*args, cwd, ok=(0,)):
@@ -45,7 +47,7 @@ class NewDesignTests(unittest.TestCase):
         _, out, _ = sdem('change', 'propose', SKILL / 'example-a1-new-design.json', '--workspace', self.tmp / 'ws', '--agent', 'sdem-a1-business',
                          '--person', 'steven', '--dry-run', cwd=self.tmp)
         self.assertTrue(out.startswith('DRY RUN — a preview: nothing below was written'))
-        self.assertEqual(json.loads((self.tmp / 'ws' / 'a1-business.json').read_text())['instances'], [])
+        self.assertEqual(json.loads(lf(self.tmp / 'ws', 'business').read_text())['instances'], [])
 
 
 if __name__ == '__main__':

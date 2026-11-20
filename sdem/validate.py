@@ -264,7 +264,8 @@ def validate(payload, registry=None, schema=None, resolver=None, entity_resolver
         if mid and ids.count(mid) > 1:
             fail('structural', 'duplicate mapping_id')
         source, target = mapping.get('source') or {}, mapping.get('target') or {}
-        stype, ttype = normalize_type(source.get('type'), registry), normalize_type(target.get('type'), registry)
+        from .identity import display   # ST-05: an id or a 0.19 name reads as the type it names, before the registry is asked
+        stype, ttype = (normalize_type(display(x.get('type')) if isinstance(x.get('type'), str) else x.get('type'), registry) for x in (source, target))
         for label, t in (('source', stype), ('target', ttype)):
             if t and not metamodel.known(t):
                 fail('structural', f"{label} entity {t!r} is not in the metamodel")

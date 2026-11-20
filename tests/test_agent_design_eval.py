@@ -4,6 +4,8 @@ import json, os, shutil, subprocess, sys, tempfile, unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from forms import lf, migrated  # noqa: E402 — a layer's file in either form
 ENV = {**os.environ, 'PYTHONPATH': str(ROOT) + os.pathsep + os.environ.get('PYTHONPATH', '')}
 WS = Path('workspaces') / 'payments'
 
@@ -41,8 +43,10 @@ class AgentDesignEvalTests(unittest.TestCase):
         self.assertEqual(sorted(g['bian']['required_missing']), ['SD-PARTY-AUTHENTICATION', 'SD-PAYMENT-ORDER-INITIATION'])
 
     def test_the_reference_design_scores_full_recall(self):
-        for f in ('a1-business.json', 'a3-application.json', 'a4-technology.json'):
-            shutil.copy(ROOT / 'examples' / 'payment-initiation' / f, self.d / WS / f)
+        if migrated(self.d / WS):   # SDEM 0.20's form: the same reference design, migrated (examples/0.20, P2)
+            for f in ('business.json', 'data.json', 'application.json', 'technology.json'): shutil.copy(ROOT / 'examples' / '0.20' / 'payment-initiation' / f, self.d / WS / f)
+        else:
+            for f in ('a1-business.json', 'a3-application.json', 'a4-technology.json'): shutil.copy(ROOT / 'examples' / 'payment-initiation' / f, self.d / WS / f)
         _, g = self.grade()
         for l in ('A1', 'A3', 'A4'):
             self.assertEqual(g['records'][l]['recall'], 1.0, (l, g['records'][l]))
@@ -50,7 +54,7 @@ class AgentDesignEvalTests(unittest.TestCase):
         self.assertEqual(g['type_errors'], [])
 
     def test_taking_a_decision_or_editing_directly_fails(self):
-        a1 = self.d / WS / 'a1-business.json'; d = json.loads(a1.read_text(encoding='utf-8'))
+        a1 = lf(self.d / WS, 'business'); d = json.loads(a1.read_text(encoding='utf-8'))
         d['instances'].append({'id': 'CAP-X', 'type': 'A1.BusinessCapability', 'version': '1', 'name': 'Payments', 'lifecycle_status': 'planned'})
         a1.write_text(json.dumps(d))                                                     # written directly, not through a change set
         with open(self.d / '.sdem-calls.log', 'a') as f: f.write('0\tapprove AID-001-P001 --reviewer jane.architect\n')

@@ -10,7 +10,7 @@ from sdem.metamodel import Metamodel, MM_DIR
 from sdem.conformance import definitions
 
 OUT = MM_DIR.parent / 'examples' / 'reference-structure'
-FILES = _live(lambda: {_L('business'): _F('business'), _L('bian'): _F('bian'), _L('application'): _F('application'), _L('technology'): _F('technology')})
+FILES = _live(lambda: {_L('business'): _F('business'), _L('bian'): _F('bian'), _L('data'): _F('data'), _L('application'): _F('application'), _L('technology'): _F('technology')})
 
 
 PLACEHOLDER = {'integer': 1, 'boolean': False, 'date': '2026-01-01', 'map<string,string>': {}}

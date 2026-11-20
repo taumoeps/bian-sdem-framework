@@ -4,7 +4,9 @@ import json, os, shutil, subprocess, sys, tempfile, unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT))
+sys.path.insert(0, str(ROOT)); sys.path.insert(0, str(Path(__file__).resolve().parent))
+from forms import lf  # noqa: E402 — a layer's file in either form
+FORM_020 = os.environ.get('SDEM_FORM') == '0.20'   # DL-D9: without a workspace, SDEM shows the stack `sdem new` would make
 ENV = {**os.environ, 'PYTHONPATH': str(ROOT) + os.pathsep + os.environ.get('PYTHONPATH', '')}
 
 
@@ -34,7 +36,7 @@ class TypesTests(unittest.TestCase):
 
     def test_the_requirement_and_change_set_formats(self):  # TS-03
         _, _, d = sdem('types', 'requirement', '--json')
-        self.assertIn('performance', d['category']); self.assertIn('>=', d['condition']['operator']); self.assertEqual(d['owner_layer'], ['A1', 'A2', 'A3', 'A4'])
+        self.assertIn('performance', d['category']); self.assertIn('>=', d['condition']['operator']); self.assertEqual(d['owner_layer'], ['A1', 'A2', 'A3', 'A4'] + (['A5'] if FORM_020 else []))
         self.assertIn('provenance', d['set_by_sdem'])
         _, _, d = sdem('types', 'change-set', '--json'); self.assertIn('relationships', d['shape'])
 
@@ -97,7 +99,7 @@ class BaselineFixTests(unittest.TestCase):
         self.assertIn("owner_layer 'X' is not a layer of this workspace", out); self.assertIn('unknown field(s) foo', out)
 
     def test_an_aid_dry_run_says_what_it_would_write(self):
-        (self.tmp / 'ws' / 'a3-application.json').unlink()
+        lf(self.tmp / 'ws', 'application').unlink()
         code, out, d = sdem('aid', '--workspace', self.tmp / 'ws', '--person', 'steven', '--dry-run', '--json', cwd=self.tmp, ok=(0, 2))
         self.assertEqual(d['error']['code'], 'refused')                                                   # approved links to records no longer held — refused, not a crash
 
@@ -109,7 +111,7 @@ class BaselineFixTests(unittest.TestCase):
         (self.tmp / 'cs.json').write_text(json.dumps(cs)); sdem('change', 'propose', self.tmp / 'cs.json', '--workspace', ws, '--agent', 'sdem-a1-business', '--person', 'steven', cwd=self.tmp)
         before = sorted(p.name for p in ws.rglob('*'))
         _, _, d = sdem('aid', '--workspace', ws, '--person', 'steven', '--dry-run', '--json', cwd=self.tmp)
-        self.assertTrue(any(w.endswith('a2-service-domain.json') for w in d['would_write']))
+        self.assertTrue(any(w.endswith(lf(ws, 'bian').name) for w in d['would_write']))
         self.assertEqual(sorted(p.name for p in ws.rglob('*')), before)
 
 if __name__ == '__main__':

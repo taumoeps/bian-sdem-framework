@@ -23,7 +23,7 @@ DECISION_STYLE = {
 NOT_DRAWN = ('bian_internal', 'not_encodable', 'not_a_mapping', 'historical_method', 'subsumed')
 DRAWN = ('verified', 'verified_intent_or_target_only')
 LEVEL_NAMES = _live(lambda: {_L('business'): f'{_L("business")} Business Architecture', _L('bian'): f'{_L("bian")} Service Domain Architecture',
-               _L('application'): f'{_L("application")} Application Architecture', _L('technology'): f'{_L("technology")} Technology Architecture'})
+               _L('data'): f'{_L("data")} Data Architecture', _L('application'): f'{_L("application")} Application Architecture', _L('technology'): f'{_L("technology")} Technology Architecture'})
 
 
 def load_official(path=OFFICIAL):
@@ -47,7 +47,7 @@ def render(official=None, metamodel=None):
            'skinparam package {', '  BackgroundColor #F5F5F5', '  BorderColor #9E9E9E', '}',
            'skinparam ArrowColor #1565C0', 'skinparam ArrowFontSize 10',
            f"title Official mappings — {len(entries)} verified connectors (B = BIAN-internal, S = cross-level with BIAN guidance)", '']
-    for lvl in (_L('business'), _L('bian'), _L('application'), _L('technology')):
+    for lvl in tuple(dict.fromkeys((_L('business'), _L('bian'), _L('data'), _L('application'), _L('technology')))):
         out.append(f'package "{LEVEL_NAMES[lvl]}" as {lvl} {{')
         for t, e in mm.entities.items():
             if e['level'] != lvl:
@@ -99,7 +99,7 @@ def render_new(new=None, metamodel=None):
            'skinparam package {', '  BackgroundColor #F5F5F5', '  BorderColor #9E9E9E', '}',
            'skinparam ArrowFontSize 9', 'skinparam ArrowThickness 1',
            f"title New mappings (plan) — {len(entries)} cross-level connections by rule decision; every one validated by the use-case suite", '']
-    for lvl in (_L('business'), _L('bian'), _L('application'), _L('technology')):
+    for lvl in tuple(dict.fromkeys((_L('business'), _L('bian'), _L('data'), _L('application'), _L('technology')))):
         out.append(f'package "{LEVEL_NAMES[lvl]}" as {lvl} {{')
         for t, e in mm.entities.items():
             if e['level'] != lvl:
@@ -164,14 +164,14 @@ def render_levels(metamodel=None, level_rels=None, examples_dir=None):
            'skinparam rectangle {', '  BackgroundColor White', '  BorderColor #424242', '}',
            'skinparam package {', '  BackgroundColor #F5F5F5', '  BorderColor #9E9E9E', '}', 'skinparam ArrowFontSize 9',
            f'title Within-level structure — every level from its reference architecture: {_L("bian")} BIAN; {_L("business")}, {_L("application")}, {_L("technology")} ArchiMate 3.2 / TOGAF (association permitted everywhere, not drawn)', '']
-    rows_by_level = {l: [(c['source_type'], c['kind'], c['target_type'], c.get('id', '')) for c in lr['constraints'] if c['level'] == l] for l in (_L('business'), _L('bian'), _L('application'), _L('technology'))}
-    for lvl in (_L('business'), _L('bian'), _L('application'), _L('technology')):
+    rows_by_level = {l: [(c['source_type'], c['kind'], c['target_type'], c.get('id', '')) for c in lr['constraints'] if c['level'] == l] for l in tuple(dict.fromkeys((_L('business'), _L('bian'), _L('data'), _L('application'), _L('technology'))))}
+    for lvl in tuple(dict.fromkeys((_L('business'), _L('bian'), _L('data'), _L('application'), _L('technology')))):
         out.append(f'package "{LEVEL_NAMES[lvl]}" as {lvl} {{')
         for t, e in mm.entities.items():
             if e['level'] != lvl: continue
             tag = '\\n(artefact)' if e.get('artefact') else '\\n(abstract)' if e.get('abstract') else ''
             out.append(f'  rectangle "{t}{tag}" as {alias[t]}')
-        src = {_L('business'): 'ArchiMate 3.2 ch. 6–8', _L('bian'): 'BIAN Service Landscape metamodel', _L('application'): 'ArchiMate 3.2 ch. 9; TOGAF (SBB)', _L('technology'): 'ArchiMate 3.2 ch. 10'}[lvl]
+        src = {_L('business'): 'ArchiMate 3.2 ch. 6–8', _L('bian'): 'BIAN Service Landscape metamodel', _L('data'): 'ArchiMate 3.2 ch. 9; TOGAF (SBB)', _L('application'): 'ArchiMate 3.2 ch. 9; TOGAF (SBB)', _L('technology'): 'ArchiMate 3.2 ch. 10'}[lvl]
         out.append(f"  ' constraints from {src} ({len(rows_by_level[lvl])})")
         for s_, k, t_, rid in rows_by_level[lvl]:
             c, st = KIND_STYLE[k]; out.append(f"  {alias[s_]} -[#{c.lstrip('#')}{',' + st if st else ''}]-> {alias[t_]} : {rid} {k}")
@@ -201,13 +201,13 @@ def render_merged(new=None, metamodel=None, level_rels=None, examples_dir=None):
     entries = new_entries(new)
     rule_of = {m['id']: (m.get('sdem_rule') or m.get('sdmm_rule')) for m in load_official()['mappings']}
     ends = {m['source'] for m in entries} | {m['target'] for m in entries}
-    rows_by_level = {l: [(c['source_type'], c['kind'], c['target_type'], c.get('id', '')) for c in lr['constraints'] if c['level'] == l] for l in (_L('business'), _L('bian'), _L('application'), _L('technology'))}
+    rows_by_level = {l: [(c['source_type'], c['kind'], c['target_type'], c.get('id', '')) for c in lr['constraints'] if c['level'] == l] for l in tuple(dict.fromkeys((_L('business'), _L('bian'), _L('data'), _L('application'), _L('technology'))))}
     within = sum(len(v) for v in rows_by_level.values())
     out = ['@startuml merged-relationships', 'left to right direction',
            'skinparam rectangle {', '  BackgroundColor White', '  BorderColor #424242', '}',
            'skinparam package {', '  BackgroundColor #F5F5F5', '  BorderColor #9E9E9E', '}', 'skinparam ArrowFontSize 9',
            f"title Merged view — {within} within-level links (thin, kind only) and {len(entries)} cross-level mappings (plan ID, coloured by decision)", '']
-    for lvl in (_L('business'), _L('bian'), _L('application'), _L('technology')):
+    for lvl in tuple(dict.fromkeys((_L('business'), _L('bian'), _L('data'), _L('application'), _L('technology')))):
         out.append(f'package "{LEVEL_NAMES[lvl]}" as {lvl} {{')
         for t, e in mm.entities.items():
             if e['level'] != lvl: continue

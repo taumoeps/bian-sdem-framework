@@ -13,7 +13,7 @@ from pathlib import Path
 from .store import GraphReader
 
 from .layers import CODES as LEVELS, titled   # LR-09: one band per layer, the profile's too
-NAMES = _live(lambda: titled({_L('business'): f'{_L("business")} Business', _L('bian'): f'{_L("bian")} Service Domain (BIAN)', _L('application'): f'{_L("application")} Application', _L('technology'): f'{_L("technology")} Technology'}))
+NAMES = _live(lambda: titled({_L('business'): f'{_L("business")} Business', _L('bian'): f'{_L("bian")} Service Domain (BIAN)', _L('data'): f'{_L("data")} Data', _L('application'): f'{_L("application")} Application', _L('technology'): f'{_L("technology")} Technology'}))
 BOX_W, BOX_H, STEP_X, STEP_Y, PAD_X, BAND_GAP, PER_ROW = 168, 38, 184, 56, 170, 46, 8
 
 

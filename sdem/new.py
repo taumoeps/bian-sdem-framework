@@ -32,6 +32,12 @@ class NewError(ValueError):
     """The request cannot be done (exit 2)."""
 
 
+
+def default_form():
+    """DL-D9a: the form a new workspace takes — 0.19's until every feature works in 0.20's; SDEM_FORM=0.20 opts in."""
+    import os
+    return os.environ.get('SDEM_FORM') or '0.19'
+
 def base_layer():
     """Every service domain of the base BIAN, accepted inferences applied — as `sdem bian import --base --all`."""
     from . import bian
@@ -244,7 +250,7 @@ def main(argv=None):
     ap.add_argument('--person', required=True, help='your name — a person')
     ap.add_argument('--bian', metavar='FILE', help=f'start with exactly this BIAN layer in {_L("bian")} (default: {_L("bian")} empty; sdem aid brings in the domains your design needs from {SHARED.as_posix()} if it exists, else the base BIAN)')
     ap.add_argument('--no-bian', action='store_true', help='start without a BIAN layer (add it later); business then does not connect to applications')
-    ap.add_argument('--form', choices=('0.20', '0.19'), default=os.environ.get('SDEM_FORM') or '0.19', help="0.20: the Data layer of its own, files named by layer, records that store type ids (DL-D9 — opt-in until every SDEM feature works in it); 0.19 (the default for now): as SDEM 0.19 made them — migrate later with sdem migrate --to 0.20")
+    ap.add_argument('--form', choices=('0.20', '0.19'), default=default_form(), help="0.20: the Data layer of its own, files named by layer, records that store type ids (DL-D9 — opt-in until every SDEM feature works in it); 0.19 (the default for now): as SDEM 0.19 made them — migrate later with sdem migrate --to 0.20")
     ap.add_argument('--core', action='store_true', help=f"a core-only design: SDEM's core layers {_L('business')}, {_L('application')} and {_L('technology')} and no BIAN — switch BIAN on later with sdem profile include ext:bian (BX-13)")
     ap.add_argument('--example', choices=sorted(EXAMPLES), help='start with a synthetic example that ships with SDEM as the baseline (made-up data, for learning) — the same as --from its folder')
     ap.add_argument('--from', dest='source', metavar='DIR', help='start with this content as the baseline: the four layers, mappings.json and requirements.json found in DIR — checked first, '

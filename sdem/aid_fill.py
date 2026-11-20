@@ -18,7 +18,7 @@ from .identity import T as _T, layer as _L, F as _F, live as _live  # ST-01…ST
 import argparse, copy, datetime, json, re, sys
 from pathlib import Path
 
-DATASETS = _live(lambda: {_L('business'): _F('business'), _L('bian'): _F('bian'), _L('application'): _F('application'), _L('technology'): _F('technology')})
+DATASETS = _live(lambda: {_L('business'): _F('business'), _L('bian'): _F('bian'), _L('data'): _F('data'), _L('application'): _F('application'), _L('technology'): _F('technology')})
 FOLDER = 'aid'
 
 
@@ -54,7 +54,8 @@ def _workspace(ws):
     if parts.migrated():   # DL-12: inside view_019 — data.json in the Application layer, approved ACCESSED_BY as access inside it
         app = _L('application'); d = ws / 'data.json'
         if d.exists():
-            dd = _j(d); a = docs.setdefault(app, {'level': app, 'instances': [], 'relationships': []})
+            dd = _j(d)   # no Application file yet: the layer as data.json describes it — a dataset needs its model_id (DS schema)
+            a = docs.setdefault(app, {**{k: dd[k] for k in ('model_id', 'model_version', 'metamodel_version', 'source_system') if dd.get(k)}, 'level': app, 'instances': [], 'relationships': []})
             a['instances'] = list(a.get('instances', [])) + dd.get('instances', []); a['relationships'] = list(a.get('relationships', [])) + dd.get('relationships', [])
         keep = []
         for m in registry.get('mappings', []):
@@ -69,7 +70,7 @@ def _workspace(ws):
 _APPROVED = {}   # {workspace: {(application element, data entity)}} — the approved ACCESSED_BY links seen as access in the 0.19 view
 
 
-def _split(ws, lvl, doc, run, proposals):
+def _split(ws, lvl, doc, run, proposals, by='sdem aid'):
     """DL-12 on the way out: {path: document} for one layer AID writes. In a migrated workspace the Application document of the 0.19 view
     goes back to application.json and data.json; an access link it holds that was an approved ACCESSED_BY stays one (not written
     twice); a new one becomes a proposed ACCESSED_BY — a link between layers is a person's to approve."""
@@ -81,7 +82,8 @@ def _split(ws, lvl, doc, run, proposals):
     data_ids = {k for k, i in kinds.items() if is_data(i.get('type'))}
     app = {**doc, 'instances': [i for i in doc.get('instances', []) if i['id'] not in data_ids], 'relationships': []}
     old = _j(ws / 'data.json') if (ws / 'data.json').exists() else {'level': 'data', 'model_id': f"{doc.get('model_id', 'workspace')}-data",
-                                                                    'metamodel_version': doc.get('metamodel_version'), 'source_system': doc.get('source_system')}
+                                                                    'model_version': doc.get('model_version'), 'metamodel_version': doc.get('metamodel_version'),
+                                                                    'source_system': doc.get('source_system')}   # every field a layer file needs, as migrate writes it
     data = {**old, 'level': 'data', 'instances': [i for i in doc.get('instances', []) if i['id'] in data_ids], 'relationships': []}   # its own layer id: in the view Data reads as Application's code
     for rel in doc.get('relationships', []):
         s, t = rel.get('source') in data_ids, rel.get('target') in data_ids
@@ -91,9 +93,9 @@ def _split(ws, lvl, doc, run, proposals):
             src, tgt = kinds[rel['target']], kinds[rel['source']]
             proposals.append({'mapping_id': f'{run}-P{len(proposals) + 1:03d}', 'source': {'id': src['id'], 'type': src['type'], 'version': src.get('version', '1')},
                               'relationship': 'ACCESSED_BY', 'target': {'id': tgt['id'], 'type': tgt['type'], 'version': tgt.get('version', '1')}, 'status': 'proposed',
-                              'evidence': [f'engine_rationale:{run} access inferred inside the Application layer of the 0.19 view'],
-                              'rationale': 'Inferred by sdem aid: the application element reads or writes the data entity — a link between the Data and Application layers (DL-04)',
-                              'baseline_id': run, 'created_by': 'sdem aid'})
+                              'evidence': [f"engine_rationale:{run} access {'inferred' if by == 'sdem aid' else 'stated'} inside the Application layer of the 0.19 view"],
+                              'rationale': (f'Inferred by {by}' if by == 'sdem aid' else f'Loaded by {by} from a past design') + ': the application element reads or writes the data entity — a link between the Data and Application layers (DL-04)',
+                              'baseline_id': run, 'created_by': by})
         else: app['relationships'].append(rel)
     return {ws / DATASETS[lvl]: app, ws / 'data.json': data}
 
@@ -462,11 +464,15 @@ def _adopt(ws, layers, person, reason):
     """AID-W10: in a workspace that keeps change sets, what sdem aid (fill, confirm, reject) wrote is recorded as a change set adopted by
     the person, so the chain of change sets stays whole (CTL-20)."""
     from .agents import Estate, CoordinationError
-    est = Estate(ws)
-    if not any(est._last_change_set(l) for l in DATASETS): return
-    for lvl in sorted(layers):
-        try: est.adopt(lvl, person.strip(), reason)
-        except CoordinationError: pass   # nothing new in that layer's file
+    from . import identity, parts
+    ids = {identity.layer_id(l) or l for l in layers}   # DL-12: AID names layers in its 0.19 view; its change sets are the workspace's
+    if parts.migrated() and 'application' in ids: ids.add('data')   # the view's Application file is written as application.json and data.json
+    with identity.outside_view():
+        est = Estate(ws)
+        if not any(est._last_change_set(l) for l in DATASETS): return
+        for lvl in sorted(identity.layer(i) if i in identity._index()[0] else i for i in ids):
+            try: est.adopt(lvl, person.strip(), reason)
+            except CoordinationError: pass   # nothing new in that layer's file
 
 
 def main(argv):

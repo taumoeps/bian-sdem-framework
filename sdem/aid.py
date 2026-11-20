@@ -30,7 +30,7 @@ from .validate import load_registry
 MEDIUM, LOW = 0.6, 0.4
 from .paths import DATA_ROOT as _DATA_ROOT
 SCHEMA = _DATA_ROOT / 'schema' / 'projection.schema.json'
-FILES = _live(lambda: {_L('business'): 'projected-a1-business.json', _L('bian'): 'projected-a2-service-domain.json', _L('application'): 'projected-a3-application.json', _L('technology'): 'projected-a4-technology.json'})
+FILES = _live(lambda: {_L('business'): 'projected-a1-business.json', _L('bian'): 'projected-a2-service-domain.json', _L('data'): 'projected-a3-data.json', _L('application'): 'projected-a3-application.json', _L('technology'): 'projected-a4-technology.json'})
 CATALOGUE_RULE = 'BIAN catalogue reference'
 PROVENANCE = ('step', 'rule', 'source_reference', 'inferred_from', 'reasoning', 'confidence')
 # AID's own rule names → the metamodel rule whose published basis they rest on (relationship-rules.json `source_reference`)

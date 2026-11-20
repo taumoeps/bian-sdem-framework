@@ -14,9 +14,9 @@ from sdem.terms import apply as _terms
 
 ROOT = MM_DIR.parent
 DOC = ROOT / 'docs' / 'design' / 'knowledge-graph-spec.md'
-LEVEL_NAMES = _live(lambda: {_L('business'): f'{_L("business")} Business Architecture', _L('bian'): f'{_L("bian")} Service Domain Architecture', _L('application'): f'{_L("application")} Application Architecture', _L('technology'): f'{_L("technology")} Technology Architecture'})
-OWNER = _live(lambda: {_L('business'): 'business architecture', _L('bian'): 'BIAN alignment (enterprise architecture)', _L('application'): 'application architecture', _L('technology'): 'infrastructure / platform engineering'})
-SOURCE = _live(lambda: {_L('business'): 'EA tool — capability, value-stream and process models', _L('bian'): 'BIAN workbench / the bank\'s BIAN alignment', _L('application'): 'application portfolio, API catalogue, data models', _L('technology'): 'CMDB, deployment manifests'})
+LEVEL_NAMES = _live(lambda: {_L('business'): f'{_L("business")} Business Architecture', _L('bian'): f'{_L("bian")} Service Domain Architecture', _L('data'): f'{_L("data")} Data Architecture', _L('application'): f'{_L("application")} Application Architecture', _L('technology'): f'{_L("technology")} Technology Architecture'})
+OWNER = _live(lambda: {_L('business'): 'business architecture', _L('bian'): 'BIAN alignment (enterprise architecture)', _L('data'): 'data architecture', _L('application'): 'application architecture', _L('technology'): 'infrastructure / platform engineering'})
+SOURCE = _live(lambda: {_L('business'): 'EA tool — capability, value-stream and process models', _L('bian'): 'BIAN workbench / the bank\'s BIAN alignment', _L('data'): 'data models and data catalogue', _L('application'): 'application portfolio, API catalogue, data models', _L('technology'): 'CMDB, deployment manifests'})
 
 
 def _j(p): return _jload(Path(p))
@@ -57,7 +57,7 @@ def render():
             '    L1 -.->|reads entities + changes| ENG', '    L2 -.-> ENG', '    L3 -.-> ENG', '    L4 -.-> ENG', '    FED -.->|reads approved edges| ENG',
             '    L1 -.->|entity references| FED', '    L2 -.-> FED', '    L3 -.-> FED', '    L4 -.-> FED', '    MD -->|approved edges| FED', '    FED --> Q', '```', '',
             '| Graph | Holds | Owner | Source | Built from |', '|---|---|---|---|---|']
-    for l in (_L('business'), _L('bian'), _L('application'), _L('technology')):
+    for l in tuple(dict.fromkeys((_L('business'), _L('bian'), _L('data'), _L('application'), _L('technology')))):
         out.append(f"| {LEVEL_NAMES[l]} local graph | the level's entity instances and the links inside the level | {OWNER[l]} | {SOURCE[l]} | one architecture dataset (`schema/level-model.schema.json`) |")
     out += ['| Federated graph | approved cross-level edges, and references to their ends in the local graphs | enterprise architecture | the mapping set | the mapping set (`schema/relationship-registry.schema.json`) joined to the four local graphs |', '']
     req('A', 'Hold each level in its own local graph, loaded only from that level\'s architecture dataset; a change in one level never requires reloading another.', 'level-model.schema.json; `LevelGraph`', 'built (in memory; persisted by the graph store, `sdem build`)')
@@ -79,7 +79,7 @@ def render():
     out += ['', '### 2.3 Node and edge types per level', '']
     byl = Counter(c['level'] for c in lr['constraints'])
     out += ['| Level | Node types (concrete) | Edge rows | Join-key properties |', '|---|---|---|---|']
-    for l in (_L('business'), _L('bian'), _L('application'), _L('technology')):
+    for l in tuple(dict.fromkeys((_L('business'), _L('bian'), _L('data'), _L('application'), _L('technology')))):
         nodes = [t.split('.')[1] for t, e in mm.entities.items() if e['level'] == l and not e.get('abstract') and not e.get('artefact')]
         keys = sorted({f"{ent.split('.')[1]}.{k}" for ent, ks in conv['conventions'].items() if ent.startswith(l) for k in ks})
         out.append(f"| {LEVEL_NAMES[l]} | {len(nodes)}: {', '.join(nodes)} | {byl[l]} (`R{l}-01` …) | {', '.join(keys)} |")

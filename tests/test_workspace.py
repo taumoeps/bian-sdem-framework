@@ -7,6 +7,15 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 EX = ROOT / 'examples' / 'payment-initiation'
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from forms import lf, migrated   # noqa: E402 — a layer's file in either form
+
+
+def stored(ws, name):
+    """A type as the workspace's files hold it: its 0.19 name, or its id in SDEM 0.20's form (ST-10)."""
+    if not migrated(ws): return name
+    sys.path.insert(0, str(ROOT)); from sdem.identity import _index
+    return _index()[3][name]
 
 
 def sdem(*args, cwd):
@@ -19,17 +28,18 @@ class WorkspaceTests(unittest.TestCase):
     def setUp(self): self.tmp = Path(tempfile.mkdtemp())
     def tearDown(self): shutil.rmtree(self.tmp, ignore_errors=True)
 
-    def a2(self, ws): return json.loads((self.tmp / ws / 'a2-service-domain.json').read_text())
-    def sds(self, ws): return [i for i in self.a2(ws)['instances'] if i['type'] == 'A2.ServiceDomain']
+    def a2(self, ws): return json.loads(lf(self.tmp / ws, 'bian').read_text())
+    def sds(self, ws): return [i for i in self.a2(ws)['instances'] if i['type'] == stored(self.tmp / ws, 'A2.ServiceDomain')]
 
     def test_new_starts_empty_and_records_its_catalogue(self):  # WS-01, WS-02
         code, out = sdem('new', '--workspace', 'workspaces/payments', '--person', 'jane.architect', cwd=self.tmp)
         self.assertEqual(code, 0, out)
         ws = self.tmp / 'workspaces' / 'payments'
-        self.assertEqual(sorted(p.name for p in ws.iterdir()),
-                         ['a1-business.json', 'a2-service-domain.json', 'a3-application.json', 'a4-technology.json', 'mappings.json', 'sdem-ledger.json', 'sdem-profile.json', 'workspace.json'])   # CPL-03: its profile includes SDEM's standard for a complete design
+        layers = ['application.json', 'bian.json', 'business.json', 'data.json', 'technology.json'] if migrated(ws) else \
+                 ['a1-business.json', 'a2-service-domain.json', 'a3-application.json', 'a4-technology.json']   # every layer in use has its file (SDEM 0.20: Data too)
+        self.assertEqual(sorted(p.name for p in ws.iterdir()), sorted(layers + ['mappings.json', 'sdem-ledger.json', 'sdem-profile.json', 'workspace.json']))   # CPL-03: its profile includes SDEM's standard for a complete design
         self.assertEqual(self.sds('workspaces/payments'), [])                       # the catalogue is read, never copied
-        self.assertLess((ws / 'a2-service-domain.json').stat().st_size, 1000)
+        self.assertLess(lf(ws, 'bian').stat().st_size, 1000)
         rec = json.loads((ws / 'workspace.json').read_text())
         self.assertEqual((rec['created_by'], rec['bian']['catalogue'], rec['bian']['selection']), ('jane.architect', 'base', 'relevant'))
         self.assertEqual(sdem('check', '--workspace', ws, cwd=self.tmp)[0], 0)
@@ -44,9 +54,11 @@ class WorkspaceTests(unittest.TestCase):
         rec = json.loads((self.tmp / 'workspaces' / 'payments' / 'workspace.json').read_text())
         self.assertEqual(rec['bian']['catalogue'], 'bian/a2-service-domain.json'); self.assertEqual(self.sds('workspaces/payments'), [])
         self.assertEqual(sdem('new', '--workspace', 'workspaces/given', '--person', 'jane.architect', '--bian', EX / 'a2-service-domain.json', cwd=self.tmp)[0], 0)
-        self.assertEqual(self.a2('workspaces/given'), json.loads((EX / 'a2-service-domain.json').read_text()))
+        given = json.loads((EX / 'a2-service-domain.json').read_text()); w = self.tmp / 'workspaces' / 'given'
+        if migrated(w): given = {**self.a2('workspaces/given'), 'instances': [{**i, 'type': stored(w, i['type'])} for i in given['instances']], 'relationships': given['relationships']}   # held by type id (ST-10)
+        self.assertEqual(self.a2('workspaces/given'), given)
         code, out = sdem('new', '--workspace', 'workspaces/plain', '--person', 'jane.architect', '--no-bian', cwd=self.tmp)
-        self.assertEqual(code, 0, out); self.assertFalse((self.tmp / 'workspaces' / 'plain' / 'a2-service-domain.json').exists())
+        self.assertEqual(code, 0, out); self.assertFalse(lf(self.tmp / 'workspaces' / 'plain', 'bian').exists())
 
     def test_load_needs_a_workspace(self):  # WS-03
         code, out = sdem('load', ROOT / 'tests' / 'fixtures', '--workspace', 'workspaces/none', '--person', 'jane.architect', '--all', cwd=self.tmp)
@@ -79,11 +91,11 @@ class WorkspaceTests(unittest.TestCase):
         self.assertEqual(sdem('new', '--workspace', 'ws', '--person', 'jane.architect', '--bian', EX / 'a2-service-domain.json', cwd=self.tmp)[0], 0)
         code, out = sdem('aid', 'project', '--workspace', 'ws', cwd=self.tmp)
         self.assertEqual(code, 2); self.assertIn('no business layer', out)
-        shutil.copy(EX / 'a1-business.json', self.tmp / 'ws' / 'a1-business.json')
+        shutil.copy(EX / 'a1-business.json', lf(self.tmp / 'ws', 'business'))   # a file in 0.19's names still reads (ST-05)
         code, out = sdem('aid', 'project', '--workspace', 'ws', cwd=self.tmp)
         self.assertEqual(code, 0, out); self.assertIn('ws/plans/PLAN-001', out)
         self.assertTrue((self.tmp / 'ws' / 'plans' / 'PLAN-001').exists())
-        self.assertEqual(json.loads((self.tmp / 'ws' / 'a3-application.json').read_text())['instances'], [])   # nothing planned enters the real layers
+        self.assertEqual(json.loads(lf(self.tmp / 'ws', 'application').read_text())['instances'], [])   # nothing planned enters the real layers
         self.assertEqual(sdem('check', '--workspace', 'ws', cwd=self.tmp)[0], 0)
         code, out = sdem('aid', 'gaps', 'ws/plans/PLAN-001', '--workspace', 'ws', cwd=self.tmp)
         self.assertEqual(code, 0, out); self.assertIn('A2 service domains', out)

@@ -6,6 +6,8 @@ import json, os, shutil, subprocess, sys, tempfile, unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from forms import lf, migrated   # noqa: E402 — a layer's file in either form
 
 
 def sdem(*args, cwd):
@@ -43,8 +45,9 @@ class OrganisationTests(unittest.TestCase):
         doc['attributes'] = [{'entity': 'A3.ApplicationComponent', 'name': 'risk_tier', 'type': 'enum', 'values': ['1', '2', '3'], 'required': True}]
         base.write_text(json.dumps(doc))
         self.assertEqual(sdem('new', '--workspace', 'workspaces/ledger', '--organisation', 'bank-xyz', '--person', 'jane.architect', cwd=self.tmp)[0], 0)
-        a3 = self.org / 'workspaces' / 'ledger' / 'a3-application.json'; d = json.loads(a3.read_text())
-        d['instances'] = [{'id': 'APP-GL', 'type': 'A3.ApplicationComponent', 'version': '1', 'name': 'General ledger', 'lifecycle_status': 'active',
+        a3 = lf(self.org / 'workspaces' / 'ledger', 'application'); d = json.loads(a3.read_text())
+        d['instances'] = [{'id': 'APP-GL', 'type': 'application.ApplicationComponent' if migrated(a3.parent) else 'A3.ApplicationComponent',   # a 0.20 file stores type ids (ST-10)
+                           'version': '1', 'name': 'General ledger', 'lifecycle_status': 'active',
                            'description': 'made up', 'attributes': {}}]
         a3.write_text(json.dumps(d))
         code, out = sdem('check', '--workspace', 'bank-xyz/workspaces/ledger', cwd=self.tmp)

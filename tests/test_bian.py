@@ -5,6 +5,8 @@ checked against all 1,241 files of BIAN releases 10.0–14.0 (scripts/bian_impor
 to PyYAML's), which are not kept in this repository."""
 import json, shutil, subprocess, sys, tempfile, unittest
 from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from forms import lf   # noqa: E402 — a layer's file in either form
 
 from sdem import bian
 
@@ -182,7 +184,7 @@ class BianImportTests(unittest.TestCase):
         transform.extract(ROOT / 'examples' / 'designs' / 'confluence-folder-export', self.tmp / 'history', ocr='off')
         res = load.load(self.tmp / 'history', start(self.tmp / 'estate'), 'jane.architect', exclude=['HIS-A3-PAYMENT-ORDER'], a2=f)
         self.assertGreater(res['reconciliation']['loaded'], 0)
-        self.assertEqual(json.loads((self.tmp / 'estate' / 'a2-service-domain.json').read_text())['source_system'], 'BIAN-SEMANTIC-API-99.0.0')
+        self.assertEqual(json.loads(lf(self.tmp / 'estate', 'bian').read_text())['source_system'], 'BIAN-SEMANTIC-API-99.0.0')
 
 
 

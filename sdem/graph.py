@@ -546,7 +546,7 @@ def write_level_csv(results, path):
             for o in res['orphans']: w.writerow([res['direction'], res['level'], o['id'], o['name'], '', '', '', 'gap: connected to nothing'])
 
 
-_LAYER = _live(lambda: {_L('business'): f'{_L("business")} Business', _L('bian'): f'{_L("bian")} BIAN', _L('application'): f'{_L("application")} Application', _L('technology'): f'{_L("technology")} Technology'})
+_LAYER = _live(lambda: {_L('business'): f'{_L("business")} Business', _L('bian'): f'{_L("bian")} BIAN', _L('data'): f'{_L("data")} Data', _L('application'): f'{_L("application")} Application', _L('technology'): f'{_L("technology")} Technology'})
 
 
 class _Layers(dict):
@@ -571,6 +571,7 @@ def kind_label(t):
     if own: return f'{LAYER.get(lvl, lvl)} · {own}'
     if lvl not in _LAYER:   # a profile type: ORG.A3.Name → its layer and its name
         org, layer, name = t.split('.', 2) if t.count('.') == 2 else (None, lvl, kind)
+        layer = _p.code_of(_p.ACTIVE, layer)   # DL-25: the name's layer as this workspace numbers it (BANK.A5.Facility → A6 beside Technology's A5)
         return f"{LAYER.get(layer, layer)} · {re.sub(r'(?<=[a-z])(?=[A-Z])', ' ', name)} ({org})"
     return f"{LAYER.get(lvl, lvl)} · {re.sub(r'(?<=[a-z])(?=[A-Z])', ' ', kind)}"
 
@@ -855,7 +856,8 @@ def _query(args, reader):
         for w in args.where:
             if '=' not in w: print(f'ERROR: --where needs ATTR=VALUE, got {w!r}', file=sys.stderr); return EXIT_USAGE
             k, v = w.split('=', 1); where[k] = v
-        rows = reader.nodes(level=args.level, type=args.type, where=where or None); cols = ('id', 'type', 'name', 'version')
+        from .identity import display   # ST-05: a type id, or its 0.19 name, reads as the type it names
+        rows = reader.nodes(level=args.level, type=display(args.type) if args.type else None, where=where or None); cols = ('id', 'type', 'name', 'version')
     if args.json: print(json.dumps(rows, indent=2, ensure_ascii=False))
     else:
         for r in rows: print('  '.join(', '.join(r[c]) if isinstance(r.get(c), list) else str(r.get(c, '')) for c in cols))

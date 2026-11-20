@@ -9,6 +9,8 @@ sys.path.insert(0, str(ROOT))
 from sdem.conformance import check_level             # noqa: E402
 from sdem.hosting import evidence, judge, path, zone_connections   # noqa: E402
 from sdem.metamodel import Metamodel                  # noqa: E402
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from forms import lf, migrated                       # noqa: E402 — a layer's file in either form
 
 PAY, LEDGER = ROOT / 'examples' / 'payment-initiation', ROOT / 'examples' / 'legacy-core-ledger'
 
@@ -19,7 +21,7 @@ def sdem(*args, cwd):
     return r.returncode, r.stdout, r.stderr
 
 
-def a4(ws): return json.loads((ws / 'a4-technology.json').read_text(encoding='utf-8'))
+def a4(ws): return json.loads(lf(ws, 'technology').read_text(encoding='utf-8'))
 
 
 class Base(unittest.TestCase):
@@ -30,7 +32,7 @@ class Base(unittest.TestCase):
         ws = self.tmp / src.name; shutil.copytree(src, ws, ignore=shutil.ignore_patterns('graph'))
         d = a4(ws); d['instances'] = [i for i in d['instances'] if i['type'] != 'A4.NetworkZone']
         ids = {i['id'] for i in d['instances']}; d['relationships'] = [r for r in d['relationships'] if r['source'] in ids and r['target'] in ids]
-        (ws / 'a4-technology.json').write_text(json.dumps(d, indent=2), encoding='utf-8'); return ws
+        lf(ws, 'technology').write_text(json.dumps(d, indent=2), encoding='utf-8'); return ws
 
 
 class EvidenceTests(Base):   # HS-01…HS-10
@@ -135,8 +137,9 @@ class PolicyTests(Base):   # PR-32, WS-12
         for name, hosting in (('zoned', ['--hosting', 'cloud']), ('plain', [])):
             self.assertEqual(sdem('new', '--workspace', name, '--person', 'jane.architect', *hosting, cwd=self.tmp)[0], 0)
             d = a4(self.tmp / name)
-            d['instances'].append({'id': 'INF-LONE', 'type': 'A4.Node', 'version': '1', 'name': 'A server', 'lifecycle_status': 'active'})
-            (self.tmp / name / 'a4-technology.json').write_text(json.dumps(d), encoding='utf-8')
+            node = 'technology.Node' if migrated(self.tmp / name) else 'A4.Node'   # a 0.20 file stores type ids (ST-10)
+            d['instances'].append({'id': 'INF-LONE', 'type': node, 'version': '1', 'name': 'A server', 'lifecycle_status': 'active'})
+            lf(self.tmp / name, 'technology').write_text(json.dumps(d), encoding='utf-8')
         code, out, err = sdem('check', '--workspace', self.tmp / 'zoned', cwd=self.tmp)
         self.assertNotEqual(code, 0); self.assertRegex(out + err, r'ERROR: .*INF-LONE.*LC-16.*an error here')
         code, out, err = sdem('check', '--workspace', self.tmp / 'plain', cwd=self.tmp)

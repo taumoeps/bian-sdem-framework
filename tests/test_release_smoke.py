@@ -5,6 +5,8 @@ import json, os, re, shutil, subprocess, sys, tempfile, unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from forms import lf, migrated  # noqa: E402 — a layer's file in either form
 
 
 def run(cmd, cwd, ok=(0,), env=None):
@@ -47,8 +49,8 @@ class ReleaseSmokeTests(unittest.TestCase):
     def test_2_a_new_workspace_is_empty_valid_and_recorded(self):
         _, d = self.sdem('new', '--workspace', 'workspaces/payments', '--person', 'steven', '--json')
         ws = self.home / 'workspaces' / 'payments'
-        for f in ('a1-business.json', 'a3-application.json', 'a4-technology.json', 'mappings.json', 'workspace.json', 'sdem-ledger.json'): self.assertTrue((ws / f).exists(), f)
-        self.assertEqual(json.loads((ws / 'a1-business.json').read_text())['instances'], [])
+        for f in [lf(ws, l).name for l in ('business', 'application', 'technology')] + ['mappings.json', 'workspace.json', 'sdem-ledger.json']: self.assertTrue((ws / f).exists(), f)
+        self.assertEqual(json.loads(lf(ws, 'business').read_text())['instances'], [])
         _, d = self.sdem('check', '--workspace', 'workspaces/payments', '--require-recorded', '--json'); self.assertTrue(d['ok']); self.assertEqual(d['unrecorded_edits'], [])
 
     def test_3_agent_support_installs_and_keeps_your_changes(self):
@@ -66,9 +68,10 @@ class ReleaseSmokeTests(unittest.TestCase):
         _, d = self.sdem('new', '--workspace', 'workspaces/example', '--person', 'steven', '--example', 'payment-initiation', '--json')
         _, d = self.sdem('check', '--workspace', 'workspaces/example', '--require-recorded', '--json'); self.assertTrue(d['ok'])
         self.sdem('build', '--workspace', 'workspaces/example', '--out', 'workspaces/example/graph', '--json')
-        _, t = self.sdem('trace', 'A4', '--direction', 'up', '--graph', 'workspaces/example/graph', '--json'); self.assertTrue(t['items'])
+        new = migrated(self.home / 'workspaces' / 'example')   # SDEM 0.20's form: with BIAN and Data, Application is A4 and Technology A5
+        _, t = self.sdem('trace', 'A5' if new else 'A4', '--direction', 'up', '--graph', 'workspaces/example/graph', '--json'); self.assertTrue(t['items'])
         _, i = self.sdem('impact', 'INF-K8S-PAY-PROD', '--change', 'rehost', '--graph', 'workspaces/example/graph', '--json')
-        self.assertEqual(i['coverage']['A3']['result'], 'impact_detected')
+        self.assertEqual(i['coverage']['A4' if new else 'A3']['result'], 'impact_detected')
         _, e = self.sdem('requirements', 'evaluate', '--workspace', 'workspaces/example', '--record', 'INF-K8S-PAY-PROD', '--change', 'rehost', '--proposed', 'INF-K8S-PAY-PROD2', '--json')
         self.assertEqual(len([f for f in e['risks'] if f['type'] == 'confirmed_breach']), 4)
 

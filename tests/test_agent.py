@@ -4,6 +4,8 @@ JSON object with the sdem marker; failures are JSON with a code and a hint; --dr
 outside sdem are noticed; `sdem commands --json` lists every command."""
 import hashlib, json, os, shutil, subprocess, sys, tempfile, unittest
 from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from forms import lf   # noqa: E402 — a layer's file in either form
 
 ROOT = Path(__file__).resolve().parents[1]
 G = ROOT / 'examples' / 'payment-initiation' / 'graph'
@@ -37,9 +39,9 @@ class AgentTests(unittest.TestCase):
         t = self.tmp
         _, d = sdem('new', '--workspace', 'ws', '--person', 'jane.architect', '--json', cwd=t)
         self.assertEqual(d['sdem']['command'], 'new')
-        a1 = json.loads((t / 'ws' / 'a1-business.json').read_text())
+        a1 = json.loads(lf(t / 'ws', 'business').read_text())
         a1['instances'] = A1; a1['relationships'] = [{'source': 'PRC-1', 'kind': 'composition', 'target': 'ACT-1'}]
-        (t / 'ws' / 'a1-business.json').write_text(json.dumps(a1))
+        lf(t / 'ws', 'business').write_text(json.dumps(a1))
         self.assertTrue(sdem('check', '--workspace', 'ws', '--json', cwd=t)[1]['ok'])
         before = tree_hash(t / 'ws')
         _, d = sdem('aid', '--workspace', 'ws', '--person', 'jane.architect', '--json', '--dry-run', cwd=t)
@@ -48,7 +50,7 @@ class AgentTests(unittest.TestCase):
         self.assertEqual(d['sdem'], {'version': d['sdem']['version'], 'command': 'aid'}); self.assertTrue(d['proposed_connections'])
         before = tree_hash(t / 'ws')
         _, d = sdem('aid', 'confirm', '--all', '--workspace', 'ws', '--person', 'jane.architect', '--json', '--dry-run', cwd=t)
-        self.assertTrue(d['dry_run']); self.assertTrue(any('a2-service-domain.json' in w for w in d['would_write']))
+        self.assertTrue(d['dry_run']); self.assertTrue(any(lf(t / 'ws', 'bian').name in w for w in d['would_write']))
         self.assertEqual(tree_hash(t / 'ws'), before)                                                       # the sandbox: nothing written
         _, d = sdem('aid', 'confirm', '--all', '--workspace', 'ws', '--person', 'jane.architect', '--json', cwd=t)
         self.assertGreater(d['count'], 10)
@@ -90,16 +92,16 @@ class AgentTests(unittest.TestCase):
         sdem('new', '--workspace', 'ws', '--person', 'jane.architect', '--json', cwd=t)
         _, d = sdem('check', '--workspace', 'ws', '--json', cwd=t)
         self.assertEqual(d['unrecorded_edits'], [])
-        a1 = json.loads((t / 'ws' / 'a1-business.json').read_text()); a1['instances'] = A1[:1]
-        (t / 'ws' / 'a1-business.json').write_text(json.dumps(a1))                                          # an edit not made through sdem
+        a1 = json.loads(lf(t / 'ws', 'business').read_text()); a1['instances'] = A1[:1]
+        lf(t / 'ws', 'business').write_text(json.dumps(a1))                                          # an edit not made through sdem
         _, d = sdem('check', '--workspace', 'ws', '--json', cwd=t)
-        self.assertTrue(d['ok']); self.assertEqual([e['file'] for e in d['unrecorded_edits']], ['a1-business.json'])   # noticed, not failed
+        self.assertTrue(d['ok']); self.assertEqual([e['file'] for e in d['unrecorded_edits']], [lf(t / 'ws', 'business').name])   # noticed, not failed
         code, d = sdem('check', '--workspace', 'ws', '--require-recorded', '--json', cwd=t, ok=(1,))
         self.assertFalse(d['ok'])                                                                          # CI: fails
         code, d = sdem('change', 'adopt', '--workspace', 'ws', '--layer', 'A1', '--person', 'sdem-a1-business', '--reason', 'x', '--json', cwd=t, ok=(1, 2))
         self.assertEqual(d['error']['code'], 'needs_person')                                               # an agent cannot accept it
         _, d = sdem('change', 'adopt', '--workspace', 'ws', '--layer', 'A1', '--person', 'jane.architect', '--reason', 'wrote the business layer', '--json', cwd=t)
-        self.assertEqual(d['accepted'], 'a1-business.json')
+        self.assertEqual(d['accepted'], lf(t / 'ws', 'business').name)
         self.assertTrue(sdem('check', '--workspace', 'ws', '--require-recorded', '--json', cwd=t)[1]['ok'])
 
     def test_limit_and_size(self):  # AF-02

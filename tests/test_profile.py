@@ -5,8 +5,9 @@ import json, os, shutil, subprocess, sys, tempfile, unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT))
+sys.path.insert(0, str(ROOT)); sys.path.insert(0, str(Path(__file__).resolve().parent))
 from sdem import profile as P  # noqa: E402
+from forms import lf, migrated  # noqa: E402 — a layer's file in either form
 
 PAY = ROOT / 'examples' / 'payment-initiation'
 ENV = {**os.environ, 'PYTHONPATH': str(ROOT) + os.pathsep + os.environ.get('PYTHONPATH', '')}
@@ -20,9 +21,9 @@ def sdem(*args, cwd, ok=(0,)):
 
 def complete(ws):
     """Fill the bank's required attributes on every application of the example, so the data meets the bank base profile."""
-    f = ws / 'a3-application.json'; d = json.loads(f.read_text())
+    f = lf(ws, 'application'); d = json.loads(f.read_text())
     for i in d['instances']:
-        if i['type'] == 'A3.ApplicationComponent':
+        if i['type'].endswith('.ApplicationComponent'):   # its 0.19 name, or its id in SDEM 0.20's form
             i.setdefault('attributes', {}).setdefault('owner', 'ROLE-PAY-OFFICER'); i['attributes'].setdefault('risk_tier', '2')
     f.write_text(json.dumps(d, indent=1))
 
@@ -45,7 +46,7 @@ class ProfileTests(unittest.TestCase):
         self.assertEqual([c['name'] for c in d['chain']], ['bank-base', 'payments-team'])
         _, _, d = sdem('profile', 'show', '--workspace', self.ws, '--json', cwd=self.tmp)
         self.assertIn('BANK.A3.PaymentsGateway', [t['type'] for t in d['types']])                     # the team's type on top of the bank's
-        self.assertEqual(d['names']['layers']['A3'], 'L3 Applications')                                # inherited from the base
+        self.assertEqual(d['names']['layers']['A4' if migrated(self.ws) else 'A3'], 'L3 Applications')  # inherited from the base; on Application's code in SDEM 0.20 (DL-25)
 
     def test_the_bank_rules_apply_to_the_data(self):  # PR-03, PR-04
         code, out, _ = sdem('check', '--workspace', self.ws, cwd=self.tmp, ok=(1,))
@@ -53,7 +54,7 @@ class ProfileTests(unittest.TestCase):
         self.assertIn("required attribute 'risk_tier' missing", out)
         complete(self.ws)
         self.assertEqual(sdem('check', '--workspace', self.ws, cwd=self.tmp)[0], 0)
-        f = self.ws / 'a3-application.json'; d = json.loads(f.read_text())
+        f = lf(self.ws, 'application'); d = json.loads(f.read_text())
         d['instances'].append({'id': 'APP-PAY-MS', 'type': 'BANK.A3.PaymentsMicroservice', 'version': '1', 'name': 'Payment notifications', 'lifecycle_status': 'active',
                                'attributes': {'owner': 'ROLE-PAY-OFFICER', 'risk_tier': '9', 'owning_team': 'payments-core'}})
         f.write_text(json.dumps(d))
@@ -65,11 +66,11 @@ class ProfileTests(unittest.TestCase):
 
     def test_a_bank_type_is_an_application_to_the_engine_and_the_names_show(self):  # PR-06, PR-08
         complete(self.ws)
-        f = self.ws / 'a3-application.json'; d = json.loads(f.read_text())
+        f = lf(self.ws, 'application'); d = json.loads(f.read_text())
         d['instances'].append({'id': 'APP-PAY-MS', 'type': 'BANK.A3.PaymentsMicroservice', 'version': '1', 'name': 'Payment notifications', 'lifecycle_status': 'active',
                                'attributes': {'owner': 'ROLE-PAY-OFFICER', 'risk_tier': '1', 'owning_team': 'payments-core', 'deployed_on': ['INF-K8S-PAY-PROD']}})
         f.write_text(json.dumps(d))
-        f4 = self.ws / 'a4-technology.json'; d4 = json.loads(f4.read_text())
+        f4 = lf(self.ws, 'technology'); d4 = json.loads(f4.read_text())
         next(i for i in d4['instances'] if i['id'] == 'INF-K8S-PAY-PROD')['attributes']['hosts'].append('APP-PAY-MS'); f4.write_text(json.dumps(d4))   # the A4 side's evidence (S33)
         sdem('build', '--workspace', self.ws, '--out', self.ws / 'graph', cwd=self.tmp)
         self.assertTrue((self.ws / 'graph' / 'profile.json').exists())                                 # the store keeps the profile it was built with
@@ -82,7 +83,7 @@ class ProfileTests(unittest.TestCase):
 
     def test_a_bank_link_kind_inside_a_layer(self):  # PR-05
         complete(self.ws)
-        f = self.ws / 'a4-technology.json'; d = json.loads(f.read_text())
+        f = lf(self.ws, 'technology'); d = json.loads(f.read_text())
         d['relationships'].append({'source': 'INF-K8S-PAY-PROD', 'kind': 'operated_by', 'target': 'INF-K8S-PAY-UAT'})   # A4.SystemSoftware is a Node
         f.write_text(json.dumps(d))
         code, out, _ = sdem('check', '--workspace', self.ws, cwd=self.tmp)
@@ -109,7 +110,7 @@ class ProfileTests(unittest.TestCase):
 
     def test_a_requirement_traces_through_what_realises_it(self):  # the realization link (ArchiMate 3.2 ch. 6), followed by trace
         complete(self.ws)
-        f = self.ws / 'a1-business.json'; d = json.loads(f.read_text())
+        f = lf(self.ws, 'business'); d = json.loads(f.read_text())
         d['instances'].append({'id': 'BREQ-PAY-01', 'type': 'A1.BusinessRequirement', 'version': '1', 'name': 'Customers can submit a payment from the mobile app', 'lifecycle_status': 'active',
                                'attributes': {'requirement_kind': 'requirement', 'requirement_class': 'functional', 'regulatory_reference': 'none'}})   # ArchiMate's kind; the bank's class
         d['relationships'].append({'source': 'PRC-PAY-01', 'kind': 'realization', 'target': 'BREQ-PAY-01'})
@@ -121,7 +122,7 @@ class ProfileTests(unittest.TestCase):
 
     def test_disaster_recovery_rules_are_conditional_and_cross_record(self):  # PR-10, PR-11
         complete(self.ws)
-        f = self.ws / 'a4-technology.json'; d = json.loads(f.read_text())
+        f = lf(self.ws, 'technology'); d = json.loads(f.read_text())
         prod = next(i for i in d['instances'] if i['id'] == 'INF-K8S-PAY-PROD'); uat = next(i for i in d['instances'] if i['id'] == 'INF-K8S-PAY-UAT')
         def check(*expect, ok=True):
             f.write_text(json.dumps(d)); code, out, _ = sdem('check', '--workspace', self.ws, cwd=self.tmp, ok=(0,) if ok else (1,))

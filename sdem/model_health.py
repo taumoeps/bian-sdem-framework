@@ -8,7 +8,7 @@ use, and whether the core changed only as the stability policy allows.
 
 Read-only except `freeze`. Everything here reads SDEM's own metamodel (never a workspace's profile, unless asked for usage).
 """
-from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
+from .identity import load as _jload, type_id, T  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
 import argparse, collections, json, sys
 from pathlib import Path
 
@@ -102,7 +102,7 @@ def usage(workspaces):
             for i in d.get('instances', []):
                 if i.get('lifecycle_status') == 'retired': continue
                 n += 1
-                for t in [i['type']] + mm.ancestors(i['type']): types[t] += 1
+                for t in [i['type']] + mm.ancestors(i['type']): types[type_id(t) or t] += 1   # by id: workspaces in either form count together
                 for k in (i.get('attributes') or {}): attrs[f"{i['type']}.{k}"] += 1
             for r in d.get('relationships', []): kinds[f"{l['code']} {r['kind']}"] += 1
         for m in _j(ws / 'mappings.json').get('mappings', []):
@@ -112,9 +112,10 @@ def usage(workspaces):
                 for cs, cr, ct in core:   # the SDEM link type it is an instance of — by type or subtype
                     if cr == rel and mm.is_a(s, cs) and mm.is_a(tg, ct): core_used[f'{cs} {cr} {ct}'] += 1
         per_ws.append({'workspace': str(ws), 'records': n, 'profile': (_p.record() or {}).get('name')})
+    core_types = [e['type'] for e in _entities() if not e.get('abstract')]   # named as the workspaces read them (the last one opened)
+    types = collections.Counter({(T(k) if type_id(k) == k else k): v for k, v in types.items()})
     _p.deactivate()
     st = {i['id']: i['status'] for i in status()['items']}
-    core_types = [e['type'] for e in _entities() if not e.get('abstract')]
     core_links = [f"{r['source_type']} {r['relationship']} {r['target_type']}" for r in _j(LINKS)['relationships']]
     unused_types = sorted((t for t in core_types if not types[t]), key=lambda t: (t not in st, t))
     unused_links = sorted((cl for cl in core_links if not core_used[cl]), key=lambda c: (c not in st, c))

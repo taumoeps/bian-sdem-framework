@@ -31,9 +31,9 @@ class Order(unittest.TestCase):
     def design(self):
         self.sdem('new', '--workspace', self.ws, '--person', 'jane.architect')
         self.sdem('bian', 'add', 'Payment Order Initiation', '--workspace', self.ws, '--person', 'jane.architect')
-        self.propose('A1', 'sdem-a1-business', [rec('PROC-PAY', 'A1.BusinessProcess', 'Take the payment'), rec('PROC-SCREEN', 'A1.BusinessProcess', 'Screen for fraud')])
-        self.propose('A3', 'sdem-a3-application', [rec('APP-HUB', 'A3.ApplicationComponent', 'Payments hub'), rec('API-HUB', 'A3.ApplicationInterface', 'Hub API'), rec('API-X', 'A3.ApplicationInterface', 'Other')])
-        self.propose('A4', 'sdem-a4-technology', [rec('DEP-HUB', 'A4.Deployment', 'Payments hub — production', component_id='APP-HUB')])
+        self.propose('business', 'sdem-a1-business', [rec('PROC-PAY', 'A1.BusinessProcess', 'Take the payment'), rec('PROC-SCREEN', 'A1.BusinessProcess', 'Screen for fraud')])
+        self.propose('application', 'sdem-a3-application', [rec('APP-HUB', 'A3.ApplicationComponent', 'Payments hub'), rec('API-HUB', 'A3.ApplicationInterface', 'Hub API'), rec('API-X', 'A3.ApplicationInterface', 'Other')])
+        self.propose('technology', 'sdem-a4-technology', [rec('DEP-HUB', 'A4.Deployment', 'Payments hub — production', component_id='APP-HUB')])
 
     def test_the_skill_lists_the_steps_in_this_order(self):   # CPL-18
         text = SKILL.read_text(encoding='utf-8'); at = [text.index(c) for c in ORDER]

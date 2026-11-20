@@ -6,6 +6,16 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 W = 'workspaces/ledger'
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from forms import lf, migrated   # noqa: E402 — a layer's file in either form
+DATA = ('A3.DataEntity', 'A3.DataAttribute')
+
+
+def stored(ws, name):
+    """A type as the workspace's files hold it: its 0.19 name, or its id in SDEM 0.20's form (ST-10)."""
+    if not migrated(ws): return name
+    sys.path.insert(0, str(ROOT)); from sdem.identity import _index
+    return _index()[3][name]
 
 
 def sdem(*args, cwd):
@@ -21,22 +31,25 @@ class AidOneListTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.d = Path(tempfile.mkdtemp())
-        assert sdem('new', '--workspace', W, '--person', 'jane.architect', cwd=cls.d)[0] == 0
+        assert sdem('new', '--workspace', W, '--person', 'jane.architect', '--form', '0.19', cwd=cls.d)[0] == 0
         ws = cls.d / W
-        a1 = json.loads((ws / 'a1-business.json').read_text(encoding='utf-8'))
+        a1 = json.loads(lf(ws, 'business').read_text(encoding='utf-8'))
         a1['instances'] = [rec('PRC-POST', 'A1.BusinessProcess', 'Post journal entries', invokes=['SO-FINANCIAL-ACCOUNTING-CAPTURE-LEDGER-POSTING'])]
-        (ws / 'a1-business.json').write_text(json.dumps(a1))
-        a3 = json.loads((ws / 'a3-application.json').read_text(encoding='utf-8'))   # an application whose data names share one word with an unrelated domain
+        lf(ws, 'business').write_text(json.dumps(a1))
+        a3 = json.loads(lf(ws, 'application').read_text(encoding='utf-8'))   # an application whose data names share one word with an unrelated domain
         a3['instances'] = [rec('APP-GL', 'A3.ApplicationComponent', 'General Ledger'), rec('DE-ACC', 'A3.DataEntity', 'account_cache')]
         a3['relationships'] = [{'source': 'APP-GL', 'kind': 'access', 'target': 'DE-ACC'}]
-        (ws / 'a3-application.json').write_text(json.dumps(a3))
+        lf(ws, 'application').write_text(json.dumps(a3))
+        if os.environ.get('SDEM_FORM') == '0.20':   # SDEM 0.20: the same design migrated — the data entity in the Data layer, its access an approved ACCESSED_BY (DL-04)
+            assert sdem('change', 'adopt', '--workspace', W, '--layer', 'application', '--person', 'jane.architect', '--reason', 'test design', cwd=cls.d)[0] in (0, 2)
+            assert sdem('migrate', '--to', '0.20', '--workspace', W, '--person', 'jane.architect', cwd=cls.d)[0] == 0
         cls.aid = sdem('aid', '--workspace', W, '--person', 'jane.architect', cwd=cls.d)
 
     @classmethod
     def tearDownClass(cls): shutil.rmtree(cls.d, ignore_errors=True)
 
     def domains(self):
-        return {i['id'] for i in json.loads((self.d / W / 'a2-service-domain.json').read_text(encoding='utf-8'))['instances'] if i['type'] == 'A2.ServiceDomain'}
+        return {i['id'] for i in json.loads(lf(self.d / W, 'bian').read_text(encoding='utf-8'))['instances'] if i['type'] == stored(self.d / W, 'A2.ServiceDomain')}
 
     def test_the_domain_the_business_layer_names_is_added(self):
         self.assertEqual(self.aid[0], 0, self.aid[1])
@@ -76,13 +89,20 @@ class SecondPassTests(unittest.TestCase):   # AID-M03 after approvals — the pu
         R = lambda i, t, n, **a: {'op': 'add', 'record': {'id': i, 'type': t, 'version': '1', 'name': n, 'lifecycle_status': 'planned', 'attributes': a}}
         cs = lambda layer, recs, rels=(): {'layer': layer, 'reason': 'test', 'changes': recs, 'relationships': {'add': [dict(zip(('source', 'kind', 'target'), r)) for r in rels]}}
         sdem('new', '--workspace', ws, '--person', 'jane.architect')
-        (tmp / 'a1.json').write_text(json.dumps(cs('A1', [R('PROC-SUBMIT', 'A1.BusinessProcess', 'Receive the payment', invokes=['SO-PAYMENT-ORDER-INITIATION-INITIATE'])])))
-        (tmp / 'a3.json').write_text(json.dumps(cs('A3', [R('APP-EDGE', 'A3.ApplicationComponent', 'API ingress'), R('IFC', 'A3.ApplicationInterface', 'Payment Initiation API'),
+        (tmp / 'a1.json').write_text(json.dumps(cs('business', [R('PROC-SUBMIT', 'A1.BusinessProcess', 'Receive the payment', invokes=['SO-PAYMENT-ORDER-INITIATION-INITIATE'])])))
+        (tmp / 'a3.json').write_text(json.dumps(cs('application', [R('APP-EDGE', 'A3.ApplicationComponent', 'API ingress'), R('IFC', 'A3.ApplicationInterface', 'Payment Initiation API'),
                                                           R('OP', 'A3.APIOperation', 'Create domestic payment', method='POST', path='/domestic-payments', payload_fields=['ConsentId', 'DomesticPaymentId', 'Status']),
                                                           R('OP2', 'A3.APIOperation', 'Read domestic payment', method='GET', path='/domestic-payments/{DomesticPaymentId}', payload_fields=['DomesticPaymentId', 'Status']),
                                                           R('DATA-PAYMENT', 'A3.DataEntity', 'PaymentLedger', attributes=['payment_id', 'payment_status'])],
                                                [('APP-EDGE', 'composition', 'IFC'), ('IFC', 'composition', 'OP'), ('IFC', 'composition', 'OP2'), ('OP', 'access', 'DATA-PAYMENT'), ('OP2', 'access', 'DATA-PAYMENT')])))
         sdem('change', 'propose', tmp / 'a1.json', '--workspace', ws, '--agent', 'sdem-a1-business', '--person', 'jane.architect')
+        if migrated(ws):   # SDEM 0.20: the data entity goes to the Data layer, by its agent; access becomes a link between layers (DL-04)
+            c = json.loads((tmp / 'a3.json').read_text())
+            dat = [x for x in c['changes'] if x['record']['type'] in DATA]; ids = {x['record']['id'] for x in dat}
+            c['changes'] = [x for x in c['changes'] if x not in dat]
+            c['relationships']['add'] = [x for x in c['relationships']['add'] if x['source'] not in ids and x['target'] not in ids]
+            (tmp / 'a3.json').write_text(json.dumps(c)); (tmp / 'data.json').write_text(json.dumps(cs('data', dat)))
+            sdem('change', 'propose', tmp / 'data.json', '--workspace', ws, '--agent', 'sdem-data', '--person', 'jane.architect')
         sdem('change', 'propose', tmp / 'a3.json', '--workspace', ws, '--agent', 'sdem-a3-application', '--person', 'jane.architect')
         sdem('bian', 'add', 'Payment Order Initiation', '--workspace', ws, '--person', 'jane.architect')
         named = lambda run: [i for i in run['added'].get('A2', []) if 'PARTY-AUTHENTICATION' not in i and 'FRAUD-EVALUATION' not in i and i != 'FP-ASSESS']   # not the domains the payment-initiation pattern names (AID-D05, CPL-16): those, and their functional pattern, rest on the pattern, not on a name

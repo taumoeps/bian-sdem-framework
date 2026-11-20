@@ -13,12 +13,18 @@ from pathlib import Path
 from .metamodel import Metamodel
 
 from .paths import DATA_ROOT as ROOT, repo_path, version as _version
-LEVELS = _live(lambda: {_L('business'): f'{_L("business")} Business', _L('bian'): f'{_L("bian")} Service domain (BIAN)', _L('application'): f'{_L("application")} Application', _L('technology'): f'{_L("technology")} Technology'})
+LEVELS = _live(lambda: {_L('business'): f'{_L("business")} Business', _L('bian'): f'{_L("bian")} Service domain (BIAN)', _L('data'): f'{_L("data")} Data', _L('application'): f'{_L("application")} Application', _L('technology'): f'{_L("technology")} Technology'})
 DATASETS = _live(lambda: (_F('business'), _F('bian'), _F('application'), _F('technology')))
 BOX_W, BOX_H, STEP_X, STEP_Y, PER_ROW, PAD = 196, 36, 210, 50, 6, 20
 
 
 def _j(p): return _jload(Path(p))
+
+
+def _ANY_FORM():
+    """DL-10: a layer file's name in either form — a root may hold workspaces migrated and not (0.19's a1-business.json, 0.20's business.json)."""
+    from .identity import table
+    return {n for l in table()['layers'] for n in (l.get('file'), f"{l['id']}.json") if n}
 
 
 def find_estates(roots=(), estates=()):
@@ -28,7 +34,7 @@ def find_estates(roots=(), estates=()):
         out.append(Path(e))
     for r in roots:
         for d in sorted(Path(r).iterdir()):
-            if d.is_dir() and (d / 'mappings.json').exists() and any((d / f).exists() for f in DATASETS): out.append(d)
+            if d.is_dir() and (d / 'mappings.json').exists() and any((d / f).exists() for f in _ANY_FORM()): out.append(d)
     seen, uniq = set(), []
     for e in out:
         k = e.resolve()
@@ -91,6 +97,7 @@ def health(mm_data):
     from . import acceptance
     from .inference import ENGINES
     from .paths import CHECKOUT
+    from . import profile as _p; _p.deactivate()   # SDEM's own health: the same for every workspace — checked with none open, in SDEM's own numbering
     gens, acc = [], []
     for g in (GENERATORS if CHECKOUT else []):   # maintainer checks: they need the repository's docs and examples
         buf = io.StringIO()

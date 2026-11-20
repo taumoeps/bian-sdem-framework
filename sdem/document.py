@@ -13,6 +13,7 @@ import argparse, hashlib, html, json, re, sys
 from pathlib import Path
 
 LAYER_TITLES = _live(lambda: {_L('business'): f'{_L("business")} Business Architecture', _L('bian'): f'{_L("bian")} BIAN Service Domain Architecture',
+                _L('data'): f'{_L("data")} Data Architecture',   # DL-01: Data its own layer in a migrated workspace; Application's code in 0.19's form
                 _L('application'): f'{_L("application")} Application Architecture', _L('technology'): f'{_L("technology")} Technology Architecture'})
 PLACEHOLDER = re.compile(r'\b(TBD|PLACEHOLDER|TODO)\b', re.I)
 SKIP_ATTRS = {'inferred', 'source_id', 'sources'}   # shown as provenance instead

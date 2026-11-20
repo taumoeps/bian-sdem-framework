@@ -754,7 +754,7 @@ STATUS_CSS = """.sdv .pt-ok>.dv-box{stroke:#2e7d32;stroke-width:2.6}.sdv .pt-bad
 
 
 def _auto_layout(S, level_of):
-    order = [_L('business'), _L('bian'), _L('application'), _L('technology')]
+    order = list(tuple(dict.fromkeys((_L('business'), _L('bian'), _L('data'), _L('application'), _L('technology')))))
     levels = sorted({level_of(r['type']) for r in S['roles']}, key=lambda l: (order.index(l) if l in order else 9, l))
     L, Z, y = {}, {}, 30
     for lvl in levels:

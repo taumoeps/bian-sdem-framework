@@ -262,6 +262,20 @@ def similar(a, b):
     return 2 * len(x & y) / (len(x) + len(y)) if x and y else 0.0
 
 
+LAYER_OF = {'business': 'A1', 'bian': 'A2', 'application': 'A3', 'technology': 'A4'}   # a layer id → its 0.19 code, what the reference is written in
+
+
+def layer_docs(ws):
+    """{0.19 file name: document}: the workspace as 0.19 held it — in SDEM 0.20's form read through to_019 (Data's records in the Application
+    file, its names 0.19's: the reference is written in them; proven record by record, P2), otherwise its files as they are."""
+    ws = Path(ws)
+    if (load(ws / 'workspace.json', {}) or {}).get('names') == 'ids':
+        sys.path.insert(0, str(ROOT))
+        from sdem.migrate20 import to_019
+        return to_019(ws)[0]
+    return {f: load(ws / f, {}) for f in LAYERS.values()}
+
+
 def load(p, default=None):
     try: return json.loads(Path(p).read_text(encoding='utf-8'))
     except (OSError, ValueError): return default
@@ -368,7 +382,7 @@ def proposals(ws):
 def grade(d, as_json=False):
     d = Path(d); design, file = config(d); cfg = DESIGNS[design]; WS = Path(cfg['ws']); ws = d / WS
     REFERENCE, REQUIRED, ACCEPTABLE, CONNECTIONS = cfg['reference'], cfg['required'], cfg['acceptable'], cfg['connections']
-    recs = {l: (load(ws / f, {}) or {}).get('instances', []) for l, f in LAYERS.items()}
+    recs = {l: (layer_docs(ws).get(f) or {}).get('instances', []) for l, f in LAYERS.items()}
     name_of = {r['id']: r.get('name', '') for l in recs for r in recs[l]}
     canonical = {r['id']: (r.get('canonical_id') or (r.get('attributes') or {}).get('canonical_id') or r['id']) for r in recs['A2']}
 
@@ -413,7 +427,8 @@ def grade(d, as_json=False):
 
     # governance and provenance
     sets = [load(f, {}) for f in sorted((ws / 'coordination' / 'change-sets').glob('*.json'))] if (ws / 'coordination' / 'change-sets').exists() else []
-    wrong_agent = [f"{c.get('id')}: {c.get('layer')} by {c.get('agent')}" for c in sets if c.get('layer') in AGENT_OF and c.get('agent') not in (AGENT_OF[c['layer']], 'architect')]
+    agent_for = lambda l: 'sdem-data' if l == 'data' else AGENT_OF.get(LAYER_OF.get(l, l))   # a migrated workspace's change sets name their layer by id (DL-25)
+    wrong_agent = [f"{c.get('id')}: {c.get('layer')} by {c.get('agent')}" for c in sets if agent_for(c.get('layer')) and c.get('agent') not in (agent_for(c['layer']), 'architect')]
     wrong_person = [c.get('id') for c in sets if c.get('person') != PERSON]
     added = {ch.get('record', {}).get('id') for c in sets for ch in c.get('changes', []) if isinstance(ch, dict)}
     no_source = []

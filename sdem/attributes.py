@@ -13,7 +13,7 @@ from sdem.terms import apply as _terms
 
 REC = MM_DIR / 'entity-attributes.json'
 DOC = MM_DIR.parent / 'docs' / 'reference' / 'architecture-attribute-design.md'
-NAMES = _live(lambda: {_L('business'): f'{_L("business")} Business Architecture', _L('bian'): f'{_L("bian")} Service Domain Architecture', _L('application'): f'{_L("application")} Application Architecture', _L('technology'): f'{_L("technology")} Technology Architecture'})
+NAMES = _live(lambda: {_L('business'): f'{_L("business")} Business Architecture', _L('bian'): f'{_L("bian")} Service Domain Architecture', _L('data'): f'{_L("data")} Data Architecture', _L('application'): f'{_L("application")} Application Architecture', _L('technology'): f'{_L("technology")} Technology Architecture'})
 
 
 def load(path=REC):
@@ -41,7 +41,7 @@ def render(rec=None):
            '| Verification | what has been checked |',
            f"| **Confidence** | {rec['confidence_rule']} |", '',
            '## 3. Summary', '', '| Architecture | Attributes | High | Medium | Low | Required |', '|---|---|---|---|---|---|']
-    for l in (_L('business'), _L('bian'), _L('application'), _L('technology')):
+    for l in tuple(dict.fromkeys((_L('business'), _L('bian'), _L('data'), _L('application'), _L('technology')))):
         r = [a for a in act if a['entity'].startswith(l)]; c = Counter(a['confidence'] for a in r)
         out.append(f"| {NAMES[l]} | {len(r)} | {c['high']} | {c['medium']} | {c['low']} | {sum(a['required'] for a in r)} |")
     out += [f"| **All** | **{len(act)}** | **{conf['high']}** | **{conf['medium']}** | **{conf['low']}** | **{sum(a['required'] for a in act)}** |", '',
@@ -61,7 +61,7 @@ def render(rec=None):
         out += [f"| {a['id']} | `{a['name']}` | {a['type']} | {(', '.join(a['values']) if a.get('values') else ('refers to ' + ', '.join(a['references'])) if a.get('references') else '—')} | {a['source']}: [{a['reference']['standard'].split(' (')[0]}]({a['reference']['uri']}) `{a['reference']['locator']}` | {a['reasoning']} | **{a['confidence']}** |" for a in COM]
     out.append('')
     n = 4
-    for l in (_L('business'), _L('bian'), _L('application'), _L('technology')):
+    for l in tuple(dict.fromkeys((_L('business'), _L('bian'), _L('data'), _L('application'), _L('technology')))):
         n += 1
         out += [f"## {n}. {NAMES[l]}", '', '| ID | Entity | Attribute | Type | Required | Source reference | Read by | Verification | Reasoning | Confidence | Confidence basis |', '|---|---|---|---|---|---|---|---|---|---|---|']
         for a in [a for a in A if a['entity'].startswith(l)]:

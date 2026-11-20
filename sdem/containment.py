@@ -243,7 +243,7 @@ def layout(doc, layer, mm=None):
             'connections': conns, 'left_out': [], 'fit': round(fit, 4)}
 
 
-FILES = _live(lambda: {_L('business'): _F('business'), _L('bian'): _F('bian'), _L('application'): _F('application'), _L('technology'): _F('technology')})
+FILES = _live(lambda: {_L('business'): _F('business'), _L('bian'): _F('bian'), _L('data'): _F('data'), _L('application'): _F('application'), _L('technology'): _F('technology')})
 
 
 def load(workspace, layer, environment='production'):

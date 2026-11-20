@@ -28,7 +28,7 @@ class UseCaseExample4(unittest.TestCase):
         for name, argv in [
             ('inspect', ['transform', 'inspect', 'work/imports/payarch', '--ocr', 'off']),
             ('transform', ['transform', 'run', 'work/imports/payarch', '-o', 'work/history', '--ocr', 'off']),
-            ('new', ['new', '--workspace', 'workspaces/history', '--person', ME, '--bian', A2]),
+            ('new', ['new', '--workspace', 'workspaces/history', '--person', ME, '--bian', A2, '--form', '0.19']),   # the use case's documented transcript, in the form it was written in
             ('dry', ['load', 'work/history', '--workspace', 'workspaces/history', '--person', ME, '--exclude', 'HIS-A3-PAYMENT-ORDER', '--dry-run']),
             ('load', ['load', 'work/history', '--workspace', 'workspaces/history', '--person', ME, '--exclude', 'HIS-A3-PAYMENT-ORDER']),
             ('check', ['check', '--workspace', 'workspaces/history']),

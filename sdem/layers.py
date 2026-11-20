@@ -37,7 +37,9 @@ def layers():
     core = [{'code': c, 'file': f, 'name': n, 'agent': a, 'core': True, 'source': 'SDEM' if c != parts.a2_code() else 'ext:bian'} for c, f, n, a in CORE
             if c != parts.a2_code() or parts.bian_on()]   # BX-04, BX-13: no A2 layer where BIAN is off
     own = (_p.ACTIVE or {}).get('layers', [])
-    def row(l): return {'code': l['code'], 'file': l['file'], 'name': l.get('name') or l['code'], 'agent': agent_for(l['code']), 'core': False,
+    was = {v: k for k, v in ((_p.ACTIVE or {}).get('_numbering') or {}).items()}   # DL-25: an own layer renumbered for this workspace, by its profile code
+    def row(l): return {'code': l['code'], 'file': l['file'], 'name': l.get('name') or l['code'], 'agent': f"sdem-layer-{was.get(l['code'], l['code']).lower()}", 'core': False,   # its agent keeps its name (CTL-19)
+                        **({'code_0_19': was[l['code']]} if l['code'] in was else {}),
                         'source': l.get('source', 'organisation profile'), 'description': l.get('description', '')}
     above = [row(l) for l in own if l['position'] == 'above']   # listed nearest A1 first
     below = [row(l) for l in own if l['position'] == 'below']   # listed nearest A4 first
@@ -72,8 +74,11 @@ def graph_file(code):
     from .identity import layer_id
     lid = layer_id(code)
     if lid and parts.migrated(): return f'{lid}.graph.json'
-    core = {_L('business'): 'a1-business.graph.json', _L('bian'): 'a2-service-domain.graph.json', _L('application'): 'a3-application.graph.json', _L('technology'): 'a4-technology.graph.json'}
-    return core.get(code) or f'{code.lower()}.graph.json'
+    core = {_L('business'): 'a1-business.graph.json', _L('bian'): 'a2-service-domain.graph.json', _L('data'): 'data.graph.json', _L('application'): 'a3-application.graph.json', _L('technology'): 'a4-technology.graph.json'}
+    if code in core: return core[code]
+    from . import profile as _p
+    was = {v: k for k, v in ((_p.ACTIVE or {}).get('_numbering') or {}).items()}   # DL-25: a profile layer's graph file keeps its profile code
+    return f'{was.get(code, code).lower()}.graph.json'
 
 
 class _LiveMap(Mapping):

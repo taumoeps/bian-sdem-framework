@@ -176,10 +176,12 @@ def layer_agents(workspaces):
             if l['core']: continue
             t = src.read_text(encoding='utf-8')
             t = '\n'.join(x for x in t.split('\n') if 'Past designs' not in x and 'AID' not in x)
-            t = t.replace('sdem-a4-technology', l['agent']).replace(f'{_L("technology")} Technology', l['name']).replace('the technology architecture', f"the {l['name']} layer")
+            from .identity import _index
+            tc = _index()[0]['technology']   # the template is SDEM's own text, in 0.19's numbering (DL-07)
+            t = t.replace('sdem-a4-technology', l['agent']).replace(f'{tc} Technology', l['name']).replace('the technology architecture', f"the {l['name']} layer")
             t = re.sub(r'(You own the \*\*.*?\*\* architecture of an SDEM workspace): .*', lambda m: m.group(1) + f": {l.get('description') or 'the records of this layer'} "
                        f"(a layer your organisation's profile adds — {l['source']}).", t)
-            t = re.sub(r'\bA4\b', l['code'], t)
+            t = re.sub(rf'\b{tc}\b', l['code'], t)
             t = re.sub(r'Review the proposed platform.*', '', t)
             out[f"agents/{l['agent']}.agent.md"] = t
     if out:   # the orchestrator may call the profile's layer agents too

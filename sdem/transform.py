@@ -29,7 +29,7 @@ from .metamodel import Metamodel
 from .paths import DATA_ROOT
 
 RULES = DATA_ROOT / 'metamodel' / 'transform-rules.json'
-DATASETS = _live(lambda: {_L('business'): _F('business'), _L('bian'): _F('bian'), _L('application'): _F('application'), _L('technology'): _F('technology')})
+DATASETS = _live(lambda: {_L('business'): _F('business'), _L('bian'): _F('bian'), _L('data'): _F('data'), _L('application'): _F('application'), _L('technology'): _F('technology')})
 RANK = {'low': 1, 'medium': 2, 'high': 3}
 SOURCE_SYSTEM = 'CONFLUENCE-EXTRACT'
 IMAGE_EXT = ('.png', '.jpg', '.jpeg', '.gif', '.bmp', '.svg', '.webp')
@@ -1299,7 +1299,7 @@ class Extraction:
     # ---- outputs
     def datasets(self, model_id):
         out = {}
-        for lvl in (_L('business'), _L('bian'), _L('application'), _L('technology')):
+        for lvl in tuple(dict.fromkeys((_L('business'), _L('bian'), _L('data'), _L('application'), _L('technology')))):
             recs = sorted((r for r in self.records.values() if r['type'][:2] == lvl), key=lambda r: r['id'])
             if not recs: continue
             ids = {r['id'] for r in recs}
@@ -1381,6 +1381,7 @@ def extract(root, out, rules=None, known=(), model_id=None, now=None, ocr='auto'
     """Read the export at root, write the candidate datasets, extraction.json, design-index.json and
     extraction-report.md to out. Returns (extraction, written datasets, check issues per layer)."""
     from .graph import LevelGraph
+    from . import profile as _p; _p.deactivate()   # DL-10: candidates are written with no workspace — 0.19's names and numbering, what sdem load reads them as
     rules_doc = _jload(Path(rules)) if rules else None
     x = Extraction(rules_doc, known, ocr=ocr if callable(ocr) else ocr_engine(ocr)).run(root)
     model_id = model_id or (re.sub(r'[^A-Z0-9]+', '-', (x.pages[0]['space'] or (Path(root).stem if Path(root).is_file() else Path(root).name)).upper()).strip('-') or 'CONFLUENCE')
@@ -1443,7 +1444,7 @@ def report(x, meta, records, links, issues, idx, cov=None):
             L.append(f"| {v['title']} (`{v['file']}`) | {v['captured']} | {v['not_captured']} | {v['skipped']} | {v['percent']}% |")
         L.append('')
     L.append('## Check (`sdem check` on the candidate datasets)\n')
-    for lvl in (_L('business'), _L('bian'), _L('application'), _L('technology')):
+    for lvl in tuple(dict.fromkeys((_L('business'), _L('bian'), _L('data'), _L('application'), _L('technology')))):
         if lvl in issues:
             e, w = issues[lvl], issues[lvl + ' advice']
             L.append(f"- **{lvl}**: {'no errors' if not e else str(len(e)) + ' error(s)'}" + (f', {len(w)} advice' if w else ''))

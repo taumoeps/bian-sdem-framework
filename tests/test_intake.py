@@ -3,6 +3,8 @@ package is checked at once, without a workspace, so its author can run the real 
 runs the complete-draft order, ending in one report. Synthetic data only — the package below is written for this test."""
 import copy, json, os, shutil, subprocess, sys, tempfile, unittest
 from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from forms import lf, migrated   # noqa: E402 — the package is in 0.19's form; the workspace takes the default form (DL-26)
 
 ROOT = Path(__file__).resolve().parents[1]
 ENV = {**os.environ, 'PYTHONPATH': str(ROOT) + os.pathsep + os.environ.get('PYTHONPATH', '')}
@@ -152,10 +154,10 @@ class Load(Base):
         self.assertFalse(self.ws.exists())
         code, out, err = self.sdem('intake', self.pkg, '--workspace', self.ws, '--person', 'jane.architect', '--allow-gaps', '--json'); self.assertEqual(code, 0, (out + err)[-1500:])
         r = json.loads(out)
-        self.assertEqual([s['step'] for s in r['steps']], ['check', 'workspace', 'load', 'bian', 'patterns', 'draft', 'links', 'report'])   # the skill's order — in the tool
-        a1 = {i['id']: i for i in json.loads((self.ws / 'a1-business.json').read_text(encoding='utf-8'))['instances']}
+        self.assertEqual([s['step'] for s in r['steps']], ['check', 'workspace', 'load', 'bian', 'patterns', 'draft', 'links'] + (['form'] if migrated(self.ws) else []) + ['report'])   # the skill's order — in the tool
+        a1 = {i['id']: i for i in json.loads(lf(self.ws, 'business').read_text(encoding='utf-8'))['instances']}
         self.assertEqual(a1['PROC-PAY']['attributes']['invokes'], ['SO-PAYMENT-ORDER-INITIATION-INITIATE'])
-        self.assertIn('SD-PAYMENT-ORDER-INITIATION', (self.ws / 'a2-service-domain.json').read_text(encoding='utf-8'))
+        self.assertIn('SD-PAYMENT-ORDER-INITIATION', lf(self.ws, 'bian').read_text(encoding='utf-8'))
         inc = json.loads((self.ws / 'sdem-profile.json').read_text(encoding='utf-8'))['includes']
         self.assertIn('sdem:sdem-pattern-payment-initiation.json', inc); self.assertIn('sdem:sdem-pattern-bian-transact.json', inc)
         self.assertEqual({p['title'] for p in r['draft']['patterns_consulted']}, {'Payment initiation', 'BIAN Transact — a transaction'})
@@ -178,8 +180,9 @@ class Load(Base):
         self.assertIn('accept', [s['step'] for s in r['steps']])
         reg = json.loads((self.ws / 'mappings.json').read_text(encoding='utf-8'))['mappings']
         got = sorted((m['relationship'], m['status'], m['reviewer_id']) for m in reg)
-        self.assertEqual(got, sorted((x, 'approved', 'jane.architect') for x in ('SUPPORTED_BY', 'USES_DOMAIN', 'REALIZED_BY', 'IMPLEMENTED_BY', 'STORED_IN', 'DEPLOYED_AS')))
-        self.assertTrue(all(any('design.md#3' in e for e in m['evidence']) for m in reg))   # each on the design section it cites
+        moved = [m['relationship'] for m in reg if m['relationship'] == 'ACCESSED_BY'] if migrated(self.ws) else []   # 0.20: each access inside Application, now an approved link between layers (DL-13)
+        self.assertEqual(got, sorted((x, 'approved', 'jane.architect') for x in ['SUPPORTED_BY', 'USES_DOMAIN', 'REALIZED_BY', 'IMPLEMENTED_BY', 'STORED_IN', 'DEPLOYED_AS'] + moved))
+        self.assertTrue(all(any('design.md#3' in e for e in m['evidence']) for m in reg if m['relationship'] != 'ACCESSED_BY' or not migrated(self.ws)))   # each of the author's on the design section it cites; a moved access cites the migration (DL-13)
         s = json.loads(self.sdem('status', '--workspace', self.ws, '--json')[1])
         c = s['completeness']; self.assertEqual((c['gaps'], c['inferred_to_confirm'], c['records_connected']), (0, 0, c['records_checked']))
         p = next(x for x in s['patterns'] if x['pattern'] == 'PAT-BIAN-TRANSACT'); self.assertEqual((p['in_place'], p['open']), (p['parts'], []))
@@ -196,11 +199,12 @@ class Load(Base):
         r = json.loads(out)
         self.assertIn('none — taken as written (--no-inference)', [s['did'] for s in r['steps'] if s['step'] == 'draft'])
         self.assertFalse((self.ws / 'aid').exists() and list((self.ws / 'aid').glob('AID-*.json')))   # sdem aid was not run
-        for f in ('a1-business.json', 'a3-application.json', 'a4-technology.json', 'a2-service-domain.json'):
-            d = json.loads((self.ws / f).read_text(encoding='utf-8'))
+        for f in (lf(self.ws, l) for l in ('business', 'data', 'application', 'technology', 'bian')):
+            if not f.exists(): continue   # 0.19's form: Data's records are in the Application file
+            d = json.loads(f.read_text(encoding='utf-8'))
             self.assertFalse([i['id'] for i in d['instances'] if isinstance((i.get('attributes') or {}).get('inferred'), dict)], f)   # nothing inferred: no record …
             self.assertFalse([x for x in d.get('relationships', []) if isinstance(x.get('inferred'), dict)], f)                         # … and no link
-        ids = {i['id'] for i in json.loads((self.ws / 'a2-service-domain.json').read_text(encoding='utf-8'))['instances'] if i['type'] == 'A2.ServiceDomain'}
+        ids = {i['id'] for i in json.loads(lf(self.ws, 'bian').read_text(encoding='utf-8'))['instances'] if i['type'] in ('A2.ServiceDomain', 'bian.ServiceDomain')}
         self.assertEqual(ids, {'SD-PAYMENT-ORDER-INITIATION'})   # the domain the package names — not the ones a pattern would have had SDEM bring in
         s = json.loads(self.sdem('status', '--workspace', self.ws, '--json')[1])
         self.assertEqual(s['completeness']['inferred_to_confirm'], 0); self.assertGreater(s['completeness']['gaps'], 0)   # what the design does not give stays open, and is said

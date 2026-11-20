@@ -13,7 +13,7 @@ import argparse, json, sys
 from pathlib import Path
 
 TEMPLATE = Path(__file__).with_name('workbench.html')
-CORE = _live(lambda: (_L('business'), _L('bian'), _L('application'), _L('technology')))
+CORE = _live(lambda: tuple(dict.fromkeys((_L('business'), _L('bian'), _L('data'), _L('application'), _L('technology')))))
 
 
 def _j(p, default=None):
@@ -51,6 +51,7 @@ def collect(ws, d=None, graph=None, now=None, home=None, fw=None):
     """Everything the page shows for one workspace. `d` (the dashboard's collect) and `fw` (framework()) may be passed in to avoid
     computing them twice (sdem home)."""
     from .dashboard import collect as dash_collect
+    from . import profile as _p; _p.activate_from(ws)   # DL-10: this workspace's form and profile (sdem home shows several)
     from .document import document, to_html, provenance
     from .layers import FILES
     from .agents import Estate, CoordinationError

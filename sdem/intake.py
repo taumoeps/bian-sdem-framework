@@ -15,8 +15,8 @@ from .identity import T as _T, layer as _L, F as _F, live as _live  # ST-01…ST
 import argparse, difflib, json, shutil, sys, tempfile
 from pathlib import Path
 
-LAYERS = _live(lambda: {_L('business'): _F('business'), _L('application'): _F('application'), _L('technology'): _F('technology')})
-AGENTS = _live(lambda: {_L('business'): 'sdem-a1-business', _L('application'): 'sdem-a3-application', _L('technology'): 'sdem-a4-technology'})
+LAYERS = _live(lambda: {_L('business'): _F('business'), _L('data'): _F('data'), _L('application'): _F('application'), _L('technology'): _F('technology')})
+AGENTS = _live(lambda: {_L('business'): 'sdem-a1-business', _L('data'): 'sdem-data', _L('application'): 'sdem-a3-application', _L('technology'): 'sdem-a4-technology'})
 BIAN, SUGG, NOTS, DECS = 'BIAN-DOMAINS.json', 'CROSS-LAYER-SUGGESTIONS.json', 'NOT-STATED.json', 'DECISIONS.json'
 CHECKER = 'intake.check'   # the name the throw-away workspace of a check is started under — nothing of it is kept
 
@@ -171,7 +171,7 @@ def check(pkg, allow_gaps=False):
         tmp = Path(tempfile.mkdtemp(prefix='sdem-intake-'))
         try:
             ws = tmp / 'ws'
-            _must('new', '--workspace', ws, '--person', CHECKER, what='starting the throw-away workspace of the check')
+            _must('new', '--workspace', ws, '--person', CHECKER, '--form', '0.19', what='starting the throw-away workspace of the check')   # the package's own form (DL-26)
             passed = []
             for layer, d in docs.items():
                 if not d['instances'] and not d['relationships']: continue   # a layer the design says nothing of: nothing to check, nothing to load
@@ -286,7 +286,12 @@ def load(pkg, workspace, person, dry_run=False, allow_gaps=False, accept=False, 
                         'then': ['include every pattern SDEM ships that fits', 'sdem aid --complete-draft', 'sdem link', 'the report']}
         return out
     steps = [{'step': 'check', 'did': f"{sum(r['counts']['records'].values())} records, nothing refused"}]
-    if not (ws / 'mappings.json').exists(): _must('new', '--workspace', ws, '--person', person, what='starting the workspace')
+    from .new import default_form
+    from .identity import _ids_folder
+    if (ws / 'mappings.json').exists() and _ids_folder(str(ws.resolve())):   # DL-26: a package is authored in 0.19's form — its data records in the application file
+        raise IntakeError(f'{ws} is in SDEM 0.20\'s form — sdem intake starts a design in a new folder: give one that does not exist yet, and it takes the form new workspaces take')
+    fresh = not (ws / 'mappings.json').exists()
+    if fresh: _must('new', '--workspace', ws, '--person', person, '--form', '0.19', what='starting the workspace')   # the package's form; migrated below when 0.20 is the default
     steps.append({'step': 'workspace', 'did': str(ws)})
     tmp = Path(tempfile.mkdtemp(prefix='sdem-intake-'))
     try:
@@ -364,6 +369,11 @@ def load(pkg, workspace, person, dry_run=False, allow_gaps=False, accept=False, 
             from .files import write_json as _wj
             _wj(ws / 'aid' / 'AUTHOR-proposals.json', {'mappings': mine})
         steps.append({'step': 'links', 'did': {'proposed': len(have) + len(mine), 'of_them_the_authors_alone': len(mine)}})
+        if fresh and default_form() == '0.20':   # DL-26: the design as authored, then in the form new workspaces take — Data its own layer, its accesses approved ACCESSED_BY links
+            from .migrate20 import migrate as _m20, Migrate20Error
+            try: _m20(ws, person, keep_backup=False, approve_access=bool(accept))   # its accesses approved only when the person accepts the design as authored
+            except Migrate20Error as e: raise IntakeError(f'moving the new workspace to the 0.20 form: {e}')
+            steps.append({'step': 'form', 'did': '0.20'})
         kept = ws / 'intake'; (kept / 'package').mkdir(parents=True, exist_ok=True)
         for f in Path(pkg).iterdir():
             if f.is_file(): shutil.copy(f, kept / 'package' / f.name)

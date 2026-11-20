@@ -9,6 +9,14 @@ sys.path.insert(0, str(ROOT))
 from sdem.metamodel import Metamodel  # noqa: E402
 CURRENT = Metamodel.load().version   # the metamodel a migration ends at
 from sdem.validate import validate, load_registry  # noqa: E402
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from forms import lf, migrated   # noqa: E402 — a layer's file in either form
+
+
+def stored(ws, name):
+    """A type as the workspace's files hold it: its 0.19 name, or its id in SDEM 0.20's form (ST-10)."""
+    from sdem.identity import _index
+    return _index()[3][name] if migrated(ws) else name
 
 ENV = {**os.environ, 'PYTHONPATH': str(ROOT) + os.pathsep + os.environ.get('PYTHONPATH', '')}
 
@@ -21,7 +29,8 @@ def sdem(*args, cwd, ok=(0,)):
 
 def back_to_070(ws):
     """The workspace as it was written under metamodel 0.7.0 — every dataset and the registry."""
-    for f in list(ws.glob('a*-*.json')) + [ws / 'mappings.json']:
+    layers = {lf(ws, i) for i in ('business', 'bian', 'data', 'application', 'technology')} | set(ws.glob('a*-*.json'))
+    for f in sorted(x for x in layers if x.exists()) + [ws / 'mappings.json']:
         d = json.loads(f.read_text()); d['metamodel_version'] = '0.7.0'; f.write_text(json.dumps(d))
 
 
@@ -56,7 +65,7 @@ class B1Tests(unittest.TestCase):
         _, _, r = sdem('migrate', '--workspace', self.ws, '--person', 'steven', '--json', cwd=self.tmp)
         self.assertEqual(r['changes'].get('narrow_endpoint_type'), 1)
         after = json.loads((self.ws / 'mappings.json').read_text())
-        self.assertEqual(next(x for x in after['mappings'] if x['mapping_id'] == m['mapping_id'])['target']['type'], 'A4.SystemSoftware')
+        self.assertEqual(next(x for x in after['mappings'] if x['mapping_id'] == m['mapping_id'])['target']['type'], stored(self.ws, 'A4.SystemSoftware'))
         self.assertEqual(after['metamodel_version'], CURRENT)   # migrated through 0.8.0 (B1) to the current version
 
     def test_migrate_covers_a_profiles_added_layers(self):

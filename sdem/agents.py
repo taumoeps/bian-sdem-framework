@@ -52,6 +52,31 @@ STRENGTH = {'design_change_required': 3, 'review_required': 2, 'no_impact': 1}
 MAX_ROUNDS = 3                            # AG-S07 / AG-Q02
 
 
+
+def layer_code(x):
+    """DL-25: a layer as a change set or command names it — its id (`application`), the same in either form, or its code as this
+    workspace numbers it — read as the code."""
+    from .identity import _index, stack, layer
+    return layer(x) if x in _index()[0] and x in stack() else x
+
+
+def scope_error(agent, layer, verb):
+    """CTL-19's refusal — and, where the agent's 0.19 number is another layer's here (SDEM 0.20's form), which layer that number is now."""
+    from .identity import _index, stack, layer as code
+    from .layers import _CORE
+    own = AGENT_LAYER.get(agent, 'no layer')
+    msg = f"CTL-19: agent {agent} may {verb} only {own}, not {layer}"
+    from .layers import layers
+    rows = layers(); mine = next((l for l in rows if l['agent'] == agent), None)
+    lid = next((i for i, _n, a in _CORE if a == agent), None)
+    was = _index()[0].get(lid) if lid else (mine or {}).get('code_0_19') if mine and mine.get('code_0_19') else None   # its number in 0.19's numbering
+    plain = lambda l: l['name'][len(l['code']) + 1:] if l['name'].startswith(l['code'] + ' ') else l['name']   # 'A3 Data' → 'Data'
+    there = next((plain(l) for l in rows if l['code'] == layer), None)
+    if mine and was == layer != own and there:
+        msg += (f" — in this workspace {layer} is {there} and {plain(mine)} is {own} (SDEM 0.20 numbers the layers in use); "
+                f"name the layer {own}" + (f" or by its id, {lid!r}" if lid else ''))
+    return msg
+
 class CoordinationError(Exception):
     """A request the controls reject; the message names the control."""
 
@@ -72,6 +97,10 @@ class Estate:
 
     def __init__(self, path, now=None):
         self.path = Path(path); self.coord = self.path / 'coordination'; self.now = now or _now
+        from . import parts
+        from .identity import _ids_folder
+        if self.path.is_dir() and _ids_folder(str(self.path.resolve())) != parts.migrated():   # DL-10: open it in its own form (a folder of files too)
+            from . import profile as _p; _p.activate_from(self.path)
         if not (self.path / REGISTRY).exists() or not any((self.path / f).exists() for f in FILES.values()):   # one to four layers, as everywhere
             raise EstateNotFound(f'{self.path}: not a workspace folder (it needs {REGISTRY} and at least one of {", ".join(FILES.values())})')
         from . import profile as _p
@@ -115,10 +144,12 @@ class Estate:
         if not change_set['changes'] and not (rl.get('add') or rl.get('remove')): raise CoordinationError('change set format: nothing to change — give at least one record change or link change')
         if not (agent or '').strip() or not is_person(person):
             raise CoordinationError('CTL-20: a change set needs both the agent and the person behind it — the person is a person, never an agent or tool (CTL-21)')
-        layer = change_set['layer']
+        layer = change_set['layer'] = layer_code(change_set['layer'])   # DL-25: a layer id reads in either form
+        from .identity import display
+        for c in change_set['changes']:   # ST-05: a type's id or 0.19 name reads as the type it names
+            if isinstance(c.get('record'), dict) and isinstance(c['record'].get('type'), str): c['record']['type'] = display(c['record']['type'])
         if agent == ORCHESTRATOR: raise CoordinationError('CTL-19: the orchestrator never changes layer data')
-        if agent != HUMAN and AGENT_LAYER.get(agent) != layer:
-            raise CoordinationError(f"CTL-19: agent {agent} may change only {AGENT_LAYER.get(agent, 'no layer')}, not {layer}")
+        if agent != HUMAN and AGENT_LAYER.get(agent) != layer: raise CoordinationError(scope_error(agent, layer, 'change'))
         ds = self.datasets(); work = self.work(); wis = []
         for work_id in work_ids or ():
             wi = next((w for w in work if w['id'] == work_id), None)
@@ -191,7 +222,7 @@ class Estate:
         _w(self.path / FILES[layer], new[layer])
         cs = {'id': cs_id, **change_set, 'agent': agent, 'person': person, 'created_at': self.now(), 'work_items': [w['id'] for w in wis], 'event': ce_id, 'branch': _branch(self.path),
               'trigger': 'downstream' if wis else 'initial',   # RR-G04: an authorised downstream change answers work items; an initial change starts a new event
-              'dataset': {'file': FILES[layer], 'before_sha256': before, 'after_sha256': _content_sha(new[layer])}}   # what was written (also in a dry run)
+              'dataset': {'file': FILES[layer], 'before_sha256': before, 'after_sha256': _content_sha(new[layer], self.path / FILES[layer])}}   # what was written (also in a dry run)
         _w(self.coord / 'change-sets' / f'{cs_id}.json', cs)
         _w(self.coord / 'snapshots' / f'{cs_id}.json', new[layer])   # the layer as this change set left it (AG-S08, and undo later)
         if rels.get('add') or rels.get('remove'): changed = [(r, 'modify' if k == 'document' else k) for r, k in changed]   # links changed: not text only
@@ -305,6 +336,7 @@ class Estate:
     def adopt(self, layer, person, reason):
         """AG-S08: record a person's direct edit of a layer's dataset as a change set, so the chain of change sets is whole
         again. The edit must keep the metamodel (no new errors); its impact is recorded like any change set's."""
+        layer = layer_code(layer)   # DL-25: a layer id reads in either form
         OTHER = {'registry': REGISTRY, 'requirements': 'requirements.json'}
         if layer not in FILES and layer not in OTHER: raise CoordinationError(f'unknown layer {layer}')
         if not is_person(person) or person in AGENT_LAYER or person in (ORCHESTRATOR, HUMAN): raise CoordinationError('CTL-20: adopt needs the name of the person who made the edit')
@@ -345,10 +377,10 @@ class Estate:
         from the reverted change event is cancelled, with a note."""
         f = self.coord / 'change-sets' / f'{cs_id}.json'
         if not f.exists(): raise CoordinationError(f'{cs_id}: no such change set')
-        target = _j(f); layer = target['layer']
+        target = _j(f); layer = layer_code(target['layer'])
         if not (agent or '').strip() or not is_person(person): raise CoordinationError('CTL-20: a revert needs both the agent and the person behind it')
         if agent == ORCHESTRATOR: raise CoordinationError('CTL-19: the orchestrator never changes layer data')
-        if agent != HUMAN and AGENT_LAYER.get(agent) != layer: raise CoordinationError(f"CTL-19: agent {agent} may change only {AGENT_LAYER.get(agent, 'no layer')}, not {layer}")
+        if agent != HUMAN and AGENT_LAYER.get(agent) != layer: raise CoordinationError(scope_error(agent, layer, 'change'))
         last = self._last_change_set(layer)
         if not last or last['id'] != cs_id: raise CoordinationError(f"{cs_id} is not the latest change set of {layer} ({last['id'] if last else 'none'} is) — revert the later ones first")
         if target.get('dataset', {}).get('after_sha256') != _file_sha(self.path / FILES[layer]):
@@ -453,7 +485,7 @@ class Estate:
         if V.phase(v) in ('architect_accepted', 'implementation_authorised'): raise CoordinationError(f"{event_id}: the impact assessment was already accepted by {v['acceptance']['by']} — it is closed")
         if layer not in V.LEVELS: raise CoordinationError(f'unknown layer {layer}')
         if agent == ORCHESTRATOR: raise CoordinationError('CTL-19: the orchestrator coordinates validation; each layer is assessed by its own agent')
-        if agent != HUMAN and AGENT_LAYER.get(agent) != layer: raise CoordinationError(f"CTL-19: agent {agent} may assess only {AGENT_LAYER.get(agent, 'no layer')}, not {layer}")
+        if agent != HUMAN and AGENT_LAYER.get(agent) != layer: raise CoordinationError(scope_error(agent, layer, 'assess'))
         if not is_person(person): raise CoordinationError('CTL-20: an assessment needs the person behind the agent (a person, never an agent or tool)')
         if status not in V.STATUSES: raise CoordinationError(f'status must be one of {", ".join(V.STATUSES)}')
         if confidence not in V.CONFIDENCE: raise CoordinationError(f'confidence must be one of {", ".join(V.CONFIDENCE)}')
@@ -654,11 +686,13 @@ def _identity(person):
             'note': 'the name given is a claim, not authenticated by SDEM; the reviewed pull request is the control'}
 
 
-def _content_sha(obj):
-    """The fingerprint of a dataset as _w writes it — the same as _file_sha of the written file."""
+def _content_sha(obj, path):
+    """The fingerprint of a dataset as _w writes it to `path` — the same as _file_sha of the written file: with the names that file's
+    workspace stores (ids in SDEM 0.20's form, DL-11)."""
     import hashlib
     from .files import dumps
-    return hashlib.sha256(dumps(obj).encode('utf-8')).hexdigest()
+    from .identity import for_file
+    return hashlib.sha256(dumps(for_file(path, obj)).encode('utf-8')).hexdigest()
 
 
 def _file_sha(path):
@@ -725,7 +759,7 @@ def change_main(argv=None):
     x.add_argument('--complete', action='store_true', help='the file is the whole layer: records it leaves out become retirement candidates (listed, never applied) and its records are compared field by field')
     x.add_argument('-o', '--out', metavar='FILE', help='write the change set here, for sdem change propose')
     d = sub.add_parser('adopt', help="record a person's direct edit of a layer as a change set (AG-S08)"); _common(d, who=False)
-    d.add_argument('--layer', required=True, choices=CODES + ['registry', 'requirements']); d.add_argument('--person', required=True, help='who made the edit'); d.add_argument('--reason', required=True)
+    d.add_argument('--layer', required=True, choices=list(CODES) + ['business', 'bian', 'data', 'application', 'technology', 'registry', 'requirements']); d.add_argument('--person', required=True, help='who made the edit'); d.add_argument('--reason', required=True)
     a = ap.parse_args(argv)
     try:
         est = Estate(a.estate)

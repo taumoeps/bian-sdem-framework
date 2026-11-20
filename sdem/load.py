@@ -41,7 +41,10 @@ def read_candidates(src):
         raise LoadInputError(f'{src}: not a transform output (no extraction.json) — run `sdem transform run` first')
     meta, ds = _j(src / 'extraction.json'), {}
     meta['_index'] = _j(src / 'design-index.json')['designs'] if (src / 'design-index.json').exists() else []
-    for lvl, name in DATASETS.items():
+    from .identity import _ids_folder, table, layer
+    ids = _ids_folder(str(src.resolve()))   # DL-10: the candidates in their own form — sdem transform writes 0.19's file names
+    names = {layer(l['id']): (f"{l['id']}.json" if ids else l['file']) for l in table()['layers'] if l.get('file') and l['id'] != 'data'}
+    for lvl, name in names.items():
         if (src / name).exists():
             d = _j(src / name)
             if d.get('source_system') != SOURCE_SYSTEM:
@@ -72,10 +75,10 @@ def keep_file(path):
     return [t for line in Path(path).read_text(encoding='utf-8').splitlines() for t in line.split('#', 1)[0].split()]
 
 
-def plan(estate, ds, keep, a2=None, mm=None, today=None):
+def plan(estate, ds, keep, a2=None, mm=None, today=None, current=None):
     """The workspace as it would be after the load, and what changes — nothing is written here."""
     estate = Path(estate); mm = mm or Metamodel.load(); today = today or datetime.date.today().isoformat()
-    current = {lvl: _j(estate / f) for lvl, f in DATASETS.items() if (estate / f).exists()}
+    if current is None: current = {lvl: _j(estate / f) for lvl, f in DATASETS.items() if (estate / f).exists()}
     existing_ids = {i['id'] for d in current.values() for i in d['instances']}
     allowed = existing_ids | keep
     after, changed = dict(current), {}
@@ -124,14 +127,30 @@ def plan(estate, ds, keep, a2=None, mm=None, today=None):
 
 
 def load(src, estate, person, keep=None, exclude=None, all_=False, a2=None, dry_run=False, now=None):
-    """Select, check, write, record. Returns the result; raises LoadError when refused (nothing written)."""
+    """Select, check, write, record. Returns the result; raises LoadError when refused (nothing written). A workspace in SDEM 0.20's form
+    takes the load in its 0.19 view (DL-12, as sdem aid does): Data's records come back in data.json; an access the design states
+    becomes a proposed ACCESSED_BY in loads/LOAD-…-proposals.json — a link between layers is a person's to approve."""
     check_person(person)
+    from . import profile as _p, parts, identity
+    if not (Path(estate) / 'mappings.json').exists(): return _load(src, estate, person, keep, exclude, all_, a2, dry_run, now)   # refused there: no workspace
+    with _p.opened(estate):   # the workspace's form and profile — and the process as it was, after
+        if parts.migrated() and not identity._VIEW_019[0]:
+            with identity.view_019(): return _load(src, estate, person, keep, exclude, all_, a2, dry_run, now)
+        return _load(src, estate, person, keep, exclude, all_, a2, dry_run, now)
+
+
+def _load(src, estate, person, keep=None, exclude=None, all_=False, a2=None, dry_run=False, now=None):
     if not (Path(estate) / 'mappings.json').exists():   # WS-03: a workspace is started with `sdem new`, never created by a load
         raise LoadError(f'{estate}: no workspace here — start it first: sdem new --workspace {estate} --person {person}')
     meta, ds = read_candidates(src)
     keep_ids, excluded = select(ds, all_, keep, exclude)
     mm = Metamodel.load(); now = now or datetime.datetime.now().replace(microsecond=0).isoformat()
-    after, changed, registry, res = plan(estate, ds, keep_ids, a2, mm, now[:10])
+    from . import parts
+    view = None
+    if parts.migrated():   # the 0.19 view: data.json inside Application, approved ACCESSED_BY as access (sdem aid's reader)
+        from .aid_fill import _workspace
+        _, view, _ = _workspace(estate)
+    after, changed, registry, res = plan(estate, ds, keep_ids, a2, mm, now[:10], current=view)
     res.update({'excluded': excluded, 'estate': str(estate), 'dry_run': dry_run,
                 'bian_mentions': meta.get('bian_mentions', []), 'transform': {k: meta.get(k) for k in ('generated', 'export', 'export_sha256', 'rules_sha256')}})
     # design and gap records — what did not fit an entity, kept beside the workspace (LD-R02)
@@ -163,7 +182,13 @@ def load(src, estate, person, keep=None, exclude=None, all_=False, a2=None, dry_
     from .files import Batch
     batch = Batch()   # all-or-nothing: every file is written to a temporary copy first, then all are moved into place
     batch.json(rec_path, records)
-    for lvl, d in changed.items(): batch.json(estate / DATASETS[lvl], d)
+    proposals = []
+    for lvl, d in changed.items():
+        if view is None: batch.json(estate / DATASETS[lvl], d); continue
+        from .aid_fill import _split
+        for path, doc in _split(estate, lvl, d, res['load_id'], proposals, by='sdem load').items(): batch.json(path, doc)   # DL-12
+    if proposals:
+        batch.json(estate / 'loads' / f"{res['load_id']}-proposals.json", {'mappings': proposals}); res['access_proposals'] = len(proposals)
     if not (estate / 'mappings.json').exists(): batch.json(estate / 'mappings.json', registry)
     record = {'id': res['load_id'], 'at': now, 'person': person, 'from': str(src), 'transform': res['transform'], 'loaded': res['loaded'],
               'links_loaded': res['links'], 'skipped_same_content': res['skipped_same'], 'excluded': excluded, 'dropped': res['dropped'],

@@ -28,14 +28,15 @@ FILE = 'sdem-profile.json'
 FORMAT = 'sdem-profile/1'
 STANDARD_FORMAT, PATTERN_FORMAT = 'sdem-standard/1', 'sdem-pattern/1'   # files a profile includes (PR-13, PR-17)
 EXCEPTIONS_FILE = 'exceptions.json'                                     # a workspace's granted exceptions (PR-18)
-PRIVATE = ('chain', 'included', '_issues', '_origin', 'aspects')                   # kept with the merged profile, not part of its content
+PRIVATE = ('chain', 'included', '_issues', '_origin', 'aspects', '_numbering')                   # kept with the merged profile, not part of its content
 SCHEMA = DATA_ROOT / 'schema' / 'profile.schema.json'
-LEVELS = _live(lambda: (_L('business'), _L('bian'), _L('application'), _L('technology')))
+LEVELS = _live(lambda: tuple(dict.fromkeys((_L('business'), _L('bian'), _L('data'), _L('application'), _L('technology')))))
 ATTR_TYPES = ('string', 'integer', 'number', 'boolean', 'date', 'enum', 'list<string>', 'map<string,string>')
 MAP_KINDS = ('shapes', 'connectors', 'zones')   # PR-28: the diagram mapping table — the organisation's shapes, connector labels and zones
 LISTS = ('layers', 'types', 'attributes', 'rules', 'link_kinds', 'link_types', 'requirement_categories')   # what a profile adds to its base
 ACTIVE = None          # the resolved, merged profile the current command works under (None: SDEM's metamodel alone)
 _ACTIVE_KEY = None     # its content hash — the metamodel cache key
+_RAW = None            # the active profile as resolved, before it is numbered for the workspace (DL-25)
 ACTIVE_EXCEPTIONS = []  # the active workspace's granted exceptions (PR-18)
 
 
@@ -283,6 +284,7 @@ def resolve(path, _seen=()):
 
 def digest(merged):
     body = {k: v for k, v in merged.items() if k not in PRIVATE}
+    if merged.get('_numbering'): body['_numbering'] = merged['_numbering']   # DL-25: numbered for another stack, another metamodel
     return hashlib.sha256(json.dumps(body, sort_keys=True).encode()).hexdigest()
 
 
@@ -315,16 +317,17 @@ def check(merged, base_mm):
     known = dict(base_mm.entities); declared = {}
     for t in merged['types']:
         m = re.fullmatch(r'[A-Z][A-Z0-9]*\.([A-Z][A-Z0-9]{0,5})\.[A-Za-z0-9]+', t['type'])
+        lc = code_of(merged, m.group(1)) if m else None   # DL-25
         if t['type'] in known: issues.append(f"type {t['type']}: redefines an SDEM type — a profile adds types, never changes SDEM's")
         elif t['type'] in declared: issues.append(f"type {t['type']}: declared twice")
-        elif not m or m.group(1) not in order: issues.append(f"type {t['type']}: a profile type is named <ORG>.<layer>.<Name> with a layer of this workspace ({', '.join(order)}), e.g. BANK.A3.PaymentsMicroservice")
-        elif m.group(1) in own_layers and not t.get('extends'):   # LR-01: a root type of the profile's own layer
-            declared[t['type']] = {'type': t['type'], 'level': m.group(1), 'extends': None, 'abstract': False, 'artefact': False, **t}
+        elif not m or lc not in order: issues.append(f"type {t['type']}: a profile type is named <ORG>.<layer>.<Name> with a layer of this workspace ({', '.join(order)}), e.g. BANK.A3.PaymentsMicroservice")
+        elif lc in own_layers and not t.get('extends'):   # LR-01: a root type of the profile's own layer
+            declared[t['type']] = {'type': t['type'], 'level': lc, 'extends': None, 'abstract': False, 'artefact': False, **t}
         elif not t.get('extends'): issues.append(f"type {t['type']}: a type in a core layer extends an SDEM type")
         else:
             parent = known.get(t['extends']) or declared.get(t['extends'])
             if not parent: issues.append(f"type {t['type']}: extends {t['extends']!r}, which is neither an SDEM type nor a profile type")
-            elif m.group(1) != parent['level']: issues.append(f"type {t['type']}: its layer is {m.group(1)} but it extends an {parent['level']} type")
+            elif lc != parent['level']: issues.append(f"type {t['type']}: its layer is {lc} but it extends an {parent['level']} type")
             else: declared[t['type']] = {**parent, **t, 'level': parent['level'], 'artefact': parent.get('artefact', False), 'abstract': False}
     for code in own_layers:
         if not any(d['level'] == code for d in declared.values()): issues.append(f"layer {code}: declares no types")
@@ -447,7 +450,7 @@ def apply(mm, merged):
     by = {e['type']: e for e in ents}
     for t in merged['types']:
         if not t.get('extends'):   # LR-01: a root type of the profile's own layer
-            e = {'type': t['type'], 'level': t['type'].split('.')[1], 'extends': None, 'abstract': False, 'artefact': False, 'definition': t.get('definition', ''),
+            e = {'type': t['type'], 'level': code_of(merged, t['type'].split('.')[1]), 'extends': None, 'abstract': False, 'artefact': False, 'definition': t.get('definition', ''),
                  'identifier': {'key': ['name'], 'basis': 'SDEM', 'reasoning': 'a unique name within the layer'}, 'alignment_kind': 'organisation_extension',
                  'reference': {'standard': merged['name'], 'concept': t.get('name') or t['type'].split('.')[-1], 'locator': t.get('source', 'organisation profile')},
                  'evidence_status': 'organisation_defined', 'definition_source': 'organisation_profile', 'confidence': 'high',
@@ -566,27 +569,96 @@ def applies(rule, inst):
 
 # ------------------------------------------------------------------ activation (PR-07)
 
+def renumber(merged):
+    """DL-25: a profile names layers in SDEM 0.19's numbering — A1 Business, A2 BIAN, A3 Application, A4 Technology, and its own layers
+    by its own codes — whatever the workspace it is used in (one organisation profile serves workspaces in both forms). In a workspace
+    whose layers are numbered otherwise (SDEM 0.20's form: Data its own layer), its core codes are read as the layers they name, and an own
+    layer whose code is now a core layer's takes the next free A-number. Type names (BANK.A3.PaymentsMicroservice) are ids and do not
+    change; the layer a name gives is read through `_numbering`."""
+    from .identity import _index, stack, layer
+    old = _index()[0]   # layer id → its 0.19 code
+    st = stack()
+    core = {c: layer(i) for i, c in old.items() if c and i in st}
+    if all(k == v for k, v in core.items()) and len(core) == len([c for c in old.values() if c]): return merged
+    taken = set(core.values()) | {layer(i) for i in st}
+    num = lambda c: int(c[1:]) if re.fullmatch(r'A\d+', c) else 0
+    nxt = max(num(c) for c in taken) + 1
+    own = {}
+    for l in merged['layers']:
+        c = l['code']
+        if c in core or c in own: continue   # the check refuses a core code; a code twice is refused there too
+        if c in taken: own[c] = f'A{nxt}'; taken.add(own[c]); nxt += 1
+    m = {**core, **own}
+    out = dict(merged)
+    def moved(l):   # a name that begins with its own code ('A5 Physical') follows the code
+        c = m.get(l['code'], l['code']); n = l.get('name')
+        return {**l, 'code': c, **({'name': c + n[len(l['code']):]} if isinstance(n, str) and n.startswith(l['code'] + ' ') else {})}
+    out['layers'] = [moved(l) for l in merged['layers']]
+    out['names'] = {**merged['names'], 'layers': {m.get(k, k): v for k, v in merged['names']['layers'].items()}}
+    out['_numbering'] = m
+    return out
+
+
+def code_of(merged, name_code):
+    """DL-25: the layer a profile type's name gives (the middle of BANK.A3.PaymentsMicroservice), as the workspace numbers it."""
+    return ((merged or {}).get('_numbering') or {}).get(name_code, name_code)
+
+
 def activate_file(path):
     """Make the profile at `path` the active one (resolved and checked). Returns the merged profile."""
-    global ACTIVE, _ACTIVE_KEY
-    merged = resolve(path)
+    global ACTIVE, _ACTIVE_KEY, _RAW
+    raw = resolve(path); merged = renumber(raw)
     from .metamodel import Metamodel
     issues = check(merged, Metamodel.base())
     if issues: raise ProfileError(f'{Path(path).as_posix()}: the profile does not pass its checks:\n  ' + '\n  '.join(issues[:10]))
-    key = digest(merged)
+    key = digest(merged); _RAW = raw
     if key != _ACTIVE_KEY:
         ACTIVE, _ACTIVE_KEY = merged, key
         from . import conformance; conformance.model.cache_clear()
     return merged
 
 
+def _renumbered(merged):
+    """DL-25: the workspace's layers were settled after the profile was activated (BX-50) — number the profile for them."""
+    global ACTIVE
+    if _RAW is None or ACTIVE is not merged: return merged
+    global _ACTIVE_KEY
+    again = renumber(_RAW)
+    if again.get('_numbering') != merged.get('_numbering'):
+        ACTIVE, _ACTIVE_KEY = again, digest(again)
+        from . import conformance; conformance.model.cache_clear()
+    return ACTIVE
+
+
 def deactivate():
-    global ACTIVE, _ACTIVE_KEY, ACTIVE_EXCEPTIONS
+    global ACTIVE, _ACTIVE_KEY, ACTIVE_EXCEPTIONS, _RAW
+    _RAW = None
     ACTIVE_EXCEPTIONS = []
     from . import parts; parts.reset()   # BX-12: no workspace, BIAN on
     if ACTIVE is not None:
         ACTIVE, _ACTIVE_KEY = None, None
         from . import conformance; conformance.model.cache_clear()
+
+
+class opened:
+    """`with opened(folder):` — the workspace's profile and form for one piece of work, and the state before it put back after (a command
+    called from Python — sdem.api, a test — leaves the process as it found it)."""
+    def __init__(self, folder): self.folder = folder
+    def __enter__(self):
+        from . import parts
+        self._was = (ACTIVE, _ACTIVE_KEY, _RAW, list(ACTIVE_EXCEPTIONS), dict(parts._STATE))
+        return activate_from(self.folder)
+    def __exit__(self, *exc):
+        global ACTIVE, _ACTIVE_KEY, _RAW, ACTIVE_EXCEPTIONS
+        from . import parts, identity
+        a, k, r, e, st = self._was
+        changed = st != parts._STATE or a is not ACTIVE
+        ACTIVE, _ACTIVE_KEY, _RAW, ACTIVE_EXCEPTIONS = a, k, r, e
+        parts._STATE.clear(); parts._STATE.update(st)
+        if changed:
+            identity.changed()
+            from . import conformance; conformance.model.cache_clear()
+        return False
 
 
 def activate_from(folder):
@@ -595,7 +667,7 @@ def activate_from(folder):
     f = Path(folder) / FILE
     parts.for_workspace(folder)   # BX-10…BX-13 first: what the profile resolves to depends on it (BX-50)
     if f.exists():
-        merged = activate_file(f); _load_exceptions(folder); parts.for_workspace(folder, merged); return merged
+        merged = activate_file(f); _load_exceptions(folder); parts.for_workspace(folder, merged); return _renumbered(merged)
     deactivate(); parts.for_workspace(folder); return None
 
 
@@ -609,7 +681,7 @@ def activate_from_paths(paths):
             merged = activate_file(d / FILE); _load_exceptions(d)
             if ws: parts.for_workspace(ws, merged)
             else: _form_of(folders)
-            return merged
+            return _renumbered(merged)
     deactivate()
     if ws: parts.for_workspace(ws)
     else: _form_of(folders)
@@ -640,39 +712,51 @@ def record():
 
 # ------------------------------------------------------------------ the CLI
 
+def _O19(layer_id):
+    """DL-25: a layer's code in 0.19's numbering — what an organisation profile is written in."""
+    from .identity import _index
+    return _index()[0][layer_id]
+
+
+def _T19(type_id):
+    """DL-25: a type's 0.19 name — what an organisation profile is written in."""
+    from .identity import _index
+    return _index()[2][type_id].get('name_0_19') or type_id
+
+
 EXAMPLE_BASE = _live(lambda: {
     'format': FORMAT, 'name': 'bank-base', 'version': 1,
     'description': "A made-up bank's standard specification on top of SDEM — the base every team's profile extends (synthetic; not a real organisation's).",
-    'names': {'layers': {_L('business'): 'L1 Business', _L('bian'): 'L2 Service Domains', _L('application'): 'L3 Applications', _L('technology'): 'L4 Technology'},
-              'types': {_T('application.ApplicationComponent'): 'Application', _T('technology.SystemSoftware'): 'Platform'}},
+    'names': {'layers': {_O19('business'): 'L1 Business', _O19('bian'): 'L2 Service Domains', _O19('application'): 'L3 Applications', _O19('technology'): 'L4 Technology'},
+              'types': {_T19('application.ApplicationComponent'): 'Application', _T19('technology.SystemSoftware'): 'Platform'}},
     'types': [
-        {'type': 'BANK.A3.PaymentsMicroservice', 'extends': _T('application.ApplicationComponent'), 'name': 'Payments microservice',
+        {'type': 'BANK.A3.PaymentsMicroservice', 'extends': _T19('application.ApplicationComponent'), 'name': 'Payments microservice',
          'definition': 'An independently deployable payments service owned by one team', 'source': 'bank application standard §4.2'},
-        {'type': 'BANK.A1.ControlFunction', 'extends': _T('business.BusinessCapability'), 'name': 'Control function',
+        {'type': 'BANK.A1.ControlFunction', 'extends': _T19('business.BusinessCapability'), 'name': 'Control function',
          'definition': 'A capability whose purpose is a regulatory or risk control', 'source': 'bank capability model §2'}],
     'attributes': [
-        {'entity': _T('application.ApplicationComponent'), 'name': 'risk_tier', 'type': 'enum', 'values': ['1', '2', '3'], 'required': True, 'description': 'the application risk tier (1 highest)'},
-        {'entity': _T('application.ApplicationComponent'), 'name': 'cost_centre', 'type': 'string', 'required': False, 'description': 'the cost centre that pays for it'},
+        {'entity': _T19('application.ApplicationComponent'), 'name': 'risk_tier', 'type': 'enum', 'values': ['1', '2', '3'], 'required': True, 'description': 'the application risk tier (1 highest)'},
+        {'entity': _T19('application.ApplicationComponent'), 'name': 'cost_centre', 'type': 'string', 'required': False, 'description': 'the cost centre that pays for it'},
         {'entity': 'BANK.A3.PaymentsMicroservice', 'name': 'owning_team', 'type': 'string', 'required': True, 'description': 'the team that owns the service'},
-        {'entity': _T('business.BusinessRequirement'), 'name': 'requirement_class', 'type': 'enum', 'values': ['functional', 'non_functional'], 'required': True,
+        {'entity': _T19('business.BusinessRequirement'), 'name': 'requirement_class', 'type': 'enum', 'values': ['functional', 'non_functional'], 'required': True,
          'description': "functional (what the business must be able to do) or non-functional (how well — measured in requirements.json); SDEM's own requirement_kind stays ArchiMate's requirement / constraint / principle"},
-        {'entity': _T('business.BusinessRequirement'), 'name': 'regulatory_reference', 'type': 'string', 'required': False, 'description': 'the regulation or policy clause it comes from'},
-        {'entity': _T('technology.InfrastructureComponent'), 'name': 'environment', 'type': 'enum', 'values': ['production', 'non_production'], 'required': False, 'description': 'production or not'},
-        {'entity': _T('technology.InfrastructureComponent'), 'name': 'dr_tier', 'type': 'enum', 'values': ['1', '2', '3'], 'required': False, 'description': 'the disaster recovery tier (1: hot standby)'},
-        {'entity': _T('technology.InfrastructureComponent'), 'name': 'dr_region', 'type': 'string', 'required': False, 'description': 'the region it runs in, for DR separation'},
-        {'entity': _T('technology.InfrastructureComponent'), 'name': 'replication_mode', 'type': 'enum', 'values': ['sync', 'async', 'none'], 'required': False, 'description': 'how its data reaches the DR pair'},
-        {'entity': _T('technology.InfrastructureComponent'), 'name': 'failover_tested_on', 'type': 'date', 'required': False, 'description': 'the last successful failover test'}],
-    'rules': [{'id': 'BANK-R01', 'entity': _T('application.ApplicationComponent'), 'require': ['owner', 'risk_tier'], 'message': 'every application names its owner and risk tier (bank application standard §3)'},
-              {'id': 'BANK-DR01', 'entity': _T('technology.InfrastructureComponent'), 'when': {'environment': 'production'}, 'require': ['dr_tier', 'dr_region', 'replication_mode'],
+        {'entity': _T19('business.BusinessRequirement'), 'name': 'regulatory_reference', 'type': 'string', 'required': False, 'description': 'the regulation or policy clause it comes from'},
+        {'entity': _T19('technology.InfrastructureComponent'), 'name': 'environment', 'type': 'enum', 'values': ['production', 'non_production'], 'required': False, 'description': 'production or not'},
+        {'entity': _T19('technology.InfrastructureComponent'), 'name': 'dr_tier', 'type': 'enum', 'values': ['1', '2', '3'], 'required': False, 'description': 'the disaster recovery tier (1: hot standby)'},
+        {'entity': _T19('technology.InfrastructureComponent'), 'name': 'dr_region', 'type': 'string', 'required': False, 'description': 'the region it runs in, for DR separation'},
+        {'entity': _T19('technology.InfrastructureComponent'), 'name': 'replication_mode', 'type': 'enum', 'values': ['sync', 'async', 'none'], 'required': False, 'description': 'how its data reaches the DR pair'},
+        {'entity': _T19('technology.InfrastructureComponent'), 'name': 'failover_tested_on', 'type': 'date', 'required': False, 'description': 'the last successful failover test'}],
+    'rules': [{'id': 'BANK-R01', 'entity': _T19('application.ApplicationComponent'), 'require': ['owner', 'risk_tier'], 'message': 'every application names its owner and risk tier (bank application standard §3)'},
+              {'id': 'BANK-DR01', 'entity': _T19('technology.InfrastructureComponent'), 'when': {'environment': 'production'}, 'require': ['dr_tier', 'dr_region', 'replication_mode'],
                'message': 'every production platform states its DR tier, region and replication (bank resilience standard §5)'},
-              {'id': 'BANK-DR02', 'entity': _T('technology.InfrastructureComponent'), 'when': {'environment': 'production', 'dr_tier': ['1', '2']}, 'link': {'kind': 'dr_pair_of', 'min': 1},
+              {'id': 'BANK-DR02', 'entity': _T19('technology.InfrastructureComponent'), 'when': {'environment': 'production', 'dr_tier': ['1', '2']}, 'link': {'kind': 'dr_pair_of', 'min': 1},
                'message': 'a tier 1 or 2 production platform has a DR pair (bank resilience standard §5.2)'},
-              {'id': 'BANK-DR03', 'entity': _T('technology.InfrastructureComponent'), 'compare': {'kind': 'dr_pair_of', 'attribute': 'dr_region', 'must': 'differ'},
+              {'id': 'BANK-DR03', 'entity': _T19('technology.InfrastructureComponent'), 'compare': {'kind': 'dr_pair_of', 'attribute': 'dr_region', 'must': 'differ'},
                'message': 'a platform and its DR pair run in different regions (bank resilience standard §5.3)'}],
     'requirement_categories': [{'id': 'operational_resilience', 'description': 'tolerance for disruption of a critical operation (synthetic)'}],
-    'link_kinds': [{'kind': 'dr_pair_of', 'maps_to': 'association', 'source_type': _T('technology.InfrastructureComponent'), 'target_type': _T('technology.InfrastructureComponent'),
+    'link_kinds': [{'kind': 'dr_pair_of', 'maps_to': 'association', 'source_type': _T19('technology.InfrastructureComponent'), 'target_type': _T19('technology.InfrastructureComponent'),
                     'description': 'a platform and the platform it fails over to'},
-                   {'kind': 'operated_by', 'maps_to': 'assignment', 'source_type': _T('technology.InfrastructureComponent'), 'target_type': _T('technology.InfrastructureComponent'),
+                   {'kind': 'operated_by', 'maps_to': 'assignment', 'source_type': _T19('technology.InfrastructureComponent'), 'target_type': _T19('technology.InfrastructureComponent'),
                     'description': 'an infrastructure component is operated by a management platform'}]})
 
 EXAMPLE_TEAM = {
@@ -686,32 +770,32 @@ EXAMPLE_TEAM = {
 EXAMPLE_SECURITY = _live(lambda: {
     'format': STANDARD_FORMAT, 'description': "A made-up bank's API security standard (synthetic; not a real organisation's).",
     'standard': {'id': 'SEC-API', 'title': 'API security standard', 'version': '3.1', 'owner': 'security architecture', 'source': 'synthetic example', 'effective_from': '2026-01-01'},
-    'attributes': [{'entity': _T('application.ApplicationComponent'), 'name': 'exposure', 'type': 'enum', 'values': ['internal', 'partner', 'external'], 'description': 'who may call it'},
-                   {'entity': _T('application.ApplicationComponent'), 'name': 'authentication', 'type': 'enum', 'values': ['none', 'api-key', 'oauth2-mtls', 'oauth2-pkjwt'], 'description': 'how callers are authenticated'}],
-    'rules': [{'id': 'SEC-API-01', 'entity': _T('application.ApplicationComponent'), 'when': {'exposure': ['partner', 'external']}, 'require': ['authentication'],
+    'attributes': [{'entity': _T19('application.ApplicationComponent'), 'name': 'exposure', 'type': 'enum', 'values': ['internal', 'partner', 'external'], 'description': 'who may call it'},
+                   {'entity': _T19('application.ApplicationComponent'), 'name': 'authentication', 'type': 'enum', 'values': ['none', 'api-key', 'oauth2-mtls', 'oauth2-pkjwt'], 'description': 'how callers are authenticated'}],
+    'rules': [{'id': 'SEC-API-01', 'entity': _T19('application.ApplicationComponent'), 'when': {'exposure': ['partner', 'external']}, 'require': ['authentication'],
                'message': 'an application called from outside the bank authenticates its callers (API security standard §2)'},
-              {'id': 'SEC-API-02', 'entity': _T('application.ApplicationComponent'), 'when': {'exposure': 'external'}, 'check': {'attribute': 'authentication', 'op': 'in', 'value': ['oauth2-mtls', 'oauth2-pkjwt']},
+              {'id': 'SEC-API-02', 'entity': _T19('application.ApplicationComponent'), 'when': {'exposure': 'external'}, 'check': {'attribute': 'authentication', 'op': 'in', 'value': ['oauth2-mtls', 'oauth2-pkjwt']},
                'message': 'an externally exposed application uses OAuth 2 with mTLS or private-key JWT (API security standard §2.3)'}]})
 EXAMPLE_NETWORK = _live(lambda: {
     'format': STANDARD_FORMAT, 'description': "A made-up bank's network standard (synthetic).",
     'standard': {'id': 'NET', 'title': 'Network zoning and transport standard', 'version': '2.0', 'owner': 'network architecture', 'source': 'synthetic example', 'effective_from': '2026-01-01'},
-    'attributes': [{'entity': _T('technology.InfrastructureComponent'), 'name': 'network_zone', 'type': 'enum', 'values': ['restricted', 'internal', 'dmz'], 'description': 'the network zone it sits in'},
-                   {'entity': _T('technology.InfrastructureComponent'), 'name': 'monitoring', 'type': 'boolean', 'description': 'monitored by the bank\'s security operations'},
-                   {'entity': _T('technology.InfrastructureComponent'), 'name': 'encryption_in_transit', 'type': 'enum', 'values': ['none', 'tls1.2', 'tls1.3'], 'description': 'transport encryption'}],
-    'rules': [{'id': 'NET-07', 'entity': _T('application.ApplicationComponent'), 'when': {'risk_tier': '1'}, 'across': {'relationship': 'DEPLOYED_ON'},
+    'attributes': [{'entity': _T19('technology.InfrastructureComponent'), 'name': 'network_zone', 'type': 'enum', 'values': ['restricted', 'internal', 'dmz'], 'description': 'the network zone it sits in'},
+                   {'entity': _T19('technology.InfrastructureComponent'), 'name': 'monitoring', 'type': 'boolean', 'description': 'monitored by the bank\'s security operations'},
+                   {'entity': _T19('technology.InfrastructureComponent'), 'name': 'encryption_in_transit', 'type': 'enum', 'values': ['none', 'tls1.2', 'tls1.3'], 'description': 'transport encryption'}],
+    'rules': [{'id': 'NET-07', 'entity': _T19('application.ApplicationComponent'), 'when': {'risk_tier': '1'}, 'across': {'relationship': 'DEPLOYED_ON'},
                'check': {'attribute': 'network_zone', 'op': 'in', 'value': ['restricted']},
                'message': 'a tier 1 application runs only in the restricted zone (network standard §7)'},
-              {'id': 'NET-09', 'entity': _T('technology.InfrastructureComponent'), 'when': {'environment': 'production'}, 'check': {'attribute': 'encryption_in_transit', 'op': 'in', 'value': ['tls1.2', 'tls1.3']},
+              {'id': 'NET-09', 'entity': _T19('technology.InfrastructureComponent'), 'when': {'environment': 'production'}, 'check': {'attribute': 'encryption_in_transit', 'op': 'in', 'value': ['tls1.2', 'tls1.3']},
                'severity': 'warning', 'message': 'production platforms encrypt traffic in transit (network standard §9)'}]})
 EXAMPLE_TECHNOLOGY = _live(lambda: {
     'format': STANDARD_FORMAT, 'description': "A made-up bank's technology lifecycle standard (synthetic).",
     'standard': {'id': 'TECH-LC', 'title': 'Technology lifecycle standard', 'version': '1.4', 'owner': 'technology architecture', 'source': 'synthetic example', 'effective_from': '2026-01-01'},
-    'rules': [{'id': 'TECH-LC-01', 'entity': _T('technology.SystemSoftware'), 'when': {'lifecycle_status': 'active'}, 'check': {'attribute': 'end_of_support', 'op': 'after', 'value': 'today+180d'},
+    'rules': [{'id': 'TECH-LC-01', 'entity': _T19('technology.SystemSoftware'), 'when': {'lifecycle_status': 'active'}, 'check': {'attribute': 'end_of_support', 'op': 'after', 'value': 'today+180d'},
                'severity': 'warning', 'message': 'software in use has at least six months of vendor support left (technology lifecycle standard §3)'}]})
 EXAMPLE_PATTERN = _live(lambda: {
     'format': PATTERN_FORMAT, 'description': "A made-up bank's reference architecture: secure API integration (synthetic).",
     'pattern': {'id': 'PAT-SECURE-API', 'title': 'Secure API integration', 'version': '2.0', 'owner': 'enterprise architecture', 'source': 'synthetic example',
-                'applies_when': {'entity': _T('application.ApplicationComponent'), 'when': {'exposure': 'external'}}},
+                'applies_when': {'entity': _T19('application.ApplicationComponent'), 'when': {'exposure': 'external'}}},
     'requires': [{'id': 'PAT-SECURE-API-1', 'rule': 'SEC-API-01'},
                  {'id': 'PAT-SECURE-API-2', 'rule': 'SEC-API-02'},
                  {'id': 'PAT-SECURE-API-3', 'within': {'kind': 'composition', 'direction': 'in', 'to': 'BANK.A3.APIGateway', 'min': 1},
@@ -724,15 +808,15 @@ EXAMPLE_STANDARDS_PROFILE = _live(lambda: {
     'format': FORMAT, 'name': 'bank-with-standards', 'version': 1, 'extends': 'bank-base.json',
     'description': "A team profile that takes the made-up bank's standards and its secure API pattern (synthetic).",
     'includes': ['standards/example-security.json', 'standards/example-network.json', 'standards/example-technology.json', 'patterns/example-secure-api.json'],
-    'types': [{'type': 'BANK.A3.APIGateway', 'extends': _T('application.ApplicationComponent'), 'name': 'API gateway', 'definition': "The bank's API gateway, which fronts external APIs", 'source': 'synthetic example'}],
+    'types': [{'type': 'BANK.A3.APIGateway', 'extends': _T19('application.ApplicationComponent'), 'name': 'API gateway', 'definition': "The bank's API gateway, which fronts external APIs", 'source': 'synthetic example'}],
     'diagram_map': {   # PR-28: how sdem pattern extract reads the bank's pattern diagrams (examples/profiles/patterns/diagrams/)
         'shapes': [{'label': 'API Gateway', 'type': 'BANK.A3.APIGateway'}, {'stereotype': 'gateway', 'type': 'BANK.A3.APIGateway'},
-                   {'label': 'Application', 'type': _T('application.ApplicationComponent')}, {'label': 'Container platform', 'type': _T('technology.SystemSoftware')},
-                   {'label': 'Private network', 'type': _T('technology.CommunicationNetwork')}, {'label': 'Secrets service', 'type': _T('technology.TechnologyService')}],
+                   {'label': 'Application', 'type': _T19('application.ApplicationComponent')}, {'label': 'Container platform', 'type': _T19('technology.SystemSoftware')},
+                   {'label': 'Private network', 'type': _T19('technology.CommunicationNetwork')}, {'label': 'Secrets service', 'type': _T19('technology.TechnologyService')}],
         'connectors': [{'label': 'routes requests to', 'kind': 'flow'}, {'label': 'deployed on', 'relationship': 'DEPLOYED_ON'},
                        {'label': 'connected to', 'kind': 'association'}, {'label': 'serves', 'kind': 'serving'}],
-        'zones': [{'label': 'Restricted zone', 'entity': _T('technology.InfrastructureComponent'), 'check': {'attribute': 'network_zone', 'op': 'in', 'value': ['restricted']}},
-                  {'label': 'DMZ', 'entity': _T('technology.InfrastructureComponent'), 'check': {'attribute': 'network_zone', 'op': 'in', 'value': ['dmz']}}]}})
+        'zones': [{'label': 'Restricted zone', 'entity': _T19('technology.InfrastructureComponent'), 'check': {'attribute': 'network_zone', 'op': 'in', 'value': ['restricted']}},
+                  {'label': 'DMZ', 'entity': _T19('technology.InfrastructureComponent'), 'check': {'attribute': 'network_zone', 'op': 'in', 'value': ['dmz']}}]}})
 
 
 def adopt(a):
@@ -797,7 +881,7 @@ def include_file(a):
         fd_, tmp = tempfile.mkstemp(dir=ws, prefix='.sdem-profile-', suffix='.json')   # checked where it will live: its includes and base are found from the workspace
         try:
             with os.fdopen(fd_, 'w', encoding='utf-8') as h: json.dump(cand, h)
-            issues = check(resolve(tmp), Metamodel.base())
+            issues = check(renumber(resolve(tmp)), Metamodel.base())
         finally: os.unlink(tmp)
         if issues: raise ProfileError(f"{name}: with it the profile does not pass its check — nothing written: " + '; '.join(issues[:5]) + (f' (and {len(issues) - 5} more)' if len(issues) > 5 else ''))
         if not a.dry_run:
@@ -1056,9 +1140,9 @@ EXAMPLE_LAYERS = _live(lambda: {
                    {'entity': 'BANK.A0.Outcome', 'name': 'target_date', 'type': 'date', 'required': False, 'description': 'when the outcome is due'}],
     'link_kinds': [{'kind': 'realization', 'maps_to': 'realization', 'source_type': 'BANK.A0.Outcome', 'target_type': 'BANK.A0.Goal', 'description': 'an outcome realises a goal'},
                    {'kind': 'composition', 'maps_to': 'composition', 'source_type': 'BANK.A5.Facility', 'target_type': 'BANK.A5.Equipment', 'description': 'a facility contains equipment'}],
-    'link_types': [{'source_type': 'BANK.A0.Outcome', 'relationship': 'REALIZED_BY', 'target_type': _T('business.BusinessCapability'), 'required_evidence': ['strategy_document'],
+    'link_types': [{'source_type': 'BANK.A0.Outcome', 'relationship': 'REALIZED_BY', 'target_type': _T19('business.BusinessCapability'), 'required_evidence': ['strategy_document'],
                     'description': 'the capability realises the outcome', 'source': 'ArchiMate 3.2 ch. 7 (a capability realises an outcome)'},
-                   {'source_type': _T('technology.InfrastructureComponent'), 'relationship': 'HOUSED_IN', 'target_type': 'BANK.A5.Facility', 'required_evidence': ['site_register'],
+                   {'source_type': _T19('technology.InfrastructureComponent'), 'relationship': 'HOUSED_IN', 'target_type': 'BANK.A5.Facility', 'required_evidence': ['site_register'],
                     'description': 'the platform runs in the facility', 'source': 'ArchiMate 3.2 ch. 11 (a node is assigned to a facility)'}]})
 
 
@@ -1117,7 +1201,7 @@ def main(argv=None):
         if a.cmd == 'purge': return purge_file(a)
         path = Path(a.file) if a.file else Path(a.estate or '.') / FILE
         if not a.file and not a.estate: raise ProfileError('give --workspace DIR or --file FILE')
-        merged = resolve(path); issues = check(merged, Metamodel.base())
+        merged = renumber(resolve(path)); issues = check(merged, Metamodel.base())
         if a.cmd == 'check':
             if a.json: print(json.dumps({'ok': not issues, 'profile': merged['name'], 'chain': merged['chain'], 'issues': issues}, indent=2)); return 1 if issues else 0
             for i in issues: print(f'ERROR: {i}')

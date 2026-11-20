@@ -105,8 +105,8 @@
       "properties": {
         "layer": {
           "type": "string",
-          "pattern": "^[A-Z][A-Z0-9]{0,5}$",
-          "description": "a layer code: A1–A4, or a layer the workspace's profile adds (docs/design/sdem-layers-spec.md)"
+          "pattern": "^([A-Z][A-Z0-9]{0,5}|[a-z][a-z0-9_]{0,31})$",
+          "description": "the layer: its code as this workspace numbers it (A1–A4, A1–A5 with BIAN and Data), a layer the workspace's profile adds (docs/design/sdem-layers-spec.md), or a core layer's id — business, bian, data, application, technology — which means the same layer in either form (DL-25)"
         },
         "reason": {
           "type": "string",

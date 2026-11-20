@@ -5,6 +5,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from forms import migrated  # noqa: E402 — the workspace's form
 from sdem.metamodel import Metamodel  # noqa: E402
 CURRENT = Metamodel.load().version   # the metamodel a migration ends at
 from sdem import upgrade as U  # noqa: E402
@@ -99,7 +101,8 @@ class UpgradeCheckTests(unittest.TestCase):
         _, _, r = sdem('upgrade', 'check', '--workspace', ws, '--repo', self.tmp, '--from', '0.15.0', '--json', cwd=self.tmp, ok=(1,))
         # deprecated in 0.15.0 (metamodel 0.8.0), removed in metamodel 0.9.0 as scheduled: now it blocks, naming the connection
         self.assertEqual(r['verdict'], 'blocked')
-        self.assertTrue(any('PAY-108' in x and '(A3.ApplicationComponent, DEPLOYED_ON, A4.TechnologyService) is not in the registry' in x for x in r['workspaces'][0]['blocking']))
+        named = '(A4.ApplicationComponent, DEPLOYED_ON, A5.TechnologyService)' if migrated(ws) else '(A3.ApplicationComponent, DEPLOYED_ON, A4.TechnologyService)'   # as the workspace numbers its layers
+        self.assertTrue(any('PAY-108' in x and f'{named} is not in the registry' in x for x in r['workspaces'][0]['blocking']))
 
     def test_releases_since(self):
         _, _, d = sdem('releases', '--since', '0.15.0', '--json', cwd=self.tmp)

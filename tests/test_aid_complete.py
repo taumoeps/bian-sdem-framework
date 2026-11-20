@@ -8,6 +8,8 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from sdem import aid_complete  # noqa: E402
 from sdem.metamodel import Metamodel  # noqa: E402
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from forms import lf   # noqa: E402 — a layer's file in either form
 
 ENV = {**os.environ, 'PYTHONPATH': str(ROOT) + os.pathsep + os.environ.get('PYTHONPATH', '')}
 PATTERN = 'sdem:sdem-pattern-payment-initiation.json'
@@ -214,12 +216,12 @@ class InAWorkspace(unittest.TestCase):
         f = self.tmp / f'{layer}.json'; f.write_text(json.dumps(cs), encoding='utf-8')
         self.ok('change', 'propose', f, '--workspace', self.ws, '--agent', agent, '--person', 'jane.architect')
 
-    def a3(self): return json.loads((self.ws / 'a3-application.json').read_text(encoding='utf-8'))
+    def a3(self): return json.loads(lf(self.ws, 'application').read_text(encoding='utf-8'))
     def inferred(self): return sorted((r['source'], r['kind'], r['target'], r['inferred']['rule'], r['inferred'].get('status')) for r in self.a3()['relationships'] if isinstance(r.get('inferred'), dict))
 
     def design(self):
         self.ok('new', '--workspace', self.ws, '--person', 'jane.architect')
-        self.propose('A3', 'sdem-a3-application', [rec('APP-LEDGER', 'A3.ApplicationComponent', 'Account ledger'), rec('APP-DOOR', 'A3.ApplicationComponent', 'Front door'), rec('APP-HUB', 'A3.ApplicationComponent', 'Hub'), rec('APP-OTHER', 'A3.ApplicationComponent', 'Other'),
+        self.propose('application', 'sdem-a3-application', [rec('APP-LEDGER', 'A3.ApplicationComponent', 'Account ledger'), rec('APP-DOOR', 'A3.ApplicationComponent', 'Front door'), rec('APP-HUB', 'A3.ApplicationComponent', 'Hub'), rec('APP-OTHER', 'A3.ApplicationComponent', 'Other'),
                                                    rec('API-LEDGER', 'A3.ApplicationInterface', 'Ledger internal API'), rec('API-AUTH', 'A3.ApplicationInterface', 'Customer authorisation'),
                                                    rec('API-OPEN', 'A3.ApplicationInterface', 'Open payments')], [('APP-DOOR', 'composition', 'API-OPEN')])
 
@@ -238,7 +240,7 @@ class InAWorkspace(unittest.TestCase):
 
     def test_the_option_completes_the_draft_and_status_says_what_rests_on_what(self):   # AID-D08, CPL-15
         self.design()
-        self.propose('A4', 'sdem-a4-technology', [rec('DEP-LEDGER', 'A4.Deployment', 'Account ledger — production', component_id='APP-LEDGER')])
+        self.propose('technology', 'sdem-a4-technology', [rec('DEP-LEDGER', 'A4.Deployment', 'Account ledger — production', component_id='APP-LEDGER')])
         run = json.loads(self.ok('aid', '--workspace', self.ws, '--person', 'jane.architect', '--complete-draft', '--json'))
         self.assertEqual(run['draft']['defaults'], 1)
         self.assertEqual([r for r in self.inferred() if r[3] == 'AID-D08'][0][:3][1:], ('composition', 'API-AUTH'))
@@ -269,11 +271,11 @@ class InAWorkspace(unittest.TestCase):
     def test_aid_adds_the_parts_and_the_workspace_still_passes_its_checks(self):   # AID-D06, AID-D07
         self.ok('new', '--workspace', self.ws, '--person', 'jane.architect')
         self.ok('bian', 'add', 'Payment Order Initiation', '--workspace', self.ws, '--person', 'jane.architect')
-        self.propose('A1', 'sdem-a1-business', [rec('PROC-PAY', 'A1.BusinessProcess', 'Take the payment')])
+        self.propose('business', 'sdem-a1-business', [rec('PROC-PAY', 'A1.BusinessProcess', 'Take the payment')])
         self.ok('profile', 'include', PATTERN, '--workspace', self.ws, '--person', 'jane.architect')
         run = json.loads(self.ok('aid', '--workspace', self.ws, '--person', 'jane.architect', '--json'))
         self.assertIn('AID-PAT-PAYMENT-INITIATION-KEY-STORE', run['draft']['parts_added']); self.assertTrue(all(i.startswith('AID-PAT-') for i in run['draft']['parts_added']))   # the solution's pattern, and its domain's kind (CPL-16: every pattern that fits is asked)
-        a4 = {i['id']: i for i in json.loads((self.ws / 'a4-technology.json').read_text(encoding='utf-8'))['instances']}
+        a4 = {i['id']: i for i in json.loads(lf(self.ws, 'technology').read_text(encoding='utf-8'))['instances']}
         self.assertEqual(a4['AID-PAT-PAYMENT-INITIATION-KEY-STORE']['attributes']['inferred']['rule'], 'AID-D06')
         self.assertEqual(run['draft']['parts_to_name'], [])
         self.assertEqual(sdem('check', '--workspace', self.ws, cwd=self.tmp)[0], 0)
@@ -285,10 +287,10 @@ class InAWorkspace(unittest.TestCase):
     def test_a_bian_domain_the_pattern_names_is_brought_in_marked_inferred(self):   # AID-D05
         self.ok('new', '--workspace', self.ws, '--person', 'jane.architect')
         self.ok('bian', 'add', 'Payment Order Initiation', '--workspace', self.ws, '--person', 'jane.architect')
-        self.propose('A1', 'sdem-a1-business', [rec('PROC-SCREEN', 'A1.BusinessProcess', 'Screen for fraud'), rec('PROC-PAY', 'A1.BusinessProcess', 'Take the payment')])
+        self.propose('business', 'sdem-a1-business', [rec('PROC-SCREEN', 'A1.BusinessProcess', 'Screen for fraud'), rec('PROC-PAY', 'A1.BusinessProcess', 'Take the payment')])
         self.ok('profile', 'include', PATTERN, '--workspace', self.ws, '--person', 'jane.architect')
         run = json.loads(self.ok('aid', '--workspace', self.ws, '--person', 'jane.architect', '--json'))
-        a2 = {i['id']: i for i in json.loads((self.ws / 'a2-service-domain.json').read_text(encoding='utf-8'))['instances']}
+        a2 = {i['id']: i for i in json.loads(lf(self.ws, 'bian').read_text(encoding='utf-8'))['instances']}
         m = a2['SD-FRAUD-EVALUATION']['attributes']['inferred']
         self.assertEqual((m['rule'], m['evidence_class'], m['asked_by']), ('AID-D05', 'pattern', 'PAT-PAYMENT-INITIATION/fraud-evaluation'))
         self.assertIn('SD-PARTY-AUTHENTICATION', a2)

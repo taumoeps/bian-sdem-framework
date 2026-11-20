@@ -5,8 +5,9 @@ from pathlib import Path
 from unittest import mock
 
 ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT))
+sys.path.insert(0, str(ROOT)); sys.path.insert(0, str(Path(__file__).resolve().parent))
 from sdem import model_health as H  # noqa: E402
+from forms import lf, migrated  # noqa: E402 — a layer's file in either form
 
 ENV = {**os.environ, 'PYTHONPATH': str(ROOT) + os.pathsep + os.environ.get('PYTHONPATH', '')}
 
@@ -61,24 +62,27 @@ class UsageAndReleaseTests(unittest.TestCase):
 
     def test_usage_shows_what_is_used_and_what_no_workspace_uses(self):  # MS-03
         _, _, d = sdem('model', 'usage', '--workspace', self.ws, '--json', cwd=self.tmp)
-        self.assertGreater(d['entity_types']['A3.ApplicationComponent'], 0)
-        self.assertIn('A2.ServiceDomain REALIZED_BY A3.ApplicationComponent', d['link_types'])
+        app = 'A4.ApplicationComponent' if migrated(self.ws) else 'A3.ApplicationComponent'   # the name a person reads: Application is A4 in SDEM 0.20 with BIAN
+        self.assertGreater(d['entity_types'][app], 0)
+        self.assertIn(f'A2.ServiceDomain REALIZED_BY {app}', d['link_types'])
         unused = [x['type'] for x in d['unused_core_types']]
         self.assertIn('A2.BOMModel', unused)   # A2.BusinessArea is used since the payment example's landscape was completed (2026-11-15)
-        self.assertNotIn('A3.ApplicationComponent', unused)
+        self.assertNotIn(app, unused)
+        used = {t.split('.', 1)[1] for t in d['entity_types']}
+        self.assertEqual([t for t in unused if t.split('.', 1)[1] in used], [])   # named as the workspace numbers its layers: no type both used and unused
         self.assertEqual(d['unused_core_types'][0]['unsettled'] != [], True)                          # the unsettled ones first
 
     def test_a_release_impact_lists_what_points_at_changed_records(self):  # MS-08
-        a2 = json.loads((self.ws / 'a2-service-domain.json').read_text()); a2['model_version'] = 'synthetic-next'
+        a2 = json.loads(lf(self.ws, 'bian').read_text()); a2['model_version'] = 'synthetic-next'
         a2['instances'] = [i for i in a2['instances'] if i['id'] != 'SD-PA']
         next(i for i in a2['instances'] if i['id'] == 'SD-PI')['description'] = 'revised scope'
         (self.tmp / 'next.json').write_text(json.dumps(a2))
-        before = (self.ws / 'a2-service-domain.json').read_bytes()
+        before = lf(self.ws, 'bian').read_bytes()
         _, _, d = sdem('bian', 'impact', '--workspace', self.ws, '--a2', self.tmp / 'next.json', '--json', cwd=self.tmp)
         r = {x['id']: x for x in d['workspaces'][0]['records']}
         self.assertEqual(r['SD-PI']['how'], ['changed']); self.assertIn('PAY-106 SD-PI -REALIZED_BY-> APP-PAY-HUB (approved)', r['SD-PI']['connections'])
         self.assertIn('not_in_release', r['SD-PA']['how'])
-        self.assertEqual((self.ws / 'a2-service-domain.json').read_bytes(), before)                   # read-only
+        self.assertEqual(lf(self.ws, 'bian').read_bytes(), before)                   # read-only
 
 
 if __name__ == '__main__':

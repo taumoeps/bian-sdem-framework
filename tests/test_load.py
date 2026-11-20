@@ -7,6 +7,8 @@ from sdem import load, transform
 from sdem.cli import main
 
 ROOT = Path(__file__).resolve().parents[1]
+import sys; sys.path.insert(0, str(Path(__file__).resolve().parent))
+from forms import lf   # noqa: E402 — a layer's file in either form
 FOLDER = ROOT / 'examples' / 'designs' / 'confluence-folder-export'
 A2 = ROOT / 'examples' / 'payment-initiation' / 'a2-service-domain.json'
 BAD = 'HIS-A3-PAYMENT-ORDER'   # a data entity drawn without its attribute list: fails the check (LC-04)
@@ -59,13 +61,13 @@ class LoadTests(unittest.TestCase):
         e = self.est('e3')
         with self.assertRaises(load.LoadError) as c: load.load(self.cand, e, 'jane.architect', all_=True)
         self.assertIn('LC-04', str(c.exception)); self.assertFalse((e / 'loads').exists())
-        self.assertEqual(json.loads((e / 'a3-application.json').read_text())['instances'], [])   # the workspace is as `sdem new` left it
+        self.assertEqual(json.loads(lf(e, 'application').read_text())['instances'], [])   # the workspace is as `sdem new` left it
 
     def test_loads_into_a_new_estate(self):  # LD-M02, LD-R01
         e = self.est('e4')
         res = load.load(self.cand, e, 'jane.architect', exclude=[BAD], now='2026-10-28T10:00:00')
         self.assertEqual(res['load_id'], 'LOAD-001'); self.assertEqual(res['excluded'], [BAD])
-        a3 = json.loads((e / 'a3-application.json').read_text())
+        a3 = json.loads(lf(e, 'application').read_text())
         self.assertEqual(a3['source_system'], 'SDEM-NEW'); self.assertEqual(a3['model_id'], 'E4-A3')   # started by `sdem new`, filled by the load
         self.assertNotIn(BAD, {i['id'] for i in a3['instances']})
         self.assertTrue((e / 'mappings.json').exists())
@@ -78,7 +80,7 @@ class LoadTests(unittest.TestCase):
         res = load.load(self.cand, self.est('e5'), 'jane.architect', exclude=[BAD, 'HIS-A4-PAYAPP01'])
         self.assertTrue(any('HIS-A3-CLEARING-GATEWAY.deployed_on' in d for d in res['dropped']))
         self.assertTrue(any(d.startswith('link HIS-A4-CORE-SWITCH -flow-> HIS-A4-PAYAPP01') for d in res['dropped']))
-        a3 = {i['id']: i for i in json.loads((self.tmp / 'e5' / 'a3-application.json').read_text())['instances']}
+        a3 = {i['id']: i for i in json.loads(lf(self.tmp / 'e5', 'application').read_text())['instances']}
         self.assertNotIn('deployed_on', a3['HIS-A3-CLEARING-GATEWAY'].get('attributes', {}))
 
     def test_same_content_skipped_different_refused(self):  # LD-M01
@@ -86,7 +88,7 @@ class LoadTests(unittest.TestCase):
         load.load(self.cand, e, 'jane.architect', exclude=[BAD])
         again = load.load(self.cand, e, 'jane.architect', exclude=[BAD])
         self.assertEqual(again['load_id'], 'LOAD-002'); self.assertIn('HIS-A3-PAYMENTS-HUB', again['skipped_same'])
-        p = e / 'a3-application.json'; d = json.loads(p.read_text())
+        p = lf(e, 'application'); d = json.loads(p.read_text())
         next(i for i in d['instances'] if i['id'] == 'HIS-A3-PAYMENTS-HUB')['description'] = 'changed in the workspace'
         p.write_text(json.dumps(d)); before = p.read_text()
         with self.assertRaises(load.LoadError) as c: load.load(self.cand, e, 'jane.architect', exclude=[BAD])
@@ -96,7 +98,7 @@ class LoadTests(unittest.TestCase):
     def test_a2_dataset_added_once(self):  # LD-A01
         e = self.est('e7')
         res = load.load(self.cand, e, 'jane.architect', exclude=[BAD], a2=A2)
-        self.assertEqual(res['a2_added'], str(A2)); self.assertTrue((e / 'a2-service-domain.json').exists())
+        self.assertEqual(res['a2_added'], str(A2)); self.assertTrue(lf(e, 'bian').exists())
         res2 = load.load(self.cand, e, 'jane.architect', exclude=[BAD], a2=A2)
         self.assertIsNone(res2['a2_added']); self.assertTrue(any('already has an A2' in n for n in res2['notes']))
 
@@ -104,7 +106,7 @@ class LoadTests(unittest.TestCase):
         e = self.est('e8')
         res = load.load(self.cand, e, 'jane.architect', exclude=[BAD], dry_run=True)
         self.assertTrue(res['loaded']['A3']); self.assertFalse((e / 'loads').exists())
-        self.assertEqual(json.loads((e / 'a3-application.json').read_text())['instances'], [])
+        self.assertEqual(json.loads(lf(e, 'application').read_text())['instances'], [])
 
     def test_build_refuses_candidates(self):  # LD-X01, CTL-23
         files = [self.cand / f for f in ('a1-business.json', 'a3-application.json', 'a4-technology.json')]

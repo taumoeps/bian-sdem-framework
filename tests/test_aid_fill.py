@@ -7,6 +7,16 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 W = 'workspaces/payments'
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from forms import lf, migrated   # noqa: E402 — a layer's file in either form
+ID = {'a1-business.json': 'business', 'a2-service-domain.json': 'bian', 'a3-application.json': 'application', 'a4-technology.json': 'technology'}
+
+
+def stored(ws, name):
+    """A type as the workspace's files hold it: its 0.19 name, or its id in SDEM 0.20's form (ST-10)."""
+    if not migrated(ws): return name
+    sys.path.insert(0, str(ROOT)); from sdem.identity import _index
+    return _index()[3][name]
 
 
 def sdem(*args, cwd):
@@ -23,7 +33,7 @@ class AidFillTests(unittest.TestCase):
     def setUpClass(cls):
         cls.base = Path(tempfile.mkdtemp())
         assert sdem('new', '--workspace', W, '--person', 'jane.architect', cwd=cls.base)[0] == 0   # all 258 BIAN service domains
-        p = cls.base / W / 'a1-business.json'; d = json.loads(p.read_text())
+        p = lf(cls.base / W, 'business'); d = json.loads(p.read_text())
         d['instances'] = [rec('CAP-PAY-INIT', 'A1.BusinessCapability', 'Payment Initiation', 'Take a customer payment order and get it ready to execute.', level=2),
                           rec('PRC-PAY', 'A1.BusinessProcess', 'Make a payment', 'From the customer request to the money leaving the account.', level=2),
                           rec('ACT-1', 'A1.BusinessActivity', 'Initiate payment order', 'Record the payee, amount and date.', sequence=1),
@@ -40,7 +50,7 @@ class AidFillTests(unittest.TestCase):
 
     def tearDown(self): shutil.rmtree(self.tmp, ignore_errors=True)
 
-    def layer(self, f): return json.loads((self.tmp / W / f).read_text())
+    def layer(self, f): return json.loads(lf(self.tmp / W, ID[f]).read_text())
 
     def test_only_the_best_covered_domains(self):  # DA2-04 (rule S06) with the full BIAN layer
         self.assertEqual(self.first[0], 0, self.first[1])
@@ -60,10 +70,11 @@ class AidFillTests(unittest.TestCase):
         names = [i['name'] for i in self.layer('a4-technology.json')['instances']]
         self.assertTrue(names and all('projected' not in n and n.endswith('(inferred)') for n in names), names)
         props = json.loads((self.tmp / W / 'aid' / 'AID-001-proposals.json').read_text())['mappings']   # BIAN ends carry their canonical id, as sdem link writes
-        self.assertTrue(all(m['target'].get('canonical_id') for m in props if m['target']['type'].startswith('A2.')))
+        self.assertTrue(all(m['target'].get('canonical_id') for m in props if m['target']['type'].startswith(stored(self.tmp / W, 'A2.ServiceDomain').split('.')[0] + '.')))
         self.assertTrue(all(i['attributes'].get('inferred') for i in a3))
         a1 = self.layer('a1-business.json'); drafted = [r for r in a1['relationships'] if isinstance(r.get('inferred'), dict)]
-        self.assertEqual({**a1, 'relationships': [r for r in a1['relationships'] if r not in drafted]}, self.a1)   # what a person wrote is unchanged
+        wrote = {**self.a1, 'instances': [{**i, 'type': stored(self.tmp / W, i['type'])} for i in self.a1['instances']]}   # held as the form holds a type (ST-10)
+        self.assertEqual({**a1, 'relationships': [r for r in a1['relationships'] if r not in drafted]}, wrote)   # what a person wrote is unchanged
         self.assertEqual([(r['source'], r['kind'], r['target'], r['inferred']['rule']) for r in drafted], [('PRC-PAY', 'realization', 'CAP-PAY-INIT', 'AID-D01')])   # a link the completeness standard asked for, marked inferred
         self.assertEqual(json.loads((self.tmp / W / 'mappings.json').read_text())['mappings'], [])   # connections are only proposed
         code, out = sdem('check', '--workspace', W, cwd=self.tmp)
@@ -88,16 +99,16 @@ class AidFillTests(unittest.TestCase):
         self.assertEqual(code, 2); self.assertIn('person', out)
 
     def test_only_the_relevant_bian_domains_come_in(self):  # WS-01, AID-W01: the catalogue is read, not copied
-        sds = [i for i in self.layer('a2-service-domain.json')['instances'] if i['type'] == 'A2.ServiceDomain']
+        sds = [i for i in self.layer('a2-service-domain.json')['instances'] if i['type'] == stored(self.tmp / W, 'A2.ServiceDomain')]
         self.assertEqual(sorted(i['name'] for i in sds), ['Payment Order Initiation', 'Payment Rail'])
         self.assertTrue(all(i['attributes']['inferred']['reasoning'] for i in sds))
-        self.assertLess((self.tmp / W / 'a2-service-domain.json').stat().st_size, 500_000)   # not the 10 MB of all of BIAN
+        self.assertLess(lf(self.tmp / W, 'bian').stat().st_size, 500_000)   # not the 10 MB of all of BIAN
 
     def test_a_domain_is_confirmed_with_its_parts_and_rejected_with_what_was_built_on_it(self):  # AID-W04, AID-W05
         code, out = sdem('aid', 'confirm', 'SD-PAYMENT-ORDER-INITIATION', '--workspace', W, '--person', 'jane.architect', cwd=self.tmp)
         self.assertEqual(code, 0, out)
         a2 = self.layer('a2-service-domain.json')['instances']
-        ops = [i for i in a2 if i['type'] == 'A2.ServiceOperation' and i['id'].startswith('SO-PAYMENT-ORDER-INITIATION')]
+        ops = [i for i in a2 if i['type'] == stored(self.tmp / W, 'A2.ServiceOperation') and i['id'].startswith('SO-PAYMENT-ORDER-INITIATION')]
         self.assertTrue(ops and all(i['attributes']['inferred'].get('status') == 'confirmed' for i in ops))
         code, out = sdem('aid', 'reject', 'SD-PAYMENT-RAIL', '--workspace', W, '--person', 'jane.architect', '--reason', 'not this design', cwd=self.tmp)
         self.assertEqual(code, 0, out)
@@ -109,16 +120,16 @@ class AidFillTests(unittest.TestCase):
     def test_an_existing_design_gets_the_domain_its_business_layer_names(self):  # AID-M02: either side, for a person to review
         ws = self.tmp / 'workspaces' / 'hist'
         self.assertEqual(sdem('new', '--workspace', ws, '--person', 'jane.architect', cwd=self.tmp)[0], 0)
-        a1 = json.loads((ws / 'a1-business.json').read_text()); a1['instances'] = [rec('CAP-1', 'A1.BusinessCapability', 'Payment Initiation', 'Initiate customer payments.', level=2)]
-        a3 = json.loads((ws / 'a3-application.json').read_text())
+        a1 = json.loads(lf(ws, 'business').read_text()); a1['instances'] = [rec('CAP-1', 'A1.BusinessCapability', 'Payment Initiation', 'Initiate customer payments.', level=2)]
+        a3 = json.loads(lf(ws, 'application').read_text())
         a3['instances'] = [{'id': 'APP-HUB', 'type': 'A3.ApplicationComponent', 'version': '1.0', 'name': 'Payments Hub', 'lifecycle_status': 'active'}]
-        (ws / 'a1-business.json').write_text(json.dumps(a1)); (ws / 'a3-application.json').write_text(json.dumps(a3))
+        lf(ws, 'business').write_text(json.dumps(a1)); lf(ws, 'application').write_text(json.dumps(a3))
         code, out = sdem('aid', '--workspace', ws, '--person', 'jane.architect', cwd=self.tmp)
         self.assertEqual(code, 0, out)
-        self.assertIn('Payment Order Initiation', {i['name'] for i in json.loads((ws / 'a2-service-domain.json').read_text())['instances'] if i['type'] == 'A2.ServiceDomain'})
+        self.assertIn('Payment Order Initiation', {i['name'] for i in json.loads(lf(ws, 'bian').read_text())['instances'] if i['type'] == stored(ws, 'A2.ServiceDomain')})
 
     def test_a_record_that_lost_its_mark_is_refused(self):  # CTL-16
-        p = self.tmp / W / 'a3-application.json'; d = json.loads(p.read_text())
+        p = lf(self.tmp / W, 'application'); d = json.loads(p.read_text())
         d['instances'][0]['attributes'].pop('inferred'); p.write_text(json.dumps(d))
         code, out = sdem('check', '--workspace', W, cwd=self.tmp)
         self.assertNotEqual(code, 0); self.assertIn("'inferred' mark is missing", out)

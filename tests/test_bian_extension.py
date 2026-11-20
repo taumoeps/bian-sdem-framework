@@ -10,8 +10,10 @@ from sdem import parts, profile as P  # noqa: E402
 from sdem.metamodel import Metamodel  # noqa: E402
 from sdem.validate import load_registry  # noqa: E402
 from test_metamodel_extensions import fake_extension  # noqa: E402
+from forms import lf  # noqa: E402 — a layer's file in either form
 
 ENV = {**os.environ, 'PYTHONPATH': str(ROOT)}
+GOLD_019 = {'SDEM_FORM': '0.19'}   # P1: the golden answers are SDEM 0.19's form — the capture's workspaces are made in it, whatever `sdem new` defaults to (DL-D9a)
 
 
 def sdem(*args, ok=(0,), env=None):
@@ -37,7 +39,7 @@ class Equivalence(unittest.TestCase):
     def test_with_bian_on_every_answer_is_the_same_as_0_19(self):   # BX-31
         out = Path(tempfile.mkdtemp())
         try:
-            subprocess.run([sys.executable, str(ROOT / 'scripts' / 'golden' / 'capture.py'), str(out)], check=True, capture_output=True, env=ENV, cwd=ROOT)
+            subprocess.run([sys.executable, str(ROOT / 'scripts' / 'golden' / 'capture.py'), str(out)], check=True, capture_output=True, env={**ENV, **GOLD_019}, cwd=ROOT)
             gold = ROOT / 'tests' / 'golden' / '0.19'
             names = sorted(p.name for p in gold.glob('*.json'))
             self.assertEqual(names, sorted(p.name for p in out.glob('*.json')))
@@ -104,9 +106,9 @@ class OnAndOff(unittest.TestCase):
     def test_switching_off_a_design_that_needs_bian_is_refused(self):   # BX-14: nothing written, the reason named
         ws = self.tmp / 'pi'; sdem('new', '--workspace', ws, '--person', 'bx.check', '--example', 'payment-initiation')
         sdem('profile', 'include', 'ext:bian', '--workspace', ws, '--person', 'bx.check', '--reason', 'explicit')
-        before = (ws / 'a2-service-domain.json').read_text()
+        before = lf(ws, 'bian').read_text()
         out = sdem('profile', 'exclude', 'ext:bian', '--workspace', ws, '--person', 'bx.check', '--reason', 'try', ok=(1, 2))
-        self.assertIn('nothing written', out); self.assertEqual((ws / 'a2-service-domain.json').read_text(), before)
+        self.assertIn('nothing written', out); self.assertEqual(lf(ws, 'bian').read_text(), before)
 
 
 class PackLinkTypes(unittest.TestCase):   # BX-50: a pack's link type that requires BIAN is left out where BIAN is off — said, not an error
@@ -169,7 +171,7 @@ class Package(unittest.TestCase):   # step 2: BIAN in its own package (docs/desi
     def test_with_the_package_every_answer_is_the_same_as_0_19(self):   # P1 with sdem-bian installed
         env = fake_bian(self.tmp)
         out = self.tmp / 'golden'
-        subprocess.run([sys.executable, str(ROOT / 'scripts' / 'golden' / 'capture.py'), str(out)], check=True, capture_output=True, env=env, cwd=ROOT)
+        subprocess.run([sys.executable, str(ROOT / 'scripts' / 'golden' / 'capture.py'), str(out)], check=True, capture_output=True, env={**env, **GOLD_019}, cwd=ROOT)
         gold = ROOT / 'tests' / 'golden' / '0.19'
         self.assertEqual([n.name for n in sorted(gold.glob('*.json')) if not filecmp.cmp(n, out / n.name, shallow=False)], [])
 

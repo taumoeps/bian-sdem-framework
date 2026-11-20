@@ -11,7 +11,7 @@
     "layers": {
       "type": "object",
       "additionalProperties": false,
-      "properties": {"A1": {"$ref": "#/$defs/dataset"}, "A2": {"$ref": "#/$defs/dataset"}, "A3": {"$ref": "#/$defs/dataset"}, "A4": {"$ref": "#/$defs/dataset"}}
+      "properties": {"A1": {"$ref": "#/$defs/dataset"}, "A2": {"$ref": "#/$defs/dataset"}, "A3": {"$ref": "#/$defs/dataset"}, "A4": {"$ref": "#/$defs/dataset"}, "A5": {"$ref": "#/$defs/dataset"}}
     },
     "links": {
       "type": "object", "required": ["links"], "additionalProperties": false,
@@ -39,7 +39,7 @@
       "required": ["id", "type", "version", "name", "projection"],
       "properties": {
         "id": {"type": "string", "minLength": 1},
-        "type": {"type": "string", "pattern": "^A[1-4]\\."},
+        "type": {"type": "string", "pattern": "^A[1-5]\\."},
         "version": {"type": "string", "minLength": 1},
         "name": {"type": "string", "minLength": 1},
         "projection": {"$ref": "#/$defs/provenance"}
@@ -50,7 +50,7 @@
       "required": ["level", "model_id", "model_version", "metamodel_version", "source_system", "instances", "relationships"],
       "additionalProperties": false,
       "properties": {
-        "level": {"enum": ["A1", "A2", "A3", "A4"]},
+        "level": {"enum": ["A1", "A2", "A3", "A4", "A5"]},
         "model_id": {"type": "string", "pattern": "-PROJECTION$"},
         "model_version": {"enum": ["projection"]},
         "metamodel_version": {"type": "string", "minLength": 1},
@@ -59,7 +59,7 @@
         "relationships": {"type": "array", "items": {"type": "object", "required": ["source", "kind", "target"]}}
       }
     },
-    "endpoint": {"type": "object", "required": ["id", "type", "version"], "properties": {"id": {"type": "string", "minLength": 1}, "type": {"type": "string", "pattern": "^A[1-4]\\."}, "version": {"type": "string"}}},
+    "endpoint": {"type": "object", "required": ["id", "type", "version"], "properties": {"id": {"type": "string", "minLength": 1}, "type": {"type": "string", "pattern": "^A[1-5]\\."}, "version": {"type": "string"}}},
     "link": {
       "type": "object",
       "required": ["mapping_id", "source", "relationship", "target", "status", "confidence", "rationale", "projection"],

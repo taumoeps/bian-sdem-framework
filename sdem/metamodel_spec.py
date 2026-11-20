@@ -268,7 +268,7 @@ def render_diagram():
     out = ['@startuml architecture-metamodel-detail-level-spec', '!pragma layout smetana', 'skinparam shadowing false', 'skinparam defaultFontSize 11',
            'skinparam rectangleBorderColor #546E7A', 'skinparam packageBorderColor #90A4AE', 'skinparam packageBackgroundColor #FAFAFA', 'skinparam noteBackgroundColor #FFF8E1', 'skinparam noteBorderColor #FFB300',
            'title SDEM Architecture Metamodel — detail-level specification (governing)\\nfollows the high-level spec section by section; generated from the records — python -m sdem.metamodel_spec', '']
-    titles = {_L('business'): f'{_L("business")} Business', _L('bian'): f'{_L("bian")} Service Domain (BIAN)', _L('application'): f'{_L("application")} Application', _L('technology'): f'{_L("technology")} Technology  [high-level: Infrastructure — ' + gtag('G-04') + ']'}
+    titles = {_L('business'): f'{_L("business")} Business', _L('bian'): f'{_L("bian")} Service Domain (BIAN)', _L('data'): f'{_L("data")} Data', _L('application'): f'{_L("application")} Application', _L('technology'): f'{_L("technology")} Technology  [high-level: Infrastructure — ' + gtag('G-04') + ']'}
     for lvl, _, _ in LEVELS:
         out.append(f'package "{titles[lvl]}  —  detail §5.{lvl[1]}, within-level rows: {byl[lvl]} (§6.1, {gtag("G-01")})" as P{lvl} {{')
         for l, e in ents:

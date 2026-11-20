@@ -10,10 +10,10 @@ import argparse, hashlib, html, json, sys
 from pathlib import Path
 
 TEMPLATES_FILE = Path(__file__).with_name('viewpoints.json')
-FILES = _live(lambda: {_L('business'): _F('business'), _L('bian'): _F('bian'), _L('application'): _F('application'), _L('technology'): _F('technology')})
+FILES = _live(lambda: {_L('business'): _F('business'), _L('bian'): _F('bian'), _L('data'): _F('data'), _L('application'): _F('application'), _L('technology'): _F('technology')})   # DL-01: Data's own file in a migrated workspace
 NEST = ('composition', 'aggregation')
 LEAF_W, LEAF_H, PAD, GAP, TITLE, CH, LEFT, MAXROW = 172, 58, 14, 16, 34, 96, 150, 4
-LAYER_CLASS = _live(lambda: {_L('business'): 'bus', _L('bian'): 'bian', _L('application'): 'app', _L('technology'): 'tec'})
+LAYER_CLASS = _live(lambda: {_L('business'): 'bus', _L('bian'): 'bian', _L('data'): 'app', _L('application'): 'app', _L('technology'): 'tec'})
 e = html.escape
 
 

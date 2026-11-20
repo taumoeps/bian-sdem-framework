@@ -4,6 +4,8 @@ import json, os, re, shutil, subprocess, sys, tempfile, unittest, urllib.parse
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from forms import lf   # noqa: E402 — a layer's file in either form
 ENV = {**os.environ, 'PYTHONPATH': str(ROOT) + os.pathsep + os.environ.get('PYTHONPATH', '')}
 
 
@@ -38,7 +40,7 @@ class NavigationTests(unittest.TestCase):
         ws = self.tmp / rel
         sdem('new', '--workspace', ws, '--person', 'steven', '--example', 'payment-initiation', cwd=self.tmp)
         if rename:   # tell two workspaces apart
-            f = ws / 'a1-business.json'; d = json.loads(f.read_text()); d['instances'][0]['name'] = rename; f.write_text(json.dumps(d))
+            f = lf(ws, 'business'); d = json.loads(f.read_text()); d['instances'][0]['name'] = rename; f.write_text(json.dumps(d))
             sdem('change', 'adopt', '--workspace', ws, '--layer', 'A1', '--person', 'steven', '--reason', 'test', cwd=self.tmp)
         if build: sdem('build', '--workspace', ws, '--out', ws / 'graph', cwd=self.tmp)
         return ws
@@ -97,10 +99,10 @@ class NavigationTests(unittest.TestCase):
         g = page_data(ws / 'dashboard.html')['graph_nav']
         self.assertEqual((g['state'], g['href']), ('missing', None)); self.assertTrue(g['commands'][0].startswith('sdem build --workspace'))
         sdem('build', '--workspace', ws, '--out', ws / 'graph', cwd=self.tmp); sdem('view', '--graph', ws / 'graph', cwd=self.tmp)
-        f = ws / 'a1-business.json'; d = json.loads(f.read_text()); d['instances'][0]['description'] = 'changed after the build'; f.write_text(json.dumps(d))
+        f = lf(ws, 'business'); d = json.loads(f.read_text()); d['instances'][0]['description'] = 'changed after the build'; f.write_text(json.dumps(d))
         sdem('dashboard', '--workspace', ws, cwd=self.tmp)
         g = page_data(ws / 'dashboard.html')['graph_nav']
-        self.assertEqual((g['state'], g['href']), ('stale', None)); self.assertIn('a1-business.json', g['reason'])
+        self.assertEqual((g['state'], g['href']), ('stale', None)); self.assertIn(lf(ws, 'business').name, g['reason'])
         out = self.tmp / 'site'; sdem('home', '--root', self.tmp / 'workspaces', '-o', out, cwd=self.tmp)
         self.assertEqual(page_data(out / 'index.html')['projects'][0]['graph']['href'], None)
         self.assertEqual(list((out / 'workspaces').glob('*-graph.html')), [])                                     # no page that would look current
@@ -112,7 +114,7 @@ class NavigationTests(unittest.TestCase):
         for f in old.glob('*.json'):
             d = json.loads(f.read_text())
             if isinstance(d, dict) and d.get('metamodel_version'): d['metamodel_version'] = '0.7.0'; f.write_text(json.dumps(d))
-        f = bad / 'a3-application.json'; d = json.loads(f.read_text()); d['instances'][0]['attributes']['hosting_model'] = 'NotAModel'; f.write_text(json.dumps(d))
+        f = lf(bad, 'application'); d = json.loads(f.read_text()); d['instances'][0]['attributes']['hosting_model'] = 'NotAModel'; f.write_text(json.dumps(d))
         out = self.tmp / 'site'; sdem('home', '--root', self.tmp / 'workspaces', '-o', out, cwd=self.tmp)
         g = {p['name']: p['graph'] for p in page_data(out / 'index.html')['projects']}
         self.assertEqual(g['old']['state'], 'blocked'); self.assertIn('migrate', g['old']['reason']); self.assertTrue(g['old']['commands'][0].startswith('sdem migrate --workspace'))
@@ -157,7 +159,7 @@ class NavigationTests(unittest.TestCase):
 
     def test_a_proposal_is_reviewed_not_drawn(self):  # proposed versus approved, as the walkthrough shows
         ws = self.workspace('workspaces/payments')
-        (self.tmp / 'new-app.json').write_text(json.dumps({'layer': 'A3', 'reason': 'synthetic', 'changes': [{'op': 'add', 'record': {
+        (self.tmp / 'new-app.json').write_text(json.dumps({'layer': 'application', 'reason': 'synthetic', 'changes': [{'op': 'add', 'record': {
             'id': 'APP-PAY-NOTIFY', 'type': 'A3.ApplicationComponent', 'version': '1.0', 'name': 'Payment Notifications', 'lifecycle_status': 'planned',
             'attributes': {'deployed_on': ['INF-K8S-PAY-PROD']}}}]}))
         sdem('change', 'propose', self.tmp / 'new-app.json', '--workspace', ws, '--agent', 'architect', '--person', 'jane', cwd=self.tmp)
@@ -198,7 +200,8 @@ class NavigationTests(unittest.TestCase):
 
     def test_documented_invocations_still_work(self):  # test 11: build, new, upgrade check as documented
         ws = self.workspace('workspaces/payments', build=False)
-        sdem('build', ws / 'a1-business.json', ws / 'a2-service-domain.json', ws / 'a3-application.json', ws / 'a4-technology.json', ws / 'mappings.json', '-o', self.tmp / 'g', cwd=self.tmp)
+        files = [lf(ws, i) for i in ('business', 'bian', 'data', 'application', 'technology')]
+        sdem('build', *dict.fromkeys(f for f in files if f.exists()), ws / 'mappings.json', '-o', self.tmp / 'g', cwd=self.tmp)
         sdem('new', '--workspace', self.tmp / 'empty', '--person', 'jane', cwd=self.tmp)
         sdem('upgrade', 'check', '--workspace', ws, '--repo', self.tmp, '--from', '0.17.0', cwd=self.tmp)
 

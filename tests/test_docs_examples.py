@@ -1,6 +1,9 @@
 """Examples printed in the user documents work as printed (two new-architect walkthroughs found ones that did not)."""
 import json, re, shutil, tempfile, unittest
+import sys
 from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from forms import lf   # noqa: E402 — a layer's file in either form
 
 from sdem import load, transform
 
@@ -27,7 +30,7 @@ class DocumentedExamplesTests(unittest.TestCase):
             transform.extract(ROOT / 'examples' / 'designs' / 'confluence-folder-export', tmp / 'history', ocr='off')
             res = load.load(tmp / 'history', start(tmp / 'estate'), 'jane.architect', exclude=['HIS-A3-PAYMENT-ORDER'], a2=tmp / 'a2-service-domain.json')
             self.assertGreater(res['reconciliation']['loaded'], 0)
-            self.assertTrue((tmp / 'estate' / 'a2-service-domain.json').exists())
+            self.assertTrue(lf(tmp / 'estate', 'bian').exists())
         finally:
             shutil.rmtree(tmp, ignore_errors=True)
 

@@ -155,3 +155,60 @@ class Reconciled(unittest.TestCase):   # DL-20: the payment example, 0.19 agains
 
 if __name__ == '__main__':
     unittest.main()
+
+
+class NamedInEitherForm(unittest.TestCase):   # DL-25: a layer named in a change set or a profile means one layer, in either form
+    @classmethod
+    def setUpClass(cls):
+        cls.tmp = Path(tempfile.mkdtemp()); t = cls.tmp
+        sdem('profile', 'example', '--out', t / 'profiles')
+        for form in ('0.19', '0.20'):
+            ws = t / form
+            sdem('new', '--workspace', ws, '--person', 'steven', '--example', 'payment-initiation', '--form', '0.19')   # made in 0.19's form, whatever the default
+            doc = json.loads((t / 'profiles' / 'strategy-and-sites-team.json').read_text()); doc['extends'] = '../profiles/bank-base.json'
+            (ws / 'sdem-profile.json').write_text(json.dumps(doc))   # one organisation profile, in 0.19's numbering, for both
+            sdem('profile', 'adopt', '--workspace', ws, '--person', 'steven', '--reason', 'team standard')
+            f = ws / 'a3-application.json'; d = json.loads(f.read_text())   # what the bank's standard asks of an application (BANK-R01)
+            for i in d['instances']:
+                if i['type'] == 'A3.ApplicationComponent': i.setdefault('attributes', {}).setdefault('owner', 'ROLE-PAY-OFFICER'); i['attributes'].setdefault('risk_tier', '2')
+            f.write_text(json.dumps(d))
+            sdem('change', 'adopt', '--workspace', ws, '--layer', 'A3', '--person', 'steven', '--reason', 'bank risk tiers')
+            if form == '0.20': sdem('migrate', '--to', '0.20', '--workspace', ws, '--person', 'steven')   # the profile is not changed
+
+    @classmethod
+    def tearDownClass(cls): shutil.rmtree(cls.tmp, ignore_errors=True)
+
+    def run_sdem(self, *args):
+        return subprocess.run([sys.executable, '-m', 'sdem', *map(str, args)], capture_output=True, text=True, encoding='utf-8', env=ENV, cwd=ROOT)
+
+    def layers(self, form):
+        return {l['level']: l['title'] for l in json.loads(self.run_sdem('status', '--workspace', self.tmp / form, '--json').stdout)['layers']}   # exits 1 while the design has gaps
+
+    def test_the_profile_serves_both_forms_its_own_layer_renumbered(self):
+        self.assertEqual(self.layers('0.19'), {'A0': 'A0 Strategy', 'A1': 'A1 Business', 'A2': 'A2 Service domain (BIAN)', 'A3': 'A3 Application',
+                                               'A4': 'A4 Technology', 'A5': 'A5 Physical'})
+        self.assertEqual(self.layers('0.20'), {'A0': 'A0 Strategy', 'A1': 'A1 Business', 'A2': 'A2 Service domain (BIAN)', 'A3': 'A3 Data',
+                                               'A4': 'A4 Application', 'A5': 'A5 Technology', 'A6': 'A6 Physical'})
+        cs = self.tmp / 'site.json'   # the own layer's agent keeps its name; the change set uses the workspace's number
+        cs.write_text(json.dumps({'layer': 'A6', 'reason': 'a site', 'changes': [{'op': 'add', 'record': {'id': 'FAC-DC1', 'type': 'BANK.A5.Facility', 'version': '1',
+                                  'name': 'Data centre 1', 'lifecycle_status': 'active', 'attributes': {'region': 'region-a'}}}]}))
+        r = self.run_sdem('change', 'propose', cs, '--workspace', self.tmp / '0.20', '--agent', 'sdem-layer-a5', '--person', 'steven', '--dry-run', '--json')
+        self.assertEqual(r.returncode, 0, r.stdout[-800:])
+
+    def change(self, form, layer, agent):
+        cs = self.tmp / f'cs-{form}-{layer}.json'
+        f = self.tmp / form / ('a3-application.json' if form == '0.19' else 'application.json')
+        rec = next(i for i in json.loads(f.read_text())['instances'] if i['id'] == 'APP-PAY-HUB')
+        cs.write_text(json.dumps({'layer': layer, 'reason': 'a note', 'changes': [{'op': 'update', 'record': {**rec, 'description': 'The payments hub.'}}]}))
+        return self.run_sdem('change', 'propose', cs, '--workspace', self.tmp / form, '--agent', agent, '--person', 'steven', '--dry-run', '--json')
+
+    def test_a_change_set_names_its_layer_by_id_in_either_form(self):
+        for form in ('0.19', '0.20'):
+            r = self.change(form, 'application', 'sdem-a3-application'); self.assertEqual(r.returncode, 0, r.stdout[-800:])
+
+    def test_an_old_number_is_never_re_read_and_the_refusal_says_why(self):
+        r = self.change('0.20', 'A3', 'sdem-a3-application')
+        self.assertNotEqual(r.returncode, 0)
+        msg = json.loads(r.stdout)['error']['message']
+        self.assertIn('A3 is Data', msg); self.assertIn("'application'", msg)
+        self.assertEqual(self.change('0.20', 'A4', 'sdem-a3-application').returncode, 0)   # the workspace's own number

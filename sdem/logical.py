@@ -15,7 +15,7 @@ from sdem.terms import apply as _terms
 
 ROOT = MM_DIR.parent
 DOC = ROOT / 'docs' / 'reference' / 'logical-data-model.md'
-NAMES = _live(lambda: {_L('business'): f'{_L("business")} Business Architecture', _L('bian'): f'{_L("bian")} Service Domain Architecture', _L('application'): f'{_L("application")} Application Architecture', _L('technology'): f'{_L("technology")} Technology Architecture'})
+NAMES = _live(lambda: {_L('business'): f'{_L("business")} Business Architecture', _L('bian'): f'{_L("bian")} Service Domain Architecture', _L('data'): f'{_L("data")} Data Architecture', _L('application'): f'{_L("application")} Application Architecture', _L('technology'): f'{_L("technology")} Technology Architecture'})
 LEFT = {'1..1': '||', '0..1': '|o', '0..*': '}o', '1..*': '}|'}
 RIGHT = {'1..1': '||', '0..1': 'o|', '0..*': 'o{', '1..*': '|{'}
 TY = {'string': str, 'list<string>': list, 'map<string,string>': dict, 'integer': int, 'boolean': bool, 'date': str}
@@ -98,7 +98,7 @@ def render():
             '- **Fields** — the entity\'s own fields. *Required* fields must be present. A field that **refers to** another entity holds that entity\'s `id`; when it points into another architecture it is a *join key* the inference engine uses, not a link in the graph.',
             '- **Links** — the relationships allowed with other entities in the same architecture, with how many are allowed on each side.', '']
     n = 0
-    for lvl in (_L('business'), _L('bian'), _L('application'), _L('technology')):
+    for lvl in tuple(dict.fromkeys((_L('business'), _L('bian'), _L('data'), _L('application'), _L('technology')))):
         n += 1
         le = [e for e in ents if e['level'] == lvl]
         rows = [c for c in lr['constraints'] if c['level'] == lvl]
