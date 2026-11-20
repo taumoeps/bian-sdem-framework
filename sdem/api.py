@@ -4,7 +4,7 @@ An extension uses SDEM through its commands, or through this module — never th
 Its version is VERSION; an extension says which it supports in its manifest ("api": ">=0.1,<0.2"). Through 0.20 it is 0.x — it may
 still change; 1.0 when SDEM 0.20 is released.
 
-    the metamodel      Metamodel, T, layer, type_id, layer_id, ROOT, DATA_ROOT
+    the metamodel      Metamodel, T, layer, type_id, layer_id, F (a layer's file in the workspace at hand), live, ROOT, DATA_ROOT
     a workspace        estate_docs, estate_errors, activate, profile, parts, catalogue_dir
     the graph          LevelGraph, estate_index
     reading            load, loads — a design's file, its names as a person reads them (ids or 0.19's in the file, DL-11)
@@ -20,7 +20,7 @@ VERSION = '0.1'
 
 _EXPORTS = {
     'Metamodel': ('metamodel', 'Metamodel'), 'ROOT': ('metamodel', 'ROOT'), 'DATA_ROOT': ('paths', 'DATA_ROOT'),
-    'T': ('identity', 'T'), 'layer': ('identity', 'layer'), 'type_id': ('identity', 'type_id'), 'layer_id': ('identity', 'layer_id'),
+    'T': ('identity', 'T'), 'layer': ('identity', 'layer'), 'F': ('identity', 'F'), 'live': ('identity', 'live'), 'type_id': ('identity', 'type_id'), 'layer_id': ('identity', 'layer_id'),
     'estate_docs': ('connect', 'estate_docs'), 'estate_errors': ('connect', 'estate_errors'), 'activate': ('profile', 'activate_from'),
     'catalogue_dir': ('parts', 'catalogue_dir'), 'LevelGraph': ('graph', 'LevelGraph'), 'estate_index': ('graph', 'estate_index'),
     'Batch': ('files', 'Batch'), 'write_json': ('files', 'write_json'), 'write_text': ('files', 'write_text'), 'relink': ('docmap', 'relink'),

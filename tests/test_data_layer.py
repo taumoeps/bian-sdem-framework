@@ -17,7 +17,7 @@ def sdem(*args):
 
 def no_sha(x, k=None):
     if isinstance(x, dict): return {kk: no_sha(v, kk) for kk, v in x.items()}
-    if isinstance(x, list): return [no_sha(v) for v in x]
+    if isinstance(x, list): return sorted(map(str, x)) if k == 'would_write' else [no_sha(v, k) for v in x]   # a migrated workspace's files sort differently
     return '<sha>' if k in ('sha256', 'export_sha256') else x
 
 
@@ -49,7 +49,7 @@ class Boundary(unittest.TestCase):   # DL-10, DL-11
             left = {str(f.relative_to(w)): OLD.findall(f.read_text(encoding='utf-8'))[:2] for f in w.rglob('*.json')
                     if not f.name.endswith('.graph.json') and 'graph' not in f.parts and OLD.search(f.read_text(encoding='utf-8'))}
             self.assertEqual(left, {})
-            self.assertIn('"application.ApplicationComponent"', (w / 'a3-application.json').read_text(encoding='utf-8'))
+            self.assertIn('"application.ApplicationComponent"', (w / 'application.json').read_text(encoding='utf-8'))   # DL-10: named by its layer id
         finally:
             shutil.rmtree(tmp, ignore_errors=True)
 

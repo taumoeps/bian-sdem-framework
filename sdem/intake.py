@@ -11,11 +11,11 @@ approves, confirms and rejects nothing: it ends with the report of what is the p
 """
 from .identity import for_file as _for_file  # DL-11: what a design's file stores (docs/design/sdem-data-layer-spec.md)
 from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
-from .identity import T as _T, layer as _L, live as _live  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
+from .identity import T as _T, layer as _L, F as _F, live as _live  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 import argparse, difflib, json, shutil, sys, tempfile
 from pathlib import Path
 
-LAYERS = _live(lambda: {_L('business'): 'a1-business.json', _L('application'): 'a3-application.json', _L('technology'): 'a4-technology.json'})
+LAYERS = _live(lambda: {_L('business'): _F('business'), _L('application'): _F('application'), _L('technology'): _F('technology')})
 AGENTS = _live(lambda: {_L('business'): 'sdem-a1-business', _L('application'): 'sdem-a3-application', _L('technology'): 'sdem-a4-technology'})
 BIAN, SUGG, NOTS, DECS = 'BIAN-DOMAINS.json', 'CROSS-LAYER-SUGGESTIONS.json', 'NOT-STATED.json', 'DECISIONS.json'
 CHECKER = 'intake.check'   # the name the throw-away workspace of a check is started under — nothing of it is kept
@@ -97,8 +97,8 @@ def check(pkg, allow_gaps=False):
     errors, docs = [], {}
     mm = Metamodel.base()
     reg = load_registry()['relationships']; rels = sorted({r['relationship'] for r in reg})
-    if (pkg / 'a2-service-domain.json').exists():
-        errors.append({'file': 'a2-service-domain.json', 'message': f'the BIAN layer is not authored — name its service domains in {BIAN}; SDEM takes BIAN records from BIAN only (CTL-24)'})
+    if (pkg / _F('bian')).exists():
+        errors.append({'file': _F('bian'), 'message': f'the BIAN layer is not authored — name its service domains in {BIAN}; SDEM takes BIAN records from BIAN only (CTL-24)'})
     for layer, name in LAYERS.items():
         d = _load_json(pkg, name, errors)
         if d is None: continue

@@ -14,10 +14,21 @@ A2_FILE, EXT_BIAN = 'a2-service-domain.json', 'ext:bian'
 def a2_code():
     """BIAN's layer code as read now (A2 where it is on; DL-06)."""
     return _L('bian')
-_STATE = {'bian': True, 'why': 'no workspace (BX-12)'}
+_STATE = {'bian': True, 'why': 'no workspace (BX-12)', 'migrated': False}
 
 
 def bian_on(): return _STATE['bian']
+
+
+def migrated():
+    """DL-10…DL-12: is the workspace at hand migrated (workspace.json "names": "ids")? It decides the files' names and what they store."""
+    return _STATE['migrated']
+
+
+def _set_form(m):
+    if _STATE['migrated'] != bool(m):
+        _STATE['migrated'] = bool(m)
+        from . import identity; identity.changed()
 
 
 def why(): return _STATE['why']
@@ -47,6 +58,8 @@ def for_workspace(folder, merged=None):
     f = Path(folder) / 'sdem-profile.json'
     try: raw = _jload(f).get('includes') or [] if f.exists() else []
     except (OSError, ValueError): raw = []
+    from .identity import _ids_folder
+    _set_form(_ids_folder(str(Path(folder).resolve())))   # DL-10…DL-12: the workspace's form, before anything is read
     if included(merged) or EXT_BIAN in raw: _set(True, 'the profile includes ext:bian (BX-10)'); return
     try: core = _jload(Path(folder) / 'workspace.json').get('core_only') is True
     except (OSError, ValueError): core = False
@@ -54,7 +67,7 @@ def for_workspace(folder, merged=None):
     _set(True, 'every workspace is a BIAN design unless a person chose otherwise, as in 0.19 — on until a person includes ext:bian (BX-11)')
 
 
-def reset(): _set(True, 'no workspace (BX-12)')
+def reset(): _set(True, 'no workspace (BX-12)'); _set_form(False)
 
 
 def keep(rows, ends):

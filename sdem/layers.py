@@ -7,13 +7,13 @@ requirements, change sets, the dashboards — reads the layers from here, so a p
 
 The collections below are *live*: they reflect the active profile at the moment they are read (FILES, CODES, AGENTS).
 """
-from .identity import T as _T, layer as _L, live as _live  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
+from .identity import T as _T, layer as _L, F as _F, live as _live  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 from collections.abc import Mapping, Sequence
 
-CORE = _live(lambda: ((_L('business'), 'a1-business.json', f'{_L("business")} Business', 'sdem-a1-business'),
-        (_L('bian'), 'a2-service-domain.json', f'{_L("bian")} BIAN', 'sdem-a2-bian'),
-        (_L('application'), 'a3-application.json', f'{_L("application")} Application', 'sdem-a3-application'),
-        (_L('technology'), 'a4-technology.json', f'{_L("technology")} Technology', 'sdem-a4-technology')))
+CORE = _live(lambda: ((_L('business'), _F('business'), f'{_L("business")} Business', 'sdem-a1-business'),
+        (_L('bian'), _F('bian'), f'{_L("bian")} BIAN', 'sdem-a2-bian'),
+        (_L('application'), _F('application'), f'{_L("application")} Application', 'sdem-a3-application'),
+        (_L('technology'), _F('technology'), f'{_L("technology")} Technology', 'sdem-a4-technology')))
 CORE_CODES = tuple(c[0] for c in CORE)
 RESERVED_FILES = {c[1] for c in CORE} | {'mappings.json', 'requirements.json', 'workspace.json', 'sdem-ledger.json', 'sdem-profile.json', 'governance.json'}
 

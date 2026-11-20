@@ -17,7 +17,7 @@ that base, so the organisation's types, attributes and rules apply from the star
 """
 from .identity import for_file as _for_file  # DL-11: what a design's file stores (docs/design/sdem-data-layer-spec.md)
 from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
-from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
+from .identity import T as _T, layer as _L, F as _F  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 import argparse, datetime, json, re, sys
 from pathlib import Path
 
@@ -180,7 +180,7 @@ def plan(workspace, person, bian_file=None, today=None, no_bian=False, core_only
         from .hosting import template_zones
         try: zrecs, zlinks = template_zones(hosting, stem)
         except ValueError as e: raise NewError(f'--hosting: {e}')
-        a4 = docs['a4-technology.json']; a4['instances'] += zrecs; a4['relationships'] += zlinks
+        a4 = docs[_F('technology')]; a4['instances'] += zrecs; a4['relationships'] += zlinks
     if from_dir:   # GV-05: the workspace's first content — a baseline, checked like any other, and recorded as one
         src = Path(from_dir)
         if not src.is_dir(): raise NewError(f'--from {from_dir}: no such folder')
@@ -189,7 +189,7 @@ def plan(workspace, person, bian_file=None, today=None, no_bian=False, core_only
         docs.update(found)
         if (src / 'mappings.json').exists(): registry = _jload(src / 'mappings.json')
         if (src / 'requirements.json').exists(): extra['requirements.json'] = _jload(src / 'requirements.json')
-        if a2 is not None and 'a2-service-domain.json' in found: catalogue, source = 'base', f'the BIAN layer of the baseline ({label or src.as_posix()})'
+        if a2 is not None and _F('bian') in found: catalogue, source = 'base', f'the BIAN layer of the baseline ({label or src.as_posix()})'
     errors = estate_errors(docs, registry)
     if extra.get('requirements.json'):
         from .requirements import check as rcheck
@@ -200,7 +200,7 @@ def plan(workspace, person, bian_file=None, today=None, no_bian=False, core_only
               **({'core_only': True} if core_only else {}),
               'bian': {'catalogue': catalogue, 'source': source, 'selection': 'none' if no_bian else 'given' if bian_file else 'relevant',
                        'service_domains': sds}}
-    if hosting: record['hosting'] = {'template': hosting, 'zones': [z['id'] for z in docs['a4-technology.json']['instances'] if z['type'] == _T('technology.NetworkZone')]}
+    if hosting: record['hosting'] = {'template': hosting, 'zones': [z['id'] for z in docs[_F('technology')]['instances'] if z['type'] == _T('technology.NetworkZone')]}
     if from_dir: record['baseline'] = {'from': label or Path(from_dir).as_posix(), 'files': sorted(list(docs) + ['mappings.json'] + list(extra))}
     if profile_file:   # PR-07, LR-03: the baseline's profile, or the one given with --profile; its layers' files are among docs
         from . import profile as _p

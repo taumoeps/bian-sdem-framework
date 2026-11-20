@@ -6,7 +6,7 @@ link back home). Everything is computed here with SDEM's own functions — the g
 acceptance cases run live at generation — and the pages only display it. No server, no network, no AI.
 """
 from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
-from .identity import T as _T, layer as _L, live as _live  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
+from .identity import T as _T, layer as _L, F as _F, live as _live  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 import argparse, contextlib, datetime, glob, html, io, json, re, sys
 from pathlib import Path
 
@@ -14,7 +14,7 @@ from .metamodel import Metamodel
 
 from .paths import DATA_ROOT as ROOT, repo_path, version as _version
 LEVELS = _live(lambda: {_L('business'): f'{_L("business")} Business', _L('bian'): f'{_L("bian")} Service domain (BIAN)', _L('application'): f'{_L("application")} Application', _L('technology'): f'{_L("technology")} Technology'})
-DATASETS = ('a1-business.json', 'a2-service-domain.json', 'a3-application.json', 'a4-technology.json')
+DATASETS = _live(lambda: (_F('business'), _F('bian'), _F('application'), _F('technology')))
 BOX_W, BOX_H, STEP_X, STEP_Y, PER_ROW, PAD = 196, 36, 210, 50, 6, 20
 
 
@@ -218,7 +218,7 @@ def components(m, h, workspaces):
 # TK-01: SDEM's capabilities grouped by what the architect wants to do — Home's "Architect tasks" tab and the user guide §4b read this.
 # effect: 'view' (reads only) · 'derived' (writes generated outputs only) · 'proposes' (writes proposals or marked records a person decides on)
 #         · 'changes' (changes the architecture, checked and recorded) · 'decides' (a person's recorded decision)
-TASKS = [
+TASKS = _live(lambda: [
     ('Explore', 'Understand the existing architecture', [
         ('See SDEM and every workspace', 'sdem home --root workspaces -o work/sdem', 'workspaces', 'SDEM Home', 'open work/sdem/index.html', 'derived', 'no'),
         ('Examine one workspace', 'sdem dashboard --workspace <ws>', 'a workspace', 'its dashboard', 'open <ws>/dashboard.html', 'derived', 'no'),
@@ -249,7 +249,7 @@ TASKS = [
         ('Before upgrading SDEM', 'sdem upgrade check (the new version, side by side)', 'your repository', 'migrations, profile, deprecations, steps', 'the terminal', 'view', 'no'),
         ('Migrate a workspace', 'sdem migrate --workspace <ws> --person <you> --dry-run, then without', 'a workspace on an older metamodel', 'the workspace on this metamodel, recorded', 'migrations/MIG-nnn.json', 'changes', 'your decision to run it'),
         ('Set up your AI agents', 'sdem agents install', 'your repository', 'instructions and skills for your agents', 'AGENTS.md', 'derived', 'no')]),
-]
+])
 EFFECT = {'view': 'reads only', 'derived': 'writes generated outputs only', 'proposes': 'proposes — a person decides', 'changes': 'changes the architecture (checked, recorded)', 'decides': 'a person\'s recorded decision'}
 
 

@@ -50,8 +50,19 @@ def _stack(_v):
 def changed():
     """The layers in use changed: forget every computed name (called by parts when BIAN is switched for a workspace)."""
     _VERSION[0] += 1
-    for f in (layer, T, display, display_layer, stored, stored_layer):
+    _ids_folder.cache_clear()
+    for f in (layer, T, F, display, display_layer, stored, stored_layer):
         f.cache_clear()
+
+
+@lru_cache(maxsize=None)
+def F(layer_id):
+    """A layer's file in the workspace at hand (DL-10): named by its id in a migrated workspace (application.json), 0.19's name
+    otherwise (a3-application.json)."""
+    from . import parts
+    l = next((x for x in table()['layers'] if x['id'] == layer_id), None)
+    if l is None: raise IdentityError(f'{layer_id!r} is not a layer id')
+    return f'{layer_id}.json' if parts.migrated() or not l.get('file') else l['file']
 
 
 @lru_cache(maxsize=None)   # called in the engines' loops; cleared when the layers in use change

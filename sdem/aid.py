@@ -17,7 +17,7 @@ Usage: sdem aid project --have a1.json [...] --catalogue bian.json --out DIR · 
 """
 from .identity import for_file as _for_file  # DL-11: what a design's file stores (docs/design/sdem-data-layer-spec.md)
 from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
-from .identity import T as _T, layer as _L, live as _live  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
+from .identity import T as _T, layer as _L, F as _F, live as _live  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 import argparse, datetime, hashlib, json, re, sys
 from pathlib import Path
 
@@ -34,10 +34,10 @@ FILES = _live(lambda: {_L('business'): 'projected-a1-business.json', _L('bian'):
 CATALOGUE_RULE = 'BIAN catalogue reference'
 PROVENANCE = ('step', 'rule', 'source_reference', 'inferred_from', 'reasoning', 'confidence')
 # AID's own rule names → the metamodel rule whose published basis they rest on (relationship-rules.json `source_reference`)
-RULE_BASIS = {'BIAN container pattern': 'S17', 'BIAN REST mapping': 'S24', f'named by {_L("technology")}': 'S32', 'domain name': 'S01'}
+RULE_BASIS = _live(lambda: {'BIAN container pattern': 'S17', 'BIAN REST mapping': 'S24', f'named by {_L("technology")}': 'S32', 'domain name': 'S01'})
 # AID's own rules → the kind of evidence they rest on (AID-E01); an engine rule brings its proposal's own class
-RULE_CLASS = {'BIAN container pattern': 'pattern', 'BIAN REST mapping': 'pattern', 'domain name': 'pattern', 'service group': 'pattern',
-              f'named by {_L("technology")}': 'attribute_join', f'S33 ({_L("technology")} hosts)': 'attribute_join', 'S32 (deployment component_id)': 'attribute_join', 'name': 'name_token'}
+RULE_CLASS = _live(lambda: {'BIAN container pattern': 'pattern', 'BIAN REST mapping': 'pattern', 'domain name': 'pattern', 'service group': 'pattern',
+              f'named by {_L("technology")}': 'attribute_join', f'S33 ({_L("technology")} hosts)': 'attribute_join', 'S32 (deployment component_id)': 'attribute_join', 'name': 'name_token'})
 
 
 def basis(rule, step=None, catalogue=None):
@@ -635,9 +635,9 @@ def main(argv=None):
     if a.cmd == 'project' and a.estate:   # WS-05: plan from a workspace; the plan is kept apart in <workspace>/plans/
         ws = Path(a.estate)
         if not (ws / 'mappings.json').exists(): print(f'ERROR: {ws}: no workspace here — start one with sdem new', file=sys.stderr); return 2
-        have = {d['level']: d for f in ('a1-business.json', 'a3-application.json', 'a4-technology.json') if (ws / f).exists() for d in [j(ws / f)] if d.get('instances')}
+        have = {d['level']: d for f in (_F('business'), _F('application'), _F('technology')) if (ws / f).exists() for d in [j(ws / f)] if d.get('instances')}
         if _L('business') not in have: print(f'ERROR: {ws}: no business layer ({_L("business")}) yet — AID plans from what the business does; add it first', file=sys.stderr); return 2
-        a.catalogue = a.catalogue or (str(ws / 'a2-service-domain.json') if (ws / 'a2-service-domain.json').exists() else None)
+        a.catalogue = a.catalogue or (str(ws / _F('bian')) if (ws / _F('bian')).exists() else None)
         a.registry = a.registry or str(ws / 'mappings.json')
         if not a.out:
             plans = ws / 'plans'; n = 1 + max([int(x.name.split('-')[1]) for x in plans.glob('PLAN-*') if x.name.split('-')[1].isdigit()] or [0]) if plans.exists() else 1
@@ -664,7 +664,7 @@ def main(argv=None):
     real, reg = {}, _registry()
     if a.estate:
         ws = Path(a.estate)
-        a.actual = [str(ws / f) for f in ('a2-service-domain.json', 'a3-application.json', 'a4-technology.json', 'mappings.json') if (ws / f).exists()]
+        a.actual = [str(ws / f) for f in (_F('bian'), _F('application'), _F('technology'), 'mappings.json') if (ws / f).exists()]
     if not a.actual: ap.error('gaps needs --workspace or --actual')
     for f in a.actual:
         d = j(f)

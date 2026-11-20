@@ -8,7 +8,7 @@ review, trace, impact, matrices, changes), `sdem document` (UX-D), the metamodel
 The page's script only selects, filters and navigates. Self-contained: no external file, script or call (UX-P02).
 """
 from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
-from .identity import T as _T, layer as _L, live as _live  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
+from .identity import T as _T, layer as _L, F as _F, live as _live  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 import argparse, json, sys
 from pathlib import Path
 
@@ -143,7 +143,7 @@ def main(argv=None):
     ap.add_argument('--json', action='store_true', help='print a summary of what the page shows (the page is written too)')
     a = ap.parse_args(argv)
     ws = Path(a.workspace)
-    if not (ws / 'mappings.json').exists() and not any((ws / f).exists() for f in ('a1-business.json', 'a2-service-domain.json', 'a3-application.json', 'a4-technology.json')):
+    if not (ws / 'mappings.json').exists() and not any((ws / f).exists() for f in (_F('business'), _F('bian'), _F('application'), _F('technology'))):
         print(f'ERROR: {ws}: not a workspace (no layer files, no mappings.json) — sdem new --workspace {ws} --person <you> starts one', file=sys.stderr); return 2
     out, data = write(ws, a.out)
     if a.json:

@@ -233,11 +233,11 @@ def render_diagram():
 REGISTRY_DOC = ROOT / 'docs' / 'design' / 'relationship-registry-spec.md'
 
 
-REGISTRY_FIELD_MEANING = {'mapping_id': 'the record\'s permanent ID (legacy name)', 'source': 'the entity the relationship starts from (§3)', 'target': 'the entity it points to (§3)',
+REGISTRY_FIELD_MEANING = _live(lambda: {'mapping_id': 'the record\'s permanent ID (legacy name)', 'source': 'the entity the relationship starts from (§3)', 'target': 'the entity it points to (§3)',
     'relationship': f'one of the catalogued types (§5); adjacent levels only, except the direct {_L("business")}→{_L("application")} types the owner named (D9)', 'perspective': 'architecture, process or information', 'status': 'lifecycle state (§4)',
     'evidence': '`kind:reference` items; the kinds must include the type\'s required evidence (§5)', 'rationale': 'why the relationship holds: the working', 'baseline_id': 'the release the record belongs to',
     'confidence': '0–1, the rule\'s band', 'bian_release': 'required on BIAN-authority types before approval (a proposed or needs_review link may wait for it — F-1)', 'reviewer_id': 'the approving architect', 'created_by': 'who or what proposed it (engine, rule, architect)',
-    'approved_at': 'approval date', 'valid_from': 'start of validity', 'valid_to': 'end of validity; set on supersession', 'previous_mapping_id': 'the record this one supersedes (legacy name)'}
+    'approved_at': 'approval date', 'valid_from': 'start of validity', 'valid_to': 'end of validity; set on supersession', 'previous_mapping_id': 'the record this one supersedes (legacy name)'})
 
 
 def render_registry():

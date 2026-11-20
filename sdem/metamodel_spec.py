@@ -44,12 +44,12 @@ def high_level_catalogue(text):
         rows[m.group(1)] = (ds.group(1).replace('sdmm_', 'sdem_') if ds else None, al.group(1) if al else None)
     return rows
 
-ROW_MEANING = {'id': 'permanent row ID (RA<level>-nn)', 'level': 'the architecture the row belongs to', 'source_type': 'entity type the link starts from (subtypes included, is-a)',
+ROW_MEANING = _live(lambda: {'id': 'permanent row ID (RA<level>-nn)', 'level': 'the architecture the row belongs to', 'source_type': 'entity type the link starts from (subtypes included, is-a)',
                'kind': 'relationship kind (ArchiMate / BIAN vocabulary)', 'target_type': 'entity type the link points to (subtypes included)',
                'cardinality': '{source_per_target, target_per_source, basis, reasoning} — e.g. 1..1 / 0..*; checked by LC-10 (maximum, error) and LC-10m (minimum, warning) where the basis is BIAN or ArchiMate',
                'basis': 'the reference architecture the row comes from', 'official_id': 'the BIAN structural row (B-row) it encodes, if any', 'description': 'what the link means',
                'reference_source': 'source reference (standard, section)', 'verification': 'how it was checked', 'enforceable': f'`false` only for documentation rows ({_L("bian")} artefacts); otherwise enforced by `sdem check` (LC-03)',
-               'inference': 'how the row was first inferred, before checking {pattern, reasoning, confidence}', 'reasoning': 'why the link is allowed', 'confidence': 'high / medium / low (single rule)', 'confidence_basis': 'which clause of the rule applied'}
+               'inference': 'how the row was first inferred, before checking {pattern, reasoning, confidence}', 'reasoning': 'why the link is allowed', 'confidence': 'high / medium / low (single rule)', 'confidence_basis': 'which clause of the rule applied'})
 INHERIT_MEANING = {'id': 'permanent row ID (XA<level>-nn)', 'level': 'architecture', 'entity': 'the specialised entity type', 'extends': 'its parent type', 'description': 'the is-a statement',
                    'reference_source': 'source reference', 'verification': 'how it was checked', 'reasoning': 'why the type specialises the parent', 'confidence': 'high / medium / low'}
 TYPE_MEANING = {'mapping_type_id': 'permanent ID of the type (legacy name)', 'source_type': 'entity type at the source end (is-a)', 'relationship': 'the type name used in registry records',

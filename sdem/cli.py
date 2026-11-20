@@ -4,7 +4,7 @@ One command with a subcommand per journey. Most subcommands hand over to the exi
 `sdem-*` commands keep working as aliases); `review` and `explain` are new. Conventions everywhere: inputs as `--graph DIR`
 or file paths, `--json` for machine-readable output, exit codes 0 = OK, 1 = issues found, 2 = usage error, no prompts.
 """
-from .identity import T as _T, layer as _L  # ST-01…ST-05, DL-07: layers and types by id; their numbers computed
+from .identity import T as _T, layer as _L, live as _live, F as _F  # ST-01…ST-05, DL-07: layers and types by id; their numbers computed
 from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
 import argparse, contextlib, glob, importlib, io, json, re, sys
 from pathlib import Path
@@ -16,7 +16,7 @@ class UsageError(Exception):
     """The command was given something it cannot use — reported as one line, exit 2."""
 
 # name: (journey, what it does, module, fixed leading arguments, worked example)
-JOURNEYS = {
+JOURNEYS = _live(lambda: {
     'check':    ('J1', 'check architecture datasets and registry against the metamodel', 'sdem.graph', ['check'],
                  'sdem check --workspace examples/payment-initiation'),
     'validate': ('J1', 'validate a relationship document (registry or proposals)', 'sdem.validate', [],
@@ -119,7 +119,7 @@ JOURNEYS = {
                  'sdem diff --git HEAD~1 examples/payment-initiation/mappings.json'),
     'model':    ('—', 'maintainers: regenerate and check generated files, acceptance, evaluation, examples', None, None,
                  'sdem model check'),
-}
+})
 
 # generated documents and schemas, in the order CI checks them
 GENERATORS = ['diagram', 'relationships', 'structure', 'spec', 'kgspec', 'catalogue', 'attributes', 'confidence',
@@ -252,7 +252,7 @@ def _link(argv):
 
 def _aid_coverage(argv, mappings):
     """O2: one list to approve from — say how many of AID's proposals in the workspace `sdem link` reproduces, and which it does not."""
-    ws = next((Path(x).parent for x in argv if Path(x).name in ('a1-business.json', 'a2-service-domain.json', 'a3-application.json', 'a4-technology.json')), None)
+    ws = next((Path(x).parent for x in argv if Path(x).name in (_F('business'), _F('bian'), _F('application'), _F('technology'))), None)
     if ws is None: return None   # --workspace is expanded to the layer files before this runs
     files = sorted((ws / 'aid').glob('*-proposals.json'))
     if not files: return None

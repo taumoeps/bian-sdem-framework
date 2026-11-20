@@ -9,7 +9,7 @@ Read-only. The zone connections are worked out from the zone structure — never
   sdem zones path INF-APIGW-PAY INF-PG-PAY-PROD --workspace examples/payment-initiation
 """
 from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
-from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
+from .identity import T as _T, layer as _L, F as _F  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 import argparse, json, sys
 from pathlib import Path
 
@@ -20,7 +20,7 @@ def collect(workspace):
     from .hosting import zone_connections
     from .metamodel import Metamodel
     from . import profile as _p
-    ws = Path(workspace); f = ws / 'a4-technology.json'
+    ws = Path(workspace); f = ws / _F('technology')
     if not f.exists(): raise ValueError(f'{ws}: no a4-technology.json — no technology layer, so no network zones')
     _p.activate_from(ws)
     doc = _jload(f); mm = Metamodel.load()
@@ -47,7 +47,7 @@ def cut(workspace, a, b):
     from .hosting import zone_connections
     from .metamodel import Metamodel
     from .graph import FederatedGraph
-    ws = Path(workspace); f = ws / 'a4-technology.json'
+    ws = Path(workspace); f = ws / _F('technology')
     if not f.exists(): raise ValueError(f'{ws}: no a4-technology.json — no technology layer')
     doc = _jload(f); mm = Metamodel.load()
     conns = zone_connections(doc, mm)
@@ -75,7 +75,7 @@ def cut(workspace, a, b):
                 for r in doc.get('relationships', []) if r['source'] in where and r['target'] in where
                 and r['source'] not in zone_ids and r['target'] not in zone_ids and across(where[r['source']], where[r['target']])]
     ends = sorted({c['source'] for c in crossing} | {c['target'] for c in crossing})
-    files = [p for p in (ws / n for n in ('a1-business.json', 'a2-service-domain.json', 'a3-application.json', 'a4-technology.json')) if p.exists()]
+    files = [p for p in (ws / n for n in (_F('business'), _F('bian'), _F('application'), _F('technology'))) if p.exists()]
     fg = FederatedGraph.load(files + ([ws / 'mappings.json'] if (ws / 'mappings.json').exists() else []))
     seen = {}
     def walk(node, through):
@@ -120,7 +120,7 @@ def main(argv=None):
         a = ap.parse_args(argv[1:])
         from .hosting import path
         from .metamodel import Metamodel
-        f = Path(a.estate) / 'a4-technology.json'
+        f = Path(a.estate) / _F('technology')
         if not f.exists(): print(f'ERROR: {a.estate}: no a4-technology.json', file=sys.stderr); return 2
         route = path(_jload(f), Metamodel.load(), a.a, a.b)
         if a.json: print(json.dumps({'from': a.a, 'to': a.b, 'path': route}, indent=2)); return 0 if route else 1

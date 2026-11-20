@@ -19,7 +19,7 @@ real until a person confirms it. The rules are in metamodel/transform-rules.json
 """
 from .identity import for_file as _for_file  # DL-11: what a design's file stores (docs/design/sdem-data-layer-spec.md)
 from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
-from .identity import T as _T, layer as _L, live as _live  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
+from .identity import T as _T, layer as _L, F as _F, live as _live  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 import argparse, base64, collections, csv, datetime, hashlib, io, json, os, re, sys, urllib.parse, zlib
 import xml.etree.ElementTree as ET
 from html.parser import HTMLParser
@@ -29,7 +29,7 @@ from .metamodel import Metamodel
 from .paths import DATA_ROOT
 
 RULES = DATA_ROOT / 'metamodel' / 'transform-rules.json'
-DATASETS = _live(lambda: {_L('business'): 'a1-business.json', _L('bian'): 'a2-service-domain.json', _L('application'): 'a3-application.json', _L('technology'): 'a4-technology.json'})
+DATASETS = _live(lambda: {_L('business'): _F('business'), _L('bian'): _F('bian'), _L('application'): _F('application'), _L('technology'): _F('technology')})
 RANK = {'low': 1, 'medium': 2, 'high': 3}
 SOURCE_SYSTEM = 'CONFLUENCE-EXTRACT'
 IMAGE_EXT = ('.png', '.jpg', '.jpeg', '.gif', '.bmp', '.svg', '.webp')

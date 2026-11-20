@@ -3,14 +3,14 @@ one relationship per enforceable constraint row (relationship name = row ID), an
 attribute (taken from the attribute record). Every row the record allows is thereby exercised on committed data and
 accepted by sdem check, including the data-model conformance rules."""
 from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
-from .identity import T as _T, layer as _L, live as _live  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
+from .identity import T as _T, layer as _L, F as _F, live as _live  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 from pathlib import Path
 import argparse, json
 from sdem.metamodel import Metamodel, MM_DIR
 from sdem.conformance import definitions
 
 OUT = MM_DIR.parent / 'examples' / 'reference-structure'
-FILES = _live(lambda: {_L('business'): "a1-business.json", _L('bian'): "a2-service-domain.json", _L('application'): "a3-application.json", _L('technology'): "a4-technology.json"})
+FILES = _live(lambda: {_L('business'): _F('business'), _L('bian'): _F('bian'), _L('application'): _F('application'), _L('technology'): _F('technology')})
 
 
 PLACEHOLDER = {'integer': 1, 'boolean': False, 'date': '2026-01-01', 'map<string,string>': {}}

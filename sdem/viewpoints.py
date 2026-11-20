@@ -5,12 +5,12 @@ drawn. The layout is computed here, deterministically (DG-05); the SVG carries i
 and stored links are drawn — links inside a layer, and approved connections between layers (DG-03); what has no link is said (DG-04).
 """
 from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
-from .identity import T as _T, layer as _L, live as _live  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
+from .identity import T as _T, layer as _L, F as _F, live as _live  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 import argparse, hashlib, html, json, sys
 from pathlib import Path
 
 TEMPLATES_FILE = Path(__file__).with_name('viewpoints.json')
-FILES = _live(lambda: {_L('business'): 'a1-business.json', _L('bian'): 'a2-service-domain.json', _L('application'): 'a3-application.json', _L('technology'): 'a4-technology.json'})
+FILES = _live(lambda: {_L('business'): _F('business'), _L('bian'): _F('bian'), _L('application'): _F('application'), _L('technology'): _F('technology')})
 NEST = ('composition', 'aggregation')
 LEAF_W, LEAF_H, PAD, GAP, TITLE, CH, LEFT, MAXROW = 172, 58, 14, 16, 34, 96, 150, 4
 LAYER_CLASS = _live(lambda: {_L('business'): 'bus', _L('bian'): 'bian', _L('application'): 'app', _L('technology'): 'tec'})

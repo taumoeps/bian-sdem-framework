@@ -22,12 +22,15 @@ def norm(x, tmp):
             for form in sorted({str(p), str(Path(p).resolve()), os.path.realpath(p)}, key=len, reverse=True):   # the longest first
                 x = x.replace(form, tag).replace(form.replace('\\', '/'), tag)
         if os.sep == '\\': x = re.sub(r'(<tmp>|<root>)([^\s"]*)', lambda m: m.group(1) + m.group(2).replace('\\', '/'), x)   # paths under them in / form
-        if IDS: x = x.replace('<tmp>/ds/', '<root>/examples/')   # the detector's copies of the dataset examples
+        if IDS:
+            x = x.replace('<tmp>/ds/', '<root>/examples/')   # the detector's copies of the dataset examples
+            for old, new in RENAME.items(): x = re.sub(rf'(?<![\w-]){re.escape(new)}', old, x)   # the migrated workspaces' file names, as 0.19's
         return re.sub(r'GD-\d{8}T\d{6}-[0-9a-f]{6}', 'GD-<id>', re.sub(r'\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[^"\s]*', '<time>', x))
     return x
 
 
-IDS = os.environ.get('SDEM_GOLDEN_IDS') == '1'   # DL-11's detector: the same answers from workspaces whose files store type ids
+IDS = os.environ.get('SDEM_GOLDEN_IDS') == '1'
+RENAME = {'a1-business.json': 'business.json', 'a2-service-domain.json': 'bian.json', 'a3-application.json': 'application.json', 'a4-technology.json': 'technology.json'}   # DL-11's detector: the same answers from workspaces whose files store type ids
 
 
 def to_ids(folder):
@@ -42,8 +45,14 @@ def to_ids(folder):
         except ValueError: continue
         if f.name == 'workspace.json': d['names'] = 'ids'
         f.write_bytes((json.dumps(store_names(read_names(d), True), indent=2, ensure_ascii=False) + '\n').encode('utf-8'))
-        if f.name in TRACKED: done.append(f)
-    if done and (Path(folder) / 'sdem-ledger.json').exists(): record(done)   # as the migration does (DL-12): SDEM's own edit, recorded
+        new = f.with_name(RENAME[f.name]) if f.name in RENAME and (f.parent / 'workspace.json').exists() else f   # DL-10: named by layer id
+        if new != f: f.rename(new)
+        if new.name in TRACKED or f.name in TRACKED: done.append(new)
+    if done and (Path(folder) / 'sdem-ledger.json').exists():   # as the migration does (DL-12): SDEM's own edit, recorded — in the migrated form
+        from sdem import parts
+        parts._set_form(True)
+        try: record(done)
+        finally: parts._set_form(False)
 
 
 def capture(out):

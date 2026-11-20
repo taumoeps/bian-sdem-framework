@@ -1,9 +1,9 @@
 """CR-04: what the common options mean, in one place — given to every `sdem` command's option that does not say it itself, so `--help`,
 `sdem commands --json` and the CLI reference never leave an option undescribed. An option's own help always wins."""
-from .identity import T as _T, layer as _L  # ST-01…ST-05, DL-07: layers and types by id; their numbers computed
+from .identity import T as _T, layer as _L, live as _live  # ST-01…ST-05, DL-07: layers and types by id; their numbers computed
 import argparse
 
-COMMON = {
+COMMON = _live(lambda: {
     '--workspace': 'the workspace folder — found from the current folder when you are inside one (WS-11)',
     '--root': 'a folder of workspaces (e.g. workspaces) — every workspace in it',
     '--graph': 'a graph store folder written by sdem build',
@@ -46,7 +46,7 @@ COMMON = {
     'export': 'the export folder (e.g. a Confluence space export)',
     'folder': "a folder of BIAN-format files (e.g. a release downloaded from BIAN's GitHub)",
     'name': 'its name',
-}
+})
 _ALIASES = {'-o': '--out'}
 
 

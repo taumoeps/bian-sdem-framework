@@ -14,7 +14,7 @@ Offline: it reads the base, a pack, or a folder you downloaded. BIAN's descripti
 """
 from .identity import for_file as _for_file  # DL-11: what a design's file stores (docs/design/sdem-data-layer-spec.md)
 from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
-from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
+from .identity import T as _T, layer as _L, F as _F  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 import argparse, csv, difflib, json, re, sys
 from collections import Counter
 from pathlib import Path
@@ -502,7 +502,7 @@ def update_estates(estates, a2_file, person, dry_run=False, now=None):
     plans, refused = [], []
     for est in estates:
         docs, reg = estate_docs(est)
-        old = docs.get('a2-service-domain.json') or {'instances': []}
+        old = docs.get(_F('bian')) or {'instances': []}
         old_by = {i['id']: i for i in old.get('instances', [])}
         change = {'estate': str(est), 'added': sorted(set(new_by) - set(old_by)), 'dropped': sorted(set(old_by) - set(new_by)),
                   'renamed': sorted([i, old_by[i]['name'], new_by[i]['name']] for i in set(old_by) & set(new_by) if old_by[i]['name'] != new_by[i]['name'])}
@@ -511,7 +511,7 @@ def update_estates(estates, a2_file, person, dry_run=False, now=None):
                 if m.get('status') == 'approved' and ({m['source']['id'], m['target']['id']} & set(change['dropped']))]
         if lost:
             refused.append(f"{est}: approved connection(s) point to BIAN records that would disappear — supersede them first: " + '; '.join(lost)); continue
-        errors = [] if change['unchanged'] else estate_errors({**docs, 'a2-service-domain.json': new}, reg)
+        errors = [] if change['unchanged'] else estate_errors({**docs, _F('bian'): new}, reg)
         if errors:
             refused.append(f'{est}: would not pass its checks with the new BIAN layer:\n    ' + '\n    '.join(errors[:8])); continue
         plans.append(change)
@@ -524,7 +524,7 @@ def update_estates(estates, a2_file, person, dry_run=False, now=None):
             est = Path(c['estate']); folder = est / 'bian-updates'
             n = 1 + max([int(p.stem.split('-')[1]) for p in folder.glob('BU-*.json')] or [0]) if folder.exists() else 1
             c['id'] = f'BU-{n:03d}'
-            b.json(est / 'a2-service-domain.json', new)
+            b.json(est / _F('bian'), new)
             b.json(folder / f"{c['id']}.json", {'id': c['id'], 'at': now or datetime.datetime.now().replace(microsecond=0).isoformat(), 'person': person,
                                                 'from': str(a2_file), 'source_system': new.get('source_system'), 'model_version': new.get('model_version'),
                                                 **{k: c[k] for k in ('added', 'dropped', 'renamed')}})
@@ -539,7 +539,7 @@ def release_impact(estate, shared):
     has are listed too (an update keeps them as they are): they are what a person must review."""
     from .connect import estate_docs
     est = Path(estate); docs, reg = estate_docs(est)
-    own = docs.get('a2-service-domain.json') or {'instances': [], 'relationships': []}
+    own = docs.get(_F('bian')) or {'instances': [], 'relationships': []}
     held = {i['name'] for i in own.get('instances', []) if i['type'] == _T('bian.ServiceDomain')}
     fresh = refresh_layer(own, shared, held) if held else own
     old_by, new_by = {i['id']: i for i in own.get('instances', [])}, {i['id']: i for i in fresh.get('instances', [])}
@@ -762,10 +762,10 @@ def main(argv=None):
             if f: infer = accepted(read_inferences(f))
         dataset, _ = build(chosen, Metamodel.load().version, False, getattr(a, 'objects', False), patterns, infer)
         if a.add:   # WS-04: added beside what the workspace holds (what AID inferred keeps its mark)
-            own = _jload(ws / 'a2-service-domain.json') if (ws / 'a2-service-domain.json').exists() else {**dataset, 'instances': [], 'relationships': []}
+            own = _jload(ws / _F('bian')) if (ws / _F('bian')).exists() else {**dataset, 'instances': [], 'relationships': []}
             dataset = merge_layers(own, dataset)
         import tempfile
-        tmp = Path(tempfile.mkdtemp()) / 'a2-service-domain.json'; tmp.write_text(json.dumps(_for_file(tmp, dataset)), encoding='utf-8')
+        tmp = Path(tempfile.mkdtemp()) / _F('bian'); tmp.write_text(json.dumps(_for_file(tmp, dataset)), encoding='utf-8')
         try: plans = update_estates([ws], tmp, a.person, a.dry_run)
         except BianRefused as e: print(f'ERROR: {e}', file=sys.stderr); return 1
         c = plans[0]
@@ -829,13 +829,13 @@ def main(argv=None):
         import tempfile
         plans = []
         for e in estates:   # WS-04: each workspace refreshes the service domains it holds — nothing else is brought in
-            own = _jload(e / 'a2-service-domain.json') if (e / 'a2-service-domain.json').exists() else None
+            own = _jload(e / _F('bian')) if (e / _F('bian')).exists() else None
             held = {i['name'] for i in (own or {}).get('instances', []) if i['type'] == _T('bian.ServiceDomain')}
             if not held: print(f"{e}: holds no BIAN service domains — nothing to refresh (sdem aid brings in the ones its design needs)"); continue
             gone = sorted(held - {i['name'] for i in shared['instances'] if i['type'] == _T('bian.ServiceDomain')})
             if gone: print(f"{e}: {len(gone)} service domain(s) it holds are not in the shared layer — kept as they are: {', '.join(gone)}")
             fresh = refresh_layer(own, shared, held)
-            tmp = Path(tempfile.mkdtemp()) / 'a2-service-domain.json'; tmp.write_text(json.dumps(_for_file(tmp, fresh)), encoding='utf-8')
+            tmp = Path(tempfile.mkdtemp()) / _F('bian'); tmp.write_text(json.dumps(_for_file(tmp, fresh)), encoding='utf-8')
             try: plans += update_estates([e], tmp, a.person, a.dry_run)
             except BianRefused as err: print(f'ERROR: {err}', file=sys.stderr); return 1
         if not plans: return 0

@@ -20,7 +20,7 @@ LEFT = {'1..1': '||', '0..1': '|o', '0..*': '}o', '1..*': '}|'}
 RIGHT = {'1..1': '||', '0..1': 'o|', '0..*': 'o{', '1..*': '|{'}
 TY = {'string': str, 'list<string>': list, 'map<string,string>': dict, 'integer': int, 'boolean': bool, 'date': str}
 
-CONSTRAINTS = [
+CONSTRAINTS = _live(lambda: [
  ('LC-01', 'Instance identity', '`id` + `version` is unique within an architecture dataset', 'enforced', '`sdem check`'),
  ('LC-02', 'Entity typing', 'every instance\'s `type` is a concrete, non-artefact entity type of the architecture dataset\'s level', 'enforced', '`sdem check`'),
  ('LC-03', 'Within-level relationships', 'every relationship matches a within-level row of its level (through inheritance), or is `association`', 'enforced', '`sdem check`'),
@@ -51,7 +51,7 @@ CONSTRAINTS = [
  ('LC-27', 'Field mappings agree on type', 'a FIELD_MAPPED_TO links a BIAN attribute to a data attribute whose physical type can hold its logical type (a date in a date or timestamp; an amount in a numeric) (metamodel 0.15.0)', 'enforced', '`sdem check` (warning)'),
  ('LC-28', 'Attributes agree with approved links', 'where a record says in an attribute what an approved link says (stored_in and STORED_IN, consumes and SERVED_BY, deployed_on, deployed_as, built_as), both name the same records — the approved link is the fact (metamodel 0.16.0, AT-01)', 'enforced', '`sdem check` (warning)'),
  ('LC-29', 'A column\'s type can hold what its name says', 'a data attribute named as an amount, a currency code, a date or time, or an identifier has a physical type of a family that can hold it — an amount is not a date, an identifier is not money (found by the public twin, F7; read from the last word of the name, and only where the type is unmistakable)', 'enforced', '`sdem check` (warning)'),
-]
+])
 
 
 def _j(p): return _jload(Path(p))
