@@ -4,7 +4,7 @@ with source reference, verification, reasoning and confidence, and the design de
 Generated from the entity catalogue (metamodel/a1…a4-*.json); the test suite checks it is current.
 """
 from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
-from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
+from .identity import T as _T, layer as _L, live as _live  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 from pathlib import Path
 from collections import Counter
 import argparse, json
@@ -12,7 +12,7 @@ from sdem.metamodel import Metamodel, MM_DIR, LEVEL_FILES
 from sdem.terms import apply as _terms
 
 DOC = MM_DIR.parent / 'docs' / 'reference' / 'architecture-entity-design.md'
-NAMES = {_L('business'): 'A1 Business Architecture', _L('bian'): 'A2 Service Domain Architecture', _L('application'): 'A3 Application Architecture', _L('technology'): 'A4 Technology Architecture'}
+NAMES = _live(lambda: {_L('business'): f'{_L("business")} Business Architecture', _L('bian'): f'{_L("bian")} Service Domain Architecture', _L('application'): f'{_L("application")} Application Architecture', _L('technology'): f'{_L("technology")} Technology Architecture'})
 SOURCE = {'bian_reference': 'BIAN reference', 'bian_aligned': 'aligned to BIAN', 'archimate_native': 'ArchiMate native', 'archimate_aligned': 'aligned to ArchiMate',
           'togaf_informed': 'TOGAF-informed', 'sdem_extension': 'SDEM extension', 'sdmm_extension': 'SDEM extension', 'bank_extension': 'institution extension'}
 STATUS = {'confirmed_in_official_source': 'concept confirmed', 'pending_release_validation': 'pending BIAN release validation',
@@ -32,7 +32,7 @@ def render():
            '2. **One concept, one entity.** Where a standard defines the concept exactly, SDEM uses it unchanged and names the standard and chapter.',
            '3. **Extensions are explicit.** Where SDEM needs something no standard defines, the entity is marked as an SDEM extension, names the standard concept it builds on, and records why.',
            '4. **Artefacts are documents, not things.** BIAN\'s Business Object Model, wireframes and Semantic APIs are citable as evidence but never instantiated or used as a relationship end.',
-           '5. **Abstract types exist only for typing.** `A4.InfrastructureComponent` lets a relationship type target "any infrastructure"; it is never instantiated.', '',
+           f'5. **Abstract types exist only for typing.** `{_T("technology.InfrastructureComponent")}` lets a relationship type target "any infrastructure"; it is never instantiated.', '',
            '## 2. How source, verification and confidence are recorded', '',
            '| Field | Meaning |', '|---|---|',
            '| Source reference | standard, release, concept, locator (chapter or page) and link, from the entity record |',
@@ -64,10 +64,10 @@ def render():
             '| Entity | Confidence | Built on |', '|---|---|---|']
     out += [f"| `{e['type']}` | {e['confidence']} | {e['reference']['standard']}: {e['reference']['concept']} |" for e in weak]
     out += ['', f'## {n + 2}. Review points', '',
-            '- **`A1.BusinessCapability` is rated medium** under the single confidence rule: its recorded source is BIAN\'s Business Capability Model with a *conceptual* alignment. ArchiMate defines Capability exactly, so re-sourcing the entity to ArchiMate would make it high.',
+            f'- **`{_T("business.BusinessCapability")}` is rated medium** under the single confidence rule: its recorded source is BIAN\'s Business Capability Model with a *conceptual* alignment. ArchiMate defines Capability exactly, so re-sourcing the entity to ArchiMate would make it high.',
             '- **All 13 BIAN reference entities await validation against a licensed BIAN release**; their concepts are checked only against the public portal.',
             '- **The ArchiMate entities are confirmed as concepts, not as specification text.** Reading the ArchiMate 3.2 specification (free Open Group account) would upgrade their verification; it would not change their confidence.',
-            '- **`A3.SolutionBuildingBlock` rests on TOGAF**, which is login-gated; its definition is SDEM\'s paraphrase.', '',
+            f'- **`{_T("application.SolutionBuildingBlock")}` rests on TOGAF**, which is login-gated; its definition is SDEM\'s paraphrase.', '',
             '## Related', '', '- [`logical-data-model.md`](logical-data-model.md) — the Logical Data Model assembled from the entities, attributes and relationships.',
             '- [`architecture-attribute-design.md`](architecture-attribute-design.md) — the attributes of each entity type.',
             '- [`relationships-planning.md`](relationships-planning.md) — every link allowed inside each architecture.',

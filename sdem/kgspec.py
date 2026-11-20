@@ -5,7 +5,7 @@ schema/impact-rules.json, metamodel/level-relationships.json and the entity cata
 versioning, query and load requirements written here. Regenerate with `python -m sdem.kgspec`; CI checks it.
 """
 from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
-from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
+from .identity import T as _T, layer as _L, live as _live  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 from pathlib import Path
 from collections import Counter
 import argparse, json
@@ -14,9 +14,9 @@ from sdem.terms import apply as _terms
 
 ROOT = MM_DIR.parent
 DOC = ROOT / 'docs' / 'design' / 'knowledge-graph-spec.md'
-LEVEL_NAMES = {_L('business'): 'A1 Business Architecture', _L('bian'): 'A2 Service Domain Architecture', _L('application'): 'A3 Application Architecture', _L('technology'): 'A4 Technology Architecture'}
-OWNER = {_L('business'): 'business architecture', _L('bian'): 'BIAN alignment (enterprise architecture)', _L('application'): 'application architecture', _L('technology'): 'infrastructure / platform engineering'}
-SOURCE = {_L('business'): 'EA tool — capability, value-stream and process models', _L('bian'): 'BIAN workbench / the bank\'s BIAN alignment', _L('application'): 'application portfolio, API catalogue, data models', _L('technology'): 'CMDB, deployment manifests'}
+LEVEL_NAMES = _live(lambda: {_L('business'): f'{_L("business")} Business Architecture', _L('bian'): f'{_L("bian")} Service Domain Architecture', _L('application'): f'{_L("application")} Application Architecture', _L('technology'): f'{_L("technology")} Technology Architecture'})
+OWNER = _live(lambda: {_L('business'): 'business architecture', _L('bian'): 'BIAN alignment (enterprise architecture)', _L('application'): 'application architecture', _L('technology'): 'infrastructure / platform engineering'})
+SOURCE = _live(lambda: {_L('business'): 'EA tool — capability, value-stream and process models', _L('bian'): 'BIAN workbench / the bank\'s BIAN alignment', _L('application'): 'application portfolio, API catalogue, data models', _L('technology'): 'CMDB, deployment manifests'})
 
 
 def _j(p): return _jload(Path(p))
@@ -50,7 +50,7 @@ def render():
             'Four **local graphs**, one per architecture level, each owned by the team that governs that level, and one **federated graph** that holds only the approved links between levels and resolves each link\'s ends into the local graphs. The federated graph never copies a local graph\'s content and never holds a proposal. Architects design and manage the **mapping model** (the cross-level rules); the engine reads both kinds of graph, applies that model and **builds the mapping set**; architects review its output, and only approved records become federated edges.', '',
             '```mermaid', 'flowchart TB',
             '    subgraph SOURCES[Source tools]', '      T1[EA tool]', '      T2[BIAN workbench]', '      T3[Application portfolio]', '      T4[CMDB]', '    end',
-            '    subgraph LOCAL[Local graphs — one per level]', '      L1[(A1 Business)]', '      L2[(A2 Service Domain)]', '      L3[(A3 Application)]', '      L4[(A4 Technology)]', '    end',
+            '    subgraph LOCAL[Local graphs — one per level]', f'      L1[({_L("business")} Business)]', f'      L2[({_L("bian")} Service Domain)]', f'      L3[({_L("application")} Application)]', f'      L4[({_L("technology")} Technology)]', '    end',
             '    MD[[Mapping set — approved cross-level links]]', '    FED[(Federated graph)]', '    Q[Trace · Impact · Unmapped]',
             '    T1 -->|adapter → architecture dataset| L1', '    T2 -->|adapter → architecture dataset| L2', '    T3 -->|adapter → architecture dataset| L3', '    T4 -->|adapter → architecture dataset| L4',
             '    MMOD[Relationship rules model] --> ENG', '    ARCH[Architect] -->|designs| MMOD', '    ENG[Inference engine] -->|builds| MD', '    ARCH -->|reviews| MD',
@@ -70,7 +70,7 @@ def render():
             '| Field | Type | Required | Note |', '|---|---|---|---|']
     for n, t, r, d in _schema_rows(lm['$defs']['instance']):
         note = {'id': 'node key; see §4 identity', 'type': 'an entity from the catalogue; concrete, never abstract or artefact', 'version': 'the instance\'s version, matched by mapping ends',
-                'attributes': 'level-specific properties, including the join keys of §2.3', 'canonical_id': 'the external reference identity (e.g. a BIAN id) on A2 nodes'}.get(n, d)
+                'attributes': 'level-specific properties, including the join keys of §2.3', 'canonical_id': f'the external reference identity (e.g. a BIAN id) on {_L("bian")} nodes'}.get(n, d)
         out.append(f"| `{n}` | {t} | {r} | {note} |")
     out += ['', 'Graph header fields (one per local graph): ' + ', '.join(f"`{k}`" for k in lm['properties'] if k not in ('instances', 'relationships')) + ' — `model_version` is the local graph\'s version (§5).', '',
             '### 2.2 Edge schema (every level)', '', 'One edge per relationship in the architecture dataset, from `relationship`:', '', '| Field | Type | Required |', '|---|---|---|']
@@ -94,15 +94,15 @@ def render():
     out += ['## 3. Federated graph', '', '### 3.1 Edge types — the registry relationships', '', '| Relationship | Source node type → target node type | Cardinality | Perspective | Authority |', '|---|---|---|---|---|']
     for r in reg['relationships']:
         out.append(f"| `{r['relationship']}` ({r['mapping_type_id']}) | {r['source_type']} → {r['target_type']} | {r['cardinality'].replace('_', ' ')} | {r['perspective']} | {r['authority']} |")
-    out += ['', 'Adjacent levels only (A1→A2, A2→A3, A3→A4). A level-skipping answer is a path, never a stored edge. The 41 candidate and derived rows of the plan are never federated edges.', '',
+    out += ['', f'Adjacent levels only ({_L("business")}→{_L("bian")}, {_L("bian")}→{_L("application")}, {_L("application")}→{_L("technology")}). A level-skipping answer is a path, never a stored edge. The 41 candidate and derived rows of the plan are never federated edges.', '',
             '### 3.2 Edge schema', '', 'One edge per approved mapping record; its fields become the edge\'s properties (`schema/relationship-registry.schema.json` › `mapping`):', '', '| Field | Type | Required |', '|---|---|---|']
     for n, t, r, d in _schema_rows(ms['$defs']['mapping']):
         out.append(f"| `{n}` | {t} | {r} |")
     out += ['', 'Each end (`source`, `target`) is a reference, not a copy: ' + ', '.join(f"`{n}`" for n, *_ in _schema_rows(ms['$defs']['entity'])) + '.', '',
-            '### 3.3 Resolving an edge\'s ends', '', '1. The end\'s `type` prefix names the level, and therefore the local graph.', '2. The local graph must contain a node with that `id` and `version`.', '3. The node\'s concrete type must be the end\'s `type` or a descendant of it (is-a) — so a `DEPLOYED_ON` edge to `A4.InfrastructureComponent` resolves to a node, system software or device.', '4. An end that does not resolve makes the edge unresolved: reported, not used.', '']
+            '### 3.3 Resolving an edge\'s ends', '', '1. The end\'s `type` prefix names the level, and therefore the local graph.', '2. The local graph must contain a node with that `id` and `version`.', f'3. The node\'s concrete type must be the end\'s `type` or a descendant of it (is-a) — so a `DEPLOYED_ON` edge to `{_T("technology.InfrastructureComponent")}` resolves to a node, system software or device.', '4. An end that does not resolve makes the edge unresolved: reported, not used.', '']
     req('F', 'Load an edge only from a record with `status: approved`; keep the other statuses in the mapping set for history but never in answers unless a query asks for them explicitly.', 'relationship-registry.schema.json status', 'built (`--status`)')
     req('F', 'Resolve every edge end into its local graph by level prefix, id, version and is-a; report unresolved ends and exclude those edges.', '§3.3', 'built (`sdem check`)')
-    req('F', 'Store only adjacent-level edges of the registry relationships — and the direct A1→A3 types the owner named (D9, 2026-11-16, `skips_level`); derive every other level-skipping answer as a path with the mapping id of every hop.', 'relationship-types.json', 'built')
+    req('F', f'Store only adjacent-level edges of the registry relationships — and the direct {_L("business")}→{_L("application")} types the owner named (D9, 2026-11-16, `skips_level`); derive every other level-skipping answer as a path with the mapping id of every hop.', 'relationship-types.json', 'built')
     req('F', 'Collapse duplicate edges between the same two nodes with the same relationship into one answer hop listing every mapping id.', '`walk` via[\'also\']', 'built')
     out += ['### 3.4 Federated graph requirements'] + inline('F')
 
@@ -110,7 +110,7 @@ def render():
     out += ['## 4. Identity', '', 'The federated graph points into the local graphs by id. These rules keep those pointers valid.', '']
     req('I', 'A node id is unique within its level and stable for the life of the thing it names; it is never reused for a different thing, even after retirement.', 'new requirement', 'not enforced (uniqueness within an architecture dataset is checked; stability across versions is not)')
     req('I', 'A rename changes `name`, never `id`. A genuine re-keying in a source tool is handled as retire-and-add: the old node is retired, the new one added, and the mappings to the old one are superseded by mappings to the new one.', 'new requirement; supersession', 'not built (needs architecture dataset diff)')
-    req('I', 'A2 nodes that correspond to a BIAN concept carry `canonical_id`; the federated edge\'s A2 end repeats it, and BIAN-authority edges require it before approval.', 'relationship-registry.schema.json; validator', 'built')
+    req('I', f'{_L("bian")} nodes that correspond to a BIAN concept carry `canonical_id`; the federated edge\'s {_L("bian")} end repeats it, and BIAN-authority edges require it before approval.', 'relationship-registry.schema.json; validator', 'built')
     req('I', 'Institution aliases (asset-type, qualifier, field and glossary aliases) are node attributes, never alternative ids.', 'export-conventions.json', 'built (convention)')
     out += inline('I')
 
@@ -126,14 +126,14 @@ def render():
 
     # ---- 6 queries
     out += ['## 6. Queries the graphs must answer', '']
-    Q = [('Trace', 'from any node, follow approved edges down (towards A4) or up (towards A1), optionally through within-level part-whole links; every hop shows the mapping id', '`sdem trace`, `--follow-composition`', 'built'),
+    Q = [('Trace', f'from any node, follow approved edges down (towards {_L("technology")}) or up (towards {_L("business")}), optionally through within-level part-whole links; every hop shows the mapping id', '`sdem trace`, `--follow-composition`', 'built'),
          ('Impact', f"given a node and a change kind ({', '.join(imp['kinds'])}), classify every dependent node design_change_required / review_required / no_impact and list the edges to supersede", '`sdem impact`, impact-rules.json', 'built'),
          ('Check', 'validate the four local graphs and the federated edges; report every unresolved or disallowed item', '`sdem check`', 'built'),
          ('Unmapped', 'list nodes of a level with no approved cross-level edge where the plan expects one — the engine\'s work list', '`sdem query --unmapped` (GS-Q-04)', 'built'),
          ('History', 'for an edge or a node, list its superseded predecessors and the baselines it appeared in', 'mapping-set history', 'not built'),
          ('Stats', 'counts of nodes, edges and statuses per level', '`sdem stats`', 'built'),
          ('Climb to the whole', 'an upward trace with part-whole following also climbs from a part to its whole inside a level (an API operation\'s operation to its Service Domain), so a trace from an API reaches the capability', 'knowledge-graph-design.md, limit of path F2', 'not built'),
-         ('Networks', 'a platform depends on the communication network it is connected to (RA4-37) — its own, or that of the node it runs on — so a trace down reaches the network and the impact of a change to a network reaches the platforms on it, what is deployed on them and on up to A1; each such hop is `CONNECTED_TO` via RA4-37; from metamodel 0.10.0 also a shape to the network zone that holds it (RA4-38) and a zone to the zone it is part of (RA4-39 — RA4-27 before zones were re-aligned to ArchiMate Grouping), so a change to a zone reaches everything in it (owner\'s decisions, 2026-11-14)', '`FederatedGraph.network_edges`, `sdem trace`, `sdem impact`', 'built')]
+         ('Networks', f'a platform depends on the communication network it is connected to (RA4-37) — its own, or that of the node it runs on — so a trace down reaches the network and the impact of a change to a network reaches the platforms on it, what is deployed on them and on up to {_L("business")}; each such hop is `CONNECTED_TO` via RA4-37; from metamodel 0.10.0 also a shape to the network zone that holds it (RA4-38) and a zone to the zone it is part of (RA4-39 — RA4-27 before zones were re-aligned to ArchiMate Grouping), so a change to a zone reaches everything in it (owner\'s decisions, 2026-11-14)', '`FederatedGraph.network_edges`, `sdem trace`, `sdem impact`', 'built')]
     out += ['| Query | Must answer | Implemented by | Status |', '|---|---|---|---|']
     for name, text, impl, st in Q:
         rid = req('Q', f"{name}: {text}.", impl, st); out.append(f"| {rid} {name} | {text} | {impl} | {st} |")
@@ -197,7 +197,7 @@ def render():
      ('Instance re-keyed in its tool', 'an application gets a new id', 'as removed + added, then C-11 supersedes the old mappings with new ones (KG-I-02)', 'approve the replacements'),
      ('Mapping approved, rejected or superseded', 'an architect reviews the queue', 'C-11 → C-09 → C-10 → C-12 → C-06 (federated)', 'the decision itself'),
      ('Mapping rule changed', 'a threshold, alias convention or a rule that produced a wrong link', 'C-01b edit → C-17 (acceptance cases rerun and scored) → C-08 rebuilds the affected mapping-set records → C-11', 'architect adopts the rule only if the scores hold'),
-     ('BIAN release', 'a new Service Landscape version', 'C-01 (A2 rows and catalogue) → C-03 for A2 → C-04 → C-05 → C-06 → C-07 → C-08 → C-11', 'review changed A2 mappings'),
+     ('BIAN release', 'a new Service Landscape version', f'C-01 ({_L("bian")} rows and catalogue) → C-03 for {_L("bian")} → C-04 → C-05 → C-06 → C-07 → C-08 → C-11', f'review changed {_L("bian")} mappings'),
     ]
     for row in W: out.append('| ' + ' | '.join(row) + ' |')
     out += ['', 'Every workflow ends with C-06 rebuilding the graphs; no component edits a graph in place.', '']

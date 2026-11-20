@@ -5,7 +5,7 @@ AID gaps, controls); the page only displays the results and shows the exact `sde
 no network, no AI. Regenerate after a change.
 """
 from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
-from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
+from .identity import T as _T, layer as _L, live as _live  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 import argparse, collections, datetime, html, json, re, sys
 from pathlib import Path
 
@@ -13,7 +13,7 @@ from .store import GraphReader, stale_inputs
 
 from .paths import DATA_ROOT as ROOT, repo_path
 from .layers import DATASET_FILES as FILES, titled   # LR-09
-LEVEL_NAMES = titled({_L('business'): 'A1 Business', _L('bian'): 'A2 Service domain (BIAN)', _L('application'): 'A3 Application', _L('technology'): 'A4 Technology'})
+LEVEL_NAMES = _live(lambda: titled({_L('business'): f'{_L("business")} Business', _L('bian'): f'{_L("bian")} Service domain (BIAN)', _L('application'): f'{_L("application")} Application', _L('technology'): f'{_L("technology")} Technology'}))
 KINDS = ('modify', 'rehost', 'replace', 'retire')
 
 

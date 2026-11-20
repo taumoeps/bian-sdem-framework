@@ -6,11 +6,11 @@
   · AID-C01…C06 — a connection for every A4 shape linked to nothing (LC-21): each a link marked inferred, with the rule, what it read and
     how sure, for a person to confirm or reject by the shape's id. A shape no rule reaches is unresolved, never guessed.
 """
-from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
+from .identity import T as _T, layer as _L, live as _live  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 import re
 
-PLATFORMS = (_T('technology.Node'), _T('technology.Device'), _T('technology.SystemSoftware'))
-NOT_SHAPES = (_T('technology.CommunicationNetwork'), _T('technology.NetworkZone'), _T('technology.DeploymentEnvironment'), _T('technology.Path'), _T('technology.Location'))   # a location is a place (0.17.0)
+PLATFORMS = _live(lambda: (_T('technology.Node'), _T('technology.Device'), _T('technology.SystemSoftware')))
+NOT_SHAPES = _live(lambda: (_T('technology.CommunicationNetwork'), _T('technology.NetworkZone'), _T('technology.DeploymentEnvironment'), _T('technology.Path'), _T('technology.Location')))   # a location is a place (0.17.0)
 DATABASE = re.compile(r'postgres|mysql|oracle|sql server|database|\bdb2?\b|redis|mongo|cassandra', re.I)
 
 

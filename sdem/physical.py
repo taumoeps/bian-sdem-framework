@@ -7,6 +7,7 @@ reference, reasoning and confidence travel with every property as `x-sdem-*` ann
 schema cannot see (references, natural keys, cardinality) stays with `sdem check` (sdem/conformance.py).
 Usage: python -m sdem.physical [--check]
 """
+from .identity import T as _T, layer as _L  # ST-01…ST-05, DL-07: layers and types by id; their numbers computed
 from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
 import argparse, json
 from collections import Counter
@@ -111,7 +112,7 @@ def render():
            '', f"Attribute definitions across all schemas: **{tot['high']} high, {tot['medium']} medium, {tot['low']} low** (the 11 common attributes are counted in every schema).", '',
            '## Using a schema', '', '```bash',
            '# any JSON Schema 2020-12 validator, e.g. check-jsonschema',
-           'check-jsonschema --schemafile schema/entities/A1/BusinessProcess.schema.json my-process.json', '',
+           f'check-jsonschema --schemafile schema/entities/{_L("business")}/BusinessProcess.schema.json my-process.json', '',
            '# then the whole architecture dataset and workspace',
            'python -m sdem.graph check architecture datasets/a*.json architecture datasets/mappings.json', '```', '']
     return files, '\n'.join(out)

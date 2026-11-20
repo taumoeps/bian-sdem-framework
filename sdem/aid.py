@@ -17,7 +17,7 @@ Usage: sdem aid project --have a1.json [...] --catalogue bian.json --out DIR · 
 """
 from .identity import for_file as _for_file  # DL-11: what a design's file stores (docs/design/sdem-data-layer-spec.md)
 from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
-from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
+from .identity import T as _T, layer as _L, live as _live  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 import argparse, datetime, hashlib, json, re, sys
 from pathlib import Path
 
@@ -30,14 +30,14 @@ from .validate import load_registry
 MEDIUM, LOW = 0.6, 0.4
 from .paths import DATA_ROOT as _DATA_ROOT
 SCHEMA = _DATA_ROOT / 'schema' / 'projection.schema.json'
-FILES = {_L('business'): 'projected-a1-business.json', _L('bian'): 'projected-a2-service-domain.json', _L('application'): 'projected-a3-application.json', _L('technology'): 'projected-a4-technology.json'}
+FILES = _live(lambda: {_L('business'): 'projected-a1-business.json', _L('bian'): 'projected-a2-service-domain.json', _L('application'): 'projected-a3-application.json', _L('technology'): 'projected-a4-technology.json'})
 CATALOGUE_RULE = 'BIAN catalogue reference'
 PROVENANCE = ('step', 'rule', 'source_reference', 'inferred_from', 'reasoning', 'confidence')
 # AID's own rule names → the metamodel rule whose published basis they rest on (relationship-rules.json `source_reference`)
-RULE_BASIS = {'BIAN container pattern': 'S17', 'BIAN REST mapping': 'S24', 'named by A4': 'S32', 'domain name': 'S01'}
+RULE_BASIS = {'BIAN container pattern': 'S17', 'BIAN REST mapping': 'S24', f'named by {_L("technology")}': 'S32', 'domain name': 'S01'}
 # AID's own rules → the kind of evidence they rest on (AID-E01); an engine rule brings its proposal's own class
 RULE_CLASS = {'BIAN container pattern': 'pattern', 'BIAN REST mapping': 'pattern', 'domain name': 'pattern', 'service group': 'pattern',
-              'named by A4': 'attribute_join', 'S33 (A4 hosts)': 'attribute_join', 'S32 (deployment component_id)': 'attribute_join', 'name': 'name_token'}
+              f'named by {_L("technology")}': 'attribute_join', f'S33 ({_L("technology")} hosts)': 'attribute_join', 'S32 (deployment component_id)': 'attribute_join', 'name': 'name_token'}
 
 
 def basis(rule, step=None, catalogue=None):
@@ -187,7 +187,7 @@ def forward_a2(prj, a1, registry):
             if m['target']['id'] not in prj.records[_L('bian')]: prj.take_domain(m['target']['id'], 'F1', m['rationale'], m['confidence'], ev=m.get('evidence_class'))
             prj.link(m['relationship'], src, tgt, 'F1', m['evidence'][0].split(' ')[0].replace('engine_rationale:', ''), [m['source']['id']], m['rationale'] + (' — name-only evidence, capped low (AID-B6)' if conf_of(m) < m['confidence'] else ''), conf_of(m), m.get('evidence_class'))
     prj.steps.append({'step': 'F1', 'domains': sorted(doms)})
-    if not doms: prj.ends.append('projection ends at A1: no business record names a BIAN operation or matches a catalogue domain closely enough')
+    if not doms: prj.ends.append(f'projection ends at {_L("business")}: no business record names a BIAN operation or matches a catalogue domain closely enough')
     return sorted(doms)
 
 
@@ -198,7 +198,7 @@ def forward_a3_a4(prj, domains, a2, project_a4=True):
         dom = next((i for i in a2['instances'] if i['id'] == dom_id), None)
         if not dom: continue
         ops = [o for o in run.of(_T('bian.ServiceOperation')) if (run.domain_of(o['id']) or {}).get('id') == dom_id]
-        if not ops: prj.ends.append(f'{dom_id}: no service operations in the A2 data — no component projected'); continue
+        if not ops: prj.ends.append(f'{dom_id}: no service operations in the {_L("bian")} data — no component projected'); continue
         ev = weakest('pattern', (prj.records[_L('bian')].get(dom_id) or {}).get('projection', {}).get('evidence_class')) or 'pattern'   # no stronger than its domain (AID-E01)
         at = run.get(run.attr(dom, 'asset_type'), _T('bian.AssetType')) if run.attr(dom, 'asset_type') else None
         base = at['name'] if at else _clean(dom['name']); coll = run._collection(base)
@@ -239,14 +239,14 @@ def reverse_a3(prj, a4):
         names = [re.split(r'\s+[—–-]\s+|\s*\(|:', i['name'])[0].strip() for i, k in via if k in ('component_id', 'of_component') and i.get('name')]
         name = max(set(names), key=names.count) if names else cid
         st = prj.record(_L('application'), {'id': cid, 'type': _T('application.ApplicationComponent'), 'version': '1.0', 'name': name},
-                        'R1', 'named by A4', [f"{i['id']}.{k}" for i, k in via],
-                        'an A4 record names this application' + (f'; its name comes from {", ".join(sorted({i["id"] for i, k in via if k in ("component_id", "of_component")}))}' if names else '; nothing else about it is known from A4'), MEDIUM)
+                        'R1', f'named by {_L("technology")}', [f"{i['id']}.{k}" for i, k in via],
+                        f'an {_L("technology")} record names this application' + (f'; its name comes from {", ".join(sorted({i["id"] for i, k in via if k in ("component_id", "of_component")}))}' if names else f'; nothing else about it is known from {_L("technology")}'), MEDIUM)
         stubs.append(st)
         for i, key in via:
-            if key == 'hosts': prj.link('DEPLOYED_ON', st, i, 'R1', 'S33 (A4 hosts)', [f"{i['id']}.hosts"], f"{i['id']} hosts {cid}", MEDIUM)
+            if key == 'hosts': prj.link('DEPLOYED_ON', st, i, 'R1', f'S33 ({_L("technology")} hosts)', [f"{i['id']}.hosts"], f"{i['id']} hosts {cid}", MEDIUM)
             if key == 'component_id' and mm_is(prj, i['type'], _T('technology.Deployment')): prj.link('DEPLOYED_AS', st, i, 'R1', 'S32 (deployment component_id)', [f"{i['id']}.component_id"], f"{i['id']} deploys {cid}", MEDIUM)
     prj.steps.append({'step': 'R1', 'applications': [s['id'] for s in stubs]})
-    if not stubs: prj.ends.append('projection ends at A4: no technology record names an application')
+    if not stubs: prj.ends.append(f'projection ends at {_L("technology")}: no technology record names an application')
     return stubs
 
 
@@ -278,7 +278,7 @@ def reverse_a2(prj, a3, a4=None, registry=None):
     if stubs and not doms: name_fallback(prj, stubs)
     chosen = sorted({i for i, r in prj.records[_L('bian')].items() if r['type'] == _T('bian.ServiceDomain')})
     prj.steps.append({'step': 'R2', 'domains': chosen})
-    if not chosen: prj.ends.append('projection ends at A3: the application data (names, APIs, data entities) does not match any domain in the BIAN catalogue')
+    if not chosen: prj.ends.append(f'projection ends at {_L("application")}: the application data (names, APIs, data entities) does not match any domain in the BIAN catalogue')
     return chosen
 
 
@@ -307,7 +307,7 @@ def name_fallback(prj, stubs):
             if cover == 1 or (len(shared) >= 2 and cover >= 2 / 3): found.append((cover, len(shared), d, sorted(shared)))
         if not found:
             prj.ends.append(f"{st['id']} {st['name']!r}: its name does not say which BIAN service domain it realises — describe its APIs or data "
-                            f"(A3), or connect it yourself (sdem connect <service domain> REALIZED_BY {st['id']} …)"); continue
+                            f"({_L('application')}), or connect it yourself (sdem connect <service domain> REALIZED_BY {st['id']} …)"); continue
         best = max((c, n) for c, n, _, _ in found)
         for c, n, d, shared in found:
             if (c, n) != best: continue
@@ -355,7 +355,7 @@ def project(have, catalogue=None, registry=None, pid=None, created_at=None, eith
         if _L('application') not in H: forward_a3_a4(prj, doms, have[_L('bian')], project_a4=_L('technology') not in H)
         if _L('business') not in H: reverse_a1(prj, doms)
     elif not catalogue:
-        prj.ends.append('no A2 layer and no BIAN catalogue: nothing can be projected through the BIAN layer')
+        prj.ends.append(f'no {_L("bian")} layer and no BIAN catalogue: nothing can be projected through the BIAN layer')
     elif _L('business') in H and _L('application') in H:  # middle gap — the domains both sides support
         fwd = Projection(have, catalogue, mm); f = set(forward_a2(fwd, have[_L('business')], registry))
         rev = Projection(have, catalogue, mm); r = set(reverse_a2(rev, have[_L('application')], have.get(_L('technology')), registry))
@@ -441,7 +441,7 @@ def check(pkg, catalogue=None):
             name_only = pr['evidence_class'] in WEAK_CLASSES if pr.get('evidence_class') else (weak(pr.get('reasoning')) and not re.search(r'\b(implements|invokes|BOM attributes)\b', pr.get('reasoning', '')))
             if pr.get('confidence', 0) > LOW and name_only:
                 issues.append(f"{i['id']}: name-only evidence above low confidence (AID-B6)")
-            if lvl == _L('bian') and (pr.get('rule') != CATALOGUE_RULE or (cat is not None and i['id'] not in cat)): issues.append(f"{i['id']}: an A2 element not taken from the BIAN catalogue")
+            if lvl == _L('bian') and (pr.get('rule') != CATALOGUE_RULE or (cat is not None and i['id'] not in cat)): issues.append(f"{i['id']}: an {_L('bian')} element not taken from the BIAN catalogue")
             if lvl != _L('bian') and not i['id'].startswith('PRJ-') and pr.get('step') != 'R1': issues.append(f"{i['id']}: a projected record must be marked PRJ-")
     for l in pkg['links']['links']:
         pr = l.get('projection') or {}
@@ -516,7 +516,7 @@ def gaps(pkg, real, registry):
         elif i['type'] == _T('application.ApplicationComponent'):
             r_ = inst.get(i['id'])
             row(_L('application'), i, 'matched' if r_ else 'projected only', f"{i['id']} {nm(i['id'])}" if r_ else '—',
-                'the application exists in the real design' + (f" — its real name is “{r_['name']}”, which A4 does not give" if r_ else '') if r_ else 'A4 names an application the real A3 does not have', 'same id')
+                'the application exists in the real design' + (f" — its real name is “{r_['name']}”, which {_L('technology')} does not give" if r_ else '') if r_ else f'{_L("technology")} names an application the real {_L("application")} does not have', 'same id')
         elif i['type'] == _T('application.APIOperation'):
             op = i['projection']['inferred_from'][0]; projected_ops.add(op); r_ = inst.get(impl.get(op))
             pf = f"{i['attributes']['method']} {i['attributes']['path']}"
@@ -528,7 +528,7 @@ def gaps(pkg, real, registry):
     if stubs:
         named = {x for i in real.get(_L('technology'), {}).get('instances', []) for k in ('hosts', 'component_id', 'of_component') for x in _list((i.get('attributes') or {}).get(k))}
         for c in sorted(named - stubs):
-            rows.append({'layer': _L('application'), 'element': c, 'name': nm(c), 'type': 'ApplicationComponent', 'result': 'real only', 'real': c, 'reason': 'an A4 record names it; AID did not project it', 'confidence': None})
+            rows.append({'layer': _L('application'), 'element': c, 'name': nm(c), 'type': 'ApplicationComponent', 'result': 'real only', 'real': c, 'reason': f'an {_L("technology")} record names it; AID did not project it', 'confidence': None})
     if any(i['type'] == _T('application.APIOperation') for i in L.get(_L('application'), {}).get('instances', [])):
         for a in (x for x in real.get(_L('application'), {}).get('instances', []) if x['type'] == _T('application.APIOperation')):
             op = next((o for o, t in impl.items() if t == a['id']), None)
@@ -575,15 +575,15 @@ def gaps(pkg, real, registry):
         P = [r for r in rows if sel(r) and r['result'] != 'real only']; Rr = [r for r in rows if sel(r) and r['result'] != 'projected only']
         m_ = [r for r in rows if sel(r) and r['result'].startswith('matched')]
         if P or Rr: metrics[name] = {'projected': len(P), 'real': len(Rr), 'matched': len(m_), 'precision': round(len(m_) / len(P), 2) if P else None, 'recall': round(len(m_) / len(Rr), 2) if Rr else None}
-    tally('A2 service domains', lambda r: r['layer'] == _L('bian') and r['type'] == 'ServiceDomain')
-    tally('A3 components', lambda r: r['layer'] == _L('application') and r['type'] == 'ApplicationComponent')
+    tally(f'{_L("bian")} service domains', lambda r: r['layer'] == _L('bian') and r['type'] == 'ServiceDomain')
+    tally(f'{_L("application")} components', lambda r: r['layer'] == _L('application') and r['type'] == 'ApplicationComponent')
     apis = [r for r in rows if r['type'] == 'APIOperation' and r['result'] != 'real only']
-    if apis: metrics['A3 APIs (method and path)'] = {'projected': len(apis), 'compared': sum(r['result'] in ('matched', 'differs') for r in apis), 'matched': sum(r['result'] == 'matched' for r in apis),
+    if apis: metrics[f'{_L("application")} APIs (method and path)'] = {'projected': len(apis), 'compared': sum(r['result'] in ('matched', 'differs') for r in apis), 'matched': sum(r['result'] == 'matched' for r in apis),
                                                     'differs': sum(r['result'] == 'differs' for r in apis), 'projected only': sum(r['result'] == 'projected only' for r in apis),
                                                     'real only': sum(r['type'] == 'APIOperation' and r['result'] == 'real only' for r in rows)}
-    tally('A4 deployments', lambda r: r['layer'] == _L('technology'))
-    tally('A1 capability candidates', lambda r: r['layer'] == _L('business') and r['type'] == 'BusinessCapability')
-    tally('A1 process candidates', lambda r: r['layer'] == _L('business') and r['type'] == 'BusinessProcess')
+    tally(f'{_L("technology")} deployments', lambda r: r['layer'] == _L('technology'))
+    tally(f'{_L("business")} capability candidates', lambda r: r['layer'] == _L('business') and r['type'] == 'BusinessCapability')
+    tally(f'{_L("business")} process candidates', lambda r: r['layer'] == _L('business') and r['type'] == 'BusinessProcess')
     if link_rows:
         Rl = {k for k in real_keys if k[1] in {x['relationship'] for x in link_rows}}; m_ = sum(x['result'] == 'matched' for x in link_rows)
         metrics['links between real elements'] = {'projected': len(link_rows), 'real': len(Rl), 'matched': m_, 'precision': round(m_ / len(link_rows), 2), 'recall': round(m_ / len(Rl), 2) if Rl else None}
@@ -636,7 +636,7 @@ def main(argv=None):
         ws = Path(a.estate)
         if not (ws / 'mappings.json').exists(): print(f'ERROR: {ws}: no workspace here — start one with sdem new', file=sys.stderr); return 2
         have = {d['level']: d for f in ('a1-business.json', 'a3-application.json', 'a4-technology.json') if (ws / f).exists() for d in [j(ws / f)] if d.get('instances')}
-        if _L('business') not in have: print(f'ERROR: {ws}: no business layer (A1) yet — AID plans from what the business does; add it first', file=sys.stderr); return 2
+        if _L('business') not in have: print(f'ERROR: {ws}: no business layer ({_L("business")}) yet — AID plans from what the business does; add it first', file=sys.stderr); return 2
         a.catalogue = a.catalogue or (str(ws / 'a2-service-domain.json') if (ws / 'a2-service-domain.json').exists() else None)
         a.registry = a.registry or str(ws / 'mappings.json')
         if not a.out:

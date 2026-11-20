@@ -75,8 +75,9 @@ class NamesInCode(unittest.TestCase):   # step 3b: SDEM's code names layers and 
         self.assertEqual(bad, [], 'use the other quote inside an f-string')
 
     def test_labels_and_messages_that_carry_a_code_only_go_down(self):
-        """The ratchet: text that carries an A-number ('A1 Business', 'not an A2 dataset') is right while the stack is 0.19's; step 4
-        computes it. A module may lower its count (then lower it here), never raise it."""
+        """The ratchet: text that carries an A-number is computed (DL-07, step 4a: 266 labels and messages). What is left names no
+        layer of the stack: record and dataset ids (HIS-A3-…, …-A2), an organisation's own type names (BANK.A3.…), the raw page
+        templates (their labels come from data) and history. A module may lower its count (then lower it here), never raise it."""
         import collections, re
         pat = re.compile(r'\bA[1-4](\.[A-Za-z]|\b)')
         now = collections.Counter(m for m, _, s in _strings() if pat.search(s))

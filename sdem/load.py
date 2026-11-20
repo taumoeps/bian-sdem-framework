@@ -111,8 +111,8 @@ def plan(estate, ds, keep, a2=None, mm=None, today=None):
         res['loaded'][lvl] = [i['id'] for i in new_i]; res['links'] += len(new_r)
     if a2:
         d = _j(a2)
-        if d.get('level') != _L('bian'): raise LoadError(f'--a2 {a2}: not an A2 dataset')
-        if _L('bian') in current: res['notes'].append('the workspace already has an A2 dataset — kept, --a2 not used')
+        if d.get('level') != _L('bian'): raise LoadError(f'--a2 {a2}: not an {_L("bian")} dataset')
+        if _L('bian') in current: res['notes'].append(f'the workspace already has an {_L("bian")} dataset — kept, --a2 not used')
         else: after[_L('bian')] = changed[_L('bian')] = d; res['a2_added'] = str(a2)
     registry = _j(estate / 'mappings.json') if (estate / 'mappings.json').exists() else {**copy.deepcopy(EMPTY_REGISTRY), 'metamodel_version': mm.version}
     fg = FederatedGraph([LevelGraph(d, mm) for d in after.values()], [registry], mm)
@@ -184,7 +184,7 @@ def main(argv=None):
     g.add_argument('--only', nargs='+', metavar='ID', help='load only these')
     g.add_argument('--exclude', nargs='+', metavar='ID', help='load all but these')
     g.add_argument('--keep', metavar='FILE', help='load the ids listed in a file (one per line, # comments)')
-    ap.add_argument('--a2', metavar='FILE', help="your organisation's A2 dataset (BIAN catalogue), added if the workspace has none")
+    ap.add_argument('--a2', metavar='FILE', help=f"your organisation's {_L('bian')} dataset (BIAN catalogue), added if the workspace has none")
     ap.add_argument('--dry-run', action='store_true', help='check and show what would be loaded; write nothing')
     ap.add_argument('--json', action='store_true')
     a = ap.parse_args(argv)
@@ -199,7 +199,7 @@ def main(argv=None):
     if a.json: print(json.dumps(res, indent=2, ensure_ascii=False)); return 0
     n = {l: len(v) for l, v in res['loaded'].items()}
     print(('would load' if a.dry_run else f"loaded ({res['load_id']})") + f" into {a.estate}: " + ', '.join(f'{l} {v} entities' for l, v in sorted(n.items()))
-          + f", {res['links']} links inside architectures" + (f"; A2 dataset added from {res['a2_added']}" if res['a2_added'] else ''))
+          + f", {res['links']} links inside architectures" + (f"; {_L('bian')} dataset added from {res['a2_added']}" if res['a2_added'] else ''))
     if res['excluded']: print(f"excluded ({len(res['excluded'])}): " + ', '.join(res['excluded']))
     dg = res['designs']; rc = res['reconciliation']
     print(f"design records: {dg['pages']} page(s); gap records: {dg['gaps']} — what did not fit an entity, kept beside the workspace"

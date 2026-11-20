@@ -1,5 +1,6 @@
 """CR-04: what the common options mean, in one place — given to every `sdem` command's option that does not say it itself, so `--help`,
 `sdem commands --json` and the CLI reference never leave an option undescribed. An option's own help always wins."""
+from .identity import T as _T, layer as _L  # ST-01…ST-05, DL-07: layers and types by id; their numbers computed
 import argparse
 
 COMMON = {
@@ -11,7 +12,7 @@ COMMON = {
     '--agent': 'the agent acting, by its name (e.g. sdem-a3-agent)',
     '--reason': 'why — recorded with the decision',
     '--note': 'a note, recorded with it',
-    '--layer': 'the layer: A1 business, A2 BIAN, A3 application, A4 technology (or a layer your profile adds)',
+    '--layer': f'the layer: {_L("business")} business, {_L("bian")} BIAN, {_L("application")} application, {_L("technology")} technology (or a layer your profile adds)',
     '--out': 'where to write the result (a file or folder)',
     '--profile': "the organisation profile to use (otherwise the workspace's sdem-profile.json)",
     '--patterns': 'a table of service domain → functional pattern, asset type (CSV: Service Domain, pattern, asset type)',

@@ -4,7 +4,7 @@ The JSON is the record; the diagram is a projection of it. Only entries whose ve
 'verified' or 'verified_intent_or_target_only' are drawn (B01 is excluded: unpublished).
 """
 from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
-from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
+from .identity import T as _T, layer as _L, live as _live  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 from pathlib import Path
 import argparse, json, sys
 from sdem.metamodel import Metamodel, MM_DIR
@@ -22,8 +22,8 @@ DECISION_STYLE = {
 }
 NOT_DRAWN = ('bian_internal', 'not_encodable', 'not_a_mapping', 'historical_method', 'subsumed')
 DRAWN = ('verified', 'verified_intent_or_target_only')
-LEVEL_NAMES = {_L('business'): 'A1 Business Architecture', _L('bian'): 'A2 Service Domain Architecture',
-               _L('application'): 'A3 Application Architecture', _L('technology'): 'A4 Technology Architecture'}
+LEVEL_NAMES = _live(lambda: {_L('business'): f'{_L("business")} Business Architecture', _L('bian'): f'{_L("bian")} Service Domain Architecture',
+               _L('application'): f'{_L("application")} Application Architecture', _L('technology'): f'{_L("technology")} Technology Architecture'})
 
 
 def load_official(path=OFFICIAL):
@@ -55,7 +55,7 @@ def render(official=None, metamodel=None):
             tag = '\\n(artefact)' if e.get('artefact') else '\\n(abstract)' if e.get('abstract') else ''
             out.append(f'  rectangle "{t}{tag}" as {alias[t]}')
         out.append('}'); out.append('')
-    out.append(f"' --- B: BIAN's own relationships inside A2 ({len(b)})")
+    out.append(f"' --- B: BIAN's own relationships inside {_L('bian')} ({len(b)})")
     for m in b:
         out.append(f"{alias[m['source']]} -[#1565C0]-> {alias[m['target']]} : {m['id']} {m['relation']}")
     out.append(''); out.append(f"' --- S: cross-level mappings with BIAN guidance ({len(s_solid)} solid, {len(s_dashed)} dashed = intent/target only)")
@@ -125,7 +125,7 @@ def render_new(new=None, metamodel=None):
         n = sum(1 for m in entries if m['rule_decision'] == dec)
         out.append(f"  <color:{colour}>{(style or 'solid').capitalize()}</color>: {label} ({n})")
     out.append("  Grey entity: no cross-level mapping by decision (artefacts are never endpoints; actors and roles are organisation, not mappings)")
-    out.append(f"  Not drawn: {', '.join(m['id'] + ' ' + m['rule_decision'].replace('_', ' ') for m in excluded)}; B02–B15 inside A2 are on official-mappings.puml")
+    out.append(f"  Not drawn: {', '.join(m['id'] + ' ' + m['rule_decision'].replace('_', ' ') for m in excluded)}; B02–B15 inside {_L('bian')} are on official-mappings.puml")
     out += ['endlegend', '@enduml']
     return _terms('\n'.join(out) + '\n')
 
@@ -163,7 +163,7 @@ def render_levels(metamodel=None, level_rels=None, examples_dir=None):
     out = ['@startuml level-relationships', 'left to right direction',
            'skinparam rectangle {', '  BackgroundColor White', '  BorderColor #424242', '}',
            'skinparam package {', '  BackgroundColor #F5F5F5', '  BorderColor #9E9E9E', '}', 'skinparam ArrowFontSize 9',
-           'title Within-level structure — every level from its reference architecture: A2 BIAN; A1, A3, A4 ArchiMate 3.2 / TOGAF (association permitted everywhere, not drawn)', '']
+           f'title Within-level structure — every level from its reference architecture: {_L("bian")} BIAN; {_L("business")}, {_L("application")}, {_L("technology")} ArchiMate 3.2 / TOGAF (association permitted everywhere, not drawn)', '']
     rows_by_level = {l: [(c['source_type'], c['kind'], c['target_type'], c.get('id', '')) for c in lr['constraints'] if c['level'] == l] for l in (_L('business'), _L('bian'), _L('application'), _L('technology'))}
     for lvl in (_L('business'), _L('bian'), _L('application'), _L('technology')):
         out.append(f'package "{LEVEL_NAMES[lvl]}" as {lvl} {{')
@@ -184,8 +184,8 @@ def render_levels(metamodel=None, level_rels=None, examples_dir=None):
     out += ['legend right', '  Kinds (ArchiMate 3.2): composition solid blue, aggregation dashed blue, realization dashed green, assignment purple,',
             '  serving orange, flow dashed orange, triggering dotted orange, access dotted grey; association is permitted between any two entities of one level and is not drawn',
             '  Every arrow is a constraint row in metamodel/level-relationships.json (ID shown; full table in docs/reference/relationships-planning.md); sdem check rejects any other within-level relationship.',
-            '  Hollow-headed black arrows: catalogue inheritance (extends). A4.InfrastructureComponent is abstract — never instantiated; it is the DEPLOYED_ON target type and every concrete A4 entity is-a InfrastructureComponent.',
-            '  A2 from BIAN (public portal); A1, A3, A4 paraphrased from ArchiMate 3.2 / TOGAF 10 chapter structure (login-gated, unverified) for the concept each entity derives from.',
+            f'  Hollow-headed black arrows: catalogue inheritance (extends). {_T("technology.InfrastructureComponent")} is abstract — never instantiated; it is the DEPLOYED_ON target type and every concrete {_L("technology")} entity is-a InfrastructureComponent.',
+            f'  {_L("bian")} from BIAN (public portal); {_L("business")}, {_L("application")}, {_L("technology")} paraphrased from ArchiMate 3.2 / TOGAF 10 chapter structure (login-gated, unverified) for the concept each entity derives from.',
             'endlegend', '@enduml']
     return _terms('\n'.join(out) + '\n')
 
@@ -227,7 +227,7 @@ def render_merged(new=None, metamodel=None, level_rels=None, examples_dir=None):
             spec = f"#{colour.lstrip('#')}" + (f",{style}" if style else '')
             out.append(f"{alias[m['source']]} -[{spec}]-> {alias[m['target']]} : {text}")
         out.append('')
-    out += ['legend right', '  Light grey thin arrows: within-level constraint rows (ArchiMate kind as label) — A2 from BIAN; A1, A3, A4 from ArchiMate 3.2 / TOGAF']
+    out += ['legend right', f'  Light grey thin arrows: within-level constraint rows (ArchiMate kind as label) — {_L("bian")} from BIAN; {_L("business")}, {_L("application")}, {_L("technology")} from ArchiMate 3.2 / TOGAF']
     for dec, (colour, style, label) in DECISION_STYLE.items():
         n = sum(1 for m in entries if m['rule_decision'] == dec)
         out.append(f"  <color:{colour}>{(style or 'solid').capitalize()}</color>: cross-level {label} ({n})")

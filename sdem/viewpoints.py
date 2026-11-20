@@ -5,15 +5,15 @@ drawn. The layout is computed here, deterministically (DG-05); the SVG carries i
 and stored links are drawn — links inside a layer, and approved connections between layers (DG-03); what has no link is said (DG-04).
 """
 from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
-from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
+from .identity import T as _T, layer as _L, live as _live  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 import argparse, hashlib, html, json, sys
 from pathlib import Path
 
 TEMPLATES_FILE = Path(__file__).with_name('viewpoints.json')
-FILES = {_L('business'): 'a1-business.json', _L('bian'): 'a2-service-domain.json', _L('application'): 'a3-application.json', _L('technology'): 'a4-technology.json'}
+FILES = _live(lambda: {_L('business'): 'a1-business.json', _L('bian'): 'a2-service-domain.json', _L('application'): 'a3-application.json', _L('technology'): 'a4-technology.json'})
 NEST = ('composition', 'aggregation')
 LEAF_W, LEAF_H, PAD, GAP, TITLE, CH, LEFT, MAXROW = 172, 58, 14, 16, 34, 96, 150, 4
-LAYER_CLASS = {_L('business'): 'bus', _L('bian'): 'bian', _L('application'): 'app', _L('technology'): 'tec'}
+LAYER_CLASS = _live(lambda: {_L('business'): 'bus', _L('bian'): 'bian', _L('application'): 'app', _L('technology'): 'tec'})
 e = html.escape
 
 
@@ -147,7 +147,7 @@ def build(D, tid, focus=None):
     """The diagram for one template: {'template', 'svg', 'notes', 'elements', 'lines', 'missing_layers'} (DG-01…DG-12)."""
     T, nt = template(tid), templates()['notation']
     if T.get('layout') == 'zones':
-        z, notes = _zones_build(D, T, nt, focus) if _L('technology') in D.present else (None, ['The workspace has no A4 dataset (a4-technology.json), so this view is empty.'])
+        z, notes = _zones_build(D, T, nt, focus) if _L('technology') in D.present else (None, [f'The workspace has no {_L("technology")} dataset (a4-technology.json), so this view is empty.'])
         drawn = z['drawn'] if z else {}
         edges = _route(D, T, nt, drawn) if drawn else []
         uid = hashlib.sha1(f'{tid}|{focus}'.encode()).hexdigest()[:6]

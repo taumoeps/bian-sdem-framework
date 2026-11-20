@@ -6,7 +6,7 @@
   · zone placements proposed for a person to decide (AID-Z01…AID-Z04), each marked inferred with the signals it read.
 """
 from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
-from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
+from .identity import T as _T, layer as _L, live as _live  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 import json, re
 from functools import lru_cache
 from pathlib import Path
@@ -15,8 +15,8 @@ from .metamodel import ROOT
 
 SIGNALS_FILE = ROOT / 'metamodel' / 'hosting-signals.json'
 RANK = {'low': 1, 'medium': 2, 'high': 3}
-PLATFORMS = (_T('technology.Node'), _T('technology.Device'), _T('technology.SystemSoftware'))
-ZONE = _T('technology.NetworkZone')
+PLATFORMS = _live(lambda: (_T('technology.Node'), _T('technology.Device'), _T('technology.SystemSoftware')))
+# DL-06: the zone type computed where used
 DEFAULT_TEMPLATES = {'cloud': ['cloud', ['dmz', 'internal']], 'on_premises': ['on_premises', ['dmz', 'internal']], 'hybrid': ['cloud', 'on_premises']}
 
 
@@ -92,7 +92,7 @@ def zone_connections(doc, mm):
     ZC-01 level-0 zones with each other (on premises ↔ cloud) · ZC-02 the level-1 zones of one level 0 with each other ·
     ZC-03 a zone with the zone it is part of. Returns [(zone, zone, rule)]."""
     from .conformance import zones_of
-    zones = {i['id']: (i.get('attributes') or {}) for i in doc.get('instances', []) if mm.is_a(i['type'], ZONE)}
+    zones = {i['id']: (i.get('attributes') or {}) for i in doc.get('instances', []) if mm.is_a(i['type'], _T('technology.NetworkZone'))}
     _, parent, _ = zones_of(doc, mm)
     tops = sorted(z for z in zones if zones[z].get('zone_level') == 0)
     out = [(a, b, 'ZC-01') for i, a in enumerate(tops) for b in tops[i + 1:]]
@@ -137,7 +137,7 @@ def template_zones(name, stem):
     recs, links = [], []
     def zone(zid, kind, where, within=None):
         name = f"{LABEL[kind]} — {LABEL[within].lower() if within == 'cloud' else 'on premises' if within else where}{f' ({where})' if within else ''}"
-        recs.append({'id': zid, 'type': ZONE, 'version': '1.0', 'name': name, 'lifecycle_status': 'active',
+        recs.append({'id': zid, 'type': _T('technology.NetworkZone'), 'version': '1.0', 'name': name, 'lifecycle_status': 'active',
                      'description': f"{LABEL[kind]} zone (level {LEVEL_OF[kind]}), from the hosting template '{name}' (sdem new --hosting).",
                      'attributes': {'zone_level': LEVEL_OF[kind], 'zone_kind': kind}})
     where = stem.lower()
@@ -167,10 +167,10 @@ def propose(doc, mm, run, person, now, rejected=(), stem=None):
     shapes, parent, _ = zones_of(doc, mm)
     local = {i['id']: i for i in doc.get('instances', [])}
     hosted = {r['target'] for r in doc.get('relationships', []) if r['kind'] in ('assignment', 'composition', 'aggregation', 'realization')
-              and r['source'] in local and r['target'] in local and not mm.is_a(local[r['source']]['type'], _T('technology.CommunicationNetwork')) and not mm.is_a(local[r['source']]['type'], ZONE)
+              and r['source'] in local and r['target'] in local and not mm.is_a(local[r['source']]['type'], _T('technology.CommunicationNetwork')) and not mm.is_a(local[r['source']]['type'], _T('technology.NetworkZone'))
               and local[r['source']]['type'] != _T('technology.DeploymentEnvironment')}   # AID-Z04: in its host's zone
     hosted |= {i['id'] for i in local.values() if (i.get('attributes') or {}).get('platform_id') in local}   # AID-Z05: a deployment is in the zone of the platform it names, before the link exists
-    zones = {i['id']: (i.get('attributes') or {}) for i in local.values() if mm.is_a(i['type'], ZONE)}
+    zones = {i['id']: (i.get('attributes') or {}) for i in local.values() if mm.is_a(i['type'], _T('technology.NetworkZone'))}
     stem = re.sub(r'[^A-Z0-9]+', '-', (stem or doc.get('model_id') or 'WS').upper()).strip('-')[:24] or 'WS'
     new_zones, links, unresolved, made = [], [], [], {}
     flat = bool(zones) and not any(z.get('zone_level') == 0 for z in zones.values())   # ZF-05: flat zones — no on-premises or cloud zone to place by, and none is created
@@ -208,7 +208,7 @@ def propose(doc, mm, run, person, now, rejected=(), stem=None):
 
 
 def _zone(zid, name, level, kind, run, person, now):
-    return {'id': zid, 'type': ZONE, 'version': '1.0', 'name': name, 'lifecycle_status': 'active',
+    return {'id': zid, 'type': _T('technology.NetworkZone'), 'version': '1.0', 'name': name, 'lifecycle_status': 'active',
             'description': f'Inferred by sdem aid from the organisation\'s hosting policy (PR-32) — a person confirms or rejects it.',
             'attributes': {'zone_level': level, 'zone_kind': kind, 'inferred': {
                 'by': 'sdem aid', 'run': run, 'at': now, 'requested_by': person, 'rule': 'AID-Z01', 'source': 'hosting policy (PR-32)',

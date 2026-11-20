@@ -99,7 +99,7 @@ def flat_note(doc, mm):
 def main(argv=None):
     argv = list(sys.argv[1:] if argv is None else argv)
     if argv[:1] == ['cut']:
-        ap = argparse.ArgumentParser(prog='sdem zones cut', description='What is lost when the connection between two zones fails (ZC-05): the A4 links that cross it and what depends on their ends.')
+        ap = argparse.ArgumentParser(prog='sdem zones cut', description=f'What is lost when the connection between two zones fails (ZC-05): the {_L("technology")} links that cross it and what depends on their ends.')
         ap.add_argument('a', metavar='ZONE'); ap.add_argument('b', metavar='ZONE')
         ap.add_argument('--workspace', dest='estate', required=True, metavar='DIR'); ap.add_argument('--json', action='store_true')
         a = ap.parse_args(argv[1:])
@@ -108,7 +108,7 @@ def main(argv=None):
         if a.json: print(json.dumps(res, indent=2)); return 0
         c = res['connection']
         print(f"if {c['from']} — {c['to']} ({c['rule']}) fails:")
-        if not res['crossing']: print('  no A4 link crosses it — nothing deployed depends on it'); return 0
+        if not res['crossing']: print(f'  no {_L("technology")} link crosses it — nothing deployed depends on it'); return 0
         for x in res['crossing']: print(f"  broken  {x['source']} {x['kind']} {x['target']}  ({x['zones'][0]} → {x['zones'][1]})")
         print(f"  affected: {', '.join(res['affected'])}")
         for r in res['depends']: print(f"  depends   {r['level'] or '':<3} {r['id']:<22} {r['name'] or ''}  (through {r['through']})")
@@ -130,9 +130,9 @@ def main(argv=None):
                                  description="A workspace's network zones: each zone and what it holds, and how the zones connect (ZC-01…ZC-03, worked out from the structure). Read-only.",
                                  epilog=__doc__.split('\n\n')[2])
     ap.add_argument('--workspace', dest='estate', required=True, metavar='DIR'); ap.add_argument('--json', action='store_true')
-    ap.add_argument('--layout', action='store_true', help='the deployment-zones layout: zone regions, where each shape sits, the zone arrows (sdem/zone_layout.py) — what every drawing of A4 uses')
+    ap.add_argument('--layout', action='store_true', help=f'the deployment-zones layout: zone regions, where each shape sits, the zone arrows (sdem/zone_layout.py) — what every drawing of {_L("technology")} uses')
     ap.add_argument('--environment', default='production', metavar='NAME', help='with --layout: the one environment drawn (name or kind; default production; all for every one)')
-    ap.add_argument('--headings', action='store_true', help="with --layout: networks shown by their zone's heading (address range), the one environment not drawn as a shape — as DESNRE draws A4 (ZL-03)")
+    ap.add_argument('--headings', action='store_true', help=f"with --layout: networks shown by their zone's heading (address range), the one environment not drawn as a shape — as DESNRE draws {_L('technology')} (ZL-03)")
     a = ap.parse_args(argv)
     if a.layout:
         from .zone_layout import load, LayoutError

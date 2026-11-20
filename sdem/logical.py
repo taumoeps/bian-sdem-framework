@@ -6,7 +6,7 @@ with cardinality (metamodel/level-relationships.json) and the relationship type 
 It also measures the example workspaces against the model. Regenerate with `python -m sdem.logical`; the tests check it.
 """
 from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
-from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
+from .identity import T as _T, layer as _L, live as _live  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 from pathlib import Path
 from collections import Counter
 import argparse, glob, json
@@ -15,7 +15,7 @@ from sdem.terms import apply as _terms
 
 ROOT = MM_DIR.parent
 DOC = ROOT / 'docs' / 'reference' / 'logical-data-model.md'
-NAMES = {_L('business'): 'A1 Business Architecture', _L('bian'): 'A2 Service Domain Architecture', _L('application'): 'A3 Application Architecture', _L('technology'): 'A4 Technology Architecture'}
+NAMES = _live(lambda: {_L('business'): f'{_L("business")} Business Architecture', _L('bian'): f'{_L("bian")} Service Domain Architecture', _L('application'): f'{_L("application")} Application Architecture', _L('technology'): f'{_L("technology")} Technology Architecture'})
 LEFT = {'1..1': '||', '0..1': '|o', '0..*': '}o', '1..*': '}|'}
 RIGHT = {'1..1': '||', '0..1': 'o|', '0..*': 'o{', '1..*': '|{'}
 TY = {'string': str, 'list<string>': list, 'map<string,string>': dict, 'integer': int, 'boolean': bool, 'date': str}
@@ -37,14 +37,14 @@ CONSTRAINTS = [
  ('LC-13', 'Deprecated attributes', 'deprecated attributes raise a warning', 'enforced', '`sdem check` (warning)'),
  ('LC-14', 'Attribute sources', 'a record\'s `sources` (CA-13) names only attributes the record has (or `name`, `description`), each with a `kind:ref` source such as `document:DESIGN.md#4.2` (owner\'s decision D4, 2026-11-09)', 'enforced', '`sdem check` (warning)'),
  ('LC-15', 'Platforms on a network', 'a platform (node, device or system software) that hosts a deployment, an artifact or system software, or that a deployment environment groups, is connected to at least one communication network (RA4-37) — its own, or that of the node or device it runs on (owner\'s decision, 2026-11-14; metamodel 0.9.0)', 'enforced', '`sdem check` (warning)'),
- ('LC-16', 'Every shape in a zone', 'every A4 shape — not networks, zones, paths or environments — is in exactly one network zone of level 1 or 2 (RA4-38), directly or through what hosts it; a workspace with no zones is told to record them (the owner\'s decision, 2026-11-14; metamodel 0.10.0)', 'enforced', '`sdem check` (warning; an error in a workspace started with its zones, `sdem new --hosting` — the owner, 2026-11-14)'),
+ ('LC-16', 'Every shape in a zone', f'every {_L("technology")} shape — not networks, zones, paths or environments — is in exactly one network zone of level 1 or 2 (RA4-38), directly or through what hosts it; a workspace with no zones is told to record them (the owner\'s decision, 2026-11-14; metamodel 0.10.0)', 'enforced', '`sdem check` (warning; an error in a workspace started with its zones, `sdem new --hosting` — the owner, 2026-11-14)'),
  ('LC-17', 'Zone structure', 'a level-0 zone is on premises or cloud and inside no other; a level-1 zone is internal or DMZ and part of a level 0; a level-2 zone is private and part of a level 1; each level 0 has one internal zone (none yet is a warning) and at most one DMZ; at most one on-premises and one cloud level 0. Flat zones (ZF-01…ZF-06, the owner 2026-11-17): where a workspace has no level-0 zone, a level-1 or level-2 zone may stand with no parent and several may be internal — kinds by level unchanged (metamodel 0.10.0)', 'enforced', '`sdem check` (error; a missing internal zone a warning)'),
  ('LC-18', 'Internet-facing shapes in a DMZ', 'a shape with `internet_facing: true` is in a DMZ (or a zone inside one), and a DMZ holds only internet-facing shapes (metamodel 0.10.0)', 'enforced', '`sdem check` (warning)'),
  ('LC-19', 'Inferred zone placements decided', 'a zone placement sdem aid proposed (a link marked inferred, AID-Z01) is confirmed or rejected by a person (the owner\'s decisions H2, H5, 2026-11-14; metamodel 0.11.0)', 'enforced', '`sdem check` (warning)'),
  ('LC-20', 'Placement agrees with the evidence', 'a shape is not in a zone that a high-confidence hosting signal contradicts (a mainframe in a cloud zone — metamodel/hosting-signals.json; metamodel 0.11.0)', 'enforced', '`sdem check` (warning)'),
- ('LC-21', 'Every A4 shape connected', 'an A4 shape (not a network, zone, path or environment, and not retired or deprecated) has a link inside A4 to another shape — not only to its zone, environment, network or a path, and not only to another layer: A4 is the physical deployment; an internet-facing one fronts nothing without one; sdem aid proposes connections (AID-C01…C06) (the owner, 2026-11-14)', 'enforced', '`sdem check` (warning)'),
- ('LC-22', 'Every internet-facing interface exposed', 'an A3 interface marked internet facing has an EXPOSED_THROUGH connection (any status) to an internet-facing edge platform — checked over the whole workspace (the owner, X1–X6, 2026-11-14)', 'enforced', '`sdem check` (warning)'),
- ('LC-23', 'Fields as records', 'a BIAN business object or a data entity with field names has a record for each field (A2.BusinessObjectAttribute, A3.DataAttribute) — names only is reported thin (metamodel 0.15.0, IM-08)', 'enforced', '`sdem check` (warning)'),
+ ('LC-21', f'Every {_L("technology")} shape connected', f'an {_L("technology")} shape (not a network, zone, path or environment, and not retired or deprecated) has a link inside {_L("technology")} to another shape — not only to its zone, environment, network or a path, and not only to another layer: {_L("technology")} is the physical deployment; an internet-facing one fronts nothing without one; sdem aid proposes connections (AID-C01…C06) (the owner, 2026-11-14)', 'enforced', '`sdem check` (warning)'),
+ ('LC-22', 'Every internet-facing interface exposed', f'an {_L("application")} interface marked internet facing has an EXPOSED_THROUGH connection (any status) to an internet-facing edge platform — checked over the whole workspace (the owner, X1–X6, 2026-11-14)', 'enforced', '`sdem check` (warning)'),
+ ('LC-23', 'Fields as records', f'a BIAN business object or a data entity with field names has a record for each field ({_T("bian.BusinessObjectAttribute")}, {_T("application.DataAttribute")}) — names only is reported thin (metamodel 0.15.0, IM-08)', 'enforced', '`sdem check` (warning)'),
  ('LC-24', 'Names and records agree', 'where a business object or data entity has both a list of field names and field records, they name the same fields (metamodel 0.15.0)', 'enforced', '`sdem check` (warning)'),
  ('LC-25', 'A system of record has a key', 'a data entity marked system of record, with field records, has a primary-key field (metamodel 0.15.0)', 'enforced', '`sdem check` (warning)'),
  ('LC-26', 'A foreign key points at a key', 'a data attribute associated with a data entity (a foreign key) points at an entity that has a primary-key field (metamodel 0.15.0)', 'enforced', '`sdem check` (warning)'),

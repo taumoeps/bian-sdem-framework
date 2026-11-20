@@ -165,7 +165,7 @@ def plan(workspace, person, bian_file=None, today=None, no_bian=False, core_only
         source = 'none — business does not connect to applications until a BIAN layer is added (sdem bian add)'
     elif bian_file:   # started with exactly this BIAN layer
         a2 = _jload(shared)
-        if a2.get('level') != _L('bian'): raise NewError(f'{shared}: not an A2 dataset (level {a2.get("level")!r})')
+        if a2.get('level') != _L('bian'): raise NewError(f'{shared}: not an {_L("bian")} dataset (level {a2.get("level")!r})')
         source, catalogue = f'the BIAN layer {shared.as_posix()}', shared.as_posix()   # recorded with / on every platform
     else:             # WS-01: the catalogue is read, not copied; A2 holds only the domains the design needs
         a2 = {'level': _L('bian'), 'model_id': f'{stem}-A2', 'model_version': today, 'metamodel_version': mm.version, 'source_system': SYSTEM,
@@ -225,7 +225,7 @@ def plan(workspace, person, bian_file=None, today=None, no_bian=False, core_only
 
 def main(argv=None):
     ap = argparse.ArgumentParser(prog='sdem new', formatter_class=argparse.RawDescriptionHelpFormatter,
-                                 description='Start a workspace — the folder where one area\'s architecture is kept: the four layers (A2 your BIAN layer) '
+                                 description=f'Start a workspace — the folder where one area\'s architecture is kept: the four layers ({_L("bian")} your BIAN layer) '
                                              'and the approved connections between them. Checked before anything is written.',
                                  epilog='Examples:\n  sdem new --organisation bank-xyz --person jane.architect                                  # once per organisation\n'
                                         '  sdem new --workspace workspaces/ledger --organisation bank-xyz --person jane.architect    # each workspace\n'
@@ -236,14 +236,14 @@ def main(argv=None):
     ap.add_argument('--organisation', metavar='NAME', help='alone: start an organisation — the folder NAME with a starter base profile (profiles/NAME-base.json) and workspaces/ (WS-08); '
                     'with --workspace: start the workspace inside that organisation, its profile extending the base (WS-09, WS-10). Inside an organisation\'s folder it is found without this')
     ap.add_argument('--person', required=True, help='your name — a person')
-    ap.add_argument('--bian', metavar='FILE', help=f'start with exactly this BIAN layer in A2 (default: A2 empty; sdem aid brings in the domains your design needs from {SHARED.as_posix()} if it exists, else the base BIAN)')
+    ap.add_argument('--bian', metavar='FILE', help=f'start with exactly this BIAN layer in {_L("bian")} (default: {_L("bian")} empty; sdem aid brings in the domains your design needs from {SHARED.as_posix()} if it exists, else the base BIAN)')
     ap.add_argument('--no-bian', action='store_true', help='start without a BIAN layer (add it later); business then does not connect to applications')
-    ap.add_argument('--core', action='store_true', help="a core-only design: SDEM's core layers A1, A3 and A4 and no BIAN — switch BIAN on later with sdem profile include ext:bian (BX-13)")
+    ap.add_argument('--core', action='store_true', help=f"a core-only design: SDEM's core layers {_L('business')}, {_L('application')} and {_L('technology')} and no BIAN — switch BIAN on later with sdem profile include ext:bian (BX-13)")
     ap.add_argument('--example', choices=sorted(EXAMPLES), help='start with a synthetic example that ships with SDEM as the baseline (made-up data, for learning) — the same as --from its folder')
     ap.add_argument('--from', dest='source', metavar='DIR', help='start with this content as the baseline: the four layers, mappings.json and requirements.json found in DIR — checked first, '
                     'recorded in the ledger and as a decision; only when the workspace is created (a baseline is never re-taken)')
     ap.add_argument('--profile', metavar='FILE', help="start with this organisation profile (kept as sdem-profile.json; its base is still found): its types, rules and names apply, "
-                    'and the layers it adds above A1 or below A4 start empty beside the core four')
+                    f'and the layers it adds above {_L("business")} or below {_L("technology")} start empty beside the core four')
     ap.add_argument('--hosting', metavar='TEMPLATE', help='start with the network zones of a hosting template — cloud, on_premises or hybrid, or one the organisation '
                     'profile adds (WS-12, PR-32); without it, sdem aid proposes zones from the organisation\'s default (cloud first)')
     ap.add_argument('--explore', action='store_true', help='also build the knowledge graph and write the pages to explore it — the graph page, the workspace dashboard '
@@ -296,7 +296,7 @@ def main(argv=None):
                   + (f", {len(extra['requirements.json']['requirements'])} requirement(s)" if 'requirements.json' in extra else '') + ' — checked')
         else:
             print(f"{'would start' if a.dry_run else 'started'} {a.estate}: "
-                  + (f"A1, A3, A4 empty; A2 {b_['service_domains']} service domains from {b_['source']}" if a.bian else f"all {len(docs)} layers empty; BIAN: {b_['source']}")
+                  + (f"{_L('business')}, {_L('application')}, {_L('technology')} empty; {_L('bian')} {b_['service_domains']} service domains from {b_['source']}" if a.bian else f"all {len(docs)} layers empty; BIAN: {b_['source']}")
                   + (f"; profile {record['profile']['name']} ({', '.join(d['level'] for d in docs.values() if d['level'] not in (_L('business'), _L('bian'), _L('application'), _L('technology'))) or 'no extra layers'})" if record.get('profile') else '')
                   + (f"; network zones from the {a.hosting} template: {', '.join(record['hosting']['zones'])}" if a.hosting else '')
                   + '; no connections yet — checked')
@@ -314,7 +314,7 @@ def main(argv=None):
         led([ws / f for f in TRACKED if (ws / f).exists()], by=f'sdem new (baseline from {src}, {g["id"]})')
     if a.explore: return explore(a.estate, a.json, record=record)
     if not a.json and a.source:
-        print(f'Next — sdem build --workspace {a.estate} --out {a.estate}/graph, then sdem trace <id or A1…A4> --graph {a.estate}/graph, '
+        print(f'Next — sdem build --workspace {a.estate} --out {a.estate}/graph, then sdem trace <id or {_L("business")}…{_L("technology")}> --graph {a.estate}/graph, '
               f'sdem impact <id> --change rehost --graph {a.estate}/graph, sdem requirements evaluate --workspace {a.estate} --record <id> --change <kind>')
     elif not a.json:
         print(f'Next — write what you have (any of a1…a4), or load existing designs (sdem load work/history --workspace {a.estate} --person <you>); '

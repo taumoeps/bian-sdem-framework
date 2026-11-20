@@ -8,12 +8,12 @@ review, trace, impact, matrices, changes), `sdem document` (UX-D), the metamodel
 The page's script only selects, filters and navigates. Self-contained: no external file, script or call (UX-P02).
 """
 from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
-from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
+from .identity import T as _T, layer as _L, live as _live  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 import argparse, json, sys
 from pathlib import Path
 
 TEMPLATE = Path(__file__).with_name('workbench.html')
-CORE = (_L('business'), _L('bian'), _L('application'), _L('technology'))
+CORE = _live(lambda: (_L('business'), _L('bian'), _L('application'), _L('technology')))
 
 
 def _j(p, default=None):

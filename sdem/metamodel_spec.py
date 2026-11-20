@@ -8,7 +8,7 @@ Catalogue alignment (§5) is computed by reading the high-level spec's own table
 Usage: python -m sdem.metamodel_spec [--check]
 """
 from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
-from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
+from .identity import T as _T, layer as _L, live as _live  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 import argparse, glob, hashlib, json, re
 from collections import Counter
 from pathlib import Path
@@ -20,8 +20,8 @@ HIGH = DOCS / 'design' / 'architecture-metamodel-high-level-spec.md'
 OUT = DOCS / 'design' / 'architecture-metamodel-detail-level-spec.md'
 PUML = DOCS / 'design' / 'architecture-metamodel-detail-level-spec.puml'
 MM = ROOT / 'metamodel'
-LEVELS = ((_L('business'), 'a1-business.json', 'A1 Business'), (_L('bian'), 'a2-service-domain.json', 'A2 Service Domain (BIAN)'),
-          (_L('application'), 'a3-application.json', 'A3 Application'), (_L('technology'), 'a4-technology.json', 'A4 Technology'))
+LEVELS = _live(lambda: ((_L('business'), 'a1-business.json', f'{_L("business")} Business'), (_L('bian'), 'a2-service-domain.json', f'{_L("bian")} Service Domain (BIAN)'),
+          (_L('application'), 'a3-application.json', f'{_L("application")} Application'), (_L('technology'), 'a4-technology.json', f'{_L("technology")} Technology')))
 
 
 def _j(p): return _jload(Path(p))
@@ -48,7 +48,7 @@ ROW_MEANING = {'id': 'permanent row ID (RA<level>-nn)', 'level': 'the architectu
                'kind': 'relationship kind (ArchiMate / BIAN vocabulary)', 'target_type': 'entity type the link points to (subtypes included)',
                'cardinality': '{source_per_target, target_per_source, basis, reasoning} — e.g. 1..1 / 0..*; checked by LC-10 (maximum, error) and LC-10m (minimum, warning) where the basis is BIAN or ArchiMate',
                'basis': 'the reference architecture the row comes from', 'official_id': 'the BIAN structural row (B-row) it encodes, if any', 'description': 'what the link means',
-               'reference_source': 'source reference (standard, section)', 'verification': 'how it was checked', 'enforceable': '`false` only for documentation rows (A2 artefacts); otherwise enforced by `sdem check` (LC-03)',
+               'reference_source': 'source reference (standard, section)', 'verification': 'how it was checked', 'enforceable': f'`false` only for documentation rows ({_L("bian")} artefacts); otherwise enforced by `sdem check` (LC-03)',
                'inference': 'how the row was first inferred, before checking {pattern, reasoning, confidence}', 'reasoning': 'why the link is allowed', 'confidence': 'high / medium / low (single rule)', 'confidence_basis': 'which clause of the rule applied'}
 INHERIT_MEANING = {'id': 'permanent row ID (XA<level>-nn)', 'level': 'architecture', 'entity': 'the specialised entity type', 'extends': 'its parent type', 'description': 'the is-a statement',
                    'reference_source': 'source reference', 'verification': 'how it was checked', 'reasoning': 'why the type specialises the parent', 'confidence': 'high / medium / low'}
@@ -141,7 +141,7 @@ def render():
             'Rules (high-level §3): artefacts are never endpoints — **enforced** (`sdem/validate.py`; `sdem check` rejects artefact instances); is-a matching — **enforced** (`sdem/metamodel.py` `is_a`).']
     # ---- 4
     out += ['', '## 4. Entity reference (relationship endpoint)', '', 'The registry endpoint fields as implemented in `schema/relationship-registry.schema.json`:', '', '| Field | High-level §4 | Implemented |', '|---|---|---|']
-    for f, req in (('id', 'yes'), ('type', 'yes'), ('version', 'yes'), ('canonical_id', 'A2 ends of bian_* rules'), ('source_system', 'optional'), ('source_entity_id', 'optional')):
+    for f, req in (('id', 'yes'), ('type', 'yes'), ('version', 'yes'), ('canonical_id', f'{_L("bian")} ends of bian_* rules'), ('source_system', 'optional'), ('source_entity_id', 'optional')):
         out.append(f"| `{f}` | {req} | {'yes' if has(f) else '**no** — ' + st('G-05')} |")
     out += ['', f"Document pins: `registry_version` — yes; `metamodel_version` — {'yes' if has('metamodel_version') else 'no'}; `profile_id` — {'yes' if has('profile_id') else '**no** — ' + st('G-05')}. `lifecycle_status` is not a reference field — aligned."]
     # ---- 5
@@ -167,7 +167,7 @@ def render():
     # ---- 6
     by = Counter(c['level'] for c in rows); ver = Counter(c['verification'] for c in rows)
     out += ['', '## 6. Relationships', '', '### 6.1 Within-level relationships', '', st('G-01') + ' — **this section supersedes high-level §6.1.** Within-level relationships are in scope: each architecture\'s allowed links come from its own reference architecture and are enforced by `sdem check` (LC-03).', '',
-            f"{len(rows)} rows + {len(lr['inheritance'])} inheritance rows ({', '.join(f'{k} {v}' for k, v in sorted(by.items()))}); {sum(1 for c in rows if c.get('enforceable') is not False)} enforced (A2 artefact rows are documentation only). Verification: " + ', '.join(f'{k} {v}' for k, v in sorted(ver.items())) + '. Every row carries cardinality, source reference, reasoning and confidence. Detail: [`relationships-planning.md`](relationships-planning.md).', '',
+            f"{len(rows)} rows + {len(lr['inheritance'])} inheritance rows ({', '.join(f'{k} {v}' for k, v in sorted(by.items()))}); {sum(1 for c in rows if c.get('enforceable') is not False)} enforced ({_L('bian')} artefact rows are documentation only). Verification: " + ', '.join(f'{k} {v}' for k, v in sorted(ver.items())) + '. Every row carries cardinality, source reference, reasoning and confidence. Detail: [`relationships-planning.md`](relationships-planning.md).', '',
             '#### 6.1a Within-level relationship row — the allowed link', '', 'One row per (source type, kind, target type) an architecture allows. ' + st('G-01') + '.', ''] + field_table(rows, ROW_MEANING) + [
             '', '#### 6.1b Inheritance row', '', 'One row per is-a link between entity types (the `extends` of §3), so a link allowed for a parent is allowed for its subtypes.', ''] + field_table(lr['inheritance'], INHERIT_MEANING) + [
             '', '#### 6.1c Within-level relationship — an actual link', '', 'In an architecture dataset\'s `relationships` list (`schema/level-model.schema.json`); never in the Relationship Registry.', '',
@@ -177,7 +177,7 @@ def render():
             '| Source | Relationship | Target | Perspective | Authority | Required evidence | Confidence |', '|---|---|---|---|---|---|---|']
     out += [f"| `{x['source_type']}` | `{x['relationship']}` | `{x['target_type']}` | {x['perspective']} | `{x['authority']}` | {', '.join(x.get('required_evidence') or []) or '—'} | {x.get('confidence', '')} |" for x in rt]
     out += ['', '#### 6.2a Relationship type record', '', 'Every field of a relationship type in `schema/relationship-types.json`. ' + al('§6.2') + ' (fields beyond `authority` and `perspective` came from v0.2.1, high-level R7; provenance fields are ' + st('G-13') + ').', ''] + field_table(rt, TYPE_MEANING)
-    out += ['', f"Is-a matching lets `DEPLOYED_ON → A4.InfrastructureComponent` accept any concrete A4 type — aligned. Detail: [`relationship-registry-spec.md`](relationship-registry-spec.md).", '',
+    out += ['', f"Is-a matching lets `DEPLOYED_ON → {_T('technology.InfrastructureComponent')}` accept any concrete {_L('technology')} type — aligned. Detail: [`relationship-registry-spec.md`](relationship-registry-spec.md).", '',
             '### 6.3 Derived relationships', '', 'Level-skipping traceability is a query over approved edges with provenance (`sdem trace`) and never a registry record — aligned. The inference engine also writes derived-path rows as **candidate reports** in a separate file, never registry records — ' + st('G-07') + '.']
     out += ['', '### 6.4 Relationship record — the mapping between architectures', '', al('§4 and §6.2') + ' (the v0.2.1 record, retained; high-level R7). One record per actual link between instances of adjacent architectures, in the **Architecture Relationship Registry** (`examples/<workspace>/mappings.json`). Field definitions are shared with [`relationship-registry-spec.md`](relationship-registry-spec.md).', '',
             '| Field | Type / values | Required | Meaning |', '|---|---|---|---|']
@@ -233,7 +233,7 @@ def render():
             '## 17. Provenance and confidence', '', st('G-13') + '.', '',
             f"Every entity, within-level row, relationship type and attribute names its source and carries reasoning and a confidence from one rule (`sdem/confidence.py`; CI fails on disagreement). Across these records: {conf['high']} high, {conf['medium']} medium, {conf['low']} low.", '',
             '## 18. Inference engine', '', st('G-14') + '.', '',
-            f"`sdem/rules_engine.py` (`sdem link`) applies the rules model in fill-step order to the graph store and writes proposals (always `proposed`), candidate reports and an inference log; design mode where no A3 architecture dataset exists. Acceptance: `sdem model accept` — {passing} of {len(cases)} cases passing. Decisions DEC-E-01…09; open item OPEN-05 (a blind case).", '',
+            f"`sdem/rules_engine.py` (`sdem link`) applies the rules model in fill-step order to the graph store and writes proposals (always `proposed`), candidate reports and an inference log; design mode where no {_L('application')} architecture dataset exists. Acceptance: `sdem model accept` — {passing} of {len(cases)} cases passing. Decisions DEC-E-01…09; open item OPEN-05 (a blind case).", '',
             '## 19. Graph store', '', st('G-15') + '.', '',
             'Local and federated knowledge graphs saved as JSON Graph Format v2 files with a load record and baselines; one graph access layer (`sdem/store.py`). Design and specification: [`graph-store-design.md`](graph-store-design.md), [`graph-store-spec.md`](graph-store-spec.md).', '',
             '## 20. Architecture Inference Design (AID)', '', st('G-18') + '.', '',
@@ -268,7 +268,7 @@ def render_diagram():
     out = ['@startuml architecture-metamodel-detail-level-spec', '!pragma layout smetana', 'skinparam shadowing false', 'skinparam defaultFontSize 11',
            'skinparam rectangleBorderColor #546E7A', 'skinparam packageBorderColor #90A4AE', 'skinparam packageBackgroundColor #FAFAFA', 'skinparam noteBackgroundColor #FFF8E1', 'skinparam noteBorderColor #FFB300',
            'title SDEM Architecture Metamodel — detail-level specification (governing)\\nfollows the high-level spec section by section; generated from the records — python -m sdem.metamodel_spec', '']
-    titles = {_L('business'): 'A1 Business', _L('bian'): 'A2 Service Domain (BIAN)', _L('application'): 'A3 Application', _L('technology'): 'A4 Technology  [high-level: Infrastructure — ' + gtag('G-04') + ']'}
+    titles = {_L('business'): f'{_L("business")} Business', _L('bian'): f'{_L("bian")} Service Domain (BIAN)', _L('application'): f'{_L("application")} Application', _L('technology'): f'{_L("technology")} Technology  [high-level: Infrastructure — ' + gtag('G-04') + ']'}
     for lvl, _, _ in LEVELS:
         out.append(f'package "{titles[lvl]}  —  detail §5.{lvl[1]}, within-level rows: {byl[lvl]} (§6.1, {gtag("G-01")})" as P{lvl} {{')
         for l, e in ents:

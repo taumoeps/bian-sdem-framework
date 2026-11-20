@@ -15,12 +15,12 @@ A4 is drawn by its network zones (sdem/zone_layout.py). A1–A3 are drawn by eac
   sdem layout --layer A2 --workspace examples/payment-initiation
 """
 from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
-from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
+from .identity import T as _T, layer as _L, live as _live  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 import argparse, json, sys
 from pathlib import Path
 
 # the primary hierarchy of each layer: (parent type, link kind, child type) in order of precedence, and the groups by kind (C3, C4)
-HIERARCHY = {
+HIERARCHY = _live(lambda: {
     _L('bian'): {
         'nest': [(_T('bian.BusinessArea'), 'composition', _T('bian.BusinessDomain')), (_T('bian.BusinessDomain'), 'composition', _T('bian.ServiceDomain')),
                  (_T('bian.ServiceDomain'), 'composition', _T('bian.ServiceGroup')), (_T('bian.ServiceDomain'), 'aggregation', _T('bian.ControlRecord')),
@@ -75,7 +75,7 @@ HIERARCHY = {
         'not_in': 'Not in the application structure',
         'skip': [_T('application.DataAttribute')],   # metamodel 0.15.0 (TL-03): a data entity's fields are not shapes — documents and the workbench show them with their entity
     },
-}
+})
 
 
 class ContainmentError(ValueError):
@@ -243,7 +243,7 @@ def layout(doc, layer, mm=None):
             'connections': conns, 'left_out': [], 'fit': round(fit, 4)}
 
 
-FILES = {_L('business'): 'a1-business.json', _L('bian'): 'a2-service-domain.json', _L('application'): 'a3-application.json', _L('technology'): 'a4-technology.json'}
+FILES = _live(lambda: {_L('business'): 'a1-business.json', _L('bian'): 'a2-service-domain.json', _L('application'): 'a3-application.json', _L('technology'): 'a4-technology.json'})
 
 
 def load(workspace, layer, environment='production'):
@@ -258,11 +258,11 @@ def load(workspace, layer, environment='production'):
 def main(argv=None):
     ap = argparse.ArgumentParser(prog='sdem layout', formatter_class=argparse.RawDescriptionHelpFormatter,
                                  description='A layer drawn by what owns what — each region an existing standard record, nesting only through structural links '
-                                             '(the containment layout; A4 by its network zones). The layout every drawing uses. Read-only.',
+                                             f'(the containment layout; {_L("technology")} by its network zones). The layout every drawing uses. Read-only.',
                                  epilog=__doc__.split('\n\n')[-1])
     ap.add_argument('--layer', required=True, choices=sorted(FILES), help='the layer')
     ap.add_argument('--workspace', dest='estate', required=True, metavar='DIR')
-    ap.add_argument('--environment', default='production', metavar='NAME', help='A4 only: the one environment drawn (default production; all for every one)')
+    ap.add_argument('--environment', default='production', metavar='NAME', help=f'{_L("technology")} only: the one environment drawn (default production; all for every one)')
     ap.add_argument('--json', action='store_true')
     a = ap.parse_args(argv)
     try: lay = load(a.estate, a.layer, a.environment)

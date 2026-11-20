@@ -92,7 +92,7 @@ def check(reg, datasets):
             if x not in ids: issues.append(f"{r['id']}: {x} is not a record of this workspace")
         for x in r.get('derived_from', []):
             if x not in reqs and (ids.get(x) or {}).get('type') != _T('business.BusinessRequirement'):
-                issues.append(f"{r['id']}: derived from {x} — neither a requirement here nor an A1.BusinessRequirement record")
+                issues.append(f"{r['id']}: derived from {x} — neither a requirement here nor an {_T('business.BusinessRequirement')} record")
         h = r['history'][-1]
         if (h['version'], h['status']) != (r['version'], r['status']): issues.append(f"{r['id']}: its history ends at version {h['version']} {h['status']}, not {r['version']} {r['status']}")
         if r['status'] == 'confirmed' and not r['evidence']: issues.append(f"{r['id']}: confirmed without evidence")

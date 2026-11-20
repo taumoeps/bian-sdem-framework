@@ -6,14 +6,14 @@ link back home). Everything is computed here with SDEM's own functions — the g
 acceptance cases run live at generation — and the pages only display it. No server, no network, no AI.
 """
 from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
-from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
+from .identity import T as _T, layer as _L, live as _live  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 import argparse, contextlib, datetime, glob, html, io, json, re, sys
 from pathlib import Path
 
 from .metamodel import Metamodel
 
 from .paths import DATA_ROOT as ROOT, repo_path, version as _version
-LEVELS = {_L('business'): 'A1 Business', _L('bian'): 'A2 Service domain (BIAN)', _L('application'): 'A3 Application', _L('technology'): 'A4 Technology'}
+LEVELS = _live(lambda: {_L('business'): f'{_L("business")} Business', _L('bian'): f'{_L("bian")} Service domain (BIAN)', _L('application'): f'{_L("application")} Application', _L('technology'): f'{_L("technology")} Technology'})
 DATASETS = ('a1-business.json', 'a2-service-domain.json', 'a3-application.json', 'a4-technology.json')
 BOX_W, BOX_H, STEP_X, STEP_Y, PER_ROW, PAD = 196, 36, 210, 50, 6, 20
 
@@ -161,9 +161,9 @@ def components(m, h, workspaces):
         ['sdem --help (every journey)', 'sdem home · sdem dashboard', 'docs/sdem-workbench-user-guide.md', '.github/ — Copilot instructions, agents, prompts, skills'],
         [f"{len(workspaces)} workspace(s) in use", 'no MCP, no AI API inside SDEM'], 'Phase 2 dashboard (sdem serve, actions and forms) — proposed', ['projects', 'config'])
     add('bian', 'BIAN Reference Architecture Repository', 'domains · operations · business objects', 'partial', 517, 20,
-        'The BIAN service landscape SDEM anchors to: every A2 element and every BIAN identity comes from here, never invented (CTL-17).',
+        f'The BIAN service landscape SDEM anchors to: every {_L("bian")} element and every BIAN identity comes from here, never invented (CTL-17).',
         ['each workspace\'s a2-service-domain.json (synthetic, made-up BIAN content)', 'the AID test catalogue (merged by BIAN canonical id)'],
-        [f"{ents[_L('bian')]} BIAN entity types in the metamodel", f"{recs[_L('bian')]} A2 records across the workspaces"], 'A licensed BIAN catalogue with real BIAN ids — roadmap v0.15', ['entities'])
+        [f"{ents[_L('bian')]} BIAN entity types in the metamodel", f"{recs[_L('bian')]} {_L('bian')} records across the workspaces"], 'A licensed BIAN catalogue with real BIAN ids — roadmap v0.15', ['entities'])
     add('history', 'Historical Design Repository', 'past designs · decisions · baselines', 'partial', 40, 20,
         'Earlier designs, diagrams and decisions kept unchanged and referenceable beside new BIAN-aligned designs (original design §9, acceptance criteria 6 and 10). Built: sdem transform turns an export of past designs (Confluence, any folder layout) into candidate architecture entities with rules — tables, draw.io and PlantUML diagrams, known names in the text, text in pictures by on-device OCR — each with its source, plus an index of every design; a person reviews, then sdem load puts the kept entities into a workspace (checked, recorded; CTL-23 keeps candidates out of any graph).',
         ['sdem transform inspect · sdem transform run · sdem load', 'metamodel/transform-rules.json (tune without code)', 'docs/design/sdem-transform-design.md', 'graph store baselines (sdem baseline)'],
@@ -228,14 +228,14 @@ TASKS = [
         ('Start a workspace', 'sdem new --workspace <ws> --person <you> [--example payment-initiation --explore]', 'a name', 'a workspace (empty, or the synthetic example)', 'sdem check --workspace <ws>', 'changes', 'no — your decision to start it'),
         ('Write or change records', 'sdem change propose <change-set.json> --workspace <ws> --agent architect --person <you> (fields: sdem types)', 'a change set', 'records added, updated or retired; a change event with its impact', 'sdem change show <CS-id>', 'changes', 'no — checked; review in the pull request'),
         ('Bring in existing designs', 'sdem transform run <export> -o <dir> · sdem load <dir> --workspace <ws> --person <you>', 'a Confluence export', 'records from past designs', 'the dashboard, Designs & gaps', 'changes', 'yes — you choose what to load'),
-        ('Fill the gaps with AID', 'sdem aid --workspace <ws> --person <you>', 'part of a design (e.g. A1 with BIAN operations)', 'inferred records, marked, and proposed connections', 'the dashboard; sdem aid confirm | reject', 'proposes', 'yes — confirm or reject each'),
-        ('Create a new design with your agent', '/sdem-new-design <what> (Copilot) — or the guide "Create a new design"', 'a request', 'a checked A1 design, requirements, inferred A2–A4 and a review list', 'the review list', 'proposes', 'yes — every decision is yours')]),
+        ('Fill the gaps with AID', 'sdem aid --workspace <ws> --person <you>', f'part of a design (e.g. {_L("business")} with BIAN operations)', 'inferred records, marked, and proposed connections', 'the dashboard; sdem aid confirm | reject', 'proposes', 'yes — confirm or reject each'),
+        ('Create a new design with your agent', '/sdem-new-design <what> (Copilot) — or the guide "Create a new design"', 'a request', f'a checked {_L("business")} design, requirements, inferred {_L("bian")}–{_L("technology")} and a review list', 'the review list', 'proposes', 'yes — every decision is yours')]),
     ('Connect', 'Establish relationships between layers', [
         ('Get proposed connections', 'sdem link --workspace <ws> --out <ws>/links', 'a workspace', 'proposed links, weakest first, with reasons', 'sdem review <ws>/links/proposals.json; the dashboard, Review', 'proposes', 'yes — nothing is architecture until approved'),
         ('Approve a connection', 'sdem approve <id> --proposals <file> --workspace <ws> --reviewer <you> --evidence <kind:ref>', 'a proposal and its evidence', 'an approved link in the registry', 'the dashboard, Matrices; sdem trace', 'decides', 'it is the approval'),
         ('State a connection yourself', 'sdem connect <source> <RELATIONSHIP> <target> --workspace <ws> --reviewer <you> --evidence <kind:ref> --rationale "…"', 'two records and evidence', 'an approved link', 'sdem trace', 'decides', 'it is the approval')]),
     ('Analyse', 'Understand dependencies and the effect of change', [
-        ('Trace dependencies', 'sdem trace <id or A1…A4> --direction down|up --graph <ws>/graph', 'a record or a layer', 'what it depends on / what depends on it, link by link', 'the terminal; the dashboard, Trace & impact', 'view', 'no'),
+        ('Trace dependencies', f'sdem trace <id or {_L("business")}…{_L("technology")}> --direction down|up --graph <ws>/graph', 'a record or a layer', 'what it depends on / what depends on it, link by link', 'the terminal; the dashboard, Trace & impact', 'view', 'no'),
         ('Assess a change', 'sdem impact <id> --change modify|rehost|replace|retire --graph <ws>/graph', 'a record and a change', 'what the change affects, layer by layer, and what the engine could not see', 'the terminal; the dashboard, Trace & impact', 'view', 'no'),
         ('The cross-layer matrix', 'sdem matrix --graph <ws>/graph', 'a graph', 'capability → domain → application → technology', 'the dashboard, Matrices', 'view', 'no'),
         ('Requirements against a change', 'sdem requirements evaluate --workspace <ws> --record <id> --change <kind> --proposed <id>', 'requirements and a change', 'breaches now and after, risks, missing evidence', 'the terminal, or --json', 'view', 'no')]),

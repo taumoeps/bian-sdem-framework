@@ -4,7 +4,7 @@ The JSON is the record of every within-level entity connection (constraint rows 
 inheritance); the document is a projection of it, checked current by the test suite.
 """
 from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
-from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
+from .identity import T as _T, layer as _L, live as _live  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 from pathlib import Path
 import argparse, json
 from sdem.metamodel import MM_DIR
@@ -12,9 +12,9 @@ from sdem.terms import apply as _terms
 
 LEVEL_RELS = MM_DIR / 'level-relationships.json'
 DOC = MM_DIR.parent / 'docs' / 'reference' / 'relationships-planning.md'
-LEVEL_NAMES = {_L('business'): 'A1 Business Architecture', _L('bian'): 'A2 Service Domain Architecture', _L('application'): 'A3 Application Architecture', _L('technology'): 'A4 Technology Architecture'}
-LEVEL_SOURCE = {_L('business'): 'ArchiMate 3.2 chapters 6 (Motivation), 7 (Strategy) and 8 (Business)', _L('bian'): "BIAN Service Landscape 14 metamodel, Control Record Model, Business Object Model and the Semantic API Practitioner Guide",
-                _L('application'): 'ArchiMate 3.2 chapter 9 (Application) and TOGAF 10 (Solution Building Block); SDEM extension rows for API operations', _L('technology'): 'ArchiMate 3.2 chapter 10 (Technology); SDEM extension rows for Deployment and Deployment Environment'}
+LEVEL_NAMES = _live(lambda: {_L('business'): f'{_L("business")} Business Architecture', _L('bian'): f'{_L("bian")} Service Domain Architecture', _L('application'): f'{_L("application")} Application Architecture', _L('technology'): f'{_L("technology")} Technology Architecture'})
+LEVEL_SOURCE = _live(lambda: {_L('business'): 'ArchiMate 3.2 chapters 6 (Motivation), 7 (Strategy) and 8 (Business)', _L('bian'): "BIAN Service Landscape 14 metamodel, Control Record Model, Business Object Model and the Semantic API Practitioner Guide",
+                _L('application'): 'ArchiMate 3.2 chapter 9 (Application) and TOGAF 10 (Solution Building Block); SDEM extension rows for API operations', _L('technology'): 'ArchiMate 3.2 chapter 10 (Technology); SDEM extension rows for Deployment and Deployment Environment'})
 
 
 def load(path=LEVEL_RELS):
@@ -27,11 +27,11 @@ def render(lr=None):
     from collections import Counter
     out = ['# Relationships planning — within-level entity connections', '',
            'Generated from `metamodel/level-relationships.json` by `python -m sdem.relationships`; the test suite checks this file is current. '
-           'These are the connections **inside** each architecture (A1–A4), held by each architecture dataset\'s `relationships` list and enforced by `sdem check`. '
+           f'These are the connections **inside** each architecture ({_L("business")}–{_L("technology")}), held by each architecture dataset\'s `relationships` list and enforced by `sdem check`. '
            'They are not mappings: the cross-level connections are planned in `docs/design/mapping-logic-planning.md` and recorded in `metamodel/relationship-rules.json`.', '',
            '**Rule.** A within-level relationship is accepted when it matches a row for its level (through catalogue inheritance), or when its kind is `association` — ArchiMate\'s generic relationship, permitted between any two entities of one level and therefore not listed. Every row derives from the reference architecture the level\'s entities derive from (README › *Reference architecture provenance*).', '',
-           '**Inference (A1, A3, A4).** ArchiMate 3.2 and TOGAF 10 are login-gated, so every row outside A2 carries an explicit inference: the ArchiMate concept of each end (SDEM extensions through the concept they extend), the generic-metamodel pattern the row instantiates, the reasoning, SDEM\'s inference confidence, and the independent test — a lookup in the open-source Archi tool\'s relationship matrix (`relationships.xml`, github.com/archimatetool/archi), which implements the specification\'s permitted relationships per concept pair with the letters c composition, g aggregation, i assignment, r realization, v serving, a access, f flow, t triggering, s specialization, o association. The test plan for running those lookups is `docs/evidence/relationships-testing.md` §6.', '',
-           '**Confidence and verification.** Confidence follows the single rule applied to every layer of the model (`sdem/confidence.py`): **high** — defined by a public standard and checked (BIAN public material, or a relationship confirmed by the Archi oracle); **medium** — follows from an SDEM extension built on a standard concept, or rests on a login-gated source exercised by the coverage cases; **low** — an SDEM reading with no standard relationship, not validated. Verification: `verified` = checked on BIAN\'s public pages; `verified_against_archi` = confirmed by the open-source Archi relationship matrix (cited by commit below); `sdem_definition` follows from an SDEM extension entity; `sdem_reading` is SDEM\'s reading of a public BIAN page that states no explicit relationship; `unverified_togaf` has no public oracle. The A1/A3/A4 tables also show the *inference confidence* recorded before the oracle test.', '']
+           f'**Inference ({_L("business")}, {_L("application")}, {_L("technology")}).** ArchiMate 3.2 and TOGAF 10 are login-gated, so every row outside {_L("bian")} carries an explicit inference: the ArchiMate concept of each end (SDEM extensions through the concept they extend), the generic-metamodel pattern the row instantiates, the reasoning, SDEM\'s inference confidence, and the independent test — a lookup in the open-source Archi tool\'s relationship matrix (`relationships.xml`, github.com/archimatetool/archi), which implements the specification\'s permitted relationships per concept pair with the letters c composition, g aggregation, i assignment, r realization, v serving, a access, f flow, t triggering, s specialization, o association. The test plan for running those lookups is `docs/evidence/relationships-testing.md` §6.', '',
+           f'**Confidence and verification.** Confidence follows the single rule applied to every layer of the model (`sdem/confidence.py`): **high** — defined by a public standard and checked (BIAN public material, or a relationship confirmed by the Archi oracle); **medium** — follows from an SDEM extension built on a standard concept, or rests on a login-gated source exercised by the coverage cases; **low** — an SDEM reading with no standard relationship, not validated. Verification: `verified` = checked on BIAN\'s public pages; `verified_against_archi` = confirmed by the open-source Archi relationship matrix (cited by commit below); `sdem_definition` follows from an SDEM extension entity; `sdem_reading` is SDEM\'s reading of a public BIAN page that states no explicit relationship; `unverified_togaf` has no public oracle. The {_L("business")}/{_L("application")}/{_L("technology")} tables also show the *inference confidence* recorded before the oracle test.', '']
     tally = Counter((c['level'], c['confidence']) for c in rows)
     out += ['## Summary', '', '| Level | Reference source | Rows | high | medium | low |', '|---|---|---|---|---|---|']
     for l in (_L('business'), _L('bian'), _L('application'), _L('technology')):
@@ -60,7 +60,7 @@ def render(lr=None):
     # ---- verification status, from the record and the test log
     from collections import Counter as _C
     vc = _C(c['verification'] for c in rows)
-    MEANING = {'verified': 'checked against BIAN\'s public pages (A2)', 'verified_against_archi': 'concept pair and kind listed by the open-source Archi relationship matrix — an implementation of the ArchiMate 3.2 relationship tables, cited by commit below',
+    MEANING = {'verified': f'checked against BIAN\'s public pages ({_L("bian")})', 'verified_against_archi': 'concept pair and kind listed by the open-source Archi relationship matrix — an implementation of the ArchiMate 3.2 relationship tables, cited by commit below',
                'sdem_reading': 'SDEM\'s reading of a public BIAN page that states no explicit relationship', 'sdem_definition': 'follows from an SDEM extension entity\'s definition', 'unverified_archimate': 'paraphrased from ArchiMate chapter structure; not yet checked', 'unverified_togaf': 'paraphrased from TOGAF; no public oracle'}
     out += ['## Verification status', '', 'How far each row has been checked, and against what. `verified_against_archi` is as far as ArchiMate-derived rows can go without Open Group access; the two TOGAF rows have no public oracle.', '',
             '| Status | Rows | Meaning |', '|---|---|---|']
@@ -80,7 +80,7 @@ def render(lr=None):
     out += ['', '## Test history', '', 'The test plan is `docs/evidence/relationships-testing.md`; its results sections and `metamodel/relationships-test-log.json` hold the per-row evidence.', '',
             '| Phase | What was tested | Result |', '|---|---|---|',
             '| 1 (2026-10-23) | provenance, grounding, consistency, enforcement probes, coverage, rule dependencies — all 131 rows and 12 inheritance links | 0 fail; 3 artefact rows not enforceable; 6 findings applied in v0.5.17 |',
-            f"| 2 (2026-10-23) | every A1 / A3 / A4 inference against the Archi relationship matrix | {oc.get('confirmed', 0)} confirmed, {oc.get('confirmed, alternative accepted', 0)} confirmed via stated alternative, 0 contradicted, {sum(1 for c in rows if c.get('inference') and 'TOGAF' in c['inference']['pattern'])} not testable (TOGAF); applied in v0.5.20 |" + ('' if log.exists() else ' (log file absent)'),
+            f"| 2 (2026-10-23) | every {_L('business')} / {_L('application')} / {_L('technology')} inference against the Archi relationship matrix | {oc.get('confirmed', 0)} confirmed, {oc.get('confirmed, alternative accepted', 0)} confirmed via stated alternative, 0 contradicted, {sum(1 for c in rows if c.get('inference') and 'TOGAF' in c['inference']['pattern'])} not testable (TOGAF); applied in v0.5.20 |" + ('' if log.exists() else ' (log file absent)'),
             '']
     return _terms('\n'.join(out) + '\n')
 

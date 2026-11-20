@@ -18,10 +18,10 @@ hero). The rules, which the owner set while reviewing the 3D view:
 Coordinates are fractions of the plate: x left → right, y far → near, both 0…1.
 """
 from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
-from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
+from .identity import T as _T, layer as _L, live as _live  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 import json
 
-UNPLACED = (_T('technology.CommunicationNetwork'), _T('technology.NetworkZone'), _T('technology.DeploymentEnvironment'), _T('technology.Path'), _T('technology.Location'))   # a location is a place, not a shape (0.17.0)
+UNPLACED = _live(lambda: (_T('technology.CommunicationNetwork'), _T('technology.NetworkZone'), _T('technology.DeploymentEnvironment'), _T('technology.Path'), _T('technology.Location')))   # a location is a place, not a shape (0.17.0)
 _X0, _X1, _Z0, _Z1 = -2.8, 2.8, -2.7, 2.7   # the working plate; the constants below are tuned to it
 
 

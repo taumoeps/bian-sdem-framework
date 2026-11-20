@@ -5,7 +5,7 @@ the federated graph resolves mapping endpoints against them, traces chains with 
 impact by rule. Nothing here decides whether a mapping is right.
 """
 from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
-from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
+from .identity import T as _T, layer as _L, live as _live  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 from pathlib import Path
 import argparse, json, re, sys
 from sdem.metamodel import Metamodel, MM_DIR, PROJECTED_PREFIXES, is_projection_dataset
@@ -148,13 +148,13 @@ class FederatedGraph:
             issues = validate(d, self.registry, load_schema(), entity_resolver=self, warnings=warnings, metamodel=self.mm)
             report[f'mappings #{n}'] = issues
         lone = self.unconnected()   # LC-21: an A4 shape linked to nothing — inside the layer (its zone aside) or across layers
-        if lone: self.warnings.setdefault(f"level A4 ({self.levels[_L('technology')].doc['model_id']})", []).extend(lone)
+        if lone: self.warnings.setdefault(f"level {_L('technology')} ({self.levels[_L('technology')].doc['model_id']})", []).extend(lone)
         unexposed = self.unexposed()   # LC-22: an internet-facing interface exposed through nothing
-        if unexposed: self.warnings.setdefault(f"level A3 ({self.levels[_L('application')].doc['model_id']})", []).extend(unexposed)
+        if unexposed: self.warnings.setdefault(f"level {_L('application')} ({self.levels[_L('application')].doc['model_id']})", []).extend(unexposed)
         if _L('application') in self.levels:   # LC-28: an attribute and the approved links of the same meaning disagree (metamodel 0.16.0, AT-01)
             from .aid_attr import disagreements
             dis = disagreements({l: g.doc for l, g in self.levels.items()}, [m for d in self.mapping_docs for m in d.get('mappings', [])], self.mm)
-            if dis: self.warnings.setdefault(f"level A3 ({self.levels[_L('application')].doc['model_id']})", []).extend(dis)
+            if dis: self.warnings.setdefault(f"level {_L('application')} ({self.levels[_L('application')].doc['model_id']})", []).extend(dis)
         for lvl, found in self.information_model().items():   # LC-23 … LC-27: the information model (metamodel 0.15.0, IM-08)
             if found: self.warnings.setdefault(f"level {lvl} ({self.levels[lvl].doc['model_id']})", []).extend(found)
         from . import profile as _p
@@ -231,8 +231,8 @@ class FederatedGraph:
         if not g: return []
         from .a4_connect import lone
         facing = {i['id'] for i in g.doc.get('instances', []) if (i.get('attributes') or {}).get('internet_facing') is True}
-        return [f"instance {x}: is internet facing but fronts nothing inside A4 — link it to what it fronts (sdem aid proposes it, AID-C06) (LC-21)" if x in facing
-                else f"instance {x}: is connected to nothing inside A4 besides its zone — sdem aid proposes connections (AID-C01…C06) (LC-21)"
+        return [f"instance {x}: is internet facing but fronts nothing inside {_L('technology')} — link it to what it fronts (sdem aid proposes it, AID-C06) (LC-21)" if x in facing
+                else f"instance {x}: is connected to nothing inside {_L('technology')} besides its zone — sdem aid proposes connections (AID-C01…C06) (LC-21)"
                 for x in sorted(lone(g.doc, self.mm))]
 
     def unexposed(self):
@@ -546,7 +546,7 @@ def write_level_csv(results, path):
             for o in res['orphans']: w.writerow([res['direction'], res['level'], o['id'], o['name'], '', '', '', 'gap: connected to nothing'])
 
 
-_LAYER = {_L('business'): 'A1 Business', _L('bian'): 'A2 BIAN', _L('application'): 'A3 Application', _L('technology'): 'A4 Technology'}
+_LAYER = _live(lambda: {_L('business'): f'{_L("business")} Business', _L('bian'): f'{_L("bian")} BIAN', _L('application'): f'{_L("application")} Application', _L('technology'): f'{_L("technology")} Technology'})
 
 
 class _Layers(dict):
@@ -601,7 +601,7 @@ def main(argv=None):
     for name in ('check', 'trace', 'impact', 'stats'):
         sp = sub.add_parser(name)
         if name in ('trace', 'impact'):
-            sp.add_argument('entity', help='instance id to start from' + (' — or a whole layer: A1, A2, A3 or A4' if name == 'trace' else ''))
+            sp.add_argument('entity', help='instance id to start from' + (f' — or a whole layer: {_L("business")}, {_L("bian")}, {_L("application")} or {_L("technology")}' if name == 'trace' else ''))
         sp.add_argument('paths', nargs='*', help='architecture datasets and mapping documents, any order (or use --graph)')
         sp.add_argument('--graph', metavar='DIR', help='read a graph store (sdem build) instead of architecture datasets')
         sp.add_argument('--status', default='approved', help='mapping statuses to treat as arrows')
@@ -724,7 +724,7 @@ def main(argv=None):
                 if u: edits[str(est)] = u
         if args.require_recorded and edits:
             report['unrecorded edits (AF-07)'] = [f"{e['file']} in {d} changed since {e['last_written_by'] or 'SDEM'} wrote it — if a person made the edit, "
-                                                   f"accept it: sdem change adopt --workspace {d} --layer <A1…A4> --person <name> --reason <why>" for d, es in edits.items() for e in es]
+                                                   f"accept it: sdem change adopt --workspace {d} --layer <{_L('business')}…{_L('technology')}> --person <name> --reason <why>" for d, es in edits.items() for e in es]
         failed = any(report.values())
         if args.json: print(json.dumps({'ok': not failed, 'report': report, 'warnings': fg.warnings,
                                         'unrecorded_edits': [{'workspace': d, **e} for d, es in edits.items() for e in es]}, indent=2))
@@ -793,7 +793,7 @@ def main(argv=None):
                     print(f"  {mid}  {m.get('source', {}).get('id', '?')} -{m.get('relationship', '?')}-> {m.get('target', {}).get('id', '?')}: "
                           f"approved by {m.get('reviewer_id', '?')} on {m.get('approved_at', '?')}; evidence {ev}")
                 WHAT = {'RA4-37': 'a platform on its network', 'RA4-38': 'a shape in its network zone', 'RA4-39': 'a zone inside a larger zone'}
-                if inside: print('ALSO FOLLOWED, inside A4 (the layer\'s own structure — nothing to approve): ' + '; '.join(f"{x} {WHAT.get(x, '')}".strip() for x in inside))
+                if inside: print(f'ALSO FOLLOWED, inside {_L("technology")} (the layer\'s own structure — nothing to approve): ' + '; '.join(f"{x} {WHAT.get(x, '')}".strip() for x in inside))
                 print()
             if fg.design_records:  # LD-R04: where the entity is documented, and what did not fit there
                 from .designs import for_entity

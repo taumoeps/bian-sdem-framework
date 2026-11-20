@@ -8,7 +8,12 @@ from .identity import load as _jload  # DL-11: a design's files read through one
 from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 from pathlib import Path
 
-A2, A2_FILE, EXT_BIAN = _L('bian'), 'a2-service-domain.json', 'ext:bian'
+A2_FILE, EXT_BIAN = 'a2-service-domain.json', 'ext:bian'
+
+
+def a2_code():
+    """BIAN's layer code as read now (A2 where it is on; DL-06)."""
+    return _L('bian')
 _STATE = {'bian': True, 'why': 'no workspace (BX-12)'}
 
 
@@ -25,6 +30,7 @@ def _set(on, why):
     changed = _STATE['bian'] != bool(on)
     _STATE.update(bian=bool(on), why=why)
     if changed:
+        from . import identity; identity.changed()   # DL-06: the layers in use changed — every computed name too
         from . import conformance
         try: conformance.model.cache_clear()
         except AttributeError: pass
@@ -62,7 +68,7 @@ PKG_FILES = {'metamodel': A2_FILE, 'within': 'within-layer-rules.json', 'link_ty
 CATALOGUE = 'catalogue'   # the BIAN catalogue, its inferences and licence, in the package's data folder
 
 
-def bian_constraint(c): return c.get('level') == A2 or a2(c.get('source_type')) or a2(c.get('target_type'))
+def bian_constraint(c): return c.get('level') == a2_code() or a2(c.get('source_type')) or a2(c.get('target_type'))
 
 
 def bian_link(r): return a2(r.get('source_type')) or a2(r.get('target_type'))

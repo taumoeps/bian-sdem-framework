@@ -18,7 +18,7 @@ works on (`--workspace`, the datasets' folder, or the graph store it was built i
 `sdem profile check` checks a profile; `sdem profile show` prints the merged result; `sdem profile example` writes a synthetic one.
 """
 from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
-from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
+from .identity import T as _T, layer as _L, live as _live, readable as _readable  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 import argparse, copy, hashlib, json, re, sys
 from pathlib import Path
 
@@ -30,7 +30,7 @@ STANDARD_FORMAT, PATTERN_FORMAT = 'sdem-standard/1', 'sdem-pattern/1'   # files 
 EXCEPTIONS_FILE = 'exceptions.json'                                     # a workspace's granted exceptions (PR-18)
 PRIVATE = ('chain', 'included', '_issues', '_origin', 'aspects')                   # kept with the merged profile, not part of its content
 SCHEMA = DATA_ROOT / 'schema' / 'profile.schema.json'
-LEVELS = (_L('business'), _L('bian'), _L('application'), _L('technology'))
+LEVELS = _live(lambda: (_L('business'), _L('bian'), _L('application'), _L('technology')))
 ATTR_TYPES = ('string', 'integer', 'number', 'boolean', 'date', 'enum', 'list<string>', 'map<string,string>')
 MAP_KINDS = ('shapes', 'connectors', 'zones')   # PR-28: the diagram mapping table — the organisation's shapes, connector labels and zones
 LISTS = ('layers', 'types', 'attributes', 'rules', 'link_kinds', 'link_types', 'requirement_categories')   # what a profile adds to its base
@@ -74,8 +74,8 @@ def shipped(name):
 _PACKS = {}
 
 
-BUILTIN = {'bian': {'name': 'bian', 'version': '1.0.0', 'kind': ['metamodel'], 'scope': {'within': [_L('bian')]}, 'builtin': True, 'pack_file': 'ext-bian-pack.json',
-                   'description': 'BIAN Service Domain Architecture — the A2 layer, its types, link types and inference rules (banking; built in, BX-01)'}}
+BUILTIN = _live(lambda: {'bian': {'name': 'bian', 'version': '1.0.0', 'kind': ['metamodel'], 'scope': {'within': [_L('bian')]}, 'builtin': True, 'pack_file': 'ext-bian-pack.json',
+                   'description': f'BIAN Service Domain Architecture — the {_L("bian")} layer, its types, link types and inference rules (banking; built in, BX-01)'}})
 
 
 def pack(name):
@@ -225,7 +225,7 @@ def include_pack(merged, name, _seen=(), local=None):
         rows = p[k]
         if k == 'link_types' and not parts.bian_on():   # BX-50: a link type that requires BIAN applies only where BIAN is on — said, not an error
             kept = [x for x in rows if x.get('requires') != parts.EXT_BIAN]
-            merged.setdefault('left_out', []).extend({'extension': m['name'], 'link_type': f"{x.get('source_type')} {x.get('relationship')} {x.get('target_type')}", 'requires': parts.EXT_BIAN} for x in rows if x not in kept)
+            merged.setdefault('left_out', []).extend({'extension': m['name'], 'link_type': f"{_readable(x.get('source_type'))} {x.get('relationship')} {_readable(x.get('target_type'))}", 'requires': parts.EXT_BIAN} for x in rows if x not in kept)
             rows = kept
         merged[k] += [{**x, 'source': x.get('source') or f"metamodel extension {m['name']} {m.get('version', '')}".strip()} if k == 'layers' else dict(x) for x in rows]
     _add(merged, {'attributes': p['attributes'], 'rules': p['rules']}, f"{name} ({f.name})")
@@ -625,7 +625,7 @@ def record():
 
 # ------------------------------------------------------------------ the CLI
 
-EXAMPLE_BASE = {
+EXAMPLE_BASE = _live(lambda: {
     'format': FORMAT, 'name': 'bank-base', 'version': 1,
     'description': "A made-up bank's standard specification on top of SDEM — the base every team's profile extends (synthetic; not a real organisation's).",
     'names': {'layers': {_L('business'): 'L1 Business', _L('bian'): 'L2 Service Domains', _L('application'): 'L3 Applications', _L('technology'): 'L4 Technology'},
@@ -658,7 +658,7 @@ EXAMPLE_BASE = {
     'link_kinds': [{'kind': 'dr_pair_of', 'maps_to': 'association', 'source_type': _T('technology.InfrastructureComponent'), 'target_type': _T('technology.InfrastructureComponent'),
                     'description': 'a platform and the platform it fails over to'},
                    {'kind': 'operated_by', 'maps_to': 'assignment', 'source_type': _T('technology.InfrastructureComponent'), 'target_type': _T('technology.InfrastructureComponent'),
-                    'description': 'an infrastructure component is operated by a management platform'}]}
+                    'description': 'an infrastructure component is operated by a management platform'}]})
 
 EXAMPLE_TEAM = {
     'format': FORMAT, 'name': 'payments-team', 'version': 1, 'extends': 'bank-base.json',
@@ -668,7 +668,7 @@ EXAMPLE_TEAM = {
 
 
 # PR-13…PR-17: a made-up bank's standards and one reference-architecture pattern — synthetic, for the form only
-EXAMPLE_SECURITY = {
+EXAMPLE_SECURITY = _live(lambda: {
     'format': STANDARD_FORMAT, 'description': "A made-up bank's API security standard (synthetic; not a real organisation's).",
     'standard': {'id': 'SEC-API', 'title': 'API security standard', 'version': '3.1', 'owner': 'security architecture', 'source': 'synthetic example', 'effective_from': '2026-01-01'},
     'attributes': [{'entity': _T('application.ApplicationComponent'), 'name': 'exposure', 'type': 'enum', 'values': ['internal', 'partner', 'external'], 'description': 'who may call it'},
@@ -676,8 +676,8 @@ EXAMPLE_SECURITY = {
     'rules': [{'id': 'SEC-API-01', 'entity': _T('application.ApplicationComponent'), 'when': {'exposure': ['partner', 'external']}, 'require': ['authentication'],
                'message': 'an application called from outside the bank authenticates its callers (API security standard §2)'},
               {'id': 'SEC-API-02', 'entity': _T('application.ApplicationComponent'), 'when': {'exposure': 'external'}, 'check': {'attribute': 'authentication', 'op': 'in', 'value': ['oauth2-mtls', 'oauth2-pkjwt']},
-               'message': 'an externally exposed application uses OAuth 2 with mTLS or private-key JWT (API security standard §2.3)'}]}
-EXAMPLE_NETWORK = {
+               'message': 'an externally exposed application uses OAuth 2 with mTLS or private-key JWT (API security standard §2.3)'}]})
+EXAMPLE_NETWORK = _live(lambda: {
     'format': STANDARD_FORMAT, 'description': "A made-up bank's network standard (synthetic).",
     'standard': {'id': 'NET', 'title': 'Network zoning and transport standard', 'version': '2.0', 'owner': 'network architecture', 'source': 'synthetic example', 'effective_from': '2026-01-01'},
     'attributes': [{'entity': _T('technology.InfrastructureComponent'), 'name': 'network_zone', 'type': 'enum', 'values': ['restricted', 'internal', 'dmz'], 'description': 'the network zone it sits in'},
@@ -687,13 +687,13 @@ EXAMPLE_NETWORK = {
                'check': {'attribute': 'network_zone', 'op': 'in', 'value': ['restricted']},
                'message': 'a tier 1 application runs only in the restricted zone (network standard §7)'},
               {'id': 'NET-09', 'entity': _T('technology.InfrastructureComponent'), 'when': {'environment': 'production'}, 'check': {'attribute': 'encryption_in_transit', 'op': 'in', 'value': ['tls1.2', 'tls1.3']},
-               'severity': 'warning', 'message': 'production platforms encrypt traffic in transit (network standard §9)'}]}
-EXAMPLE_TECHNOLOGY = {
+               'severity': 'warning', 'message': 'production platforms encrypt traffic in transit (network standard §9)'}]})
+EXAMPLE_TECHNOLOGY = _live(lambda: {
     'format': STANDARD_FORMAT, 'description': "A made-up bank's technology lifecycle standard (synthetic).",
     'standard': {'id': 'TECH-LC', 'title': 'Technology lifecycle standard', 'version': '1.4', 'owner': 'technology architecture', 'source': 'synthetic example', 'effective_from': '2026-01-01'},
     'rules': [{'id': 'TECH-LC-01', 'entity': _T('technology.SystemSoftware'), 'when': {'lifecycle_status': 'active'}, 'check': {'attribute': 'end_of_support', 'op': 'after', 'value': 'today+180d'},
-               'severity': 'warning', 'message': 'software in use has at least six months of vendor support left (technology lifecycle standard §3)'}]}
-EXAMPLE_PATTERN = {
+               'severity': 'warning', 'message': 'software in use has at least six months of vendor support left (technology lifecycle standard §3)'}]})
+EXAMPLE_PATTERN = _live(lambda: {
     'format': PATTERN_FORMAT, 'description': "A made-up bank's reference architecture: secure API integration (synthetic).",
     'pattern': {'id': 'PAT-SECURE-API', 'title': 'Secure API integration', 'version': '2.0', 'owner': 'enterprise architecture', 'source': 'synthetic example',
                 'applies_when': {'entity': _T('application.ApplicationComponent'), 'when': {'exposure': 'external'}}},
@@ -704,8 +704,8 @@ EXAMPLE_PATTERN = {
                  {'id': 'PAT-SECURE-API-4', 'across': {'relationship': 'DEPLOYED_ON'}, 'check': {'attribute': 'monitoring', 'op': '==', 'value': True},
                   'message': 'its platform is monitored by security operations'},
                  {'id': 'PAT-SECURE-API-5', 'across': {'relationship': 'DEPLOYED_ON'}, 'check': {'attribute': 'encryption_in_transit', 'op': '==', 'value': 'tls1.3'},
-                  'message': 'its platform encrypts traffic with TLS 1.3'}]}
-EXAMPLE_STANDARDS_PROFILE = {
+                  'message': 'its platform encrypts traffic with TLS 1.3'}]})
+EXAMPLE_STANDARDS_PROFILE = _live(lambda: {
     'format': FORMAT, 'name': 'bank-with-standards', 'version': 1, 'extends': 'bank-base.json',
     'description': "A team profile that takes the made-up bank's standards and its secure API pattern (synthetic).",
     'includes': ['standards/example-security.json', 'standards/example-network.json', 'standards/example-technology.json', 'patterns/example-secure-api.json'],
@@ -717,7 +717,7 @@ EXAMPLE_STANDARDS_PROFILE = {
         'connectors': [{'label': 'routes requests to', 'kind': 'flow'}, {'label': 'deployed on', 'relationship': 'DEPLOYED_ON'},
                        {'label': 'connected to', 'kind': 'association'}, {'label': 'serves', 'kind': 'serving'}],
         'zones': [{'label': 'Restricted zone', 'entity': _T('technology.InfrastructureComponent'), 'check': {'attribute': 'network_zone', 'op': 'in', 'value': ['restricted']}},
-                  {'label': 'DMZ', 'entity': _T('technology.InfrastructureComponent'), 'check': {'attribute': 'network_zone', 'op': 'in', 'value': ['dmz']}}]}}
+                  {'label': 'DMZ', 'entity': _T('technology.InfrastructureComponent'), 'check': {'attribute': 'network_zone', 'op': 'in', 'value': ['dmz']}}]}})
 
 
 def adopt(a):
@@ -827,7 +827,7 @@ def exclude_file(a):
         try: layers = (read(pf).get('layers') or []) if pf is not None and pf.is_file() and read(pf).get('format') == FORMAT else []
         except (OSError, ValueError, ProfileError): layers = []
     from . import parts
-    if name == parts.EXT_BIAN: layers = [{'code': parts.A2, 'file': parts.A2_FILE}]   # BX-14: BIAN's layer is the reserved A2
+    if name == parts.EXT_BIAN: layers = [{'code': parts.a2_code(), 'file': parts.A2_FILE}]   # BX-14: BIAN's layer is the reserved A2
     files = [l['file'] for l in layers if l.get('file') and (ws / l['file']).exists()]
     gone = {i['id'] for fn in files for i in _jload(ws / fn).get('instances', [])}
     reg_f = ws / 'mappings.json'
@@ -1028,7 +1028,7 @@ def describe(r):
     return out + ' ' + '; '.join(parts) + (f" [{', '.join(tags)}]" if tags else '') + (' (warning)' if r.get('severity') == 'warning' else '')
 
 
-EXAMPLE_LAYERS = {
+EXAMPLE_LAYERS = _live(lambda: {
     'format': FORMAT, 'name': 'strategy-and-sites-team', 'version': 1, 'extends': 'bank-base.json',
     'description': 'A design team that also models strategy above the business layer and physical sites below technology (synthetic).',
     'layers': [{'code': 'A0', 'name': 'A0 Strategy', 'position': 'above', 'file': 'a0-strategy.json', 'description': 'goals and outcomes the business pursues', 'source': 'ArchiMate 3.2 ch. 6 Motivation and ch. 7 Strategy'},
@@ -1044,7 +1044,7 @@ EXAMPLE_LAYERS = {
     'link_types': [{'source_type': 'BANK.A0.Outcome', 'relationship': 'REALIZED_BY', 'target_type': _T('business.BusinessCapability'), 'required_evidence': ['strategy_document'],
                     'description': 'the capability realises the outcome', 'source': 'ArchiMate 3.2 ch. 7 (a capability realises an outcome)'},
                    {'source_type': _T('technology.InfrastructureComponent'), 'relationship': 'HOUSED_IN', 'target_type': 'BANK.A5.Facility', 'required_evidence': ['site_register'],
-                    'description': 'the platform runs in the facility', 'source': 'ArchiMate 3.2 ch. 11 (a node is assigned to a facility)'}]}
+                    'description': 'the platform runs in the facility', 'source': 'ArchiMate 3.2 ch. 11 (a node is assigned to a facility)'}]})
 
 
 def main(argv=None):

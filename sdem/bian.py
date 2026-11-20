@@ -451,7 +451,7 @@ def compare(previous, dataset):
 def report_md(dataset, report, refused, warnings, changes=None, descriptions=False, source='the BIAN files you downloaded'):
     c = Counter(i['type'] for i in dataset['instances'])
     L = [f"# BIAN import — {dataset['source_system']}", '',
-         f"{len(dataset['instances'])} records, {len(dataset['relationships'])} links inside A2, from BIAN's Semantic API release {dataset['model_version']}. "
+         f"{len(dataset['instances'])} records, {len(dataset['relationships'])} links inside {_L('bian')}, from BIAN's Semantic API release {dataset['model_version']}. "
          f'Read from {source}; nothing was fetched. ' + ('BIAN descriptions included (--descriptions).' if descriptions else 'BIAN descriptions left out.'), '',
          '| Kind | Records |', '|---|---|'] + [f'| {t} | {n} |' for t, n in sorted(c.items())]
     L += ['', '## Asset type and functional pattern — confirm', '',
@@ -463,7 +463,7 @@ def report_md(dataset, report, refused, warnings, changes=None, descriptions=Fal
         L += ['', '## Control records with the same name', '', "BIAN's files give these service domains the same control record name; each domain keeps its own record (the metamodel allows one domain per control record). Check with BIAN which is intended.", '']
         L += [f"- `{n}`: {', '.join(ds)}" for n, ds in report['shared_control_records']]
     if changes:
-        L += ['', '## Against the previous A2 dataset', '', f"Added {len(changes['added'])} · dropped {len(changes['dropped'])} · renamed {len(changes['renamed'])}. "
+        L += ['', f'## Against the previous {_L("bian")} dataset', '', f"Added {len(changes['added'])} · dropped {len(changes['dropped'])} · renamed {len(changes['renamed'])}. "
               'A dropped record is **not** removed from your workspace — check whether approved links point to it.', '']
         L += [f'- dropped: `{i}`' for i in changes['dropped']] + [f'- renamed: `{i}` {a!r} → {b!r}' for i, a, b in changes['renamed']]
     if warnings:
@@ -497,7 +497,7 @@ def update_estates(estates, a2_file, person, dry_run=False, now=None):
     from .validate import is_person
     if not is_person(person): raise BianError(f"--person {person!r}: updating a workspace's BIAN layer is a person's decision — give your own name")
     new = _jload(Path(a2_file))
-    if new.get('level') != _L('bian'): raise BianError(f'{a2_file}: not an A2 dataset (level {new.get("level")!r})')
+    if new.get('level') != _L('bian'): raise BianError(f'{a2_file}: not an {_L("bian")} dataset (level {new.get("level")!r})')
     new_by = {i['id']: i for i in new.get('instances', [])}
     plans, refused = [], []
     for est in estates:
@@ -665,8 +665,8 @@ def main(argv=None):
     if argv[:1] == ['inference']:   # SDEM's record of inferred asset types and patterns (DA2-03)
         from .inferences import commands
         return commands(argv[1:])
-    ap = argparse.ArgumentParser(prog='sdem bian', description="The BIAN (A2) layer from BIAN's public Semantic APIs (github.com/bian-official/public, Apache-2.0): "
-                                 'list what a downloaded release holds; import the service domains you choose as a checked A2 dataset.',
+    ap = argparse.ArgumentParser(prog='sdem bian', description=f"The BIAN ({_L('bian')}) layer from BIAN's public Semantic APIs (github.com/bian-official/public, Apache-2.0): "
+                                 f'list what a downloaded release holds; import the service domains you choose as a checked {_L("bian")} dataset.',
                                  epilog='Examples:\n  sdem bian list ~/bian/release14.0.0\n'
                                         '  sdem bian import ~/bian/release14.0.0 --only "Payment Order Initiation" "Payment Execution" -o work/bian/a2-service-domain.json',
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -678,7 +678,7 @@ def main(argv=None):
     ls.add_argument('--json', action='store_true')
     pk = sub.add_parser('pack', help='pack a folder of BIAN-format files into one file — your own base')
     pk.add_argument('folder'); pk.add_argument('-o', '--out', required=True, metavar='FILE')
-    im = sub.add_parser('import', parents=[src], help='write an A2 dataset for the service domains you choose — checked first')
+    im = sub.add_parser('import', parents=[src], help=f'write an {_L("bian")} dataset for the service domains you choose — checked first')
     im.add_argument('-o', '--out', required=True, metavar='FILE')
     im.add_argument('--only', nargs='+', metavar='NAME', help='service domains by name (or file name)')
     im.add_argument('--from', dest='from_file', metavar='FILE', help='a file of service-domain names, one per line')
@@ -689,7 +689,7 @@ def main(argv=None):
     im.add_argument('--descriptions', action='store_true', help="include BIAN's descriptions (left out by default)")
     im.add_argument('--objects', action='store_true', help='also write BIAN business objects (many)')
     im.add_argument('--object', action='append', metavar='NAME', help="only this business object (repeat; BIAN's name or its words) — implies --objects")
-    im.add_argument('--previous', metavar='FILE', help='a previous A2 dataset: report what was added, dropped or renamed')
+    im.add_argument('--previous', metavar='FILE', help=f'a previous {_L("bian")} dataset: report what was added, dropped or renamed')
     im.add_argument('--json', action='store_true')
     sub.add_parser('inference', help="SDEM's record of inferred asset types and functional patterns — list, show, accept, challenge, change, reject")
     def _ws_change(p):   # WS-04: what adding, selecting and the old `custom` share
@@ -801,13 +801,13 @@ def main(argv=None):
         for r in res:
             print(f"{r['service_domain']}  ({r['id']}, {r['operations_total']} operations; control record {r['control_record'] or '—'})  matched: {', '.join(r['matched'])}")
             for o in r['operations']: print(f"    {o['id']:<64} {o['method'] or ''} {o['path'] or ''}")
-        print("use the SO-… ids in a business process's or activity's invokes; sdem aid then brings these domains into A2")
+        print(f"use the SO-… ids in a business process's or activity's invokes; sdem aid then brings these domains into {_L('bian')}")
         return 0
     if a.cmd == 'impact':   # MS-08
         estates = [Path(a.estate)] if a.estate else sorted(p for p in Path(a.root).iterdir() if (p / 'mappings.json').exists())
         if not estates: raise BianError(f'{a.root}: no workspaces in it (folders with a mappings.json)')
         shared = _jload(Path(a.a2))
-        if shared.get('level') != _L('bian'): raise BianError(f'{a.a2}: not an A2 dataset (level {shared.get("level")!r})')
+        if shared.get('level') != _L('bian'): raise BianError(f'{a.a2}: not an {_L("bian")} dataset (level {shared.get("level")!r})')
         res = [release_impact(e, shared) for e in estates]
         if a.json: print(json.dumps({'workspaces': res}, indent=2, ensure_ascii=False)); return 0
         for r in res:
@@ -823,7 +823,7 @@ def main(argv=None):
         estates = [Path(a.estate)] if a.estate else sorted(p for p in Path(a.root).iterdir() if (p / 'mappings.json').exists())
         if not estates: raise BianError(f'{a.root}: no workspaces in it (folders with a mappings.json)')
         shared = _jload(Path(a.a2))
-        if shared.get('level') != _L('bian'): raise BianError(f'{a.a2}: not an A2 dataset (level {shared.get("level")!r})')
+        if shared.get('level') != _L('bian'): raise BianError(f'{a.a2}: not an {_L("bian")} dataset (level {shared.get("level")!r})')
         from .validate import is_person
         if not is_person(a.person): raise BianError(f"--person {a.person!r}: updating a workspace's BIAN layer is a person's decision — give your own name")
         import tempfile
@@ -892,7 +892,7 @@ def main(argv=None):
     if unknown: rep['template'] = template.name
     errors, warnings = check(dataset)
     if errors:
-        print('ERROR: refused — the A2 dataset would not pass the metamodel; nothing written:', file=sys.stderr)
+        print(f'ERROR: refused — the {_L("bian")} dataset would not pass the metamodel; nothing written:', file=sys.stderr)
         for e in errors[:20]: print(f'  {e}', file=sys.stderr)
         return 1
     changes = compare(_jload(Path(a.previous)), dataset) if a.previous else None

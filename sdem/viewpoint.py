@@ -39,7 +39,7 @@ def check(mm, d):
     a3 = [p for p in d.get('plates', []) if p['code'].startswith(_L('application'))]
     if a3:   # A3 is drawn on two plates: together they cover the layer
         cov = {t for p in a3 for t in list(p.get('shapes', [])) + [g['type'] for g in p.get('groupings', [])] + [t for lo in p.get('left_out', []) for t in lo['types']]}
-        out += [f'A3: {t} is neither drawn nor named as left out (ARV-05)' for t, e in mm.entities.items() if e.get('level') == _L('application') and t.count('.') == 1 and not e.get('abstract') and t not in cov]
+        out += [f'{_L("application")}: {t} is neither drawn nor named as left out (ARV-05)' for t, e in mm.entities.items() if e.get('level') == _L('application') and t.count('.') == 1 and not e.get('abstract') and t not in cov]
     out += [f'between plates: {r} is not a relationship SDEM knows' for r in d.get('between_plates', []) if r not in notation()['cross_layer']]
     return out
 

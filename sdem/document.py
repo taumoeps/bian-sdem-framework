@@ -8,12 +8,12 @@ person's change set). Markdown for people and agents (an agent can pour it into 
 workbench; JSON for anything else.
 """
 from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
-from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
+from .identity import T as _T, layer as _L, live as _live  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 import argparse, hashlib, html, json, re, sys
 from pathlib import Path
 
-LAYER_TITLES = {_L('business'): 'A1 Business Architecture', _L('bian'): 'A2 BIAN Service Domain Architecture',
-                _L('application'): 'A3 Application Architecture', _L('technology'): 'A4 Technology Architecture'}
+LAYER_TITLES = _live(lambda: {_L('business'): f'{_L("business")} Business Architecture', _L('bian'): f'{_L("bian")} BIAN Service Domain Architecture',
+                _L('application'): f'{_L("application")} Application Architecture', _L('technology'): f'{_L("technology")} Technology Architecture'})
 PLACEHOLDER = re.compile(r'\b(TBD|PLACEHOLDER|TODO)\b', re.I)
 SKIP_ATTRS = {'inferred', 'source_id', 'sources'}   # shown as provenance instead
 
@@ -366,11 +366,11 @@ def main(argv=None):
     ap = argparse.ArgumentParser(prog='sdem document', formatter_class=argparse.RawDescriptionHelpFormatter,
                                  description="A layer's design as a readable document, generated from the workspace — deterministic, nothing invented; "
                                              'every record says where it came from, and gaps are listed.',
-                                 epilog='Examples:\n  sdem document --workspace examples/payment-initiation --layer A3\n'
+                                 epilog=f'Examples:\n  sdem document --workspace examples/payment-initiation --layer {_L("application")}\n'
                                         '  sdem document --workspace examples/payment-initiation --layer all --format html -o work/designs/\n'
                                         '  sdem document verify work/a3-narrative.md --workspace examples/payment-initiation   # check an agent\'s narrative (UX-D09)')
     ap.add_argument('--workspace', required=True, metavar='DIR')
-    ap.add_argument('--layer', default='all', help='A1, A2, A3, A4 (or a layer the profile adds), or all (default)')
+    ap.add_argument('--layer', default='all', help=f'{_L("business")}, {_L("bian")}, {_L("application")}, {_L("technology")} (or a layer the profile adds), or all (default)')
     ap.add_argument('--format', choices=['md', 'html'], default='md')
     ap.add_argument('-o', '--out', metavar='PATH', help='a file (one layer) or a folder (all layers); without it, Markdown goes to the screen')
     ap.add_argument('--json', action='store_true', help='the structured document instead')

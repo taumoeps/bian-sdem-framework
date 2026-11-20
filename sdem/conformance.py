@@ -22,7 +22,7 @@ Warnings (the architecture dataset is usable but incomplete or dated):
 LC-01…LC-03 and LC-11 are checked by the graph loader and the registry validator; LC-12 by sdem-diff.
 """
 from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
-from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
+from .identity import T as _T, layer as _L, live as _live  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 import json, re
 from collections import Counter
 from functools import lru_cache
@@ -68,8 +68,8 @@ def natural(v):
     return ' '.join(re.sub(r'[^0-9a-z]+', ' ', v.casefold()).split()) if isinstance(v, str) else v
 
 
-OWNERS = {'owning interface': _T('application.ApplicationInterface'), 'owning service domain': _T('bian.ServiceDomain'),
-          'owning business object': _T('bian.BusinessObject'), 'owning data entity': _T('application.DataEntity')}   # a field is named within its object or entity (0.17.0)   # identifier keys held as a whole-part link, not an attribute
+OWNERS = _live(lambda: {'owning interface': _T('application.ApplicationInterface'), 'owning service domain': _T('bian.ServiceDomain'),
+          'owning business object': _T('bian.BusinessObject'), 'owning data entity': _T('application.DataEntity')})   # a field is named within its object or entity (0.17.0)   # identifier keys held as a whole-part link, not an attribute
 
 
 def owner_of(iid, want, mm, local, parents, depth=4):
@@ -249,9 +249,9 @@ def check_level(doc, mm, estate_index=None):
     return errors, warnings, n
 
 
-PLATFORM, NETWORK, ZONE = _T('technology.InfrastructureComponent'), _T('technology.CommunicationNetwork'), _T('technology.NetworkZone')
+# DL-06: computed where used — the layers in use decide the names
 ZONE_KINDS = {0: ('on_premises', 'cloud'), 1: ('internal', 'dmz'), 2: ('private',)}
-UNPLACED = (_T('technology.CommunicationNetwork'), _T('technology.NetworkZone'), _T('technology.DeploymentEnvironment'), _T('technology.Path'), _T('technology.Location'))   # networks, zones, environments (they group deployments: Z2) and paths are not placed
+UNPLACED = _live(lambda: (_T('technology.CommunicationNetwork'), _T('technology.NetworkZone'), _T('technology.DeploymentEnvironment'), _T('technology.Path'), _T('technology.Location')))   # networks, zones, environments (they group deployments: Z2) and paths are not placed
 
 
 def zones_of(doc, mm, local=None):
@@ -263,11 +263,11 @@ def zones_of(doc, mm, local=None):
     for r in doc.get('relationships', []):
         a, b, k = r['source'], r['target'], r['kind']
         if a not in local or b not in local: continue
-        if mm.is_a(local[a], ZONE):
-            if k == 'aggregation' and not mm.is_a(local[b], NETWORK): direct.setdefault(b, []).append(a)
-            elif k == 'composition' and mm.is_a(local[b], ZONE): parent[b] = a
+        if mm.is_a(local[a], _T('technology.NetworkZone')):
+            if k == 'aggregation' and not mm.is_a(local[b], _T('technology.CommunicationNetwork')): direct.setdefault(b, []).append(a)
+            elif k == 'composition' and mm.is_a(local[b], _T('technology.NetworkZone')): parent[b] = a
             continue
-        if mm.is_a(local[a], NETWORK) or mm.is_a(local[b], NETWORK) or mm.is_a(local[b], ZONE) or mm.is_a(local[a], _T('technology.DeploymentEnvironment')) or mm.is_a(local[a], _T('technology.Location')) or mm.is_a(local[b], _T('technology.Location')): continue   # a location holds things; it does not host them (0.17.0)
+        if mm.is_a(local[a], _T('technology.CommunicationNetwork')) or mm.is_a(local[b], _T('technology.CommunicationNetwork')) or mm.is_a(local[b], _T('technology.NetworkZone')) or mm.is_a(local[a], _T('technology.DeploymentEnvironment')) or mm.is_a(local[a], _T('technology.Location')) or mm.is_a(local[b], _T('technology.Location')): continue   # a location holds things; it does not host them (0.17.0)
         if k in ('assignment', 'composition', 'aggregation', 'realization'): hosts.setdefault(b, []).append(a)   # b runs on, or is part of, a
     def find(x, seen):
         if direct.get(x): return direct[x]
@@ -283,7 +283,7 @@ def zones_of(doc, mm, local=None):
 def zone_checks(doc, mm, local, byid, errors, warnings, n):
     """LC-16 every shape in one zone (warning) · LC-17 the zone structure holds (error) · LC-18 internet-facing shapes in a DMZ (warning)."""
     if doc.get('level') != _L('technology'): return
-    zones = {x: (byid[x].get('attributes') or {}) for x, t in local.items() if mm.is_a(t, ZONE)}
+    zones = {x: (byid[x].get('attributes') or {}) for x, t in local.items() if mm.is_a(t, _T('technology.NetworkZone'))}
     shapes, parent, direct = zones_of(doc, mm, local)
     if not zones:
         if shapes: n['LC-16 checked'] += 1; n['LC-16 failed'] += 1; warnings.append(f"no network zones recorded — place each of the {len(shapes)} shape(s) in a zone: on premises or cloud, internal or DMZ (RA4-38, LC-16)")
@@ -327,7 +327,7 @@ def zone_checks(doc, mm, local, byid, errors, warnings, n):
     waiting = [r for r in doc.get('relationships', []) if isinstance(r.get('inferred'), dict) and r['inferred'].get('status') != 'confirmed']   # LC-19
     if waiting:
         n['LC-19 checked'] += 1; n['LC-19 failed'] += len(waiting)
-        warnings.append(f"{len(waiting)} inferred link(s) to decide — zone placements and A4 connections: {', '.join(r['source'] + ' ' + r['kind'] + ' ' + r['target'] for r in waiting[:4])}"
+        warnings.append(f"{len(waiting)} inferred link(s) to decide — zone placements and {_L('technology')} connections: {', '.join(r['source'] + ' ' + r['kind'] + ' ' + r['target'] for r in waiting[:4])}"
                         f"{' …' if len(waiting) > 4 else ''}: sdem aid confirm|reject <shape> (LC-19)")
     from .hosting import evidence, policy   # LC-20: a shape placed against strong evidence
     sig = policy()['signals']; kind_of = {}
@@ -360,11 +360,11 @@ def networks_of(doc, mm, local=None):
         if a not in local or b not in local: continue
         if k == 'association':
             for p, x in ((a, b), (b, a)):
-                if mm.is_a(local[p], PLATFORM) and mm.is_a(local[x], NETWORK) and not mm.is_a(local[p], NETWORK): own.setdefault(p, []).append(x)
-        elif k == 'aggregation' and mm.is_a(local[a], ZONE):   # RA4-38: the zone holds it — it is on that zone (0.10.0)
-            if not mm.is_a(local[b], NETWORK): own.setdefault(b, []).append(a)
-        elif mm.is_a(local[a], NETWORK) or mm.is_a(local[b], NETWORK) or mm.is_a(local[a], ZONE) or mm.is_a(local[b], ZONE): continue   # network nesting (RA4-27), zone nesting (RA4-39): not hosting
-        elif k in ('assignment', 'composition', 'aggregation') and mm.is_a(local[a], PLATFORM) and mm.is_a(local[b], PLATFORM):
+                if mm.is_a(local[p], _T('technology.InfrastructureComponent')) and mm.is_a(local[x], _T('technology.CommunicationNetwork')) and not mm.is_a(local[p], _T('technology.CommunicationNetwork')): own.setdefault(p, []).append(x)
+        elif k == 'aggregation' and mm.is_a(local[a], _T('technology.NetworkZone')):   # RA4-38: the zone holds it — it is on that zone (0.10.0)
+            if not mm.is_a(local[b], _T('technology.CommunicationNetwork')): own.setdefault(b, []).append(a)
+        elif mm.is_a(local[a], _T('technology.CommunicationNetwork')) or mm.is_a(local[b], _T('technology.CommunicationNetwork')) or mm.is_a(local[a], _T('technology.NetworkZone')) or mm.is_a(local[b], _T('technology.NetworkZone')): continue   # network nesting (RA4-27), zone nesting (RA4-39): not hosting
+        elif k in ('assignment', 'composition', 'aggregation') and mm.is_a(local[a], _T('technology.InfrastructureComponent')) and mm.is_a(local[b], _T('technology.InfrastructureComponent')):
             hosts.setdefault(b, []).append(a)   # b runs on (or is part of) a
     def find(p, seen):
         if own.get(p): return own[p]
@@ -373,7 +373,7 @@ def networks_of(doc, mm, local=None):
                 got = find(h, seen | {h})
                 if got: return got
         return []
-    return {p: find(p, {p}) for p in local if mm.is_a(local[p], PLATFORM)}
+    return {p: find(p, {p}) for p in local if mm.is_a(local[p], _T('technology.InfrastructureComponent'))}
 
 
 def on_network(doc, mm, local, byid, warnings, n):

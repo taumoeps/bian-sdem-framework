@@ -7,6 +7,7 @@ SDEM; references to files of the SDEM project become links to those files at the
   cd <your workspace repository>
   sdem copilot install [--dry-run] [--force]
 """
+from .identity import T as _T, layer as _L  # ST-01…ST-05, DL-07: layers and types by id; their numbers computed
 from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
 import argparse, hashlib, json, re, sys
 from pathlib import Path
@@ -175,7 +176,7 @@ def layer_agents(workspaces):
             if l['core']: continue
             t = src.read_text(encoding='utf-8')
             t = '\n'.join(x for x in t.split('\n') if 'Past designs' not in x and 'AID' not in x)
-            t = t.replace('sdem-a4-technology', l['agent']).replace('A4 Technology', l['name']).replace('the technology architecture', f"the {l['name']} layer")
+            t = t.replace('sdem-a4-technology', l['agent']).replace(f'{_L("technology")} Technology', l['name']).replace('the technology architecture', f"the {l['name']} layer")
             t = re.sub(r'(You own the \*\*.*?\*\* architecture of an SDEM workspace): .*', lambda m: m.group(1) + f": {l.get('description') or 'the records of this layer'} "
                        f"(a layer your organisation's profile adds — {l['source']}).", t)
             t = re.sub(r'\bA4\b', l['code'], t)
@@ -185,7 +186,7 @@ def layer_agents(workspaces):
         o = files()['agents/sdem-orchestrator.agent.md'].read_text(encoding='utf-8')
         extra_agents = ''.join(f", '{Path(r).name.split('.')[0]}'" for r in sorted(out))
         out['agents/sdem-orchestrator.agent.md'] = o.replace("'sdem-a4-technology']", "'sdem-a4-technology'" + extra_agents + "]", 1).replace(
-            'calls the A1–A4 layer agents', "calls the layer agents (A1–A4 and the layers the workspace's profile adds)", 1)
+            f'calls the {_L("business")}–{_L("technology")} layer agents', f"calls the layer agents ({_L('business')}–{_L('technology')} and the layers the workspace's profile adds)", 1)
     _p.deactivate()
     return out
 

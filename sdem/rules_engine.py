@@ -306,12 +306,12 @@ class Run:
             for x, via in hosts.items():
                 t = self.get(x, _T('technology.InfrastructureComponent'), _L('technology'))
                 if t is None:
-                    self.attempt('S33', c['id'], x, 1, via, f'{x} is not an A4 instance in the architecture dataset — no instance to map to'); continue
+                    self.attempt('S33', c['id'], x, 1, via, f'{x} is not an {_L("technology")} instance in the architecture dataset — no instance to map to'); continue
                 if self.mm.is_a(t['type'], _T('technology.Deployment')): continue  # a deployment is DEPLOYED_AS, not a platform
                 if not any(self.mm.is_a(t['type'], h) for h in (_T('technology.Node'), _T('technology.Device'), _T('technology.SystemSoftware'))):   # B1 (metamodel 0.8.0): only what hosts software
                     self.attempt('S33', c['id'], x, 1, via, f"{x} is a {t['type']} — an application is deployed on a Node, Device or System Software (ArchiMate 3.2), not on this"); continue
                 plan = 'S34' if self.mm.is_a(t['type'], _T('technology.Node')) else 'S35' if self.mm.is_a(t['type'], _T('technology.Device')) else 'S33'
-                note = {'S34': ', logged under S34 because the target is A4.Node', 'S35': ', logged under S35 because the target is A4.Device',
+                note = {'S34': f', logged under S34 because the target is {_T("technology.Node")}', 'S35': f', logged under S35 because the target is {_T("technology.Device")}',
                         'S33': ' (S36 subsumed in S33)' if self.mm.is_a(t['type'], _T('technology.SystemSoftware')) else ''}[plan]
                 self.propose(plan, 'DEPLOYED_ON', c, t, 1, f'data join{note}; ' + '; '.join(via), via, band=self.rules['S33']['confidence'])
         # candidate joins: (plan, source type, attribute on source, target type, reverse attribute on target)
@@ -895,8 +895,8 @@ class Run:
         levels = set(self.r.levels())
         if _L('application') in levels or _L('bian') not in levels:
             return []
-        self.log.append({'plan_id': 'DESIGN', 'connection': 'mapping ends at A2', 'step_assigned': None, 'step_used': 'design', 'fallback': False, 'data_read': ['architecture datasets: ' + ', '.join(sorted(levels))],
-                         'reasoning': 'no A3 or A4 architecture dataset: no step applies below A2; a target design is produced from the BIAN container pattern', 'confidence_predicted': 'low', 'confidence_given': None, 'proposal_id': None, 'outcome': 'design'})
+        self.log.append({'plan_id': 'DESIGN', 'connection': f'mapping ends at {_L("bian")}', 'step_assigned': None, 'step_used': 'design', 'fallback': False, 'data_read': ['architecture datasets: ' + ', '.join(sorted(levels))],
+                         'reasoning': f'no {_L("application")} or {_L("technology")} architecture dataset: no step applies below {_L("bian")}; a target design is produced from the BIAN container pattern', 'confidence_predicted': 'low', 'confidence_given': None, 'proposal_id': None, 'outcome': 'design'})
         a3 = {'level': _L('application'), 'model_id': f'{self.uc.lower()}-a3-TARGET-DESIGN', 'model_version': 'design', 'metamodel_version': self.mm.version,
               'source_system': 'DESIGN-PROPOSAL (bian-container-pattern; not an APM architecture dataset)', 'instances': [], 'relationships': []}
         a4 = {'level': _L('technology'), 'model_id': f'{self.uc.lower()}-a4-TARGET-DESIGN', 'model_version': 'design', 'metamodel_version': self.mm.version,

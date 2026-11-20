@@ -6,14 +6,14 @@ architecture and type; highlight a record's trace down (towards A4) or up (towar
 With a projection package (AID-O06), projected records and links are drawn dashed and labelled PROJECTED with their
 confidence; their details show the projection provenance. Real records are never changed.
 """
-from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
+from .identity import T as _T, layer as _L, live as _live  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 import html, json
 from pathlib import Path
 
 from .store import GraphReader
 
 from .layers import CODES as LEVELS, titled   # LR-09: one band per layer, the profile's too
-NAMES = titled({_L('business'): 'A1 Business', _L('bian'): 'A2 Service Domain (BIAN)', _L('application'): 'A3 Application', _L('technology'): 'A4 Technology'})
+NAMES = _live(lambda: titled({_L('business'): f'{_L("business")} Business', _L('bian'): f'{_L("bian")} Service Domain (BIAN)', _L('application'): f'{_L("application")} Application', _L('technology'): f'{_L("technology")} Technology'}))
 BOX_W, BOX_H, STEP_X, STEP_Y, PAD_X, BAND_GAP, PER_ROW = 168, 38, 184, 56, 170, 46, 8
 
 

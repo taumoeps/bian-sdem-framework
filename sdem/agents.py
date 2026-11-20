@@ -152,7 +152,7 @@ class Estate:
             if op == 'add':
                 if rid in ids_anywhere: raise CoordinationError(f'change {n}: {rid} already exists — use update')
                 if layer == _L('bian'):
-                    if cat is None: raise CoordinationError('CTL-19: an A2 change set that adds records needs --catalogue (BIAN elements come only from the catalogue)')
+                    if cat is None: raise CoordinationError(f'CTL-19: an {_L("bian")} change set that adds records needs --catalogue (BIAN elements come only from the catalogue)')
                     src = cat.get(rid)
                     if not src or (rec.get('canonical_id') and src.get('canonical_id') != rec['canonical_id']):
                         raise CoordinationError(f'CTL-19: change {n}: {rid} is not in the BIAN catalogue')
@@ -716,9 +716,9 @@ def change_main(argv=None):
     p = sub.add_parser('propose', help='check and apply a change set to its layer; records the change event and its impact')
     p.add_argument('change_set', help='change set file (JSON): layer, reason, changes[, relationships]')
     _common(p); p.add_argument('--work', nargs='*', default=[], metavar='WI', help='work item(s) this change set answers (claimed by the same agent)')
-    p.add_argument('--catalogue', metavar='FILE', help='BIAN catalogue (A2 dataset) — required when an A2 change set adds records')
+    p.add_argument('--catalogue', metavar='FILE', help=f'BIAN catalogue ({_L("bian")} dataset) — required when an {_L("bian")} change set adds records')
     s = sub.add_parser('show', help='a change set with its event and impact'); s.add_argument('id', help='the change set id (e.g. CS-001)'); _common(s, who=False)
-    r = sub.add_parser('revert', help='undo the latest change set of a layer — recorded as a new change set (T5)'); r.add_argument('id', help='the layer whose latest change set to undo (e.g. A3)'); _common(r); r.add_argument('--reason', default='')
+    r = sub.add_parser('revert', help='undo the latest change set of a layer — recorded as a new change set (T5)'); r.add_argument('id', help=f'the layer whose latest change set to undo (e.g. {_L("application")})'); _common(r); r.add_argument('--reason', default='')
     x = sub.add_parser('diff', help='compare an incoming layer file with the workspace and write the change set it implies — nothing is applied (AG-K09)')
     x.add_argument('incoming', help="a layer dataset (JSON with 'level', 'instances', 'relationships') — e.g. records an agent drafted from a document")
     _common(x, who=False)
@@ -824,8 +824,8 @@ def events_main(argv=None):
                                  description='Four-layer impact validation (AG-V01…V10): every layer\'s specialist assesses a change event\'s calculated impact; a person accepts '
                                              'the final assessment and authorises implementation. Only then does `sdem work plan` plan the work.',
                                  epilog='The flow:\n  sdem events validate CE-001 --workspace W --agent sdem-orchestrator --person jane.architect\n'
-                                        '  sdem events pending --workspace W --layer A2\n'
-                                        '  sdem events assess CE-001 --layer A2 --status no_impact_confirmed --evidence process_model:PM-1 --reasoning "…" --workspace W --agent sdem-a2-bian --person jane.architect\n'
+                                        f'  sdem events pending --workspace W --layer {_L("bian")}\n'
+                                        f'  sdem events assess CE-001 --layer {_L("bian")} --status no_impact_confirmed --evidence process_model:PM-1 --reasoning "…" --workspace W --agent sdem-a2-bian --person jane.architect\n'
                                         '  sdem events show CE-001 --workspace W\n'
                                         '  sdem events accept CE-001 --reason "…" --authorise --workspace W --person jane.architect')
     sub = ap.add_subparsers(dest='cmd', required=True)
@@ -902,7 +902,7 @@ def events_main(argv=None):
                 if r['additional_records']: print(f"      additional records named by the {l} agent: {', '.join(r['additional_records'])}")
                 if r['missing_relationships']: print(f"      missing links reported: {'; '.join(r['missing_relationships'])}")
                 if r['related_within_layer']: print(f"      linked inside {l}, not followed by the impact rules: {', '.join(r['related_within_layer'])}")
-            print('  risk findings: ' + ', '.join(f'{k} {len(x)}' for k, x in sm['risks'].items() if x) + (f"; A1 obligations exposed: {', '.join(sm['obligations'])}" if sm['obligations'] else ''))
+            print('  risk findings: ' + ', '.join(f'{k} {len(x)}' for k, x in sm['risks'].items() if x) + (f"; {_L('business')} obligations exposed: {', '.join(sm['obligations'])}" if sm['obligations'] else ''))
             print('  (no structural change is not no risk — the requirements column and the findings are separate from it)')
             for o in sm['open']: print(f'  open: {o}')
             return 0
@@ -926,7 +926,7 @@ def work_main(argv=None):
     import argparse
     ap = argparse.ArgumentParser(prog='sdem work', description='Work items — the orchestrator plans them from a change event; layer agents claim and answer them (AG-K04).',
                                  epilog='Examples:\n  sdem work plan --event CE-001 --workspace work/est --agent sdem-orchestrator --person jane.architect\n'
-                                        '  sdem work list --workspace work/est --layer A3 --status open\n'
+                                        f'  sdem work list --workspace work/est --layer {_L("application")} --status open\n'
                                         '  sdem work claim WI-001 --workspace work/est --agent sdem-a3-application --person jane.architect',
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest='cmd', required=True)

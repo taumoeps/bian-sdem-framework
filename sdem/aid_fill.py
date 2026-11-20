@@ -14,11 +14,11 @@ signals (metamodel/hosting-signals.json) or the organisation's default, the DMZ 
 reject it by the shape's id: `sdem aid confirm INF-K8S-PROD --workspace … --person …`.
 """
 from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
-from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
+from .identity import T as _T, layer as _L, live as _live  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 import argparse, copy, datetime, json, re, sys
 from pathlib import Path
 
-DATASETS = {_L('business'): 'a1-business.json', _L('bian'): 'a2-service-domain.json', _L('application'): 'a3-application.json', _L('technology'): 'a4-technology.json'}
+DATASETS = _live(lambda: {_L('business'): 'a1-business.json', _L('bian'): 'a2-service-domain.json', _L('application'): 'a3-application.json', _L('technology'): 'a4-technology.json'})
 FOLDER = 'aid'
 
 
@@ -415,7 +415,7 @@ def main(argv):
         print(f"{'confirmed' if action == 'confirm' else 'rejected'} {len(done)} inferred record(s) in {a.estate}: {', '.join(done[:8])}{' …' if len(done) > 8 else ''}")
         print('Next: commit on a branch and open a pull request.'); return 0
     ap = argparse.ArgumentParser(prog='sdem aid', formatter_class=argparse.RawDescriptionHelpFormatter,
-                                 description='Architecture Inference Design: from what the workspace has (any of A1…A4), add the records it is missing to its layer '
+                                 description=f'Architecture Inference Design: from what the workspace has (any of {_L("business")}…{_L("technology")}), add the records it is missing to its layer '
                                              'files — each marked inferred, with source, reasoning and confidence — and propose the connections. You review, then '
                                              '`sdem aid confirm` or `sdem aid reject` each record and `sdem approve` the connections.',
                                  epilog=__doc__.split('\n\n')[2])
@@ -445,8 +445,8 @@ def main(argv):
         print(f"zones: {rec['zone_placements']} shape(s) {'would be placed' if a.dry_run else 'placed'} in a proposed zone (AID-Z01) — from the hosting signals and the organisation's default; "
               f"decide each: sdem aid confirm|reject <shape> --workspace {a.estate} --person <you>")
     if rec.get('a4_connections'):
-        print(f"A4: {rec['a4_connections']} connection(s) {'would be proposed' if a.dry_run else 'proposed'} for shapes linked to nothing (AID-C01…C06) — confirm or reject by the shape's id")
-    for u in rec.get('a4_unresolved', []): print(f"A4: {u['id']} not connected — {u['why']}")
+        print(f"{_L('technology')}: {rec['a4_connections']} connection(s) {'would be proposed' if a.dry_run else 'proposed'} for shapes linked to nothing (AID-C01…C06) — confirm or reject by the shape's id")
+    for u in rec.get('a4_unresolved', []): print(f"{_L('technology')}: {u['id']} not connected — {u['why']}")
     dr = rec.get('draft') or {}
     if dr.get('patterns_consulted'):   # CPL-16: said every time — which patterns were asked before anything was inferred
         print('patterns consulted: ' + '; '.join(f"{p['title']} (" + ('in the profile' if p['included'] else f"fits the design; not in the profile — a person includes it to keep it checked: sdem profile include {p['include']} --workspace {a.estate} --person <you>") + ')' for p in dr['patterns_consulted']))

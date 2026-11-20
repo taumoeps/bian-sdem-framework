@@ -19,7 +19,7 @@ real until a person confirms it. The rules are in metamodel/transform-rules.json
 """
 from .identity import for_file as _for_file  # DL-11: what a design's file stores (docs/design/sdem-data-layer-spec.md)
 from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
-from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
+from .identity import T as _T, layer as _L, live as _live  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 import argparse, base64, collections, csv, datetime, hashlib, io, json, os, re, sys, urllib.parse, zlib
 import xml.etree.ElementTree as ET
 from html.parser import HTMLParser
@@ -29,7 +29,7 @@ from .metamodel import Metamodel
 from .paths import DATA_ROOT
 
 RULES = DATA_ROOT / 'metamodel' / 'transform-rules.json'
-DATASETS = {_L('business'): 'a1-business.json', _L('bian'): 'a2-service-domain.json', _L('application'): 'a3-application.json', _L('technology'): 'a4-technology.json'}
+DATASETS = _live(lambda: {_L('business'): 'a1-business.json', _L('bian'): 'a2-service-domain.json', _L('application'): 'a3-application.json', _L('technology'): 'a4-technology.json'})
 RANK = {'low': 1, 'medium': 2, 'high': 3}
 SOURCE_SYSTEM = 'CONFLUENCE-EXTRACT'
 IMAGE_EXT = ('.png', '.jpg', '.jpeg', '.gif', '.bmp', '.svg', '.webp')
@@ -742,7 +742,7 @@ class Extraction:
         if etype.startswith((_L('bian') + '.')):  # CTL-24: BIAN elements come from a BIAN source only — a document's mention is a hint for a link, never an entity
             k = self.known.get(norm(name))
             m = {'name': name, 'type': etype, 'page_id': page['page_id'], 'page_title': page['title'], 'where': where,
-                 'existing_id': k[0] if k else None, 'why': 'names a BIAN element; A2 entities come from a BIAN source only (CTL-24) — link to it with sdem link after adoption'}
+                 'existing_id': k[0] if k else None, 'why': f'names a BIAN element; {_L("bian")} entities come from a BIAN source only (CTL-24) — link to it with sdem link after adoption'}
             if not any((x['name'], x['page_id'], x['where']) == (name, page['page_id'], where) for x in self.bian_mentions): self.bian_mentions.append(m)
             return None
         key = (etype, norm(name))
@@ -1472,7 +1472,7 @@ def report(x, meta, records, links, issues, idx, cov=None):
         frm = '<br>'.join(f"{q['page_title']} — {q['where']}" for q in c['sources'])
         L.append(f"| `{c['source']}` | `{c['target']}` | {c['mapping_type_id'] or '—'} | {c['confidence']} | {frm} | {'<br>'.join(q['reasoning'] for q in c['sources'])} |")
     L.append('\n## BIAN elements named in the designs — not entities (BIAN records come from your BIAN layer only, CTL-24)\n')
-    L.append('A2 entities come from the BIAN catalogue only. These names are hints for `sdem link` once the entities are adopted.\n')
+    L.append(f'{_L("bian")} entities come from the BIAN catalogue only. These names are hints for `sdem link` once the entities are adopted.\n')
     L.append('| Name | Type | Existing record | Page | Where |')
     L.append('|---|---|---|---|---|')
     for m in x.bian_mentions:

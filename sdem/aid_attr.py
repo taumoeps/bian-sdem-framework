@@ -1,4 +1,4 @@
-from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
+from .identity import T as _T, layer as _L, live as _live  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 """Attributes as evidence (metamodel 0.16.0; docs/design/sdem-full-design-metamodel-design.md AT-01, FD-P3).
 
 The approved link is the fact; an attribute that says the same thing is evidence `sdem aid` proposes the link from:
@@ -8,13 +8,13 @@ AID-A03  a path's from and to → the path associated with each end (a link insi
 Links between layers are proposals for a person to approve; nothing already approved or proposed is proposed again.
 LC-28 (warning): where a record's attribute and its approved links of the same meaning name different records.
 """
-PAIRS = [   # (entity, attribute, relationship, target types) — the attribute and the link that say the same thing
+PAIRS = _live(lambda: [   # (entity, attribute, relationship, target types) — the attribute and the link that say the same thing
     (_T('application.DataEntity'), 'stored_in', 'STORED_IN', (_T('technology.Artifact'), _T('technology.SystemSoftware'))),
     (_T('application.ApplicationFunction'), 'consumes', 'SERVED_BY', (_T('technology.TechnologyService'),)),
     (_T('application.ApplicationComponent'), 'deployed_on', 'DEPLOYED_ON', (_T('technology.Node'), _T('technology.Device'), _T('technology.SystemSoftware'))),
     (_T('application.ApplicationComponent'), 'deployed_as', 'DEPLOYED_AS', (_T('technology.Deployment'),)),
     (_T('application.ApplicationComponent'), 'built_as', 'BUILT_AS', (_T('technology.Artifact'),)),
-]
+])
 
 
 def _list(v): return v if isinstance(v, list) else ([v] if v else [])

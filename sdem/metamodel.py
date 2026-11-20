@@ -54,7 +54,7 @@ class Metamodel:
         versions.add(rels['metamodel_version'])
         rels = {**rels, 'constraints': parts.splice(rels.get('constraints', []), parts.bian_constraint, lambda c: c.get('id'), 'within')}   # BP-02
         if not parts.bian_on():   # its within-layer rules too
-            rels = {**rels, 'constraints': [c for c in rels.get('constraints', []) if c.get('level') != parts.A2 and not parts.a2(c.get('source_type')) and not parts.a2(c.get('target_type'))]}
+            rels = {**rels, 'constraints': [c for c in rels.get('constraints', []) if c.get('level') != parts.a2_code() and not parts.a2(c.get('source_type')) and not parts.a2(c.get('target_type'))]}
         if len(versions) != 1:
             raise ValueError(f'metamodel files disagree on metamodel_version: {sorted(versions)}')
         return cls(ents, rels, versions.pop())

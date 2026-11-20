@@ -3,15 +3,16 @@
 The outputs the original design specification lists (§11): capability → service domain, process → service domain,
 service domain → application, application → technology, and the end-to-end chain. Only approved links are used.
 """
+from .identity import T as _T, layer as _L  # ST-01…ST-05, DL-07: layers and types by id; their numbers computed
 import argparse, json, sys
 from pathlib import Path
 
 PAIRS = [  # (title, relationship(s), source label, target label)
-    ('Capability → service domain', ('SUPPORTED_BY',), 'Capability (A1)', 'Service domain (A2)'),
-    ('Process → service domain', ('USES_DOMAIN',), 'Process (A1)', 'Service domain (A2)'),
-    ('Service domain → application', ('REALIZED_BY',), 'Service domain (A2)', 'Application (A3)'),
-    ('Service operation → API', ('IMPLEMENTED_BY',), 'Service operation (A2)', 'API (A3)'),
-    ('Application → technology', ('DEPLOYED_ON', 'DEPLOYED_AS'), 'Application (A3)', 'Technology (A4)'),
+    ('Capability → service domain', ('SUPPORTED_BY',), f'Capability ({_L("business")})', f'Service domain ({_L("bian")})'),
+    ('Process → service domain', ('USES_DOMAIN',), f'Process ({_L("business")})', f'Service domain ({_L("bian")})'),
+    ('Service domain → application', ('REALIZED_BY',), f'Service domain ({_L("bian")})', f'Application ({_L("application")})'),
+    ('Service operation → API', ('IMPLEMENTED_BY',), f'Service operation ({_L("bian")})', f'API ({_L("application")})'),
+    ('Application → technology', ('DEPLOYED_ON', 'DEPLOYED_AS'), f'Application ({_L("application")})', f'Technology ({_L("technology")})'),
 ]
 
 

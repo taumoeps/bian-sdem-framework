@@ -164,7 +164,7 @@ def validate_registry(registry, metamodel=None):
             issues.append(f'{prefix}: source/target types must be prefixed with a level code {levels}')
         elif levels.index(tgt) - levels.index(src) != 1 and not (rule.get('skips_level') is True and (src, tgt) == (_L('business'), _L('application')) and rule.get('skips_level_reasoning')):
             # KG-F-03, with the owner's decision D9 (2026-11-16): adjacent layers only — except a link type marked skips_level, A1 → A3, with its reason
-            issues.append(f'{prefix}: cross-level edges must point from A(n) to A(n+1)' + (' — only a link type marked skips_level, from A1 to A3, with its reason, may skip a layer (D9)' if rule.get('skips_level') else ''))
+            issues.append(f'{prefix}: cross-level edges must point from A(n) to A(n+1)' + (f' — only a link type marked skips_level, from {_L("business")} to {_L("application")}, with its reason, may skip a layer (D9)' if rule.get('skips_level') else ''))
         for key in ('source_type', 'target_type'):
             if rule.get(key) and not metamodel.known(normalize_type(rule[key], registry)):
                 issues.append(f'{prefix}: {key} {rule[key]!r} is not in the metamodel')

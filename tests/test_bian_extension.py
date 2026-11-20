@@ -65,13 +65,14 @@ class OnAndOff(unittest.TestCase):
 
     def test_off_the_metamodel_has_no_a2(self):   # BX-02, BX-04
         P.activate_from(self.core)
-        mm = Metamodel.load()
-        self.assertFalse([t for t in mm.entities if t.startswith('A2.')])
-        self.assertFalse([r for r in load_registry()['relationships'] if 'A2.' in r['source_type'] + r['target_type']])
+        mm = Metamodel.load()   # DL-06: with BIAN off the layers are numbered A1–A3; BIAN's types are not in it
+        self.assertFalse([t for t in mm.entities if t.startswith('(bian).') or t.endswith('.ServiceDomain')])
+        self.assertIn('A2.ApplicationComponent', mm.entities)
+        self.assertFalse([r for r in load_registry()['relationships'] if 'ServiceDomain' in r['source_type'] + r['target_type']])
         from sdem.rules_engine import _rules
-        self.assertFalse([k for k, m in _rules().items() if 'A2.' in json.dumps(m)])
+        self.assertFalse([k for k, m in _rules().items() if '(bian).' in json.dumps(m) or 'ServiceDomain' in json.dumps(m)])
         from sdem.layers import codes
-        self.assertEqual(codes(), ['A1', 'A3', 'A4'])
+        self.assertEqual(codes(), ['A1', 'A2', 'A3'])
 
     def test_the_core_stands_alone(self):   # BX-32
         g = self.tmp / 'graph'
@@ -81,12 +82,12 @@ class OnAndOff(unittest.TestCase):
                      ('comply', '--workspace', self.core)):
             sdem(*args)
         props = json.loads((self.tmp / 'links' / 'proposals.json').read_text())
-        self.assertNotIn('A2.', json.dumps(props))
+        self.assertNotIn('ServiceDomain', json.dumps(props))
 
     def test_bian_commands_and_types_say_how_to_switch_it_on(self):   # BX-13
         out = sdem('bian', 'add', 'Payment Order', '--workspace', self.core, '--person', 'bx.check', ok=(2,))
         self.assertIn('sdem profile include ext:bian', out)
-        self.assertIn('A1, A3, A4', sdem('types', 'A2', '--workspace', self.core, ok=(2,)))
+        self.assertIn('A1, A2, A3', sdem('types', 'A4', '--workspace', self.core, ok=(2,)))   # DL-06: three layers, A1–A3
 
     def test_sdem_extensions_names_it_and_says_why(self):   # BX-01, BX-11
         d = json.loads(sdem('extensions', '--workspace', ROOT / 'examples' / 'payment-initiation-v3' / 'sdem', '--json'))
@@ -125,7 +126,7 @@ class PackLinkTypes(unittest.TestCase):   # BX-50: a pack's link type that requi
             sdem('profile', 'adopt', '--workspace', core, '--person', 'bx.check', '--reason', 'r', env=env)
             self.assertIn('"ok": true', sdem('check', '--workspace', core, '--json', env=env))
             shown = json.loads(sdem('profile', 'show', '--workspace', core, '--json', env=env))
-            self.assertEqual([x['link_type'] for x in shown.get('left_out', [])], ['SECT.S.SecurityControl PROTECTS A2.ServiceDomain'])
+            self.assertEqual([x['link_type'] for x in shown.get('left_out', [])], ['SECT.S.SecurityControl PROTECTS bian.ServiceDomain'])   # by its id: BIAN is off
             sdem('profile', 'include', 'ext:bian', '--workspace', core, '--person', 'bx.check', '--reason', 'r', env=env)
             shown = json.loads(sdem('profile', 'show', '--workspace', core, '--json', env=env))
             self.assertFalse(shown.get('left_out'))

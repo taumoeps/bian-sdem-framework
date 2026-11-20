@@ -4,6 +4,7 @@ Edges are stored once, in their registry direction. Upstream traversal walks the
 no inverse edges exist. Every reported hop carries the mapping_id that justifies it, so a
 level-skipping answer (A1 -> A4) is always a derived path with provenance, never a stored record.
 """
+from .identity import T as _T, layer as _L  # ST-01…ST-05, DL-07: layers and types by id; their numbers computed
 from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
 from pathlib import Path
 import argparse, json, sys
@@ -91,7 +92,7 @@ def main(argv=None):
     parser.add_argument('entity', help='entity id to start from, e.g. CAP-310 or INF-CLOUD-K8S-PROD')
     parser.add_argument('paths', nargs='+', help='mapping JSON file(s)')
     parser.add_argument('--direction', choices=['down', 'up', 'both'], default='both',
-                        help='down = what this depends on (toward A4 Technology); up = what depends on this (toward A1 Business)')
+                        help=f'down = what this depends on (toward {_L("technology")} Technology); up = what depends on this (toward {_L("business")} Business)')
     parser.add_argument('--status', default=','.join(DEFAULT_STATUSES),
                         help='comma-separated statuses to include (default: approved)')
     parser.add_argument('--json', action='store_true', help='emit trees and derived paths as JSON')

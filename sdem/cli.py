@@ -4,6 +4,7 @@ One command with a subcommand per journey. Most subcommands hand over to the exi
 `sdem-*` commands keep working as aliases); `review` and `explain` are new. Conventions everywhere: inputs as `--graph DIR`
 or file paths, `--json` for machine-readable output, exit codes 0 = OK, 1 = issues found, 2 = usage error, no prompts.
 """
+from .identity import T as _T, layer as _L  # ST-01…ST-05, DL-07: layers and types by id; their numbers computed
 from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
 import argparse, contextlib, glob, importlib, io, json, re, sys
 from pathlib import Path
@@ -31,7 +32,7 @@ JOURNEYS = {
     'build':    ('J4', 'check the inputs and write the graph store (knowledge graph)', 'sdem.graph', ['build'],
                  'sdem build --workspace examples/card-fraud-alerts --out work/graph'),
     'query':    ('J4', 'find records in a graph store', 'sdem.graph', ['query'],
-                 'sdem query --graph examples/card-fraud-alerts/graph --level A3'),
+                 f'sdem query --graph examples/card-fraud-alerts/graph --level {_L("application")}'),
     'baseline': ('J4', 'freeze the current graph store under a name', 'sdem.graph', ['baseline'],
                  'sdem baseline release-1 --graph work/graph'),
     'trace':    ('J5', 'trace what a record depends on (down) or what depends on it (up)', 'sdem.graph', ['trace'],
@@ -40,13 +41,13 @@ JOURNEYS = {
                  'sdem impact INF-CLOUD-K8S-PROD --change rehost --graph examples/card-fraud-alerts/graph'),
     'aid':      ('J6', 'Architecture Inference Design: fill a workspace\'s gaps — inferred records marked with source, reasoning and confidence; confirm, reject (also project, check, gaps for file-based planning)', 'sdem.aid', [],
                  'sdem aid --workspace workspaces/payments --person jane.architect'),
-    'new':      ('J9', 'start a workspace: the four layers (A2 your BIAN layer) and an empty registry of connections — checked, recorded', 'sdem.new', [],
+    'new':      ('J9', f'start a workspace: the four layers ({_L("bian")} your BIAN layer) and an empty registry of connections — checked, recorded', 'sdem.new', [],
                  'sdem new --workspace workspaces/payments --person jane.architect'),
     'load':     ('J9', 'load reviewed candidate entities from sdem transform into a workspace — selected, checked first, recorded (the L of the ETL)', 'sdem.load', [],
                  'sdem load work/history --workspace workspaces/history --person jane.architect --exclude HIS-A3-X'),
     'designs':  ('J9', 'design records and gap records: the pages onboarded designs came from, and what did not fit an entity', 'sdem.designs', [],
                  'sdem designs --workspace workspaces/history --entity HIS-A3-PAYMENTS-HUB'),
-    'bian':     ('J9', "the BIAN (A2) layer: from the base BIAN that ships with SDEM, your own BIAN pack, or BIAN's files — list, search, import the service domains you choose (checked), add one to a workspace or select exactly which it holds, pack", 'sdem.bian', [],
+    'bian':     ('J9', f"the BIAN ({_L('bian')}) layer: from the base BIAN that ships with SDEM, your own BIAN pack, or BIAN's files — list, search, import the service domains you choose (checked), add one to a workspace or select exactly which it holds, pack", 'sdem.bian', [],
                  'sdem bian import ~/bian/release14.0.0 --only "Payment Order Initiation" -o work/bian/a2-service-domain.json'),
     'transform': ('J9', 'transform past designs — a Confluence export, a folder, or one Word, Excel, Markdown or CSV file — into candidate architecture entities: inspect it, extract (rules; on-device OCR for pictures)', 'sdem.transform', [],
                  'sdem transform run tests/fixtures/confluence-export-sample -o work/history --known examples/payment-initiation/a3-application.json'),
@@ -60,10 +61,10 @@ JOURNEYS = {
                  'sdem workbench --workspace examples/payment-initiation -o work/workbench.html'),
     'status':   ('J3', "where a design is and what to do next: what blocks it, what waits on a value or a person's decision, what is worth a look — with the next commands and who runs each (ST-01)", 'sdem.status', [],
                  'sdem status --workspace examples/payment-initiation'),
-    'zones':    ('J5', "a workspace's network zones: each zone and what it holds, how the zones connect (ZC-01…ZC-03, worked out from the zone structure), how one shape reaches another through them (ZC-04), what a lost zone connection cuts off (ZC-05, sdem zones cut) and the layout every drawing of A4 uses (--layout) — read-only", 'sdem.zones', [],
+    'zones':    ('J5', f"a workspace's network zones: each zone and what it holds, how the zones connect (ZC-01…ZC-03, worked out from the zone structure), how one shape reaches another through them (ZC-04), what a lost zone connection cuts off (ZC-05, sdem zones cut) and the layout every drawing of {_L('technology')} uses (--layout) — read-only", 'sdem.zones', [],
                  'sdem zones --workspace examples/payment-initiation'),
-    'layout':   ('J5', "a layer drawn by what owns what — A1 as a capability map, A2 as BIAN's service landscape (business area → business domain → service domain → service group → operation), A3 as the application structure, A4 by its network zones; each region an existing standard record, nesting only through structural links; the layout every drawing uses — read-only", 'sdem.containment', [],
-                 'sdem layout --layer A2 --workspace examples/payment-initiation'),
+    'layout':   ('J5', f"a layer drawn by what owns what — {_L('business')} as a capability map, {_L('bian')} as BIAN's service landscape (business area → business domain → service domain → service group → operation), {_L('application')} as the application structure, {_L('technology')} by its network zones; each region an existing standard record, nesting only through structural links; the layout every drawing uses — read-only", 'sdem.containment', [],
+                 f'sdem layout --layer {_L("bian")} --workspace examples/payment-initiation'),
     'handback': ('J3', 'what a workspace leaves open for a person — values nobody knows, unconfirmed inferences and the strength of their evidence, links to review, possible duplicates, unsourced records — with the commands the person runs (AG-H01)', 'sdem.handback', [],
                  'sdem handback --workspace examples/payment-initiation'),
     'comply':   ('J1', "the organisation's standards and reference-architecture patterns over a workspace: per rule and record compliant, non-compliant, unresolved or under an exception — separate from sdem check (PR-19)", 'sdem.comply', [],
@@ -75,7 +76,7 @@ JOURNEYS = {
     'diagram':  ('J7', 'ArchiMate diagrams of a workspace from SDEM\'s templates — capabilities and value stream, business process, BIAN service domains, application cooperation, technology and deployment, layered — only stored, approved links drawn', 'sdem.viewpoints', [],
                  'sdem diagram --workspace examples/payment-initiation --template layered -o work/layered.svg'),
     'document': ('J7', "a layer's design as a structured, readable document (Markdown or HTML), generated from the workspace — nothing invented, sources and gaps shown; verify checks an agent's narrative against it", 'sdem.document', [],
-                 'sdem document --workspace examples/payment-initiation --layer A3'),
+                 f'sdem document --workspace examples/payment-initiation --layer {_L("application")}'),
     'dashboard': ('J7', 'one read-only HTML dashboard for a workspace: health, attention, review, trace & impact, matrices, changes, AID, controls', 'sdem.dashboard', [],
                  'sdem dashboard --workspace examples/payment-initiation -o work/dashboard.html'),
     'explain':  ('J8', 'explain one element or link: why it exists, from what, how sure', None, None,
@@ -105,7 +106,7 @@ JOURNEYS = {
     'viewpoint': ('J1', "the viewpoints SDEM defines, as data — what each plate draws and leaves out, and the ArchiMate element each kind of record is drawn as (list, show, check)", 'sdem.viewpoint', [],
                  'sdem viewpoint show architecture'),
     'types':    ('J1', "what you may write: each layer's kinds of record, their fields (type, required, allowed values) and allowed links; the requirement and change-set formats — your profile's included with --workspace", 'sdem.typeinfo', [],
-                 'sdem types A1.BusinessProcess'),
+                 f'sdem types {_T("business.BusinessProcess")}'),
     'requirements': ('J5', 'requirements and constraints the workspace must keep meeting, their measurements, and what a change does to them: in scope, satisfied, breached, not evaluable — and the risk findings', 'sdem.requirements', [],
                  'sdem requirements evaluate --workspace examples/payment-initiation --record INF-K8S-PAY-PROD --change rehost --proposed INF-K8S-PAY-PROD2'),
     'profile':  ('J1', "the organisation's design specification on top of SDEM's metamodel — its own types, attributes, rules, link kinds and names (sdem-profile.json, optionally extending a shared base): check, show, example", 'sdem.profile', [],

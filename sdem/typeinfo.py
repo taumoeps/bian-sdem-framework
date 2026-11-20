@@ -10,6 +10,7 @@
 With --workspace, the workspace's organisation profile is included (its types, fields, rules, layers, requirement categories).
 Read-only. Built because the agent baseline (2026-11-02) found every mistake was a field, value or link no command listed.
 """
+from .identity import T as _T, layer as _L  # ST-01…ST-05, DL-07: layers and types by id; their numbers computed
 from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
 import argparse, json, sys
 from pathlib import Path
@@ -86,7 +87,7 @@ def requirement_format():
             'condition': {'required': cond['required'], 'operator': cond['properties']['operator']['enum'], 'optional': ['unit', 'period'],
                           'example': {'metric': 'availability_pct', 'operator': '>=', 'value': 99.9, 'unit': '%', 'period': 'month'}},
             'subject': 'the id of a record in the workspace (any layer) the requirement is about',
-            'derived_from': 'ids of the requirements, or A1 business requirements, it refines',
+            'derived_from': f'ids of the requirements, or {_L("business")} business requirements, it refines',
             'allocated_to': 'ids of lower-layer records that carry part of it',
             'evidence': "list of 'kind:reference' — the document that states it; may be empty when proposed, needed before a person confirms it"}
 
@@ -96,7 +97,7 @@ def change_set_format():
     return {'command': 'sdem change propose <file> --workspace DIR --agent <agent or architect> --person NAME [--dry-run]',
             'shape': {'layer': f"one of {', '.join(codes())} — a change set changes one layer", 'reason': 'one sentence',
                       'changes': [{'op': 'add | update | retire', 'kind': 'for update: modify | rehost | replace | retire (impact); optional',
-                                   'record': {'id': '…', 'type': 'e.g. A1.BusinessProcess (sdem types <layer>)', 'version': '1', 'name': '…',
+                                   'record': {'id': '…', 'type': f'e.g. {_T("business.BusinessProcess")} (sdem types <layer>)', 'version': '1', 'name': '…',
                                               'lifecycle_status': ' | '.join(_lifecycle()), 'description': 'optional', 'attributes': {'…': 'sdem types <type>'}}}],
                       'relationships': {'add': [{'source': 'id', 'kind': 'an allowed kind (sdem types <type>: links_out)', 'target': 'id'}], 'remove': ['…']}},
             'notes': ['update and retire give the full record', 'links between layers are not in a change set — the rules engine proposes them (sdem link) and a person approves (sdem approve)']}
@@ -108,11 +109,11 @@ def main(argv=None):
     ap = argparse.ArgumentParser(prog='sdem types', formatter_class=argparse.RawDescriptionHelpFormatter,
                                  description='What you may write: each layer\'s kinds of record, their fields (type, required, allowed values) and the links each may have; '
                                              'the requirement and change-set formats. With --workspace, your organisation profile is included.',
-                                 epilog='Examples:\n  sdem types A1\n  sdem types A1.BusinessProcess --json\n  sdem types requirement\n  sdem types authoring -o sdem-authoring-guide.md    # hand it to an AI assistant with the design\n  sdem types A3 --workspace workspaces/payments')
-    ap.add_argument('what', nargs='?', help='a layer (A1), a type (A1.BusinessProcess), requirement, change-set, or authoring (the guide for an outside author — an AI assistant without the CLI); nothing: the overview')
+                                 epilog=f'Examples:\n  sdem types {_L("business")}\n  sdem types {_T("business.BusinessProcess")} --json\n  sdem types requirement\n  sdem types authoring -o sdem-authoring-guide.md    # hand it to an AI assistant with the design\n  sdem types {_L("application")} --workspace workspaces/payments')
+    ap.add_argument('what', nargs='?', help=f'a layer ({_L("business")}), a type ({_T("business.BusinessProcess")}), requirement, change-set, or authoring (the guide for an outside author — an AI assistant without the CLI); nothing: the overview')
     ap.add_argument('--workspace', dest='estate', metavar='DIR', help="include the workspace's organisation profile"); ap.add_argument('--json', action='store_true')
     ap.add_argument('-o', '--out', metavar='FILE', help='with `authoring`: write the guide to this file')
-    ap.add_argument('--ids', action='store_true', help="every layer's and type's id — the name that never changes (ST-01, ST-02) — beside the name you read (A3.ApplicationComponent)")
+    ap.add_argument('--ids', action='store_true', help=f"every layer's and type's id — the name that never changes (ST-01, ST-02) — beside the name you read ({_T('application.ApplicationComponent')})")
     ap.add_argument('--kit', metavar='DIR', help='with `authoring`: write the guide AND SDEM itself as a zip into this folder — everything an outside author needs, to write the package and to check it')
     a = ap.parse_args(argv)
     mm = Metamodel.load(); w = a.what
