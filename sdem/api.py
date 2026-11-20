@@ -11,6 +11,7 @@ still change; 1.0 when SDEM 0.20 is released.
     writing            Batch, write_json, write_text, relink, for_file — every write through SDEM's own writer (atomic, LF, UTF-8),
                        holding the names the file's workspace stores
     checks             is_person
+    0.19's form        export_019(workspace, folder) — a 0.20 workspace as 0.19 held it, for a consumer not yet on 0.20 (DL-23)
     commands           run(command, main, argv) — an extension's code for one of SDEM's commands, run the way SDEM runs its own
                        (its --json, --dry-run, errors and exit codes)
 """
@@ -25,6 +26,7 @@ _EXPORTS = {
     'catalogue_dir': ('parts', 'catalogue_dir'), 'LevelGraph': ('graph', 'LevelGraph'), 'estate_index': ('graph', 'estate_index'),
     'Batch': ('files', 'Batch'), 'write_json': ('files', 'write_json'), 'write_text': ('files', 'write_text'), 'relink': ('docmap', 'relink'),
     'is_person': ('validate', 'is_person'),
+    'export_019': ('migrate20', 'export_019'), 'view_019': ('identity', 'view_019'),   # DL-23: a 0.20 workspace for a consumer built on 0.19's form
     'load': ('identity', 'load'), 'loads': ('identity', 'loads'), 'for_file': ('identity', 'for_file'),   # DL-11: a design's files, read and written
 }
 _MODULES = {'profile', 'parts'}   # whole modules an extension may use: the profile (activate, include) and BIAN's on-or-off (parts)

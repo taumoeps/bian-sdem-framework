@@ -6,6 +6,9 @@ from pathlib import Path
 
 ROOT = Path(os.environ.get('SDEM_GOLDEN_ROOT') or Path(__file__).resolve().parents[2])   # SDEM_GOLDEN_ROOT: capture another checkout, e.g. v0.19.0 (BP-D5)
 ENV = {**os.environ, 'PYTHONPATH': str(ROOT), 'PYTHONIOENCODING': 'utf-8'}   # SDEM writes UTF-8 on every platform
+FORM = ['--form', '0.20'] if os.environ.get('SDEM_GOLDEN_P2') == '1' else []
+if os.environ.get('SDEM_GOLDEN_P2') == '1' and (ROOT / 'examples' / '0.20').is_dir():   # P2: the 0.20 form, opted in (DL-D9), from the migrated example
+    ENV.update({'SDEM_FORM': '0.20', 'SDEM_EXAMPLES': str(ROOT / 'examples' / '0.20')})
 VOLATILE = re.compile(r'^(at|generated_at|written_at|recorded_at|started_at|ended_at|built_at|date|created|timestamp|now|as_of|run_id|id_run|fingerprint|duration_ms|seconds|elapsed)$')
 
 
@@ -70,11 +73,11 @@ def capture(out):
     try:
         cases = {}
         ws = tmp / 'pi'
-        sdem('new', '--workspace', ws, '--person', 'golden.check', '--example', 'payment-initiation')
+        sdem('new', '--workspace', ws, '--person', 'golden.check', '--example', 'payment-initiation', *FORM)
         v3 = tmp / 'v3'; shutil.copytree(ROOT / 'examples' / 'payment-initiation-v3' / 'sdem', v3, ignore=shutil.ignore_patterns('graph', 'links', 'aid'))
         if IDS: to_ids(ws); to_ids(v3)
-        if P2:
-            for w in (ws, v3):
+        if P2:   # the example is in the 0.20 form already (DL-D9); the second workspace is migrated
+            for w in (v3,):
                 code, so, se = sdem('migrate', '--workspace', w, '--person', 'golden.check', '--to', '0.20')
                 assert code == 0, se
         for name, w in (('payment-initiation', ws), ('payment-initiation-v3', v3)):
@@ -85,13 +88,12 @@ def capture(out):
             cases[f'{name}/link'] = ('link', '--workspace', w, '--out', tmp / f'{name}-links', '--json')
             for L in ('A1', 'A2', 'A3', 'A4'): cases[f'{name}/document-{L}'] = ('document', '--workspace', w, '--layer', now(L) if P2 else L, '--json')
             cases[f'{name}/build'] = ('build', '--workspace', w, '--out', tmp / f'{name}-graph', '--json')
-        for L in ('A1', 'A2', 'A3', 'A4'): cases[f'types/{L}'] = ('types', L, '--json')
+        for L in ('A1', 'A2', 'A3', 'A4'): cases[f'types/{L}'] = ('types', now(L) if P2 else L, '--json')
         cases['trace/pi-A1'] = ('trace', 'A1', '--graph', tmp / 'payment-initiation-graph', '--json')
         cases['impact/pi-APP'] = ('impact', 'APP-PAY-HUB', '--change', 'retire', '--graph', tmp / 'payment-initiation-graph', '--json')
         cases['bian/search'] = ('bian', 'search', 'payment', 'order', '--json')
-        nb = tmp / 'nb'; sdem('new', '--workspace', nb, '--person', 'golden.check', '--no-bian')   # BP-D5: sdem bian add, before BIAN's code moves
+        nb = tmp / 'nb'; sdem('new', '--workspace', nb, '--person', 'golden.check', '--no-bian', *FORM)   # BP-D5: sdem bian add, before BIAN's code moves
         if IDS: to_ids(nb)
-        if P2: assert sdem('migrate', '--workspace', nb, '--person', 'golden.check', '--to', '0.20')[0] == 0
         cases['bian/add-pi'] = ('bian', 'add', 'Card Authorization', '--workspace', ws, '--person', 'golden.check', '--dry-run', '--json')
         cases['bian/add-new'] = ('bian', 'add', 'Payment Rail', 'Party Reference Data Directory', '--workspace', nb, '--person', 'golden.check', '--dry-run', '--json')
         for d in ('card-fraud-alerts', 'digital-lending', 'legacy-core-ledger'):

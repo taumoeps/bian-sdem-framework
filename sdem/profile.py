@@ -608,10 +608,19 @@ def activate_from_paths(paths):
         if (d / FILE).exists():
             merged = activate_file(d / FILE); _load_exceptions(d)
             if ws: parts.for_workspace(ws, merged)
+            else: _form_of(folders)
             return merged
     deactivate()
     if ws: parts.for_workspace(ws)
+    else: _form_of(folders)
     return None
+
+
+def _form_of(folders):
+    """DL-10: files given without a workspace — their folder's form, by the names of its layer files (a bundled example)."""
+    from . import parts
+    from .identity import _ids_folder
+    parts._set_form(any(_ids_folder(str(d)) for d in folders))
 
 
 def activate_merged(merged):

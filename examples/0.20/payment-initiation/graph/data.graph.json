@@ -1,0 +1,100 @@
+{
+  "graph": {
+    "id": "sdem:synthetic-bank-payments-a3-data",
+    "type": "sdem.local",
+    "label": "A3 local knowledge graph (synthetic-bank-payments-a3-data)",
+    "directed": true,
+    "metadata": {
+      "sdem_store_version": "1.0",
+      "export_sha256": "a6136fb3eb965022fada315f9458a55abfd86a27fa31fe22d6064ebbf1640b6e",
+      "level": "A3",
+      "model_id": "synthetic-bank-payments-a3-data",
+      "model_version": "2026.10",
+      "metamodel_version": "0.17.0",
+      "source_system": "SYNTHETIC-APM"
+    },
+    "nodes": {
+      "A3:ENT-PAY-INSTR@7.1": {
+        "label": "payment_instruction",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.DataEntity",
+          "id": "ENT-PAY-INSTR",
+          "version": "7.1",
+          "lifecycle_status": "active",
+          "description": "Hub table holding one row per instruction.",
+          "attributes": {
+            "attributes": [
+              "payment_instruction_reference",
+              "debtor_account_reference",
+              "creditor_account_reference",
+              "amount",
+              "currency",
+              "value_date",
+              "payment_status",
+              "authorisation_status",
+              "execution_reference",
+              "remittance_information",
+              "channel_id"
+            ],
+            "stored_in": [
+              "INF-PG-PAY-PROD"
+            ],
+            "personal_information": true,
+            "system_of_record": true,
+            "retention_period": "7y",
+            "glossary_uri": "https://example.org/glossary/payment-instruction"
+          }
+        }
+      },
+      "A3:ENT-PAY-EVENT@7.1": {
+        "label": "payment_event",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.DataEntity",
+          "id": "ENT-PAY-EVENT",
+          "version": "7.1",
+          "lifecycle_status": "active",
+          "description": "Append-only event history per instruction.",
+          "attributes": {
+            "attributes": [
+              "event_id",
+              "payment_instruction_reference",
+              "event_type",
+              "occurred_at"
+            ],
+            "stored_in": [
+              "INF-PG-PAY-PROD"
+            ]
+          }
+        }
+      },
+      "A3:ENT-ACCOUNT-CACHE@7.1": {
+        "label": "account_cache",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.DataEntity",
+          "id": "ENT-ACCOUNT-CACHE",
+          "version": "7.1",
+          "lifecycle_status": "active",
+          "description": "Cached account details for validation.",
+          "attributes": {
+            "attributes": [
+              "account_reference",
+              "iban",
+              "currency",
+              "holder_reference",
+              "cached_at"
+            ],
+            "stored_in": [
+              "INF-PG-PAY-PROD"
+            ],
+            "personal_information": true,
+            "system_of_record": false
+          }
+        }
+      }
+    },
+    "edges": []
+  }
+}

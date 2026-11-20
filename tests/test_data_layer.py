@@ -36,6 +36,7 @@ NAMED = {
     'aid': {'.output.added.A3': "inferred data records are added to Data", '.output.added.A4': 'the same', '.output.would_write[]': 'data.json among the files, in another order'},
     'trace': {'.output.items[].chains': 'the access links between Data and Application add chains', '.output.items[].reach.A3': 'trace reaches Data', '.output.items[].reach.A5': 'and through it'},
     'impact': {'.output.coverage.A3': 'impact is seen on Data', '.output.coverage.A4.*': "Application's coverage without the data records"},
+    'types': {'.output.types': "Application's types without Data's (DL-02) — sdem types A4 lists Application in the 0.20 stack (DL-D9)"},
 }
 
 
@@ -78,7 +79,7 @@ class Boundary(unittest.TestCase):   # DL-10…DL-13, DL-20
             unnamed = {}
             for f in sorted(gold.glob('*.json')):
                 raw = json.loads(f.read_text(encoding='utf-8'))
-                a = raw if f.name.startswith(('types__', 'datasets__', 'bian__search')) else tr(raw)   # without a workspace: 0.19's form
+                a = raw if f.name.startswith(('datasets__', 'bian__search')) else tr(raw)   # 0.19's files given directly keep 0.19's form; sdem types shows 0.20's (DL-D9)
                 b = json.loads((out / f.name).read_text(encoding='utf-8'))
                 left = [p for p in diffs(a, b) if not named(f.name.replace('.json', ''), p)]
                 if left: unnamed[f.name] = left[:5]
@@ -89,7 +90,7 @@ class Boundary(unittest.TestCase):   # DL-10…DL-13, DL-20
     def test_a_migrated_workspace_is_never_written_with_0_19_names(self):   # every writer through the boundary (DL-11)
         tmp = Path(tempfile.mkdtemp()); w = tmp / 'ws'
         try:
-            sdem('new', '--workspace', w, '--person', 'dl.check', '--example', 'payment-initiation')
+            sdem('new', '--workspace', w, '--person', 'dl.check', '--example', 'payment-initiation', '--form', '0.19')
             sdem('migrate', '--workspace', w, '--person', 'dl.check', '--to', '0.20')
             sdem('bian', 'add', 'Card Authorization', '--workspace', w, '--person', 'dl.check')
             sdem('aid', '--workspace', w, '--person', 'dl.check')
@@ -106,7 +107,7 @@ class Boundary(unittest.TestCase):   # DL-10…DL-13, DL-20
         import filecmp
         tmp = Path(tempfile.mkdtemp()); w = tmp / 'ws'
         try:
-            sdem('new', '--workspace', w, '--person', 'dl.check', '--example', 'payment-initiation')
+            sdem('new', '--workspace', w, '--person', 'dl.check', '--example', 'payment-initiation', '--form', '0.19')
             shutil.copytree(w, tmp / 'orig')
             sdem('migrate', '--workspace', w, '--person', 'dl.check', '--to', '0.20')
             self.assertTrue((w / 'data.json').exists()); self.assertFalse((w / 'a3-application.json').exists())
@@ -123,6 +124,33 @@ class Boundary(unittest.TestCase):   # DL-10…DL-13, DL-20
         self.assertEqual(ids, {'level': 'application', 'instances': [{'type': 'application.ApplicationComponent', 'id': 'X'}], 'layer': 'application'})
         self.assertEqual(I.read_names(ids), doc)   # 'layer' is ArchiMate's own word, never translated
         self.assertEqual(I.store_names(I.read_names(ids), False), doc)
+
+
+
+class Reconciled(unittest.TestCase):   # DL-20: the payment example, 0.19 against 0.20 — the data, not only the answers
+    def test_every_record_field_and_link_of_0_19_is_in_the_migrated_example(self):
+        from sdem import identity as I
+        old, new = ROOT / 'examples' / 'payment-initiation', ROOT / 'examples' / '0.20' / 'payment-initiation'
+        j = lambda f: json.loads(f.read_text(encoding='utf-8'))
+        o_recs, o_rels = {}, set()
+        for f in ('a1-business.json', 'a2-service-domain.json', 'a3-application.json', 'a4-technology.json'):
+            d = j(old / f)
+            o_recs.update({r['id']: {**r, 'type': I.type_id(r['type'])} for r in d['instances']})
+            o_rels |= {(r['source'], r.get('kind'), r['target']) for r in d.get('relationships', [])}
+        n_recs, n_rels, where = {}, set(), {}
+        for lid in ('business', 'bian', 'data', 'application', 'technology'):
+            d = j(new / f'{lid}.json')
+            for r in d['instances']: n_recs[r['id']] = r; where[r['id']] = lid
+            n_rels |= {(r['source'], r.get('kind'), r['target']) for r in d.get('relationships', [])}
+        self.assertEqual(n_recs, o_recs)   # the same records, every field, nothing lost or invented
+        self.assertEqual({k for k in where if where[k] != n_recs[k]['type'].split('.')[0]}, set())   # each in its type's layer
+        acc = {r for r in o_rels if r[1] == 'access' and o_recs[r[2]]['type'].startswith('data.')}
+        self.assertEqual(n_rels, o_rels - acc)   # the links inside the layers, but access to data
+        o_m, n_m = j(old / 'mappings.json')['mappings'], j(new / 'mappings.json')['mappings']
+        self.assertEqual({(m['target']['id'], 'access', m['source']['id']) for m in n_m if m['relationship'] == 'ACCESSED_BY' and m['status'] == 'approved'}, acc)   # DL-13
+        norm = lambda m: json.dumps({**m, 'source': {**m['source'], 'type': I.type_id(m['source']['type'])}, 'target': {**m['target'], 'type': I.type_id(m['target']['type'])}}, sort_keys=True)
+        self.assertEqual({norm(m) for m in n_m if m['relationship'] != 'ACCESSED_BY'}, {norm(m) for m in o_m})   # every link between layers as it was
+        self.assertEqual([r['id'] for r in j(new / 'requirements.json')['requirements']], [r['id'] for r in j(old / 'requirements.json')['requirements']])
 
 
 if __name__ == '__main__':

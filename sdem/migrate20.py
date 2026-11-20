@@ -29,7 +29,32 @@ def _design_files(ws):
     return sorted(p for p in Path(ws).rglob('*.json') if BACKUP not in p.parts and not _derived(p))
 
 
-def plan(ws, person, today=None):
+def to_019(folder):
+    """A folder in the 0.20 form read as 0.19 held it — {0.19 file name: document}, Data's records in the Application file and each
+    approved ACCESSED_BY as access inside it — and those ACCESSED_BY links themselves, to be put back as they were (sdem new from a
+    0.20 baseline, DL-D9). Read with 0.19's stack (no workspace is active), so the names are 0.19's."""
+    from .identity import load
+    folder = Path(folder); new = {v: k for k, v in OLD.items()}
+    docs = {new[l]: load(folder / f'{l}.json') for l in ('business', 'bian', 'application', 'technology') if (folder / f'{l}.json').is_file()}
+    access = []
+    if (folder / 'data.json').is_file():
+        from .identity import layer
+        d = load(folder / 'data.json'); a = docs.setdefault('a3-application.json', {'level': layer('application'), 'instances': [], 'relationships': []})
+        a['instances'] = list(a.get('instances', [])) + d.get('instances', []); a['relationships'] = list(a.get('relationships', [])) + d.get('relationships', [])
+    reg = load(folder / 'mappings.json') if (folder / 'mappings.json').is_file() else None
+    if reg is not None:
+        keep = []
+        for m in reg.get('mappings', []):
+            if m.get('relationship') == 'ACCESSED_BY':
+                access.append(m)
+                if m.get('status') == 'approved' and 'a3-application.json' in docs:
+                    docs['a3-application.json']['relationships'].append({'source': m['target']['id'], 'kind': 'access', 'target': m['source']['id']})
+            else: keep.append(m)
+        reg = {**reg, 'mappings': keep}
+    return docs, reg, access
+
+
+def plan(ws, person, today=None, access=None):
     """{relative path: new document} for every file the migration writes, the old paths it removes, and what it did."""
     from . import profile as _p, parts
     from .identity import load, store_names, _ids_folder
@@ -68,6 +93,11 @@ def plan(ws, person, today=None):
             out['data.json'] = {k: v for k, v in data.items() if v is not None}
             out['application.json'] = {**app, 'instances': [i for i in app['instances'] if i['id'] not in data_ids], 'relationships': keep}
             did['data_records'], did['data_links'] = len(data_ids), len(inside)
+        if accesses and access is not None:   # the baseline's own ACCESSED_BY links, as they were (to_019) — never re-approved
+            maps = out.get('mappings.json') or {'mappings': []}
+            from .identity import store_names
+            out['mappings.json'] = {**maps, 'mappings': list(maps.get('mappings', [])) + store_names(access, True)}
+            did['access_links'] = len(access); accesses = []
         if accesses:
             ver = {i['id']: i.get('version', '1.0') for i in app.get('instances', [])}
             maps = out.get('mappings.json') or {'mappings': []}
@@ -88,12 +118,13 @@ def plan(ws, person, today=None):
     return out, removed, did
 
 
-def migrate(ws, person, dry_run=False, today=None):
-    """DL-12: plan, back up, write, check — restore the backup if the check does not pass."""
+def migrate(ws, person, dry_run=False, today=None, access=None, keep_backup=True):
+    """DL-12: plan, back up, write, check — restore the backup if the check does not pass. `access`: a baseline's ACCESSED_BY links to
+    keep as they were (sdem new); keep_backup=False for a workspace just made, which has nothing to go back to."""
     from . import parts, profile as _p
     from .identity import changed
     ws = Path(ws)
-    out, removed, did = plan(ws, person, today)
+    out, removed, did = plan(ws, person, today, access=access)
     res = {'workspace': str(ws), 'to': '0.20', **did, 'files_written': sorted(out), 'files_removed': sorted(removed), 'backup': str(ws / BACKUP)}
     if dry_run: return {**res, 'dry_run': True}
     bk = ws / BACKUP
@@ -118,6 +149,7 @@ def migrate(ws, person, dry_run=False, today=None):
         rollback(ws, keep_backup=False); raise
     finally:
         parts.reset()
+    if not keep_backup: shutil.rmtree(bk, ignore_errors=True); res['backup'] = None
     return res
 
 
@@ -134,3 +166,29 @@ def rollback(ws, keep_backup=False):
     if not keep_backup: shutil.rmtree(bk)
     changed()
     return {'workspace': str(ws), 'restored': len(man['originals']), 'removed': man['created']}
+
+
+def export_019(ws, out):
+    """A workspace in the 0.20 form written to `out` as 0.19 held it — Data's records in the Application file, each approved
+    ACCESSED_BY as access inside it, 0.19's file names and type names — for a consumer built on 0.19's form (the DESNRE publisher,
+    DL-23). The workspace itself is only read."""
+    from . import parts
+    from .identity import load, _derived
+    ws, out = Path(ws), Path(out)
+    parts.reset()   # no workspace active: 0.19's stack — every name read as 0.19 named it
+    docs, reg, _ = to_019(ws)
+    shutil.copytree(ws, out, ignore=shutil.ignore_patterns(BACKUP, 'graph', '*.graph.json'))
+    raw = lambda p, d: Path(p).write_bytes((json.dumps(d, indent=2, ensure_ascii=False) + '\n').encode('utf-8'))
+    rec = json.loads((ws / 'workspace.json').read_text(encoding='utf-8')) if (ws / 'workspace.json').is_file() else None
+    if rec is not None: raw(out / 'workspace.json', {k: v for k, v in rec.items() if k not in ('names', 'migrated')})
+    for l in ('business', 'bian', 'data', 'application', 'technology'):
+        if (out / f'{l}.json').exists(): (out / f'{l}.json').unlink()
+    for f, d in docs.items(): raw(out / f, d)
+    if reg is not None: raw(out / 'mappings.json', reg)
+    done = set(docs) | {'mappings.json', 'workspace.json'}
+    for p in sorted(ws.rglob('*.json')):   # every other design file: 0.19's names
+        rel = p.relative_to(ws)
+        if BACKUP in rel.parts or _derived(p) or rel.as_posix() in done or p.name in {f'{l}.json' for l in ('business', 'bian', 'data', 'application', 'technology')}: continue
+        try: raw(out / rel, load(p))
+        except ValueError: pass
+    return out

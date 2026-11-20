@@ -213,6 +213,8 @@ def _ids_folder(folder):
         if w.is_file():
             try: return json.loads(w.read_text(encoding='utf-8')).get('names') == 'ids'
             except (OSError, ValueError): return False
+        if (d / 'a1-business.json').is_file() or (d / 'a3-application.json').is_file(): return False   # a folder of 0.19's layer files
+        if any((d / f'{l}.json').is_file() for l in ('business', 'data', 'application', 'technology')): return True   # DL-10: a folder in the 0.20 form, workspace or not
     return False
 
 
@@ -227,6 +229,8 @@ def load(path):
     doc = json.loads(Path(path).read_text(encoding='utf-8'))
     if _derived(path): return doc
     doc = read_names(doc, legacy=not stores_ids(path))
+    if Path(path).parent.name in ('metamodel', 'schema', 'standards') and _moved():   # DL-07: SDEM's own prose names layers by 0.19's numbers
+        doc = _walk_text(doc)
     if Path(path).parent.name == 'standards':   # DL-04: SDEM's standards as a workspace in the 0.20 form reads them
         from .form020 import adapt
         doc = adapt(doc)
@@ -309,3 +313,35 @@ class view_019:
         self._was = _VIEW_019[0]; _VIEW_019[0] = True; changed(); return self
     def __exit__(self, *exc):
         _VIEW_019[0] = self._was; changed(); return False
+
+
+
+_TEXT = None
+
+
+def _moved():
+    """Does any layer of 0.19 read with another number now?"""
+    code = _index()[0]
+    return any(c and layer(i) != c for i, c in code.items())
+
+
+def text_019(v):
+    """Prose that names layers or types by 0.19's numbers ('id of the A3 component', 'A3.DataEntity'), as a person reads them now —
+    never an id that only contains one (RA4-37, AT-A4-35, HIS-A3-…)."""
+    import re
+    global _TEXT
+    if _TEXT is None: _TEXT = re.compile(r'(?<![A-Za-z0-9_.\-])(A[1-4])(?:\.([A-Z][A-Za-z]+))?(?![A-Za-z0-9_\-])')
+    of_code, by_old = _index()[1], _index()[3]
+    def rep(m):
+        if m.group(2):
+            n = f'{m.group(1)}.{m.group(2)}'
+            return T(by_old[n]) if n in by_old else m.group(0)
+        return layer(of_code[m.group(1)]) if m.group(1) in of_code else m.group(0)
+    return _TEXT.sub(rep, v)
+
+
+def _walk_text(x, key=None):
+    if isinstance(x, dict): return {k: _walk_text(v, k) for k, v in x.items()}
+    if isinstance(x, list): return [_walk_text(v, key) for v in x]
+    if isinstance(x, str) and ' ' in x and key not in LAYER_KEYS: return text_019(x)   # prose only: a value with a space in it
+    return x

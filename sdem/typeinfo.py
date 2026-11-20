@@ -116,6 +116,10 @@ def main(argv=None):
     ap.add_argument('--ids', action='store_true', help=f"every layer's and type's id — the name that never changes (ST-01, ST-02) — beside the name you read ({_T('application.ApplicationComponent')})")
     ap.add_argument('--kit', metavar='DIR', help='with `authoring`: write the guide AND SDEM itself as a zip into this folder — everything an outside author needs, to write the package and to check it')
     a = ap.parse_args(argv)
+    if not a.estate:   # DL-D9: without a workspace, the 0.20 stack (SDEM_FORM=0.19: as 0.19 showed it)
+        import os
+        from . import parts
+        parts._set_form(os.environ.get('SDEM_FORM') == '0.20')   # DL-D9, opt-in for now (the owner, 2026-11-21)
     mm = Metamodel.load(); w = a.what
     from . import identity
     if w and '.' in w and w not in mm.entities and identity.type_id(w): w = identity.T(identity.type_id(w))   # ST-05: a type given by its id

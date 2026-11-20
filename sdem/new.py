@@ -18,7 +18,7 @@ that base, so the organisation's types, attributes and rules apply from the star
 from .identity import for_file as _for_file  # DL-11: what a design's file stores (docs/design/sdem-data-layer-spec.md)
 from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
 from .identity import T as _T, layer as _L, F as _F  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
-import argparse, datetime, json, re, sys
+import argparse, os, datetime, json, re, sys
 from pathlib import Path
 
 from .layers import FILES as DATASETS   # LR-03
@@ -49,8 +49,9 @@ EXAMPLES = {'payment-initiation': 'payment_initiation'}   # synthetic examples t
 def example_dir(name):
     """A bundled example's folder: examples/<name> in a checkout, sdem/data/examples/<package> when installed."""
     from .paths import CHECKOUT, DATA_ROOT
-    d = DATA_ROOT / 'examples' / (name if CHECKOUT else EXAMPLES[name])
-    if not (d / 'a1-business.json').exists(): raise NewError(f'the example {name} is not installed with this SDEM — reinstall it')
+    import os
+    d = Path(os.environ['SDEM_EXAMPLES']) / name if os.environ.get('SDEM_EXAMPLES') else DATA_ROOT / 'examples' / (name if CHECKOUT else EXAMPLES[name])   # SDEM_EXAMPLES: another folder of examples
+    if not any((d / f).exists() for f in ('a1-business.json', 'business.json')): raise NewError(f'the example {name} is not installed with this SDEM — reinstall it')
     return d
 
 
@@ -184,10 +185,15 @@ def plan(workspace, person, bian_file=None, today=None, no_bian=False, core_only
     if from_dir:   # GV-05: the workspace's first content — a baseline, checked like any other, and recorded as one
         src = Path(from_dir)
         if not src.is_dir(): raise NewError(f'--from {from_dir}: no such folder')
-        found = {f: _jload(src / f) for f in DATASETS.values() if (src / f).exists()}
+        from .migrate20 import to_019
+        if not (src / 'a1-business.json').exists() and any((src / f'{l}.json').exists() for l in ('business', 'application', 'data')):   # a baseline in the 0.20 form
+            found, reg020, extra['_access'] = to_019(src)
+            if reg020 is not None: registry = reg020
+        else:
+            found = {f: _jload(src / f) for f in DATASETS.values() if (src / f).exists()}
         if not found: raise NewError(f'--from {from_dir}: no architecture datasets ({", ".join(DATASETS.values())})')
         docs.update(found)
-        if (src / 'mappings.json').exists(): registry = _jload(src / 'mappings.json')
+        if (src / 'mappings.json').exists() and '_access' not in extra: registry = _jload(src / 'mappings.json')
         if (src / 'requirements.json').exists(): extra['requirements.json'] = _jload(src / 'requirements.json')
         if a2 is not None and _F('bian') in found: catalogue, source = 'base', f'the BIAN layer of the baseline ({label or src.as_posix()})'
     errors = estate_errors(docs, registry)
@@ -238,6 +244,7 @@ def main(argv=None):
     ap.add_argument('--person', required=True, help='your name — a person')
     ap.add_argument('--bian', metavar='FILE', help=f'start with exactly this BIAN layer in {_L("bian")} (default: {_L("bian")} empty; sdem aid brings in the domains your design needs from {SHARED.as_posix()} if it exists, else the base BIAN)')
     ap.add_argument('--no-bian', action='store_true', help='start without a BIAN layer (add it later); business then does not connect to applications')
+    ap.add_argument('--form', choices=('0.20', '0.19'), default=os.environ.get('SDEM_FORM') or '0.19', help="0.20: the Data layer of its own, files named by layer, records that store type ids (DL-D9 — opt-in until every SDEM feature works in it); 0.19 (the default for now): as SDEM 0.19 made them — migrate later with sdem migrate --to 0.20")
     ap.add_argument('--core', action='store_true', help=f"a core-only design: SDEM's core layers {_L('business')}, {_L('application')} and {_L('technology')} and no BIAN — switch BIAN on later with sdem profile include ext:bian (BX-13)")
     ap.add_argument('--example', choices=sorted(EXAMPLES), help='start with a synthetic example that ships with SDEM as the baseline (made-up data, for learning) — the same as --from its folder')
     ap.add_argument('--from', dest='source', metavar='DIR', help='start with this content as the baseline: the four layers, mappings.json and requirements.json found in DIR — checked first, '
@@ -304,6 +311,7 @@ def main(argv=None):
     from .files import Batch
     ws = Path(a.estate); b = Batch()
     for f, d in docs.items(): b.json(ws / f, d)
+    access = extra.pop('_access', None)
     for f, d in extra.items(): b.json(ws / f, d)
     b.json(ws / 'mappings.json', registry); b.json(ws / RECORD, record); b.commit()
     if a.source:   # GV-05: the ledger records the baseline as such, and the decision is on record (attributed)
@@ -312,6 +320,10 @@ def main(argv=None):
         src = record['baseline']['from']
         g = gd(a.estate, 'establish_baseline', a.person, ws.name, {'from': src, 'files': record['baseline']['files']})
         led([ws / f for f in TRACKED if (ws / f).exists()], by=f'sdem new (baseline from {src}, {g["id"]})')
+    if getattr(a, 'form', '0.19') == '0.20':   # DL-D9: a new workspace in the 0.20 form — made as 0.19 made it, then migrated in place
+        from .migrate20 import migrate as _m20, Migrate20Error
+        try: _m20(a.estate, a.person, access=access, keep_backup=False)
+        except Migrate20Error as e: print(f'ERROR: the new workspace could not take the 0.20 form: {e}', file=sys.stderr); return 1
     if a.explore: return explore(a.estate, a.json, record=record)
     if not a.json and a.source:
         print(f'Next — sdem build --workspace {a.estate} --out {a.estate}/graph, then sdem trace <id or {_L("business")}…{_L("technology")}> --graph {a.estate}/graph, '

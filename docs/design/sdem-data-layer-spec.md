@@ -114,8 +114,9 @@
 | — | SDEM's inference engine AID runs on a migrated workspace in its **0.19 view** (`identity.view_019`) — Data's records in Application, approved `ACCESSED_BY` as access — and its results go back through ids, Data's records into `data.json`; an access it newly infers becomes a *proposed* `ACCESSED_BY` link | the engine proven on 0.19's stack runs unchanged; a link between layers is a person's to approve |
 | — | a graph store records the layers it was built with (`load-record.json`, when not 0.19's); `--graph` reads it | trace and impact on a migrated workspace's store |
 
-**Still to do in step 4:** `sdem new` in the 0.20 form, and the commands without a workspace (DL-D9); the examples migrated (DL-20); the made-up non-banking example (DL-21, P3); security and BIAN packages naming the data ids (DL-22); the viewpoint, DESNRE publisher, skills and docs (DL-23, DL-24).
+**Still to do in step 4:** every feature in the 0.20 form, then the default switched on (DL-D9a) — agents' layer scope, layout and zones, load, intake, the acceptance harness; the examples migrated (DL-20); the made-up non-banking example (DL-21, P3); security and BIAN packages naming the data ids (DL-22); the viewpoint, DESNRE publisher, skills and docs (DL-23, DL-24).
 
-| # | Decision for the owner | Recommended |
+| # | Decision | Decided |
 |---|---|---|
-| DL-D9 | In 0.20, `sdem new` creates a workspace in the 0.20 form (Data layer, files by id), and SDEM without a workspace shows the 0.20 stack; an existing workspace stays in 0.19's form until a person migrates it | **yes** |
+| DL-D9 | In 0.20, `sdem new` creates a workspace in the 0.20 form (Data layer, files by id), and SDEM without a workspace shows the 0.20 stack; an existing workspace stays in 0.19's form until a person migrates it | **yes** — approved 2026-11-21 ("yes continue"), with the payment-initiation example migrated to 0.20 |
+| DL-D9a | **Opt-in until every feature works in the 0.20 form** (the owner, 2026-11-21: "opt-in for now"). Switching the default on broke a large part of the full suite — real gaps: each layer agent's scope for change sets (CTL-19), the layout and zone commands, load and intake, the acceptance harness. So `sdem new --form 0.20` (or `SDEM_FORM=0.20`) opts in; the payment example in the 0.20 form is `examples/0.20/payment-initiation`, beside the 0.19 one, reconciled with it record by record. The default switches on when the suite is green in both forms | **yes** |

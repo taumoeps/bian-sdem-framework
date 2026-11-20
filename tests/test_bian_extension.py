@@ -29,7 +29,7 @@ def core_workspace(tmp, name='core'):
     m['mappings'] = [x for x in m['mappings'] if not x['source']['type'].startswith('A2.') and not x['target']['type'].startswith('A2.')]
     (src / 'mappings.json').write_text(json.dumps(m))
     ws = tmp / name
-    sdem('new', '--workspace', ws, '--person', 'bx.check', '--core', '--from', src)
+    sdem('new', '--workspace', ws, '--person', 'bx.check', '--core', '--form', '0.20', '--from', src)   # SDEM's default stack: A1 Business, A2 Data, A3 Application, A4 Technology
     return ws
 
 
@@ -65,14 +65,14 @@ class OnAndOff(unittest.TestCase):
 
     def test_off_the_metamodel_has_no_a2(self):   # BX-02, BX-04
         P.activate_from(self.core)
-        mm = Metamodel.load()   # DL-06: with BIAN off the layers are numbered A1–A3; BIAN's types are not in it
+        mm = Metamodel.load()   # DL-06, DL-D9: SDEM's default — A1 Business, A2 Data, A3 Application, A4 Technology; BIAN's types not in it
         self.assertFalse([t for t in mm.entities if t.startswith('(bian).') or t.endswith('.ServiceDomain')])
-        self.assertIn('A2.ApplicationComponent', mm.entities)
+        self.assertIn('A3.ApplicationComponent', mm.entities); self.assertIn('A2.DataEntity', mm.entities)
         self.assertFalse([r for r in load_registry()['relationships'] if 'ServiceDomain' in r['source_type'] + r['target_type']])
         from sdem.rules_engine import _rules
         self.assertFalse([k for k, m in _rules().items() if '(bian).' in json.dumps(m) or 'ServiceDomain' in json.dumps(m)])
         from sdem.layers import codes
-        self.assertEqual(codes(), ['A1', 'A2', 'A3'])
+        self.assertEqual(codes(), ['A1', 'A2', 'A3', 'A4'])
 
     def test_the_core_stands_alone(self):   # BX-32
         g = self.tmp / 'graph'
@@ -87,7 +87,7 @@ class OnAndOff(unittest.TestCase):
     def test_bian_commands_and_types_say_how_to_switch_it_on(self):   # BX-13
         out = sdem('bian', 'add', 'Payment Order', '--workspace', self.core, '--person', 'bx.check', ok=(2,))
         self.assertIn('sdem profile include ext:bian', out)
-        self.assertIn('A1, A2, A3', sdem('types', 'A4', '--workspace', self.core, ok=(2,)))   # DL-06: three layers, A1–A3
+        self.assertIn('A1, A2, A3, A4', sdem('types', 'A5', '--workspace', self.core, ok=(2,)))   # DL-D9: four layers, A1–A4
 
     def test_sdem_extensions_names_it_and_says_why(self):   # BX-01, BX-11
         d = json.loads(sdem('extensions', '--workspace', ROOT / 'examples' / 'payment-initiation-v3' / 'sdem', '--json'))

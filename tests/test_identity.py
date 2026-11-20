@@ -42,7 +42,7 @@ class IdentityTests(unittest.TestCase):
         d = json.loads(r.stdout)
         self.assertIn({'id': 'bian.ServiceDomain', 'name': 'A2.ServiceDomain'}, d['types'])
         r = subprocess.run([sys.executable, '-m', 'sdem', 'types', 'technology.Node', '--json'], capture_output=True, text=True, cwd=ROOT)
-        self.assertEqual(json.loads(r.stdout)['type'], 'A4.Node')
+        self.assertEqual(json.loads(r.stdout)['type'], 'A4.Node')   # without a workspace: 0.19's stack until DL-D9 is switched on
 
 
 
