@@ -139,16 +139,19 @@ def fake_bian(folder, sdem_range='>=0.0', mark=None):
     """A stand-in for an installed sdem-bian (BP-01): its data folder written from SDEM's own (scripts/bian_package.py), optionally with a
     mark in one A2 type, one link type and one inference rule — to see SDEM read the package, not its built-in copy."""
     from sdem.parts import write_package_data
-    data = folder / 'sdem_bian_data'; write_package_data(data)
+    write_package_data(folder / 'sdem_bian'); data = folder / 'sdem_bian' / 'data'
     if mark:
         for f, key in (('a2-service-domain.json', 'entities'), ('link-types.json', None), ('inference-rules.json', None)):
             d = json.loads((data / f).read_text()); rows = d[key] if key else d
             field = 'definition' if key else 'description'   # a type is shown by its definition (sdem types)
             rows[0][field] = f"{mark} {rows[0].get(field, '')}"
             (data / f).write_text(json.dumps(d))
+    (folder / 'sdem_bian' / '__init__.py').write_text('')
     man = {'name': 'bian', 'command': 'sdem-bian', 'version': '9.9.9', 'kind': ['metamodel'], 'sdem': sdem_range, 'bian_data': str(data),
-           'pack': str(ROOT / 'metamodel' / 'ext-bian-pack.json'), 'description': 'a test sdem-bian'}
-    body = f'import sys, json\nif "--manifest" in sys.argv: print(json.dumps({man!r}))\n'
+           'pack': str(ROOT / 'metamodel' / 'ext-bian-pack.json'), 'description': 'a test sdem-bian', 'commands': ['bian'], 'api': '>=0.1,<0.2'}
+    body = (f'import sys, json\nif "--manifest" in sys.argv: print(json.dumps({man!r})); sys.exit(0)\n'   # else: its own sdem bian code, through sdem.api
+            f'sys.path.insert(0, {str(folder)!r}); print("[the package\'s code]", file=sys.stderr)\n'
+            'from sdem import api\nfrom sdem_bian.bian import main\nsys.exit(api.run("bian", main, sys.argv[1:]))\n')
     if os.name == 'nt':
         (folder / 'sdem-bian.py').write_text(body)
         (folder / 'sdem-bian.cmd').write_text(f'@"{sys.executable}" "%~dp0sdem-bian.py" %*\r\n')
@@ -180,6 +183,20 @@ class Package(unittest.TestCase):   # step 2: BIAN in its own package (docs/desi
         for what in (ents, links, rules): self.assertIn('FROM-THE-PACKAGE', what)
         self.assertIn('FROM-THE-PACKAGE', sdem('types', 'A2', '--json', env=env))   # and what a person sees
         self.assertIn('bian', sdem('profile', 'include', 'ext:bian', '--workspace', core_workspace(self.tmp), '--person', 'bx.check', '--reason', 'r', env=env))
+
+    def test_sdem_bian_runs_the_packages_code(self):   # ST-22: the commands from the package, through sdem.api — the same answer
+        env = fake_bian(self.tmp)
+        r = subprocess.run([sys.executable, '-m', 'sdem', 'bian', 'search', 'payment', 'rail', '--json'], capture_output=True, text=True, env=env, cwd=ROOT)
+        self.assertEqual(r.returncode, 0, r.stderr); self.assertIn("[the package's code]", r.stderr)
+        plain = subprocess.run([sys.executable, '-m', 'sdem', 'bian', 'search', 'payment', 'rail', '--json'], capture_output=True, text=True, env=ENV, cwd=ROOT)
+        self.assertNotIn("[the package's code]", plain.stderr); self.assertEqual(r.stdout, plain.stdout)
+
+    def test_the_packages_code_uses_only_sdem_api(self):   # ST-21
+        import ast
+        from sdem.parts import package_code
+        for f, src in package_code().items():
+            used = {n.module for n in ast.walk(ast.parse(src)) if isinstance(n, ast.ImportFrom) and (n.module or '').startswith('sdem')}
+            self.assertLessEqual(used, {'sdem.api'}, f)
 
     def test_a_package_that_does_not_support_this_sdem_is_not_used_and_said(self):   # BP-10, BP-05
         env = fake_bian(self.tmp, sdem_range='<0.1', mark='FROM-THE-PACKAGE')

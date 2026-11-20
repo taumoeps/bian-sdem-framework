@@ -175,7 +175,12 @@ def _expand(name, rest):
     return out
 
 
+PROVIDED = {}   # ST-22: a command whose code an installed extension provides — {command: its main}, set by sdem.api.run
+
+
 def _main_of(module):
+    cmd = next((c for c, (_j, _w, m, *_r) in JOURNEYS.items() if m == module), None)
+    if cmd in PROVIDED: return PROVIDED[cmd]
     return importlib.import_module(module).main
 
 
@@ -476,6 +481,13 @@ def _main(argv=None):
             try: stream.reconfigure(encoding='utf-8', errors='replace')
             except (ValueError, OSError): pass
     argv = list(sys.argv[1:] if argv is None else argv)
+    if argv[:1] == ['bian'] and 'bian' not in PROVIDED:   # ST-22: an installed sdem-bian runs `sdem bian` with its own code (BP-05, BP-10)
+        from . import parts
+        if (parts.package() or {}).get('code'):
+            from . import extensions
+            code = extensions.run('bian', argv[1:])
+            if code is not None:
+                return code
     if argv and argv[0] not in JOURNEYS and not argv[0].startswith('-'):   # EXT-15: sdem <name> runs the installed extension sdem-<name>,
         from . import extensions                                            # with the rest of the line untouched — its own --help, --dry-run, --json
         code = extensions.run(argv[0], argv[1:])

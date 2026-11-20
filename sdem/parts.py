@@ -83,16 +83,19 @@ def builtin_data():
             'rules': [m for m in rd('metamodel', 'relationship-rules.json')['mappings'] if bian_rule(m)]}
 
 
-def write_package_data(out):
-    """The package's data folder from SDEM's built-in copy (scripts/bian_package.py): the four files and the catalogue, verbatim."""
+def write_package_data(pkg):
+    """sdem-bian's package folder (sdem_bian/) from SDEM's built-in copy (scripts/bian_package.py): data/ — the four files and the
+    catalogue, verbatim — and the `sdem bian` commands written against sdem.api (ST-22). Returns the files, relative to the folder."""
     import json, shutil
     from .paths import DATA_ROOT
-    out = Path(out); out.mkdir(parents=True, exist_ok=True)
+    pkg = Path(pkg); out = pkg / 'data'; out.mkdir(parents=True, exist_ok=True)
     for k, v in builtin_data().items():
         (out / PKG_FILES[k]).write_bytes((json.dumps(v, indent=1, ensure_ascii=False) + '\n').encode('utf-8'))   # LF on every platform (BP-11)
+    for f, src in package_code().items():   # ST-22: the commands, beside the data folder (sdem_bian/<file>)
+        (pkg / f).write_bytes(src.encode('utf-8'))
     if (out / CATALOGUE).exists(): shutil.rmtree(out / CATALOGUE)
     shutil.copytree(DATA_ROOT / 'bian', out / CATALOGUE)
-    return sorted(p.relative_to(out).as_posix() for p in out.rglob('*') if p.is_file())
+    return sorted([*(f'data/{p.relative_to(out).as_posix()}' for p in out.rglob('*') if p.is_file()), *CODE_FILES])
 
 
 _PKG = {}
@@ -114,7 +117,8 @@ def package():
         elif m.get('sdem') and not satisfies(version(), m['sdem']):
             res = {'refused': f"sdem-bian {m.get('version', '')} supports SDEM {m['sdem']}; this is SDEM {version()}"}
         else:
-            res = {'version': m.get('version', ''), 'data': d, 'manifest': m}
+            res = {'version': m.get('version', ''), 'data': d, 'manifest': m,
+                   'code': bool(m.get('commands')) and api_supported(m.get('api'))}   # ST-22: it runs `sdem bian` with its own code
     _PKG['v'] = res
     return res
 
@@ -151,3 +155,31 @@ def catalogue_dir():
     from .paths import DATA_ROOT
     p = package()
     return p['data'] / CATALOGUE if p and p.get('data') else DATA_ROOT / 'bian'
+
+
+def api_supported(spec):
+    """ST-20: does this SDEM's sdem.api satisfy an extension's "api" range? No range — it does not use sdem.api."""
+    if not spec: return False
+    from .api import VERSION
+    from .upgrade import satisfies
+    return satisfies(VERSION, spec)
+
+
+CODE_FILES = ('bian.py', 'inferences.py')   # ST-22, ST-D7: the sdem bian commands; the engines' BIAN steps move in step 5
+
+
+def package_code():
+    """The `sdem bian` commands written against sdem.api — what sdem-bian carries ({file name: source}). Every relative import of
+    SDEM's becomes `from sdem.api import …`; the two modules' imports of each other stay relative (ST-21)."""
+    import re
+    from .paths import DATA_ROOT
+    own = {f[:-3] for f in CODE_FILES}
+    out = {}
+    for f in CODE_FILES:
+        src = (Path(__file__).parent / f).read_text(encoding='utf-8')
+        def sub(m):
+            mod = m.group(2)
+            return m.group(0) if mod in own else f"{m.group(1)}from sdem.api import {m.group(3)}"
+        src = re.sub(r'^(\s*)from \.(\w*) import (.+)$', sub, src, flags=re.M)
+        out[f] = src
+    return out

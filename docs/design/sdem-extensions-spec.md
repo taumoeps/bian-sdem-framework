@@ -15,7 +15,7 @@ Not in SDEM's repository: an extension changes when its target changes, may need
 | ID | Rule |
 |---|---|
 | **EXT-01** | An extension is **a separate program or package with its own command**, named `sdem-<name>` (for example `sdem-desnre`). It is not part of SDEM's repository and SDEM does not ship it. |
-| **EXT-02** | An extension **uses SDEM only through its public interface**: the `sdem` commands with `--json` (the same interface agents use, `templates/agents/AGENTS.md`), the workspace files as documented, and the generated documents. It **never imports SDEM's code** (`import sdem…`) — SDEM's modules are internal and may change in any release. |
+| **EXT-02** | An extension **uses SDEM only through its public interface**: the `sdem` commands with `--json` (the same interface agents use, `templates/agents/AGENTS.md`), the workspace files as documented, and the generated documents. It **never imports SDEM's code** (`import sdem…`) — SDEM's modules are internal and may change in any release — **except `sdem.api`** (amended 2026-11-20, [stable identity](sdem-stable-identity-spec.md) ST-21, approved ST-D5): SDEM's one published, versioned code interface, which an extension names in its manifest (`"api": ">=0.1,<0.2"`). A test fails if an extension imports any other module of SDEM's. |
 | **EXT-03** | It **discovers what it needs** with `sdem commands --json` (the commands, their flags, exit codes and error codes) and reads SDEM's version from `sdem --version`. |
 | **EXT-04** | It **declares the SDEM versions and metamodel versions it supports**, checks them when it starts, and stops with a clear message outside them — never runs on a version it does not know. |
 

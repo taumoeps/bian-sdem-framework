@@ -87,3 +87,16 @@ A part is committed only with the 32 answers byte-identical and the full suite g
 | ST-D4 | Workspace files store type ids from step 4's migration (ST-10) | **yes** — identity must not change when BIAN is switched |
 | ST-D5 | `sdem.api` as the one code interface for extensions; EXT-02 amended (ST-20, ST-21) | **yes** |
 | ST-D6 | BIAN's code and inference steps move to `sdem-bian` in step 3 through it (ST-22) | **yes** |
+| ST-D7 | **ST-22 split** (2026-11-20, the owner: "split it"): in step 3, `sdem.api` and the `sdem bian` commands (`bian.py`, `inferences.py`) move to `sdem-bian`; the engines' BIAN inference steps — woven through 27 functions of the rules engine, AID, its fill and link steps and containment — are extracted in **step 5**, through a plug-in point designed with the service domain → data → application paths (PL-D4). Until then they stay in SDEM, off where BIAN is off | **yes** |
+
+## 9. As built (2026-11-20, branch `release/0.20`)
+
+| Part | Where | Proof |
+|---|---|---|
+| **3a** | `metamodel/identity.json` (4 layers, 50 types, each with its 0.19 name); `sdem/identity.py` — `T`, `layer`, `type_id`, `layer_id`, cached; `sdem types --ids`; `sdem types <type id>` | 32 answers identical; `tests/test_identity.py` |
+| **3b** | 1,073 names written in 46 modules — every string that was exactly a type name or layer code is `_T('<type id>')` / `_L('<layer id>')`; the 8 `'A2.'` prefix checks `_L('bian') + '.'` | 32 answers identical after each of three batches; the rules engine as fast (3,000 records in 0.6 s) |
+| **3c** | `sdem/api.py`, version **0.1**: the metamodel and identity, a workspace, the graph, SDEM's writer, `is_person`, and `run(command, main, argv)` — an extension's code for one of SDEM's commands, run through SDEM's own command line; EXT-02 amended (ST-21) | `sdem.api` loads lazily; anything else refused by name |
+| **3d-1** | `sdem-bian` 1.0.0.dev2 carries the `sdem bian` commands (`bian.py`, `inferences.py`), generated from SDEM's by `scripts/bian_package.py` with every import of SDEM's code turned into `sdem.api`; its manifest names `commands` and `api`; `sdem bian …` runs the package's code when it is installed and supports this `sdem.api`, SDEM's own otherwise (BP-10) | 32 answers identical through the package's code (a real install, and a stand-in in SDEM's tests); the package imports only `sdem.api`; package and SDEM's copy identical (BP-11) |
+| **3d-2** | the engines' BIAN inference steps — **step 5** (ST-D7) | — |
+
+**Not yet as the spec said (§7):** 271 labels and messages still carry an A-number written as text ("A1 Business", "not an A2 dataset"). They are right while the stack is 0.19's; a test lets their count only go down (`tests/data/identity-text-baseline.json`), and step 4, where the numbers move, computes them.

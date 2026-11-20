@@ -120,7 +120,12 @@ def main(argv=None):
     t = render()
     if a.check:
         ok = OUT.exists() and OUT.read_text(encoding='utf-8') == t
-        print(f"{OUT.name}: {'up to date' if ok else 'STALE: regenerate with sdem model regenerate'}"); return 0 if ok else 1
+        print(f"{OUT.name}: {'up to date' if ok else 'STALE: regenerate with sdem model regenerate'}")
+        if not ok and OUT.exists():   # say where: on a CI Python that renders differently, the difference is the only clue
+            import difflib, sys as _sys
+            d = list(difflib.unified_diff(OUT.read_text(encoding='utf-8').splitlines(), t.splitlines(), 'committed', 'rendered here', n=1, lineterm=''))
+            print('\n'.join(d[:30]), file=_sys.stderr)
+        return 0 if ok else 1
     OUT.write_text(t, encoding='utf-8'); print(f'wrote {OUT.relative_to(ROOT)}'); return 0
 
 
