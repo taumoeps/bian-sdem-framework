@@ -14,6 +14,8 @@ Controls: CTL-19 layer ownership (a change set changes one declared layer; an ag
 registry), CTL-20 change provenance (agent and person on every change set and work-item step). A change set lands only
 if the workspace's checks show no new error (the metamodel, CTL-01…17).
 """
+from .identity import for_file as _for_file  # DL-11: what a design's file stores (docs/design/sdem-data-layer-spec.md)
+from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
 from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 import copy, datetime, json, re, subprocess
 from pathlib import Path
@@ -59,7 +61,7 @@ class EstateNotFound(ValueError):
 
 
 def _now(): return datetime.datetime.now(datetime.timezone.utc).replace(microsecond=0).isoformat()
-def _j(p): return json.loads(Path(p).read_text(encoding='utf-8'))
+def _j(p): return _jload(Path(p))
 def _w(p, obj):
     from .files import write_json
     write_json(p, obj)   # in one step — never a half-written record
@@ -107,7 +109,7 @@ class Estate:
 
     # -- change sets (AG-K01)
     def propose(self, change_set, agent, person, work_ids=(), catalogue=None):
-        issues = check_schema(change_set, json.loads(SCHEMA.read_text(encoding='utf-8'))['$defs']['change_set_input'], json.loads(SCHEMA.read_text(encoding='utf-8')))
+        issues = check_schema(change_set, _jload(SCHEMA)['$defs']['change_set_input'], _jload(SCHEMA))
         if issues: raise CoordinationError('change set format: ' + '; '.join(issues[:5]))
         rl = change_set.get('relationships') or {}
         if not change_set['changes'] and not (rl.get('add') or rl.get('remove')): raise CoordinationError('change set format: nothing to change — give at least one record change or link change')
@@ -753,7 +755,7 @@ def change_main(argv=None):
             return 0
         if a.cmd == 'diff':
             r = est.compare(_j(a.incoming), a.complete)
-            if a.out: Path(a.out).write_text(json.dumps(r['change_set'], indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+            if a.out: Path(a.out).write_text(json.dumps(_for_file(Path(a.out), r['change_set']), indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
             if a.json: print(json.dumps(r, indent=2, ensure_ascii=False)); return 1 if r['conflicts'] or r['possible_duplicates'] else 0
             sm = r['summary']
             print(f"{r['layer']} compared with {a.incoming} ({'complete snapshot' if r['complete'] else 'partial — records it leaves out are unchanged'}): "
@@ -969,7 +971,7 @@ def check_coordination(estate_dir):
     steps, every step has agent and person (CTL-20). Empty when there is no coordination folder."""
     coord = Path(estate_dir) / 'coordination'
     if not coord.exists(): return [], 0
-    root = json.loads(SCHEMA.read_text(encoding='utf-8')); issues = []
+    root = _jload(SCHEMA); issues = []
     def load(folder):
         out = {}
         for f in sorted((coord / folder).glob('*.json')) if (coord / folder).exists() else []:

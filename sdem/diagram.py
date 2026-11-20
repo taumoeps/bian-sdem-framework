@@ -3,6 +3,7 @@
 The JSON is the record; the diagram is a projection of it. Only entries whose verification is
 'verified' or 'verified_intent_or_target_only' are drawn (B01 is excluded: unpublished).
 """
+from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
 from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 from pathlib import Path
 import argparse, json, sys
@@ -26,7 +27,7 @@ LEVEL_NAMES = {_L('business'): 'A1 Business Architecture', _L('bian'): 'A2 Servi
 
 
 def load_official(path=OFFICIAL):
-    return json.loads(Path(path).read_text(encoding='utf-8'))
+    return _jload(Path(path))
 
 
 def drawn_entries(official):
@@ -69,7 +70,7 @@ def render(official=None, metamodel=None):
 
 
 def load_new(path=NEW):
-    return json.loads(Path(path).read_text(encoding='utf-8'))
+    return _jload(Path(path))
 
 
 def new_entries(new):
@@ -142,7 +143,7 @@ def observed_patterns(examples_dir=None):
     root = Path(examples_dir) if examples_dir else MM_DIR.parent / 'examples'
     obs = Counter()
     for f in sorted(glob.glob(str(root / '*' / 'a[1-4]-*.json'))):
-        d = json.loads(Path(f).read_text(encoding='utf-8')); t = {i['id']: i['type'] for i in d['instances']}
+        d = _jload(Path(f)); t = {i['id']: i['type'] for i in d['instances']}
         for r in d['relationships']:
             if r['source'] in t and r['target'] in t:
                 obs[(d['level'], t[r['source']], r['kind'], t[r['target']])] += 1
@@ -155,7 +156,7 @@ def render_levels(metamodel=None, level_rels=None, examples_dir=None):
     relationship patterns observed across the example architecture datasets (the institution's own structure, using
     catalogued ArchiMate kinds) — observed, not prescribed."""
     mm = metamodel or Metamodel.load()
-    lr = level_rels or json.loads(LEVEL_RELS.read_text(encoding='utf-8'))
+    lr = level_rels or _jload(LEVEL_RELS)
     alias = {t: f"{e['level'].lower()}_{t.split('.')[1].lower()}" for t, e in mm.entities.items()}
     a2 = [(c['source_type'], c['kind'], c['target_type']) for c in lr['constraints'] if c['level'] == _L('bian')]
     obs = observed_patterns(examples_dir)
@@ -195,7 +196,7 @@ def render_merged(new=None, metamodel=None, level_rels=None, examples_dir=None):
     and unlabelled by ID; cross-level arrows carry their plan ID and decision colour."""
     new = new or load_new()
     mm = metamodel or Metamodel.load()
-    lr = level_rels or json.loads(LEVEL_RELS.read_text(encoding='utf-8'))
+    lr = level_rels or _jload(LEVEL_RELS)
     alias = {t: f"{e['level'].lower()}_{t.split('.')[1].lower()}" for t, e in mm.entities.items()}
     entries = new_entries(new)
     rule_of = {m['id']: (m.get('sdem_rule') or m.get('sdmm_rule')) for m in load_official()['mappings']}

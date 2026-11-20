@@ -9,6 +9,8 @@ between layers suggested, what the design does not state, the author's checklist
 The second form does, in the one order (the skill sdem-complete-draft), what took eight commands and a memory for their order. It
 approves, confirms and rejects nothing: it ends with the report of what is the person's to decide, weakest first.
 """
+from .identity import for_file as _for_file  # DL-11: what a design's file stores (docs/design/sdem-data-layer-spec.md)
+from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
 from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 import argparse, difflib, json, shutil, sys, tempfile
 from pathlib import Path
@@ -45,7 +47,7 @@ def _load_json(pkg, name, errors, required=True):
     if not f.exists():
         if required: errors.append({'file': name, 'message': 'missing — the package has this file (sdem types authoring, section 1)'})
         return None
-    try: return json.loads(f.read_text(encoding='utf-8'))
+    try: return _jload(f)
     except ValueError as e: errors.append({'file': name, 'message': f'not valid JSON — {e}'}); return None
 
 
@@ -73,14 +75,14 @@ def _invokes(ws, tmp, ops, person):
     for o in ops:
         for u in o['used_by']: uses.setdefault(u, []).append(o['id'])
     if not uses: return
-    a1 = json.loads((Path(ws) / LAYERS[_L('business')]).read_text(encoding='utf-8')); changes = []
+    a1 = _jload(Path(ws) / LAYERS[_L('business')]); changes = []
     for i in a1['instances']:
         if i['id'] in uses:
             i = json.loads(json.dumps(i)); at = i.setdefault('attributes', {})
             at['invokes'] = sorted(set(at.get('invokes') or []) | set(uses[i['id']])); changes.append({'op': 'update', 'kind': 'modify', 'record': i})
     if not changes: return
     cs = Path(tmp) / 'cs-invokes.json'
-    cs.write_text(json.dumps({'layer': _L('business'), 'reason': f"{BIAN}: the BIAN operations each process uses, by their id in the BIAN release", 'changes': changes, 'relationships': {'add': [], 'remove': []}}), encoding='utf-8')
+    cs.write_text(json.dumps(_for_file(cs, {'layer': _L('business'), 'reason': f"{BIAN}: the BIAN operations each process uses, by their id in the BIAN release", 'changes': changes, 'relationships': {'add': [], 'remove': []}})), encoding='utf-8')
     _must('change', 'propose', cs, '--workspace', ws, '--agent', AGENTS[_L('business')], '--person', person, what='recording the BIAN operations the processes use')
 
 
@@ -173,7 +175,7 @@ def check(pkg, allow_gaps=False):
             passed = []
             for layer, d in docs.items():
                 if not d['instances'] and not d['relationships']: continue   # a layer the design says nothing of: nothing to check, nothing to load
-                src = tmp / LAYERS[layer]; src.write_text(json.dumps(d), encoding='utf-8'); cs = tmp / f'cs-{layer}.json'
+                src = tmp / LAYERS[layer]; src.write_text(json.dumps(_for_file(src, d)), encoding='utf-8'); cs = tmp / f'cs-{layer}.json'
                 code, out, err = _sdem('change', 'diff', src, '--workspace', ws, '-o', cs)
                 if code or not cs.exists(): errors.append({'file': LAYERS[layer], 'message': (out + err).strip().splitlines()[-1] if (out + err).strip() else 'could not be read as a layer'}); continue
                 code, out, err = _sdem('change', 'propose', cs, '--workspace', ws, '--agent', AGENTS[layer], '--person', CHECKER, '--dry-run')
@@ -189,9 +191,9 @@ def check(pkg, allow_gaps=False):
                 # operations its processes use, every pattern that fits, and the links between layers the package gives counted as links
                 if domains: _must('bian', 'add', *domains, '--workspace', ws, '--person', CHECKER, what='adding the BIAN service domains (throw-away workspace)')
                 _invokes(ws, tmp, ops, CHECKER)
-                reg_f = ws / 'mappings.json'; regd = json.loads(reg_f.read_text(encoding='utf-8'))
+                reg_f = ws / 'mappings.json'; regd = _jload(reg_f)
                 regd['mappings'] = [{'mapping_id': f'CHK-{n}', 'source': {'id': g['source']}, 'relationship': g['relationship'], 'target': {'id': g['target']}, 'status': 'approved'} for n, g in enumerate(good)]
-                reg_f.write_text(json.dumps(regd), encoding='utf-8')
+                reg_f.write_text(json.dumps(_for_file(reg_f, regd)), encoding='utf-8')
                 from .comply import workspace_data
                 from . import profile as _p
                 ds, _, mm_ws, _ = workspace_data(ws)
@@ -273,7 +275,7 @@ def load(pkg, workspace, person, dry_run=False, allow_gaps=False, accept=False, 
     from .layers import FILES
     ws = Path(workspace)
     if not is_person(person): raise IntakeError(f"--person {person!r}: taking a design in — its BIAN domains, the patterns it is checked against, the draft — is a person's decision; give your own name (CTL-21)")
-    if ws.exists() and any((ws / f).exists() and json.loads((ws / f).read_text(encoding='utf-8')).get('instances') for f in FILES.values()):
+    if ws.exists() and any((ws / f).exists() and _jload(ws / f).get('instances') for f in FILES.values()):
         raise IntakeError(f'{ws} already holds records — sdem intake starts a design; change one that exists through change sets (sdem change propose)')
     r = check(pkg, allow_gaps)
     out = {**_public(r), 'workspace': str(ws), 'dry_run': bool(dry_run), 'accepted': bool(accept)}
@@ -290,7 +292,7 @@ def load(pkg, workspace, person, dry_run=False, allow_gaps=False, accept=False, 
     try:
         for layer, d in r['_docs'].items():
             if not d['instances'] and not d['relationships']: continue
-            src = tmp / LAYERS[layer]; src.write_text(json.dumps(d), encoding='utf-8'); cs = tmp / f'cs-{layer}.json'
+            src = tmp / LAYERS[layer]; src.write_text(json.dumps(_for_file(src, d)), encoding='utf-8'); cs = tmp / f'cs-{layer}.json'
             _must('change', 'diff', src, '--workspace', ws, '-o', cs, what=f'reading {LAYERS[layer]}')
             _must('change', 'propose', cs, '--workspace', ws, '--agent', AGENTS[layer], '--person', person, what=f'loading {LAYERS[layer]}')
         steps.append({'step': 'load', 'did': r['counts']['records']})
@@ -299,7 +301,7 @@ def load(pkg, workspace, person, dry_run=False, allow_gaps=False, accept=False, 
         ev = ws / 'coordination' / 'events'   # IN-13: the change events of the design's first load — nothing existed before them to be changed, so there is no work to plan from them
         first = sorted(f.stem for f in ev.glob('CE-*.json')) if ev.exists() else []
         (ws / 'intake').mkdir(parents=True, exist_ok=True)
-        (ws / 'intake' / 'first-load.json').write_text(json.dumps({'events': first, 'by': person, 'note': 'the change events of sdem intake: the first load of the design'}, indent=1), encoding='utf-8')
+        (ws / 'intake' / 'first-load.json').write_text(json.dumps(_for_file(ws / 'intake' / 'first-load.json', {'events': first, 'by': person, 'note': 'the change events of sdem intake: the first load of the design'}), indent=1), encoding='utf-8')
         steps.append({'step': 'bian', 'did': {'service_domains': r['bian']['service_domains'], 'operations': [o['id'] for o in r['bian']['operations']]}})
         avail = json.loads(_must('status', '--workspace', ws, '--json', what='reading the status')).get('patterns_available') or []
         for p in avail: _must('profile', 'include', p['include'], '--workspace', ws, '--person', person, '--reason', f"sdem intake: fits the design ({p['because']})", what=f"including {p['include']}")
@@ -310,7 +312,7 @@ def load(pkg, workspace, person, dry_run=False, allow_gaps=False, accept=False, 
             from .files import write_json
             from .metamodel import Metamodel
             mmb = Metamodel.load(); reg = load_registry()['relationships']
-            by0 = {i['id']: i for f in FILES.values() if (ws / f).exists() for i in json.loads((ws / f).read_text(encoding='utf-8'))['instances']}
+            by0 = {i['id']: i for f in FILES.values() if (ws / f).exists() for i in _jload(ws / f)['instances']}
             allp = []
             for g in r['_suggestions']:
                 if g['source'] not in by0 or g['target'] not in by0: continue
@@ -320,7 +322,7 @@ def load(pkg, workspace, person, dry_run=False, allow_gaps=False, accept=False, 
                              'evidence': [f"author:design section {g['section']}"], 'rationale': f"As authored ({g['basis']}, design section {g['section']}): {g['reason']}",
                              'baseline_id': 'intake', 'created_by': 'the author (sdem intake)', '_section': g['section']})
             pf = ws / 'aid' / 'AUTHOR-proposals.json'; write_json(pf, {'mappings': [{k: v for k, v in m.items() if k != '_section'} for m in allp]})
-            release = (json.loads((Path(pkg) / BIAN).read_text(encoding='utf-8')).get('release') or '') if (Path(pkg) / BIAN).exists() else ''
+            release = (_jload(Path(pkg) / BIAN).get('release') or '') if (Path(pkg) / BIAN).exists() else ''
             for m in allp:
                 kinds = next((q['required_evidence'] for q in reg if q['relationship'] == m['relationship'] and mmb.is_a(m['source']['type'], q['source_type']) and mmb.is_a(m['target']['type'], q['target_type'])), [])
                 bian_end = m['source']['type'].startswith((_L('bian') + '.')) or m['target']['type'].startswith((_L('bian') + '.'))
@@ -339,16 +341,16 @@ def load(pkg, workspace, person, dry_run=False, allow_gaps=False, accept=False, 
         if accept and r['complete']:   # IN-13: taken as authored — what SDEM's rules would propose beside the author's links is not taken, and is recorded so
             lp = ws / 'links' / 'proposals.json'
             if not lp.exists(): _must('link', '--workspace', ws, '--out', ws / 'links', '--no-review', what="listing the links SDEM's rules would propose beside the author's")   # with --no-inference none was listed yet
-            ids = [m['mapping_id'] for m in json.loads(lp.read_text(encoding='utf-8')).get('mappings', [])] if lp.exists() else []
+            ids = [m['mapping_id'] for m in _jload(lp).get('mappings', [])] if lp.exists() else []
             if ids:
                 _must('reject', *ids, '--proposals', lp, '--workspace', ws, '--reviewer', person, '--reason', 'the design is taken as authored (sdem intake --accept): not one of its author\'s links',
                       what="declining the links SDEM's rules propose beside the author's")
                 declined = ids
             steps.append({'step': 'as-authored', 'did': f"{len(declined)} link(s) SDEM's rules proposed beside the author's, declined"})
-        by = {i['id']: i for f in FILES.values() if (ws / f).exists() for i in json.loads((ws / f).read_text(encoding='utf-8'))['instances']}
+        by = {i['id']: i for f in FILES.values() if (ws / f).exists() for i in _jload(ws / f)['instances']}
         have = set()
         for f in sorted((ws / 'aid').glob('*-proposals.json')) + [ws / 'links' / 'proposals.json']:
-            if f.exists(): have |= {(m['source']['id'], m['relationship'], m['target']['id']) for m in json.loads(f.read_text(encoding='utf-8')).get('mappings', [])}
+            if f.exists(): have |= {(m['source']['id'], m['relationship'], m['target']['id']) for m in _jload(f).get('mappings', [])}
         mine = []
         for g in ([] if accept else r['_suggestions']):   # IN-08: what the author suggested and SDEM did not propose itself — proposals too, said to be the author's
             if (g['source'], g['relationship'], g['target']) in have or g['source'] not in by or g['target'] not in by: continue
@@ -371,7 +373,7 @@ def load(pkg, workspace, person, dry_run=False, allow_gaps=False, accept=False, 
         (kept / 'report.md').write_text(report, encoding='utf-8')
         steps.append({'step': 'report', 'did': 'intake/report.md'})
         out.update(steps=steps, draft=run.get('draft') or {}, completeness=status.get('completeness'), patterns=status.get('patterns'), report='intake/report.md', author_proposals=len(mine))
-        (kept / 'report.json').write_text(json.dumps(out, indent=1), encoding='utf-8')
+        (kept / 'report.json').write_text(json.dumps(_for_file(kept / 'report.json', out), indent=1), encoding='utf-8')
     finally: shutil.rmtree(tmp, ignore_errors=True)
     return out
 

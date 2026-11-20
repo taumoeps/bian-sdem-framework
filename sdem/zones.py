@@ -8,6 +8,7 @@ Read-only. The zone connections are worked out from the zone structure — never
   sdem zones --workspace examples/payment-initiation
   sdem zones path INF-APIGW-PAY INF-PG-PAY-PROD --workspace examples/payment-initiation
 """
+from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
 from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 import argparse, json, sys
 from pathlib import Path
@@ -22,7 +23,7 @@ def collect(workspace):
     ws = Path(workspace); f = ws / 'a4-technology.json'
     if not f.exists(): raise ValueError(f'{ws}: no a4-technology.json — no technology layer, so no network zones')
     _p.activate_from(ws)
-    doc = json.loads(f.read_text(encoding='utf-8')); mm = Metamodel.load()
+    doc = _jload(f); mm = Metamodel.load()
     byid = {i['id']: i for i in doc.get('instances', [])}
     shapes, parent, direct = zones_of(doc, mm)
     zones = [{'id': z, 'name': byid[z]['name'], 'level': (byid[z].get('attributes') or {}).get('zone_level'), 'kind': (byid[z].get('attributes') or {}).get('zone_kind'),
@@ -48,7 +49,7 @@ def cut(workspace, a, b):
     from .graph import FederatedGraph
     ws = Path(workspace); f = ws / 'a4-technology.json'
     if not f.exists(): raise ValueError(f'{ws}: no a4-technology.json — no technology layer')
-    doc = json.loads(f.read_text(encoding='utf-8')); mm = Metamodel.load()
+    doc = _jload(f); mm = Metamodel.load()
     conns = zone_connections(doc, mm)
     rule = next((r for x, y, r in conns if {x, y} == {a, b}), None)
     if not rule: raise ValueError(f"{a} and {b} are not connected — the zone connections are: {', '.join(f'{x}—{y} ({r})' for x, y, r in conns) or 'none'}")
@@ -121,7 +122,7 @@ def main(argv=None):
         from .metamodel import Metamodel
         f = Path(a.estate) / 'a4-technology.json'
         if not f.exists(): print(f'ERROR: {a.estate}: no a4-technology.json', file=sys.stderr); return 2
-        route = path(json.loads(f.read_text(encoding='utf-8')), Metamodel.load(), a.a, a.b)
+        route = path(_jload(f), Metamodel.load(), a.a, a.b)
         if a.json: print(json.dumps({'from': a.a, 'to': a.b, 'path': route}, indent=2)); return 0 if route else 1
         if not route: print(f'{a.a} does not reach {a.b} through network zones — one of them is in no zone (sdem check, LC-16)'); return 1
         print(' → '.join(route)); return 0

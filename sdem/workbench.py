@@ -7,6 +7,7 @@ One engine, the page only shows (UX-P01): every fact comes from SDEM's own funct
 review, trace, impact, matrices, changes), `sdem document` (UX-D), the metamodel and its rules, the change events' status.
 The page's script only selects, filters and navigates. Self-contained: no external file, script or call (UX-P02).
 """
+from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
 from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 import argparse, json, sys
 from pathlib import Path
@@ -16,7 +17,7 @@ CORE = (_L('business'), _L('bian'), _L('application'), _L('technology'))
 
 
 def _j(p, default=None):
-    try: return json.loads(Path(p).read_text(encoding='utf-8'))
+    try: return _jload(Path(p))
     except (OSError, ValueError): return default
 
 

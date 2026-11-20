@@ -14,6 +14,7 @@ every change goes through `sdem bian inference …`, names a person and a reason
 
 Usage of the generated page: python -m sdem.inferences [--check]
 """
+from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
 import argparse, datetime, json, re, sys
 from pathlib import Path
 
@@ -39,7 +40,7 @@ def installed_file(release):
 
 
 def read(path):
-    rec = json.loads(Path(path).read_text(encoding='utf-8'))
+    rec = _jload(Path(path))
     if rec.get('format') != FORMAT: raise InferenceError(f'{path}: not an SDEM inference record ({FORMAT})')
     return rec
 

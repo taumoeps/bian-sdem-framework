@@ -1,6 +1,7 @@
 """Safe file writes: a file is written to a temporary copy beside it and moved into place in one step (os.replace), so a
 crash or a full disk never leaves a half-written file. `Batch` writes several files all-or-nothing as far as the file
 system allows: every file is written to its temporary copy first, and only then are they moved into place."""
+from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
 import datetime, hashlib, json, os, sys, tempfile
 from pathlib import Path
 
@@ -46,7 +47,8 @@ def write_text(path, text):
 
 
 def write_json(path, obj):
-    write_text(path, dumps(obj))
+    from .identity import for_file   # DL-11: the names the file's workspace stores
+    write_text(path, dumps(for_file(path, obj)))
 
 
 def _sha(p):
@@ -67,7 +69,7 @@ def record(paths, by=None, note=None):
     for d, ps in groups.items():
         if not ((d / 'mappings.json').exists() and ((d / 'workspace.json').exists() or (d / LEDGER).exists())): continue   # workspaces only
         f = d / LEDGER
-        try: led = json.loads(f.read_text(encoding='utf-8')) if f.exists() else {}
+        try: led = _jload(f) if f.exists() else {}
         except ValueError: led = {}
         led['format'] = 'sdem-ledger/1'
         files = led.setdefault('files', {})
@@ -82,7 +84,7 @@ def unrecorded(workspace):
     when the workspace has no ledger yet (started before v0.9.13)."""
     f = Path(workspace) / LEDGER
     if not f.exists(): return None
-    try: files = json.loads(f.read_text(encoding='utf-8')).get('files', {})
+    try: files = _jload(f).get('files', {})
     except ValueError: return None
     out = []
     for name in TRACKED:
@@ -97,7 +99,9 @@ def unrecorded(workspace):
 class Batch:
     """Collect writes; `commit()` writes every temporary copy, then moves them all into place."""
     def __init__(self): self.items = []
-    def json(self, path, obj): self.items.append((Path(path), dumps(obj)))
+    def json(self, path, obj):
+        from .identity import for_file   # DL-11
+        self.items.append((Path(path), dumps(for_file(path, obj))))
     def text(self, path, text): self.items.append((Path(path), text))
 
     def commit(self):

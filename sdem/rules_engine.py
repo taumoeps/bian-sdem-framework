@@ -9,6 +9,7 @@ It never approves, never invents an instance, and never re-proposes a link that 
 
 Built step by step against the acceptance harness (sdem/acceptance.py). Implemented: steps 1–5 (data joins; BIAN REST decision procedure; structural matching; derivation; bounded text inference). Design mode: a target design from BIAN's container pattern when no A3 architecture dataset exists (M2).
 """
+from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
 from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 import collections, functools, json, re
 from pathlib import Path
@@ -37,7 +38,7 @@ def weakest(*classes):
 
 def _rules():
     from . import parts   # BX-02: inference rules that name an A2 type belong to ext:bian
-    ms = json.loads((DATA_ROOT / 'metamodel' / 'relationship-rules.json').read_text(encoding='utf-8'))['mappings']
+    ms = _jload(DATA_ROOT / 'metamodel' / 'relationship-rules.json')['mappings']
     ms = parts.splice(ms, parts.bian_rule, lambda m: m['id'], 'rules')   # BP-02: the installed sdem-bian's, if any
     if not parts.bian_on(): ms = [m for m in ms if (_L('bian') + '.') not in json.dumps(m)]
     return {m['id']: m for m in ms}

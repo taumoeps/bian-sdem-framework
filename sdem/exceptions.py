@@ -6,13 +6,14 @@ why, which rule, which records, until when. While it holds, the rule's finding f
 and not an error in `sdem check`; on the day after it expires the finding comes back. An agent never grants one (CTL-21). Stored in the
 workspace's `exceptions.json`; `sdem exception list` shows them, active or expired.
 """
+from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
 import argparse, datetime, json, sys
 from pathlib import Path
 
 FORMAT = 'sdem-exceptions/1'
 
 
-def _j(p): return json.loads(Path(p).read_text(encoding='utf-8'))
+def _j(p): return _jload(Path(p))
 
 
 def load(ws):

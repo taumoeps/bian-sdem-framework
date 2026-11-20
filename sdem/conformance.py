@@ -21,6 +21,7 @@ Warnings (the architecture dataset is usable but incomplete or dated):
   Flat zones (ZF-01…ZF-06): where a workspace has no level-0 zone, a level-1 or level-2 zone may stand with no parent, and several may be internal.
 LC-01…LC-03 and LC-11 are checked by the graph loader and the registry validator; LC-12 by sdem-diff.
 """
+from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
 from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 import json, re
 from collections import Counter
@@ -35,7 +36,7 @@ TYPES = {'string': str, 'list<string>': list, 'map<string,string>': dict, 'integ
 DATE = re.compile(r'^\d{4}-\d{2}-\d{2}$')
 
 
-def _j(p): return json.loads(Path(p).read_text(encoding='utf-8'))
+def _j(p): return _jload(Path(p))
 
 
 @lru_cache(maxsize=1)

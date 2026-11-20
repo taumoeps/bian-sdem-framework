@@ -6,6 +6,7 @@ A store is built only from inputs that pass every `sdem check` rule; a failed bu
 store untouched (GS-B-02). Output is deterministic (GS-F-04): same inputs, byte-identical graph files; records and links keep the order of
 the architecture dataset and registry, so every reader sees them in the same order as the source.
 """
+from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
 import datetime, hashlib, json, os, shutil, tempfile
 from pathlib import Path
 
@@ -127,7 +128,7 @@ def _registry_docs(g):
 
 def _load_record(out):
     p = Path(out) / LOAD_RECORD
-    return json.loads(p.read_text(encoding='utf-8')) if p.exists() else {'store': Path(out).name, 'entries': []}
+    return _jload(p) if p.exists() else {'store': Path(out).name, 'entries': []}
 
 
 def stale_inputs(store):
@@ -156,7 +157,8 @@ def render(paths, mm=None):
     from .designs import is_design_records, graph as _designs_graph, GRAPH as _DESIGNS
     inputs, levels, registries, design = [], [], [], None
     for p, t in texts.items():
-        d = json.loads(t); sha = _sha(t)
+        from .identity import loads as _jloads   # DL-11: the design's names, whatever the file stores
+        d = _jloads(t, p); sha = _sha(t)
         if is_design_records(d):
             design = d; inputs.append({'path': p, 'kind': 'design records', 'sha256': sha}); continue
         if 'mappings' in d:
@@ -262,19 +264,19 @@ class GraphReader:
         from . import profile as _p
         if mm is None:
             pf = Path(store) / PROFILE_FILE
-            if pf.exists(): _p.activate_merged(json.loads(pf.read_text(encoding='utf-8')))
+            if pf.exists(): _p.activate_merged(_jload(pf))
             else: _p.deactivate()
         store = Path(store); mm = mm or Metamodel.load()
         if not (store / FEDERATED).exists(): raise StoreError(f'{store}: not a graph store (no {FEDERATED})')
         levels = []
         for lvl, name in LEVEL_FILES.items():
             if (store / name).exists():
-                levels.append(LevelGraph(_export_doc(json.loads((store / name).read_text(encoding='utf-8'))['graph']), mm))
-        fed = json.loads((store / FEDERATED).read_text(encoding='utf-8'))['graph']
+                levels.append(LevelGraph(_export_doc(_jload(store / name)['graph']), mm))
+        fed = _jload(store / FEDERATED)['graph']
         fg = FederatedGraph(levels, _registry_docs(fed), mm)
         if (store / 'designs.graph.json').exists():  # GS-D-03
             from .designs import from_graph
-            fg.design_records = from_graph(json.loads((store / 'designs.graph.json').read_text(encoding='utf-8')))
+            fg.design_records = from_graph(_jload(store / 'designs.graph.json'))
         return cls(fg, 'store', _load_record(store))
 
     @classmethod
@@ -289,12 +291,12 @@ class GraphReader:
         """GS-F-02/03 and resolution for a stored graph: file shapes, the local graphs, every stored link resolving.
         Registry history (supersession chains) was validated when the store was built and is not in the store."""
         from .validate import check_schema
-        schema = json.loads((DATA_ROOT / 'schema' / 'graph-store.schema.json').read_text(encoding='utf-8'))
+        schema = _jload(DATA_ROOT / 'schema' / 'graph-store.schema.json')
         report = {}
         for name in list(LEVEL_FILES.values()) + [FEDERATED]:
             p = Path(store) / name
             if not p.exists(): continue
-            g = json.loads(p.read_text(encoding='utf-8')); issues = check_schema(g, schema)
+            g = _jload(p); issues = check_schema(g, schema)
             issues += [f'node {k}: {i}' for k, n in g['graph']['nodes'].items() for i in check_schema(n, schema['$defs']['node'], schema)]
             keys = set(g['graph']['nodes'])
             issues += [f"edge {e['id']}: end not a node of this file" for e in g['graph']['edges'] if e['source'] not in keys or e['target'] not in keys]
@@ -359,7 +361,7 @@ class GraphReader:
 
     def unmapped(self, level):
         """GS-Q-04: nodes of `level` with no approved cross-level link of a type the catalogue expects for them."""
-        types = json.loads((DATA_ROOT / 'schema' / 'relationship-types.json').read_text(encoding='utf-8'))['relationships']
+        types = _jload(DATA_ROOT / 'schema' / 'relationship-types.json')['relationships']
         edges = self.fg.edges(); out = []
         for n in self.nodes(level=level):
             expected = sorted({(x['relationship'], 'source' if self.mm.is_a(n['type'], x['source_type']) else 'target') for x in types

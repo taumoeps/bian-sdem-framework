@@ -5,6 +5,7 @@ Writes a small offline site: <out>/index.html (home) and <out>/workspaces/<name>
 link back home). Everything is computed here with SDEM's own functions — the generated-file checks and the engine's
 acceptance cases run live at generation — and the pages only display it. No server, no network, no AI.
 """
+from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
 from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 import argparse, contextlib, datetime, glob, html, io, json, re, sys
 from pathlib import Path
@@ -17,7 +18,7 @@ DATASETS = ('a1-business.json', 'a2-service-domain.json', 'a3-application.json',
 BOX_W, BOX_H, STEP_X, STEP_Y, PER_ROW, PAD = 196, 36, 210, 50, 6, 20
 
 
-def _j(p): return json.loads(Path(p).read_text(encoding='utf-8'))
+def _j(p): return _jload(Path(p))
 
 
 def find_estates(roots=(), estates=()):

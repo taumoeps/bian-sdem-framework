@@ -3,6 +3,7 @@ and each entity type's own attributes, with source reference, verification, reas
 
 Generated from metamodel/entity-attributes.json; the test suite checks it is current.
 """
+from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
 from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 from pathlib import Path
 from collections import Counter
@@ -16,7 +17,7 @@ NAMES = {_L('business'): 'A1 Business Architecture', _L('bian'): 'A2 Service Dom
 
 
 def load(path=REC):
-    return json.loads(Path(path).read_text(encoding='utf-8'))
+    return _jload(Path(path))
 
 
 def render(rec=None):

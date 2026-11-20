@@ -1,6 +1,7 @@
 """`sdem viewpoint` — the viewpoints SDEM defines, as data (docs/design/sdem-architecture-viewpoint-spec.md §10, ARV-18…ARV-22): which
 records each plate draws (a type's subtypes too, ARV-19), how they group, which links connect them, what is left out and why, and the
 layout each plate uses (named, not encoded — ARV-20). Viewers (DESNRE's 3D view and the Design document's figures) draw from them."""
+from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
 from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 import argparse, json, sys
 from .paths import DATA_ROOT
@@ -15,7 +16,7 @@ def names(): return sorted(p.stem[len('viewpoint-'):] for p in DIR.glob('viewpoi
 def load(name):
     f = DIR / f'viewpoint-{name}.json'
     if not f.is_file(): raise ValueError(f"no viewpoint {name!r} — SDEM defines: {', '.join(names()) or 'none'}")
-    return json.loads(f.read_text(encoding='utf-8'))
+    return _jload(f)
 
 
 def check(mm, d):

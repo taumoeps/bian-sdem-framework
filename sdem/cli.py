@@ -4,6 +4,7 @@ One command with a subcommand per journey. Most subcommands hand over to the exi
 `sdem-*` commands keep working as aliases); `review` and `explain` are new. Conventions everywhere: inputs as `--graph DIR`
 or file paths, `--json` for machine-readable output, exit codes 0 = OK, 1 = issues found, 2 = usage error, no prompts.
 """
+from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
 import argparse, contextlib, glob, importlib, io, json, re, sys
 from pathlib import Path
 
@@ -219,7 +220,10 @@ def _link(argv):
         code = _main_of('sdem.inference')(argv)
     text = buf.getvalue()
     if code == 0 and out:
-        (Path(out) / 'proposals.json').write_text(text, encoding='utf-8')
+        from .identity import stores_ids, for_file
+        pf = Path(out) / 'proposals.json'
+        if stores_ids(pf): from .files import write_json; write_json(pf, json.loads(text))   # DL-11: a migrated workspace stores ids
+        else: pf.write_text(text, encoding='utf-8')
         doc = json.loads(text); n = len(doc.get('mappings', []))
         aid = _aid_coverage(argv, doc.get('mappings', []))
         if as_json:   # AG-03: the proposals, weakest first, and where they are
@@ -253,7 +257,7 @@ def _aid_coverage(argv, mappings):
     if not files: return None
     key = lambda m: ((m.get('source') or {}).get('id'), m.get('relationship'), (m.get('target') or {}).get('id'))
     have = {key(m) for m in mappings}
-    aid = [m for f in files for m in (json.loads(f.read_text(encoding='utf-8')).get('mappings') or [])]
+    aid = [m for f in files for m in (_jload(f).get('mappings') or [])]
     missing = [m.get('mapping_id') for m in aid if key(m) not in have]
     return {'files': [str(f) for f in files], 'total': len(aid), 'included': len(aid) - len(missing), 'not_included': missing}
 
@@ -268,8 +272,8 @@ def _metamodel_sources():
     """The rule records (id → record) and the published-source key (code → address) from the metamodel."""
     from .paths import DATA_ROOT
     mm = DATA_ROOT / 'metamodel'
-    rules = {r['id']: r for r in json.loads((mm / 'relationship-rules.json').read_text(encoding='utf-8'))['mappings']}
-    return rules, json.loads((mm / 'official-mappings.json').read_text(encoding='utf-8')).get('sources', {})
+    rules = {r['id']: r for r in _jload(mm / 'relationship-rules.json')['mappings']}
+    return rules, _jload(mm / 'official-mappings.json').get('sources', {})
 
 
 def _with_sources(x, rules, sources):
@@ -310,12 +314,12 @@ def review(argv):
     if a.estate: a.names = a.names + _estate_files(a.estate)[:-1]
     rows = []
     for f in a.proposals:
-        try: doc = json.loads(Path(f).read_text(encoding='utf-8'))
+        try: doc = _jload(Path(f))
         except (OSError, ValueError) as e: print(f'ERROR: {f}: {e}', file=sys.stderr); return 2
         rows += [dict(m, _file=f) for m in doc.get('mappings', []) if m.get('status', 'proposed') == 'proposed']
     decided = {}
     if a.estate:   # RJ-07: with the workspace, a proposal a person has decided — approved or rejected — is not listed as still to review
-        try: decided = {(m['source']['id'], m['relationship'], m['target']['id']): m.get('status') for m in json.loads((Path(a.estate) / 'mappings.json').read_text(encoding='utf-8')).get('mappings', []) if m.get('status') in ('approved', 'rejected')}
+        try: decided = {(m['source']['id'], m['relationship'], m['target']['id']): m.get('status') for m in _jload(Path(a.estate) / 'mappings.json').get('mappings', []) if m.get('status') in ('approved', 'rejected')}
         except (OSError, ValueError): pass
     n_rej = sum(1 for m in rows if decided.get((m['source']['id'], m['relationship'], m['target']['id'])) == 'rejected')
     rows = [m for m in rows if (m['source']['id'], m['relationship'], m['target']['id']) not in decided]
@@ -392,7 +396,7 @@ def explain(argv):
             if a.id in (l['mapping_id'], l['source']['id'], l['target']['id']):
                 found.append({'kind': 'projected link', 'id': l['mapping_id'], 'name': f"{l['source']['id']} -{l['relationship']}-> {l['target']['id']}", **l['projection']})
     for f in a.proposals:
-        try: doc = json.loads(Path(f).read_text(encoding='utf-8'))
+        try: doc = _jload(Path(f))
         except (OSError, ValueError) as e: print(f'ERROR: {f}: {e}', file=sys.stderr); return 2
         for m in doc.get('mappings', []):
             if a.id in (m['mapping_id'], m['source']['id'], m['target']['id']):
@@ -556,7 +560,7 @@ def _activate_profile(rest):
             d = Path(rest[rest.index(flag) + 1])
             try:
                 if flag == '--workspace': _p.activate_from(d)
-                elif (d / 'profile.json').exists(): _p.activate_merged(json.loads((d / 'profile.json').read_text(encoding='utf-8')))
+                elif (d / 'profile.json').exists(): _p.activate_merged(_jload(d / 'profile.json'))
                 else: _p.deactivate()
             except _p.ProfileError as e: raise UsageError(str(e))
             return

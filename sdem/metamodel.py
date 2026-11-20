@@ -2,6 +2,7 @@
 
 The catalogue is the public vocabulary (metamodel/*.json). It holds no institutional content.
 """
+from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
 from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 from pathlib import Path
 import json
@@ -44,12 +45,12 @@ class Metamodel:
         from . import parts
         ents, versions = [], set()
         for name in LEVEL_FILES:
-            doc = json.loads((Path(mm_dir) / name).read_text(encoding='utf-8'))
+            doc = _jload(Path(mm_dir) / name)
             versions.add(doc['metamodel_version'])
             if name == parts.A2_FILE and not parts.bian_on(): continue   # BX-02, BX-13: BIAN's types belong to ext:bian
             if name == parts.A2_FILE: doc = parts.metamodel_doc(doc)   # BP-02: the installed sdem-bian's, if any
             ents += doc['entities']
-        rels = json.loads((Path(mm_dir) / 'level-relationships.json').read_text(encoding='utf-8'))
+        rels = _jload(Path(mm_dir) / 'level-relationships.json')
         versions.add(rels['metamodel_version'])
         rels = {**rels, 'constraints': parts.splice(rels.get('constraints', []), parts.bian_constraint, lambda c: c.get('id'), 'within')}   # BP-02
         if not parts.bian_on():   # its within-layer rules too

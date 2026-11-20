@@ -7,6 +7,7 @@ reference, reasoning and confidence travel with every property as `x-sdem-*` ann
 schema cannot see (references, natural keys, cardinality) stays with `sdem check` (sdem/conformance.py).
 Usage: python -m sdem.physical [--check]
 """
+from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
 import argparse, json
 from collections import Counter
 from pathlib import Path
@@ -20,7 +21,7 @@ REPO = 'https://github.com/taumoeps/bian-sdem-framework'
 DATE_PATTERN = r'^\d{4}-\d{2}-\d{2}$'
 
 
-def _j(p): return json.loads(Path(p).read_text(encoding='utf-8'))
+def _j(p): return _jload(Path(p))
 
 
 def _prop(a, group):

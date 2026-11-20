@@ -15,6 +15,8 @@ that base, so the organisation's types, attributes and rules apply from the star
   sdem new --organisation bank-xyz --person jane.architect
   sdem new --workspace workspaces/ledger --organisation bank-xyz --person jane.architect
 """
+from .identity import for_file as _for_file  # DL-11: what a design's file stores (docs/design/sdem-data-layer-spec.md)
+from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
 from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 import argparse, datetime, json, re, sys
 from pathlib import Path
@@ -56,7 +58,7 @@ def profile_copy(src, ws):
     """A profile file as the workspace will keep it (sdem-profile.json): its `extends` re-pointed from the workspace, so the base it
     names is still found (LR-03)."""
     import os
-    src = Path(src); doc = json.loads(src.read_text(encoding='utf-8'))
+    src = Path(src); doc = _jload(src)
     if doc.get('extends'):
         base = (src.parent / doc['extends']).resolve()
         try: doc['extends'] = Path(os.path.relpath(base, Path(ws).resolve())).as_posix()
@@ -100,7 +102,7 @@ def _org_at(folder):
     """The organisation record in `folder`, or None."""
     f = Path(folder) / ORG_RECORD
     if not f.is_file(): return None
-    try: rec = json.loads(f.read_text(encoding='utf-8'))
+    try: rec = _jload(f)
     except ValueError: return None
     return rec if rec.get('format') == ORG_FORMAT else None
 
@@ -162,7 +164,7 @@ def plan(workspace, person, bian_file=None, today=None, no_bian=False, core_only
         a2, catalogue = None, None
         source = 'none — business does not connect to applications until a BIAN layer is added (sdem bian add)'
     elif bian_file:   # started with exactly this BIAN layer
-        a2 = json.loads(shared.read_text(encoding='utf-8'))
+        a2 = _jload(shared)
         if a2.get('level') != _L('bian'): raise NewError(f'{shared}: not an A2 dataset (level {a2.get("level")!r})')
         source, catalogue = f'the BIAN layer {shared.as_posix()}', shared.as_posix()   # recorded with / on every platform
     else:             # WS-01: the catalogue is read, not copied; A2 holds only the domains the design needs
@@ -182,11 +184,11 @@ def plan(workspace, person, bian_file=None, today=None, no_bian=False, core_only
     if from_dir:   # GV-05: the workspace's first content — a baseline, checked like any other, and recorded as one
         src = Path(from_dir)
         if not src.is_dir(): raise NewError(f'--from {from_dir}: no such folder')
-        found = {f: json.loads((src / f).read_text(encoding='utf-8')) for f in DATASETS.values() if (src / f).exists()}
+        found = {f: _jload(src / f) for f in DATASETS.values() if (src / f).exists()}
         if not found: raise NewError(f'--from {from_dir}: no architecture datasets ({", ".join(DATASETS.values())})')
         docs.update(found)
-        if (src / 'mappings.json').exists(): registry = json.loads((src / 'mappings.json').read_text(encoding='utf-8'))
-        if (src / 'requirements.json').exists(): extra['requirements.json'] = json.loads((src / 'requirements.json').read_text(encoding='utf-8'))
+        if (src / 'mappings.json').exists(): registry = _jload(src / 'mappings.json')
+        if (src / 'requirements.json').exists(): extra['requirements.json'] = _jload(src / 'requirements.json')
         if a2 is not None and 'a2-service-domain.json' in found: catalogue, source = 'base', f'the BIAN layer of the baseline ({label or src.as_posix()})'
     errors = estate_errors(docs, registry)
     if extra.get('requirements.json'):
@@ -266,7 +268,7 @@ def main(argv=None):
             import tempfile
             with tempfile.TemporaryDirectory() as t:
                 tf = Path(t) / 'sdem-profile.json'
-                tf.write_text(json.dumps({**pdoc, 'extends': (Path(org) / _org_at(org)['base_profile']).resolve().as_posix()}), encoding='utf-8')
+                tf.write_text(json.dumps(_for_file(tf, {**pdoc, 'extends': (Path(org) / _org_at(org)['base_profile']).resolve().as_posix()})), encoding='utf-8')
                 _p.activate_file(tf)
         else: _p.deactivate()
         core = getattr(a, 'core', False)
@@ -334,7 +336,7 @@ def new_org(a):
         files = org_files(name, a.person)
         import tempfile
         with tempfile.TemporaryDirectory() as t:   # the starter base passes its own check
-            tf = Path(t) / 'base.json'; tf.write_text(json.dumps(files[files[ORG_RECORD]['base_profile']]), encoding='utf-8')
+            tf = Path(t) / 'base.json'; tf.write_text(json.dumps(_for_file(tf, files[files[ORG_RECORD]['base_profile']])), encoding='utf-8')
             _p.activate_file(tf); _p.deactivate()
     except (NewError, _p.ProfileError) as e:
         print(f'ERROR: {e}', file=sys.stderr); return 2
@@ -386,12 +388,12 @@ def catalogue(workspace):
     ws = Path(workspace)
     from . import profile as _p, parts; _p.activate_from(ws)   # PR-07
     if not parts.bian_on(): return None   # BX-13: no A2 layer, no BIAN catalogue — AID infers among the core layers only
-    rec = json.loads((ws / RECORD).read_text(encoding='utf-8')) if (ws / RECORD).exists() else {}
+    rec = _jload(ws / RECORD) if (ws / RECORD).exists() else {}
     src = (rec.get('bian') or {}).get('catalogue', 'base')
     if src is None: cat = None
     elif src == 'base' or not Path(src).exists(): cat, _ = base_layer()
-    else: cat = json.loads(Path(src).read_text(encoding='utf-8'))
-    own = json.loads((ws / DATASETS[_L('bian')]).read_text(encoding='utf-8')) if (ws / DATASETS[_L('bian')]).exists() else None
+    else: cat = _jload(Path(src))
+    own = _jload(ws / DATASETS[_L('bian')]) if (ws / DATASETS[_L('bian')]).exists() else None
     if not cat: return own
     if not own or not own.get('instances'): return cat
     have = {i['id'] for i in own['instances']}

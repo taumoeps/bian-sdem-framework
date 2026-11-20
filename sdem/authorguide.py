@@ -6,6 +6,7 @@ this version's. Printed by `sdem types authoring`; kept as docs/reference/author
   python -m sdem.authorguide            # write docs/reference/authoring-guide.md
   python -m sdem.authorguide --check    # is it current?
 """
+from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
 from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 import argparse, json
 from pathlib import Path
@@ -103,7 +104,7 @@ def _standards():
     L = ['## 4. What SDEM will check — a complete design', '',
          "Every record of the kind named meets its rule, or is in `NOT-STATED.json` — the check in section 8 fails on each that is neither. *Between layers* means a link you give in `CROSS-LAYER-SUGGESTIONS.json`.", '',
          '| Rule | Applies to | A complete design has |', '|---|---|---|']
-    std = json.loads((ROOT / 'standards' / 'sdem-completeness.json').read_text(encoding='utf-8'))
+    std = _jload(ROOT / 'standards' / 'sdem-completeness.json')
     def say(r):
         if r.get('link'): l = r['link']; return f"`{l['kind']}` {'from' if l.get('direction') == 'in' else 'to'} {l.get('to', 'another record')}"
         if r.get('any_link'): return ' **or** '.join((f"*between layers* `{l['relationship']}`" if l.get('relationship') else f"`{l['kind']}` {'from' if l.get('direction') == 'in' else 'to'} {l.get('to', 'another record')}") for l in r['any_link'])
@@ -112,7 +113,7 @@ def _standards():
     for r in std['rules']: L.append(f"| {r['id']} | {r['entity']} | {r['message']} — {say(r)} |")
     pats = []
     for f in sorted((ROOT / 'standards').glob('*.json')):
-        d = json.loads(f.read_text(encoding='utf-8'))
+        d = _jload(f)
         if d.get('format') == 'sdem-pattern/1': pats.append(d)
     if pats:
         L += ['', '**Patterns for kinds of solution.** Where the design is one of these, SDEM also looks for these parts. Write each part the design has. A part the design does not mention, you leave out: the rules of SDEM add what they can, marked inferred.', '']

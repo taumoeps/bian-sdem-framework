@@ -17,6 +17,8 @@ real until a person confirms it. The rules are in metamodel/transform-rules.json
   sdem transform run EXPORT_DIR -o OUT [--known …]       candidate datasets, extraction.json, design-index.json, report
   then: review the report, `sdem load` the entities you keep (docs/design/sdem-load-design.md)
 """
+from .identity import for_file as _for_file  # DL-11: what a design's file stores (docs/design/sdem-data-layer-spec.md)
+from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
 from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 import argparse, base64, collections, csv, datetime, hashlib, io, json, os, re, sys, urllib.parse, zlib
 import xml.etree.ElementTree as ET
@@ -691,7 +693,7 @@ def group_labels(lines, rules):
 # ---------------------------------------------------------------- the extraction
 class Extraction:
     def __init__(self, rules=None, known=(), mm=None, ocr=None):
-        self.rules = rules or json.loads(RULES.read_text(encoding='utf-8'))
+        self.rules = rules or _jload(RULES)
         self.ocr = ocr                 # a function path -> text lines (ocr_engine), or None
         self.mm = mm or Metamodel.load()
         self.records = {}          # (type, norm name) -> record
@@ -701,7 +703,7 @@ class Extraction:
         self.ledger = []           # every item: captured, skipped (with the reason) or not captured (with category, place, text) — HI-N01
         self.inspect = {'tables': collections.Counter(), 'shapes': collections.Counter(), 'headings': collections.Counter()}
         for f in known:
-            d = json.loads(Path(f).read_text(encoding='utf-8'))
+            d = _jload(Path(f))
             for i in d.get('instances', []):
                 self.known.setdefault(norm(i['name']), (i['id'], i['type'], Path(f).name))
         self.cap = self.rules['confidence']
@@ -731,7 +733,7 @@ class Extraction:
         """Whether the metamodel types this entity's attribute as a boolean (it or a type it extends)."""
         if not hasattr(self, '_bools'):
             from .metamodel import MM_DIR
-            self._bools = [(x['entity'], x['name']) for x in json.loads((MM_DIR / 'entity-attributes.json').read_text(encoding='utf-8'))['attributes'] if x.get('type') == 'boolean']
+            self._bools = [(x['entity'], x['name']) for x in _jload(MM_DIR / 'entity-attributes.json')['attributes'] if x.get('type') == 'boolean']
         return any(n == attr and self.mm.is_a(etype, e) for e, n in self._bools)
 
     def record(self, etype, name, page, where, rule, how, reasoning, description='', lifecycle=None, attributes=None):
@@ -1364,7 +1366,7 @@ def best(sources):
 
 
 def _cross_types():
-    return json.loads((DATA_ROOT / 'schema' / 'relationship-types.json').read_text(encoding='utf-8'))['relationships']
+    return _jload(DATA_ROOT / 'schema' / 'relationship-types.json')['relationships']
 
 
 def _digest(root):
@@ -1379,13 +1381,13 @@ def extract(root, out, rules=None, known=(), model_id=None, now=None, ocr='auto'
     """Read the export at root, write the candidate datasets, extraction.json, design-index.json and
     extraction-report.md to out. Returns (extraction, written datasets, check issues per layer)."""
     from .graph import LevelGraph
-    rules_doc = json.loads(Path(rules).read_text(encoding='utf-8')) if rules else None
+    rules_doc = _jload(Path(rules)) if rules else None
     x = Extraction(rules_doc, known, ocr=ocr if callable(ocr) else ocr_engine(ocr)).run(root)
     model_id = model_id or (re.sub(r'[^A-Z0-9]+', '-', (x.pages[0]['space'] or (Path(root).stem if Path(root).is_file() else Path(root).name)).upper()).strip('-') or 'CONFLUENCE')
     out = Path(out); out.mkdir(parents=True, exist_ok=True)
     ds = x.datasets(model_id); issues = {}
     for lvl, d in ds.items():
-        (out / DATASETS[lvl]).write_text(json.dumps(d, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+        (out / DATASETS[lvl]).write_text(json.dumps(_for_file(out / DATASETS[lvl], d), indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
         g = LevelGraph(d, x.mm); issues[lvl] = g.validate(); issues[lvl + ' advice'] = g.warnings
     now = now or datetime.datetime.now().replace(microsecond=0).isoformat()
     meta = {'generated': now, 'export': str(root), 'export_sha256': _digest(root), 'rules': str(rules or RULES.relative_to(DATA_ROOT)),
@@ -1397,9 +1399,9 @@ def extract(root, out, rules=None, known=(), model_id=None, now=None, ocr='auto'
                 **({'unmapped': r['unmapped']} if r.get('unmapped') else {})}
                for r in sorted(x.records.values(), key=lambda r: r['id'])]
     links = [{**l, 'confidence': best(l['sources']), 'status': 'candidate'} for l in x.links]
-    (out / 'extraction.json').write_text(json.dumps({**meta, 'records': records, 'links_within': links, 'links_between_candidates': x.cross, 'bian_mentions': x.bian_mentions,
+    (out / 'extraction.json').write_text(json.dumps(_for_file(out / 'extraction.json', {**meta, 'records': records, 'links_within': links, 'links_between_candidates': x.cross, 'bian_mentions': x.bian_mentions,
                                                      'coverage': {**coverage(x.ledger), 'items': x.ledger},
-                                                     'for_review': x.review, 'check': issues}, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+                                                     'for_review': x.review, 'check': issues}), indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
     idx, cov = [], coverage(x.ledger)
     for p in x.pages:
         ids = sorted({r['id'] for r in x.records.values() if any(s['page_id'] == p['page_id'] for s in r['sources'])})
@@ -1408,7 +1410,7 @@ def extract(root, out, rules=None, known=(), model_id=None, now=None, ocr='auto'
                     'records': ids, 'existing_records_mentioned': sorted(p.get('existing_mentions', ())),
                     'diagrams': p['diagrams'], 'pictures_for_a_person': p['images_for_review'],
                     'facts': p.get('facts', {}), 'coverage': cov['by_page'].get(p['page_id'])})
-    (out / 'design-index.json').write_text(json.dumps({'generated': now, 'export': str(root), 'provenance_files': x.provenance_files, 'designs': idx},
+    (out / 'design-index.json').write_text(json.dumps(_for_file(out / 'design-index.json', {'generated': now, 'export': str(root), 'provenance_files': x.provenance_files, 'designs': idx}),
                                                       indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
     (out / 'extraction-report.md').write_text(report(x, meta, records, links, issues, idx, cov), encoding='utf-8')
     return x, ds, issues
@@ -1525,7 +1527,7 @@ KEEP_NAMES = {'archives', 'archive', 'attachments', 'images', 'styles', 'diagram
 def inspect(root, rules=None, anonymous=False, ocr='auto'):
     """What is in the export and which rule reads it — structure only (folders, headings, column names, shape kinds),
     no records. anonymous: folder names replaced by F1, F2 … (well-known names kept) so the layout can be described safely."""
-    rules_doc = json.loads(Path(rules).read_text(encoding='utf-8')) if rules else None
+    rules_doc = _jload(Path(rules)) if rules else None
     x = Extraction(rules_doc, ocr=ocr if callable(ocr) else ocr_engine(ocr)).run(root)
     names = {}
 
@@ -1565,7 +1567,7 @@ def main(argv=None):
         if out.exists(): print(f'ERROR: {out} exists — tune that copy, or remove it to start again from SDEM\'s rules', file=sys.stderr); return 2
         from .files import write_text
         write_text(out, RULES.read_text(encoding='utf-8'))
-        print(f"wrote {out} — SDEM's transform rules (version {json.loads(RULES.read_text(encoding='utf-8')).get('metamodel_version', '')}); add your table headings under `tables`, then:\n"
+        print(f"wrote {out} — SDEM's transform rules (version {_jload(RULES).get('metamodel_version', '')}); add your table headings under `tables`, then:\n"
               f'next: sdem transform inspect <export> --rules {out}   ·   sdem transform run <export> -o work/history --rules {out}')
         return 0
     try:

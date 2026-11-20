@@ -10,6 +10,8 @@ The structure is usually drawn, not written: `sdem pattern extract` reads the or
 PlantUML or Mermaid — with the standard library only, and writes a DRAFT pattern file and a report; a person approves it (PR-30).
 `sdem pattern draw` draws the pattern, and over a workspace's design, which part is there and which is missing (PR-25).
 """
+from .identity import for_file as _for_file  # DL-11: what a design's file stores (docs/design/sdem-data-layer-spec.md)
+from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
 from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 import argparse, base64, html, json, re, sys, urllib.parse, zipfile, zlib
 import xml.etree.ElementTree as ET
@@ -716,7 +718,7 @@ def draft_issues(draft, merged, base_mm):
     m = copy.deepcopy(merged); m['_issues'] = list(m.get('_issues', []))
     fd, tmp = tempfile.mkstemp(suffix='.json'); os.close(fd)
     try:
-        Path(tmp).write_text(json.dumps(draft), encoding='utf-8')
+        Path(tmp).write_text(json.dumps(_for_file(Path(tmp), draft)), encoding='utf-8')
         before = len(m['_issues'])
         try: _p.include(m, tmp)
         except _p.ProfileError as err: return [str(err).replace(tmp, 'the draft')]
@@ -902,15 +904,15 @@ def main(argv=None):
         if a.cmd == 'extract':
             merged = _profile_for(a)
             draft, rep = extract(a.src, merged, base, {'id': a.id, 'title': a.title, 'version': a.version, 'owner': a.owner}, a.anchor)
-            if a.compare: rep['compared_with'] = a.compare; rep['changes'] = compare(json.loads(Path(a.compare).read_text(encoding='utf-8')), draft)
-            if a.out and not a.dry_run: Path(a.out).write_text(json.dumps(draft, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+            if a.compare: rep['compared_with'] = a.compare; rep['changes'] = compare(_jload(Path(a.compare)), draft)
+            if a.out and not a.dry_run: Path(a.out).write_text(json.dumps(_for_file(Path(a.out), draft), indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
             if a.json: print(json.dumps({'report': rep, 'draft': draft, 'written': a.out if a.out and not a.dry_run else None, 'dry_run': a.dry_run}, indent=2, ensure_ascii=False))
             else: print(render_report(rep, draft, a.out if not a.dry_run else None))
             return 0 if rep['clean'] else 1
         merged = _profile_for(a) if (a.profile or a.workspace) else None
         from . import profile as _p
         if a.file:
-            fd = json.loads(Path(a.file).read_text(encoding='utf-8'))
+            fd = _jload(Path(a.file))
             if not fd.get('structure'): raise ValueError(f'{a.file}: the pattern has no structure to draw')
             st = {'pattern': fd['pattern'], 'structure': fd['structure']}
         else:

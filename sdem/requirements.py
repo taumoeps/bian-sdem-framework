@@ -15,6 +15,7 @@ each with evidence. A requirement no measurement speaks to is *not evaluable*, n
 
   sdem requirements list|show|check|trace|evaluate|propose|confirm|retire|measure
 """
+from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
 from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 import argparse, datetime, hashlib, json, re, sys
 from pathlib import Path
@@ -41,7 +42,7 @@ def _now(): return datetime.datetime.now(datetime.timezone.utc).replace(microsec
 
 def load(workspace):
     f = Path(workspace) / FILE
-    return json.loads(f.read_text(encoding='utf-8')) if f.exists() else None
+    return _jload(f) if f.exists() else None
 
 
 def empty():
@@ -71,7 +72,7 @@ def check(reg, datasets):
     """Issues in a registry: schema, unique ids, references that resolve, versions and histories that agree, confirmed
     requirements with evidence."""
     from .validate import check_schema
-    schema = json.loads(SCHEMA.read_text(encoding='utf-8'))
+    schema = _jload(SCHEMA)
     from . import profile as _p
     schema['$defs']['requirement']['properties']['category']['enum'] += _p.requirement_categories()   # PR-12: the organisation's categories
     issues = check_schema(reg, schema)
@@ -246,7 +247,7 @@ def risks(analysis, coverage, kind, fg):
     """Findings, each one of: confirmed_breach · potential_risk · missing_evidence · assumption (accepted_residual_risk is set
     only by a person on acceptance). Scenarios, decisions and mitigations come from schema/risk-rules.json; there are no
     likelihoods, losses, obligations or targets — only what the requirements and their evidence say."""
-    rules = json.loads(RULES.read_text(encoding='utf-8'))['rules']
+    rules = _jload(RULES)['rules']
     name = lambda rid: (fg.instance(rid) or {}).get('name') or rid
     changed = ', '.join(name(x) for x in analysis['changed'][:3])
     def rule_for(cat):
@@ -306,7 +307,7 @@ def evaluate_event(ws, event_id):
     if not ev: raise RequirementsError(f'{event_id}: no such change event')
     coord = Path(ws) / 'coordination' / 'snapshots'
     b, a = coord / f"{ev['change_set']}.before.json", coord / f"{ev['change_set']}.json"
-    subs = substitution(json.loads(b.read_text(encoding='utf-8')), json.loads(a.read_text(encoding='utf-8'))) if b.exists() and a.exists() else {}
+    subs = substitution(_jload(b), _jload(a)) if b.exists() and a.exists() else {}
     kinds = sorted({(r.get('cause') or '').split(' of ')[0] for r in ev['impact']['records'] if ' of ' in (r.get('cause') or '')}) or ['modify']
     fg = _graph(ws)
     cov = ev['impact'].get('coverage') or impact_coverage(fg, ev['impact']['records'], ev['impact']['changed'])
@@ -406,7 +407,7 @@ def main(argv=None):
         reg = reg or empty()
         by = f'{a.agent} for {a.person}' if getattr(a, 'agent', '') else a.person
         if a.cmd == 'propose':   # always proposed — a person confirms each (RR-D03)
-            doc = json.loads(Path(a.file).read_text(encoding='utf-8'))
+            doc = _jload(Path(a.file))
             items = doc['requirements'] if isinstance(doc, dict) and 'requirements' in doc else doc if isinstance(doc, list) else [doc]
             for new in items:
                 new = {k: v for k, v in new.items() if k not in ('version', 'status', 'history', 'provenance')}
@@ -427,7 +428,7 @@ def main(argv=None):
                 r['history'].append({'version': r['version'], 'status': r['status'], 'by': a.person, 'at': _now(), 'note': a.note if a.cmd == 'confirm' else a.reason})
         else:   # measure — each recorded against the person (and agent) running it, whatever the file says (RR-D02)
             if a.source:
-                doc = json.loads(Path(a.source).read_text(encoding='utf-8'))
+                doc = _jload(Path(a.source))
                 items = doc['measurements'] if isinstance(doc, dict) else doc
             else:
                 if not (a.record and a.metric and a.value is not None and a.evidence): raise RequirementsError('give --record, --metric, --value and --evidence, or --from FILE')

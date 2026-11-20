@@ -7,6 +7,7 @@ or the gap(s) where the implementation differs; sections the high-level spec doe
 Catalogue alignment (§5) is computed by reading the high-level spec's own tables, not asserted.
 Usage: python -m sdem.metamodel_spec [--check]
 """
+from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
 from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 import argparse, glob, hashlib, json, re
 from collections import Counter
@@ -23,7 +24,7 @@ LEVELS = ((_L('business'), 'a1-business.json', 'A1 Business'), (_L('bian'), 'a2-
           (_L('application'), 'a3-application.json', 'A3 Application'), (_L('technology'), 'a4-technology.json', 'A4 Technology'))
 
 
-def _j(p): return json.loads(Path(p).read_text(encoding='utf-8'))
+def _j(p): return _jload(Path(p))
 
 
 def high_level_catalogue(text):

@@ -7,6 +7,7 @@ SDEM; references to files of the SDEM project become links to those files at the
   cd <your workspace repository>
   sdem copilot install [--dry-run] [--force]
 """
+from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
 import argparse, hashlib, json, re, sys
 from pathlib import Path
 
@@ -74,7 +75,7 @@ def plan(target, ver=None, force=False, extra=None):
     gh = Path(target) / '.github'
     old = {}
     if (gh / RECORD).exists():
-        try: old = json.loads((gh / RECORD).read_text(encoding='utf-8')).get('files', {})
+        try: old = _jload(gh / RECORD).get('files', {})
         except ValueError: old = {}
     writes, kept, record = {}, [], {}
     extra = extra or {}
@@ -199,7 +200,7 @@ def install_agents(target='.', platforms=PLATFORMS, dry_run=False, force=False, 
     ver = sdem_version()
     old = {}
     if (target / AGENTS_RECORD).exists():
-        try: old = json.loads((target / AGENTS_RECORD).read_text(encoding='utf-8')).get('files', {})
+        try: old = _jload(target / AGENTS_RECORD).get('files', {})
         except ValueError: old = {}
     writes, kept, record = {}, [], {}
     for rel, (src, as_rel) in agent_files(platforms).items():

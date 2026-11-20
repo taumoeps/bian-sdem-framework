@@ -15,6 +15,8 @@ Projects the architecture layers an architect does not have from the ones they d
 BIAN elements are always references to the catalogue, never invented. No element is above medium confidence.
 Usage: sdem aid project --have a1.json [...] --catalogue bian.json --out DIR · sdem aid check DIR · sdem aid gaps DIR --actual a*.json mappings.json
 """
+from .identity import for_file as _for_file  # DL-11: what a design's file stores (docs/design/sdem-data-layer-spec.md)
+from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
 from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 import argparse, datetime, hashlib, json, re, sys
 from pathlib import Path
@@ -414,21 +416,21 @@ def project(have, catalogue=None, registry=None, pid=None, created_at=None, eith
 def write(pkg, out):
     out = Path(out); out.mkdir(parents=True, exist_ok=True)
     for f in out.glob('projected-*.json'): f.unlink()
-    (out / 'projection.json').write_text(json.dumps(pkg['projection'], indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
-    for lvl, d in pkg['layers'].items(): (out / FILES[lvl]).write_text(json.dumps(d, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
-    (out / 'projected-links.json').write_text(json.dumps(pkg['links'], indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+    (out / 'projection.json').write_text(json.dumps(_for_file(out / 'projection.json', pkg['projection']), indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+    for lvl, d in pkg['layers'].items(): (out / FILES[lvl]).write_text(json.dumps(_for_file(out / FILES[lvl], d), indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+    (out / 'projected-links.json').write_text(json.dumps(_for_file(out / 'projected-links.json', pkg['links']), indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
     return out
 
 
 def read(path):
-    p = Path(path); layers = {lvl: json.loads((p / f).read_text(encoding='utf-8')) for lvl, f in FILES.items() if (p / f).exists()}
-    return {'projection': json.loads((p / 'projection.json').read_text(encoding='utf-8')), 'layers': layers, 'links': json.loads((p / 'projected-links.json').read_text(encoding='utf-8'))}
+    p = Path(path); layers = {lvl: _jload(p / f) for lvl, f in FILES.items() if (p / f).exists()}
+    return {'projection': _jload(p / 'projection.json'), 'layers': layers, 'links': _jload(p / 'projected-links.json')}
 
 
 def check(pkg, catalogue=None):
     """CTL-17: every projected element carries its provenance, is at most medium confidence, and invents no BIAN element."""
     from .validate import check_schema
-    issues = [f'schema: {x}' for x in check_schema(pkg, json.loads(SCHEMA.read_text(encoding='utf-8')))]  # AID-O05
+    issues = [f'schema: {x}' for x in check_schema(pkg, _jload(SCHEMA))]  # AID-O05
     cat = {i['id'] for i in catalogue['instances']} if catalogue else None
     for lvl, d in pkg['layers'].items():
         for i in d['instances']:
@@ -629,7 +631,7 @@ def main(argv=None):
     c = sub.add_parser('check'); c.add_argument('projection'); c.add_argument('--catalogue'); c.add_argument('--json', action='store_true')
     g = sub.add_parser('gaps'); g.add_argument('projection', help='a projection file written by sdem aid project'); g.add_argument('--workspace', dest='estate', metavar='DIR', help="compare with a workspace's real layers and approved connections"); g.add_argument('--actual', nargs='+', help='the real architecture datasets to compare the plan with'); g.add_argument('--json', action='store_true')
     a = ap.parse_args(argv)
-    j = lambda f: json.loads(Path(f).read_text(encoding='utf-8'))
+    j = lambda f: _jload(Path(f))
     if a.cmd == 'project' and a.estate:   # WS-05: plan from a workspace; the plan is kept apart in <workspace>/plans/
         ws = Path(a.estate)
         if not (ws / 'mappings.json').exists(): print(f'ERROR: {ws}: no workspace here — start one with sdem new', file=sys.stderr); return 2

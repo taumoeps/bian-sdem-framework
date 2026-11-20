@@ -3,6 +3,7 @@
 No third-party dependencies. The schema subset covers only the keywords used in
 schema/relationship-registry.schema.json; `check_schema` is not a general JSON Schema engine.
 """
+from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
 from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 from pathlib import Path
 import argparse, json, re, sys
@@ -30,7 +31,7 @@ EXIT_OK, EXIT_ISSUES, EXIT_USAGE = 0, 1, 2
 
 def load_registry(path=RULES, core=False):
     """SDEM's link-type registry — with the active profile's layers and link types added (LR-06), unless core=True."""
-    reg = json.loads(Path(path).read_text(encoding='utf-8'))
+    reg = _jload(Path(path))
     from . import profile as _p, parts
     if Path(path) == RULES:   # BP-02: BIAN's link types from the installed sdem-bian, if any
         reg = {**reg, 'relationships': parts.splice(reg['relationships'], parts.bian_link, lambda r: (r.get('source_type'), r.get('relationship'), r.get('target_type')), 'link_types')}
@@ -45,7 +46,7 @@ def load_registry(path=RULES, core=False):
 
 
 def load_schema(path=SCHEMA):
-    return json.loads(Path(path).read_text(encoding='utf-8'))
+    return _jload(Path(path))
 
 
 def level_codes(registry):
@@ -324,7 +325,7 @@ def validate_files(paths, registry=None, schema=None, resolver=None, entity_reso
     for path in paths:
         path = Path(path)
         try:
-            payload = json.loads(path.read_text(encoding='utf-8'))
+            payload = _jload(path)
         except (OSError, ValueError) as exc:
             report[str(path)] = [f'cannot read: {exc}']
             continue
@@ -353,7 +354,7 @@ def main(argv=None):
     args = parser.parse_args(argv)
     from .errors import SdemError, report as _report
     for p in args.paths:   # AF-05: a file that cannot be read is an input error (exit 2), not a failed validation
-        try: json.loads(Path(p).read_text(encoding='utf-8'))
+        try: _jload(Path(p))
         except FileNotFoundError: return _report(SdemError('not_found', f'{p}: no such file', 'check the path'))
         except ValueError as e: return _report(SdemError('invalid_input', f'{p}: not valid JSON — {e}', 'fix the file (often a missing comma or quote), then run again'))
     try:

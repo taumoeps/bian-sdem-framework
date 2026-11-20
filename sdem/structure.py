@@ -2,6 +2,7 @@
 one relationship per enforceable constraint row (relationship name = row ID), and a valid value for every required
 attribute (taken from the attribute record). Every row the record allows is thereby exercised on committed data and
 accepted by sdem check, including the data-model conformance rules."""
+from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
 from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 from pathlib import Path
 import argparse, json
@@ -33,7 +34,7 @@ def required_values(mm, etype, short, n=1):
 
 def render(metamodel=None, level_rels=None):
     mm = metamodel or Metamodel.load()
-    lr = level_rels or json.loads((MM_DIR / 'level-relationships.json').read_text(encoding='utf-8'))
+    lr = level_rels or _jload(MM_DIR / 'level-relationships.json')
     short = lambda t: t.split('.')[1]
     docs = {}
     for lvl in FILES:

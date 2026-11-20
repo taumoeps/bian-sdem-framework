@@ -4,6 +4,7 @@ The repository never ships BIAN content. A bank that holds the applicable rights
 implements `ReferenceResolver` against its own licensed copy; the validator only
 asks whether a canonical identifier exists in a named release.
 """
+from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
 from dataclasses import dataclass
 from typing import Optional, Protocol
 
@@ -67,7 +68,7 @@ class CatalogueEntityResolver:
     def from_file(cls, path):
         import json
         from pathlib import Path
-        return cls(json.loads(Path(path).read_text(encoding='utf-8')))
+        return cls(_jload(Path(path)))
 
     def resolve_entity(self, id, type, version):
         return self._index.get((id, type, version))

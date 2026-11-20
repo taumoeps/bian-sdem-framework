@@ -8,6 +8,7 @@ use, and whether the core changed only as the stability policy allows.
 
 Read-only except `freeze`. Everything here reads SDEM's own metamodel (never a workspace's profile, unless asked for usage).
 """
+from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
 import argparse, collections, json, sys
 from pathlib import Path
 
@@ -34,7 +35,7 @@ SETTLE = {
 }
 
 
-def _j(p): return json.loads(Path(p).read_text(encoding='utf-8'))
+def _j(p): return _jload(Path(p))
 
 
 def _entities(): return [e for f in LEVEL_FILES for e in _j(MM / f)['entities']]

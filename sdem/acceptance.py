@@ -8,6 +8,8 @@ the floor's, for registry proposals and, where the case has a candidate gold, fo
 
 Usage: python -m sdem.acceptance [--engine rules] [--case C1 ...] [--json] [--out DIR]
 """
+from .identity import for_file as _for_file  # DL-11: what a design's file stores (docs/design/sdem-data-layer-spec.md)
+from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
 import argparse, glob, json, shutil, sys, tempfile
 from pathlib import Path
 
@@ -23,11 +25,11 @@ EPS = 1e-9
 
 def load_cases(ids=None, blind=False):
     f = BLIND if blind else CASES
-    cases = json.loads(f.read_text(encoding='utf-8'))['cases'] if f.exists() else []
+    cases = _jload(f)['cases'] if f.exists() else []
     return [c for c in cases if not ids or c['id'] in ids]
 
 
-def _j(p): return json.loads(Path(p).read_text(encoding='utf-8'))
+def _j(p): return _jload(Path(p))
 
 
 def case_inputs(case):
@@ -102,12 +104,12 @@ def run(engine, ids=None, out=None):
         for r in rows:
             uc = r['case'].lower(); res = r['result']
             case = next(c for c in load_cases([r['case']]))
-            (out / f'{uc}-proposals.json').write_text(json.dumps(_doc(res.get('proposals', []), getattr(engine, 'name', ''), case), indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+            (out / f'{uc}-proposals.json').write_text(json.dumps(_for_file(out / f'{uc}-proposals.json', _doc(res.get('proposals', []), getattr(engine, 'name', ''), case)), indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
             if res.get('candidates') is not None:
-                (out / f'{uc}-candidates.json').write_text(json.dumps(_doc(res['candidates'], getattr(engine, 'name', ''), case), indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+                (out / f'{uc}-candidates.json').write_text(json.dumps(_for_file(out / f'{uc}-candidates.json', _doc(res['candidates'], getattr(engine, 'name', ''), case)), indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
             for d in res.get('design', []):
-                (out / f"{uc}-design-{d['level'].lower()}.json").write_text(json.dumps(d, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
-            (out / f'{uc}-inference-log.json').write_text(json.dumps({'use_case': r['case'], 'engine': getattr(engine, 'name', ''), 'attempts': res.get('log', [])}, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+                (out / f"{uc}-design-{d['level'].lower()}.json").write_text(json.dumps(_for_file(out / f"{uc}-design-{d['level'].lower()}.json", d), indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+            (out / f'{uc}-inference-log.json').write_text(json.dumps(_for_file(out / f'{uc}-inference-log.json', {'use_case': r['case'], 'engine': getattr(engine, 'name', ''), 'attempts': res.get('log', [])}), indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
     return rows
 
 

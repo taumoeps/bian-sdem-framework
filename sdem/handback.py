@@ -6,6 +6,7 @@ the same whichever agent did the work: values nobody knows yet (LC-04), records 
 evidence they rest on), links to review, possible duplicates (LC-09), records with no recorded source, checks that fail, and change
 events waiting for a person — each with the command the person runs. Read-only.
 """
+from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
 import argparse, json, sys
 from pathlib import Path
 
@@ -15,7 +16,7 @@ from .metamodel import Metamodel
 from .rules_engine import WEAK_CLASSES
 
 
-def _j(p): return json.loads(Path(p).read_text(encoding='utf-8'))
+def _j(p): return _jload(Path(p))
 
 
 def collect(ws):
@@ -66,7 +67,7 @@ def collect(ws):
     try:
         import json as _json
         from pathlib import Path as _P
-        ms = _json.loads((_P(ws) / 'mappings.json').read_text(encoding='utf-8')).get('mappings', [])
+        ms = _jload(_P(ws) / 'mappings.json').get('mappings', [])
         k = lambda m: (m['source']['id'], m['relationship'], m['target']['id'])
         ok = {k(m) for m in ms if m.get('status') == 'approved'}
         rejected = [{'id': m['mapping_id'], 'link': ' '.join(k(m)), 'by': m.get('reviewer_id'), 'on': m.get('approved_at'), 'reason': (m.get('rationale') or '').split(' — as proposed:')[0]}

@@ -4,6 +4,7 @@ The templates (`viewpoints.json`) are data: which metamodel types, in which rows
 drawn. The layout is computed here, deterministically (DG-05); the SVG carries its own styles and loads nothing (DG-06). Only records
 and stored links are drawn — links inside a layer, and approved connections between layers (DG-03); what has no link is said (DG-04).
 """
+from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
 from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 import argparse, hashlib, html, json, sys
 from pathlib import Path
@@ -17,7 +18,7 @@ e = html.escape
 
 
 def templates():
-    return json.loads(TEMPLATES_FILE.read_text(encoding='utf-8'))
+    return _jload(TEMPLATES_FILE)
 
 
 def template(tid):
@@ -34,13 +35,13 @@ class Data:
             p = self.ws / f
             if not p.exists(): continue
             self.present.append(l)
-            d = json.loads(p.read_text(encoding='utf-8'))
+            d = _jload(p)
             for i in d.get('instances', []):
                 self.rec[i['id']] = {**i, 'layer': l, 't': i['type']}
             self.rels += d.get('relationships', [])
         self.rels = [r for r in self.rels if r.get('source') in self.rec and r.get('target') in self.rec]
         reg = self.ws / 'mappings.json'
-        maps = json.loads(reg.read_text(encoding='utf-8')).get('mappings', []) if reg.exists() else []
+        maps = _jload(reg).get('mappings', []) if reg.exists() else []
         self.maps = [m for m in maps if m.get('status') == 'approved' and m['source']['id'] in self.rec and m['target']['id'] in self.rec]
         self.children = {}
         for r in self.rels:

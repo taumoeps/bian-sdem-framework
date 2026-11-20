@@ -4,6 +4,7 @@ Structural logic only. A level graph holds an institution's instances and within
 the federated graph resolves mapping endpoints against them, traces chains with names, and classifies
 impact by rule. Nothing here decides whether a mapping is right.
 """
+from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
 from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 from pathlib import Path
 import argparse, json, re, sys
@@ -21,7 +22,7 @@ IMPACT_RULES_FILE = ROOT / 'schema' / 'impact-rules.json'
 
 def load_impact_rules(path=IMPACT_RULES_FILE):
     """Impact classification is governed data (schema/impact-rules.json), not code."""
-    doc = json.loads(Path(path).read_text(encoding='utf-8'))
+    doc = _jload(Path(path))
     for kind, spec in doc['kinds'].items():
         bad = set(spec['rules'].values()) - set(doc['classes'])
         if bad:
@@ -48,10 +49,10 @@ class LevelGraph:
 
     @classmethod
     def load(cls, path, metamodel=None):
-        return cls(json.loads(Path(path).read_text(encoding='utf-8')), metamodel or Metamodel.load())
+        return cls(_jload(Path(path)), metamodel or Metamodel.load())
 
     def validate(self):
-        issues = check_schema(self.doc, json.loads(LEVEL_SCHEMA.read_text(encoding='utf-8')))
+        issues = check_schema(self.doc, _jload(LEVEL_SCHEMA))
         if issues:
             return issues
         if self.doc.get('metamodel_version') and self.doc['metamodel_version'] != self.mm.version:
@@ -112,7 +113,7 @@ class FederatedGraph:
         mm = metamodel or Metamodel.load()
         levels, docs, design = [], [], None
         for p in paths:
-            d = json.loads(Path(p).read_text(encoding='utf-8'))
+            d = _jload(Path(p))
             if 'mappings' in d: docs.append(d)
             elif 'instances' in d and 'level' in d: levels.append(LevelGraph(d, mm))
             elif is_design_records(d): design = d
@@ -706,7 +707,7 @@ def main(argv=None):
                 report[f'requirements ({len(reg.get("requirements", []))} requirement(s))'] = _req.check(reg, {l: g.doc for l, g in fg.levels.items()})
         if reader.origin != 'store':   # LC-16 is an error in a workspace started with zones (sdem new --hosting, WS-12): it chose them
             for est in sorted({Path(p).resolve().parent for p in args.paths if (Path(p).resolve().parent / 'workspace.json').exists()}):
-                try: started = json.loads((est / 'workspace.json').read_text(encoding='utf-8')).get('hosting')
+                try: started = _jload(est / 'workspace.json').get('hosting')
                 except (OSError, ValueError): started = None
                 if not started: continue
                 for k in list(fg.warnings):

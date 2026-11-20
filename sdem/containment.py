@@ -14,6 +14,7 @@ A4 is drawn by its network zones (sdem/zone_layout.py). A1–A3 are drawn by eac
 
   sdem layout --layer A2 --workspace examples/payment-initiation
 """
+from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
 from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 import argparse, json, sys
 from pathlib import Path
@@ -251,7 +252,7 @@ def load(workspace, layer, environment='production'):
     if layer == _L('technology'):
         from .zone_layout import load as zl
         return zl(workspace, environment)
-    return layout(json.loads(f.read_text(encoding='utf-8')), layer)
+    return layout(_jload(f), layer)
 
 
 def main(argv=None):

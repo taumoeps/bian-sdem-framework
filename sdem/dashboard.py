@@ -4,6 +4,7 @@ Everything is computed here, with the same functions the CLI uses (checks, the r
 AID gaps, controls); the page only displays the results and shows the exact `sdem` command for every action. No server,
 no network, no AI. Regenerate after a change.
 """
+from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
 from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 import argparse, collections, datetime, html, json, re, sys
 from pathlib import Path
@@ -16,7 +17,7 @@ LEVEL_NAMES = titled({_L('business'): 'A1 Business', _L('bian'): 'A2 Service dom
 KINDS = ('modify', 'rehost', 'replace', 'retire')
 
 
-def _j(p): return json.loads(Path(p).read_text(encoding='utf-8'))
+def _j(p): return _jload(Path(p))
 
 
 def _compact(tree, fg):

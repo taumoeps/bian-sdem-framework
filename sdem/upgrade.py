@@ -8,6 +8,7 @@
 SDEM is a product you install; your work lives in your own repository. An update replaces the product and never changes your data
 unless you run a recorded migration (`sdem migrate`). `upgrade check` writes nothing.
 """
+from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
 import argparse, json, re, sys
 from pathlib import Path
 
@@ -35,7 +36,7 @@ def satisfies(ver, spec):
 
 def releases(since=None, until=None):
     """UF-03: the release notes after `since` up to and including `until` (default: this version), oldest first."""
-    doc = json.loads(NOTES.read_text(encoding='utf-8'))
+    doc = _jload(NOTES)
     until = until or version()
     return [r for r in doc['releases'] if (since is None or _v(r['version']) > _v(since)) and _v(r['version']) <= _v(until)]
 
@@ -48,7 +49,7 @@ def _from_version(repo):
         if m: return m.group(1), 'requirements.txt'
     rec = Path(repo) / 'sdem-agents.json'
     if rec.exists():
-        try: return json.loads(rec.read_text(encoding='utf-8')).get('sdem_version'), 'sdem-agents.json'
+        try: return _jload(rec).get('sdem_version'), 'sdem-agents.json'
         except ValueError: pass
     return None, None
 
@@ -69,7 +70,7 @@ def check_workspace(ws):
     current = Metamodel.base().version
     files = {}
     for f in sorted(ws.glob('*.json')):
-        try: d = json.loads(f.read_text(encoding='utf-8'))
+        try: d = _jload(f)
         except ValueError: continue
         if isinstance(d, dict) and d.get('metamodel_version'): files[f.name] = d['metamodel_version']
     out['metamodel'] = {'this_version': current, 'workspace_files': files}

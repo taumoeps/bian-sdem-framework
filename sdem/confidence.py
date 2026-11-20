@@ -12,6 +12,8 @@ and whether it was validated against sealed answers in the use-case runs.
 `python -m sdem.confidence` reapplies the rule to the records and reports every change; `--check` fails if any record
 disagrees with the rule.
 """
+from .identity import for_file as _for_file  # DL-11: what a design's file stores (docs/design/sdem-data-layer-spec.md)
+from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
 from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 from pathlib import Path
 import argparse, glob, json, re
@@ -26,14 +28,14 @@ def validated_rules():
     """Plan IDs with at least one hit against sealed answers in the inference logs."""
     hits = Counter()
     for f in glob.glob(str(ROOT / 'examples' / '*' / '*inference-log.json')):
-        d = json.loads(Path(f).read_text(encoding='utf-8'))
+        d = _jload(Path(f))
         for a in d.get('attempts') or d.get('inferences') or []:
             m = re.match(r'S\d+|B\d+', str(a.get('plan_id') or ''))
             if m and a.get('outcome') == 'hit': hits[m.group(0)] += 1
     return {k for k, v in hits.items() if v}
 
 
-def _j(p): return json.loads(Path(p).read_text(encoding='utf-8'))
+def _j(p): return _jload(Path(p))
 
 
 def entity(e, val, rules_by_entity):
@@ -113,7 +115,7 @@ def apply(write=True):
         d = _j(f)
         for e in d['entities']:
             c, b = entity(e, val, by_entity); setc(e, 'confidence', c, b, e['type'])
-        if write: Path(f).write_text(json.dumps(d, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+        if write: Path(f).write_text(json.dumps(_for_file(Path(f), d), indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
     at = _j(MM_DIR / 'entity-attributes.json')
     for a in at['attributes']:
         c, b = attribute(a, val); setc(a, 'confidence', c, b, f"{a['id']} {a['entity']}.{a['name']}")
@@ -123,19 +125,19 @@ def apply(write=True):
         c, b = ('high', 'BIAN concept identifier') if cf['name'] == 'canonical_id' else ('high', 'SDEM data-contract field, defined authoritatively by SDEM')
         setc(cf, 'confidence', c, b, f"core {cf['name']}")
     at['confidence_rule'] = RULE
-    if write: (MM_DIR / 'entity-attributes.json').write_text(json.dumps(at, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+    if write: (MM_DIR / 'entity-attributes.json').write_text(json.dumps(_for_file(MM_DIR / 'entity-attributes.json', at), indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
     lr = _j(MM_DIR / 'level-relationships.json')
     for c in lr['constraints']:
         cc, b = within(c, val); setc(c, 'confidence', cc, b, c['id'])
-    if write: (MM_DIR / 'level-relationships.json').write_text(json.dumps(lr, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+    if write: (MM_DIR / 'level-relationships.json').write_text(json.dumps(_for_file(MM_DIR / 'level-relationships.json', lr), indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
     reg = _j(ROOT / 'schema' / 'relationship-types.json')
     for x in reg['relationships']:
         m_ = re.match(r'plan row (S\d+)', x.get('source_reference', '')); row = m_.group(1) if m_ else None   # a type added after the plan has no row
         c, b = rel_type(x, val, row); setc(x, 'confidence', c, b, x['mapping_type_id'])
-    if write: (ROOT / 'schema' / 'relationship-types.json').write_text(json.dumps(reg, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+    if write: (ROOT / 'schema' / 'relationship-types.json').write_text(json.dumps(_for_file(ROOT / 'schema' / 'relationship-types.json', reg), indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
     for m in rules['mappings']:
         c, b = rule(m, val, off[m['id']]['verification']); setc(m, 'basis_confidence', c, b, f"rule {m['id']}", 'basis_confidence_reason')
-    if write: (MM_DIR / 'relationship-rules.json').write_text(json.dumps(rules, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+    if write: (MM_DIR / 'relationship-rules.json').write_text(json.dumps(_for_file(MM_DIR / 'relationship-rules.json', rules), indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
     return changes
 
 

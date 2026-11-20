@@ -1,6 +1,7 @@
 """The ArchiMate notation of SDEM's types and links (docs/design/sdem-architecture-viewpoint-spec.md §10, ARV-12…ARV-17): how each
 kind of record is DRAWN — not where its definition comes from (its `reference`). A file beside the frozen core: changing it changes no
 record. Profiles and extensions name their own types' element (`archimate`); a type with none inherits its nearest ancestor's."""
+from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
 import json
 from functools import lru_cache
 from .paths import DATA_ROOT
@@ -24,7 +25,7 @@ RELATIONSHIPS = {'composition', 'aggregation', 'assignment', 'realization', 'ser
 
 @lru_cache(maxsize=1)
 def load():
-    return json.loads(FILE.read_text(encoding='utf-8'))
+    return _jload(FILE)
 
 
 def for_type(mm, t):

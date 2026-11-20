@@ -5,6 +5,7 @@ reason is kept in its rationale and in a governance decision. A rejected link is
 it again (RJ-03), nor put something in its place (RJ-04). Approving the same link later supersedes the rejection (RJ-05). Agents never
 run this command.
 """
+from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
 import argparse, copy, datetime, json, sys
 from pathlib import Path
 
@@ -58,7 +59,7 @@ def main(argv=None):
     reg_path = Path(a.registry) if a.registry else Path(a.estate or '.') / 'mappings.json'
     if not a.registry and not a.estate: ap.error('give --workspace DIR or --registry FILE')
     try:
-        reg = json.loads(reg_path.read_text(encoding='utf-8')); props = json.loads(Path(a.proposals).read_text(encoding='utf-8'))
+        reg = _jload(reg_path); props = _jload(Path(a.proposals))
         from .approve import retired_ids
         new, recs = reject(reg, props, a.ids, a.reviewer, a.reason, a.date, retired_ids(reg_path.parent))
     except (OSError, ValueError) as e:

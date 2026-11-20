@@ -7,6 +7,7 @@ architecture graphs. Information, not architecture: the rules engine and impact 
   sdem designs --workspace DIR | --graph DIR [--entity ID] [--gaps] [--category C] [--status S] [--json]
   sdem designs resolve | accept | reopen GAP-… --workspace DIR --person NAME --note TEXT     (a person's decision, on record)
 """
+from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
 import argparse, collections, datetime, hashlib, json, re, sys
 from pathlib import Path
 
@@ -104,7 +105,7 @@ def merge(existing, documents, gaps, load_id):
 def check(doc, entity_ids=None):
     """Schema, then references: gap → design record (error); design or gap → an entity no longer in the workspace (warning)."""
     from .validate import check_schema
-    errors = check_schema(doc, json.loads(SCHEMA.read_text(encoding='utf-8')))
+    errors = check_schema(doc, _jload(SCHEMA))
     if errors: return errors, []
     warnings, ids = [], {d['id'] for d in doc['documents']}
     for kind, items in (('design record', doc['documents']), ('gap record', doc['gaps'])):
@@ -185,10 +186,10 @@ def load(estate=None, graph_dir=None):
     if graph_dir:
         p = Path(graph_dir) / GRAPH
         if not p.exists(): raise ValueError(f'{graph_dir}: no {GRAPH} — the workspace has no design records, or the store was built before them')
-        return from_graph(json.loads(p.read_text(encoding='utf-8')))
+        return from_graph(_jload(p))
     p = Path(estate) / RECORDS
     if not p.exists(): raise ValueError(f'{estate}: no {RECORDS.as_posix()} — onboard designs with `sdem load` first')
-    return json.loads(p.read_text(encoding='utf-8'))
+    return _jload(p)
 
 
 def _set_main(argv):
@@ -200,7 +201,7 @@ def _set_main(argv):
     a = ap.parse_args(argv[1:])
     p = Path(a.estate) / RECORDS
     try:
-        doc = json.loads(p.read_text(encoding='utf-8'))
+        doc = _jload(p)
         changed = set_status(doc, a.gaps, status, a.person, a.note)
         errs, _ = check(doc)
         if errs: raise ValueError('; '.join(errs[:5]))

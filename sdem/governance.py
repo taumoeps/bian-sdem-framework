@@ -12,6 +12,7 @@ can use the person's signing key — keep the key passphrase- or hardware-protec
 acceptance that is not verified and `sdem governance verify --require-verified` (in CI, on the protected branch) fails on any
 unverified decision. Without a policy file nothing is verified, and SDEM never says otherwise.
 """
+from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
 import argparse, datetime, json, re, secrets, subprocess, sys
 from pathlib import Path
 
@@ -49,12 +50,12 @@ def record(workspace, kind, person, subject, details=None):
 
 def decisions(workspace):
     d = Path(workspace) / DIR
-    return [json.loads(f.read_text(encoding='utf-8')) for f in sorted(d.glob('GD-*.json'))] if d.exists() else []
+    return [_jload(f) for f in sorted(d.glob('GD-*.json'))] if d.exists() else []
 
 
 def policy(workspace):
     f = Path(workspace) / POLICY
-    return json.loads(f.read_text(encoding='utf-8')) if f.exists() else None
+    return _jload(f) if f.exists() else None
 
 
 def _git(cwd, *args):

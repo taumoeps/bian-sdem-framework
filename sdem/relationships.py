@@ -3,6 +3,7 @@
 The JSON is the record of every within-level entity connection (constraint rows per level, plus catalogue
 inheritance); the document is a projection of it, checked current by the test suite.
 """
+from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
 from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 from pathlib import Path
 import argparse, json
@@ -17,7 +18,7 @@ LEVEL_SOURCE = {_L('business'): 'ArchiMate 3.2 chapters 6 (Motivation), 7 (Strat
 
 
 def load(path=LEVEL_RELS):
-    return json.loads(Path(path).read_text(encoding='utf-8'))
+    return _jload(Path(path))
 
 
 def render(lr=None):

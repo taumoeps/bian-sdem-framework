@@ -6,6 +6,7 @@ mapping document (a file, or a git revision) with the current one and reports:
   - status transitions that are not permitted
   - approved / superseded / rejected records whose frozen fields changed
 """
+from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
 from pathlib import Path
 import argparse, json, subprocess, sys
 from sdem.validate import split_evidence, normalize_type, load_registry
@@ -76,7 +77,8 @@ def load_revision(path, rev):
         out = subprocess.run(['git', 'show', f'{rev}:{path}'], capture_output=True, text=True, check=True).stdout
     except (subprocess.CalledProcessError, FileNotFoundError):
         return None
-    return json.loads(out)
+    from .identity import loads as _jloads   # DL-11
+    return _jloads(out, path)
 
 
 def main(argv=None):
@@ -91,8 +93,8 @@ def main(argv=None):
     report = {}
     for path in args.new:
         try:
-            new = json.loads(Path(path).read_text(encoding='utf-8'))
-            old = json.loads(Path(args.old).read_text(encoding='utf-8')) if args.old else load_revision(path, args.git)
+            new = _jload(Path(path))
+            old = _jload(Path(args.old)) if args.old else load_revision(path, args.git)
         except (OSError, ValueError) as exc:
             print(f'ERROR: cannot read inputs for {path}: {exc}', file=sys.stderr)
             return EXIT_USAGE

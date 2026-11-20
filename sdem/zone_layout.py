@@ -17,6 +17,7 @@ hero). The rules, which the owner set while reviewing the 3D view:
 
 Coordinates are fractions of the plate: x left → right, y far → near, both 0…1.
 """
+from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
 from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 import json
 
@@ -233,4 +234,4 @@ def load(workspace, environment='production', headings=False):
     from pathlib import Path
     f = Path(workspace) / 'a4-technology.json'
     if not f.exists(): raise LayoutError(f'{workspace}: no a4-technology.json — no technology layer to lay out')
-    return layout(json.loads(f.read_text(encoding='utf-8')), environment=environment, headings=headings)
+    return layout(_jload(f), environment=environment, headings=headings)

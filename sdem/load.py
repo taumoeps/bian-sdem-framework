@@ -7,6 +7,7 @@ architect has reviewed them, into an SDEM workspace — selected, checked before
 Links between architectures are not loaded: `sdem link` proposes them from the loaded data and a person approves them.
 Unreviewed candidates never enter a knowledge graph: `sdem build` refuses them (CTL-23); this is the only way in.
 """
+from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
 from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 import argparse, collections, copy, datetime, json, re, sys
 from pathlib import Path
@@ -30,7 +31,7 @@ class LoadInputError(LoadError):
 
 
 def _j(p):
-    return json.loads(Path(p).read_text(encoding='utf-8'))
+    return _jload(Path(p))
 
 
 def read_candidates(src):

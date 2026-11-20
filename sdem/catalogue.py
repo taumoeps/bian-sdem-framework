@@ -3,6 +3,7 @@ with source reference, verification, reasoning and confidence, and the design de
 
 Generated from the entity catalogue (metamodel/a1…a4-*.json); the test suite checks it is current.
 """
+from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
 from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 from pathlib import Path
 from collections import Counter
@@ -19,7 +20,7 @@ STATUS = {'confirmed_in_official_source': 'concept confirmed', 'pending_release_
 
 
 def render():
-    ents = [e for f in LEVEL_FILES for e in json.loads((MM_DIR / f).read_text(encoding='utf-8'))['entities']]
+    ents = [e for f in LEVEL_FILES for e in _jload(MM_DIR / f)['entities']]
     conf = Counter(e['confidence'] for e in ents); src = Counter(SOURCE[e['definition_source']] for e in ents)
     by = {l: [e for e in ents if e['level'] == l] for l in (_L('business'), _L('bian'), _L('application'), _L('technology'))}
     lvl_std = {_L('business'): 'ArchiMate 3.2 Strategy, Business and Motivation (ch. 6–8), with BIAN\'s Business Capability Model', _L('bian'): 'BIAN Service Landscape 14.0 and the Semantic API Practitioner Guide v8.1',

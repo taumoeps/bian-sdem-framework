@@ -4,6 +4,7 @@ types, within-layer rules, the link types and inference rules that touch it — 
 Off (BX-13) only where a person chose it — `sdem new --core`, or `sdem profile exclude ext:bian` — recorded in workspace.json
 (`core_only`); including `ext:bian` turns it on again. Every other workspace is on, as in 0.19 — with an A2 file or without one (AID
 brings service domains in from the catalogue) — and so is the work outside a workspace (BX-10…BX-12)."""
+from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
 from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 from pathlib import Path
 
@@ -38,10 +39,10 @@ def for_workspace(folder, merged=None):
     are kept or left out by the right answer: the includes are read from the profile file itself."""
     import json
     f = Path(folder) / 'sdem-profile.json'
-    try: raw = json.loads(f.read_text(encoding='utf-8')).get('includes') or [] if f.exists() else []
+    try: raw = _jload(f).get('includes') or [] if f.exists() else []
     except (OSError, ValueError): raw = []
     if included(merged) or EXT_BIAN in raw: _set(True, 'the profile includes ext:bian (BX-10)'); return
-    try: core = json.loads((Path(folder) / 'workspace.json').read_text(encoding='utf-8')).get('core_only') is True
+    try: core = _jload(Path(folder) / 'workspace.json').get('core_only') is True
     except (OSError, ValueError): core = False
     if core: _set(False, 'a person chose a core-only design — sdem new --core or sdem profile exclude ext:bian (BX-13)'); return
     _set(True, 'every workspace is a BIAN design unless a person chose otherwise, as in 0.19 — on until a person includes ext:bian (BX-11)')
@@ -76,7 +77,7 @@ def builtin_data():
     """BP-02, BP-10: BIAN's data as SDEM ships it — what the package carries, and the fallback when it is not installed."""
     import json
     from .paths import DATA_ROOT
-    rd = lambda *p: json.loads(DATA_ROOT.joinpath(*p).read_text(encoding='utf-8'))
+    rd = lambda *p: _jload(DATA_ROOT.joinpath(*p))
     return {'metamodel': rd('metamodel', A2_FILE),
             'within': [c for c in rd('metamodel', 'level-relationships.json')['constraints'] if bian_constraint(c)],
             'link_types': [r for r in rd('schema', 'relationship-types.json')['relationships'] if bian_link(r)],
@@ -128,7 +129,7 @@ def _pkg_data():
     if not (p and p.get('data')): return None
     if 'data' not in _PKG:
         import json
-        _PKG['data'] = {k: json.loads((p['data'] / f).read_text(encoding='utf-8')) for k, f in PKG_FILES.items()}
+        _PKG['data'] = {k: _jload(p['data'] / f) for k, f in PKG_FILES.items()}
     return _PKG['data']
 
 

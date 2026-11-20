@@ -10,6 +10,7 @@
 With --workspace, the workspace's organisation profile is included (its types, fields, rules, layers, requirement categories).
 Read-only. Built because the agent baseline (2026-11-02) found every mistake was a field, value or link no command listed.
 """
+from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
 import argparse, json, sys
 from pathlib import Path
 
@@ -72,7 +73,7 @@ def describe_type(mm, t, full=True):
 def requirement_format():
     from . import profile as _p
     from .layers import codes
-    s = json.loads((DATA_ROOT / 'schema' / 'requirements.schema.json').read_text(encoding='utf-8'))
+    s = _jload(DATA_ROOT / 'schema' / 'requirements.schema.json')
     props, req = s['$defs']['requirement']['properties'], s['$defs']['requirement']['required']
     cond = s['$defs']['condition']
     return {'file': 'requirements.json — {"requirements": [...]}; add with sdem requirements propose <file> --workspace DIR --person NAME',

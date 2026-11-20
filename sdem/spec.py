@@ -5,6 +5,7 @@ relationship-rules.json, export-conventions.json, impact-rules.json) plus a numb
 names the record rows it derives from and the use-case runs that validated it (from the inference logs), so the
 document cannot say more than the records and the runs support. Regenerate with `python -m sdem.spec`; CI checks it.
 """
+from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
 from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 from pathlib import Path
 from collections import Counter, defaultdict
@@ -18,7 +19,7 @@ LEVEL_NAMES = {_L('business'): 'A1 Business Architecture', _L('bian'): 'A2 Servi
 
 
 def _load(p):
-    return json.loads(Path(p).read_text(encoding='utf-8'))
+    return _jload(Path(p))
 
 
 def runs_by_plan_id():
@@ -38,7 +39,7 @@ def _logs():
     import glob as _g
     fs = _g.glob(str(ROOT / 'examples' / '*' / '*inference-log*.json')); n = 0
     for f in fs:
-        d = json.loads(Path(f).read_text(encoding='utf-8')); n += len(d.get('attempts') or d.get('log') or d.get('entries') or (d if isinstance(d, list) else []))
+        d = _jload(Path(f)); n += len(d.get('attempts') or d.get('log') or d.get('entries') or (d if isinstance(d, list) else []))
     return len(fs), n
 
 

@@ -5,6 +5,7 @@ date, the evidence the link type requires, and — when it replaces an old link 
 set to `superseded`. The whole registry is validated before anything is written. Approval still becomes final only when the
 change is merged in a reviewed pull request. Agents never run this command.
 """
+from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
 import argparse, collections, copy, datetime, json, re, sys
 from pathlib import Path
 
@@ -22,7 +23,7 @@ RETIRED = 'archive/retired-mappings.json'   # MX-16: links taken out of the regi
 def retired_ids(workspace):
     """The ids of links a workspace has retired (sdem profile exclude): kept so a new link never takes one of them."""
     f = Path(workspace) / RETIRED
-    try: return [m['mapping_id'] for m in json.loads(f.read_text(encoding='utf-8')).get('mappings', []) if m.get('mapping_id')]
+    try: return [m['mapping_id'] for m in _jload(f).get('mappings', []) if m.get('mapping_id')]
     except (OSError, ValueError): return []
 
 
@@ -95,7 +96,7 @@ def main(argv=None):
     reg_path = Path(a.registry) if a.registry else Path(a.estate or '.') / 'mappings.json'
     if not a.registry and not a.estate: ap.error('give --workspace DIR or --registry FILE')
     try:
-        reg = json.loads(reg_path.read_text(encoding='utf-8')); props = json.loads(Path(a.proposals).read_text(encoding='utf-8'))
+        reg = _jload(reg_path); props = _jload(Path(a.proposals))
         new, recs = approve(reg, props, a.ids, a.reviewer, a.evidence, a.supersedes, a.new_id, a.date, a.bian_release, retired_ids(reg_path.parent))
     except (OSError, ValueError) as e:
         print(f'ERROR: {e}', file=sys.stderr); return 2

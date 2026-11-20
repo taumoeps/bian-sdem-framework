@@ -7,6 +7,7 @@ every record says where it came from (a document section, a past design, AID's i
 person's change set). Markdown for people and agents (an agent can pour it into a Word template); HTML for the
 workbench; JSON for anything else.
 """
+from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
 from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 import argparse, hashlib, html, json, re, sys
 from pathlib import Path
@@ -18,7 +19,7 @@ SKIP_ATTRS = {'inferred', 'source_id', 'sources'}   # shown as provenance instea
 
 
 def _j(p):
-    return json.loads(Path(p).read_text(encoding='utf-8'))
+    return _jload(Path(p))
 
 
 def _layer_title(code):

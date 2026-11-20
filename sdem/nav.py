@@ -5,6 +5,7 @@ The pages are generated, read-only HTML files that open offline (file://). Links
 folder of pages can be moved or zipped, and paths with spaces work. A graph is linked only when it is current; otherwise the page
 says why — not built, out of date, or the workspace cannot be built yet — and gives the command that fixes it.
 """
+from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
 import json, os, shlex, urllib.parse
 from pathlib import Path
 
@@ -58,7 +59,7 @@ def graph_state(workspace, store=None):
     try:
         current = Metamodel.base().version
         files = [ws / f for f in DATASET_FILES if (ws / f).exists()] + ([ws / 'mappings.json'] if (ws / 'mappings.json').exists() else [])
-        old = sorted({json.loads(f.read_text(encoding='utf-8')).get('metamodel_version') for f in files} - {current, None})
+        old = sorted({_jload(f).get('metamodel_version') for f in files} - {current, None})
         if old:
             return {**out, 'state': 'blocked', 'reason': f"the workspace is on metamodel {', '.join(old)}; this SDEM uses {current} — migrate it before building its graph",
                     'command': f'sdem migrate --workspace {q(ws)} --person <you> --dry-run'}

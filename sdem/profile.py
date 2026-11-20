@@ -17,6 +17,7 @@ The merged metamodel is what every command sees once the profile is active. A pr
 works on (`--workspace`, the datasets' folder, or the graph store it was built into — a store keeps the profile it was built with).
 `sdem profile check` checks a profile; `sdem profile show` prints the merged result; `sdem profile example` writes a synthetic one.
 """
+from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
 from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 import argparse, copy, hashlib, json, re, sys
 from pathlib import Path
@@ -46,7 +47,7 @@ class ProfileError(ValueError):
 
 def read(path):
     path = Path(path)
-    try: doc = json.loads(path.read_text(encoding='utf-8'))
+    try: doc = _jload(path)
     except FileNotFoundError: raise ProfileError(f'{path}: no such profile')
     except ValueError as e: raise ProfileError(f'{path}: not valid JSON — {e}')
     if doc.get('format') != FORMAT: raise ProfileError(f"{path}: not an SDEM profile (format {doc.get('format')!r}; expected {FORMAT!r})")
@@ -54,7 +55,7 @@ def read(path):
 
 
 def _format_of(path):
-    try: return json.loads(Path(path).read_text(encoding='utf-8')).get('format')
+    try: return _jload(Path(path)).get('format')
     except (OSError, ValueError, AttributeError): return None
 
 
@@ -106,7 +107,7 @@ def shipped_patterns():
     """CPL-09: the patterns shipped with SDEM — [(the name a profile includes it by, the pattern file)]."""
     out = []
     for f in sorted((DATA_ROOT / 'standards').glob('*.json')):
-        try: d = json.loads(f.read_text(encoding='utf-8'))
+        try: d = _jload(f)
         except ValueError: continue
         if d.get('format') == PATTERN_FORMAT: out.append((SHIPPED + f.name, d))
     return out
@@ -141,7 +142,7 @@ def shipped_included():
 
 def _fragment(path):
     """A standards or pattern file a profile includes (PR-13, PR-17)."""
-    try: doc = json.loads(Path(path).read_text(encoding='utf-8'))
+    try: doc = _jload(Path(path))
     except FileNotFoundError: raise ProfileError(f'{path}: no such standards or pattern file')
     except ValueError as e: raise ProfileError(f'{path}: not valid JSON — {e}')
     kind = {STANDARD_FORMAT: 'standard', PATTERN_FORMAT: 'pattern'}.get(doc.get('format'))
@@ -292,7 +293,7 @@ def check(merged, base_mm):
     layer, no core type is redefined, attributes well formed on known types, rules name declared attributes, link kinds map onto
     ArchiMate kinds between types of one layer."""
     from .validate import check_schema
-    schema = json.loads(SCHEMA.read_text(encoding='utf-8'))
+    schema = _jload(SCHEMA)
     issues = check_schema({k: v for k, v in merged.items() if k not in PRIVATE and k != 'structures'}, schema)
     if issues: return [f'profile: {i}' for i in issues]
     issues += merged.get('_issues', [])   # PR-14, PR-17
@@ -367,7 +368,7 @@ def check(merged, base_mm):
             known_rels = {x['relationship'] for x in load_registry_rows()} | {x['relationship'] for x in merged['link_types']}
             if rel not in known_rels: issues.append(f"rule {r['id']}: across {rel!r}, which is not a link type between layers ({', '.join(sorted(known_rels))})")
     from .requirements import SCHEMA as REQ_SCHEMA
-    sdem_categories = json.loads(REQ_SCHEMA.read_text(encoding='utf-8'))['$defs']['requirement']['properties']['category']['enum']
+    sdem_categories = _jload(REQ_SCHEMA)['$defs']['requirement']['properties']['category']['enum']
     seen = set()
     for c in merged['requirement_categories']:
         if c['id'] in sdem_categories: issues.append(f"requirement category {c['id']}: already one of SDEM's")
@@ -540,7 +541,7 @@ def exceptions():
 def _load_exceptions(folder):
     global ACTIVE_EXCEPTIONS
     f = Path(folder) / EXCEPTIONS_FILE
-    try: ACTIVE_EXCEPTIONS = json.loads(f.read_text(encoding='utf-8')).get('exceptions', []) if f.exists() else []
+    try: ACTIVE_EXCEPTIONS = _jload(f).get('exceptions', []) if f.exists() else []
     except ValueError: ACTIVE_EXCEPTIONS = []
 
 
@@ -731,7 +732,7 @@ def adopt(a):
     if not (ws / 'workspace.json').exists(): raise ProfileError(f'{ws}: no such workspace (sdem new starts one)')
     if not (ws / FILE).exists(): raise ProfileError(f'{ws}: no {FILE} — put the profile there first (sdem profile example shows the form)')
     merged = activate_from(ws)
-    rec = json.loads((ws / 'workspace.json').read_text(encoding='utf-8'))
+    rec = _jload(ws / 'workspace.json')
     from .metamodel import Metamodel
     mm = Metamodel.load(); today = datetime.date.today().isoformat(); stem = re.sub(r'[^A-Z0-9]+', '-', ws.resolve().name.upper()).strip('-') or 'WORKSPACE'
     new = {l['file']: {'level': l['code'], 'model_id': f"{stem}-{l['code']}", 'model_version': today, 'metamodel_version': mm.version, 'source_system': 'SDEM', 'instances': [], 'relationships': []}
@@ -771,7 +772,7 @@ def include_file(a):
         path = shipped(name) if name.startswith(SHIPPED) else (ws / name).resolve()
         kind, fd = _fragment(path); meta = fd[kind]
     f = ws / FILE
-    doc = json.loads(f.read_text(encoding='utf-8')) if f.exists() else {
+    doc = _jload(f) if f.exists() else {
         'format': FORMAT, 'name': ws.resolve().name, 'version': 1,
         'description': f"The {ws.resolve().name} workspace's design specification on top of SDEM's metamodel: the standards and patterns it includes."}
     there = f.exists() and (any(x['name'] == name for x in resolve(f).get('aspects', [])) if name.startswith(EXT) else any(x['file'] == path.resolve().as_posix() for x in resolve(f)['included']))   # by this profile, or by a base it extends
@@ -790,7 +791,7 @@ def include_file(a):
             g = gd(ws, 'include_in_profile', a.person, name, {'kind': kind, 'id': meta['id'], 'title': meta['title'], 'version': meta['version'], 'reason': a.reason})
             b = Batch(); b.json(f, cand)
             if (ws / 'workspace.json').exists():
-                rec = json.loads((ws / 'workspace.json').read_text(encoding='utf-8')); before = json.dumps(rec, sort_keys=True)
+                rec = _jload(ws / 'workspace.json'); before = json.dumps(rec, sort_keys=True)
                 if not rec.get('profile'): rec['profile'] = {'file': FILE, 'from': 'sdem', 'name': cand['name'], 'version': cand['version']}
                 if name == 'ext:bian': rec.pop('core_only', None)   # BX-10: BIAN on again
                 if json.dumps(rec, sort_keys=True) != before: b.json(ws / 'workspace.json', rec)
@@ -816,7 +817,7 @@ def exclude_file(a):
     if not (a.reason or '').strip(): raise ProfileError('--reason is required: why it is switched off (kept with the decision)')
     f = ws / FILE
     if not f.exists(): raise ProfileError(f'{ws}: no sdem-profile.json — nothing is included')
-    doc = json.loads(f.read_text(encoding='utf-8'))
+    doc = _jload(f)
     if name not in (doc.get('includes') or []): raise ProfileError(f"{name} is not included in {ws}'s profile ({', '.join(doc.get('includes') or []) or 'it includes nothing'})")
     if name.startswith(EXT):
         try: path, _ = pack(name); layers = read(path).get('layers') or []
@@ -828,11 +829,11 @@ def exclude_file(a):
     from . import parts
     if name == parts.EXT_BIAN: layers = [{'code': parts.A2, 'file': parts.A2_FILE}]   # BX-14: BIAN's layer is the reserved A2
     files = [l['file'] for l in layers if l.get('file') and (ws / l['file']).exists()]
-    gone = {i['id'] for fn in files for i in json.loads((ws / fn).read_text(encoding='utf-8')).get('instances', [])}
+    gone = {i['id'] for fn in files for i in _jload(ws / fn).get('instances', [])}
     reg_f = ws / 'mappings.json'
-    reg = json.loads(reg_f.read_text(encoding='utf-8')) if reg_f.exists() else None
+    reg = _jload(reg_f) if reg_f.exists() else None
     out_maps = [m for m in (reg or {}).get('mappings', []) if m['source']['id'] in gone or m['target']['id'] in gone]
-    ex_f = ws / 'exceptions.json'; exc = json.loads(ex_f.read_text(encoding='utf-8')) if ex_f.exists() else None
+    ex_f = ws / 'exceptions.json'; exc = _jload(ex_f) if ex_f.exists() else None
     out_exc = [e for e in (exc or {}).get('exceptions', []) if set(e.get('records') or []) & gone]   # an exception for an archived record goes with it
     keep = {**doc, 'includes': [i for i in doc['includes'] if i != name]}
     day = datetime.date.today().isoformat(); tag = re.sub(r'[^a-z0-9-]+', '-', name.lower()).strip('-')
@@ -844,14 +845,14 @@ def exclude_file(a):
     def write(root, decision):
         from .files import Batch
         arc = {'format': 'sdem-archive/1', 'excluded': name, 'reason': a.reason.strip(), 'by': a.person.strip(), 'decision': decision, 'at': day,
-               'files': {fn: json.loads((ws / fn).read_text(encoding='utf-8')) for fn in files}, 'mappings': out_maps, 'exceptions': out_exc,
+               'files': {fn: _jload(ws / fn) for fn in files}, 'mappings': out_maps, 'exceptions': out_exc,
                'note': 'Switched off by a person (sdem profile exclude, MX-16). To switch it on again: sdem profile include, sdem profile adopt, then restore these files and connections.'}
         rf = root / RETIRED
-        ret = json.loads(rf.read_text(encoding='utf-8')) if rf.exists() else {'format': 'sdem-retired-mappings/1', 'note': 'Connections taken out of mappings.json when a layer was switched off; their ids are never given again.', 'mappings': []}
+        ret = _jload(rf) if rf.exists() else {'format': 'sdem-retired-mappings/1', 'note': 'Connections taken out of mappings.json when a layer was switched off; their ids are never given again.', 'mappings': []}
         ret['mappings'] += [{'mapping_id': m['mapping_id'], 'archive': arc_name, 'decision': decision} for m in out_maps]
         b = Batch(); b.json(root / arc_name, arc); b.json(rf, ret); b.json(root / FILE, keep)
         if name == parts.EXT_BIAN and (root / 'workspace.json').exists():   # BX-13, BX-14: a person chose a core-only design
-            wrec = json.loads((root / 'workspace.json').read_text(encoding='utf-8')); wrec['core_only'] = True; b.json(root / 'workspace.json', wrec)
+            wrec = _jload(root / 'workspace.json'); wrec['core_only'] = True; b.json(root / 'workspace.json', wrec)
         if reg is not None and out_maps: b.json(root / 'mappings.json', {**reg, 'mappings': [m for m in reg['mappings'] if m not in out_maps]})
         if exc is not None and out_exc: b.json(root / 'exceptions.json', {**exc, 'exceptions': [e for e in exc['exceptions'] if e not in out_exc]})
         b.commit()
@@ -916,15 +917,15 @@ def restore_file(a):
     if not is_person(a.person): raise ProfileError(f"--person {a.person!r}: restoring is a person's decision — give your own name (CTL-21)")
     if not (a.reason or '').strip(): raise ProfileError('--reason is required: why it is switched on again')
     if not af.is_file(): raise ProfileError(f'{a.archive}: no such archive in {ws} (sdem profile exclude writes them to archive/)')
-    arc = json.loads(af.read_text(encoding='utf-8'))
+    arc = _jload(af)
     if arc.get('format') != 'sdem-archive/1': raise ProfileError(f'{a.archive}: not an SDEM archive')
     if arc.get('restored'): raise ProfileError(f"{a.archive}: already restored on {arc['restored'].get('at')} ({arc['restored'].get('decision')})")
-    name = arc['excluded']; f = ws / FILE; doc = json.loads(f.read_text(encoding='utf-8')) if f.exists() else {'format': FORMAT, 'name': ws.resolve().name, 'version': 1, 'includes': []}
+    name = arc['excluded']; f = ws / FILE; doc = _jload(f) if f.exists() else {'format': FORMAT, 'name': ws.resolve().name, 'version': 1, 'includes': []}
     if name in (doc.get('includes') or []): raise ProfileError(f'{name} is already included in {ws} — restore puts back a part that was switched off')
     if name.startswith(EXT): pack(name)   # installed and supported (MX-11a) — or refused here, with the reason
-    busy = [fn for fn in arc.get('files', {}) if (ws / fn).exists() and json.loads((ws / fn).read_text(encoding='utf-8')).get('instances')]
+    busy = [fn for fn in arc.get('files', {}) if (ws / fn).exists() and _jload(ws / fn).get('instances')]
     if busy: raise ProfileError(f"{', '.join(busy)} already hold(s) records — restore does not merge into a layer that has been started again")
-    have = {i['id'] for fn in FILES.values() if (ws / fn).exists() for i in json.loads((ws / fn).read_text(encoding='utf-8')).get('instances', [])}
+    have = {i['id'] for fn in FILES.values() if (ws / fn).exists() for i in _jload(ws / fn).get('instances', [])}
     have |= {i['id'] for d in arc.get('files', {}).values() for i in d.get('instances', [])}
     unfit = [m for m in arc.get('mappings', []) if m['source']['id'] not in have or m['target']['id'] not in have]
     if unfit and not a.skip_unfit:
@@ -939,21 +940,21 @@ def restore_file(a):
     def write(root, decision):
         from .files import Batch
         b = Batch()
-        pf = root / FILE; pd = json.loads(pf.read_text(encoding='utf-8')) if pf.exists() else dict(doc)
+        pf = root / FILE; pd = _jload(pf) if pf.exists() else dict(doc)
         b.json(pf, {**pd, 'includes': list(pd.get('includes') or []) + [name]})
         for fn, d in arc.get('files', {}).items(): b.json(root / fn, d)
-        rf = root / 'mappings.json'; reg = json.loads(rf.read_text(encoding='utf-8')) if rf.exists() else {'mappings': []}
+        rf = root / 'mappings.json'; reg = _jload(rf) if rf.exists() else {'mappings': []}
         b.json(rf, {**reg, 'mappings': reg['mappings'] + back})
         if exc_back:
-            ef = root / 'exceptions.json'; ex = json.loads(ef.read_text(encoding='utf-8')) if ef.exists() else {'format': 'sdem-exceptions/1', 'exceptions': []}
+            ef = root / 'exceptions.json'; ex = _jload(ef) if ef.exists() else {'format': 'sdem-exceptions/1', 'exceptions': []}
             b.json(ef, {**ex, 'exceptions': ex['exceptions'] + exc_back})
         rt = root / RETIRED
         if rt.exists():   # the restored ids are live again; the ones left in the archive stay retired
-            ret = json.loads(rt.read_text(encoding='utf-8')); ids = {m['mapping_id'] for m in back}
+            ret = _jload(rt); ids = {m['mapping_id'] for m in back}
             b.json(rt, {**ret, 'mappings': [m for m in ret['mappings'] if m['mapping_id'] not in ids]})
         b.json(root / af.relative_to(ws) if af.is_relative_to(ws) else af, {**arc, 'restored': {'at': day, 'decision': decision, 'by': a.person.strip(), 'left_in_archive': out['left_in_archive']}})
         if name == 'ext:bian' and (root / 'workspace.json').exists():   # BX-10: BIAN on again
-            wrec = json.loads((root / 'workspace.json').read_text(encoding='utf-8'))
+            wrec = _jload(root / 'workspace.json')
             if wrec.pop('core_only', None) is not None: b.json(root / 'workspace.json', wrec)
         b.commit()
     ok, why = _check_copy(ws, lambda t: write(t, 'trial'))
@@ -981,13 +982,13 @@ def purge_file(a):
     if not is_person(a.person): raise ProfileError(f"--person {a.person!r}: purging data is a person's decision — give your own name (CTL-21)")
     if not (a.reason or '').strip(): raise ProfileError('--reason is required: why the data is deleted (kept with the decision)')
     arcs = sorted((ws / 'archive').glob('*.json')) if (ws / 'archive').is_dir() else []
-    arcs = [p for p in arcs if p.name != Path(RETIRED).name and (json.loads(p.read_text(encoding='utf-8')).get('format') == 'sdem-archive/1')]
-    pick = [p for p in arcs if (a.archive and (p == ws / a.archive or p.name == Path(a.archive).name)) or (a.file and json.loads(p.read_text(encoding='utf-8')).get('excluded') == a.file)]
+    arcs = [p for p in arcs if p.name != Path(RETIRED).name and (_jload(p).get('format') == 'sdem-archive/1')]
+    pick = [p for p in arcs if (a.archive and (p == ws / a.archive or p.name == Path(a.archive).name)) or (a.file and _jload(p).get('excluded') == a.file)]
     if not (a.archive or a.file): raise ProfileError('name what to purge: an archive (--archive archive/<file>.json) or every archive of a part (e.g. ext:security)')
     if not pick: raise ProfileError(f"nothing to purge in {ws}: no archive {'of ' + a.file if a.file else a.archive}")
     summ = []
     for p in pick:
-        d = json.loads(p.read_text(encoding='utf-8'))
+        d = _jload(p)
         summ.append({'archive': p.relative_to(ws).as_posix(), 'excluded': d.get('excluded'), 'records': sum(len(x.get('instances', [])) for x in d.get('files', {}).values()),
                      'connections': len(d.get('mappings', [])), 'exceptions': len(d.get('exceptions', [])), 'restored': bool(d.get('restored'))})
     out = {'workspace': str(ws), 'purged': summ, 'dry_run': bool(a.dry_run),
@@ -1000,7 +1001,7 @@ def purge_file(a):
                'counts': [{k: x[k] for k in ('records', 'connections', 'exceptions')} for x in summ]})
         rt = ws / RETIRED
         if rt.exists():   # the ids stay retired — only the pointer to the deleted archive goes
-            ret = json.loads(rt.read_text(encoding='utf-8')); gone = {x['archive'] for x in summ}
+            ret = _jload(rt); gone = {x['archive'] for x in summ}
             b = Batch(); b.json(rt, {**ret, 'mappings': [({**m, 'archive': None, 'purged': g['id']} if m.get('archive') in gone else m) for m in ret['mappings']]}); b.commit()
         for p in pick: p.unlink()
         out['decision'] = g['id']

@@ -14,6 +14,7 @@ or the record is inferred and unconfirmed, or a planned design not yet complete 
 granted a time-limited exception, `sdem exception grant`). A rule not yet effective (`effective_from` after today) is reported as a warning.
 `sdem check` keeps enforcing the rules (errors; warnings for severity warning); `sdem comply` reports every outcome. Read-only.
 """
+from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
 import argparse, datetime, json, os, re, sys
 from pathlib import Path
 
@@ -195,8 +196,8 @@ def workspace_data(ws):
     ws = Path(ws)
     merged = _p.activate_from(ws)
     mm = Metamodel.load()
-    datasets = {l: json.loads((ws / f).read_text(encoding='utf-8')) for l, f in FILES.items() if (ws / f).exists()}
-    reg = json.loads((ws / 'mappings.json').read_text(encoding='utf-8')) if (ws / 'mappings.json').exists() else {}
+    datasets = {l: _jload(ws / f) for l, f in FILES.items() if (ws / f).exists()}
+    reg = _jload(ws / 'mappings.json') if (ws / 'mappings.json').exists() else {}
     maps = [(m['source']['id'], m['relationship'], m['target']['id']) for m in reg.get('mappings', []) if m.get('status') == 'approved']
     return datasets, maps, mm, merged
 

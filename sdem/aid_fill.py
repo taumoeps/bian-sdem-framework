@@ -13,6 +13,7 @@ Zone placements (metamodel 0.11.0; AID-Z01…Z04): each A4 shape in no zone is p
 signals (metamodel/hosting-signals.json) or the organisation's default, the DMZ when internet facing — as a link marked inferred. Confirm or
 reject it by the shape's id: `sdem aid confirm INF-K8S-PROD --workspace … --person …`.
 """
+from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
 from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 import argparse, copy, datetime, json, re, sys
 from pathlib import Path
@@ -25,7 +26,7 @@ class AidError(ValueError):
     """The request cannot be done (exit 2)."""
 
 
-def _j(p): return json.loads(Path(p).read_text(encoding='utf-8'))
+def _j(p): return _jload(Path(p))
 
 
 def _rid(i): return 'AID-' + i[4:] if isinstance(i, str) and i.startswith('PRJ-') else i

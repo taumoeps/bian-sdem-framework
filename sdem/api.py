@@ -7,7 +7,9 @@ still change; 1.0 when SDEM 0.20 is released.
     the metamodel      Metamodel, T, layer, type_id, layer_id, ROOT, DATA_ROOT
     a workspace        estate_docs, estate_errors, activate, profile, parts, catalogue_dir
     the graph          LevelGraph, estate_index
-    writing            Batch, write_json, write_text, relink — every write through SDEM's own writer (atomic, LF, UTF-8)
+    reading            load, loads — a design's file, its names as a person reads them (ids or 0.19's in the file, DL-11)
+    writing            Batch, write_json, write_text, relink, for_file — every write through SDEM's own writer (atomic, LF, UTF-8),
+                       holding the names the file's workspace stores
     checks             is_person
     commands           run(command, main, argv) — an extension's code for one of SDEM's commands, run the way SDEM runs its own
                        (its --json, --dry-run, errors and exit codes)
@@ -23,6 +25,7 @@ _EXPORTS = {
     'catalogue_dir': ('parts', 'catalogue_dir'), 'LevelGraph': ('graph', 'LevelGraph'), 'estate_index': ('graph', 'estate_index'),
     'Batch': ('files', 'Batch'), 'write_json': ('files', 'write_json'), 'write_text': ('files', 'write_text'), 'relink': ('docmap', 'relink'),
     'is_person': ('validate', 'is_person'),
+    'load': ('identity', 'load'), 'loads': ('identity', 'loads'), 'for_file': ('identity', 'for_file'),   # DL-11: a design's files, read and written
 }
 _MODULES = {'profile', 'parts'}   # whole modules an extension may use: the profile (activate, include) and BIAN's on-or-off (parts)
 __all__ = sorted(_EXPORTS) + sorted(_MODULES) + ['VERSION', 'run']

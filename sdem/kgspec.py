@@ -4,6 +4,7 @@ Generated from schema/level-model.schema.json, schema/relationship-registry.sche
 schema/impact-rules.json, metamodel/level-relationships.json and the entity catalogue, plus the identity,
 versioning, query and load requirements written here. Regenerate with `python -m sdem.kgspec`; CI checks it.
 """
+from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
 from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 from pathlib import Path
 from collections import Counter
@@ -18,7 +19,7 @@ OWNER = {_L('business'): 'business architecture', _L('bian'): 'BIAN alignment (e
 SOURCE = {_L('business'): 'EA tool — capability, value-stream and process models', _L('bian'): 'BIAN workbench / the bank\'s BIAN alignment', _L('application'): 'application portfolio, API catalogue, data models', _L('technology'): 'CMDB, deployment manifests'}
 
 
-def _j(p): return json.loads(Path(p).read_text(encoding='utf-8'))
+def _j(p): return _jload(Path(p))
 
 
 def _schema_rows(defn):

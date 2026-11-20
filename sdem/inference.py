@@ -4,6 +4,7 @@ An engine reads a FederatedGraph and returns *proposed* mapping records. It neve
 records; everything it returns goes through sdem validate and an architect. The baseline here exists
 to exercise the evaluation harness; it is not the rule-based engine specified in docs/design/relationship-rules-spec.md.
 """
+from .identity import for_file as _for_file  # DL-11: what a design's file stores (docs/design/sdem-data-layer-spec.md)
 from pathlib import Path
 import argparse, json, re, sys
 from typing import Protocol
@@ -106,10 +107,10 @@ def main(argv=None):
     print(json.dumps({**head, 'mappings': result['proposals']}, indent=2, ensure_ascii=False))
     if args.out:
         out = Path(args.out); out.mkdir(parents=True, exist_ok=True)
-        (out / 'candidates.json').write_text(json.dumps({**head, 'mappings': result.get('candidates', [])}, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
-        (out / 'inference-log.json').write_text(json.dumps({'engine': engine.name, 'attempts': result.get('log', [])}, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+        (out / 'candidates.json').write_text(json.dumps(_for_file(out / 'candidates.json', {**head, 'mappings': result.get('candidates', [])}), indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+        (out / 'inference-log.json').write_text(json.dumps(_for_file(out / 'inference-log.json', {'engine': engine.name, 'attempts': result.get('log', [])}), indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
         for d in result.get('design', []):
-            (out / f"design-{d['level'].lower()}.json").write_text(json.dumps(d, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+            (out / f"design-{d['level'].lower()}.json").write_text(json.dumps(_for_file(out / f"design-{d['level'].lower()}.json", d), indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
     return 0
 
 

@@ -68,3 +68,107 @@ def type_id(name):
 def ids():
     """Every type: [{'id', 'name'}] — the name as a person reads it now."""
     return [{'id': x['id'], 'name': T(x['id'])} for x in table()['types']]
+
+
+# ---- step 4b of 0.20: files store ids, SDEM works in the names a person reads (docs/design/sdem-data-layer-spec.md, DL-10, DL-11)
+# In memory, a type is the name a person reads (T(id)). A file holds ids (a migrated workspace: workspace.json "names": "ids") or
+# 0.19's names (every other). Reading accepts all three — an id, a name as a person reads it now, a 0.19 name, in that order —
+# and writing gives the file's own form, so no file is ever mixed (DL-12). Graph stores are derived: written as built, never translated.
+LAYER_KEYS = frozenset({'level', 'owner_layer'})   # never 'layer': ArchiMate's own (business, application, technology — the same words as SDEM's layer ids)
+
+
+@lru_cache(maxsize=None)
+def display(name):
+    """The name a person reads now, for a type id, a name as read now or a 0.19 name; anything else unchanged."""
+    if not isinstance(name, str) or '.' not in name: return name
+    _, _, by_id, by_old = _index()
+    if name in by_id: return T(name)
+    tid = _now().get(name) or by_old.get(name)
+    return T(tid) if tid else name
+
+
+@lru_cache(maxsize=None)
+def display_layer(code):
+    if not isinstance(code, str): return code
+    code_of, of_code = _index()[:2]
+    if code in code_of: return layer(code)
+    return code if code in _now_layers() else (layer(of_code[code]) if code in of_code else code)
+
+
+def _now():
+    """{name as read now: type id}."""
+    return {T(x['id']): x['id'] for x in table()['types']}
+
+
+def _now_layers(): return {layer(l['id']) for l in table()['layers']}
+
+
+@lru_cache(maxsize=None)
+def stored(name, ids):
+    """The name a file holds for a name in memory: its id (ids=True) or its 0.19 name."""
+    if not isinstance(name, str) or '.' not in name: return name
+    tid = _now().get(name) or (name if name in _index()[2] else None)
+    if not tid: return name
+    return tid if ids else _index()[2][tid]['name_0_19']
+
+
+@lru_cache(maxsize=None)
+def stored_layer(code, ids):
+    if not isinstance(code, str): return code
+    code_of, of_code = _index()[:2]
+    lid = next((i for i in code_of if layer(i) == code), None) or (code if code in code_of else None)
+    if not lid: return code
+    return lid if ids else code_of[lid]
+
+
+def _walk(x, f, fl, key=None):
+    if isinstance(x, dict): return {f(k) if isinstance(k, str) else k: _walk(v, f, fl, k) for k, v in x.items()}
+    if isinstance(x, list): return [_walk(v, f, fl, key) for v in x]
+    if isinstance(x, str): return fl(x) if key in LAYER_KEYS else f(x)
+    return x
+
+
+def read_names(doc): return _walk(doc, display, display_layer)
+
+
+def store_names(doc, ids): return _walk(doc, lambda s: stored(s, ids), lambda s: stored_layer(s, ids))
+
+
+def _derived(path):
+    p = str(path).replace('\\', '/')
+    return p.endswith('.graph.json') or '/graph/' in p or p.endswith('/metamodel/identity.json')
+
+
+@lru_cache(maxsize=256)
+def _ids_folder(folder):
+    """Does the workspace this folder is in store ids (migrated, DL-12)? Its workspace.json says "names": "ids"."""
+    from pathlib import Path
+    for d in (Path(folder), *Path(folder).parents):
+        w = d / 'workspace.json'
+        if w.is_file():
+            try: return json.loads(w.read_text(encoding='utf-8')).get('names') == 'ids'
+            except (OSError, ValueError): return False
+    return False
+
+
+def stores_ids(path):
+    from pathlib import Path
+    return _ids_folder(str(Path(path).resolve().parent))
+
+
+def load(path):
+    """A JSON file, its names as a person reads them now — the one way SDEM reads a design's files (DL-11)."""
+    from pathlib import Path
+    doc = json.loads(Path(path).read_text(encoding='utf-8'))
+    return doc if _derived(path) else read_names(doc)
+
+
+def for_file(path, obj):
+    """What to write to `path`: obj with the names the file's workspace stores (ids or 0.19's)."""
+    return obj if _derived(path) else store_names(obj, stores_ids(path))
+
+
+def loads(text, path=None):
+    """JSON text of a design file (read by its caller, e.g. to take its checksum), its names as a person reads them now (DL-11)."""
+    doc = json.loads(text)
+    return doc if path is not None and _derived(path) else read_names(doc)

@@ -5,6 +5,7 @@
   · the zone connections SDEM works out from the zone structure (ZC-01…ZC-04) — never records;
   · zone placements proposed for a person to decide (AID-Z01…AID-Z04), each marked inferred with the signals it read.
 """
+from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
 from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 import json, re
 from functools import lru_cache
@@ -21,7 +22,7 @@ DEFAULT_TEMPLATES = {'cloud': ['cloud', ['dmz', 'internal']], 'on_premises': ['o
 
 @lru_cache(maxsize=1)
 def _sdem_signals():
-    return json.loads(SIGNALS_FILE.read_text(encoding='utf-8'))['signals']
+    return _jload(SIGNALS_FILE)['signals']
 
 
 def policy():

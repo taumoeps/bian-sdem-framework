@@ -8,6 +8,7 @@ before anything is written. The record says it was stated by a person (`created_
        --reviewer jane.architect --evidence application_architecture_document:PAYHUB-HLD#s2 \\
        --rationale "The Payments Hub design names it as the payment-order initiation service"
 """
+from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
 import argparse, json, sys
 from pathlib import Path
 
@@ -18,10 +19,10 @@ from .layers import DATASET_FILES as DATASETS   # LR-06: a profile layer's recor
 
 def estate_docs(estate):
     estate = Path(estate)
-    docs = {f: json.loads((estate / f).read_text(encoding='utf-8')) for f in DATASETS if (estate / f).exists()}
+    docs = {f: _jload(estate / f) for f in DATASETS if (estate / f).exists()}
     if not (estate / 'mappings.json').exists() or not docs:
         raise ValueError(f'{estate}: not a workspace folder (it needs mappings.json and at least one of {", ".join(DATASETS)})')
-    return docs, json.loads((estate / 'mappings.json').read_text(encoding='utf-8'))
+    return docs, _jload(estate / 'mappings.json')
 
 
 def estate_errors(docs, registry):

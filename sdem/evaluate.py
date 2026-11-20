@@ -4,6 +4,7 @@ Gold = approved records in the gold documents. Proposals = proposed records in t
 A proposal is a hit when (source.id, relationship, target.id) matches a gold record. Reported per
 relationship type and overall. This is the acceptance test for any mapping engine.
 """
+from .identity import load as _jload  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
 from pathlib import Path
 import argparse, json, sys
 
@@ -49,8 +50,8 @@ def main(argv=None):
     parser.add_argument('--json', action='store_true')
     args = parser.parse_args(argv)
     try:
-        gold = [json.loads(Path(p).read_text(encoding='utf-8')) for p in args.gold]
-        props = [json.loads(Path(p).read_text(encoding='utf-8')) for p in args.proposals]
+        gold = [_jload(Path(p)) for p in args.gold]
+        props = [_jload(Path(p)) for p in args.proposals]
     except (OSError, ValueError) as exc:
         print(f'ERROR: {exc}', file=sys.stderr); return 2
     result = evaluate(gold, props)
