@@ -111,9 +111,20 @@ def main(argv=None):
     ap.add_argument('what', nargs='?', help='a layer (A1), a type (A1.BusinessProcess), requirement, change-set, or authoring (the guide for an outside author — an AI assistant without the CLI); nothing: the overview')
     ap.add_argument('--workspace', dest='estate', metavar='DIR', help="include the workspace's organisation profile"); ap.add_argument('--json', action='store_true')
     ap.add_argument('-o', '--out', metavar='FILE', help='with `authoring`: write the guide to this file')
+    ap.add_argument('--ids', action='store_true', help="every layer's and type's id — the name that never changes (ST-01, ST-02) — beside the name you read (A3.ApplicationComponent)")
     ap.add_argument('--kit', metavar='DIR', help='with `authoring`: write the guide AND SDEM itself as a zip into this folder — everything an outside author needs, to write the package and to check it')
     a = ap.parse_args(argv)
     mm = Metamodel.load(); w = a.what
+    from . import identity
+    if w and '.' in w and w not in mm.entities and identity.type_id(w): w = identity.T(identity.type_id(w))   # ST-05: a type given by its id
+    if a.ids:   # ST-01, ST-02: the ids, and the names a person reads now (ST-03)
+        res = {'layers': [{'id': l['id'], 'code': identity.layer(l['id']), 'name': l['name'], 'provided_by': l['provided_by']} for l in identity.table()['layers']],
+               'types': [x for x in identity.ids() if x['name'] in mm.entities]}
+        if a.json: print(json.dumps(res, indent=2, ensure_ascii=False)); return 0
+        for l in res['layers']: print(f"{l['code']:<4} {l['id']:<14} {l['name']}  ({l['provided_by']})")
+        print()
+        for x in res['types']: print(f"  {x['name']:<34} {x['id']}")
+        return 0
     if w in ('authoring', 'authoring-guide'):   # AU-01: the one file an outside author is given — the method, the rules and this version's vocabulary
         from .authorguide import render
         if a.kit:

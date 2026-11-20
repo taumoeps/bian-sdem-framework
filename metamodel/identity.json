@@ -1,0 +1,240 @@
+{
+ "format": "sdem-identity/1",
+ "note": "ST-01…ST-05 (docs/design/sdem-stable-identity-spec.md): the id of every layer and type never changes; the A-number a person reads is computed from the layers in order. name_0_19: the name SDEM 0.19 wrote — read for as long as 0.20 lasts (ST-05).",
+ "layers": [
+  {
+   "id": "business",
+   "order": 10,
+   "code_0_19": "A1",
+   "file": "a1-business.json",
+   "provided_by": "core",
+   "name": "Business"
+  },
+  {
+   "id": "bian",
+   "order": 20,
+   "code_0_19": "A2",
+   "file": "a2-service-domain.json",
+   "provided_by": "ext:bian",
+   "name": "Service Domain (BIAN)"
+  },
+  {
+   "id": "application",
+   "order": 30,
+   "code_0_19": "A3",
+   "file": "a3-application.json",
+   "provided_by": "core",
+   "name": "Application"
+  },
+  {
+   "id": "technology",
+   "order": 40,
+   "code_0_19": "A4",
+   "file": "a4-technology.json",
+   "provided_by": "core",
+   "name": "Technology"
+  }
+ ],
+ "types": [
+  {
+   "id": "business.BusinessCapability",
+   "name_0_19": "A1.BusinessCapability"
+  },
+  {
+   "id": "business.ValueStream",
+   "name_0_19": "A1.ValueStream"
+  },
+  {
+   "id": "business.ValueStreamStage",
+   "name_0_19": "A1.ValueStreamStage"
+  },
+  {
+   "id": "business.BusinessProcess",
+   "name_0_19": "A1.BusinessProcess"
+  },
+  {
+   "id": "business.BusinessActivity",
+   "name_0_19": "A1.BusinessActivity"
+  },
+  {
+   "id": "business.BusinessService",
+   "name_0_19": "A1.BusinessService"
+  },
+  {
+   "id": "business.BusinessActor",
+   "name_0_19": "A1.BusinessActor"
+  },
+  {
+   "id": "business.BusinessRole",
+   "name_0_19": "A1.BusinessRole"
+  },
+  {
+   "id": "business.BusinessObject",
+   "name_0_19": "A1.BusinessObject"
+  },
+  {
+   "id": "business.BusinessRequirement",
+   "name_0_19": "A1.BusinessRequirement"
+  },
+  {
+   "id": "business.BusinessEvent",
+   "name_0_19": "A1.BusinessEvent"
+  },
+  {
+   "id": "business.Product",
+   "name_0_19": "A1.Product"
+  },
+  {
+   "id": "business.BusinessInterface",
+   "name_0_19": "A1.BusinessInterface"
+  },
+  {
+   "id": "bian.BusinessArea",
+   "name_0_19": "A2.BusinessArea"
+  },
+  {
+   "id": "bian.BusinessDomain",
+   "name_0_19": "A2.BusinessDomain"
+  },
+  {
+   "id": "bian.ServiceDomain",
+   "name_0_19": "A2.ServiceDomain"
+  },
+  {
+   "id": "bian.FunctionalPattern",
+   "name_0_19": "A2.FunctionalPattern"
+  },
+  {
+   "id": "bian.AssetType",
+   "name_0_19": "A2.AssetType"
+  },
+  {
+   "id": "bian.ControlRecord",
+   "name_0_19": "A2.ControlRecord"
+  },
+  {
+   "id": "bian.ServiceGroup",
+   "name_0_19": "A2.ServiceGroup"
+  },
+  {
+   "id": "bian.ServiceOperation",
+   "name_0_19": "A2.ServiceOperation"
+  },
+  {
+   "id": "bian.BehaviorQualifier",
+   "name_0_19": "A2.BehaviorQualifier"
+  },
+  {
+   "id": "bian.BusinessScenario",
+   "name_0_19": "A2.BusinessScenario"
+  },
+  {
+   "id": "bian.BusinessObject",
+   "name_0_19": "A2.BusinessObject"
+  },
+  {
+   "id": "bian.BusinessObjectAttribute",
+   "name_0_19": "A2.BusinessObjectAttribute"
+  },
+  {
+   "id": "bian.BOMModel",
+   "name_0_19": "A2.BOMModel"
+  },
+  {
+   "id": "bian.Wireframe",
+   "name_0_19": "A2.Wireframe"
+  },
+  {
+   "id": "bian.SemanticAPI",
+   "name_0_19": "A2.SemanticAPI"
+  },
+  {
+   "id": "application.ApplicationComponent",
+   "name_0_19": "A3.ApplicationComponent"
+  },
+  {
+   "id": "application.ApplicationService",
+   "name_0_19": "A3.ApplicationService"
+  },
+  {
+   "id": "application.ApplicationInterface",
+   "name_0_19": "A3.ApplicationInterface"
+  },
+  {
+   "id": "application.ApplicationFunction",
+   "name_0_19": "A3.ApplicationFunction"
+  },
+  {
+   "id": "application.APIOperation",
+   "name_0_19": "A3.APIOperation"
+  },
+  {
+   "id": "application.DataEntity",
+   "name_0_19": "A3.DataEntity"
+  },
+  {
+   "id": "application.Event",
+   "name_0_19": "A3.Event"
+  },
+  {
+   "id": "application.SolutionBuildingBlock",
+   "name_0_19": "A3.SolutionBuildingBlock"
+  },
+  {
+   "id": "application.DataAttribute",
+   "name_0_19": "A3.DataAttribute"
+  },
+  {
+   "id": "technology.InfrastructureComponent",
+   "name_0_19": "A4.InfrastructureComponent"
+  },
+  {
+   "id": "technology.Deployment",
+   "name_0_19": "A4.Deployment"
+  },
+  {
+   "id": "technology.DeploymentEnvironment",
+   "name_0_19": "A4.DeploymentEnvironment"
+  },
+  {
+   "id": "technology.Node",
+   "name_0_19": "A4.Node"
+  },
+  {
+   "id": "technology.Device",
+   "name_0_19": "A4.Device"
+  },
+  {
+   "id": "technology.SystemSoftware",
+   "name_0_19": "A4.SystemSoftware"
+  },
+  {
+   "id": "technology.TechnologyService",
+   "name_0_19": "A4.TechnologyService"
+  },
+  {
+   "id": "technology.TechnologyInterface",
+   "name_0_19": "A4.TechnologyInterface"
+  },
+  {
+   "id": "technology.CommunicationNetwork",
+   "name_0_19": "A4.CommunicationNetwork"
+  },
+  {
+   "id": "technology.NetworkZone",
+   "name_0_19": "A4.NetworkZone"
+  },
+  {
+   "id": "technology.Path",
+   "name_0_19": "A4.Path"
+  },
+  {
+   "id": "technology.Artifact",
+   "name_0_19": "A4.Artifact"
+  },
+  {
+   "id": "technology.Location",
+   "name_0_19": "A4.Location"
+  }
+ ]
+}

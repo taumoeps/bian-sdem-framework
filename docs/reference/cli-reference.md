@@ -2578,7 +2578,7 @@ sdem transform run <export> -o O [--rules RULES] [--known KNOWN …] [--model-id
 what you may write: each layer's kinds of record, their fields (type, required, allowed values) and allowed links; the requirement and change-set formats — your profile's included with --workspace
 
 ```
-sdem types [<what>] [--workspace WORKSPACE] [-o O] [--kit KIT]
+sdem types [<what>] [--workspace WORKSPACE] [-o O] [--ids] [--kit KIT]
 ```
 
 *JSON: native · dry run: sandbox*
@@ -2589,6 +2589,7 @@ sdem types [<what>] [--workspace WORKSPACE] [-o O] [--kit KIT]
 | `--workspace` |  | include the workspace's organisation profile |
 | `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
 | `-o`, `--out` |  | with `authoring`: write the guide to this file |
+| `--ids` |  | every layer's and type's id — the name that never changes (ST-01, ST-02) — beside the name you read (A3.ApplicationComponent) |
 | `--kit` |  | with `authoring`: write the guide AND SDEM itself as a zip into this folder — everything an outside author needs, to write the package and to check it |
 
 Example:
