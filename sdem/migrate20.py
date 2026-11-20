@@ -185,7 +185,8 @@ def export_019(ws, out):
         if (out / f'{l}.json').exists(): (out / f'{l}.json').unlink()
     if 'a2-service-domain.json' not in docs and docs:   # a design without BIAN: 0.19 always had the layer — here empty, as a design with no service domains yet
         some = next(iter(docs.values()))
-        docs['a2-service-domain.json'] = {'level': 'A2', 'model_id': f"{ws.name}-a2", 'model_version': some.get('model_version'), 'metamodel_version': some.get('metamodel_version'),
+        from .identity import _index   # BIAN's code in 0.19's form — what the copy is written in
+        docs['a2-service-domain.json'] = {'level': _index()[0]['bian'], 'model_id': f"{ws.name}-a2", 'model_version': some.get('model_version'), 'metamodel_version': some.get('metamodel_version'),
                                          'source_system': some.get('source_system'), 'instances': [], 'relationships': []}
         docs['a2-service-domain.json'] = {k: v for k, v in docs['a2-service-domain.json'].items() if v is not None}
     for f, d in docs.items(): raw(out / f, d)
