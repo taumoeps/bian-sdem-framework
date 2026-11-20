@@ -180,9 +180,14 @@ def export_019(ws, out):
     shutil.copytree(ws, out, ignore=shutil.ignore_patterns(BACKUP, 'graph', '*.graph.json'))
     raw = lambda p, d: Path(p).write_bytes((json.dumps(d, indent=2, ensure_ascii=False) + '\n').encode('utf-8'))
     rec = json.loads((ws / 'workspace.json').read_text(encoding='utf-8')) if (ws / 'workspace.json').is_file() else None
-    if rec is not None: raw(out / 'workspace.json', {k: v for k, v in rec.items() if k not in ('names', 'migrated')})
+    if rec is not None: raw(out / 'workspace.json', {k: v for k, v in rec.items() if k not in ('names', 'migrated', 'core_only')})   # 0.19's stack in the copy
     for l in ('business', 'bian', 'data', 'application', 'technology'):
         if (out / f'{l}.json').exists(): (out / f'{l}.json').unlink()
+    if 'a2-service-domain.json' not in docs and docs:   # a design without BIAN: 0.19 always had the layer — here empty, as a design with no service domains yet
+        some = next(iter(docs.values()))
+        docs['a2-service-domain.json'] = {'level': 'A2', 'model_id': f"{ws.name}-a2", 'model_version': some.get('model_version'), 'metamodel_version': some.get('metamodel_version'),
+                                         'source_system': some.get('source_system'), 'instances': [], 'relationships': []}
+        docs['a2-service-domain.json'] = {k: v for k, v in docs['a2-service-domain.json'].items() if v is not None}
     for f, d in docs.items(): raw(out / f, d)
     if reg is not None: raw(out / 'mappings.json', reg)
     done = set(docs) | {'mappings.json', 'workspace.json'}
