@@ -123,7 +123,7 @@ def document(ws, layer):
         out = []
         for x in rels:
             f = byid.get(x['target'])
-            if x['source'] != rid or x['kind'] != 'composition' or not f or not (mm.is_a(f['type'], _T('bian.BusinessObjectAttribute')) or mm.is_a(f['type'], _T('application.DataAttribute'))): continue
+            if x['source'] != rid or x['kind'] != 'composition' or not f or not (mm.is_a(f['type'], _T('bian.BusinessObjectAttribute')) or mm.is_a(f['type'], _T('data.DataAttribute'))): continue
             a = f.get('attributes') or {}
             ref = next((names.get(y['target'], y['target']) for y in rels if y['source'] == f['id'] and y['kind'] == 'association'), None)
             out.append({'id': f['id'], 'name': f.get('name') or f['id'], 'type': a.get('physical_type') or a.get('data_type') or '—',

@@ -28,10 +28,12 @@ def _index():
     code = {l['id']: l.get('code_0_19') for l in t['layers']}   # 0.19's code of each layer — how an unmigrated file names it
     layer_of_code = {v: k for k, v in code.items() if v}
     by_id = {x['id']: x for x in t['types']}
+    by_id.update({a: x for x in t['types'] for a in x.get('aliases', [])})   # DL-02: an earlier id still reads (application.DataEntity)
     by_old = {x['name_0_19']: x['id'] for x in t['types'] if x.get('name_0_19')}
     return code, layer_of_code, by_id, by_old
 
 
+_VIEW_019 = [False]   # an engine's view of a migrated workspace as 0.19 saw it (view_019) — its files keep their names
 _VERSION = [0]   # bumped when the layers in use change (BIAN switched for the workspace at hand): every computed name is recomputed
 
 
@@ -43,7 +45,7 @@ def stack():
 @lru_cache(maxsize=8)
 def _stack(_v):
     from . import parts
-    on = {'ext:bian': parts.bian_on()}
+    on = {'ext:bian': parts.bian_on(), 'form:migrated': parts.migrated() and not _VIEW_019[0]}   # DL-01, DL-12: Data is its own layer in a migrated workspace
     return tuple(l['id'] for l in sorted(table()['layers'], key=lambda l: l['order']) if l['provided_by'] == 'core' or on.get(l['provided_by'], False))
 
 
@@ -53,6 +55,9 @@ def changed():
     _ids_folder.cache_clear()
     for f in (layer, T, F, display, display_layer, stored, stored_layer):
         f.cache_clear()
+    import sys   # every cache built on the names: the conformance model (attributes by type) too
+    c = sys.modules.get(__package__ + '.conformance')
+    if c is not None and hasattr(getattr(c, 'model', None), 'cache_clear'): c.model.cache_clear()
 
 
 @lru_cache(maxsize=None)
@@ -72,14 +77,19 @@ def layer(layer_id):
     code = _index()[0]
     if layer_id not in code: raise IdentityError(f'{layer_id!r} is not a layer id — layer ids: {", ".join(code)}')
     st = stack()
-    return f'A{st.index(layer_id) + 1}' if layer_id in st else f'({layer_id})'
+    if layer_id in st: return f'A{st.index(layer_id) + 1}'
+    fb = _layer_row(layer_id).get('fallback')   # DL-12: Data not in use — its types are in Application, as in 0.19
+    return layer(fb) if fb and fb in st else f'({layer_id})'
+
+
+def _layer_row(layer_id): return next((l for l in table()['layers'] if l['id'] == layer_id), {})
 
 
 def layer_id(code_or_id):
     """The layer id for an A-code as read now, or a layer id: 'A3' → 'application'. None for a layer the table does not hold (a profile's own)."""
     code = _index()[0]
     if code_or_id in code: return code_or_id
-    return next((i for i in code if layer(i) == code_or_id), None)
+    return next((i for i in stack() if layer(i) == code_or_id), None)   # a layer in use — never Data's fallback to Application's code
 
 
 @lru_cache(maxsize=None)   # called in the engines' loops; the stack is fixed in step 3 — step 4 clears it when it changes
@@ -87,7 +97,7 @@ def T(type_id):
     """The type name a person reads (and SDEM's records hold in 0.20) for a type id: T('application.ApplicationComponent') → 'A3.ApplicationComponent'."""
     by_id = _index()[2]
     if type_id not in by_id: raise IdentityError(f'{type_id!r} is not a type id — see sdem types --ids')
-    lid, name = type_id.split('.', 1)
+    lid, name = by_id[type_id]['id'].split('.', 1)   # an alias reads as the type it names
     return f'{layer(lid)}.{name}'
 
 
@@ -95,7 +105,7 @@ def type_id(name):
     """The type id for a name as read now, an id, or a 0.19 name: 'A3.ApplicationComponent' → 'application.ApplicationComponent'.
     None for a type the table does not hold (an extension's or a profile's own, e.g. SEC.S.SecurityControl)."""
     _, _, by_id, by_old = _index()
-    if name in by_id: return name
+    if name in by_id: return by_id[name]['id']
     return _now().get(name) or by_old.get(name)
 
 
@@ -141,13 +151,21 @@ def _now():
 def _now_v(_v): return {T(x['id']): x['id'] for x in table()['types']}
 
 
+def layer_of_type(name):
+    """The layer code, as read now, a type belongs to (DL-02: from its id — Data's types in Data, or in Application where Data is not
+    in use); None for a type the table does not hold."""
+    tid = type_id(name)
+    return layer(tid.split('.', 1)[0]) if tid else None
+
+
 @lru_cache(maxsize=None)
 def stored(name, ids):
     """The name a file holds for a name in memory: its id (ids=True) or its 0.19 name (an unmigrated workspace)."""
     if not isinstance(name, str) or '.' not in name: return name
-    tid = _now().get(name) or (name if name in _index()[2] else None)
+    by_id = _index()[2]
+    tid = _now().get(name) or (by_id[name]['id'] if name in by_id else None)
     if not tid: return name
-    return tid if ids else (_index()[2][tid].get('name_0_19') or tid)
+    return tid if ids else (by_id[tid].get('name_0_19') or tid)
 
 
 @lru_cache(maxsize=None)
@@ -166,7 +184,16 @@ def _walk(x, f, fl, key=None):
     return x
 
 
-def read_names(doc, legacy=False): return _walk(doc, lambda s: display(s, legacy), lambda s: display_layer(s, legacy))
+def read_names(doc, legacy=False):
+    doc = _walk(doc, lambda s: display(s, legacy), lambda s: display_layer(s, legacy))
+    return _layer_keys(doc)
+
+
+def _layer_keys(x):
+    """A key '@layer:<layer id>' — a report keyed by layer, made inside an engine's view — as the code a person reads now."""
+    if isinstance(x, dict): return {(layer(k[7:]) if isinstance(k, str) and k.startswith('@layer:') else k): _layer_keys(v) for k, v in x.items()}
+    if isinstance(x, list): return [_layer_keys(v) for v in x]
+    return x
 
 
 def store_names(doc, ids): return _walk(doc, lambda s: stored(s, ids), lambda s: stored_layer(s, ids))
@@ -198,7 +225,12 @@ def load(path):
     """A JSON file, its names as a person reads them now — the one way SDEM reads a design's files (DL-11)."""
     from pathlib import Path
     doc = json.loads(Path(path).read_text(encoding='utf-8'))
-    return doc if _derived(path) else read_names(doc, legacy=not stores_ids(path))
+    if _derived(path): return doc
+    doc = read_names(doc, legacy=not stores_ids(path))
+    if Path(path).parent.name == 'standards':   # DL-04: SDEM's standards as a workspace in the 0.20 form reads them
+        from .form020 import adapt
+        doc = adapt(doc)
+    return doc
 
 
 def for_file(path, obj):
@@ -266,3 +298,14 @@ def readable(name):
     if isinstance(name, str) and name.startswith('('):
         return type_id(name) or name
     return name
+
+
+
+class view_019:
+    """DL-12 for SDEM's inference engines: inside `with view_019():` a migrated workspace is seen as 0.19 saw it — Data's types in the
+    Application layer, numbered as 0.19 numbered them — while its files keep their 0.20 names. An engine proven on 0.19's stack runs
+    unchanged; what it hands back goes through ids (store_names) into the workspace's own numbering."""
+    def __enter__(self):
+        self._was = _VIEW_019[0]; _VIEW_019[0] = True; changed(); return self
+    def __exit__(self, *exc):
+        _VIEW_019[0] = self._was; changed(); return False

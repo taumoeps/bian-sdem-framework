@@ -22,6 +22,15 @@ CORE = ('lifecycle_status', 'canonical_id', 'description', 'definition_uri')
 EXPORT_HEADER = ('level', 'model_id', 'model_version', 'metamodel_version', 'source_system')
 
 
+def graph_form(store):
+    """DL-12: a graph store is read with the layers it was built with — its load record's last entry says when they were not 0.19's."""
+    from . import parts
+    try: st = (json.loads((Path(store) / 'load-record.json').read_text(encoding='utf-8')).get('entries') or [{}])[-1].get('stack')
+    except (OSError, ValueError): st = None
+    if st:
+        parts._set('bian' in st, 'the graph store was built with BIAN' + ('' if 'bian' in st else ' off')); parts._set_form('data' in st)
+
+
 class StoreError(Exception):
     pass
 
@@ -220,6 +229,9 @@ def build(paths, out, mm=None, now=None):
         finally:
             shutil.rmtree(tmp, ignore_errors=True)
         entry['result'] = 'accepted'
+        from . import parts as _parts
+        from .identity import stack as _stack
+        if _parts.migrated() or not _parts.bian_on(): entry['stack'] = list(_stack())   # DL-12: the layers it was built with — what --graph reads
         entry['outputs'] = [{'file': n, 'sha256': _sha(t), 'nodes': len(json.loads(t)['graph']['nodes']), 'edges': len(json.loads(t)['graph']['edges'])} for n, t in sorted(files.items())]
     if files is not None:
         from .files import write_json
@@ -266,6 +278,7 @@ class GraphReader:
             pf = Path(store) / PROFILE_FILE
             if pf.exists(): _p.activate_merged(_jload(pf))
             else: _p.deactivate()
+            graph_form(store)   # DL-12: the layers it was built with
         store = Path(store); mm = mm or Metamodel.load()
         if not (store / FEDERATED).exists(): raise StoreError(f'{store}: not a graph store (no {FEDERATED})')
         levels = []

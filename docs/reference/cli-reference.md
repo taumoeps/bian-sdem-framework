@@ -1735,7 +1735,7 @@ sdem matrix --workspace examples/payment-initiation --md work/matrix.md
 move a workspace to the current metamodel version — recorded migrations applied, checked, written all-or-nothing, recorded
 
 ```
-sdem migrate --workspace WORKSPACE --person PERSON [--dry-run]
+sdem migrate --workspace WORKSPACE --person PERSON [--dry-run] [--to TO] [--rollback]
 ```
 
 *JSON: native · dry run: native · 👤 a person's own name*
@@ -1746,6 +1746,8 @@ sdem migrate --workspace WORKSPACE --person PERSON [--dry-run]
 | `--person` | yes | your name — a person |
 | `--dry-run` |  | check and show what would change; write nothing |
 | `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
+| `--to` |  | 0.20: the 0.20 form — files named by layer id, records that store type ids, the Data layer of its own; backed up first (DL-12) |
+| `--rollback` |  | restore the workspace exactly as it was before sdem migrate --to 0.20 (from its backup) |
 
 Example:
 

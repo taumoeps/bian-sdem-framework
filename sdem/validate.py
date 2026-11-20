@@ -35,8 +35,14 @@ def load_registry(path=RULES, core=False):
     from . import profile as _p, parts
     if Path(path) == RULES:   # BP-02: BIAN's link types from the installed sdem-bian, if any
         reg = {**reg, 'relationships': parts.splice(reg['relationships'], parts.bian_link, lambda r: (r.get('source_type'), r.get('relationship'), r.get('target_type')), 'link_types')}
+    if Path(path) == RULES:   # DL-04: the Data layer's link types, where it is in use (their own file — the core registry is unchanged)
+        from .identity import stack
+        if 'data' in stack(): reg = {**reg, 'relationships': list(reg['relationships']) + _jload(Path(path).with_name('relationship-types-data.json'))['relationships']}
     if Path(path) == RULES and not parts.bian_on():   # BX-02, BX-13: link types touching A2 belong to ext:bian
         reg = {**reg, 'relationships': parts.keep(reg['relationships'], lambda r: (r.get('source_type'), r.get('target_type')))}
+    if Path(path) == RULES and parts.migrated():   # DL-01, DL-06: a migrated workspace's levels are the layers in use, Data among them
+        from .identity import table, layer, stack
+        reg['levels'] = [{'code': layer(l['id']), 'name': f"{l['name']} Architecture"} for l in sorted(table()['layers'], key=lambda l: l['order']) if l['id'] in stack()]
     if core or _p.ACTIVE is None or Path(path) != RULES: return reg
     from .layers import layers
     reg['levels'] = [{'code': l['code'], 'name': l['name']} for l in layers()]
@@ -47,6 +53,23 @@ def load_registry(path=RULES, core=False):
 
 def load_schema(path=SCHEMA):
     return _jload(Path(path))
+
+
+def _as019(code):
+    """DL-05: a code where Data counts as part of Application (its fallback) — adjacency as it was in 0.19."""
+    from .identity import layer_id, layer, _layer_row
+    lid = layer_id(code)
+    fb = _layer_row(lid).get('fallback') if lid else None
+    return layer(fb) if fb else code
+
+
+def _adjacent(src, tgt, levels):
+    """KG-F-03 with DL-05: a link points from a layer to the next one down — judged with Data counted as part of Application, so every
+    link type of 0.19 is as valid as it was; and a link between Data and Application (ACCESSED_BY) crosses the boundary they share."""
+    s, t = _as019(src), _as019(tgt)
+    if s == t: return src != tgt   # Data → Application: the former access inside Application
+    lv = [c for c in levels if _as019(c) == c]
+    return s in lv and t in lv and lv.index(t) - lv.index(s) == 1
 
 
 def level_codes(registry):
@@ -162,7 +185,7 @@ def validate_registry(registry, metamodel=None):
         src, tgt = level_of(rule.get('source_type'), registry), level_of(rule.get('target_type'), registry)
         if src not in levels or tgt not in levels:
             issues.append(f'{prefix}: source/target types must be prefixed with a level code {levels}')
-        elif levels.index(tgt) - levels.index(src) != 1 and not (rule.get('skips_level') is True and (src, tgt) == (_L('business'), _L('application')) and rule.get('skips_level_reasoning')):
+        elif not _adjacent(src, tgt, levels) and not (rule.get('skips_level') is True and (_as019(src), _as019(tgt)) == (_L('business'), _L('application')) and rule.get('skips_level_reasoning')):
             # KG-F-03, with the owner's decision D9 (2026-11-16): adjacent layers only — except a link type marked skips_level, A1 → A3, with its reason
             issues.append(f'{prefix}: cross-level edges must point from A(n) to A(n+1)' + (f' — only a link type marked skips_level, from {_L("business")} to {_L("application")}, with its reason, may skip a layer (D9)' if rule.get('skips_level') else ''))
         for key in ('source_type', 'target_type'):

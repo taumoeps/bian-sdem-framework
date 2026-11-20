@@ -71,7 +71,7 @@ def propose_information(a2, a3, mappings, mark, rejected=frozenset(), is_inferre
         o, eid = a2i[bo], entity_of[bo]
         if eid not in a3i:
             names = [_snake(f['name']) for f in fs]
-            inst.append({'id': eid, 'type': _T('application.DataEntity'), 'version': '1', 'name': f"{_snake(o['name'])} (inferred)", 'lifecycle_status': 'planned',
+            inst.append({'id': eid, 'type': _T('data.DataEntity'), 'version': '1', 'name': f"{_snake(o['name'])} (inferred)", 'lifecycle_status': 'planned',
                          'description': f"Inferred: the data entity that stores the business object {o['name']} ({bo}).",
                          'attributes': {'attributes': names, 'inferred': mark('AID-I01', f"one data entity per business object with typed fields — {o['name']} has {len(fs)}", bo)}})
             rels_from = []
@@ -85,7 +85,7 @@ def propose_information(a2, a3, mappings, mark, rejected=frozenset(), is_inferre
                 if a.get('allowed_values'): fa['allowed_values'] = list(a['allowed_values'])
                 if a.get('personal_information') is not None: fa['personal_information'] = a['personal_information']
                 fa['inferred'] = mark('AID-I01', f"the field {f['name']} ({lt}) as {fa['physical_type']}" + (', the primary key' if fa.get('primary_key') else ''), f['id'])
-                inst.append({'id': fid, 'type': _T('application.DataAttribute'), 'version': '1', 'name': _snake(f['name']), 'lifecycle_status': 'planned', 'attributes': fa})
+                inst.append({'id': fid, 'type': _T('data.DataAttribute'), 'version': '1', 'name': _snake(f['name']), 'lifecycle_status': 'planned', 'attributes': fa})
                 rels.append({'source': eid, 'kind': 'composition', 'target': fid})
                 target = entity_of.get(refers.get(f['id']))
                 if target and target != eid:   # AID-I02: a reference becomes a foreign key
@@ -116,7 +116,7 @@ def propose_access(docs, mappings, mm, mark):
     sd_of = {r['target']: r['source'] for r in a2.get('relationships', []) if r.get('kind') == 'aggregation'}
     out = []
     for e, rec in i3.items():
-        if not mm.is_a(rec['type'], _T('application.DataEntity')) or e in accessed: continue
+        if not mm.is_a(rec['type'], _T('data.DataEntity')) or e in accessed: continue
         comps = {c for bo in stores.get(e, ()) for cr in cr_of.get(bo, ()) for c in realised.get(sd_of.get(cr), ())}
         if len(comps) == 1:
             c = next(iter(comps))

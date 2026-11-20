@@ -166,12 +166,12 @@ def propose_direct(docs, mappings, mm):
             same = bians.get(norm(r.get('name', '')), [])
             if len(same) == 1: add(x, 'ALIGNED_TO', same[0], 'AID-I05', f"{r.get('name')} is BIAN's {every[same[0]].get('name')} (the same name)", 0.6)
     # AID-I06: an inferred data entity is STORED_IN the one database the design's other entities are stored in
-    stores = {t for s_, t in link('STORED_IN') if isa(s_, _T('application.DataEntity'))}
+    stores = {t for s_, t in link('STORED_IN') if isa(s_, _T('data.DataEntity'))}
     if len(stores) == 1:
         db = next(iter(stores))
         for x, r in every.items():
             inf = (r.get('attributes') or {}).get('inferred')
-            if isa(x, _T('application.DataEntity')) and isinstance(inf, dict) and inf.get('status') == 'confirmed' and not any(s_ == x for s_, _ in link('STORED_IN')):   # only a table the person kept
+            if isa(x, _T('data.DataEntity')) and isinstance(inf, dict) and inf.get('status') == 'confirmed' and not any(s_ == x for s_, _ in link('STORED_IN')):   # only a table the person kept
                 add(x, 'STORED_IN', db, 'AID-I06', f'every other table of the design is stored in {db}', 0.4)
     return out
 
@@ -181,7 +181,7 @@ def propose_fields(docs, mappings, mm):
     every, rels = _idx(docs)
     fields = {}
     for s, k, t in rels:
-        if k == 'composition' and t in every and (mm.is_a(every[t]['type'], _T('bian.BusinessObjectAttribute')) or mm.is_a(every[t]['type'], _T('application.DataAttribute'))):
+        if k == 'composition' and t in every and (mm.is_a(every[t]['type'], _T('bian.BusinessObjectAttribute')) or mm.is_a(every[t]['type'], _T('data.DataAttribute'))):
             fields.setdefault(s, []).append(every[t])
     done = {m['target']['id'] for m in mappings if m['relationship'] == 'FIELD_MAPPED_TO' and m.get('status') != 'rejected'}
     out = []
@@ -220,11 +220,11 @@ def match_existing(docs, mappings, mm):
     every, rels = _idx(docs)
     fields = {}
     for s_, k, t in rels:
-        if k == 'composition' and t in every and (mm.is_a(every[t]['type'], _T('bian.BusinessObjectAttribute')) or mm.is_a(every[t]['type'], _T('application.DataAttribute'))):
+        if k == 'composition' and t in every and (mm.is_a(every[t]['type'], _T('bian.BusinessObjectAttribute')) or mm.is_a(every[t]['type'], _T('data.DataAttribute'))):
             fields.setdefault(s_, []).append(every[t])
     mapped = {(m['source']['id'], m['target']['id']) for m in mappings if m['relationship'] == 'MAPPED_TO' and m.get('status') != 'rejected'}
     has_map = {a for a, _ in mapped}
-    ents = [e for e in every.values() if mm.is_a(e['type'], _T('application.DataEntity')) and not (e.get('attributes') or {}).get('inferred') and fields.get(e['id'])]
+    ents = [e for e in every.values() if mm.is_a(e['type'], _T('data.DataEntity')) and not (e.get('attributes') or {}).get('inferred') and fields.get(e['id'])]
     objs = [o for o in every.values() if mm.is_a(o['type'], _T('bian.BusinessObject')) and fields.get(o['id']) and o['id'] not in has_map]
     best = {}   # each object to its one best table; each table to its one best object
     for e in ents:

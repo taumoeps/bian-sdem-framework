@@ -93,3 +93,29 @@
 | DL-D6 | Layer files named by layer id; records store type ids; old names read (DL-10, DL-11) | **yes** |
 | DL-D7 | Migration only on a person's command, with dry run, backup and rollback (DL-12) | **yes** |
 | DL-D8 | Security and BIAN packages each get a 0.20 release naming the data ids (DL-22) | **yes** |
+
+## 10. As built so far (2026-11-21, branch `release/0.20`)
+
+| Part | Where | Proof |
+|---|---|---|
+| **4b** | one boundary for a design's files — `sdem/identity.py` `load`, `loads`, `for_file`: reading accepts an id, a name as read now or a 0.19 name, **by the file's form** (an unmigrated file holds 0.19's names and codes; a migrated one ids); writing gives the file's own form; 194 reads and 31 direct writes routed through it; graph stores are derived and not translated | P1 |
+| **4a** | the A-number from the layers in use (DL-06): `identity.stack()`; BIAN's reserved A2 ends; a layer not in use has a code nothing matches (`(bian)`); 46 module tables live (`identity.live`), recomputed when the stack changes; 266 labels and messages computed (DL-07) — 26 texts left name no layer of the stack (record and dataset ids, an organisation's types, page templates, history), held by a ratchet | P1; a core-only design reads A1–A3 |
+| **4c-1** | the workspace's **form** (migrated or not), set when it is opened (`parts.migrated()`), decides its files' names (DL-10): `identity.F(layer id)` — 70 file names in the code; graph files too | P1 |
+| **4c** | the Data layer (DL-01…DL-05): `data` in `metamodel/identity.json`; `data.DataEntity`, `data.DataAttribute` (their step-3 ids kept as aliases); a type's layer from its id; the 5 within-Application access rules become **`ACCESSED_BY`** link types (Data → Application); adjacency judged with Data counted as part of Application, so every link type of 0.19 is as valid as it was (DL-05); SDEM's standards read through `sdem/form020.py` | **P2** (`tests/test_data_layer.py`): the 32 answers of 0.19, translated, against the golden workspaces migrated — every difference named, with its reason |
+| **4d (part)** | `sdem migrate --to 0.20` (`sdem/migrate20.py`): backup, ids, files renamed, data records to `data.json`, access links to approved `ACCESSED_BY` links, checked in the new form — restored if it does not pass; `sdem migrate --rollback` | migrate → rollback restores every byte |
+
+**Built differently from the text above, for the owner:**
+
+| Rule | As built | Why |
+|---|---|---|
+| DL-01, DL-12 | **The Data layer is in use only in a migrated workspace.** An unmigrated workspace keeps 0.19's stack — its data records in the Application file — and is read and answered exactly as before (P1). Without a workspace (`sdem types`, files given directly), 0.19's form too, until 0.20 is released (DL-D9, below). | DL-12's "a workspace not migrated is still read" — byte for byte |
+| DL-04 | the link type is **`ACCESSED_BY`** (data entity → application element), not `ACCESSES` | every link between layers points down the stack (KG-F-03); the meaning is ArchiMate's access, unchanged |
+| DL-13 | the migrated access links carry the evidence kind the link type requires — `application_architecture_document:sdem-migrate-0.20#within-layer-access` — and say in their rationale that the migration approved them, by whom and when | the registry's required evidence holds for every approved link |
+| — | SDEM's inference engine AID runs on a migrated workspace in its **0.19 view** (`identity.view_019`) — Data's records in Application, approved `ACCESSED_BY` as access — and its results go back through ids, Data's records into `data.json`; an access it newly infers becomes a *proposed* `ACCESSED_BY` link | the engine proven on 0.19's stack runs unchanged; a link between layers is a person's to approve |
+| — | a graph store records the layers it was built with (`load-record.json`, when not 0.19's); `--graph` reads it | trace and impact on a migrated workspace's store |
+
+**Still to do in step 4:** `sdem new` in the 0.20 form, and the commands without a workspace (DL-D9); the examples migrated (DL-20); the made-up non-banking example (DL-21, P3); security and BIAN packages naming the data ids (DL-22); the viewpoint, DESNRE publisher, skills and docs (DL-23, DL-24).
+
+| # | Decision for the owner | Recommended |
+|---|---|---|
+| DL-D9 | In 0.20, `sdem new` creates a workspace in the 0.20 form (Data layer, files by id), and SDEM without a workspace shows the 0.20 stack; an existing workspace stays in 0.19's form until a person migrates it | **yes** |

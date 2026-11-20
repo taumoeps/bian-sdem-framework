@@ -251,7 +251,7 @@ class FederatedGraph:
         disagree · LC-25 a system-of-record entity with field records but no primary key · LC-26 a foreign key to an entity with no
         primary key · LC-27 a FIELD_MAPPED_TO between incompatible types. Old data is reported, never refused (FD-P2)."""
         out = {}
-        FIELD = {_L('bian'): (_T('bian.BusinessObject'), _T('bian.BusinessObjectAttribute')), _L('application'): (_T('application.DataEntity'), _T('application.DataAttribute'))}
+        FIELD = {_L('bian'): (_T('bian.BusinessObject'), _T('bian.BusinessObjectAttribute')), _L('application'): (_T('data.DataEntity'), _T('data.DataAttribute'))}
         recs = {}
         for lvl, (whole, part) in FIELD.items():
             g = self.levels.get(lvl)
@@ -278,8 +278,8 @@ class FederatedGraph:
             if lvl == _L('application'):
                 pk = {e for e, fs in fields.items() if any((f.get('attributes') or {}).get('primary_key') is True for f in fs)}
                 for r in g.doc.get('relationships', []):
-                    if r.get('kind') == 'association' and r['source'] in inst and r['target'] in inst and self.mm.is_a(inst[r['source']]['type'], _T('application.DataAttribute')) \
-                            and self.mm.is_a(inst[r['target']]['type'], _T('application.DataEntity')) and r['target'] not in pk:
+                    if r.get('kind') == 'association' and r['source'] in inst and r['target'] in inst and self.mm.is_a(inst[r['source']]['type'], _T('data.DataAttribute')) \
+                            and self.mm.is_a(inst[r['target']]['type'], _T('data.DataEntity')) and r['target'] not in pk:
                         found.append(f"instance {r['source']}: is a foreign key to {r['target']}, which has no primary key (LC-26)")
             out[lvl] = found
         COMPAT = {'integer': ('int', 'integer', 'smallint', 'bigint', 'number', 'numeric'), 'decimal': ('numeric', 'decimal', 'number', 'float', 'double', 'real', 'money'),
@@ -305,7 +305,7 @@ class FederatedGraph:
                 ('an identifier', ('id', 'identifier', 'identification', 'reference', 'ref', 'key', 'hash'), {'text', 'whole number'}))
         g3 = self.levels.get(_L('application'))
         for i in (g3.doc.get('instances', []) if g3 else []):
-            if not self.mm.is_a(i['type'], _T('application.DataAttribute')) or i.get('lifecycle_status') == 'retired': continue
+            if not self.mm.is_a(i['type'], _T('data.DataAttribute')) or i.get('lifecycle_status') == 'retired': continue
             pt = str((i.get('attributes') or {}).get('physical_type') or ''); fam = family(pt)
             if not fam: continue
             last = re.split(r'[^a-z0-9]+', re.sub(r'(?<=[a-z0-9])(?=[A-Z])', '_', str(i.get('name', ''))).lower())

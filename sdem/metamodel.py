@@ -35,7 +35,7 @@ class Metamodel:
         cache = getattr(cls, '_merged_cache', None)
         if cache is None: cache = {}; setattr(cls, '_merged_cache', cache)
         from . import parts
-        key = (_p.digest(_p.ACTIVE), parts.bian_on())
+        key = (_p.digest(_p.ACTIVE), parts.bian_on(), parts.migrated())   # DL-12: the workspace's form decides the layers too
         if key not in cache: cache.clear(); cache[key] = _p.apply(base, _p.ACTIVE)
         return cache[key]
 
@@ -57,6 +57,14 @@ class Metamodel:
             rels = {**rels, 'constraints': [c for c in rels.get('constraints', []) if c.get('level') != parts.a2_code() and not parts.a2(c.get('source_type')) and not parts.a2(c.get('target_type'))]}
         if len(versions) != 1:
             raise ValueError(f'metamodel files disagree on metamodel_version: {sorted(versions)}')
+        from .identity import layer_of_type   # DL-02: a type's layer is its id's — Data's types in Data where it is in use
+        ents = [{**e, 'level': layer_of_type(e['type']) or e['level']} for e in ents]
+        cons = []
+        for c in rels.get('constraints', []):
+            ls, lt = layer_of_type(c.get('source_type')), layer_of_type(c.get('target_type'))
+            if ls and lt and ls != lt: continue   # DL-04: its ends are in two layers now — a link between them (ACCESSES), not a rule inside one
+            cons.append({**c, 'level': ls} if ls else c)
+        rels = {**rels, 'constraints': cons}
         return cls(ents, rels, versions.pop())
 
     # ---- hierarchy

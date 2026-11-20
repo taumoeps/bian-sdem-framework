@@ -9,7 +9,7 @@ Links between layers are proposals for a person to approve; nothing already appr
 LC-28 (warning): where a record's attribute and its approved links of the same meaning name different records.
 """
 PAIRS = _live(lambda: [   # (entity, attribute, relationship, target types) — the attribute and the link that say the same thing
-    (_T('application.DataEntity'), 'stored_in', 'STORED_IN', (_T('technology.Artifact'), _T('technology.SystemSoftware'))),
+    (_T('data.DataEntity'), 'stored_in', 'STORED_IN', (_T('technology.Artifact'), _T('technology.SystemSoftware'))),
     (_T('application.ApplicationFunction'), 'consumes', 'SERVED_BY', (_T('technology.TechnologyService'),)),
     (_T('application.ApplicationComponent'), 'deployed_on', 'DEPLOYED_ON', (_T('technology.Node'), _T('technology.Device'), _T('technology.SystemSoftware'))),
     (_T('application.ApplicationComponent'), 'deployed_as', 'DEPLOYED_AS', (_T('technology.Deployment'),)),

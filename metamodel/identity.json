@@ -1,6 +1,6 @@
 {
  "format": "sdem-identity/1",
- "note": "ST-01…ST-05 (docs/design/sdem-stable-identity-spec.md): the id of every layer and type never changes; the A-number a person reads is computed from the layers in order. name_0_19: the name SDEM 0.19 wrote — read for as long as 0.20 lasts (ST-05).",
+ "note": "ST-01…ST-05 (docs/design/sdem-stable-identity-spec.md): the id of every layer and type never changes; the A-number a person reads is computed from the layers in order. name_0_19: the name SDEM 0.19 wrote — read for as long as 0.20 lasts (ST-05). aliases: an id a type had before (application.DataEntity before the Data layer, DL-02) — still read.",
  "layers": [
   {
    "id": "business",
@@ -17,6 +17,15 @@
    "file": "a2-service-domain.json",
    "provided_by": "ext:bian",
    "name": "Service Domain (BIAN)"
+  },
+  {
+   "id": "data",
+   "order": 25,
+   "file": null,
+   "provided_by": "form:migrated",
+   "name": "Data",
+   "fallback": "application",
+   "note": "DL-01: a core layer between Business (and BIAN) and Application — in use in a migrated workspace; in an unmigrated one its types are in Application, as in 0.19 (DL-12)"
   },
   {
    "id": "application",
@@ -169,8 +178,11 @@
    "name_0_19": "A3.APIOperation"
   },
   {
-   "id": "application.DataEntity",
-   "name_0_19": "A3.DataEntity"
+   "id": "data.DataEntity",
+   "name_0_19": "A3.DataEntity",
+   "aliases": [
+    "application.DataEntity"
+   ]
   },
   {
    "id": "application.Event",
@@ -181,8 +193,11 @@
    "name_0_19": "A3.SolutionBuildingBlock"
   },
   {
-   "id": "application.DataAttribute",
-   "name_0_19": "A3.DataAttribute"
+   "id": "data.DataAttribute",
+   "name_0_19": "A3.DataAttribute",
+   "aliases": [
+    "application.DataAttribute"
+   ]
   },
   {
    "id": "technology.InfrastructureComponent",

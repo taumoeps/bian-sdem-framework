@@ -22,6 +22,8 @@ def norm(x, tmp):
             for form in sorted({str(p), str(Path(p).resolve()), os.path.realpath(p)}, key=len, reverse=True):   # the longest first
                 x = x.replace(form, tag).replace(form.replace('\\', '/'), tag)
         if os.sep == '\\': x = re.sub(r'(<tmp>|<root>)([^\s"]*)', lambda m: m.group(1) + m.group(2).replace('\\', '/'), x)   # paths under them in / form
+        if P2:   # the migrated workspaces' file names, as 0.19's
+            for old, new in RENAME.items(): x = re.sub(rf'(?<![\w-]){re.escape(new)}', old, x)
         if IDS:
             x = x.replace('<tmp>/ds/', '<root>/examples/')   # the detector's copies of the dataset examples
             for old, new in RENAME.items(): x = re.sub(rf'(?<![\w-]){re.escape(new)}', old, x)   # the migrated workspaces' file names, as 0.19's
@@ -30,6 +32,8 @@ def norm(x, tmp):
 
 
 IDS = os.environ.get('SDEM_GOLDEN_IDS') == '1'
+P2 = os.environ.get('SDEM_GOLDEN_P2') == '1'   # DL-20: the golden workspaces migrated to 0.20 (sdem migrate --to 0.20) — answers compared after translation
+LAYER_0_19 = {'A1': 'business', 'A2': 'bian', 'A3': 'application', 'A4': 'technology'}
 RENAME = {'a1-business.json': 'business.json', 'a2-service-domain.json': 'bian.json', 'a3-application.json': 'application.json', 'a4-technology.json': 'technology.json'}   # DL-11's detector: the same answers from workspaces whose files store type ids
 
 
@@ -55,6 +59,11 @@ def to_ids(folder):
         finally: parts._set_form(False)
 
 
+def now(code):
+    """A 0.19 layer code as a migrated workspace with BIAN reads it (A3 Application → A4)."""
+    return {'A1': 'A1', 'A2': 'A2', 'A3': 'A4', 'A4': 'A5'}[code]
+
+
 def capture(out):
     out = Path(out); out.mkdir(parents=True, exist_ok=True)
     tmp = Path(tempfile.mkdtemp(prefix='sdem-golden-'))
@@ -64,13 +73,17 @@ def capture(out):
         sdem('new', '--workspace', ws, '--person', 'golden.check', '--example', 'payment-initiation')
         v3 = tmp / 'v3'; shutil.copytree(ROOT / 'examples' / 'payment-initiation-v3' / 'sdem', v3, ignore=shutil.ignore_patterns('graph', 'links', 'aid'))
         if IDS: to_ids(ws); to_ids(v3)
+        if P2:
+            for w in (ws, v3):
+                code, so, se = sdem('migrate', '--workspace', w, '--person', 'golden.check', '--to', '0.20')
+                assert code == 0, se
         for name, w in (('payment-initiation', ws), ('payment-initiation-v3', v3)):
             cases[f'{name}/check'] = ('check', '--workspace', w, '--json')
             cases[f'{name}/comply'] = ('comply', '--workspace', w, '--json')
             cases[f'{name}/status'] = ('status', '--workspace', w, '--json')
             cases[f'{name}/aid'] = ('aid', '--workspace', w, '--person', 'golden.check', '--dry-run', '--json')
             cases[f'{name}/link'] = ('link', '--workspace', w, '--out', tmp / f'{name}-links', '--json')
-            for L in ('A1', 'A2', 'A3', 'A4'): cases[f'{name}/document-{L}'] = ('document', '--workspace', w, '--layer', L, '--json')
+            for L in ('A1', 'A2', 'A3', 'A4'): cases[f'{name}/document-{L}'] = ('document', '--workspace', w, '--layer', now(L) if P2 else L, '--json')
             cases[f'{name}/build'] = ('build', '--workspace', w, '--out', tmp / f'{name}-graph', '--json')
         for L in ('A1', 'A2', 'A3', 'A4'): cases[f'types/{L}'] = ('types', L, '--json')
         cases['trace/pi-A1'] = ('trace', 'A1', '--graph', tmp / 'payment-initiation-graph', '--json')
@@ -78,6 +91,7 @@ def capture(out):
         cases['bian/search'] = ('bian', 'search', 'payment', 'order', '--json')
         nb = tmp / 'nb'; sdem('new', '--workspace', nb, '--person', 'golden.check', '--no-bian')   # BP-D5: sdem bian add, before BIAN's code moves
         if IDS: to_ids(nb)
+        if P2: assert sdem('migrate', '--workspace', nb, '--person', 'golden.check', '--to', '0.20')[0] == 0
         cases['bian/add-pi'] = ('bian', 'add', 'Card Authorization', '--workspace', ws, '--person', 'golden.check', '--dry-run', '--json')
         cases['bian/add-new'] = ('bian', 'add', 'Payment Rail', 'Party Reference Data Directory', '--workspace', nb, '--person', 'golden.check', '--dry-run', '--json')
         for d in ('card-fraud-alerts', 'digital-lending', 'legacy-core-ledger'):

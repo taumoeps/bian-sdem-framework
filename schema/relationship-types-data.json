@@ -1,0 +1,105 @@
+{
+  "note": "DL-04 (docs/design/sdem-data-layer-spec.md): the link types of the Data layer — read only where it is in use (a workspace in the 0.20 form). SDEM's core registry (relationship-types.json) is unchanged until 0.20's metamodel version.",
+  "relationships": [
+    {
+      "mapping_type_id": "DATA_ENTITY_ACCESSED_BY_APPLICATION_COMPONENT",
+      "source_type": "A3.DataEntity",
+      "relationship": "ACCESSED_BY",
+      "target_type": "A3.ApplicationComponent",
+      "cardinality": "many_to_many",
+      "perspective": "information",
+      "authority": "enterprise_rule",
+      "direction_semantics": "The data entity is read or written by the application component — ArchiMate access, from the Data layer down to the Application layer (DL-04).",
+      "required_evidence": [
+        "application_architecture_document"
+      ],
+      "rule_version": "1.0",
+      "owner": "data-architecture",
+      "source_reference": "SDEM 0.20 step 4 (docs/design/sdem-data-layer-spec.md, DL-04, approved DL-D3, 2026-11-21): the within-layer access rule RA3-16 of SDEM 0.19, now a link between the Data and Application layers; ArchiMate 3.2's access relationship.",
+      "verification": "sdem_definition_grounded",
+      "confidence": "high",
+      "confidence_basis": "SDEM's own definition, grounded in an ArchiMate 3.2 pattern checked against the relationship tables",
+      "reasoning": "What an application element reads or writes. Pointed down the stack, as every link between layers is (KG-F-03)."
+    },
+    {
+      "mapping_type_id": "DATA_ENTITY_ACCESSED_BY_APPLICATION_FUNCTION",
+      "source_type": "A3.DataEntity",
+      "relationship": "ACCESSED_BY",
+      "target_type": "A3.ApplicationFunction",
+      "cardinality": "many_to_many",
+      "perspective": "information",
+      "authority": "enterprise_rule",
+      "direction_semantics": "The data entity is read or written by the application function — ArchiMate access, from the Data layer down to the Application layer (DL-04).",
+      "required_evidence": [
+        "application_architecture_document"
+      ],
+      "rule_version": "1.0",
+      "owner": "data-architecture",
+      "source_reference": "SDEM 0.20 step 4 (docs/design/sdem-data-layer-spec.md, DL-04, approved DL-D3, 2026-11-21): the within-layer access rule RA3-17 of SDEM 0.19, now a link between the Data and Application layers; ArchiMate 3.2's access relationship.",
+      "verification": "sdem_definition_grounded",
+      "confidence": "high",
+      "confidence_basis": "SDEM's own definition, grounded in an ArchiMate 3.2 pattern checked against the relationship tables",
+      "reasoning": "What an application element reads or writes. Pointed down the stack, as every link between layers is (KG-F-03)."
+    },
+    {
+      "mapping_type_id": "DATA_ENTITY_ACCESSED_BY_APPLICATION_SERVICE",
+      "source_type": "A3.DataEntity",
+      "relationship": "ACCESSED_BY",
+      "target_type": "A3.ApplicationService",
+      "cardinality": "many_to_many",
+      "perspective": "information",
+      "authority": "enterprise_rule",
+      "direction_semantics": "The data entity is read or written by the application service — ArchiMate access, from the Data layer down to the Application layer (DL-04).",
+      "required_evidence": [
+        "application_architecture_document"
+      ],
+      "rule_version": "1.0",
+      "owner": "data-architecture",
+      "source_reference": "SDEM 0.20 step 4 (docs/design/sdem-data-layer-spec.md, DL-04, approved DL-D3, 2026-11-21): the within-layer access rule RA3-18 of SDEM 0.19, now a link between the Data and Application layers; ArchiMate 3.2's access relationship.",
+      "verification": "sdem_definition_grounded",
+      "confidence": "high",
+      "confidence_basis": "SDEM's own definition, grounded in an ArchiMate 3.2 pattern checked against the relationship tables",
+      "reasoning": "What an application element reads or writes. Pointed down the stack, as every link between layers is (KG-F-03)."
+    },
+    {
+      "mapping_type_id": "DATA_ENTITY_ACCESSED_BY_EVENT",
+      "source_type": "A3.DataEntity",
+      "relationship": "ACCESSED_BY",
+      "target_type": "A3.Event",
+      "cardinality": "many_to_many",
+      "perspective": "information",
+      "authority": "enterprise_rule",
+      "direction_semantics": "The data entity is read or written by the event — ArchiMate access, from the Data layer down to the Application layer (DL-04).",
+      "required_evidence": [
+        "application_architecture_document"
+      ],
+      "rule_version": "1.0",
+      "owner": "data-architecture",
+      "source_reference": "SDEM 0.20 step 4 (docs/design/sdem-data-layer-spec.md, DL-04, approved DL-D3, 2026-11-21): the within-layer access rule RA3-26 of SDEM 0.19, now a link between the Data and Application layers; ArchiMate 3.2's access relationship.",
+      "verification": "sdem_definition_grounded",
+      "confidence": "high",
+      "confidence_basis": "SDEM's own definition, grounded in an ArchiMate 3.2 pattern checked against the relationship tables",
+      "reasoning": "What an application element reads or writes. Pointed down the stack, as every link between layers is (KG-F-03)."
+    },
+    {
+      "mapping_type_id": "DATA_ENTITY_ACCESSED_BY_API_OPERATION",
+      "source_type": "A3.DataEntity",
+      "relationship": "ACCESSED_BY",
+      "target_type": "A3.APIOperation",
+      "cardinality": "many_to_many",
+      "perspective": "information",
+      "authority": "enterprise_rule",
+      "direction_semantics": "The data entity is read or written by the API operation — ArchiMate access, from the Data layer down to the Application layer (DL-04).",
+      "required_evidence": [
+        "application_architecture_document"
+      ],
+      "rule_version": "1.0",
+      "owner": "data-architecture",
+      "source_reference": "SDEM 0.20 step 4 (docs/design/sdem-data-layer-spec.md, DL-04, approved DL-D3, 2026-11-21): the within-layer access rule RA3-29 of SDEM 0.19, now a link between the Data and Application layers; ArchiMate 3.2's access relationship.",
+      "verification": "sdem_definition_grounded",
+      "confidence": "high",
+      "confidence_basis": "SDEM's own definition, grounded in an ArchiMate 3.2 pattern checked against the relationship tables",
+      "reasoning": "What an application element reads or writes. Pointed down the stack, as every link between layers is (KG-F-03)."
+    }
+  ]
+}

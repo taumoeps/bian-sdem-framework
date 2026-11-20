@@ -173,7 +173,20 @@ def main(argv=None):
     ap = argparse.ArgumentParser(prog='sdem migrate', description='Move a workspace to the current metamodel version — the recorded migrations applied, the workspace checked, then written all-or-nothing and recorded.')
     ap.add_argument('--workspace', dest='estate', required=True, metavar='DIR'); ap.add_argument('--person', required=True, help='your name — a person')
     ap.add_argument('--dry-run', action='store_true', help='check and show what would change; write nothing'); ap.add_argument('--json', action='store_true')
+    ap.add_argument('--to', metavar='VERSION', help="0.20: the 0.20 form — files named by layer id, records that store type ids, the Data layer of its own; backed up first (DL-12)")
+    ap.add_argument('--rollback', action='store_true', help="restore the workspace exactly as it was before sdem migrate --to 0.20 (from its backup)")
     a = ap.parse_args(argv)
+    if a.to or a.rollback:   # DL-10…DL-13 (docs/design/sdem-data-layer-spec.md)
+        from . import migrate20 as m
+        if a.to and a.to not in ('0.20', '0.20.0'): print(f'ERROR: --to {a.to}: this SDEM migrates to 0.20 only', file=sys.stderr); return 2
+        try: res = m.rollback(a.estate) if a.rollback else m.migrate(a.estate, a.person, a.dry_run)
+        except m.Migrate20Error as e: print(f'ERROR: {e}', file=sys.stderr); return 1
+        if a.json: print(json.dumps(res, indent=2, ensure_ascii=False)); return 0
+        if a.rollback: print(f"rolled back: {res['restored']} file(s) restored, {len(res['removed'])} removed — the workspace is exactly as it was"); return 0
+        print('\n'.join(res['renamed']))
+        print(f"Data layer: {res['data_records']} record(s) and {res['data_links']} link(s) to data.json; {res['access_links']} access link(s) now ACCESSED_BY, approved by the migration ({a.person}) — listed in mappings.json as MIG-020-…, for review")
+        print('would migrate (dry run) — nothing written' if a.dry_run else f"migrated to 0.20; the workspace passes its checks. Backup: {res['backup']} — sdem migrate --rollback --workspace {a.estate} --person {a.person} restores it")
+        return 0
     try: res = migrate(a.estate, a.person, a.dry_run)
     except MigrateError as e:
         print(f'ERROR: {e}', file=sys.stderr); return 1

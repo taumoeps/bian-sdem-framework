@@ -17,15 +17,18 @@ class IdentityTests(unittest.TestCase):
 
     def test_ids_never_carry_a_position(self):   # ST-01, ST-02
         for x in identity.table()['types']:
-            self.assertRegex(x['id'], r'^(business|bian|application|technology)\.[A-Z][A-Za-z]+$')
-        self.assertEqual([l['id'] for l in identity.table()['layers']], ['business', 'bian', 'application', 'technology'])
+            self.assertRegex(x['id'], r'^(business|bian|data|application|technology)\.[A-Z][A-Za-z]+$')
+        self.assertEqual([l['id'] for l in identity.table()['layers']], ['business', 'bian', 'data', 'application', 'technology'])
 
     def test_in_step_3_every_name_is_0_19s(self):   # ST-03 with 0.19's stack: P1
         for x in identity.table()['types']: self.assertEqual(T(x['id']), x['name_0_19'])
         self.assertEqual([layer(i) for i in ('business', 'bian', 'application', 'technology')], ['A1', 'A2', 'A3', 'A4'])
+        self.assertEqual(layer('data'), 'A3')   # an unmigrated workspace: Data's types in Application, as in 0.19 (DL-12)
 
     def test_old_names_and_ids_both_read(self):   # ST-05
         self.assertEqual(type_id('A3.ApplicationComponent'), 'application.ApplicationComponent')
+        self.assertEqual(type_id('application.DataEntity'), 'data.DataEntity')   # DL-02: the id it had before the Data layer
+        self.assertEqual(type_id('A3.DataEntity'), 'data.DataEntity')
         self.assertEqual(type_id('application.ApplicationComponent'), 'application.ApplicationComponent')
         self.assertEqual(layer_id('A2'), 'bian'); self.assertEqual(layer_id('technology'), 'technology')
         self.assertIsNone(type_id('SEC.S.SecurityControl')); self.assertIsNone(layer_id('X9'))
@@ -56,7 +59,7 @@ def _strings():
 class NamesInCode(unittest.TestCase):   # step 3b: SDEM's code names layers and types by id (spec §7)
     def test_no_type_name_layer_code_or_prefix_is_written_in_the_code(self):
         import re
-        names = {x['name_0_19'] for x in identity.table()['types']} | {l['code_0_19'] for l in identity.table()['layers']}
+        names = {x['name_0_19'] for x in identity.table()['types']} | {l['code_0_19'] for l in identity.table()['layers'] if l.get('code_0_19')}
         bad = [f'{m}:{n} {s}' for m, n, s in _strings() if s[:1] in '\'"' and (s[1:-1] in names or re.fullmatch(r'A[1-4]\.', s[1:-1]))]
         self.assertEqual(bad, [], "write _T('<type id>') or _L('<layer id>') (sdem/identity.py) instead")
 

@@ -49,7 +49,53 @@ def _workspace(ws):
     ws = Path(ws)
     if not (ws / 'mappings.json').exists(): raise AidError(f'{ws}: no workspace here — start one with sdem new --workspace {ws} --person <you>')
     docs = {lvl: _j(ws / f) for lvl, f in DATASETS.items() if (ws / f).exists()}
-    return ws, docs, _j(ws / 'mappings.json')
+    registry = _j(ws / 'mappings.json')
+    from . import parts
+    if parts.migrated():   # DL-12: inside view_019 — data.json in the Application layer, approved ACCESSED_BY as access inside it
+        app = _L('application'); d = ws / 'data.json'
+        if d.exists():
+            dd = _j(d); a = docs.setdefault(app, {'level': app, 'instances': [], 'relationships': []})
+            a['instances'] = list(a.get('instances', [])) + dd.get('instances', []); a['relationships'] = list(a.get('relationships', [])) + dd.get('relationships', [])
+        keep = []
+        for m in registry.get('mappings', []):
+            if m.get('relationship') == 'ACCESSED_BY' and m.get('status') == 'approved' and app in docs:
+                docs[app]['relationships'].append({'source': m['target']['id'], 'kind': 'access', 'target': m['source']['id']})
+                _APPROVED.setdefault(str(ws.resolve()), set()).add((m['target']['id'], m['source']['id']))
+            else: keep.append(m)
+        registry = {**registry, 'mappings': keep}
+    return ws, docs, registry
+
+
+_APPROVED = {}   # {workspace: {(application element, data entity)}} — the approved ACCESSED_BY links seen as access in the 0.19 view
+
+
+def _split(ws, lvl, doc, run, proposals):
+    """DL-12 on the way out: {path: document} for one layer AID writes. In a migrated workspace the Application document of the 0.19 view
+    goes back to application.json and data.json; an access link it holds that was an approved ACCESSED_BY stays one (not written
+    twice); a new one becomes a proposed ACCESSED_BY — a link between layers is a person's to approve."""
+    from . import parts
+    from .identity import type_id
+    if not parts.migrated() or lvl != _L('application'): return {ws / DATASETS[lvl]: doc}
+    is_data = lambda t: (type_id(t) or '').startswith('data.')
+    kinds = {i['id']: i for i in doc.get('instances', [])}
+    data_ids = {k for k, i in kinds.items() if is_data(i.get('type'))}
+    app = {**doc, 'instances': [i for i in doc.get('instances', []) if i['id'] not in data_ids], 'relationships': []}
+    old = _j(ws / 'data.json') if (ws / 'data.json').exists() else {'level': 'data', 'model_id': f"{doc.get('model_id', 'workspace')}-data",
+                                                                    'metamodel_version': doc.get('metamodel_version'), 'source_system': doc.get('source_system')}
+    data = {**old, 'level': 'data', 'instances': [i for i in doc.get('instances', []) if i['id'] in data_ids], 'relationships': []}   # its own layer id: in the view Data reads as Application's code
+    for rel in doc.get('relationships', []):
+        s, t = rel.get('source') in data_ids, rel.get('target') in data_ids
+        if s and t: data['relationships'].append(rel)
+        elif t and rel.get('kind') == 'access':
+            if (rel['source'], rel['target']) in _APPROVED.get(str(Path(ws).resolve()), ()): continue   # an approved ACCESSED_BY already
+            src, tgt = kinds[rel['target']], kinds[rel['source']]
+            proposals.append({'mapping_id': f'{run}-P{len(proposals) + 1:03d}', 'source': {'id': src['id'], 'type': src['type'], 'version': src.get('version', '1')},
+                              'relationship': 'ACCESSED_BY', 'target': {'id': tgt['id'], 'type': tgt['type'], 'version': tgt.get('version', '1')}, 'status': 'proposed',
+                              'evidence': [f'engine_rationale:{run} access inferred inside the Application layer of the 0.19 view'],
+                              'rationale': 'Inferred by sdem aid: the application element reads or writes the data entity — a link between the Data and Application layers (DL-04)',
+                              'baseline_id': run, 'created_by': 'sdem aid'})
+        else: app['relationships'].append(rel)
+    return {ws / DATASETS[lvl]: app, ws / 'data.json': data}
 
 
 def _person(p):
@@ -62,6 +108,20 @@ def _rejected(ws):
     return _j(f) if f.exists() else {'rejected': []}
 
 
+def _in_view(fn):
+    """DL-12: AID — proven on 0.19's stack — runs in a migrated workspace's 0.19 view; what it returns comes back through ids, in the
+    workspace's own numbering."""
+    import functools
+    @functools.wraps(fn)
+    def run(*a, **k):
+        from . import parts, identity
+        if not parts.migrated() or identity._VIEW_019[0]: return fn(*a, **k)
+        with identity.view_019(): out = identity.store_names(fn(*a, **k), True)
+        return identity.read_names(out)
+    return run
+
+
+@_in_view
 def fill(workspace, person, dry_run=False, now=None, complete_draft=False):
     """Infer what the workspace is missing into its layer files (AID-W01…W04). Returns the run record; nothing written when refused."""
     from .aid import project
@@ -295,7 +355,16 @@ def fill(workspace, person, dry_run=False, now=None, complete_draft=False):
         if isinstance(pr.get('confidence'), str): pr['confidence'] = BAND.get(pr['confidence'], 0.4)
     errors = estate_errors({DATASETS[l]: d for l, d in after.items()}, registry)
     if errors: raise AidError('the workspace would not pass its checks with the inferred records — nothing written:\n  ' + '\n  '.join(errors[:10]))
-    record = {'id': run, 'at': now, 'requested_by': person.strip(), 'added': added, 'proposals': f'{FOLDER}/{run}-proposals.json',
+    from . import parts as _parts
+    if _parts.migrated():   # DL-12: reported by layer id, Data's records apart from Application's — numbered as the workspace reads them, outside the view
+        from .identity import layer_id as _lid, type_id as _tid
+        typ = {i['id']: i.get('type') for d in after.values() for i in d.get('instances', [])}
+        by_id = {}
+        for lvl, ids_ in added.items():
+            for x in ids_: by_id.setdefault('data' if (_tid(typ.get(x)) or '').startswith('data.') else _lid(lvl), []).append(x)
+        added_report = {f'@layer:{k}': v for k, v in by_id.items()}
+    else: added_report = added
+    record = {'id': run, 'at': now, 'requested_by': person.strip(), 'added': added_report, 'proposals': f'{FOLDER}/{run}-proposals.json',
               'proposed_connections': len(proposals), 'projection_ends': pkg['projection'].get('projection_ends', []),
               'zone_placements': placements - connections, 'zones_unresolved': zone_unresolved, 'a4_connections': connections, 'a4_unresolved': conn_unresolved,
               'exposure_unresolved': exposure_unresolved, 'tables_not_inferred': not_stored, 'draft': draft,
@@ -305,12 +374,14 @@ def fill(workspace, person, dry_run=False, now=None, complete_draft=False):
     if not dry_run and (added or proposals or placements):
         from .files import Batch
         b = Batch()
-        for lvl in added: b.json(ws / DATASETS[lvl], after[lvl])
+        for lvl in added:
+            for path, doc in _split(ws, lvl, after[lvl], run, proposals).items(): b.json(path, doc)   # DL-12
         b.json(runs / f'{run}-proposals.json', {'mappings': proposals}); b.json(runs / f'{run}.json', record); b.commit()
         _adopt(ws, added, person, f'sdem aid {run}: inferred records and links, each marked inferred (AID-W02) - confirm or reject them with sdem aid confirm|reject')   # AID-W10
     return record
 
 
+@_in_view
 def decide(workspace, ids, person, action, reason='', all_=False, now=None):
     """Confirm or reject inferred records (AID-W05, W06). Returns the ids changed."""
     _person(person)
@@ -379,7 +450,8 @@ def decide(workspace, ids, person, action, reason='', all_=False, now=None):
                               + ('\n  (an approved connection may still point to it: supersede it first)' if action == 'reject' else ''))
     from .files import Batch
     b = Batch()
-    for lvl in changed: b.json(ws / DATASETS[lvl], docs[lvl])
+    for lvl in changed:
+        for path, doc in _split(ws, lvl, docs[lvl], 'AID-DECIDE', []).items(): b.json(path, doc)   # DL-12
     if action == 'reject': b.json(ws / FOLDER / 'rejected.json', rej)
     b.commit()
     _adopt(ws, changed, person, f'sdem aid {action}: {len(chosen) + len(plc)} inferred record(s) or link(s)' + (f' - {reason}' if reason else ''))   # AID-W10

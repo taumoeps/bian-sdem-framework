@@ -185,7 +185,7 @@ class Run:
                 if self.mm.is_a(n['type'], _T('application.APIOperation')): texts += [n['name'], self.attr(n, 'path'), n.get('description'), self.attr(n, 'operation_id')]
             for c in (self.descendants(comp['id']) if comp else []):
                 for e in self.children(c, 'access'):
-                    de = self.get(e, _T('application.DataEntity'), _L('application'))
+                    de = self.get(e, _T('data.DataEntity'), _L('application'))
                     if de: texts.append(de['name'])
             self._bound[key] = tokens(*texts)
         return self._bound[key]
@@ -319,8 +319,8 @@ class Run:
                  ('S41', _T('application.ApplicationService'), 'consumes', _T('technology.TechnologyService'), None),
                  ('S43', _T('application.ApplicationInterface'), 'exposed_through', _T('technology.TechnologyInterface'), 'exposes'),
                  ('S45', _T('application.ApplicationFunction'), 'consumes', _T('technology.TechnologyService'), None),
-                 ('S49', _T('application.DataEntity'), 'stored_in', _T('technology.Artifact'), None),
-                 ('S50', _T('application.DataEntity'), 'stored_in', _T('technology.SystemSoftware'), None),
+                 ('S49', _T('data.DataEntity'), 'stored_in', _T('technology.Artifact'), None),
+                 ('S50', _T('data.DataEntity'), 'stored_in', _T('technology.SystemSoftware'), None),
                  ('S51', _T('application.Event'), 'published_to', _T('technology.TechnologyService'), None),
                  ('S06', _T('business.BusinessActivity'), 'invokes', _T('bian.ServiceOperation'), None)]
         for plan, st, key, tt, back in joins:
@@ -573,7 +573,7 @@ class Run:
 
     def step4(self):
         # S30 MAPPED_TO (BOM object -> data entity) and S20 (control record -> data entity): >= 50 % of the BIAN object's attributes, one-to-one
-        des = self.of(_T('application.DataEntity'))
+        des = self.of(_T('data.DataEntity'))
         for plan, stype in (('S30', _T('bian.BusinessObject')), ('S20', _T('bian.ControlRecord'))):
             scored = []
             for b in self.of(stype):
@@ -589,7 +589,7 @@ class Run:
                 self.one_to_one(plan, scored, lambda x: self.report('S20', x[1], x[2], 4, f"{len(x[3])}/{len(_list(self.attr(x[1], 'attributes')))} control-record attributes matched ({x[0]:.0%})", x[4]))
         # S31: attributes of a mapped BOM object found in the data entity
         for b_id, de_id, lab in self.links('MAPPED_TO'):
-            b = self.get(b_id, _T('bian.BusinessObject')); de = self.get(de_id, _T('application.DataEntity'))
+            b = self.get(b_id, _T('bian.BusinessObject')); de = self.get(de_id, _T('data.DataEntity'))
             if not (b and de): continue
             have = self.attr_match([x['name'] for x in (self.get(c, _T('bian.BusinessObjectAttribute')) for c in self.children(b_id)) if x], _list(self.attr(de, 'attributes')), self.entity_aliases(de))
             for c in self.children(b_id):
@@ -721,7 +721,7 @@ class Run:
                     if n: texts.append(self.attr(n, 'path'))
                 for x in self.descendants(comp['id']):
                     for e in self.children(x, 'access'):
-                        de = self.get(e, _T('application.DataEntity'), _L('application'))
+                        de = self.get(e, _T('data.DataEntity'), _L('application'))
                         if de: texts.append(de['name'])
                 hit = (toks - explained) & stems(tokens(*texts))
                 if hit: self.propose('S17', 'REALIZED_BY', dom, comp, 4, f'fallback B: asset-type tokens {sorted(hit)} in API paths / entity names', [f"{comp['id']} API paths, data entities"], fallback=True, band='low')  # name-only evidence: low, never more (T6, owner 2026-10-28)

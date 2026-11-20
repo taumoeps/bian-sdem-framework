@@ -69,7 +69,7 @@ def attribute(a, val):
     if src == 'ArchiMate relationship': return 'medium', 'standard relationship (confirmed by the Archi oracle) recorded on the entity as SDEM chose'
     if src == 'institution': return 'medium', 'institution data under an SDEM convention'
     if src == 'TOGAF': return ('medium', 'login-gated TOGAF source; validated against sealed answers') if tested else ('low', 'login-gated TOGAF source; not validated')
-    if a['entity'] in (_T('technology.Deployment'),) or a['entity'] == _T('application.DataEntity') and a['name'] == 'attributes' or a['name'] in ('lifecycle_states', 'deployed_as'):
+    if a['entity'] in (_T('technology.Deployment'),) or a['entity'] == _T('data.DataEntity') and a['name'] == 'attributes' or a['name'] in ('lifecycle_states', 'deployed_as'):
         return 'medium', 'SDEM field built on a standard concept'
     return ('medium', 'SDEM field with no standard concept; validated against sealed answers') if tested else ('low', 'SDEM field with no standard concept; not validated')
 

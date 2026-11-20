@@ -602,10 +602,16 @@ def activate_from(folder):
 def activate_from_paths(paths):
     """Datasets given as files: their folder's profile, when they share one."""
     folders = {Path(p).resolve().parent for p in paths if str(p).endswith('.json')}
+    from . import parts
+    ws = next((d for d in sorted(folders) if (d / 'workspace.json').exists()), None)   # DL-12: the files' workspace decides their form
     for d in sorted(folders):
         if (d / FILE).exists():
-            merged = activate_file(d / FILE); _load_exceptions(d); return merged
-    deactivate(); return None
+            merged = activate_file(d / FILE); _load_exceptions(d)
+            if ws: parts.for_workspace(ws, merged)
+            return merged
+    deactivate()
+    if ws: parts.for_workspace(ws)
+    return None
 
 
 def activate_merged(merged):

@@ -563,6 +563,8 @@ def _activate_profile(rest):
                 if flag == '--workspace': _p.activate_from(d)
                 elif (d / 'profile.json').exists(): _p.activate_merged(_jload(d / 'profile.json'))
                 else: _p.deactivate()
+                if flag == '--graph':
+                    from .store import graph_form; graph_form(d)
             except _p.ProfileError as e: raise UsageError(str(e))
             return
 

@@ -64,16 +64,16 @@ HIERARCHY = _live(lambda: {
                  (_T('application.ApplicationComponent'), 'realization', _T('application.ApplicationService')), (_T('application.ApplicationFunction'), 'composition', _T('application.ApplicationFunction')),
                  (_T('application.ApplicationFunction'), 'realization', _T('application.ApplicationService')),
                  (_T('application.ApplicationInterface'), 'composition', _T('application.APIOperation')), (_T('application.ApplicationComponent'), 'composition', _T('application.APIOperation')),
-                 (_T('application.DataEntity'), 'composition', _T('application.DataEntity')), (_T('application.DataEntity'), 'aggregation', _T('application.DataEntity'))],
+                 (_T('data.DataEntity'), 'composition', _T('data.DataEntity')), (_T('data.DataEntity'), 'aggregation', _T('data.DataEntity'))],
         'containers': [_T('application.SolutionBuildingBlock'), _T('application.ApplicationComponent'), _T('application.ApplicationInterface'), _T('application.ApplicationFunction')],
         'always': [_T('application.SolutionBuildingBlock')],
         'kinds': {_T('application.SolutionBuildingBlock'): 'Solution building block', _T('application.ApplicationComponent'): 'Application', _T('application.ApplicationInterface'): 'Interface',
                   _T('application.ApplicationFunction'): 'Function'},
-        'groups': [('Data entities', [_T('application.DataEntity')]), ('Events', [_T('application.Event')]),
+        'groups': [('Data entities', [_T('data.DataEntity')]), ('Events', [_T('application.Event')]),
                    ('Applications', [_T('application.ApplicationComponent')]), ('Services', [_T('application.ApplicationService')]), ('Interfaces', [_T('application.ApplicationInterface')]),
                    ('Functions', [_T('application.ApplicationFunction')])],
         'not_in': 'Not in the application structure',
-        'skip': [_T('application.DataAttribute')],   # metamodel 0.15.0 (TL-03): a data entity's fields are not shapes — documents and the workbench show them with their entity
+        'skip': [_T('data.DataAttribute')],   # metamodel 0.15.0 (TL-03): a data entity's fields are not shapes — documents and the workbench show them with their entity
     },
 })
 

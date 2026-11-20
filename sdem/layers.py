@@ -10,12 +10,18 @@ The collections below are *live*: they reflect the active profile at the moment 
 from .identity import T as _T, layer as _L, F as _F, live as _live  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 from collections.abc import Mapping, Sequence
 
-CORE = _live(lambda: ((_L('business'), _F('business'), f'{_L("business")} Business', 'sdem-a1-business'),
-        (_L('bian'), _F('bian'), f'{_L("bian")} BIAN', 'sdem-a2-bian'),
-        (_L('application'), _F('application'), f'{_L("application")} Application', 'sdem-a3-application'),
-        (_L('technology'), _F('technology'), f'{_L("technology")} Technology', 'sdem-a4-technology')))
-CORE_CODES = tuple(c[0] for c in CORE)
-RESERVED_FILES = {c[1] for c in CORE} | {'mappings.json', 'requirements.json', 'workspace.json', 'sdem-ledger.json', 'sdem-profile.json', 'governance.json'}
+_CORE = (('business', 'Business', 'sdem-a1-business'), ('bian', 'BIAN', 'sdem-a2-bian'), ('data', 'Data', 'sdem-data'),
+         ('application', 'Application', 'sdem-a3-application'), ('technology', 'Technology', 'sdem-a4-technology'))   # agent names never change (CTL-19)
+
+
+def _core():
+    from .identity import stack
+    return tuple((_L(i), _F(i), f'{_L(i)} {n}', a) for i, n, a in _CORE if i != 'data' or 'data' in stack())   # DL-01: Data where it is in use
+
+
+CORE = _live(_core)
+CORE_CODES = _live(lambda: tuple(c[0] for c in CORE))
+RESERVED_FILES = _live(lambda: {c[1] for c in CORE} | {'mappings.json', 'requirements.json', 'workspace.json', 'sdem-ledger.json', 'sdem-profile.json', 'governance.json'})
 
 
 def agent_for(code):
@@ -61,6 +67,11 @@ def adjacent(upper, lower):
 
 
 def graph_file(code):
+    """A layer's graph file in a store: by its layer id where the workspace is in the 0.20 form (DL-10), 0.19's name otherwise."""
+    from . import parts
+    from .identity import layer_id
+    lid = layer_id(code)
+    if lid and parts.migrated(): return f'{lid}.graph.json'
     core = {_L('business'): 'a1-business.graph.json', _L('bian'): 'a2-service-domain.graph.json', _L('application'): 'a3-application.graph.json', _L('technology'): 'a4-technology.graph.json'}
     return core.get(code) or f'{code.lower()}.graph.json'
 

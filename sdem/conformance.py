@@ -69,7 +69,7 @@ def natural(v):
 
 
 OWNERS = _live(lambda: {'owning interface': _T('application.ApplicationInterface'), 'owning service domain': _T('bian.ServiceDomain'),
-          'owning business object': _T('bian.BusinessObject'), 'owning data entity': _T('application.DataEntity')})   # a field is named within its object or entity (0.17.0)   # identifier keys held as a whole-part link, not an attribute
+          'owning business object': _T('bian.BusinessObject'), 'owning data entity': _T('data.DataEntity')})   # a field is named within its object or entity (0.17.0)   # identifier keys held as a whole-part link, not an attribute
 
 
 def owner_of(iid, want, mm, local, parents, depth=4):
