@@ -1,0 +1,24 @@
+{
+  "what": "DESNRE's example page \u2014 the working reference of SDEM 0.19, as the site served it",
+  "page": "https://desnre.vercel.app/example/payment",
+  "fetched_at": "2026-11-20T18:49:51+00:00",
+  "files": {
+    "model.json": {
+      "from": "https://desnre.vercel.app/api/u/example/payment",
+      "sha256": "ef11a8cd3b4d7d7ccf8ec06a6140ced87c82dd3f7c3bc4613124fcef32ccefb5",
+      "bytes": 32754
+    },
+    "narrative.json": {
+      "from": "https://desnre.vercel.app/api/u/example/payment/narrative",
+      "sha256": "97b56d81a8e680b2a8331b530eb939cbe0934b8c1cd56b2570f70f05c2842615",
+      "bytes": 29307
+    },
+    "workspace.json": {
+      "from": "https://desnre.vercel.app/api/u/example/payment/workspace",
+      "sha256": "2faf282e5ad7ead684a7858ebf3a5741fb14f7788aab1543ef5a367754c76610",
+      "bytes": 679867
+    }
+  },
+  "compare": "python scripts/desnre_compare.py tests/reference/desnre-0.19/payment <a snapshot folder>  \u2014 or a live design: --live <user>/<name>",
+  "note": "Made-up data (a fictional bank). Never edited: refetch with scripts/desnre_compare.py --fetch example/payment <folder> to see whether the live page has changed."
+}
