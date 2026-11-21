@@ -1,0 +1,2295 @@
+{
+  "level": "bian",
+  "model_id": "SDEM-A2",
+  "model_version": "2026-11-18",
+  "metamodel_version": "0.17.0",
+  "source_system": "SDEM-NEW",
+  "instances": [
+    {
+      "id": "AT-PARTY-AUTHENTICATION",
+      "type": "bian.AssetType",
+      "version": "14.0.0",
+      "name": "Party Authentication",
+      "lifecycle_status": "active",
+      "description": "Asset type of Party Authentication — derived (BIAN Semantic API Practitioner Guide v8.1 §3.2.1, Figure 9); confirm."
+    },
+    {
+      "id": "FP-ASSESS",
+      "type": "bian.FunctionalPattern",
+      "version": "14.0.0",
+      "name": "Assess",
+      "lifecycle_status": "active",
+      "description": "A BIAN functional pattern (BIAN Semantic API Practitioner Guide v8.1 §3.2.1, Figure 9).",
+      "attributes": {
+        "generic_artefact": "Assessment"
+      }
+    },
+    {
+      "id": "SD-PARTY-AUTHENTICATION",
+      "type": "bian.ServiceDomain",
+      "version": "14.0.0",
+      "name": "Party Authentication",
+      "lifecycle_status": "active",
+      "canonical_id": "BIAN-PARTY-AUTHENTICATION",
+      "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+      "attributes": {
+        "asset_type": "AT-PARTY-AUTHENTICATION",
+        "functional_pattern": "FP-ASSESS",
+        "classification": "derived",
+        "source_id": "bian-semantic-api:14.0.0:PartyAuthentication.yaml",
+        "conforms_to": [
+          "BIAN 14.0.0"
+        ]
+      }
+    },
+    {
+      "id": "CR-PARTY-AUTHENTICATION",
+      "type": "bian.ControlRecord",
+      "version": "14.0.0",
+      "name": "Party Authentication Assessment",
+      "lifecycle_status": "active",
+      "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+      "attributes": {
+        "attributes": [
+          "CustomerReference",
+          "PartyReference",
+          "PartyAuthenticationAssessmentProfile",
+          "AuthenticationType",
+          "PartyAuthenticationConsolidationRecord",
+          "CustomerContactAuthenticationLevel",
+          "AuthorisationTokenReference",
+          "RefreshTokenReference"
+        ],
+        "source_id": "bian-semantic-api:14.0.0:PartyAuthentication.yaml",
+        "conforms_to": [
+          "BIAN 14.0.0"
+        ]
+      }
+    },
+    {
+      "id": "BQ-PARTY-AUTHENTICATION-PASSWORD",
+      "type": "bian.BehaviorQualifier",
+      "version": "14.0.0",
+      "name": "Password (Party Authentication)",
+      "lifecycle_status": "active",
+      "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+      "attributes": {
+        "source_id": "bian-semantic-api:14.0.0:PartyAuthentication.yaml",
+        "conforms_to": [
+          "BIAN 14.0.0"
+        ]
+      }
+    },
+    {
+      "id": "BQ-PARTY-AUTHENTICATION-QUESTION",
+      "type": "bian.BehaviorQualifier",
+      "version": "14.0.0",
+      "name": "Question (Party Authentication)",
+      "lifecycle_status": "active",
+      "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+      "attributes": {
+        "source_id": "bian-semantic-api:14.0.0:PartyAuthentication.yaml",
+        "conforms_to": [
+          "BIAN 14.0.0"
+        ]
+      }
+    },
+    {
+      "id": "BQ-PARTY-AUTHENTICATION-DOCUMENT",
+      "type": "bian.BehaviorQualifier",
+      "version": "14.0.0",
+      "name": "Document (Party Authentication)",
+      "lifecycle_status": "active",
+      "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+      "attributes": {
+        "source_id": "bian-semantic-api:14.0.0:PartyAuthentication.yaml",
+        "conforms_to": [
+          "BIAN 14.0.0"
+        ]
+      }
+    },
+    {
+      "id": "BQ-PARTY-AUTHENTICATION-DEVICE",
+      "type": "bian.BehaviorQualifier",
+      "version": "14.0.0",
+      "name": "Device (Party Authentication)",
+      "lifecycle_status": "active",
+      "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+      "attributes": {
+        "source_id": "bian-semantic-api:14.0.0:PartyAuthentication.yaml",
+        "conforms_to": [
+          "BIAN 14.0.0"
+        ]
+      }
+    },
+    {
+      "id": "BQ-PARTY-AUTHENTICATION-BIOMETRIC",
+      "type": "bian.BehaviorQualifier",
+      "version": "14.0.0",
+      "name": "Biometric (Party Authentication)",
+      "lifecycle_status": "active",
+      "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+      "attributes": {
+        "source_id": "bian-semantic-api:14.0.0:PartyAuthentication.yaml",
+        "conforms_to": [
+          "BIAN 14.0.0"
+        ]
+      }
+    },
+    {
+      "id": "BQ-PARTY-AUTHENTICATION-BEHAVIOR",
+      "type": "bian.BehaviorQualifier",
+      "version": "14.0.0",
+      "name": "Behavior (Party Authentication)",
+      "lifecycle_status": "active",
+      "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+      "attributes": {
+        "source_id": "bian-semantic-api:14.0.0:PartyAuthentication.yaml",
+        "conforms_to": [
+          "BIAN 14.0.0"
+        ]
+      }
+    },
+    {
+      "id": "SG-PARTY-AUTHENTICATION-PARTY-AUTHENTICATION-ASSESSMENT",
+      "type": "bian.ServiceGroup",
+      "version": "14.0.0",
+      "name": "Party Authentication — Party Authentication Assessment",
+      "lifecycle_status": "active",
+      "description": "The operations BIAN tags 'PartyAuthenticationAssessment' in Party Authentication.",
+      "attributes": {
+        "source_id": "bian-semantic-api:14.0.0:PartyAuthentication.yaml",
+        "conforms_to": [
+          "BIAN 14.0.0"
+        ]
+      }
+    },
+    {
+      "id": "SO-PARTY-AUTHENTICATION-UPDATE",
+      "type": "bian.ServiceOperation",
+      "version": "14.0.0",
+      "name": "Party Authentication: Update",
+      "lifecycle_status": "active",
+      "canonical_id": "BIAN-PARTY-AUTHENTICATION-UPDATE",
+      "description": "PUT /PartyAuthentication/{partyauthenticationid}/Update in BIAN's Semantic API 14.0.0.",
+      "attributes": {
+        "action_term": "Update",
+        "http_method": "PUT",
+        "input_attributes": [
+          "CustomerReference",
+          "PartyReference",
+          "PartyAuthenticationAssessmentProfile",
+          "AuthenticationType",
+          "PartyAuthenticationConsolidationRecord",
+          "CustomerContactAuthenticationLevel",
+          "AuthorisationTokenReference",
+          "RefreshTokenReference"
+        ],
+        "output_attributes": [
+          "CustomerReference",
+          "PartyReference",
+          "PartyAuthenticationAssessmentProfile",
+          "AuthenticationType",
+          "PartyAuthenticationConsolidationRecord",
+          "CustomerContactAuthenticationLevel",
+          "AuthorisationTokenReference",
+          "RefreshTokenReference"
+        ],
+        "source_id": "bian-semantic-api:14.0.0:PartyAuthentication.yaml",
+        "conforms_to": [
+          "BIAN 14.0.0"
+        ]
+      }
+    },
+    {
+      "id": "SO-PARTY-AUTHENTICATION-EVALUATE",
+      "type": "bian.ServiceOperation",
+      "version": "14.0.0",
+      "name": "Party Authentication: Evaluate",
+      "lifecycle_status": "active",
+      "canonical_id": "BIAN-PARTY-AUTHENTICATION-EVALUATE",
+      "description": "POST /PartyAuthentication/Evaluate in BIAN's Semantic API 14.0.0.",
+      "attributes": {
+        "action_term": "Evaluate",
+        "http_method": "POST",
+        "input_attributes": [
+          "CustomerReference",
+          "PartyReference",
+          "PartyAuthenticationAssessmentProfile",
+          "AuthenticationType",
+          "PartyAuthenticationConsolidationRecord",
+          "CustomerContactAuthenticationLevel",
+          "AuthorisationTokenReference",
+          "RefreshTokenReference"
+        ],
+        "output_attributes": [
+          "CustomerReference",
+          "PartyReference",
+          "PartyAuthenticationAssessmentProfile",
+          "AuthenticationType",
+          "PartyAuthenticationConsolidationRecord",
+          "CustomerContactAuthenticationLevel",
+          "AuthorisationTokenReference",
+          "RefreshTokenReference"
+        ],
+        "source_id": "bian-semantic-api:14.0.0:PartyAuthentication.yaml",
+        "conforms_to": [
+          "BIAN 14.0.0"
+        ]
+      }
+    },
+    {
+      "id": "SO-PARTY-AUTHENTICATION-EXCHANGE",
+      "type": "bian.ServiceOperation",
+      "version": "14.0.0",
+      "name": "Party Authentication: Exchange",
+      "lifecycle_status": "active",
+      "canonical_id": "BIAN-PARTY-AUTHENTICATION-EXCHANGE",
+      "description": "PUT /PartyAuthentication/{partyauthenticationid}/Exchange in BIAN's Semantic API 14.0.0.",
+      "attributes": {
+        "action_term": "Exchange",
+        "http_method": "PUT",
+        "input_attributes": [
+          "CustomerReference",
+          "PartyReference",
+          "PartyAuthenticationAssessmentProfile",
+          "AuthenticationType",
+          "PartyAuthenticationConsolidationRecord",
+          "CustomerContactAuthenticationLevel",
+          "AuthorisationTokenReference",
+          "RefreshTokenReference"
+        ],
+        "output_attributes": [
+          "CustomerReference",
+          "PartyReference",
+          "PartyAuthenticationAssessmentProfile",
+          "AuthenticationType",
+          "PartyAuthenticationConsolidationRecord",
+          "CustomerContactAuthenticationLevel",
+          "AuthorisationTokenReference",
+          "RefreshTokenReference"
+        ],
+        "source_id": "bian-semantic-api:14.0.0:PartyAuthentication.yaml",
+        "conforms_to": [
+          "BIAN 14.0.0"
+        ]
+      }
+    },
+    {
+      "id": "SO-PARTY-AUTHENTICATION-EXECUTE",
+      "type": "bian.ServiceOperation",
+      "version": "14.0.0",
+      "name": "Party Authentication: Execute",
+      "lifecycle_status": "active",
+      "canonical_id": "BIAN-PARTY-AUTHENTICATION-EXECUTE",
+      "description": "PUT /PartyAuthentication/{partyauthenticationid}/Execute in BIAN's Semantic API 14.0.0.",
+      "attributes": {
+        "action_term": "Execute",
+        "http_method": "PUT",
+        "input_attributes": [
+          "CustomerReference",
+          "PartyReference",
+          "PartyAuthenticationAssessmentProfile",
+          "AuthenticationType",
+          "PartyAuthenticationConsolidationRecord",
+          "CustomerContactAuthenticationLevel",
+          "AuthorisationTokenReference",
+          "RefreshTokenReference"
+        ],
+        "output_attributes": [
+          "CustomerReference",
+          "PartyReference",
+          "PartyAuthenticationAssessmentProfile",
+          "AuthenticationType",
+          "PartyAuthenticationConsolidationRecord",
+          "CustomerContactAuthenticationLevel",
+          "AuthorisationTokenReference",
+          "RefreshTokenReference"
+        ],
+        "source_id": "bian-semantic-api:14.0.0:PartyAuthentication.yaml",
+        "conforms_to": [
+          "BIAN 14.0.0"
+        ]
+      }
+    },
+    {
+      "id": "SO-PARTY-AUTHENTICATION-REQUEST",
+      "type": "bian.ServiceOperation",
+      "version": "14.0.0",
+      "name": "Party Authentication: Request",
+      "lifecycle_status": "active",
+      "canonical_id": "BIAN-PARTY-AUTHENTICATION-REQUEST",
+      "description": "PUT /PartyAuthentication/{partyauthenticationid}/Request in BIAN's Semantic API 14.0.0.",
+      "attributes": {
+        "action_term": "Request",
+        "http_method": "PUT",
+        "input_attributes": [
+          "CustomerReference",
+          "PartyReference",
+          "PartyAuthenticationAssessmentProfile",
+          "AuthenticationType",
+          "PartyAuthenticationConsolidationRecord",
+          "CustomerContactAuthenticationLevel",
+          "AuthorisationTokenReference",
+          "RefreshTokenReference"
+        ],
+        "output_attributes": [
+          "CustomerReference",
+          "PartyReference",
+          "PartyAuthenticationAssessmentProfile",
+          "AuthenticationType",
+          "PartyAuthenticationConsolidationRecord",
+          "CustomerContactAuthenticationLevel",
+          "AuthorisationTokenReference",
+          "RefreshTokenReference"
+        ],
+        "source_id": "bian-semantic-api:14.0.0:PartyAuthentication.yaml",
+        "conforms_to": [
+          "BIAN 14.0.0"
+        ]
+      }
+    },
+    {
+      "id": "SO-PARTY-AUTHENTICATION-GRANT",
+      "type": "bian.ServiceOperation",
+      "version": "14.0.0",
+      "name": "Party Authentication: Grant",
+      "lifecycle_status": "active",
+      "canonical_id": "BIAN-PARTY-AUTHENTICATION-GRANT",
+      "description": "PUT /PartyAuthentication/{partyauthenticationid}/Grant in BIAN's Semantic API 14.0.0.",
+      "attributes": {
+        "action_term": "Grant",
+        "http_method": "PUT",
+        "input_attributes": [
+          "CustomerReference",
+          "PartyReference",
+          "PartyAuthenticationAssessmentProfile",
+          "AuthenticationType",
+          "PartyAuthenticationConsolidationRecord",
+          "CustomerContactAuthenticationLevel",
+          "AuthorisationTokenReference",
+          "RefreshTokenReference"
+        ],
+        "output_attributes": [
+          "CustomerReference",
+          "PartyReference",
+          "PartyAuthenticationAssessmentProfile",
+          "AuthenticationType",
+          "PartyAuthenticationConsolidationRecord",
+          "CustomerContactAuthenticationLevel",
+          "AuthorisationTokenReference",
+          "RefreshTokenReference"
+        ],
+        "source_id": "bian-semantic-api:14.0.0:PartyAuthentication.yaml",
+        "conforms_to": [
+          "BIAN 14.0.0"
+        ]
+      }
+    },
+    {
+      "id": "SO-PARTY-AUTHENTICATION-RETRIEVE",
+      "type": "bian.ServiceOperation",
+      "version": "14.0.0",
+      "name": "Party Authentication: Retrieve",
+      "lifecycle_status": "active",
+      "canonical_id": "BIAN-PARTY-AUTHENTICATION-RETRIEVE",
+      "description": "GET /PartyAuthentication/{partyauthenticationid}/Retrieve in BIAN's Semantic API 14.0.0.",
+      "attributes": {
+        "action_term": "Retrieve",
+        "http_method": "GET",
+        "input_attributes": [],
+        "output_attributes": [
+          "CustomerReference",
+          "PartyReference",
+          "PartyAuthenticationAssessmentProfile",
+          "AuthenticationType",
+          "PartyAuthenticationConsolidationRecord",
+          "CustomerContactAuthenticationLevel",
+          "AuthorisationTokenReference",
+          "RefreshTokenReference"
+        ],
+        "source_id": "bian-semantic-api:14.0.0:PartyAuthentication.yaml",
+        "conforms_to": [
+          "BIAN 14.0.0"
+        ]
+      }
+    },
+    {
+      "id": "SG-PARTY-AUTHENTICATION-PASSWORD",
+      "type": "bian.ServiceGroup",
+      "version": "14.0.0",
+      "name": "Party Authentication — Password",
+      "lifecycle_status": "active",
+      "description": "The operations BIAN tags 'Password' in Party Authentication.",
+      "attributes": {
+        "source_id": "bian-semantic-api:14.0.0:PartyAuthentication.yaml",
+        "conforms_to": [
+          "BIAN 14.0.0"
+        ]
+      }
+    },
+    {
+      "id": "SO-PARTY-AUTHENTICATION-EVALUATE-PASSWORD",
+      "type": "bian.ServiceOperation",
+      "version": "14.0.0",
+      "name": "Party Authentication: Evaluate Password",
+      "lifecycle_status": "active",
+      "canonical_id": "BIAN-PARTY-AUTHENTICATION-EVALUATE-PASSWORD",
+      "description": "POST /PartyAuthentication/{partyauthenticationid}/Password/Evaluate in BIAN's Semantic API 14.0.0.",
+      "attributes": {
+        "action_term": "Evaluate",
+        "http_method": "POST",
+        "input_attributes": [
+          "PasswordValidityPeriod",
+          "PasswordFormat",
+          "PasswordValue"
+        ],
+        "output_attributes": [
+          "PasswordValidityPeriod",
+          "PasswordFormat",
+          "PasswordValue"
+        ],
+        "behavior_qualifier": "BQ-PARTY-AUTHENTICATION-PASSWORD",
+        "source_id": "bian-semantic-api:14.0.0:PartyAuthentication.yaml",
+        "conforms_to": [
+          "BIAN 14.0.0"
+        ]
+      }
+    },
+    {
+      "id": "SO-PARTY-AUTHENTICATION-RETRIEVE-PASSWORD",
+      "type": "bian.ServiceOperation",
+      "version": "14.0.0",
+      "name": "Party Authentication: Retrieve Password",
+      "lifecycle_status": "active",
+      "canonical_id": "BIAN-PARTY-AUTHENTICATION-RETRIEVE-PASSWORD",
+      "description": "GET /PartyAuthentication/{partyauthenticationid}/Password/{passwordid}/Retrieve in BIAN's Semantic API 14.0.0.",
+      "attributes": {
+        "action_term": "Retrieve",
+        "http_method": "GET",
+        "input_attributes": [],
+        "output_attributes": [
+          "PasswordValidityPeriod",
+          "PasswordFormat",
+          "PasswordValue"
+        ],
+        "behavior_qualifier": "BQ-PARTY-AUTHENTICATION-PASSWORD",
+        "source_id": "bian-semantic-api:14.0.0:PartyAuthentication.yaml",
+        "conforms_to": [
+          "BIAN 14.0.0"
+        ]
+      }
+    },
+    {
+      "id": "SG-PARTY-AUTHENTICATION-QUESTION",
+      "type": "bian.ServiceGroup",
+      "version": "14.0.0",
+      "name": "Party Authentication — Question",
+      "lifecycle_status": "active",
+      "description": "The operations BIAN tags 'Question' in Party Authentication.",
+      "attributes": {
+        "source_id": "bian-semantic-api:14.0.0:PartyAuthentication.yaml",
+        "conforms_to": [
+          "BIAN 14.0.0"
+        ]
+      }
+    },
+    {
+      "id": "SO-PARTY-AUTHENTICATION-EVALUATE-QUESTION",
+      "type": "bian.ServiceOperation",
+      "version": "14.0.0",
+      "name": "Party Authentication: Evaluate Question",
+      "lifecycle_status": "active",
+      "canonical_id": "BIAN-PARTY-AUTHENTICATION-EVALUATE-QUESTION",
+      "description": "POST /PartyAuthentication/{partyauthenticationid}/Question/Evaluate in BIAN's Semantic API 14.0.0.",
+      "attributes": {
+        "action_term": "Evaluate",
+        "http_method": "POST",
+        "input_attributes": [
+          "AuthenticationSecretQuestionReference",
+          "AuthenticationSecretQuestionTemplate",
+          "AuthenticationSecretQuestionValue",
+          "SecretQuestionTestResult"
+        ],
+        "output_attributes": [
+          "AuthenticationSecretQuestionReference",
+          "AuthenticationSecretQuestionTemplate",
+          "AuthenticationSecretQuestionValue",
+          "SecretQuestionTestResult"
+        ],
+        "behavior_qualifier": "BQ-PARTY-AUTHENTICATION-QUESTION",
+        "source_id": "bian-semantic-api:14.0.0:PartyAuthentication.yaml",
+        "conforms_to": [
+          "BIAN 14.0.0"
+        ]
+      }
+    },
+    {
+      "id": "SO-PARTY-AUTHENTICATION-RETRIEVE-QUESTION",
+      "type": "bian.ServiceOperation",
+      "version": "14.0.0",
+      "name": "Party Authentication: Retrieve Question",
+      "lifecycle_status": "active",
+      "canonical_id": "BIAN-PARTY-AUTHENTICATION-RETRIEVE-QUESTION",
+      "description": "GET /PartyAuthentication/{partyauthenticationid}/Question/{questionid}/Retrieve in BIAN's Semantic API 14.0.0.",
+      "attributes": {
+        "action_term": "Retrieve",
+        "http_method": "GET",
+        "input_attributes": [],
+        "output_attributes": [
+          "AuthenticationSecretQuestionReference",
+          "AuthenticationSecretQuestionTemplate",
+          "AuthenticationSecretQuestionValue",
+          "SecretQuestionTestResult"
+        ],
+        "behavior_qualifier": "BQ-PARTY-AUTHENTICATION-QUESTION",
+        "source_id": "bian-semantic-api:14.0.0:PartyAuthentication.yaml",
+        "conforms_to": [
+          "BIAN 14.0.0"
+        ]
+      }
+    },
+    {
+      "id": "SG-PARTY-AUTHENTICATION-DOCUMENT",
+      "type": "bian.ServiceGroup",
+      "version": "14.0.0",
+      "name": "Party Authentication — Document",
+      "lifecycle_status": "active",
+      "description": "The operations BIAN tags 'Document' in Party Authentication.",
+      "attributes": {
+        "source_id": "bian-semantic-api:14.0.0:PartyAuthentication.yaml",
+        "conforms_to": [
+          "BIAN 14.0.0"
+        ]
+      }
+    },
+    {
+      "id": "SO-PARTY-AUTHENTICATION-RETRIEVE-DOCUMENT",
+      "type": "bian.ServiceOperation",
+      "version": "14.0.0",
+      "name": "Party Authentication: Retrieve Document",
+      "lifecycle_status": "active",
+      "canonical_id": "BIAN-PARTY-AUTHENTICATION-RETRIEVE-DOCUMENT",
+      "description": "GET /PartyAuthentication/{partyauthenticationid}/Document/{documentid}/Retrieve in BIAN's Semantic API 14.0.0.",
+      "attributes": {
+        "action_term": "Retrieve",
+        "http_method": "GET",
+        "input_attributes": [],
+        "output_attributes": [
+          "DocumentIdentification",
+          "DocumentVersion",
+          "DocumentType",
+          "DocumentStatus",
+          "DocumentDateTime",
+          "DocumentName",
+          "DocumentDateTimeType",
+          "DocumentPurpose",
+          "DocumentFormat",
+          "DocumentSubject",
+          "DocumentDescription",
+          "DocumentValidityPeriod"
+        ],
+        "behavior_qualifier": "BQ-PARTY-AUTHENTICATION-DOCUMENT",
+        "source_id": "bian-semantic-api:14.0.0:PartyAuthentication.yaml",
+        "conforms_to": [
+          "BIAN 14.0.0"
+        ]
+      }
+    },
+    {
+      "id": "SO-PARTY-AUTHENTICATION-EVALUATE-DOCUMENT",
+      "type": "bian.ServiceOperation",
+      "version": "14.0.0",
+      "name": "Party Authentication: Evaluate Document",
+      "lifecycle_status": "active",
+      "canonical_id": "BIAN-PARTY-AUTHENTICATION-EVALUATE-DOCUMENT",
+      "description": "POST /PartyAuthentication/{partyauthenticationid}/Document/Evaluate in BIAN's Semantic API 14.0.0.",
+      "attributes": {
+        "action_term": "Evaluate",
+        "http_method": "POST",
+        "input_attributes": [
+          "DocumentIdentification",
+          "DocumentVersion",
+          "DocumentType",
+          "DocumentStatus",
+          "DocumentDateTime",
+          "DocumentName",
+          "DocumentDateTimeType",
+          "DocumentPurpose",
+          "DocumentFormat",
+          "DocumentSubject",
+          "DocumentDescription",
+          "DocumentValidityPeriod"
+        ],
+        "output_attributes": [
+          "DocumentIdentification",
+          "DocumentVersion",
+          "DocumentType",
+          "DocumentStatus",
+          "DocumentDateTime",
+          "DocumentName",
+          "DocumentDateTimeType",
+          "DocumentPurpose",
+          "DocumentFormat",
+          "DocumentSubject",
+          "DocumentDescription",
+          "DocumentValidityPeriod"
+        ],
+        "behavior_qualifier": "BQ-PARTY-AUTHENTICATION-DOCUMENT",
+        "source_id": "bian-semantic-api:14.0.0:PartyAuthentication.yaml",
+        "conforms_to": [
+          "BIAN 14.0.0"
+        ]
+      }
+    },
+    {
+      "id": "SG-PARTY-AUTHENTICATION-DEVICE",
+      "type": "bian.ServiceGroup",
+      "version": "14.0.0",
+      "name": "Party Authentication — Device",
+      "lifecycle_status": "active",
+      "description": "The operations BIAN tags 'Device' in Party Authentication.",
+      "attributes": {
+        "source_id": "bian-semantic-api:14.0.0:PartyAuthentication.yaml",
+        "conforms_to": [
+          "BIAN 14.0.0"
+        ]
+      }
+    },
+    {
+      "id": "SO-PARTY-AUTHENTICATION-EVALUATE-DEVICE",
+      "type": "bian.ServiceOperation",
+      "version": "14.0.0",
+      "name": "Party Authentication: Evaluate Device",
+      "lifecycle_status": "active",
+      "canonical_id": "BIAN-PARTY-AUTHENTICATION-EVALUATE-DEVICE",
+      "description": "POST /PartyAuthentication/{partyauthenticationid}/Device/Evaluate in BIAN's Semantic API 14.0.0.",
+      "attributes": {
+        "action_term": "Evaluate",
+        "http_method": "POST",
+        "input_attributes": [
+          "DeviceIdentification",
+          "DeviceType",
+          "DeviceProperty",
+          "DeviceElement",
+          "DeviceStatus",
+          "DeviceVersion",
+          "DeviceDateTime",
+          "DeviceDescription",
+          "DeviceName",
+          "DeviceLanguage",
+          "DevicePhoneNumber",
+          "DeviceLocationReference",
+          "DeviceManufacturer",
+          "DeviceCountryReference",
+          "DeviceAddressReference",
+          "DeviceOperatingSystem"
+        ],
+        "output_attributes": [
+          "DeviceIdentification",
+          "DeviceType",
+          "DeviceProperty",
+          "DeviceElement",
+          "DeviceStatus",
+          "DeviceVersion",
+          "DeviceDateTime",
+          "DeviceDescription",
+          "DeviceName",
+          "DeviceLanguage",
+          "DevicePhoneNumber",
+          "DeviceLocationReference",
+          "DeviceManufacturer",
+          "DeviceCountryReference",
+          "DeviceAddressReference",
+          "DeviceOperatingSystem"
+        ],
+        "behavior_qualifier": "BQ-PARTY-AUTHENTICATION-DEVICE",
+        "source_id": "bian-semantic-api:14.0.0:PartyAuthentication.yaml",
+        "conforms_to": [
+          "BIAN 14.0.0"
+        ]
+      }
+    },
+    {
+      "id": "SG-PARTY-AUTHENTICATION-BIOMETRIC",
+      "type": "bian.ServiceGroup",
+      "version": "14.0.0",
+      "name": "Party Authentication — Biometric",
+      "lifecycle_status": "active",
+      "description": "The operations BIAN tags 'Biometric' in Party Authentication.",
+      "attributes": {
+        "source_id": "bian-semantic-api:14.0.0:PartyAuthentication.yaml",
+        "conforms_to": [
+          "BIAN 14.0.0"
+        ]
+      }
+    },
+    {
+      "id": "SO-PARTY-AUTHENTICATION-EVALUATE-BIOMETRIC",
+      "type": "bian.ServiceOperation",
+      "version": "14.0.0",
+      "name": "Party Authentication: Evaluate Biometric",
+      "lifecycle_status": "active",
+      "canonical_id": "BIAN-PARTY-AUTHENTICATION-EVALUATE-BIOMETRIC",
+      "description": "POST /PartyAuthentication/{partyauthenticationid}/Biometric/Evaluate in BIAN's Semantic API 14.0.0.",
+      "attributes": {
+        "action_term": "Evaluate",
+        "http_method": "POST",
+        "input_attributes": [
+          "AuthenticationBiometricType",
+          "AuthenticationBiometricRecord",
+          "RegisteredBiometricInstanceReference",
+          "BiometricTestResult"
+        ],
+        "output_attributes": [
+          "AuthenticationBiometricType",
+          "AuthenticationBiometricRecord",
+          "RegisteredBiometricInstanceReference",
+          "BiometricTestResult"
+        ],
+        "behavior_qualifier": "BQ-PARTY-AUTHENTICATION-BIOMETRIC",
+        "source_id": "bian-semantic-api:14.0.0:PartyAuthentication.yaml",
+        "conforms_to": [
+          "BIAN 14.0.0"
+        ]
+      }
+    },
+    {
+      "id": "SO-PARTY-AUTHENTICATION-RETRIEVE-DEVICE",
+      "type": "bian.ServiceOperation",
+      "version": "14.0.0",
+      "name": "Party Authentication: Retrieve Device",
+      "lifecycle_status": "active",
+      "canonical_id": "BIAN-PARTY-AUTHENTICATION-RETRIEVE-DEVICE",
+      "description": "GET /PartyAuthentication/{partyauthenticationid}/Device/{deviceid}/Retrieve in BIAN's Semantic API 14.0.0.",
+      "attributes": {
+        "action_term": "Retrieve",
+        "http_method": "GET",
+        "input_attributes": [],
+        "output_attributes": [
+          "DeviceIdentification",
+          "DeviceType",
+          "DeviceProperty",
+          "DeviceElement",
+          "DeviceStatus",
+          "DeviceVersion",
+          "DeviceDateTime",
+          "DeviceDescription",
+          "DeviceName",
+          "DeviceLanguage",
+          "DevicePhoneNumber",
+          "DeviceLocationReference",
+          "DeviceManufacturer",
+          "DeviceCountryReference",
+          "DeviceAddressReference",
+          "DeviceOperatingSystem"
+        ],
+        "behavior_qualifier": "BQ-PARTY-AUTHENTICATION-DEVICE",
+        "source_id": "bian-semantic-api:14.0.0:PartyAuthentication.yaml",
+        "conforms_to": [
+          "BIAN 14.0.0"
+        ]
+      }
+    },
+    {
+      "id": "SO-PARTY-AUTHENTICATION-RETRIEVE-BIOMETRIC",
+      "type": "bian.ServiceOperation",
+      "version": "14.0.0",
+      "name": "Party Authentication: Retrieve Biometric",
+      "lifecycle_status": "active",
+      "canonical_id": "BIAN-PARTY-AUTHENTICATION-RETRIEVE-BIOMETRIC",
+      "description": "GET /PartyAuthentication/{partyauthenticationid}/Biometric/{biometricid}/Retrieve in BIAN's Semantic API 14.0.0.",
+      "attributes": {
+        "action_term": "Retrieve",
+        "http_method": "GET",
+        "input_attributes": [],
+        "output_attributes": [
+          "AuthenticationBiometricType",
+          "AuthenticationBiometricRecord",
+          "RegisteredBiometricInstanceReference",
+          "BiometricTestResult"
+        ],
+        "behavior_qualifier": "BQ-PARTY-AUTHENTICATION-BIOMETRIC",
+        "source_id": "bian-semantic-api:14.0.0:PartyAuthentication.yaml",
+        "conforms_to": [
+          "BIAN 14.0.0"
+        ]
+      }
+    },
+    {
+      "id": "SG-PARTY-AUTHENTICATION-BEHAVIOR",
+      "type": "bian.ServiceGroup",
+      "version": "14.0.0",
+      "name": "Party Authentication — Behavior",
+      "lifecycle_status": "active",
+      "description": "The operations BIAN tags 'Behavior' in Party Authentication.",
+      "attributes": {
+        "source_id": "bian-semantic-api:14.0.0:PartyAuthentication.yaml",
+        "conforms_to": [
+          "BIAN 14.0.0"
+        ]
+      }
+    },
+    {
+      "id": "SO-PARTY-AUTHENTICATION-EVALUATE-BEHAVIOR",
+      "type": "bian.ServiceOperation",
+      "version": "14.0.0",
+      "name": "Party Authentication: Evaluate Behavior",
+      "lifecycle_status": "active",
+      "canonical_id": "BIAN-PARTY-AUTHENTICATION-EVALUATE-BEHAVIOR",
+      "description": "POST /PartyAuthentication/{partyauthenticationid}/Behavior/Evaluate in BIAN's Semantic API 14.0.0.",
+      "attributes": {
+        "action_term": "Evaluate",
+        "http_method": "POST",
+        "input_attributes": [
+          "AuthenticationBehaviorType",
+          "AuthenticationBehaviorRecord",
+          "RegisteredBehaviorInstanceReference",
+          "BehaviorTestResult"
+        ],
+        "output_attributes": [
+          "AuthenticationBehaviorType",
+          "AuthenticationBehaviorRecord",
+          "RegisteredBehaviorInstanceReference",
+          "BehaviorTestResult"
+        ],
+        "behavior_qualifier": "BQ-PARTY-AUTHENTICATION-BEHAVIOR",
+        "source_id": "bian-semantic-api:14.0.0:PartyAuthentication.yaml",
+        "conforms_to": [
+          "BIAN 14.0.0"
+        ]
+      }
+    },
+    {
+      "id": "SO-PARTY-AUTHENTICATION-RETRIEVE-BEHAVIOR",
+      "type": "bian.ServiceOperation",
+      "version": "14.0.0",
+      "name": "Party Authentication: Retrieve Behavior",
+      "lifecycle_status": "active",
+      "canonical_id": "BIAN-PARTY-AUTHENTICATION-RETRIEVE-BEHAVIOR",
+      "description": "GET /PartyAuthentication/{partyauthenticationid}/Behavior/{behaviorid}/Retrieve in BIAN's Semantic API 14.0.0.",
+      "attributes": {
+        "action_term": "Retrieve",
+        "http_method": "GET",
+        "input_attributes": [],
+        "output_attributes": [
+          "AuthenticationBehaviorType",
+          "AuthenticationBehaviorRecord",
+          "RegisteredBehaviorInstanceReference",
+          "BehaviorTestResult"
+        ],
+        "behavior_qualifier": "BQ-PARTY-AUTHENTICATION-BEHAVIOR",
+        "source_id": "bian-semantic-api:14.0.0:PartyAuthentication.yaml",
+        "conforms_to": [
+          "BIAN 14.0.0"
+        ]
+      }
+    },
+    {
+      "id": "AT-PAYMENT-ORDER-INITIATION",
+      "type": "bian.AssetType",
+      "version": "14.0.0",
+      "name": "Payment Order Initiation",
+      "lifecycle_status": "active",
+      "description": "Asset type of Payment Order Initiation — derived (BIAN Semantic API Practitioner Guide v8.1 §3.2.1, Figure 9); confirm."
+    },
+    {
+      "id": "FP-TRANSACT",
+      "type": "bian.FunctionalPattern",
+      "version": "14.0.0",
+      "name": "Transact",
+      "lifecycle_status": "active",
+      "description": "A BIAN functional pattern (BIAN Semantic API Practitioner Guide v8.1 §3.2.1, Figure 9).",
+      "attributes": {
+        "generic_artefact": "Transaction"
+      }
+    },
+    {
+      "id": "SD-PAYMENT-ORDER-INITIATION",
+      "type": "bian.ServiceDomain",
+      "version": "14.0.0",
+      "name": "Payment Order Initiation",
+      "lifecycle_status": "active",
+      "canonical_id": "BIAN-PAYMENT-ORDER-INITIATION",
+      "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+      "attributes": {
+        "asset_type": "AT-PAYMENT-ORDER-INITIATION",
+        "functional_pattern": "FP-TRANSACT",
+        "classification": "derived",
+        "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+        "conforms_to": [
+          "BIAN 14.0.0"
+        ]
+      }
+    },
+    {
+      "id": "CR-PAYMENT-ORDER-INITIATION",
+      "type": "bian.ControlRecord",
+      "version": "14.0.0",
+      "name": "Payment Order Initiation Transaction",
+      "lifecycle_status": "active",
+      "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+      "attributes": {
+        "attributes": [
+          "PaymentTransactionType",
+          "RecurringPaymentRecord",
+          "RecurringPaymentCustomerReference",
+          "RecurringPaymentReference",
+          "CustomerReference",
+          "PaymentTransaction",
+          "PayerReference",
+          "PayerBankReference",
+          "PayerProductInstanceReference",
+          "PayeeReference",
+          "PayeeBankReference",
+          "PayeeProductInstanceReference",
+          "Amount",
+          "Currency",
+          "DateType",
+          "Date",
+          "PaymentFeesCharges",
+          "PaymentMechanism",
+          "PaymentPurpose",
+          "DocumentDirectoryEntryInstanceReference",
+          "DocumentContent"
+        ],
+        "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+        "conforms_to": [
+          "BIAN 14.0.0"
+        ]
+      }
+    },
+    {
+      "id": "BQ-PAYMENT-ORDER-INITIATION-COMPLIANCE",
+      "type": "bian.BehaviorQualifier",
+      "version": "14.0.0",
+      "name": "Compliance (Payment Order Initiation)",
+      "lifecycle_status": "active",
+      "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+      "attributes": {
+        "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+        "conforms_to": [
+          "BIAN 14.0.0"
+        ]
+      }
+    },
+    {
+      "id": "BQ-PAYMENT-ORDER-INITIATION-CONFIRMATION",
+      "type": "bian.BehaviorQualifier",
+      "version": "14.0.0",
+      "name": "Confirmation (Payment Order Initiation)",
+      "lifecycle_status": "active",
+      "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+      "attributes": {
+        "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+        "conforms_to": [
+          "BIAN 14.0.0"
+        ]
+      }
+    },
+    {
+      "id": "BQ-PAYMENT-ORDER-INITIATION-ORDER-INITIATION",
+      "type": "bian.BehaviorQualifier",
+      "version": "14.0.0",
+      "name": "Order Initiation (Payment Order Initiation)",
+      "lifecycle_status": "active",
+      "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+      "attributes": {
+        "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+        "conforms_to": [
+          "BIAN 14.0.0"
+        ]
+      }
+    },
+    {
+      "id": "SG-PAYMENT-ORDER-INITIATION-PAYMENT-ORDER-INITIATION-TRANSACTION",
+      "type": "bian.ServiceGroup",
+      "version": "14.0.0",
+      "name": "Payment Order Initiation — Payment Order Initiation Transaction",
+      "lifecycle_status": "active",
+      "description": "The operations BIAN tags 'PaymentOrderInitiationTransaction' in Payment Order Initiation.",
+      "attributes": {
+        "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+        "conforms_to": [
+          "BIAN 14.0.0"
+        ]
+      }
+    },
+    {
+      "id": "SO-PAYMENT-ORDER-INITIATION-INITIATE",
+      "type": "bian.ServiceOperation",
+      "version": "14.0.0",
+      "name": "Payment Order Initiation: Initiate",
+      "lifecycle_status": "active",
+      "canonical_id": "BIAN-PAYMENT-ORDER-INITIATION-INITIATE",
+      "description": "POST /PaymentOrderInitiation/Initiate in BIAN's Semantic API 14.0.0.",
+      "attributes": {
+        "action_term": "Initiate",
+        "http_method": "POST",
+        "input_attributes": [
+          "PaymentTransactionType",
+          "RecurringPaymentRecord",
+          "RecurringPaymentCustomerReference",
+          "RecurringPaymentReference",
+          "CustomerReference",
+          "PaymentTransaction",
+          "PayerReference",
+          "PayerBankReference",
+          "PayerProductInstanceReference",
+          "PayeeReference",
+          "PayeeBankReference",
+          "PayeeProductInstanceReference",
+          "Amount",
+          "Currency",
+          "DateType",
+          "Date",
+          "PaymentFeesCharges",
+          "PaymentMechanism",
+          "PaymentPurpose",
+          "DocumentDirectoryEntryInstanceReference",
+          "DocumentContent"
+        ],
+        "output_attributes": [
+          "PaymentTransactionType",
+          "RecurringPaymentRecord",
+          "RecurringPaymentCustomerReference",
+          "RecurringPaymentReference",
+          "CustomerReference",
+          "PaymentTransaction",
+          "PayerReference",
+          "PayerBankReference",
+          "PayerProductInstanceReference",
+          "PayeeReference",
+          "PayeeBankReference",
+          "PayeeProductInstanceReference",
+          "Amount",
+          "Currency",
+          "DateType",
+          "Date",
+          "PaymentFeesCharges",
+          "PaymentMechanism",
+          "PaymentPurpose",
+          "DocumentDirectoryEntryInstanceReference",
+          "DocumentContent"
+        ],
+        "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+        "conforms_to": [
+          "BIAN 14.0.0"
+        ]
+      }
+    },
+    {
+      "id": "SO-PAYMENT-ORDER-INITIATION-UPDATE",
+      "type": "bian.ServiceOperation",
+      "version": "14.0.0",
+      "name": "Payment Order Initiation: Update",
+      "lifecycle_status": "active",
+      "canonical_id": "BIAN-PAYMENT-ORDER-INITIATION-UPDATE",
+      "description": "PUT /PaymentOrderInitiation/{paymentorderinitiationid}/Update in BIAN's Semantic API 14.0.0.",
+      "attributes": {
+        "action_term": "Update",
+        "http_method": "PUT",
+        "input_attributes": [
+          "PaymentTransactionType",
+          "RecurringPaymentRecord",
+          "RecurringPaymentCustomerReference",
+          "RecurringPaymentReference",
+          "CustomerReference",
+          "PaymentTransaction",
+          "PayerReference",
+          "PayerBankReference",
+          "PayerProductInstanceReference",
+          "PayeeReference",
+          "PayeeBankReference",
+          "PayeeProductInstanceReference",
+          "Amount",
+          "Currency",
+          "DateType",
+          "Date",
+          "PaymentFeesCharges",
+          "PaymentMechanism",
+          "PaymentPurpose",
+          "DocumentDirectoryEntryInstanceReference",
+          "DocumentContent"
+        ],
+        "output_attributes": [
+          "PaymentTransactionType",
+          "RecurringPaymentRecord",
+          "RecurringPaymentCustomerReference",
+          "RecurringPaymentReference",
+          "CustomerReference",
+          "PaymentTransaction",
+          "PayerReference",
+          "PayerBankReference",
+          "PayerProductInstanceReference",
+          "PayeeReference",
+          "PayeeBankReference",
+          "PayeeProductInstanceReference",
+          "Amount",
+          "Currency",
+          "DateType",
+          "Date",
+          "PaymentFeesCharges",
+          "PaymentMechanism",
+          "PaymentPurpose",
+          "DocumentDirectoryEntryInstanceReference",
+          "DocumentContent"
+        ],
+        "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+        "conforms_to": [
+          "BIAN 14.0.0"
+        ]
+      }
+    },
+    {
+      "id": "SO-PAYMENT-ORDER-INITIATION-RETRIEVE",
+      "type": "bian.ServiceOperation",
+      "version": "14.0.0",
+      "name": "Payment Order Initiation: Retrieve",
+      "lifecycle_status": "active",
+      "canonical_id": "BIAN-PAYMENT-ORDER-INITIATION-RETRIEVE",
+      "description": "GET /PaymentOrderInitiation/{paymentorderinitiationid}/Retrieve in BIAN's Semantic API 14.0.0.",
+      "attributes": {
+        "action_term": "Retrieve",
+        "http_method": "GET",
+        "input_attributes": [],
+        "output_attributes": [
+          "PaymentTransactionType",
+          "RecurringPaymentRecord",
+          "RecurringPaymentCustomerReference",
+          "RecurringPaymentReference",
+          "CustomerReference",
+          "PaymentTransaction",
+          "PayerReference",
+          "PayerBankReference",
+          "PayerProductInstanceReference",
+          "PayeeReference",
+          "PayeeBankReference",
+          "PayeeProductInstanceReference",
+          "Amount",
+          "Currency",
+          "DateType",
+          "Date",
+          "PaymentFeesCharges",
+          "PaymentMechanism",
+          "PaymentPurpose",
+          "DocumentDirectoryEntryInstanceReference",
+          "DocumentContent"
+        ],
+        "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+        "conforms_to": [
+          "BIAN 14.0.0"
+        ]
+      }
+    },
+    {
+      "id": "SG-PAYMENT-ORDER-INITIATION-COMPLIANCE",
+      "type": "bian.ServiceGroup",
+      "version": "14.0.0",
+      "name": "Payment Order Initiation — Compliance",
+      "lifecycle_status": "active",
+      "description": "The operations BIAN tags 'Compliance' in Payment Order Initiation.",
+      "attributes": {
+        "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+        "conforms_to": [
+          "BIAN 14.0.0"
+        ]
+      }
+    },
+    {
+      "id": "SO-PAYMENT-ORDER-INITIATION-RETRIEVE-COMPLIANCE",
+      "type": "bian.ServiceOperation",
+      "version": "14.0.0",
+      "name": "Payment Order Initiation: Retrieve Compliance",
+      "lifecycle_status": "active",
+      "canonical_id": "BIAN-PAYMENT-ORDER-INITIATION-RETRIEVE-COMPLIANCE",
+      "description": "GET /PaymentOrderInitiation/{paymentorderinitiationid}/Compliance/{complianceid}/Retrieve in BIAN's Semantic API 14.0.0.",
+      "attributes": {
+        "action_term": "Retrieve",
+        "http_method": "GET",
+        "input_attributes": [],
+        "output_attributes": [
+          "PaymentTransactionComplianceCheckType",
+          "PaymentTransactionComplianceCheckResult",
+          "PaymentTransactionComplianceTaskResult"
+        ],
+        "behavior_qualifier": "BQ-PAYMENT-ORDER-INITIATION-COMPLIANCE",
+        "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+        "conforms_to": [
+          "BIAN 14.0.0"
+        ]
+      }
+    },
+    {
+      "id": "SG-PAYMENT-ORDER-INITIATION-CONFIRMATION",
+      "type": "bian.ServiceGroup",
+      "version": "14.0.0",
+      "name": "Payment Order Initiation — Confirmation",
+      "lifecycle_status": "active",
+      "description": "The operations BIAN tags 'Confirmation' in Payment Order Initiation.",
+      "attributes": {
+        "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+        "conforms_to": [
+          "BIAN 14.0.0"
+        ]
+      }
+    },
+    {
+      "id": "SO-PAYMENT-ORDER-INITIATION-RETRIEVE-CONFIRMATION",
+      "type": "bian.ServiceOperation",
+      "version": "14.0.0",
+      "name": "Payment Order Initiation: Retrieve Confirmation",
+      "lifecycle_status": "active",
+      "canonical_id": "BIAN-PAYMENT-ORDER-INITIATION-RETRIEVE-CONFIRMATION",
+      "description": "GET /PaymentOrderInitiation/{paymentorderinitiationid}/Confirmation/{confirmationid}/Retrieve in BIAN's Semantic API 14.0.0.",
+      "attributes": {
+        "action_term": "Retrieve",
+        "http_method": "GET",
+        "input_attributes": [],
+        "output_attributes": [
+          "PaymentTransactionFundingCheckResult"
+        ],
+        "behavior_qualifier": "BQ-PAYMENT-ORDER-INITIATION-CONFIRMATION",
+        "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+        "conforms_to": [
+          "BIAN 14.0.0"
+        ]
+      }
+    },
+    {
+      "id": "SG-PAYMENT-ORDER-INITIATION-ORDER-INITIATION",
+      "type": "bian.ServiceGroup",
+      "version": "14.0.0",
+      "name": "Payment Order Initiation — Order Initiation",
+      "lifecycle_status": "active",
+      "description": "The operations BIAN tags 'OrderInitiation' in Payment Order Initiation.",
+      "attributes": {
+        "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+        "conforms_to": [
+          "BIAN 14.0.0"
+        ]
+      }
+    },
+    {
+      "id": "SO-PAYMENT-ORDER-INITIATION-EXCHANGE-ORDER-INITIATION",
+      "type": "bian.ServiceOperation",
+      "version": "14.0.0",
+      "name": "Payment Order Initiation: Exchange Order Initiation",
+      "lifecycle_status": "active",
+      "canonical_id": "BIAN-PAYMENT-ORDER-INITIATION-EXCHANGE-ORDER-INITIATION",
+      "description": "PUT /PaymentOrderInitiation/{paymentorderinitiationid}/OrderInitiation/{orderinitiationid}/Exchange in BIAN's Semantic API 14.0.0.",
+      "attributes": {
+        "action_term": "Exchange",
+        "http_method": "PUT",
+        "input_attributes": [
+          "PaymentOrderProcedureInstanceReference",
+          "PaymentOrderProcedureInstanceStatus",
+          "OrderInitiationTaskResult"
+        ],
+        "output_attributes": [
+          "PaymentOrderProcedureInstanceReference",
+          "PaymentOrderProcedureInstanceStatus",
+          "OrderInitiationTaskResult"
+        ],
+        "behavior_qualifier": "BQ-PAYMENT-ORDER-INITIATION-ORDER-INITIATION",
+        "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+        "conforms_to": [
+          "BIAN 14.0.0"
+        ]
+      }
+    },
+    {
+      "id": "SO-PAYMENT-ORDER-INITIATION-RETRIEVE-ORDER-INITIATION",
+      "type": "bian.ServiceOperation",
+      "version": "14.0.0",
+      "name": "Payment Order Initiation: Retrieve Order Initiation",
+      "lifecycle_status": "active",
+      "canonical_id": "BIAN-PAYMENT-ORDER-INITIATION-RETRIEVE-ORDER-INITIATION",
+      "description": "GET /PaymentOrderInitiation/{paymentorderinitiationid}/OrderInitiation/{orderinitiationid}/Retrieve in BIAN's Semantic API 14.0.0.",
+      "attributes": {
+        "action_term": "Retrieve",
+        "http_method": "GET",
+        "input_attributes": [],
+        "output_attributes": [
+          "PaymentOrderProcedureInstanceReference",
+          "PaymentOrderProcedureInstanceStatus",
+          "OrderInitiationTaskResult"
+        ],
+        "behavior_qualifier": "BQ-PAYMENT-ORDER-INITIATION-ORDER-INITIATION",
+        "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+        "conforms_to": [
+          "BIAN 14.0.0"
+        ]
+      }
+    },
+    {
+      "id": "AT-FRAUD-EVALUATION",
+      "type": "bian.AssetType",
+      "version": "14.0.0",
+      "name": "Fraud Evaluation",
+      "lifecycle_status": "active",
+      "description": "Asset type of Fraud Evaluation — derived (BIAN Semantic API Practitioner Guide v8.1 §3.2.1, Figure 9); confirm."
+    },
+    {
+      "id": "SD-FRAUD-EVALUATION",
+      "type": "bian.ServiceDomain",
+      "version": "14.0.0",
+      "name": "Fraud Evaluation",
+      "lifecycle_status": "active",
+      "canonical_id": "BIAN-FRAUD-EVALUATION",
+      "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+      "attributes": {
+        "asset_type": "AT-FRAUD-EVALUATION",
+        "functional_pattern": "FP-ASSESS",
+        "classification": "derived",
+        "source_id": "bian-semantic-api:14.0.0:FraudEvaluation.yaml",
+        "conforms_to": [
+          "BIAN 14.0.0"
+        ]
+      }
+    },
+    {
+      "id": "CR-FRAUD-EVALUATION",
+      "type": "bian.ControlRecord",
+      "version": "14.0.0",
+      "name": "Fraud Evaluation Assessment",
+      "lifecycle_status": "active",
+      "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+      "attributes": {
+        "attributes": [
+          "ProductProductionSessionReference",
+          "FraudEvaluationTestProfile",
+          "FraudEvaluationEnsembleTechniqueType",
+          "FraudEvaluationEnsembleTechniqueDefinition",
+          "FraudEvaluationTransactionConsolidationRecord",
+          "FraudEvaluationProductionAnomalyRecord",
+          "FraudEvaluationProductionAnomalyProductionTransactionReference"
+        ],
+        "source_id": "bian-semantic-api:14.0.0:FraudEvaluation.yaml",
+        "conforms_to": [
+          "BIAN 14.0.0"
+        ]
+      }
+    },
+    {
+      "id": "BQ-FRAUD-EVALUATION-RULE-SETSAND-DECISION-TREES",
+      "type": "bian.BehaviorQualifier",
+      "version": "14.0.0",
+      "name": "Rule Setsand Decision Trees (Fraud Evaluation)",
+      "lifecycle_status": "active",
+      "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+      "attributes": {
+        "source_id": "bian-semantic-api:14.0.0:FraudEvaluation.yaml",
+        "conforms_to": [
+          "BIAN 14.0.0"
+        ]
+      }
+    },
+    {
+      "id": "BQ-FRAUD-EVALUATION-MODELS",
+      "type": "bian.BehaviorQualifier",
+      "version": "14.0.0",
+      "name": "Models (Fraud Evaluation)",
+      "lifecycle_status": "active",
+      "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+      "attributes": {
+        "source_id": "bian-semantic-api:14.0.0:FraudEvaluation.yaml",
+        "conforms_to": [
+          "BIAN 14.0.0"
+        ]
+      }
+    },
+    {
+      "id": "SG-FRAUD-EVALUATION-FRAUD-EVALUATION-ASSESSMENT",
+      "type": "bian.ServiceGroup",
+      "version": "14.0.0",
+      "name": "Fraud Evaluation — Fraud Evaluation Assessment",
+      "lifecycle_status": "active",
+      "description": "The operations BIAN tags 'FraudEvaluationAssessment' in Fraud Evaluation.",
+      "attributes": {
+        "source_id": "bian-semantic-api:14.0.0:FraudEvaluation.yaml",
+        "conforms_to": [
+          "BIAN 14.0.0"
+        ]
+      }
+    },
+    {
+      "id": "SO-FRAUD-EVALUATION-EVALUATE",
+      "type": "bian.ServiceOperation",
+      "version": "14.0.0",
+      "name": "Fraud Evaluation: Evaluate",
+      "lifecycle_status": "active",
+      "canonical_id": "BIAN-FRAUD-EVALUATION-EVALUATE",
+      "description": "POST /FraudEvaluation/Evaluate in BIAN's Semantic API 14.0.0.",
+      "attributes": {
+        "action_term": "Evaluate",
+        "http_method": "POST",
+        "input_attributes": [
+          "ProductProductionSessionReference",
+          "FraudEvaluationTestProfile",
+          "FraudEvaluationEnsembleTechniqueType",
+          "FraudEvaluationEnsembleTechniqueDefinition",
+          "FraudEvaluationTransactionConsolidationRecord",
+          "FraudEvaluationProductionAnomalyRecord",
+          "FraudEvaluationProductionAnomalyProductionTransactionReference"
+        ],
+        "output_attributes": [
+          "ProductProductionSessionReference",
+          "FraudEvaluationTestProfile",
+          "FraudEvaluationEnsembleTechniqueType",
+          "FraudEvaluationEnsembleTechniqueDefinition",
+          "FraudEvaluationTransactionConsolidationRecord",
+          "FraudEvaluationProductionAnomalyRecord",
+          "FraudEvaluationProductionAnomalyProductionTransactionReference"
+        ],
+        "source_id": "bian-semantic-api:14.0.0:FraudEvaluation.yaml",
+        "conforms_to": [
+          "BIAN 14.0.0"
+        ]
+      }
+    },
+    {
+      "id": "SO-FRAUD-EVALUATION-EXCHANGE",
+      "type": "bian.ServiceOperation",
+      "version": "14.0.0",
+      "name": "Fraud Evaluation: Exchange",
+      "lifecycle_status": "active",
+      "canonical_id": "BIAN-FRAUD-EVALUATION-EXCHANGE",
+      "description": "PUT /FraudEvaluation/{fraudevaluationid}/Exchange in BIAN's Semantic API 14.0.0.",
+      "attributes": {
+        "action_term": "Exchange",
+        "http_method": "PUT",
+        "input_attributes": [
+          "ProductProductionSessionReference",
+          "FraudEvaluationTestProfile",
+          "FraudEvaluationEnsembleTechniqueType",
+          "FraudEvaluationEnsembleTechniqueDefinition",
+          "FraudEvaluationTransactionConsolidationRecord",
+          "FraudEvaluationProductionAnomalyRecord",
+          "FraudEvaluationProductionAnomalyProductionTransactionReference"
+        ],
+        "output_attributes": [
+          "ProductProductionSessionReference",
+          "FraudEvaluationTestProfile",
+          "FraudEvaluationEnsembleTechniqueType",
+          "FraudEvaluationEnsembleTechniqueDefinition",
+          "FraudEvaluationTransactionConsolidationRecord",
+          "FraudEvaluationProductionAnomalyRecord",
+          "FraudEvaluationProductionAnomalyProductionTransactionReference"
+        ],
+        "source_id": "bian-semantic-api:14.0.0:FraudEvaluation.yaml",
+        "conforms_to": [
+          "BIAN 14.0.0"
+        ]
+      }
+    },
+    {
+      "id": "SO-FRAUD-EVALUATION-EXECUTE",
+      "type": "bian.ServiceOperation",
+      "version": "14.0.0",
+      "name": "Fraud Evaluation: Execute",
+      "lifecycle_status": "active",
+      "canonical_id": "BIAN-FRAUD-EVALUATION-EXECUTE",
+      "description": "PUT /FraudEvaluation/{fraudevaluationid}/Execute in BIAN's Semantic API 14.0.0.",
+      "attributes": {
+        "action_term": "Execute",
+        "http_method": "PUT",
+        "input_attributes": [
+          "ProductProductionSessionReference",
+          "FraudEvaluationTestProfile",
+          "FraudEvaluationEnsembleTechniqueType",
+          "FraudEvaluationEnsembleTechniqueDefinition",
+          "FraudEvaluationTransactionConsolidationRecord",
+          "FraudEvaluationProductionAnomalyRecord",
+          "FraudEvaluationProductionAnomalyProductionTransactionReference"
+        ],
+        "output_attributes": [
+          "ProductProductionSessionReference",
+          "FraudEvaluationTestProfile",
+          "FraudEvaluationEnsembleTechniqueType",
+          "FraudEvaluationEnsembleTechniqueDefinition",
+          "FraudEvaluationTransactionConsolidationRecord",
+          "FraudEvaluationProductionAnomalyRecord",
+          "FraudEvaluationProductionAnomalyProductionTransactionReference"
+        ],
+        "source_id": "bian-semantic-api:14.0.0:FraudEvaluation.yaml",
+        "conforms_to": [
+          "BIAN 14.0.0"
+        ]
+      }
+    },
+    {
+      "id": "SG-FRAUD-EVALUATION-RULE-SETSAND-DECISION-TREES",
+      "type": "bian.ServiceGroup",
+      "version": "14.0.0",
+      "name": "Fraud Evaluation — Rule Setsand Decision Trees",
+      "lifecycle_status": "active",
+      "description": "The operations BIAN tags 'RuleSetsandDecisionTrees' in Fraud Evaluation.",
+      "attributes": {
+        "source_id": "bian-semantic-api:14.0.0:FraudEvaluation.yaml",
+        "conforms_to": [
+          "BIAN 14.0.0"
+        ]
+      }
+    },
+    {
+      "id": "SO-FRAUD-EVALUATION-RETRIEVE-RULE-SETSAND-DECISION-TREES",
+      "type": "bian.ServiceOperation",
+      "version": "14.0.0",
+      "name": "Fraud Evaluation: Retrieve Rule Setsand Decision Trees",
+      "lifecycle_status": "active",
+      "canonical_id": "BIAN-FRAUD-EVALUATION-RETRIEVE-RULE-SETSAND-DECISION-TREES",
+      "description": "GET /FraudEvaluation/{fraudevaluationid}/RuleSetsandDecisionTrees/{rulesetsanddecisiontreesid}/Retrieve in BIAN's Semantic API 14.0.0.",
+      "attributes": {
+        "action_term": "Retrieve",
+        "http_method": "GET",
+        "input_attributes": [],
+        "output_attributes": [
+          "RuleSetsAndDecisionTreesTestResult",
+          "RuleSetsAndDecisionTreesTestWorkProduct"
+        ],
+        "behavior_qualifier": "BQ-FRAUD-EVALUATION-RULE-SETSAND-DECISION-TREES",
+        "source_id": "bian-semantic-api:14.0.0:FraudEvaluation.yaml",
+        "conforms_to": [
+          "BIAN 14.0.0"
+        ]
+      }
+    },
+    {
+      "id": "SO-FRAUD-EVALUATION-GRANT",
+      "type": "bian.ServiceOperation",
+      "version": "14.0.0",
+      "name": "Fraud Evaluation: Grant",
+      "lifecycle_status": "active",
+      "canonical_id": "BIAN-FRAUD-EVALUATION-GRANT",
+      "description": "PUT /FraudEvaluation/{fraudevaluationid}/Grant in BIAN's Semantic API 14.0.0.",
+      "attributes": {
+        "action_term": "Grant",
+        "http_method": "PUT",
+        "input_attributes": [
+          "ProductProductionSessionReference",
+          "FraudEvaluationTestProfile",
+          "FraudEvaluationEnsembleTechniqueType",
+          "FraudEvaluationEnsembleTechniqueDefinition",
+          "FraudEvaluationTransactionConsolidationRecord",
+          "FraudEvaluationProductionAnomalyRecord",
+          "FraudEvaluationProductionAnomalyProductionTransactionReference"
+        ],
+        "output_attributes": [
+          "ProductProductionSessionReference",
+          "FraudEvaluationTestProfile",
+          "FraudEvaluationEnsembleTechniqueType",
+          "FraudEvaluationEnsembleTechniqueDefinition",
+          "FraudEvaluationTransactionConsolidationRecord",
+          "FraudEvaluationProductionAnomalyRecord",
+          "FraudEvaluationProductionAnomalyProductionTransactionReference"
+        ],
+        "source_id": "bian-semantic-api:14.0.0:FraudEvaluation.yaml",
+        "conforms_to": [
+          "BIAN 14.0.0"
+        ]
+      }
+    },
+    {
+      "id": "SO-FRAUD-EVALUATION-REQUEST",
+      "type": "bian.ServiceOperation",
+      "version": "14.0.0",
+      "name": "Fraud Evaluation: Request",
+      "lifecycle_status": "active",
+      "canonical_id": "BIAN-FRAUD-EVALUATION-REQUEST",
+      "description": "PUT /FraudEvaluation/{fraudevaluationid}/Request in BIAN's Semantic API 14.0.0.",
+      "attributes": {
+        "action_term": "Request",
+        "http_method": "PUT",
+        "input_attributes": [
+          "ProductProductionSessionReference",
+          "FraudEvaluationTestProfile",
+          "FraudEvaluationEnsembleTechniqueType",
+          "FraudEvaluationEnsembleTechniqueDefinition",
+          "FraudEvaluationTransactionConsolidationRecord",
+          "FraudEvaluationProductionAnomalyRecord",
+          "FraudEvaluationProductionAnomalyProductionTransactionReference"
+        ],
+        "output_attributes": [
+          "ProductProductionSessionReference",
+          "FraudEvaluationTestProfile",
+          "FraudEvaluationEnsembleTechniqueType",
+          "FraudEvaluationEnsembleTechniqueDefinition",
+          "FraudEvaluationTransactionConsolidationRecord",
+          "FraudEvaluationProductionAnomalyRecord",
+          "FraudEvaluationProductionAnomalyProductionTransactionReference"
+        ],
+        "source_id": "bian-semantic-api:14.0.0:FraudEvaluation.yaml",
+        "conforms_to": [
+          "BIAN 14.0.0"
+        ]
+      }
+    },
+    {
+      "id": "SO-FRAUD-EVALUATION-RETRIEVE",
+      "type": "bian.ServiceOperation",
+      "version": "14.0.0",
+      "name": "Fraud Evaluation: Retrieve",
+      "lifecycle_status": "active",
+      "canonical_id": "BIAN-FRAUD-EVALUATION-RETRIEVE",
+      "description": "GET /FraudEvaluation/{fraudevaluationid}/Retrieve in BIAN's Semantic API 14.0.0.",
+      "attributes": {
+        "action_term": "Retrieve",
+        "http_method": "GET",
+        "input_attributes": [],
+        "output_attributes": [
+          "ProductProductionSessionReference",
+          "FraudEvaluationTestProfile",
+          "FraudEvaluationEnsembleTechniqueType",
+          "FraudEvaluationEnsembleTechniqueDefinition",
+          "FraudEvaluationTransactionConsolidationRecord",
+          "FraudEvaluationProductionAnomalyRecord",
+          "FraudEvaluationProductionAnomalyProductionTransactionReference"
+        ],
+        "source_id": "bian-semantic-api:14.0.0:FraudEvaluation.yaml",
+        "conforms_to": [
+          "BIAN 14.0.0"
+        ]
+      }
+    },
+    {
+      "id": "SG-FRAUD-EVALUATION-MODELS",
+      "type": "bian.ServiceGroup",
+      "version": "14.0.0",
+      "name": "Fraud Evaluation — Models",
+      "lifecycle_status": "active",
+      "description": "The operations BIAN tags 'Models' in Fraud Evaluation.",
+      "attributes": {
+        "source_id": "bian-semantic-api:14.0.0:FraudEvaluation.yaml",
+        "conforms_to": [
+          "BIAN 14.0.0"
+        ]
+      }
+    },
+    {
+      "id": "SO-FRAUD-EVALUATION-RETRIEVE-MODELS",
+      "type": "bian.ServiceOperation",
+      "version": "14.0.0",
+      "name": "Fraud Evaluation: Retrieve Models",
+      "lifecycle_status": "active",
+      "canonical_id": "BIAN-FRAUD-EVALUATION-RETRIEVE-MODELS",
+      "description": "GET /FraudEvaluation/{fraudevaluationid}/Models/{modelsid}/Retrieve in BIAN's Semantic API 14.0.0.",
+      "attributes": {
+        "action_term": "Retrieve",
+        "http_method": "GET",
+        "input_attributes": [],
+        "output_attributes": [
+          "ModelsTestResult",
+          "ModelsTestWorkProduct"
+        ],
+        "behavior_qualifier": "BQ-FRAUD-EVALUATION-MODELS",
+        "source_id": "bian-semantic-api:14.0.0:FraudEvaluation.yaml",
+        "conforms_to": [
+          "BIAN 14.0.0"
+        ]
+      }
+    }
+  ],
+  "relationships": [
+    {
+      "source": "SD-PARTY-AUTHENTICATION",
+      "kind": "association",
+      "target": "AT-PARTY-AUTHENTICATION"
+    },
+    {
+      "source": "SD-PARTY-AUTHENTICATION",
+      "kind": "association",
+      "target": "FP-ASSESS"
+    },
+    {
+      "source": "SD-PARTY-AUTHENTICATION",
+      "kind": "aggregation",
+      "target": "CR-PARTY-AUTHENTICATION"
+    },
+    {
+      "source": "CR-PARTY-AUTHENTICATION",
+      "kind": "composition",
+      "target": "BQ-PARTY-AUTHENTICATION-PASSWORD"
+    },
+    {
+      "source": "CR-PARTY-AUTHENTICATION",
+      "kind": "composition",
+      "target": "BQ-PARTY-AUTHENTICATION-QUESTION"
+    },
+    {
+      "source": "CR-PARTY-AUTHENTICATION",
+      "kind": "composition",
+      "target": "BQ-PARTY-AUTHENTICATION-DOCUMENT"
+    },
+    {
+      "source": "CR-PARTY-AUTHENTICATION",
+      "kind": "composition",
+      "target": "BQ-PARTY-AUTHENTICATION-DEVICE"
+    },
+    {
+      "source": "CR-PARTY-AUTHENTICATION",
+      "kind": "composition",
+      "target": "BQ-PARTY-AUTHENTICATION-BIOMETRIC"
+    },
+    {
+      "source": "CR-PARTY-AUTHENTICATION",
+      "kind": "composition",
+      "target": "BQ-PARTY-AUTHENTICATION-BEHAVIOR"
+    },
+    {
+      "source": "SD-PARTY-AUTHENTICATION",
+      "kind": "composition",
+      "target": "SG-PARTY-AUTHENTICATION-PARTY-AUTHENTICATION-ASSESSMENT"
+    },
+    {
+      "source": "SG-PARTY-AUTHENTICATION-PARTY-AUTHENTICATION-ASSESSMENT",
+      "kind": "composition",
+      "target": "SO-PARTY-AUTHENTICATION-UPDATE"
+    },
+    {
+      "source": "SO-PARTY-AUTHENTICATION-UPDATE",
+      "kind": "access",
+      "target": "CR-PARTY-AUTHENTICATION"
+    },
+    {
+      "source": "SG-PARTY-AUTHENTICATION-PARTY-AUTHENTICATION-ASSESSMENT",
+      "kind": "composition",
+      "target": "SO-PARTY-AUTHENTICATION-EVALUATE"
+    },
+    {
+      "source": "SO-PARTY-AUTHENTICATION-EVALUATE",
+      "kind": "access",
+      "target": "CR-PARTY-AUTHENTICATION"
+    },
+    {
+      "source": "SG-PARTY-AUTHENTICATION-PARTY-AUTHENTICATION-ASSESSMENT",
+      "kind": "composition",
+      "target": "SO-PARTY-AUTHENTICATION-EXCHANGE"
+    },
+    {
+      "source": "SO-PARTY-AUTHENTICATION-EXCHANGE",
+      "kind": "access",
+      "target": "CR-PARTY-AUTHENTICATION"
+    },
+    {
+      "source": "SG-PARTY-AUTHENTICATION-PARTY-AUTHENTICATION-ASSESSMENT",
+      "kind": "composition",
+      "target": "SO-PARTY-AUTHENTICATION-EXECUTE"
+    },
+    {
+      "source": "SO-PARTY-AUTHENTICATION-EXECUTE",
+      "kind": "access",
+      "target": "CR-PARTY-AUTHENTICATION"
+    },
+    {
+      "source": "SG-PARTY-AUTHENTICATION-PARTY-AUTHENTICATION-ASSESSMENT",
+      "kind": "composition",
+      "target": "SO-PARTY-AUTHENTICATION-REQUEST"
+    },
+    {
+      "source": "SO-PARTY-AUTHENTICATION-REQUEST",
+      "kind": "access",
+      "target": "CR-PARTY-AUTHENTICATION"
+    },
+    {
+      "source": "SG-PARTY-AUTHENTICATION-PARTY-AUTHENTICATION-ASSESSMENT",
+      "kind": "composition",
+      "target": "SO-PARTY-AUTHENTICATION-GRANT"
+    },
+    {
+      "source": "SO-PARTY-AUTHENTICATION-GRANT",
+      "kind": "access",
+      "target": "CR-PARTY-AUTHENTICATION"
+    },
+    {
+      "source": "SG-PARTY-AUTHENTICATION-PARTY-AUTHENTICATION-ASSESSMENT",
+      "kind": "composition",
+      "target": "SO-PARTY-AUTHENTICATION-RETRIEVE"
+    },
+    {
+      "source": "SO-PARTY-AUTHENTICATION-RETRIEVE",
+      "kind": "access",
+      "target": "CR-PARTY-AUTHENTICATION"
+    },
+    {
+      "source": "SD-PARTY-AUTHENTICATION",
+      "kind": "composition",
+      "target": "SG-PARTY-AUTHENTICATION-PASSWORD"
+    },
+    {
+      "source": "SG-PARTY-AUTHENTICATION-PASSWORD",
+      "kind": "composition",
+      "target": "SO-PARTY-AUTHENTICATION-EVALUATE-PASSWORD"
+    },
+    {
+      "source": "SO-PARTY-AUTHENTICATION-EVALUATE-PASSWORD",
+      "kind": "access",
+      "target": "CR-PARTY-AUTHENTICATION"
+    },
+    {
+      "source": "SO-PARTY-AUTHENTICATION-EVALUATE-PASSWORD",
+      "kind": "association",
+      "target": "BQ-PARTY-AUTHENTICATION-PASSWORD"
+    },
+    {
+      "source": "SG-PARTY-AUTHENTICATION-PASSWORD",
+      "kind": "composition",
+      "target": "SO-PARTY-AUTHENTICATION-RETRIEVE-PASSWORD"
+    },
+    {
+      "source": "SO-PARTY-AUTHENTICATION-RETRIEVE-PASSWORD",
+      "kind": "access",
+      "target": "CR-PARTY-AUTHENTICATION"
+    },
+    {
+      "source": "SO-PARTY-AUTHENTICATION-RETRIEVE-PASSWORD",
+      "kind": "association",
+      "target": "BQ-PARTY-AUTHENTICATION-PASSWORD"
+    },
+    {
+      "source": "SD-PARTY-AUTHENTICATION",
+      "kind": "composition",
+      "target": "SG-PARTY-AUTHENTICATION-QUESTION"
+    },
+    {
+      "source": "SG-PARTY-AUTHENTICATION-QUESTION",
+      "kind": "composition",
+      "target": "SO-PARTY-AUTHENTICATION-EVALUATE-QUESTION"
+    },
+    {
+      "source": "SO-PARTY-AUTHENTICATION-EVALUATE-QUESTION",
+      "kind": "access",
+      "target": "CR-PARTY-AUTHENTICATION"
+    },
+    {
+      "source": "SO-PARTY-AUTHENTICATION-EVALUATE-QUESTION",
+      "kind": "association",
+      "target": "BQ-PARTY-AUTHENTICATION-QUESTION"
+    },
+    {
+      "source": "SG-PARTY-AUTHENTICATION-QUESTION",
+      "kind": "composition",
+      "target": "SO-PARTY-AUTHENTICATION-RETRIEVE-QUESTION"
+    },
+    {
+      "source": "SO-PARTY-AUTHENTICATION-RETRIEVE-QUESTION",
+      "kind": "access",
+      "target": "CR-PARTY-AUTHENTICATION"
+    },
+    {
+      "source": "SO-PARTY-AUTHENTICATION-RETRIEVE-QUESTION",
+      "kind": "association",
+      "target": "BQ-PARTY-AUTHENTICATION-QUESTION"
+    },
+    {
+      "source": "SD-PARTY-AUTHENTICATION",
+      "kind": "composition",
+      "target": "SG-PARTY-AUTHENTICATION-DOCUMENT"
+    },
+    {
+      "source": "SG-PARTY-AUTHENTICATION-DOCUMENT",
+      "kind": "composition",
+      "target": "SO-PARTY-AUTHENTICATION-RETRIEVE-DOCUMENT"
+    },
+    {
+      "source": "SO-PARTY-AUTHENTICATION-RETRIEVE-DOCUMENT",
+      "kind": "access",
+      "target": "CR-PARTY-AUTHENTICATION"
+    },
+    {
+      "source": "SO-PARTY-AUTHENTICATION-RETRIEVE-DOCUMENT",
+      "kind": "association",
+      "target": "BQ-PARTY-AUTHENTICATION-DOCUMENT"
+    },
+    {
+      "source": "SG-PARTY-AUTHENTICATION-DOCUMENT",
+      "kind": "composition",
+      "target": "SO-PARTY-AUTHENTICATION-EVALUATE-DOCUMENT"
+    },
+    {
+      "source": "SO-PARTY-AUTHENTICATION-EVALUATE-DOCUMENT",
+      "kind": "access",
+      "target": "CR-PARTY-AUTHENTICATION"
+    },
+    {
+      "source": "SO-PARTY-AUTHENTICATION-EVALUATE-DOCUMENT",
+      "kind": "association",
+      "target": "BQ-PARTY-AUTHENTICATION-DOCUMENT"
+    },
+    {
+      "source": "SD-PARTY-AUTHENTICATION",
+      "kind": "composition",
+      "target": "SG-PARTY-AUTHENTICATION-DEVICE"
+    },
+    {
+      "source": "SG-PARTY-AUTHENTICATION-DEVICE",
+      "kind": "composition",
+      "target": "SO-PARTY-AUTHENTICATION-EVALUATE-DEVICE"
+    },
+    {
+      "source": "SO-PARTY-AUTHENTICATION-EVALUATE-DEVICE",
+      "kind": "access",
+      "target": "CR-PARTY-AUTHENTICATION"
+    },
+    {
+      "source": "SO-PARTY-AUTHENTICATION-EVALUATE-DEVICE",
+      "kind": "association",
+      "target": "BQ-PARTY-AUTHENTICATION-DEVICE"
+    },
+    {
+      "source": "SD-PARTY-AUTHENTICATION",
+      "kind": "composition",
+      "target": "SG-PARTY-AUTHENTICATION-BIOMETRIC"
+    },
+    {
+      "source": "SG-PARTY-AUTHENTICATION-BIOMETRIC",
+      "kind": "composition",
+      "target": "SO-PARTY-AUTHENTICATION-EVALUATE-BIOMETRIC"
+    },
+    {
+      "source": "SO-PARTY-AUTHENTICATION-EVALUATE-BIOMETRIC",
+      "kind": "access",
+      "target": "CR-PARTY-AUTHENTICATION"
+    },
+    {
+      "source": "SO-PARTY-AUTHENTICATION-EVALUATE-BIOMETRIC",
+      "kind": "association",
+      "target": "BQ-PARTY-AUTHENTICATION-BIOMETRIC"
+    },
+    {
+      "source": "SG-PARTY-AUTHENTICATION-DEVICE",
+      "kind": "composition",
+      "target": "SO-PARTY-AUTHENTICATION-RETRIEVE-DEVICE"
+    },
+    {
+      "source": "SO-PARTY-AUTHENTICATION-RETRIEVE-DEVICE",
+      "kind": "access",
+      "target": "CR-PARTY-AUTHENTICATION"
+    },
+    {
+      "source": "SO-PARTY-AUTHENTICATION-RETRIEVE-DEVICE",
+      "kind": "association",
+      "target": "BQ-PARTY-AUTHENTICATION-DEVICE"
+    },
+    {
+      "source": "SG-PARTY-AUTHENTICATION-BIOMETRIC",
+      "kind": "composition",
+      "target": "SO-PARTY-AUTHENTICATION-RETRIEVE-BIOMETRIC"
+    },
+    {
+      "source": "SO-PARTY-AUTHENTICATION-RETRIEVE-BIOMETRIC",
+      "kind": "access",
+      "target": "CR-PARTY-AUTHENTICATION"
+    },
+    {
+      "source": "SO-PARTY-AUTHENTICATION-RETRIEVE-BIOMETRIC",
+      "kind": "association",
+      "target": "BQ-PARTY-AUTHENTICATION-BIOMETRIC"
+    },
+    {
+      "source": "SD-PARTY-AUTHENTICATION",
+      "kind": "composition",
+      "target": "SG-PARTY-AUTHENTICATION-BEHAVIOR"
+    },
+    {
+      "source": "SG-PARTY-AUTHENTICATION-BEHAVIOR",
+      "kind": "composition",
+      "target": "SO-PARTY-AUTHENTICATION-EVALUATE-BEHAVIOR"
+    },
+    {
+      "source": "SO-PARTY-AUTHENTICATION-EVALUATE-BEHAVIOR",
+      "kind": "access",
+      "target": "CR-PARTY-AUTHENTICATION"
+    },
+    {
+      "source": "SO-PARTY-AUTHENTICATION-EVALUATE-BEHAVIOR",
+      "kind": "association",
+      "target": "BQ-PARTY-AUTHENTICATION-BEHAVIOR"
+    },
+    {
+      "source": "SG-PARTY-AUTHENTICATION-BEHAVIOR",
+      "kind": "composition",
+      "target": "SO-PARTY-AUTHENTICATION-RETRIEVE-BEHAVIOR"
+    },
+    {
+      "source": "SO-PARTY-AUTHENTICATION-RETRIEVE-BEHAVIOR",
+      "kind": "access",
+      "target": "CR-PARTY-AUTHENTICATION"
+    },
+    {
+      "source": "SO-PARTY-AUTHENTICATION-RETRIEVE-BEHAVIOR",
+      "kind": "association",
+      "target": "BQ-PARTY-AUTHENTICATION-BEHAVIOR"
+    },
+    {
+      "source": "SD-PAYMENT-ORDER-INITIATION",
+      "kind": "association",
+      "target": "AT-PAYMENT-ORDER-INITIATION"
+    },
+    {
+      "source": "SD-PAYMENT-ORDER-INITIATION",
+      "kind": "association",
+      "target": "FP-TRANSACT"
+    },
+    {
+      "source": "SD-PAYMENT-ORDER-INITIATION",
+      "kind": "aggregation",
+      "target": "CR-PAYMENT-ORDER-INITIATION"
+    },
+    {
+      "source": "CR-PAYMENT-ORDER-INITIATION",
+      "kind": "composition",
+      "target": "BQ-PAYMENT-ORDER-INITIATION-COMPLIANCE"
+    },
+    {
+      "source": "CR-PAYMENT-ORDER-INITIATION",
+      "kind": "composition",
+      "target": "BQ-PAYMENT-ORDER-INITIATION-CONFIRMATION"
+    },
+    {
+      "source": "CR-PAYMENT-ORDER-INITIATION",
+      "kind": "composition",
+      "target": "BQ-PAYMENT-ORDER-INITIATION-ORDER-INITIATION"
+    },
+    {
+      "source": "SD-PAYMENT-ORDER-INITIATION",
+      "kind": "composition",
+      "target": "SG-PAYMENT-ORDER-INITIATION-PAYMENT-ORDER-INITIATION-TRANSACTION"
+    },
+    {
+      "source": "SG-PAYMENT-ORDER-INITIATION-PAYMENT-ORDER-INITIATION-TRANSACTION",
+      "kind": "composition",
+      "target": "SO-PAYMENT-ORDER-INITIATION-INITIATE"
+    },
+    {
+      "source": "SO-PAYMENT-ORDER-INITIATION-INITIATE",
+      "kind": "access",
+      "target": "CR-PAYMENT-ORDER-INITIATION"
+    },
+    {
+      "source": "SG-PAYMENT-ORDER-INITIATION-PAYMENT-ORDER-INITIATION-TRANSACTION",
+      "kind": "composition",
+      "target": "SO-PAYMENT-ORDER-INITIATION-UPDATE"
+    },
+    {
+      "source": "SO-PAYMENT-ORDER-INITIATION-UPDATE",
+      "kind": "access",
+      "target": "CR-PAYMENT-ORDER-INITIATION"
+    },
+    {
+      "source": "SG-PAYMENT-ORDER-INITIATION-PAYMENT-ORDER-INITIATION-TRANSACTION",
+      "kind": "composition",
+      "target": "SO-PAYMENT-ORDER-INITIATION-RETRIEVE"
+    },
+    {
+      "source": "SO-PAYMENT-ORDER-INITIATION-RETRIEVE",
+      "kind": "access",
+      "target": "CR-PAYMENT-ORDER-INITIATION"
+    },
+    {
+      "source": "SD-PAYMENT-ORDER-INITIATION",
+      "kind": "composition",
+      "target": "SG-PAYMENT-ORDER-INITIATION-COMPLIANCE"
+    },
+    {
+      "source": "SG-PAYMENT-ORDER-INITIATION-COMPLIANCE",
+      "kind": "composition",
+      "target": "SO-PAYMENT-ORDER-INITIATION-RETRIEVE-COMPLIANCE"
+    },
+    {
+      "source": "SO-PAYMENT-ORDER-INITIATION-RETRIEVE-COMPLIANCE",
+      "kind": "access",
+      "target": "CR-PAYMENT-ORDER-INITIATION"
+    },
+    {
+      "source": "SO-PAYMENT-ORDER-INITIATION-RETRIEVE-COMPLIANCE",
+      "kind": "association",
+      "target": "BQ-PAYMENT-ORDER-INITIATION-COMPLIANCE"
+    },
+    {
+      "source": "SD-PAYMENT-ORDER-INITIATION",
+      "kind": "composition",
+      "target": "SG-PAYMENT-ORDER-INITIATION-CONFIRMATION"
+    },
+    {
+      "source": "SG-PAYMENT-ORDER-INITIATION-CONFIRMATION",
+      "kind": "composition",
+      "target": "SO-PAYMENT-ORDER-INITIATION-RETRIEVE-CONFIRMATION"
+    },
+    {
+      "source": "SO-PAYMENT-ORDER-INITIATION-RETRIEVE-CONFIRMATION",
+      "kind": "access",
+      "target": "CR-PAYMENT-ORDER-INITIATION"
+    },
+    {
+      "source": "SO-PAYMENT-ORDER-INITIATION-RETRIEVE-CONFIRMATION",
+      "kind": "association",
+      "target": "BQ-PAYMENT-ORDER-INITIATION-CONFIRMATION"
+    },
+    {
+      "source": "SD-PAYMENT-ORDER-INITIATION",
+      "kind": "composition",
+      "target": "SG-PAYMENT-ORDER-INITIATION-ORDER-INITIATION"
+    },
+    {
+      "source": "SG-PAYMENT-ORDER-INITIATION-ORDER-INITIATION",
+      "kind": "composition",
+      "target": "SO-PAYMENT-ORDER-INITIATION-EXCHANGE-ORDER-INITIATION"
+    },
+    {
+      "source": "SO-PAYMENT-ORDER-INITIATION-EXCHANGE-ORDER-INITIATION",
+      "kind": "access",
+      "target": "CR-PAYMENT-ORDER-INITIATION"
+    },
+    {
+      "source": "SO-PAYMENT-ORDER-INITIATION-EXCHANGE-ORDER-INITIATION",
+      "kind": "association",
+      "target": "BQ-PAYMENT-ORDER-INITIATION-ORDER-INITIATION"
+    },
+    {
+      "source": "SG-PAYMENT-ORDER-INITIATION-ORDER-INITIATION",
+      "kind": "composition",
+      "target": "SO-PAYMENT-ORDER-INITIATION-RETRIEVE-ORDER-INITIATION"
+    },
+    {
+      "source": "SO-PAYMENT-ORDER-INITIATION-RETRIEVE-ORDER-INITIATION",
+      "kind": "access",
+      "target": "CR-PAYMENT-ORDER-INITIATION"
+    },
+    {
+      "source": "SO-PAYMENT-ORDER-INITIATION-RETRIEVE-ORDER-INITIATION",
+      "kind": "association",
+      "target": "BQ-PAYMENT-ORDER-INITIATION-ORDER-INITIATION"
+    },
+    {
+      "source": "SD-FRAUD-EVALUATION",
+      "kind": "association",
+      "target": "AT-FRAUD-EVALUATION"
+    },
+    {
+      "source": "SD-FRAUD-EVALUATION",
+      "kind": "association",
+      "target": "FP-ASSESS"
+    },
+    {
+      "source": "SD-FRAUD-EVALUATION",
+      "kind": "aggregation",
+      "target": "CR-FRAUD-EVALUATION"
+    },
+    {
+      "source": "CR-FRAUD-EVALUATION",
+      "kind": "composition",
+      "target": "BQ-FRAUD-EVALUATION-RULE-SETSAND-DECISION-TREES"
+    },
+    {
+      "source": "CR-FRAUD-EVALUATION",
+      "kind": "composition",
+      "target": "BQ-FRAUD-EVALUATION-MODELS"
+    },
+    {
+      "source": "SD-FRAUD-EVALUATION",
+      "kind": "composition",
+      "target": "SG-FRAUD-EVALUATION-FRAUD-EVALUATION-ASSESSMENT"
+    },
+    {
+      "source": "SG-FRAUD-EVALUATION-FRAUD-EVALUATION-ASSESSMENT",
+      "kind": "composition",
+      "target": "SO-FRAUD-EVALUATION-EVALUATE"
+    },
+    {
+      "source": "SO-FRAUD-EVALUATION-EVALUATE",
+      "kind": "access",
+      "target": "CR-FRAUD-EVALUATION"
+    },
+    {
+      "source": "SG-FRAUD-EVALUATION-FRAUD-EVALUATION-ASSESSMENT",
+      "kind": "composition",
+      "target": "SO-FRAUD-EVALUATION-EXCHANGE"
+    },
+    {
+      "source": "SO-FRAUD-EVALUATION-EXCHANGE",
+      "kind": "access",
+      "target": "CR-FRAUD-EVALUATION"
+    },
+    {
+      "source": "SG-FRAUD-EVALUATION-FRAUD-EVALUATION-ASSESSMENT",
+      "kind": "composition",
+      "target": "SO-FRAUD-EVALUATION-EXECUTE"
+    },
+    {
+      "source": "SO-FRAUD-EVALUATION-EXECUTE",
+      "kind": "access",
+      "target": "CR-FRAUD-EVALUATION"
+    },
+    {
+      "source": "SD-FRAUD-EVALUATION",
+      "kind": "composition",
+      "target": "SG-FRAUD-EVALUATION-RULE-SETSAND-DECISION-TREES"
+    },
+    {
+      "source": "SG-FRAUD-EVALUATION-RULE-SETSAND-DECISION-TREES",
+      "kind": "composition",
+      "target": "SO-FRAUD-EVALUATION-RETRIEVE-RULE-SETSAND-DECISION-TREES"
+    },
+    {
+      "source": "SO-FRAUD-EVALUATION-RETRIEVE-RULE-SETSAND-DECISION-TREES",
+      "kind": "access",
+      "target": "CR-FRAUD-EVALUATION"
+    },
+    {
+      "source": "SO-FRAUD-EVALUATION-RETRIEVE-RULE-SETSAND-DECISION-TREES",
+      "kind": "association",
+      "target": "BQ-FRAUD-EVALUATION-RULE-SETSAND-DECISION-TREES"
+    },
+    {
+      "source": "SG-FRAUD-EVALUATION-FRAUD-EVALUATION-ASSESSMENT",
+      "kind": "composition",
+      "target": "SO-FRAUD-EVALUATION-GRANT"
+    },
+    {
+      "source": "SO-FRAUD-EVALUATION-GRANT",
+      "kind": "access",
+      "target": "CR-FRAUD-EVALUATION"
+    },
+    {
+      "source": "SG-FRAUD-EVALUATION-FRAUD-EVALUATION-ASSESSMENT",
+      "kind": "composition",
+      "target": "SO-FRAUD-EVALUATION-REQUEST"
+    },
+    {
+      "source": "SO-FRAUD-EVALUATION-REQUEST",
+      "kind": "access",
+      "target": "CR-FRAUD-EVALUATION"
+    },
+    {
+      "source": "SG-FRAUD-EVALUATION-FRAUD-EVALUATION-ASSESSMENT",
+      "kind": "composition",
+      "target": "SO-FRAUD-EVALUATION-RETRIEVE"
+    },
+    {
+      "source": "SO-FRAUD-EVALUATION-RETRIEVE",
+      "kind": "access",
+      "target": "CR-FRAUD-EVALUATION"
+    },
+    {
+      "source": "SD-FRAUD-EVALUATION",
+      "kind": "composition",
+      "target": "SG-FRAUD-EVALUATION-MODELS"
+    },
+    {
+      "source": "SG-FRAUD-EVALUATION-MODELS",
+      "kind": "composition",
+      "target": "SO-FRAUD-EVALUATION-RETRIEVE-MODELS"
+    },
+    {
+      "source": "SO-FRAUD-EVALUATION-RETRIEVE-MODELS",
+      "kind": "access",
+      "target": "CR-FRAUD-EVALUATION"
+    },
+    {
+      "source": "SO-FRAUD-EVALUATION-RETRIEVE-MODELS",
+      "kind": "association",
+      "target": "BQ-FRAUD-EVALUATION-MODELS"
+    }
+  ]
+}

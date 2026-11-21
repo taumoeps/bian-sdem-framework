@@ -14,7 +14,7 @@ def main(folder, person):
     from sdem import migrate20, parts
     from sdem.identity import load, store_names, _derived, changed
     folder = Path(folder)
-    if not (folder / 'a1-business.json').exists(): sys.exit(f'{folder}: not in the 0.19 form')
+    if not any((folder / f).exists() for f in migrate20.OLD): sys.exit(f'{folder}: not in the 0.19 form')   # an example may lack a layer (acquired-fintech: no business)
     tmp = Path(tempfile.mkdtemp()) / 'ws'
     tmp.mkdir()
     layer = list(migrate20.OLD) + ['mappings.json', 'requirements.json']
@@ -22,7 +22,7 @@ def main(folder, person):
         if (folder / f).exists(): shutil.copy2(folder / f, tmp / f)
     (tmp / 'workspace.json').write_text(json.dumps({'format': 'sdem-workspace/1', 'name': folder.name}), encoding='utf-8')
     migrate20.migrate(tmp, person, keep_backup=False)
-    for f in migrate20.OLD: (folder / f).unlink()
+    for f in migrate20.OLD: (folder / f).unlink(missing_ok=True)   # an example may lack a layer
     for f in ('business', 'bian', 'data', 'application', 'technology'):
         if (tmp / f'{f}.json').exists(): shutil.copy2(tmp / f'{f}.json', folder / f'{f}.json')
     for f in ('mappings.json', 'requirements.json'):

@@ -1,0 +1,609 @@
+{
+  "graph": {
+    "id": "sdem:federated",
+    "type": "sdem.federated",
+    "label": "Federated knowledge graph (approved cross-level links)",
+    "directed": true,
+    "metadata": {
+      "sdem_store_version": "1.0",
+      "metamodel_version": "0.17.0",
+      "levels": {
+        "A1": "2026.11",
+        "A2": "2026.11",
+        "A3": "2026.11",
+        "A4": "2026.11",
+        "A5": "2026.11"
+      },
+      "registries": [
+        {
+          "file": "mappings.json",
+          "sha256": "9bbd0c2873ed8f27407b9069a281c02962d1cf8e5e4d68806ab8e5853c2e05e7",
+          "registry_version": "0.4.0",
+          "metamodel_version": "0.17.0"
+        }
+      ],
+      "statuses": [
+        "approved"
+      ]
+    },
+    "nodes": {
+      "A3:ENT-FX-QUOTE@1.0": {
+        "label": "fx_quote",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.DataEntity",
+          "id": "ENT-FX-QUOTE",
+          "version": "1.0",
+          "stub": true,
+          "graph": "data.graph.json"
+        }
+      },
+      "A4:APP-AURORA@4.2": {
+        "label": "Aurora Pricing Engine",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.ApplicationComponent",
+          "id": "APP-AURORA",
+          "version": "4.2",
+          "stub": true,
+          "graph": "application.graph.json"
+        }
+      },
+      "A3:ENT-RATE-SNAPSHOT@1.0": {
+        "label": "rate_snapshot",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.DataEntity",
+          "id": "ENT-RATE-SNAPSHOT",
+          "version": "1.0",
+          "stub": true,
+          "graph": "data.graph.json"
+        }
+      },
+      "A3:ENT-FX-DEAL@1.0": {
+        "label": "fx_deal",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.DataEntity",
+          "id": "ENT-FX-DEAL",
+          "version": "1.0",
+          "stub": true,
+          "graph": "data.graph.json"
+        }
+      },
+      "A4:APP-LEDGERLINE@11.0": {
+        "label": "Ledgerline FX Booking",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.ApplicationComponent",
+          "id": "APP-LEDGERLINE",
+          "version": "11.0",
+          "stub": true,
+          "graph": "application.graph.json"
+        }
+      },
+      "A3:ENT-IB-TRADE@1.0": {
+        "label": "interbank_trade",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.DataEntity",
+          "id": "ENT-IB-TRADE",
+          "version": "1.0",
+          "stub": true,
+          "graph": "data.graph.json"
+        }
+      },
+      "A3:ENT-DESK-POSITION@1.0": {
+        "label": "desk_position",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.DataEntity",
+          "id": "ENT-DESK-POSITION",
+          "version": "1.0",
+          "stub": true,
+          "graph": "data.graph.json"
+        }
+      },
+      "A3:ENT-DEALER-LIMIT@1.0": {
+        "label": "dealer_limit",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.DataEntity",
+          "id": "ENT-DEALER-LIMIT",
+          "version": "1.0",
+          "stub": true,
+          "graph": "data.graph.json"
+        }
+      },
+      "A3:ENT-CONFIRMATION@1.0": {
+        "label": "CONF_MESSAGE",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.DataEntity",
+          "id": "ENT-CONFIRMATION",
+          "version": "1.0",
+          "stub": true,
+          "graph": "data.graph.json"
+        }
+      },
+      "A4:APP-CONFIRMHUB@8.4": {
+        "label": "ConfirmHub",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.ApplicationComponent",
+          "id": "APP-CONFIRMHUB",
+          "version": "8.4",
+          "stub": true,
+          "graph": "application.graph.json"
+        }
+      },
+      "A3:ENT-MATCH-BREAK@1.0": {
+        "label": "CONF_BREAK",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.DataEntity",
+          "id": "ENT-MATCH-BREAK",
+          "version": "1.0",
+          "stub": true,
+          "graph": "data.graph.json"
+        }
+      },
+      "A3:ENT-SETTLEMENT-INSTR@1.0": {
+        "label": "settlement_instruction",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.DataEntity",
+          "id": "ENT-SETTLEMENT-INSTR",
+          "version": "1.0",
+          "stub": true,
+          "graph": "data.graph.json"
+        }
+      },
+      "A4:APP-FXSM@5.7": {
+        "label": "FX Settlement Manager",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.ApplicationComponent",
+          "id": "APP-FXSM",
+          "version": "5.7",
+          "stub": true,
+          "graph": "application.graph.json"
+        }
+      },
+      "A3:ENT-NOSTRO-ADVICE@1.0": {
+        "label": "nostro_advice",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.DataEntity",
+          "id": "ENT-NOSTRO-ADVICE",
+          "version": "1.0",
+          "stub": true,
+          "graph": "data.graph.json"
+        }
+      },
+      "A3:ENT-COUNTERPARTY@1.0": {
+        "label": "counterparty",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.DataEntity",
+          "id": "ENT-COUNTERPARTY",
+          "version": "1.0",
+          "stub": true,
+          "graph": "data.graph.json"
+        }
+      },
+      "A4:APP-CRDS@3.1": {
+        "label": "Counterparty Reference Data Service",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.ApplicationComponent",
+          "id": "APP-CRDS",
+          "version": "3.1",
+          "stub": true,
+          "graph": "application.graph.json"
+        }
+      },
+      "A3:ENT-SSI@1.0": {
+        "label": "standing_settlement_instruction",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.DataEntity",
+          "id": "ENT-SSI",
+          "version": "1.0",
+          "stub": true,
+          "graph": "data.graph.json"
+        }
+      },
+      "A4:APP-RATEGW@2.9": {
+        "label": "Contributor Rates Gateway",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.ApplicationComponent",
+          "id": "APP-RATEGW",
+          "version": "2.9",
+          "stub": true,
+          "graph": "application.graph.json"
+        }
+      }
+    },
+    "edges": [
+      {
+        "id": "MIG-020-001",
+        "source": "A3:ENT-FX-QUOTE@1.0",
+        "target": "A4:APP-AURORA@4.2",
+        "relation": "ACCESSED_BY",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "ENT-FX-QUOTE",
+            "type": "A3.DataEntity",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "APP-AURORA",
+            "type": "A4.ApplicationComponent",
+            "version": "4.2"
+          },
+          "perspective": "information",
+          "status": "approved",
+          "evidence": [
+            "application_architecture_document:sdem-migrate-0.20#within-layer-access"
+          ],
+          "rationale": "Approved by the migration to 0.20 (sdem migrate --to 0.20, jane.architect, 2026-11-21): an access link inside the Application layer of SDEM 0.19, now between the Data and Application layers (DL-04, DL-13)",
+          "baseline_id": "MIGRATION-0.20",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-11-21"
+        }
+      },
+      {
+        "id": "MIG-020-002",
+        "source": "A3:ENT-RATE-SNAPSHOT@1.0",
+        "target": "A4:APP-AURORA@4.2",
+        "relation": "ACCESSED_BY",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "ENT-RATE-SNAPSHOT",
+            "type": "A3.DataEntity",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "APP-AURORA",
+            "type": "A4.ApplicationComponent",
+            "version": "4.2"
+          },
+          "perspective": "information",
+          "status": "approved",
+          "evidence": [
+            "application_architecture_document:sdem-migrate-0.20#within-layer-access"
+          ],
+          "rationale": "Approved by the migration to 0.20 (sdem migrate --to 0.20, jane.architect, 2026-11-21): an access link inside the Application layer of SDEM 0.19, now between the Data and Application layers (DL-04, DL-13)",
+          "baseline_id": "MIGRATION-0.20",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-11-21"
+        }
+      },
+      {
+        "id": "MIG-020-003",
+        "source": "A3:ENT-FX-DEAL@1.0",
+        "target": "A4:APP-LEDGERLINE@11.0",
+        "relation": "ACCESSED_BY",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "ENT-FX-DEAL",
+            "type": "A3.DataEntity",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "APP-LEDGERLINE",
+            "type": "A4.ApplicationComponent",
+            "version": "11.0"
+          },
+          "perspective": "information",
+          "status": "approved",
+          "evidence": [
+            "application_architecture_document:sdem-migrate-0.20#within-layer-access"
+          ],
+          "rationale": "Approved by the migration to 0.20 (sdem migrate --to 0.20, jane.architect, 2026-11-21): an access link inside the Application layer of SDEM 0.19, now between the Data and Application layers (DL-04, DL-13)",
+          "baseline_id": "MIGRATION-0.20",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-11-21"
+        }
+      },
+      {
+        "id": "MIG-020-004",
+        "source": "A3:ENT-IB-TRADE@1.0",
+        "target": "A4:APP-LEDGERLINE@11.0",
+        "relation": "ACCESSED_BY",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "ENT-IB-TRADE",
+            "type": "A3.DataEntity",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "APP-LEDGERLINE",
+            "type": "A4.ApplicationComponent",
+            "version": "11.0"
+          },
+          "perspective": "information",
+          "status": "approved",
+          "evidence": [
+            "application_architecture_document:sdem-migrate-0.20#within-layer-access"
+          ],
+          "rationale": "Approved by the migration to 0.20 (sdem migrate --to 0.20, jane.architect, 2026-11-21): an access link inside the Application layer of SDEM 0.19, now between the Data and Application layers (DL-04, DL-13)",
+          "baseline_id": "MIGRATION-0.20",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-11-21"
+        }
+      },
+      {
+        "id": "MIG-020-005",
+        "source": "A3:ENT-DESK-POSITION@1.0",
+        "target": "A4:APP-LEDGERLINE@11.0",
+        "relation": "ACCESSED_BY",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "ENT-DESK-POSITION",
+            "type": "A3.DataEntity",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "APP-LEDGERLINE",
+            "type": "A4.ApplicationComponent",
+            "version": "11.0"
+          },
+          "perspective": "information",
+          "status": "approved",
+          "evidence": [
+            "application_architecture_document:sdem-migrate-0.20#within-layer-access"
+          ],
+          "rationale": "Approved by the migration to 0.20 (sdem migrate --to 0.20, jane.architect, 2026-11-21): an access link inside the Application layer of SDEM 0.19, now between the Data and Application layers (DL-04, DL-13)",
+          "baseline_id": "MIGRATION-0.20",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-11-21"
+        }
+      },
+      {
+        "id": "MIG-020-006",
+        "source": "A3:ENT-DEALER-LIMIT@1.0",
+        "target": "A4:APP-LEDGERLINE@11.0",
+        "relation": "ACCESSED_BY",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "ENT-DEALER-LIMIT",
+            "type": "A3.DataEntity",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "APP-LEDGERLINE",
+            "type": "A4.ApplicationComponent",
+            "version": "11.0"
+          },
+          "perspective": "information",
+          "status": "approved",
+          "evidence": [
+            "application_architecture_document:sdem-migrate-0.20#within-layer-access"
+          ],
+          "rationale": "Approved by the migration to 0.20 (sdem migrate --to 0.20, jane.architect, 2026-11-21): an access link inside the Application layer of SDEM 0.19, now between the Data and Application layers (DL-04, DL-13)",
+          "baseline_id": "MIGRATION-0.20",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-11-21"
+        }
+      },
+      {
+        "id": "MIG-020-007",
+        "source": "A3:ENT-CONFIRMATION@1.0",
+        "target": "A4:APP-CONFIRMHUB@8.4",
+        "relation": "ACCESSED_BY",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "ENT-CONFIRMATION",
+            "type": "A3.DataEntity",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "APP-CONFIRMHUB",
+            "type": "A4.ApplicationComponent",
+            "version": "8.4"
+          },
+          "perspective": "information",
+          "status": "approved",
+          "evidence": [
+            "application_architecture_document:sdem-migrate-0.20#within-layer-access"
+          ],
+          "rationale": "Approved by the migration to 0.20 (sdem migrate --to 0.20, jane.architect, 2026-11-21): an access link inside the Application layer of SDEM 0.19, now between the Data and Application layers (DL-04, DL-13)",
+          "baseline_id": "MIGRATION-0.20",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-11-21"
+        }
+      },
+      {
+        "id": "MIG-020-008",
+        "source": "A3:ENT-MATCH-BREAK@1.0",
+        "target": "A4:APP-CONFIRMHUB@8.4",
+        "relation": "ACCESSED_BY",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "ENT-MATCH-BREAK",
+            "type": "A3.DataEntity",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "APP-CONFIRMHUB",
+            "type": "A4.ApplicationComponent",
+            "version": "8.4"
+          },
+          "perspective": "information",
+          "status": "approved",
+          "evidence": [
+            "application_architecture_document:sdem-migrate-0.20#within-layer-access"
+          ],
+          "rationale": "Approved by the migration to 0.20 (sdem migrate --to 0.20, jane.architect, 2026-11-21): an access link inside the Application layer of SDEM 0.19, now between the Data and Application layers (DL-04, DL-13)",
+          "baseline_id": "MIGRATION-0.20",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-11-21"
+        }
+      },
+      {
+        "id": "MIG-020-009",
+        "source": "A3:ENT-SETTLEMENT-INSTR@1.0",
+        "target": "A4:APP-FXSM@5.7",
+        "relation": "ACCESSED_BY",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "ENT-SETTLEMENT-INSTR",
+            "type": "A3.DataEntity",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "APP-FXSM",
+            "type": "A4.ApplicationComponent",
+            "version": "5.7"
+          },
+          "perspective": "information",
+          "status": "approved",
+          "evidence": [
+            "application_architecture_document:sdem-migrate-0.20#within-layer-access"
+          ],
+          "rationale": "Approved by the migration to 0.20 (sdem migrate --to 0.20, jane.architect, 2026-11-21): an access link inside the Application layer of SDEM 0.19, now between the Data and Application layers (DL-04, DL-13)",
+          "baseline_id": "MIGRATION-0.20",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-11-21"
+        }
+      },
+      {
+        "id": "MIG-020-010",
+        "source": "A3:ENT-NOSTRO-ADVICE@1.0",
+        "target": "A4:APP-FXSM@5.7",
+        "relation": "ACCESSED_BY",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "ENT-NOSTRO-ADVICE",
+            "type": "A3.DataEntity",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "APP-FXSM",
+            "type": "A4.ApplicationComponent",
+            "version": "5.7"
+          },
+          "perspective": "information",
+          "status": "approved",
+          "evidence": [
+            "application_architecture_document:sdem-migrate-0.20#within-layer-access"
+          ],
+          "rationale": "Approved by the migration to 0.20 (sdem migrate --to 0.20, jane.architect, 2026-11-21): an access link inside the Application layer of SDEM 0.19, now between the Data and Application layers (DL-04, DL-13)",
+          "baseline_id": "MIGRATION-0.20",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-11-21"
+        }
+      },
+      {
+        "id": "MIG-020-011",
+        "source": "A3:ENT-COUNTERPARTY@1.0",
+        "target": "A4:APP-CRDS@3.1",
+        "relation": "ACCESSED_BY",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "ENT-COUNTERPARTY",
+            "type": "A3.DataEntity",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "APP-CRDS",
+            "type": "A4.ApplicationComponent",
+            "version": "3.1"
+          },
+          "perspective": "information",
+          "status": "approved",
+          "evidence": [
+            "application_architecture_document:sdem-migrate-0.20#within-layer-access"
+          ],
+          "rationale": "Approved by the migration to 0.20 (sdem migrate --to 0.20, jane.architect, 2026-11-21): an access link inside the Application layer of SDEM 0.19, now between the Data and Application layers (DL-04, DL-13)",
+          "baseline_id": "MIGRATION-0.20",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-11-21"
+        }
+      },
+      {
+        "id": "MIG-020-012",
+        "source": "A3:ENT-SSI@1.0",
+        "target": "A4:APP-CRDS@3.1",
+        "relation": "ACCESSED_BY",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "ENT-SSI",
+            "type": "A3.DataEntity",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "APP-CRDS",
+            "type": "A4.ApplicationComponent",
+            "version": "3.1"
+          },
+          "perspective": "information",
+          "status": "approved",
+          "evidence": [
+            "application_architecture_document:sdem-migrate-0.20#within-layer-access"
+          ],
+          "rationale": "Approved by the migration to 0.20 (sdem migrate --to 0.20, jane.architect, 2026-11-21): an access link inside the Application layer of SDEM 0.19, now between the Data and Application layers (DL-04, DL-13)",
+          "baseline_id": "MIGRATION-0.20",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-11-21"
+        }
+      },
+      {
+        "id": "MIG-020-013",
+        "source": "A3:ENT-RATE-SNAPSHOT@1.0",
+        "target": "A4:APP-RATEGW@2.9",
+        "relation": "ACCESSED_BY",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "ENT-RATE-SNAPSHOT",
+            "type": "A3.DataEntity",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "APP-RATEGW",
+            "type": "A4.ApplicationComponent",
+            "version": "2.9"
+          },
+          "perspective": "information",
+          "status": "approved",
+          "evidence": [
+            "application_architecture_document:sdem-migrate-0.20#within-layer-access"
+          ],
+          "rationale": "Approved by the migration to 0.20 (sdem migrate --to 0.20, jane.architect, 2026-11-21): an access link inside the Application layer of SDEM 0.19, now between the Data and Application layers (DL-04, DL-13)",
+          "baseline_id": "MIGRATION-0.20",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-11-21"
+        }
+      }
+    ]
+  }
+}

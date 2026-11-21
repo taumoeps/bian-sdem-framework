@@ -1,0 +1,759 @@
+{
+  "graph": {
+    "id": "sdem:synthetic-bank-ledger-a3",
+    "type": "sdem.local",
+    "label": "A4 local knowledge graph (synthetic-bank-ledger-a3)",
+    "directed": true,
+    "metadata": {
+      "sdem_store_version": "1.0",
+      "export_sha256": "1177ae06a0c7baab457464ca313aa4ab54b01f4d3ff2f89ceed28f202880c8a6",
+      "level": "A4",
+      "model_id": "synthetic-bank-ledger-a3",
+      "model_version": "2026.10",
+      "metamodel_version": "0.17.0",
+      "source_system": "SYNTHETIC-CMDB-APM"
+    },
+    "nodes": {
+      "A4:APP-LEDGER@12.4": {
+        "label": "LedgerMaster core ledger",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.ApplicationComponent",
+          "id": "APP-LEDGER",
+          "version": "12.4",
+          "lifecycle_status": "active",
+          "description": "Twenty-year-old core banking ledger: accounts, postings, payments, customer master and nightly batch. SOAP services over HTTP; all operations are POST.",
+          "attributes": {
+            "vendor": "LedgerMaster Ltd (synthetic)",
+            "deployed_on": [
+              "INF-MF-LPAR-PROD"
+            ],
+            "deployed_as": [
+              "DEP-LM-PROD"
+            ]
+          }
+        }
+      },
+      "A4:LM-ACCT@12.4": {
+        "label": "Account module",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.ApplicationComponent",
+          "id": "LM-ACCT",
+          "version": "12.4",
+          "lifecycle_status": "active",
+          "description": "Opens, maintains, blocks and closes accounts."
+        }
+      },
+      "A4:LM-POST@12.4": {
+        "label": "Posting engine",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.ApplicationComponent",
+          "id": "LM-POST",
+          "version": "12.4",
+          "lifecycle_status": "active",
+          "description": "Posts and reverses entries; maintains balances."
+        }
+      },
+      "A4:LM-PAY@12.4": {
+        "label": "Payment interface module",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.ApplicationComponent",
+          "id": "LM-PAY",
+          "version": "12.4",
+          "lifecycle_status": "active",
+          "description": "Submits payments to the scheme gateway and tracks status."
+        }
+      },
+      "A4:LM-PARTY@12.4": {
+        "label": "Customer master module",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.ApplicationComponent",
+          "id": "LM-PARTY",
+          "version": "12.4",
+          "lifecycle_status": "active",
+          "description": "Holds customer and counterparty master records."
+        }
+      },
+      "A4:LM-BATCH@12.4": {
+        "label": "Batch module",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.ApplicationComponent",
+          "id": "LM-BATCH",
+          "version": "12.4",
+          "lifecycle_status": "active",
+          "description": "End-of-day, interest and extract jobs."
+        }
+      },
+      "A4:IFC-ACCT@12.4": {
+        "label": "AccountService (SOAP)",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.ApplicationInterface",
+          "id": "IFC-ACCT",
+          "version": "12.4",
+          "lifecycle_status": "active",
+          "description": "Account operations."
+        }
+      },
+      "A4:IFC-POST@12.4": {
+        "label": "PostingService (SOAP)",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.ApplicationInterface",
+          "id": "IFC-POST",
+          "version": "12.4",
+          "lifecycle_status": "active",
+          "description": "Posting operations."
+        }
+      },
+      "A4:IFC-PAY@12.4": {
+        "label": "PaymentService (SOAP)",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.ApplicationInterface",
+          "id": "IFC-PAY",
+          "version": "12.4",
+          "lifecycle_status": "active",
+          "description": "Payment operations."
+        }
+      },
+      "A4:IFC-PARTY@12.4": {
+        "label": "CustomerService (SOAP)",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.ApplicationInterface",
+          "id": "IFC-PARTY",
+          "version": "12.4",
+          "lifecycle_status": "active",
+          "description": "Customer operations."
+        }
+      },
+      "A4:OP-OpenAccount@12.4": {
+        "label": "OpenAccount",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.APIOperation",
+          "id": "OP-OpenAccount",
+          "version": "12.4",
+          "lifecycle_status": "active",
+          "description": "Opens a current account.",
+          "attributes": {
+            "method": "POST",
+            "path": "/ledger/svc/OpenAccount",
+            "payload_fields": [
+              "customer_reference",
+              "currency",
+              "overdraft_limit",
+              "account_reference",
+              "account_status",
+              "open_date"
+            ]
+          }
+        }
+      },
+      "A4:OP-GetAccount@12.4": {
+        "label": "GetAccount",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.APIOperation",
+          "id": "OP-GetAccount",
+          "version": "12.4",
+          "lifecycle_status": "active",
+          "description": "Returns account status and terms.",
+          "attributes": {
+            "method": "POST",
+            "path": "/ledger/svc/GetAccount",
+            "payload_fields": [
+              "account_reference",
+              "account_status",
+              "currency",
+              "balance",
+              "overdraft_limit",
+              "customer_reference"
+            ]
+          }
+        }
+      },
+      "A4:OP-BlockAccount@12.4": {
+        "label": "BlockAccount",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.APIOperation",
+          "id": "OP-BlockAccount",
+          "version": "12.4",
+          "lifecycle_status": "active",
+          "description": "Blocks or unblocks an account.",
+          "attributes": {
+            "method": "POST",
+            "path": "/ledger/svc/BlockAccount",
+            "payload_fields": [
+              "account_reference",
+              "account_status",
+              "block_reason"
+            ]
+          }
+        }
+      },
+      "A4:OP-AmendOverdraft@12.4": {
+        "label": "AmendOverdraft",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.APIOperation",
+          "id": "OP-AmendOverdraft",
+          "version": "12.4",
+          "lifecycle_status": "active",
+          "description": "Changes the overdraft limit.",
+          "attributes": {
+            "method": "POST",
+            "path": "/ledger/svc/AmendOverdraft",
+            "payload_fields": [
+              "account_reference",
+              "overdraft_limit",
+              "account_status"
+            ]
+          }
+        }
+      },
+      "A4:OP-CloseAccount@12.4": {
+        "label": "CloseAccount",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.APIOperation",
+          "id": "OP-CloseAccount",
+          "version": "12.4",
+          "lifecycle_status": "active",
+          "description": "Closes an account.",
+          "attributes": {
+            "method": "POST",
+            "path": "/ledger/svc/CloseAccount",
+            "payload_fields": [
+              "account_reference",
+              "account_status",
+              "close_date"
+            ]
+          }
+        }
+      },
+      "A4:OP-PostEntry@12.4": {
+        "label": "PostEntry",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.APIOperation",
+          "id": "OP-PostEntry",
+          "version": "12.4",
+          "lifecycle_status": "active",
+          "description": "Posts a financial entry.",
+          "attributes": {
+            "method": "POST",
+            "path": "/ledger/svc/PostEntry",
+            "payload_fields": [
+              "account_reference",
+              "amount",
+              "currency",
+              "posting_date",
+              "posting_type",
+              "posting_reference",
+              "balance_after"
+            ]
+          }
+        }
+      },
+      "A4:OP-GetBalance@12.4": {
+        "label": "GetBalance",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.APIOperation",
+          "id": "OP-GetBalance",
+          "version": "12.4",
+          "lifecycle_status": "active",
+          "description": "Returns the balance and position.",
+          "attributes": {
+            "method": "POST",
+            "path": "/ledger/svc/GetBalance",
+            "payload_fields": [
+              "account_reference",
+              "balance_after",
+              "position_reference",
+              "currency"
+            ]
+          }
+        }
+      },
+      "A4:OP-ReverseEntry@12.4": {
+        "label": "ReverseEntry",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.APIOperation",
+          "id": "OP-ReverseEntry",
+          "version": "12.4",
+          "lifecycle_status": "active",
+          "description": "Reverses a posting.",
+          "attributes": {
+            "method": "POST",
+            "path": "/ledger/svc/ReverseEntry",
+            "payload_fields": [
+              "posting_reference",
+              "balance_after",
+              "reversal_reason"
+            ]
+          }
+        }
+      },
+      "A4:OP-SubmitPayment@12.4": {
+        "label": "SubmitPayment",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.APIOperation",
+          "id": "OP-SubmitPayment",
+          "version": "12.4",
+          "lifecycle_status": "active",
+          "description": "Submits a payment for execution.",
+          "attributes": {
+            "method": "POST",
+            "path": "/ledger/svc/SubmitPayment",
+            "payload_fields": [
+              "debtor_account_reference",
+              "creditor_account_reference",
+              "amount",
+              "currency",
+              "payment_reference",
+              "execution_status"
+            ]
+          }
+        }
+      },
+      "A4:OP-PaymentStatus@12.4": {
+        "label": "PaymentStatus",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.APIOperation",
+          "id": "OP-PaymentStatus",
+          "version": "12.4",
+          "lifecycle_status": "active",
+          "description": "Returns execution status.",
+          "attributes": {
+            "method": "POST",
+            "path": "/ledger/svc/PaymentStatus",
+            "payload_fields": [
+              "payment_reference",
+              "execution_status",
+              "scheme_reference",
+              "execution_date"
+            ]
+          }
+        }
+      },
+      "A4:OP-CancelPayment@12.4": {
+        "label": "CancelPayment",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.APIOperation",
+          "id": "OP-CancelPayment",
+          "version": "12.4",
+          "lifecycle_status": "active",
+          "description": "Cancels a payment.",
+          "attributes": {
+            "method": "POST",
+            "path": "/ledger/svc/CancelPayment",
+            "payload_fields": [
+              "payment_reference",
+              "execution_status",
+              "cancel_reason"
+            ]
+          }
+        }
+      },
+      "A4:OP-CreateCustomer@12.4": {
+        "label": "CreateCustomer",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.APIOperation",
+          "id": "OP-CreateCustomer",
+          "version": "12.4",
+          "lifecycle_status": "active",
+          "description": "Creates a customer record.",
+          "attributes": {
+            "method": "POST",
+            "path": "/ledger/svc/CreateCustomer",
+            "payload_fields": [
+              "party_name",
+              "party_type",
+              "address",
+              "party_reference"
+            ]
+          }
+        }
+      },
+      "A4:OP-GetCustomer@12.4": {
+        "label": "GetCustomer",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.APIOperation",
+          "id": "OP-GetCustomer",
+          "version": "12.4",
+          "lifecycle_status": "active",
+          "description": "Returns a customer record.",
+          "attributes": {
+            "method": "POST",
+            "path": "/ledger/svc/GetCustomer",
+            "payload_fields": [
+              "party_reference",
+              "party_name",
+              "party_type",
+              "address",
+              "kyc_status"
+            ]
+          }
+        }
+      },
+      "A4:OP-UpdateCustomer@12.4": {
+        "label": "UpdateCustomer",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.APIOperation",
+          "id": "OP-UpdateCustomer",
+          "version": "12.4",
+          "lifecycle_status": "active",
+          "description": "Updates customer details.",
+          "attributes": {
+            "method": "POST",
+            "path": "/ledger/svc/UpdateCustomer",
+            "payload_fields": [
+              "party_reference",
+              "address",
+              "contact_details"
+            ]
+          }
+        }
+      },
+      "A4:JOB-EOD@12.4": {
+        "label": "EndOfDay",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.APIOperation",
+          "id": "JOB-EOD",
+          "version": "12.4",
+          "lifecycle_status": "active",
+          "description": "Nightly close: roll dates, compute balances.",
+          "attributes": {
+            "method": "BATCH",
+            "path": "/batch/EOD",
+            "payload_fields": [
+              "run_date",
+              "accounts_processed",
+              "status"
+            ]
+          }
+        }
+      },
+      "A4:JOB-INTEREST@12.4": {
+        "label": "ApplyInterest",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.APIOperation",
+          "id": "JOB-INTEREST",
+          "version": "12.4",
+          "lifecycle_status": "active",
+          "description": "Applies interest to accounts.",
+          "attributes": {
+            "method": "BATCH",
+            "path": "/batch/ApplyInterest",
+            "payload_fields": [
+              "account_reference",
+              "interest_amount",
+              "posting_date"
+            ]
+          }
+        }
+      },
+      "A4:JOB-AUDIT@12.4": {
+        "label": "AuditExtract",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.APIOperation",
+          "id": "JOB-AUDIT",
+          "version": "12.4",
+          "lifecycle_status": "active",
+          "description": "Extracts the audit trail.",
+          "attributes": {
+            "method": "BATCH",
+            "path": "/batch/AuditExtract",
+            "payload_fields": [
+              "audit_id",
+              "event",
+              "operator_id",
+              "timestamp"
+            ]
+          }
+        }
+      }
+    },
+    "edges": [
+      {
+        "id": "A4:APP-LEDGER-composition-LM-ACCT",
+        "source": "A4:APP-LEDGER@12.4",
+        "target": "A4:LM-ACCT@12.4",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-01"
+        }
+      },
+      {
+        "id": "A4:APP-LEDGER-composition-LM-POST",
+        "source": "A4:APP-LEDGER@12.4",
+        "target": "A4:LM-POST@12.4",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-01"
+        }
+      },
+      {
+        "id": "A4:APP-LEDGER-composition-LM-PAY",
+        "source": "A4:APP-LEDGER@12.4",
+        "target": "A4:LM-PAY@12.4",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-01"
+        }
+      },
+      {
+        "id": "A4:APP-LEDGER-composition-LM-PARTY",
+        "source": "A4:APP-LEDGER@12.4",
+        "target": "A4:LM-PARTY@12.4",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-01"
+        }
+      },
+      {
+        "id": "A4:APP-LEDGER-composition-LM-BATCH",
+        "source": "A4:APP-LEDGER@12.4",
+        "target": "A4:LM-BATCH@12.4",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-01"
+        }
+      },
+      {
+        "id": "A4:LM-ACCT-composition-IFC-ACCT",
+        "source": "A4:LM-ACCT@12.4",
+        "target": "A4:IFC-ACCT@12.4",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-03"
+        }
+      },
+      {
+        "id": "A4:LM-POST-composition-IFC-POST",
+        "source": "A4:LM-POST@12.4",
+        "target": "A4:IFC-POST@12.4",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-03"
+        }
+      },
+      {
+        "id": "A4:LM-PAY-composition-IFC-PAY",
+        "source": "A4:LM-PAY@12.4",
+        "target": "A4:IFC-PAY@12.4",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-03"
+        }
+      },
+      {
+        "id": "A4:LM-PARTY-composition-IFC-PARTY",
+        "source": "A4:LM-PARTY@12.4",
+        "target": "A4:IFC-PARTY@12.4",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-03"
+        }
+      },
+      {
+        "id": "A4:IFC-ACCT-composition-OP-OpenAccount",
+        "source": "A4:IFC-ACCT@12.4",
+        "target": "A4:OP-OpenAccount@12.4",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-27"
+        }
+      },
+      {
+        "id": "A4:IFC-ACCT-composition-OP-GetAccount",
+        "source": "A4:IFC-ACCT@12.4",
+        "target": "A4:OP-GetAccount@12.4",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-27"
+        }
+      },
+      {
+        "id": "A4:IFC-ACCT-composition-OP-BlockAccount",
+        "source": "A4:IFC-ACCT@12.4",
+        "target": "A4:OP-BlockAccount@12.4",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-27"
+        }
+      },
+      {
+        "id": "A4:IFC-ACCT-composition-OP-AmendOverdraft",
+        "source": "A4:IFC-ACCT@12.4",
+        "target": "A4:OP-AmendOverdraft@12.4",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-27"
+        }
+      },
+      {
+        "id": "A4:IFC-ACCT-composition-OP-CloseAccount",
+        "source": "A4:IFC-ACCT@12.4",
+        "target": "A4:OP-CloseAccount@12.4",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-27"
+        }
+      },
+      {
+        "id": "A4:IFC-POST-composition-OP-PostEntry",
+        "source": "A4:IFC-POST@12.4",
+        "target": "A4:OP-PostEntry@12.4",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-27"
+        }
+      },
+      {
+        "id": "A4:IFC-POST-composition-OP-GetBalance",
+        "source": "A4:IFC-POST@12.4",
+        "target": "A4:OP-GetBalance@12.4",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-27"
+        }
+      },
+      {
+        "id": "A4:IFC-POST-composition-OP-ReverseEntry",
+        "source": "A4:IFC-POST@12.4",
+        "target": "A4:OP-ReverseEntry@12.4",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-27"
+        }
+      },
+      {
+        "id": "A4:IFC-PAY-composition-OP-SubmitPayment",
+        "source": "A4:IFC-PAY@12.4",
+        "target": "A4:OP-SubmitPayment@12.4",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-27"
+        }
+      },
+      {
+        "id": "A4:IFC-PAY-composition-OP-PaymentStatus",
+        "source": "A4:IFC-PAY@12.4",
+        "target": "A4:OP-PaymentStatus@12.4",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-27"
+        }
+      },
+      {
+        "id": "A4:IFC-PAY-composition-OP-CancelPayment",
+        "source": "A4:IFC-PAY@12.4",
+        "target": "A4:OP-CancelPayment@12.4",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-27"
+        }
+      },
+      {
+        "id": "A4:IFC-PARTY-composition-OP-CreateCustomer",
+        "source": "A4:IFC-PARTY@12.4",
+        "target": "A4:OP-CreateCustomer@12.4",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-27"
+        }
+      },
+      {
+        "id": "A4:IFC-PARTY-composition-OP-GetCustomer",
+        "source": "A4:IFC-PARTY@12.4",
+        "target": "A4:OP-GetCustomer@12.4",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-27"
+        }
+      },
+      {
+        "id": "A4:IFC-PARTY-composition-OP-UpdateCustomer",
+        "source": "A4:IFC-PARTY@12.4",
+        "target": "A4:OP-UpdateCustomer@12.4",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-27"
+        }
+      },
+      {
+        "id": "A4:LM-BATCH-composition-JOB-EOD",
+        "source": "A4:LM-BATCH@12.4",
+        "target": "A4:JOB-EOD@12.4",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-28"
+        }
+      },
+      {
+        "id": "A4:LM-BATCH-composition-JOB-INTEREST",
+        "source": "A4:LM-BATCH@12.4",
+        "target": "A4:JOB-INTEREST@12.4",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-28"
+        }
+      },
+      {
+        "id": "A4:LM-BATCH-composition-JOB-AUDIT",
+        "source": "A4:LM-BATCH@12.4",
+        "target": "A4:JOB-AUDIT@12.4",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-28"
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,103 @@
+{
+  "graph": {
+    "id": "sdem:library-holds-a3",
+    "type": "sdem.local",
+    "label": "A4 local knowledge graph (library-holds-a3)",
+    "directed": true,
+    "metadata": {
+      "sdem_store_version": "1.0",
+      "export_sha256": "6f14d5a5459badc73d63471c1597906a6e007d99390b205bcf1aeac156edfdf7",
+      "level": "A4",
+      "model_id": "library-holds-a3",
+      "model_version": "2026.11",
+      "metamodel_version": "0.17.0",
+      "source_system": "SYNTHETIC-DESIGN"
+    },
+    "nodes": {
+      "A4:APP-CIRC@3.1": {
+        "label": "Circulation system",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.ApplicationComponent",
+          "id": "APP-CIRC",
+          "version": "3.1",
+          "lifecycle_status": "active",
+          "description": "Keeps loans, renewals and holds for every branch.",
+          "attributes": {
+            "vendor": "in-house",
+            "deployed_on": [
+              "SYS-CIRC-RUNTIME"
+            ],
+            "deployed_as": [
+              "DEP-CIRC-PROD"
+            ]
+          }
+        }
+      },
+      "A4:APS-HOLDS@1.0": {
+        "label": "Hold placement",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.ApplicationService",
+          "id": "APS-HOLDS",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Places, queues and releases holds."
+        }
+      },
+      "A4:IFC-HOLDS-API@1.0": {
+        "label": "Holds API",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.ApplicationInterface",
+          "id": "IFC-HOLDS-API",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Used by the member app and the branch desk."
+        }
+      },
+      "A4:POST /holds@1.0": {
+        "label": "Place a hold",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.APIOperation",
+          "id": "POST /holds",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "attributes": {
+            "method": "POST",
+            "path": "/holds",
+            "payload_fields": [
+              "hold_reference",
+              "member_reference",
+              "item_reference",
+              "branch_code"
+            ]
+          }
+        }
+      }
+    },
+    "edges": [
+      {
+        "id": "A4:APP-CIRC-composition-IFC-HOLDS-API",
+        "source": "A4:APP-CIRC@3.1",
+        "target": "A4:IFC-HOLDS-API@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-03"
+        }
+      },
+      {
+        "id": "A4:IFC-HOLDS-API-composition-POST /holds",
+        "source": "A4:IFC-HOLDS-API@1.0",
+        "target": "A4:POST /holds@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-27"
+        }
+      }
+    ]
+  }
+}

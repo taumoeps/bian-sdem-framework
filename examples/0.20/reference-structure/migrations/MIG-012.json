@@ -1,0 +1,17 @@
+{
+  "id": "MIG-012",
+  "at": "2026-11-16T06:05:46",
+  "person": "sdem.maintainer",
+  "current": "0.15.0",
+  "files": [
+    {
+      "file": "mappings.json",
+      "from": "0.14.0",
+      "to": "0.15.0",
+      "migrations": [
+        "0.14.0 → 0.15.0"
+      ]
+    }
+  ],
+  "changes": {}
+}

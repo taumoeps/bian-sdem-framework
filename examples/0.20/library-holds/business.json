@@ -1,0 +1,152 @@
+{
+  "level": "business",
+  "model_id": "library-holds-a1",
+  "model_version": "2026.11",
+  "metamodel_version": "0.17.0",
+  "source_system": "SYNTHETIC-DESIGN",
+  "instances": [
+    {
+      "id": "CAP-LEND",
+      "type": "business.BusinessCapability",
+      "version": "1.0",
+      "name": "Lending",
+      "lifecycle_status": "active",
+      "attributes": {
+        "owner": "ACT-CIRC-TEAM"
+      },
+      "description": "Lending the collection to members: loans, renewals and holds."
+    },
+    {
+      "id": "CAP-HOLDS",
+      "type": "business.BusinessCapability",
+      "version": "1.0",
+      "name": "Holds management",
+      "lifecycle_status": "active",
+      "attributes": {
+        "owner": "ACT-CIRC-TEAM"
+      },
+      "description": "Letting a member reserve an item and collect it at a branch."
+    },
+    {
+      "id": "VS-RESERVE",
+      "type": "business.ValueStream",
+      "version": "1.0",
+      "name": "Reserve and collect an item",
+      "lifecycle_status": "active",
+      "attributes": {
+        "stages": [
+          "VSS-REQUEST",
+          "VSS-READY",
+          "VSS-COLLECT"
+        ]
+      }
+    },
+    {
+      "id": "VSS-REQUEST",
+      "type": "business.ValueStreamStage",
+      "version": "1.0",
+      "name": "Request",
+      "lifecycle_status": "active"
+    },
+    {
+      "id": "VSS-READY",
+      "type": "business.ValueStreamStage",
+      "version": "1.0",
+      "name": "Item ready",
+      "lifecycle_status": "active"
+    },
+    {
+      "id": "VSS-COLLECT",
+      "type": "business.ValueStreamStage",
+      "version": "1.0",
+      "name": "Collect",
+      "lifecycle_status": "active"
+    },
+    {
+      "id": "PRC-PLACE-HOLD",
+      "type": "business.BusinessProcess",
+      "version": "1.0",
+      "name": "Place a hold",
+      "lifecycle_status": "active",
+      "description": "A member reserves a catalogue item for collection at a branch of their choice."
+    },
+    {
+      "id": "PRC-COLLECT",
+      "type": "business.BusinessProcess",
+      "version": "1.0",
+      "name": "Collect a held item",
+      "lifecycle_status": "active",
+      "description": "Branch staff hand a held item to the member and record the loan."
+    },
+    {
+      "id": "ACT-MEMBER",
+      "type": "business.BusinessActor",
+      "version": "1.0",
+      "name": "Library member",
+      "lifecycle_status": "active",
+      "attributes": {
+        "actor_kind": "person",
+        "external": true
+      }
+    },
+    {
+      "id": "ACT-CIRC-TEAM",
+      "type": "business.BusinessActor",
+      "version": "1.0",
+      "name": "Circulation team",
+      "lifecycle_status": "active",
+      "attributes": {
+        "actor_kind": "organisational unit",
+        "external": false
+      }
+    },
+    {
+      "id": "BSV-HOLDS",
+      "type": "business.BusinessService",
+      "version": "1.0",
+      "name": "Reserve an item",
+      "lifecycle_status": "active",
+      "description": "The service a member uses to reserve an item."
+    },
+    {
+      "id": "BO-HOLD",
+      "type": "business.BusinessObject",
+      "version": "1.0",
+      "name": "Hold",
+      "lifecycle_status": "active",
+      "description": "A member's reservation of one catalogue item for one branch."
+    }
+  ],
+  "relationships": [
+    {
+      "source": "CAP-LEND",
+      "kind": "composition",
+      "target": "CAP-HOLDS"
+    },
+    {
+      "source": "CAP-HOLDS",
+      "kind": "serving",
+      "target": "VS-RESERVE"
+    },
+    {
+      "source": "PRC-PLACE-HOLD",
+      "kind": "realization",
+      "target": "CAP-HOLDS"
+    },
+    {
+      "source": "VS-RESERVE",
+      "kind": "composition",
+      "target": "VSS-REQUEST"
+    },
+    {
+      "source": "VS-RESERVE",
+      "kind": "composition",
+      "target": "VSS-READY"
+    },
+    {
+      "source": "VS-RESERVE",
+      "kind": "composition",
+      "target": "VSS-COLLECT"
+    }
+  ]
+}

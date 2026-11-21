@@ -1,0 +1,121 @@
+{
+  "level": "data",
+  "model_id": "synthetic-bank-ledger-a3-data",
+  "model_version": "2026.10",
+  "metamodel_version": "0.17.0",
+  "source_system": "SYNTHETIC-CMDB-APM",
+  "instances": [
+    {
+      "id": "ENT-ACCOUNT",
+      "type": "data.DataEntity",
+      "version": "12.4",
+      "name": "ACCT_MASTER",
+      "lifecycle_status": "active",
+      "description": "Account master table.",
+      "attributes": {
+        "attributes": [
+          "account_reference",
+          "customer_reference",
+          "account_status",
+          "currency",
+          "balance",
+          "overdraft_limit",
+          "open_date",
+          "close_date",
+          "branch_code"
+        ],
+        "stored_in": [
+          "INF-DB2-PROD"
+        ]
+      }
+    },
+    {
+      "id": "ENT-POSTING",
+      "type": "data.DataEntity",
+      "version": "12.4",
+      "name": "POSTING_JRNL",
+      "lifecycle_status": "active",
+      "description": "Posting journal.",
+      "attributes": {
+        "attributes": [
+          "posting_reference",
+          "account_reference",
+          "amount",
+          "currency",
+          "posting_date",
+          "posting_type",
+          "balance_after",
+          "operator_id"
+        ],
+        "stored_in": [
+          "INF-DB2-PROD"
+        ]
+      }
+    },
+    {
+      "id": "ENT-PAYMENT",
+      "type": "data.DataEntity",
+      "version": "12.4",
+      "name": "PAYMT_TXN",
+      "lifecycle_status": "active",
+      "description": "Payment transactions.",
+      "attributes": {
+        "attributes": [
+          "payment_reference",
+          "debtor_account_reference",
+          "creditor_account_reference",
+          "amount",
+          "currency",
+          "execution_date",
+          "execution_status",
+          "scheme_reference"
+        ],
+        "stored_in": [
+          "INF-DB2-PROD"
+        ]
+      }
+    },
+    {
+      "id": "ENT-PARTY",
+      "type": "data.DataEntity",
+      "version": "12.4",
+      "name": "CUST_MASTER",
+      "lifecycle_status": "active",
+      "description": "Customer master.",
+      "attributes": {
+        "attributes": [
+          "party_reference",
+          "party_name",
+          "party_type",
+          "address",
+          "contact_details",
+          "kyc_status",
+          "created_by"
+        ],
+        "stored_in": [
+          "INF-DB2-PROD"
+        ]
+      }
+    },
+    {
+      "id": "ENT-AUDIT",
+      "type": "data.DataEntity",
+      "version": "12.4",
+      "name": "AUDIT_TRAIL",
+      "lifecycle_status": "active",
+      "description": "Audit trail.",
+      "attributes": {
+        "attributes": [
+          "audit_id",
+          "event",
+          "operator_id",
+          "timestamp"
+        ],
+        "stored_in": [
+          "INF-DB2-PROD"
+        ]
+      }
+    }
+  ],
+  "relationships": []
+}

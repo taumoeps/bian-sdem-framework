@@ -1,0 +1,1317 @@
+{
+  "use_case": "C3",
+  "executor": "fable-executor/2026-10-23",
+  "given": "c3-mappings-given.json (17 arrows: A1->A2 and A2->A3)",
+  "gold_opened_at_phase": 5,
+  "files": {
+    "c3-proposals.json": "registry: S32 x2; DEPLOYED_ON x5 logged by target entity — S33 x2 (SystemSoftware), S34 x2 (Node), S35 x1 (Device)",
+    "c3-candidates.json": "45 candidate reports over 18 plan IDs (S37-S54 except S36)"
+  },
+  "deployed_on_by_target": {
+    "S33": [
+      "APP-LC -> SYS-RUNTIME-TF",
+      "APP-DOC -> SYS-RUNTIME-TF"
+    ],
+    "S34": [
+      "APP-LC -> NODE-TF-PROD",
+      "APP-DOC -> NODE-TF-PROD"
+    ],
+    "S35": [
+      "APP-DOC -> DEV-SCAN-01"
+    ],
+    "S36": "subsumed in S33"
+  },
+  "note": "One record per connection attempted. Outcomes set after sdmm-eval against both golds.",
+  "attempts": [
+    {
+      "plan_id": "S32",
+      "connection": "APP-LC DEPLOYED_AS DEP-LC-PROD",
+      "step_assigned": 1,
+      "step_used": 1,
+      "fallback": false,
+      "data_read": [
+        "a3 APP-LC.deployed_as lists DEP-LC-PROD",
+        "a4 DEP-LC-PROD.component_id = APP-LC (environment ENV-TF-PROD, platform NODE-TF-PROD)"
+      ],
+      "reasoning": "direct join",
+      "confidence_predicted": "high",
+      "confidence_given": 0.8,
+      "proposal_id": "P-C3-001",
+      "outcome": "hit",
+      "outcome_note": "gold TF-118 (band None vs given 0.8)",
+      "file": "c3-proposals.json (registry)"
+    },
+    {
+      "plan_id": "S34",
+      "connection": "APP-LC DEPLOYED_ON NODE-TF-PROD [A4.Node]",
+      "step_assigned": 1,
+      "step_used": 1,
+      "fallback": false,
+      "data_read": [
+        "a3 APP-LC.deployed_on lists NODE-TF-PROD",
+        "a4 NODE-TF-PROD.hosts lists APP-LC",
+        "a4 DEP-LC-PROD.platform_id = NODE-TF-PROD"
+      ],
+      "reasoning": "direct join; DEPLOYED_ON with a Node target is plan row S34",
+      "confidence_predicted": "high",
+      "confidence_given": 0.8,
+      "proposal_id": "P-C3-002",
+      "outcome": "hit",
+      "outcome_note": "gold TF-122 (band None vs given 0.8)",
+      "file": "c3-proposals.json (registry)"
+    },
+    {
+      "plan_id": "S33",
+      "connection": "APP-LC DEPLOYED_ON SYS-RUNTIME-TF [A4.SystemSoftware]",
+      "step_assigned": 1,
+      "step_used": 1,
+      "fallback": false,
+      "data_read": [
+        "a3 APP-LC.deployed_on lists SYS-RUNTIME-TF",
+        "a4 SYS-RUNTIME-TF.hosts lists APP-LC"
+      ],
+      "reasoning": "direct join; DEPLOYED_ON with a SystemSoftware target is plan row S33",
+      "confidence_predicted": "high",
+      "confidence_given": 0.8,
+      "proposal_id": "P-C3-003",
+      "outcome": "hit",
+      "outcome_note": "gold TF-120 (band None vs given 0.8)",
+      "file": "c3-proposals.json (registry)"
+    },
+    {
+      "plan_id": "S32",
+      "connection": "APP-DOC DEPLOYED_AS DEP-DOC-PROD",
+      "step_assigned": 1,
+      "step_used": 1,
+      "fallback": false,
+      "data_read": [
+        "a3 APP-DOC.deployed_as lists DEP-DOC-PROD",
+        "a4 DEP-DOC-PROD.component_id = APP-DOC (environment ENV-TF-PROD, platform NODE-TF-PROD)"
+      ],
+      "reasoning": "direct join",
+      "confidence_predicted": "high",
+      "confidence_given": 0.8,
+      "proposal_id": "P-C3-004",
+      "outcome": "hit",
+      "outcome_note": "gold TF-119 (band None vs given 0.8)",
+      "file": "c3-proposals.json (registry)"
+    },
+    {
+      "plan_id": "S35",
+      "connection": "APP-DOC DEPLOYED_ON DEV-SCAN-01 [A4.Device]",
+      "step_assigned": 1,
+      "step_used": 1,
+      "fallback": false,
+      "data_read": [
+        "a3 APP-DOC.deployed_on lists DEV-SCAN-01",
+        "a4 DEV-SCAN-01.hosts lists APP-DOC"
+      ],
+      "reasoning": "direct join; DEPLOYED_ON with a Device target is plan row S35",
+      "confidence_predicted": "high",
+      "confidence_given": 0.8,
+      "proposal_id": "P-C3-005",
+      "outcome": "hit",
+      "outcome_note": "gold TF-124 (band None vs given 0.8)",
+      "file": "c3-proposals.json (registry)"
+    },
+    {
+      "plan_id": "S34",
+      "connection": "APP-DOC DEPLOYED_ON NODE-TF-PROD [A4.Node]",
+      "step_assigned": 1,
+      "step_used": 1,
+      "fallback": false,
+      "data_read": [
+        "a3 APP-DOC.deployed_on lists NODE-TF-PROD",
+        "a4 NODE-TF-PROD.hosts lists APP-DOC",
+        "a4 DEP-DOC-PROD.platform_id = NODE-TF-PROD"
+      ],
+      "reasoning": "direct join; DEPLOYED_ON with a Node target is plan row S34",
+      "confidence_predicted": "high",
+      "confidence_given": 0.8,
+      "proposal_id": "P-C3-006",
+      "outcome": "hit",
+      "outcome_note": "gold TF-123 (band None vs given 0.8)",
+      "file": "c3-proposals.json (registry)"
+    },
+    {
+      "plan_id": "S33",
+      "connection": "APP-DOC DEPLOYED_ON SYS-RUNTIME-TF [A4.SystemSoftware]",
+      "step_assigned": 1,
+      "step_used": 1,
+      "fallback": false,
+      "data_read": [
+        "a3 APP-DOC.deployed_on lists SYS-RUNTIME-TF",
+        "a4 SYS-RUNTIME-TF.hosts lists APP-DOC"
+      ],
+      "reasoning": "direct join; DEPLOYED_ON with a SystemSoftware target is plan row S33",
+      "confidence_predicted": "high",
+      "confidence_given": 0.8,
+      "proposal_id": "P-C3-007",
+      "outcome": "hit",
+      "outcome_note": "gold TF-121 (band None vs given 0.8)",
+      "file": "c3-proposals.json (registry)"
+    },
+    {
+      "plan_id": "S37",
+      "connection": "APP-LC -> NET-TF",
+      "step_assigned": 1,
+      "step_used": 1,
+      "fallback": false,
+      "data_read": [
+        "a3 APP-LC.network_zone = NET-TF",
+        "a4 NET-TF.connects names ['NODE-TF-PROD'] which host the component"
+      ],
+      "reasoning": "join on network_zone / connects",
+      "confidence_predicted": "low",
+      "confidence_given": 0.4,
+      "proposal_id": "C-C3-001",
+      "outcome": "hit",
+      "outcome_note": "gold TFC-057 (band 0.4 vs given 0.4)",
+      "file": "c3-candidates.json (guide 4c)"
+    },
+    {
+      "plan_id": "S39",
+      "connection": "APP-LC -> ART-LC-IMG",
+      "step_assigned": 1,
+      "step_used": 1,
+      "fallback": false,
+      "data_read": [
+        "a3 APP-LC.built_as lists ART-LC-IMG",
+        "a4 ART-LC-IMG.of_component = APP-LC"
+      ],
+      "reasoning": "join",
+      "confidence_predicted": "medium",
+      "confidence_given": 0.6,
+      "proposal_id": "C-C3-002",
+      "outcome": "hit",
+      "outcome_note": "gold TFC-060 (band 0.6 vs given 0.6)",
+      "file": "c3-candidates.json (guide 4c)"
+    },
+    {
+      "plan_id": "S37",
+      "connection": "APP-DOC -> NET-TF",
+      "step_assigned": 1,
+      "step_used": 1,
+      "fallback": false,
+      "data_read": [
+        "a3 APP-DOC.network_zone = NET-TF",
+        "a4 NET-TF.connects names ['DEV-SCAN-01', 'NODE-TF-PROD'] which host the component"
+      ],
+      "reasoning": "join on network_zone / connects",
+      "confidence_predicted": "low",
+      "confidence_given": 0.4,
+      "proposal_id": "C-C3-003",
+      "outcome": "hit",
+      "outcome_note": "gold TFC-058 (band 0.4 vs given 0.4)",
+      "file": "c3-candidates.json (guide 4c)"
+    },
+    {
+      "plan_id": "S39",
+      "connection": "APP-DOC -> ART-DOC-IMG",
+      "step_assigned": 1,
+      "step_used": 1,
+      "fallback": false,
+      "data_read": [
+        "a3 APP-DOC.built_as lists ART-DOC-IMG",
+        "a4 ART-DOC-IMG.of_component = APP-DOC"
+      ],
+      "reasoning": "join",
+      "confidence_predicted": "medium",
+      "confidence_given": 0.6,
+      "proposal_id": "C-C3-004",
+      "outcome": "hit",
+      "outcome_note": "gold TFC-061 (band 0.6 vs given 0.6)",
+      "file": "c3-candidates.json (guide 4c)"
+    },
+    {
+      "plan_id": "S38",
+      "connection": "APP-DOC -> PATH-TF-01",
+      "step_assigned": 1,
+      "step_used": 1,
+      "fallback": false,
+      "data_read": [
+        "a4 PATH-TF-01.carries"
+      ],
+      "reasoning": "join",
+      "confidence_predicted": "low",
+      "confidence_given": 0.4,
+      "proposal_id": "C-C3-005",
+      "outcome": "hit",
+      "outcome_note": "gold TFC-059 (band 0.4 vs given 0.4)",
+      "file": "c3-candidates.json (guide 4c)"
+    },
+    {
+      "plan_id": "S39",
+      "connection": "<component> -> ART-DOC-STORE",
+      "step_assigned": 1,
+      "step_used": 1,
+      "fallback": false,
+      "data_read": [
+        "a4 ART-DOC-STORE: no of_component; no built_as names it"
+      ],
+      "reasoning": "NO REPORT — nobody's build (C3.4); it is a store, reached by S49",
+      "confidence_predicted": "none",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct"
+    },
+    {
+      "plan_id": "S41",
+      "connection": "SVC-LC -> TS-QUEUE",
+      "step_assigned": 1,
+      "step_used": 1,
+      "fallback": false,
+      "data_read": [
+        "a3 SVC-LC.consumes"
+      ],
+      "reasoning": "join",
+      "confidence_predicted": "medium",
+      "confidence_given": 0.6,
+      "proposal_id": "C-C3-006",
+      "outcome": "hit",
+      "outcome_note": "gold TFC-064 (band 0.6 vs given 0.6)",
+      "file": "c3-candidates.json (guide 4c)"
+    },
+    {
+      "plan_id": "S41",
+      "connection": "SVC-LC -> TS-GATEWAY",
+      "step_assigned": 1,
+      "step_used": 1,
+      "fallback": false,
+      "data_read": [
+        "a3 SVC-LC.consumes"
+      ],
+      "reasoning": "join",
+      "confidence_predicted": "medium",
+      "confidence_given": 0.6,
+      "proposal_id": "C-C3-007",
+      "outcome": "hit",
+      "outcome_note": "gold TFC-065 (band 0.6 vs given 0.6)",
+      "file": "c3-candidates.json (guide 4c)"
+    },
+    {
+      "plan_id": "S41",
+      "connection": "SVC-DOC -> TS-GATEWAY",
+      "step_assigned": 1,
+      "step_used": 1,
+      "fallback": false,
+      "data_read": [
+        "a3 SVC-DOC.consumes"
+      ],
+      "reasoning": "join",
+      "confidence_predicted": "medium",
+      "confidence_given": 0.6,
+      "proposal_id": "C-C3-008",
+      "outcome": "hit",
+      "outcome_note": "gold TFC-066 (band 0.6 vs given 0.6)",
+      "file": "c3-candidates.json (guide 4c)"
+    },
+    {
+      "plan_id": "S41",
+      "connection": "<application service> -> TS-SIGNING",
+      "step_assigned": 1,
+      "step_used": 1,
+      "fallback": false,
+      "data_read": [
+        "a3: no ApplicationService.consumes names TS-SIGNING; only functions consume it"
+      ],
+      "reasoning": "NO REPORT — consumed by functions (S45), not services (C3.4)",
+      "confidence_predicted": "none",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct"
+    },
+    {
+      "plan_id": "S41",
+      "connection": "<application service> -> TS-OCR",
+      "step_assigned": 1,
+      "step_used": 1,
+      "fallback": false,
+      "data_read": [
+        "a3: no ApplicationService.consumes names TS-OCR; only functions consume it"
+      ],
+      "reasoning": "NO REPORT — consumed by functions (S45), not services (C3.4)",
+      "confidence_predicted": "none",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct"
+    },
+    {
+      "plan_id": "S43",
+      "connection": "IFC-LC -> TI-INGRESS",
+      "step_assigned": 1,
+      "step_used": 1,
+      "fallback": false,
+      "data_read": [
+        "a3 IFC-LC.exposed_through lists TI-INGRESS",
+        "a4 TI-INGRESS.exposes lists IFC-LC"
+      ],
+      "reasoning": "join",
+      "confidence_predicted": "low",
+      "confidence_given": 0.4,
+      "proposal_id": "C-C3-009",
+      "outcome": "hit",
+      "outcome_note": "gold TFC-069 (band 0.4 vs given 0.4)",
+      "file": "c3-candidates.json (guide 4c)"
+    },
+    {
+      "plan_id": "S43",
+      "connection": "IFC-DOC -> TI-INGRESS",
+      "step_assigned": 1,
+      "step_used": 1,
+      "fallback": false,
+      "data_read": [
+        "a3 IFC-DOC.exposed_through lists TI-INGRESS",
+        "a4 TI-INGRESS.exposes lists IFC-DOC"
+      ],
+      "reasoning": "join",
+      "confidence_predicted": "low",
+      "confidence_given": 0.4,
+      "proposal_id": "C-C3-010",
+      "outcome": "hit",
+      "outcome_note": "gold TFC-070 (band 0.4 vs given 0.4)",
+      "file": "c3-candidates.json (guide 4c)"
+    },
+    {
+      "plan_id": "S43",
+      "connection": "<application interface> -> TI-TOPIC-LC",
+      "step_assigned": 1,
+      "step_used": 1,
+      "fallback": false,
+      "data_read": [
+        "a4 TI-TOPIC-LC.exposes = []; no exposed_through names it"
+      ],
+      "reasoning": "NO REPORT — exposes nothing (C3.4); hence no S48 either",
+      "confidence_predicted": "none",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct"
+    },
+    {
+      "plan_id": "S45",
+      "connection": "FN-LC-CAPTURE -> <technology service>",
+      "step_assigned": 1,
+      "step_used": 1,
+      "fallback": false,
+      "data_read": [
+        "a3 FN-LC-CAPTURE.consumes = []"
+      ],
+      "reasoning": "no record",
+      "confidence_predicted": "medium",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct"
+    },
+    {
+      "plan_id": "S45",
+      "connection": "FN-LC-ISSUE -> TS-SIGNING",
+      "step_assigned": 1,
+      "step_used": 1,
+      "fallback": false,
+      "data_read": [
+        "a3 FN-LC-ISSUE.consumes"
+      ],
+      "reasoning": "join",
+      "confidence_predicted": "medium",
+      "confidence_given": 0.6,
+      "proposal_id": "C-C3-011",
+      "outcome": "hit",
+      "outcome_note": "gold TFC-073 (band 0.6 vs given 0.6)",
+      "file": "c3-candidates.json (guide 4c)"
+    },
+    {
+      "plan_id": "S45",
+      "connection": "FN-DOC-CHECK -> TS-OCR",
+      "step_assigned": 1,
+      "step_used": 1,
+      "fallback": false,
+      "data_read": [
+        "a3 FN-DOC-CHECK.consumes"
+      ],
+      "reasoning": "join",
+      "confidence_predicted": "medium",
+      "confidence_given": 0.6,
+      "proposal_id": "C-C3-012",
+      "outcome": "hit",
+      "outcome_note": "gold TFC-074 (band 0.6 vs given 0.6)",
+      "file": "c3-candidates.json (guide 4c)"
+    },
+    {
+      "plan_id": "S50",
+      "connection": "ENT-LC -> SYS-DB-TF",
+      "step_assigned": 1,
+      "step_used": 1,
+      "fallback": false,
+      "data_read": [
+        "a3 ENT-LC.stored_in"
+      ],
+      "reasoning": "join; target is A4.SystemSoftware",
+      "confidence_predicted": "medium",
+      "confidence_given": 0.6,
+      "proposal_id": "C-C3-013",
+      "outcome": "hit",
+      "outcome_note": "gold TFC-091 (band 0.6 vs given 0.6)",
+      "file": "c3-candidates.json (guide 4c)"
+    },
+    {
+      "plan_id": "S50",
+      "connection": "ENT-LC-AMEND -> SYS-DB-TF",
+      "step_assigned": 1,
+      "step_used": 1,
+      "fallback": false,
+      "data_read": [
+        "a3 ENT-LC-AMEND.stored_in"
+      ],
+      "reasoning": "join; target is A4.SystemSoftware",
+      "confidence_predicted": "medium",
+      "confidence_given": 0.6,
+      "proposal_id": "C-C3-014",
+      "outcome": "hit",
+      "outcome_note": "gold TFC-092 (band 0.6 vs given 0.6)",
+      "file": "c3-candidates.json (guide 4c)"
+    },
+    {
+      "plan_id": "S50",
+      "connection": "ENT-DOCSET -> SYS-DB-TF",
+      "step_assigned": 1,
+      "step_used": 1,
+      "fallback": false,
+      "data_read": [
+        "a3 ENT-DOCSET.stored_in"
+      ],
+      "reasoning": "join; target is A4.SystemSoftware",
+      "confidence_predicted": "medium",
+      "confidence_given": 0.6,
+      "proposal_id": "C-C3-015",
+      "outcome": "hit",
+      "outcome_note": "gold TFC-093 (band 0.6 vs given 0.6)",
+      "file": "c3-candidates.json (guide 4c)"
+    },
+    {
+      "plan_id": "S49",
+      "connection": "ENT-DOCSET -> ART-DOC-STORE",
+      "step_assigned": 1,
+      "step_used": 1,
+      "fallback": false,
+      "data_read": [
+        "a3 ENT-DOCSET.stored_in"
+      ],
+      "reasoning": "join; target is A4.Artifact",
+      "confidence_predicted": "medium",
+      "confidence_given": 0.6,
+      "proposal_id": "C-C3-016",
+      "outcome": "hit",
+      "outcome_note": "gold TFC-090 (band 0.6 vs given 0.6)",
+      "file": "c3-candidates.json (guide 4c)"
+    },
+    {
+      "plan_id": "S51",
+      "connection": "EVT-LC-ISSUED -> TS-QUEUE",
+      "step_assigned": 1,
+      "step_used": 1,
+      "fallback": false,
+      "data_read": [
+        "a3 EVT-LC-ISSUED.published_to"
+      ],
+      "reasoning": "join",
+      "confidence_predicted": "low",
+      "confidence_given": 0.4,
+      "proposal_id": "C-C3-017",
+      "outcome": "hit",
+      "outcome_note": "gold TFC-094 (band 0.4 vs given 0.4)",
+      "file": "c3-candidates.json (guide 4c)"
+    },
+    {
+      "plan_id": "S40",
+      "connection": "APP-LC -> ENV-TF-PROD",
+      "step_assigned": 3,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "P-C3-001",
+        "a4 DEP-LC-PROD.environment_id"
+      ],
+      "reasoning": "closure over S32",
+      "confidence_predicted": "high",
+      "confidence_given": 0.8,
+      "proposal_id": "C-C3-018",
+      "outcome": "hit",
+      "outcome_note": "gold TFC-062 (band 0.8 vs given 0.8)",
+      "file": "c3-candidates.json (guide 4c)"
+    },
+    {
+      "plan_id": "S40",
+      "connection": "APP-DOC -> ENV-TF-PROD",
+      "step_assigned": 3,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "P-C3-004",
+        "a4 DEP-DOC-PROD.environment_id"
+      ],
+      "reasoning": "closure over S32",
+      "confidence_predicted": "high",
+      "confidence_given": 0.8,
+      "proposal_id": "C-C3-019",
+      "outcome": "hit",
+      "outcome_note": "gold TFC-063 (band 0.8 vs given 0.8)",
+      "file": "c3-candidates.json (guide 4c)"
+    },
+    {
+      "plan_id": "S42",
+      "connection": "SVC-LC -> TI-TOPIC-LC",
+      "step_assigned": 3,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "C-C3-006",
+        "a4 TS-QUEUE -composition-> TI-TOPIC-LC"
+      ],
+      "reasoning": "closure over S41 + A4 composition; mechanical",
+      "confidence_predicted": "low",
+      "confidence_given": 0.4,
+      "proposal_id": "C-C3-020",
+      "outcome": "false",
+      "outcome_note": "FALSE — not in gold: the S42 rule as written (S41 + TechnologyService -> TechnologyInterface composition) reaches the broker topic through the consumed messaging service; the gold keeps S42 to the interface through which the service is exposed (finding 1)",
+      "file": "c3-candidates.json (guide 4c)"
+    },
+    {
+      "plan_id": "S42",
+      "connection": "SVC-LC -> TI-INGRESS",
+      "step_assigned": 3,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "C-C3-007",
+        "a4 TS-GATEWAY -composition-> TI-INGRESS"
+      ],
+      "reasoning": "closure over S41 + A4 composition; mechanical",
+      "confidence_predicted": "low",
+      "confidence_given": 0.4,
+      "proposal_id": "C-C3-021",
+      "outcome": "hit",
+      "outcome_note": "gold TFC-067 (band 0.4 vs given 0.4)",
+      "file": "c3-candidates.json (guide 4c)"
+    },
+    {
+      "plan_id": "S42",
+      "connection": "SVC-DOC -> TI-INGRESS",
+      "step_assigned": 3,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "C-C3-008",
+        "a4 TS-GATEWAY -composition-> TI-INGRESS"
+      ],
+      "reasoning": "closure over S41 + A4 composition; mechanical",
+      "confidence_predicted": "low",
+      "confidence_given": 0.4,
+      "proposal_id": "C-C3-022",
+      "outcome": "hit",
+      "outcome_note": "gold TFC-068 (band 0.4 vs given 0.4)",
+      "file": "c3-candidates.json (guide 4c)"
+    },
+    {
+      "plan_id": "S44",
+      "connection": "IFC-LC -> TS-GATEWAY",
+      "step_assigned": 3,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "C-C3-009",
+        "a4 TI-INGRESS.of_service"
+      ],
+      "reasoning": "closure over S43",
+      "confidence_predicted": "low",
+      "confidence_given": 0.4,
+      "proposal_id": "C-C3-023",
+      "outcome": "hit",
+      "outcome_note": "gold TFC-071 (band 0.4 vs given 0.4)",
+      "file": "c3-candidates.json (guide 4c)"
+    },
+    {
+      "plan_id": "S44",
+      "connection": "IFC-DOC -> TS-GATEWAY",
+      "step_assigned": 3,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "C-C3-010",
+        "a4 TI-INGRESS.of_service"
+      ],
+      "reasoning": "closure over S43",
+      "confidence_predicted": "low",
+      "confidence_given": 0.4,
+      "proposal_id": "C-C3-024",
+      "outcome": "hit",
+      "outcome_note": "gold TFC-072 (band 0.4 vs given 0.4)",
+      "file": "c3-candidates.json (guide 4c)"
+    },
+    {
+      "plan_id": "S46",
+      "connection": "FN-LC-CAPTURE -> SYS-RUNTIME-TF",
+      "step_assigned": 3,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "P-C3-003",
+        "a3 composition"
+      ],
+      "reasoning": "closure over S33",
+      "confidence_predicted": "low",
+      "confidence_given": 0.4,
+      "proposal_id": "C-C3-025",
+      "outcome": "hit",
+      "outcome_note": "gold TFC-075 (band 0.4 vs given 0.4)",
+      "file": "c3-candidates.json (guide 4c)"
+    },
+    {
+      "plan_id": "S46",
+      "connection": "FN-LC-ISSUE -> SYS-RUNTIME-TF",
+      "step_assigned": 3,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "P-C3-003",
+        "a3 composition"
+      ],
+      "reasoning": "closure over S33",
+      "confidence_predicted": "low",
+      "confidence_given": 0.4,
+      "proposal_id": "C-C3-026",
+      "outcome": "hit",
+      "outcome_note": "gold TFC-076 (band 0.4 vs given 0.4)",
+      "file": "c3-candidates.json (guide 4c)"
+    },
+    {
+      "plan_id": "S46",
+      "connection": "FN-DOC-CHECK -> SYS-RUNTIME-TF",
+      "step_assigned": 3,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "P-C3-007",
+        "a3 composition"
+      ],
+      "reasoning": "closure over S33",
+      "confidence_predicted": "low",
+      "confidence_given": 0.4,
+      "proposal_id": "C-C3-027",
+      "outcome": "hit",
+      "outcome_note": "gold TFC-077 (band 0.4 vs given 0.4)",
+      "file": "c3-candidates.json (guide 4c)"
+    },
+    {
+      "plan_id": "S47",
+      "connection": "API-LC-01 -> DEP-LC-PROD",
+      "step_assigned": 3,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "P-C3-001",
+        "a3 composition"
+      ],
+      "reasoning": "closure over S32",
+      "confidence_predicted": "high",
+      "confidence_given": 0.8,
+      "proposal_id": "C-C3-028",
+      "outcome": "hit",
+      "outcome_note": "gold TFC-078 (band 0.8 vs given 0.8)",
+      "file": "c3-candidates.json (guide 4c)"
+    },
+    {
+      "plan_id": "S48",
+      "connection": "API-LC-01 -> TI-INGRESS",
+      "step_assigned": 3,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "C-C3-009",
+        "a3 composition"
+      ],
+      "reasoning": "closure over S43",
+      "confidence_predicted": "medium",
+      "confidence_given": 0.6,
+      "proposal_id": "C-C3-029",
+      "outcome": "hit",
+      "outcome_note": "gold TFC-084 (band 0.6 vs given 0.6)",
+      "file": "c3-candidates.json (guide 4c)"
+    },
+    {
+      "plan_id": "S47",
+      "connection": "API-LC-02 -> DEP-LC-PROD",
+      "step_assigned": 3,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "P-C3-001",
+        "a3 composition"
+      ],
+      "reasoning": "closure over S32",
+      "confidence_predicted": "high",
+      "confidence_given": 0.8,
+      "proposal_id": "C-C3-030",
+      "outcome": "hit",
+      "outcome_note": "gold TFC-079 (band 0.8 vs given 0.8)",
+      "file": "c3-candidates.json (guide 4c)"
+    },
+    {
+      "plan_id": "S48",
+      "connection": "API-LC-02 -> TI-INGRESS",
+      "step_assigned": 3,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "C-C3-009",
+        "a3 composition"
+      ],
+      "reasoning": "closure over S43",
+      "confidence_predicted": "medium",
+      "confidence_given": 0.6,
+      "proposal_id": "C-C3-031",
+      "outcome": "hit",
+      "outcome_note": "gold TFC-085 (band 0.6 vs given 0.6)",
+      "file": "c3-candidates.json (guide 4c)"
+    },
+    {
+      "plan_id": "S47",
+      "connection": "API-LC-03 -> DEP-LC-PROD",
+      "step_assigned": 3,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "P-C3-001",
+        "a3 composition"
+      ],
+      "reasoning": "closure over S32",
+      "confidence_predicted": "high",
+      "confidence_given": 0.8,
+      "proposal_id": "C-C3-032",
+      "outcome": "hit",
+      "outcome_note": "gold TFC-080 (band 0.8 vs given 0.8)",
+      "file": "c3-candidates.json (guide 4c)"
+    },
+    {
+      "plan_id": "S48",
+      "connection": "API-LC-03 -> TI-INGRESS",
+      "step_assigned": 3,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "C-C3-009",
+        "a3 composition"
+      ],
+      "reasoning": "closure over S43",
+      "confidence_predicted": "medium",
+      "confidence_given": 0.6,
+      "proposal_id": "C-C3-033",
+      "outcome": "hit",
+      "outcome_note": "gold TFC-086 (band 0.6 vs given 0.6)",
+      "file": "c3-candidates.json (guide 4c)"
+    },
+    {
+      "plan_id": "S47",
+      "connection": "API-LC-04 -> DEP-LC-PROD",
+      "step_assigned": 3,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "P-C3-001",
+        "a3 composition"
+      ],
+      "reasoning": "closure over S32",
+      "confidence_predicted": "high",
+      "confidence_given": 0.8,
+      "proposal_id": "C-C3-034",
+      "outcome": "hit",
+      "outcome_note": "gold TFC-081 (band 0.8 vs given 0.8)",
+      "file": "c3-candidates.json (guide 4c)"
+    },
+    {
+      "plan_id": "S48",
+      "connection": "API-LC-04 -> TI-INGRESS",
+      "step_assigned": 3,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "C-C3-009",
+        "a3 composition"
+      ],
+      "reasoning": "closure over S43",
+      "confidence_predicted": "medium",
+      "confidence_given": 0.6,
+      "proposal_id": "C-C3-035",
+      "outcome": "hit",
+      "outcome_note": "gold TFC-087 (band 0.6 vs given 0.6)",
+      "file": "c3-candidates.json (guide 4c)"
+    },
+    {
+      "plan_id": "S47",
+      "connection": "API-DC-01 -> DEP-DOC-PROD",
+      "step_assigned": 3,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "P-C3-004",
+        "a3 composition"
+      ],
+      "reasoning": "closure over S32",
+      "confidence_predicted": "high",
+      "confidence_given": 0.8,
+      "proposal_id": "C-C3-036",
+      "outcome": "hit",
+      "outcome_note": "gold TFC-082 (band 0.8 vs given 0.8)",
+      "file": "c3-candidates.json (guide 4c)"
+    },
+    {
+      "plan_id": "S48",
+      "connection": "API-DC-01 -> TI-INGRESS",
+      "step_assigned": 3,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "C-C3-010",
+        "a3 composition"
+      ],
+      "reasoning": "closure over S43",
+      "confidence_predicted": "medium",
+      "confidence_given": 0.6,
+      "proposal_id": "C-C3-037",
+      "outcome": "hit",
+      "outcome_note": "gold TFC-088 (band 0.6 vs given 0.6)",
+      "file": "c3-candidates.json (guide 4c)"
+    },
+    {
+      "plan_id": "S47",
+      "connection": "API-DC-02 -> DEP-DOC-PROD",
+      "step_assigned": 3,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "P-C3-004",
+        "a3 composition"
+      ],
+      "reasoning": "closure over S32",
+      "confidence_predicted": "high",
+      "confidence_given": 0.8,
+      "proposal_id": "C-C3-038",
+      "outcome": "hit",
+      "outcome_note": "gold TFC-083 (band 0.8 vs given 0.8)",
+      "file": "c3-candidates.json (guide 4c)"
+    },
+    {
+      "plan_id": "S48",
+      "connection": "API-DC-02 -> TI-INGRESS",
+      "step_assigned": 3,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "C-C3-010",
+        "a3 composition"
+      ],
+      "reasoning": "closure over S43",
+      "confidence_predicted": "medium",
+      "confidence_given": 0.6,
+      "proposal_id": "C-C3-039",
+      "outcome": "hit",
+      "outcome_note": "gold TFC-089 (band 0.6 vs given 0.6)",
+      "file": "c3-candidates.json (guide 4c)"
+    },
+    {
+      "plan_id": "S52",
+      "connection": "SBB-TRADE -> NODE-TF-PROD",
+      "step_assigned": 3,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "P-C3-002",
+        "P-C3-006"
+      ],
+      "reasoning": "closure over S33/S34/S35",
+      "confidence_predicted": "medium",
+      "confidence_given": 0.6,
+      "proposal_id": "C-C3-040",
+      "outcome": "hit",
+      "outcome_note": "gold TFC-095 (band 0.6 vs given 0.6)",
+      "file": "c3-candidates.json (guide 4c)"
+    },
+    {
+      "plan_id": "S52",
+      "connection": "SBB-TRADE -> SYS-RUNTIME-TF",
+      "step_assigned": 3,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "P-C3-003",
+        "P-C3-007"
+      ],
+      "reasoning": "closure over S33/S34/S35",
+      "confidence_predicted": "medium",
+      "confidence_given": 0.6,
+      "proposal_id": "C-C3-041",
+      "outcome": "hit",
+      "outcome_note": "gold TFC-096 (band 0.6 vs given 0.6)",
+      "file": "c3-candidates.json (guide 4c)"
+    },
+    {
+      "plan_id": "S52",
+      "connection": "SBB-TRADE -> DEV-SCAN-01",
+      "step_assigned": 3,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "P-C3-005"
+      ],
+      "reasoning": "closure over S33/S34/S35",
+      "confidence_predicted": "medium",
+      "confidence_given": 0.6,
+      "proposal_id": "C-C3-042",
+      "outcome": "hit",
+      "outcome_note": "gold TFC-097 (band 0.6 vs given 0.6)",
+      "file": "c3-candidates.json (guide 4c)"
+    },
+    {
+      "plan_id": "S53",
+      "connection": "SBB-TRADE -> DEP-LC-PROD",
+      "step_assigned": 3,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "P-C3-001"
+      ],
+      "reasoning": "closure over S32",
+      "confidence_predicted": "medium",
+      "confidence_given": 0.6,
+      "proposal_id": "C-C3-043",
+      "outcome": "hit",
+      "outcome_note": "gold TFC-098 (band 0.6 vs given 0.6)",
+      "file": "c3-candidates.json (guide 4c)"
+    },
+    {
+      "plan_id": "S53",
+      "connection": "SBB-TRADE -> DEP-DOC-PROD",
+      "step_assigned": 3,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "P-C3-004"
+      ],
+      "reasoning": "closure over S32",
+      "confidence_predicted": "medium",
+      "confidence_given": 0.6,
+      "proposal_id": "C-C3-044",
+      "outcome": "hit",
+      "outcome_note": "gold TFC-099 (band 0.6 vs given 0.6)",
+      "file": "c3-candidates.json (guide 4c)"
+    },
+    {
+      "plan_id": "S54",
+      "connection": "SBB-TRADE -> NODE-TF-PROD",
+      "step_assigned": 3,
+      "step_used": 3,
+      "fallback": false,
+      "data_read": [
+        "P-C3-002",
+        "P-C3-006"
+      ],
+      "reasoning": "closure over S34",
+      "confidence_predicted": "low",
+      "confidence_given": 0.4,
+      "proposal_id": "C-C3-045",
+      "outcome": "hit",
+      "outcome_note": "gold TFC-100 (band 0.4 vs given 0.4)",
+      "file": "c3-candidates.json (guide 4c)"
+    },
+    {
+      "plan_id": "S36",
+      "connection": "components -> SYS-RUNTIME-TF",
+      "step_assigned": 1,
+      "step_used": 1,
+      "fallback": false,
+      "data_read": [],
+      "reasoning": "subsumed by S33; the two SystemSoftware DEPLOYED_ON proposals are logged under S33",
+      "confidence_predicted": "— (subsumed)",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "correct"
+    },
+    {
+      "plan_id": "S01",
+      "connection": "CAP-TF SUPPORTED_BY SD-LC",
+      "step_assigned": null,
+      "step_used": null,
+      "fallback": false,
+      "data_read": [
+        "given TF-101"
+      ],
+      "reasoning": "given (approved)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "given"
+    },
+    {
+      "plan_id": "S02/S12",
+      "connection": "VS-LC ALIGNED_TO BS-LC",
+      "step_assigned": null,
+      "step_used": null,
+      "fallback": false,
+      "data_read": [
+        "given TF-102"
+      ],
+      "reasoning": "given (approved)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "given"
+    },
+    {
+      "plan_id": "S04",
+      "connection": "PRC-LC-APPLY USES_DOMAIN SD-LC",
+      "step_assigned": null,
+      "step_used": null,
+      "fallback": false,
+      "data_read": [
+        "given TF-103"
+      ],
+      "reasoning": "given (approved)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "given"
+    },
+    {
+      "plan_id": "S04",
+      "connection": "PRC-LC-ISSUE USES_DOMAIN SD-DC",
+      "step_assigned": null,
+      "step_used": null,
+      "fallback": false,
+      "data_read": [
+        "given TF-104"
+      ],
+      "reasoning": "given (approved)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "given"
+    },
+    {
+      "plan_id": "S04",
+      "connection": "PRC-LC-ISSUE USES_DOMAIN SD-LC",
+      "step_assigned": null,
+      "step_used": null,
+      "fallback": false,
+      "data_read": [
+        "given TF-105"
+      ],
+      "reasoning": "given (approved)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "given"
+    },
+    {
+      "plan_id": "S02/S12",
+      "connection": "BO-LC ALIGNED_TO BBO-LC",
+      "step_assigned": null,
+      "step_used": null,
+      "fallback": false,
+      "data_read": [
+        "given TF-106"
+      ],
+      "reasoning": "given (approved)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "given"
+    },
+    {
+      "plan_id": "S02/S12",
+      "connection": "BO-DOCSET ALIGNED_TO BBO-DOCSET",
+      "step_assigned": null,
+      "step_used": null,
+      "fallback": false,
+      "data_read": [
+        "given TF-107"
+      ],
+      "reasoning": "given (approved)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "given"
+    },
+    {
+      "plan_id": "S17",
+      "connection": "SD-LC REALIZED_BY APP-LC",
+      "step_assigned": null,
+      "step_used": null,
+      "fallback": false,
+      "data_read": [
+        "given TF-108"
+      ],
+      "reasoning": "given (approved)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "given"
+    },
+    {
+      "plan_id": "S17",
+      "connection": "SD-DC REALIZED_BY APP-DOC",
+      "step_assigned": null,
+      "step_used": null,
+      "fallback": false,
+      "data_read": [
+        "given TF-109"
+      ],
+      "reasoning": "given (approved)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "given"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-LC-01 IMPLEMENTED_BY API-LC-01",
+      "step_assigned": null,
+      "step_used": null,
+      "fallback": false,
+      "data_read": [
+        "given TF-110"
+      ],
+      "reasoning": "given (approved)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "given"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-LC-02 IMPLEMENTED_BY API-LC-02",
+      "step_assigned": null,
+      "step_used": null,
+      "fallback": false,
+      "data_read": [
+        "given TF-111"
+      ],
+      "reasoning": "given (approved)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "given"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-LC-03 IMPLEMENTED_BY API-LC-03",
+      "step_assigned": null,
+      "step_used": null,
+      "fallback": false,
+      "data_read": [
+        "given TF-112"
+      ],
+      "reasoning": "given (approved)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "given"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-LC-04 IMPLEMENTED_BY API-LC-04",
+      "step_assigned": null,
+      "step_used": null,
+      "fallback": false,
+      "data_read": [
+        "given TF-113"
+      ],
+      "reasoning": "given (approved)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "given"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-DC-01 IMPLEMENTED_BY API-DC-01",
+      "step_assigned": null,
+      "step_used": null,
+      "fallback": false,
+      "data_read": [
+        "given TF-114"
+      ],
+      "reasoning": "given (approved)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "given"
+    },
+    {
+      "plan_id": "S24",
+      "connection": "SO-DC-02 IMPLEMENTED_BY API-DC-02",
+      "step_assigned": null,
+      "step_used": null,
+      "fallback": false,
+      "data_read": [
+        "given TF-115"
+      ],
+      "reasoning": "given (approved)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "given"
+    },
+    {
+      "plan_id": "S30",
+      "connection": "BBO-LC MAPPED_TO ENT-LC",
+      "step_assigned": null,
+      "step_used": null,
+      "fallback": false,
+      "data_read": [
+        "given TF-116"
+      ],
+      "reasoning": "given (approved)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "given"
+    },
+    {
+      "plan_id": "S30",
+      "connection": "BBO-DOCSET MAPPED_TO ENT-DOCSET",
+      "step_assigned": null,
+      "step_used": null,
+      "fallback": false,
+      "data_read": [
+        "given TF-117"
+      ],
+      "reasoning": "given (approved)",
+      "confidence_predicted": "—",
+      "confidence_given": null,
+      "proposal_id": null,
+      "outcome": "no_proposal",
+      "outcome_note": "given"
+    }
+  ]
+}

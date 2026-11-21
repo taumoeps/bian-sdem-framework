@@ -1,0 +1,384 @@
+{
+  "level": "application",
+  "model_id": "SDEM-A3",
+  "model_version": "2026-11-18",
+  "metamodel_version": "0.17.0",
+  "source_system": "SDEM-NEW",
+  "instances": [
+    {
+      "id": "APP-EDGE",
+      "type": "application.ApplicationComponent",
+      "version": "1",
+      "name": "API ingress",
+      "lifecycle_status": "planned",
+      "attributes": {
+        "deployed_as": [
+          "DEP-EDGE"
+        ],
+        "sources": {
+          "deployed_as": "document:design.md#6"
+        },
+        "source_id": "document:design.md#5,document:design.md#6"
+      },
+      "description": "Terminates the accredited provider API channel and produces correlated security events."
+    },
+    {
+      "id": "APP-IDENT",
+      "type": "application.ApplicationComponent",
+      "version": "1",
+      "name": "Identity",
+      "lifecycle_status": "planned",
+      "attributes": {
+        "deployed_as": [
+          "DEP-IDENT"
+        ],
+        "sources": {
+          "deployed_as": "document:design.md#6"
+        },
+        "source_id": "document:design.md#5,document:design.md#6"
+      },
+      "description": "Handles customer authentication."
+    },
+    {
+      "id": "APP-CONSENT",
+      "type": "application.ApplicationComponent",
+      "version": "1",
+      "name": "Consent processing",
+      "lifecycle_status": "planned",
+      "attributes": {
+        "deployed_as": [
+          "DEP-CONSENT"
+        ],
+        "sources": {
+          "deployed_as": "document:design.md#6"
+        },
+        "source_id": "document:design.md#5,document:design.md#6"
+      },
+      "description": "Controls the consent lifecycle and its persistence."
+    },
+    {
+      "id": "APP-PAYHUB",
+      "type": "application.ApplicationComponent",
+      "version": "1",
+      "name": "Payments hub",
+      "lifecycle_status": "planned",
+      "attributes": {
+        "deployed_as": [
+          "DEP-PAYHUB"
+        ],
+        "sources": {
+          "deployed_as": "document:design.md#6"
+        },
+        "source_id": "document:design.md#5,document:design.md#6"
+      },
+      "description": "Validates and orchestrates initiation, idempotency, risk, status and retries."
+    },
+    {
+      "id": "APP-RISK",
+      "type": "application.ApplicationComponent",
+      "version": "1",
+      "name": "Fraud service",
+      "lifecycle_status": "planned",
+      "attributes": {
+        "deployed_as": [
+          "DEP-RISK"
+        ],
+        "sources": {
+          "deployed_as": "document:design.md#6"
+        },
+        "source_id": "document:design.md#5,document:design.md#6"
+      },
+      "description": "Returns a risk decision."
+    },
+    {
+      "id": "APP-LEDGER",
+      "type": "application.ApplicationComponent",
+      "version": "1",
+      "name": "Account ledger",
+      "lifecycle_status": "planned",
+      "attributes": {
+        "deployed_as": [
+          "DEP-LEDGER"
+        ],
+        "sources": {
+          "deployed_as": "document:design.md#6"
+        },
+        "source_id": "document:design.md#5,document:design.md#6"
+      },
+      "description": "Owns account eligibility and posting; rejects repeated posting ids."
+    },
+    {
+      "id": "APP-OUTBOUND",
+      "type": "application.ApplicationComponent",
+      "version": "1",
+      "name": "Outbound connector",
+      "lifecycle_status": "planned",
+      "attributes": {
+        "deployed_as": [
+          "DEP-OUT"
+        ],
+        "sources": {
+          "deployed_as": "document:design.md#6"
+        },
+        "source_id": "document:design.md#5,document:design.md#6"
+      },
+      "description": "Performs the accepted-instruction handoff."
+    },
+    {
+      "id": "APP-NOTIFY",
+      "type": "application.ApplicationComponent",
+      "version": "1",
+      "name": "Notification service",
+      "lifecycle_status": "planned",
+      "attributes": {
+        "deployed_as": [
+          "DEP-NOTIFY"
+        ],
+        "sources": {
+          "deployed_as": "document:design.md#6"
+        },
+        "source_id": "document:design.md#5,document:design.md#6"
+      },
+      "description": "A non-critical downstream notification component."
+    },
+    {
+      "id": "IFC-PAYMENT-INITIATION",
+      "type": "application.ApplicationInterface",
+      "version": "1",
+      "name": "Payment Initiation API v2.3.3",
+      "lifecycle_status": "planned",
+      "attributes": {
+        "security_scheme": "oauth2",
+        "protocol": "https",
+        "internet_facing": true,
+        "field_aliases": {
+          "ConsentId": "consent_id",
+          "NZDomesticConsent1/InstructionIdentification": "instruction_identification",
+          "NZDomesticConsent1/EndToEndIdentification": "end_to_end_identification",
+          "NZDomesticConsent1/InstructedAmount/Amount": "amount",
+          "NZDomesticConsent1/InstructedAmount/Currency": "currency",
+          "Status": "status",
+          "DomesticPaymentId": "payment_id"
+        },
+        "source_id": "document:design.md#5,document:design.md#6"
+      },
+      "description": "The provider-facing API: domestic payment consents and domestic payments, as the NZ Banking Data standard v2.3.3 defines them."
+    },
+    {
+      "id": "API-CONSENT-CREATE",
+      "type": "application.APIOperation",
+      "version": "1",
+      "name": "Create domestic payment consent",
+      "lifecycle_status": "planned",
+      "attributes": {
+        "method": "POST",
+        "path": "/domestic-payment-consents",
+        "payload_fields": [
+          "InstructionIdentification",
+          "EndToEndIdentification",
+          "InstructedAmount/Amount",
+          "InstructedAmount/Currency",
+          "CreditorAccount/SchemeName",
+          "CreditorAccount/Identification",
+          "CreditorAccount/Name",
+          "DebtorAccount/Identification",
+          "DebtorAccountRelease",
+          "RemittanceInformation/Reference",
+          "ConsentId",
+          "Status"
+        ],
+        "request_fields": [
+          "F-CONSENT-INSTRUCTION-IDENTIFICATION",
+          "F-CONSENT-END-TO-END-IDENTIFICATION",
+          "F-CONSENT-AMOUNT",
+          "F-CONSENT-CURRENCY"
+        ],
+        "response_fields": [
+          "F-CONSENT-CONSENT-ID",
+          "F-CONSENT-STATUS"
+        ],
+        "source_id": "document:design.md#5"
+      }
+    },
+    {
+      "id": "API-CONSENT-READ",
+      "type": "application.APIOperation",
+      "version": "1",
+      "name": "Read domestic payment consent",
+      "lifecycle_status": "planned",
+      "attributes": {
+        "method": "GET",
+        "path": "/domestic-payment-consents/{ConsentId}",
+        "payload_fields": [
+          "ConsentId",
+          "Status"
+        ],
+        "request_fields": [
+          "F-CONSENT-CONSENT-ID"
+        ],
+        "response_fields": [
+          "F-CONSENT-CONSENT-ID",
+          "F-CONSENT-STATUS"
+        ],
+        "source_id": "document:design.md#5"
+      }
+    },
+    {
+      "id": "API-PAYMENT-CREATE",
+      "type": "application.APIOperation",
+      "version": "1",
+      "name": "Create domestic payment",
+      "lifecycle_status": "planned",
+      "attributes": {
+        "method": "POST",
+        "path": "/domestic-payments",
+        "payload_fields": [
+          "ConsentId",
+          "DomesticPaymentId",
+          "Status"
+        ],
+        "request_fields": [
+          "F-PAYMENT-CONSENT-ID"
+        ],
+        "response_fields": [
+          "F-PAYMENT-PAYMENT-ID",
+          "F-PAYMENT-PAYMENT-STATUS"
+        ],
+        "source_id": "document:design.md#5"
+      }
+    },
+    {
+      "id": "API-PAYMENT-READ",
+      "type": "application.APIOperation",
+      "version": "1",
+      "name": "Read domestic payment",
+      "lifecycle_status": "planned",
+      "attributes": {
+        "method": "GET",
+        "path": "/domestic-payments/{DomesticPaymentId}",
+        "payload_fields": [
+          "DomesticPaymentId",
+          "Status"
+        ],
+        "request_fields": [
+          "F-PAYMENT-PAYMENT-ID"
+        ],
+        "response_fields": [
+          "F-PAYMENT-PAYMENT-ID",
+          "F-PAYMENT-PAYMENT-STATUS"
+        ],
+        "source_id": "document:design.md#5"
+      }
+    },
+    {
+      "id": "API-DEBTOR-READ",
+      "type": "application.APIOperation",
+      "version": "1",
+      "name": "Read payment debtor account",
+      "lifecycle_status": "planned",
+      "attributes": {
+        "method": "GET",
+        "source_id": "document:design.md#5,document:design.md#2"
+      },
+      "description": "Returned only where DebtorAccountRelease is true (R-24). The document gives no path."
+    },
+    {
+      "id": "EVT-HANDOFF",
+      "type": "application.Event",
+      "version": "1",
+      "name": "Durable handoff event",
+      "lifecycle_status": "planned",
+      "attributes": {
+        "event_source": "APP-PAYHUB",
+        "source_id": "document:design.md#5"
+      },
+      "description": "Emitted by the hub when a payment is recorded as accepted for execution."
+    }
+  ],
+  "relationships": [
+    {
+      "source": "IFC-PAYMENT-INITIATION",
+      "kind": "composition",
+      "target": "API-CONSENT-CREATE",
+      "source_id": "document:design.md#5"
+    },
+    {
+      "source": "IFC-PAYMENT-INITIATION",
+      "kind": "composition",
+      "target": "API-CONSENT-READ",
+      "source_id": "document:design.md#5"
+    },
+    {
+      "source": "IFC-PAYMENT-INITIATION",
+      "kind": "composition",
+      "target": "API-PAYMENT-CREATE",
+      "source_id": "document:design.md#5"
+    },
+    {
+      "source": "IFC-PAYMENT-INITIATION",
+      "kind": "composition",
+      "target": "API-PAYMENT-READ",
+      "source_id": "document:design.md#5"
+    },
+    {
+      "source": "IFC-PAYMENT-INITIATION",
+      "kind": "composition",
+      "target": "API-DEBTOR-READ",
+      "source_id": "document:design.md#5"
+    },
+    {
+      "source": "APP-EDGE",
+      "kind": "composition",
+      "target": "IFC-PAYMENT-INITIATION",
+      "source_id": "document:design.md#5"
+    },
+    {
+      "source": "APP-PAYHUB",
+      "kind": "flow",
+      "target": "APP-RISK",
+      "source_id": "document:design.md#5"
+    },
+    {
+      "source": "APP-PAYHUB",
+      "kind": "flow",
+      "target": "APP-LEDGER",
+      "source_id": "document:design.md#5"
+    },
+    {
+      "source": "APP-PAYHUB",
+      "kind": "flow",
+      "target": "APP-OUTBOUND",
+      "source_id": "document:design.md#5"
+    },
+    {
+      "source": "APP-EDGE",
+      "kind": "flow",
+      "target": "APP-PAYHUB",
+      "source_id": "document:design.md#5"
+    },
+    {
+      "source": "APP-EDGE",
+      "kind": "flow",
+      "target": "APP-CONSENT",
+      "source_id": "document:design.md#5"
+    },
+    {
+      "source": "APP-IDENT",
+      "kind": "flow",
+      "target": "APP-CONSENT",
+      "source_id": "document:design.md#5"
+    },
+    {
+      "source": "APP-PAYHUB",
+      "kind": "flow",
+      "target": "APP-NOTIFY",
+      "source_id": "document:design.md#5"
+    },
+    {
+      "source": "APP-PAYHUB",
+      "kind": "triggering",
+      "target": "EVT-HANDOFF",
+      "source_id": "document:design.md#5"
+    }
+  ]
+}

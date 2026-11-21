@@ -1,0 +1,121 @@
+{
+  "registry_version": "0.4.0",
+  "metamodel_version": "0.17.0",
+  "mappings": [
+    {
+      "mapping_id": "MIG-020-001",
+      "source": {
+        "id": "RS-DataEntity-1",
+        "type": "data.DataEntity",
+        "version": "1.0"
+      },
+      "relationship": "ACCESSED_BY",
+      "target": {
+        "id": "RS-ApplicationComponent-1",
+        "type": "application.ApplicationComponent",
+        "version": "1.0"
+      },
+      "perspective": "information",
+      "status": "approved",
+      "evidence": [
+        "application_architecture_document:sdem-migrate-0.20#within-layer-access"
+      ],
+      "rationale": "Approved by the migration to 0.20 (sdem migrate --to 0.20, jane.architect, 2026-11-21): an access link inside the Application layer of SDEM 0.19, now between the Data and Application layers (DL-04, DL-13)",
+      "baseline_id": "MIGRATION-0.20",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-11-21"
+    },
+    {
+      "mapping_id": "MIG-020-002",
+      "source": {
+        "id": "RS-DataEntity-1",
+        "type": "data.DataEntity",
+        "version": "1.0"
+      },
+      "relationship": "ACCESSED_BY",
+      "target": {
+        "id": "RS-ApplicationFunction-1",
+        "type": "application.ApplicationFunction",
+        "version": "1.0"
+      },
+      "perspective": "information",
+      "status": "approved",
+      "evidence": [
+        "application_architecture_document:sdem-migrate-0.20#within-layer-access"
+      ],
+      "rationale": "Approved by the migration to 0.20 (sdem migrate --to 0.20, jane.architect, 2026-11-21): an access link inside the Application layer of SDEM 0.19, now between the Data and Application layers (DL-04, DL-13)",
+      "baseline_id": "MIGRATION-0.20",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-11-21"
+    },
+    {
+      "mapping_id": "MIG-020-003",
+      "source": {
+        "id": "RS-DataEntity-1",
+        "type": "data.DataEntity",
+        "version": "1.0"
+      },
+      "relationship": "ACCESSED_BY",
+      "target": {
+        "id": "RS-ApplicationService-1",
+        "type": "application.ApplicationService",
+        "version": "1.0"
+      },
+      "perspective": "information",
+      "status": "approved",
+      "evidence": [
+        "application_architecture_document:sdem-migrate-0.20#within-layer-access"
+      ],
+      "rationale": "Approved by the migration to 0.20 (sdem migrate --to 0.20, jane.architect, 2026-11-21): an access link inside the Application layer of SDEM 0.19, now between the Data and Application layers (DL-04, DL-13)",
+      "baseline_id": "MIGRATION-0.20",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-11-21"
+    },
+    {
+      "mapping_id": "MIG-020-004",
+      "source": {
+        "id": "RS-DataEntity-1",
+        "type": "data.DataEntity",
+        "version": "1.0"
+      },
+      "relationship": "ACCESSED_BY",
+      "target": {
+        "id": "RS-Event-1",
+        "type": "application.Event",
+        "version": "1.0"
+      },
+      "perspective": "information",
+      "status": "approved",
+      "evidence": [
+        "application_architecture_document:sdem-migrate-0.20#within-layer-access"
+      ],
+      "rationale": "Approved by the migration to 0.20 (sdem migrate --to 0.20, jane.architect, 2026-11-21): an access link inside the Application layer of SDEM 0.19, now between the Data and Application layers (DL-04, DL-13)",
+      "baseline_id": "MIGRATION-0.20",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-11-21"
+    },
+    {
+      "mapping_id": "MIG-020-005",
+      "source": {
+        "id": "RS-DataEntity-1",
+        "type": "data.DataEntity",
+        "version": "1.0"
+      },
+      "relationship": "ACCESSED_BY",
+      "target": {
+        "id": "RS-APIOperation-1",
+        "type": "application.APIOperation",
+        "version": "1.0"
+      },
+      "perspective": "information",
+      "status": "approved",
+      "evidence": [
+        "application_architecture_document:sdem-migrate-0.20#within-layer-access"
+      ],
+      "rationale": "Approved by the migration to 0.20 (sdem migrate --to 0.20, jane.architect, 2026-11-21): an access link inside the Application layer of SDEM 0.19, now between the Data and Application layers (DL-04, DL-13)",
+      "baseline_id": "MIGRATION-0.20",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-11-21"
+    }
+  ]
+}

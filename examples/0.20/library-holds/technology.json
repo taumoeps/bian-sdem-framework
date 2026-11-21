@@ -1,0 +1,140 @@
+{
+  "level": "technology",
+  "model_id": "library-holds-a4",
+  "model_version": "2026.11",
+  "metamodel_version": "0.17.0",
+  "source_system": "SYNTHETIC-DESIGN",
+  "instances": [
+    {
+      "id": "SYS-CIRC-RUNTIME",
+      "type": "technology.SystemSoftware",
+      "version": "1.0",
+      "name": "Application runtime — circulation",
+      "lifecycle_status": "active",
+      "attributes": {
+        "hosts": [
+          "APP-CIRC"
+        ]
+      }
+    },
+    {
+      "id": "SYS-CATALOGUE-DB",
+      "type": "technology.SystemSoftware",
+      "version": "1.0",
+      "name": "Catalogue database",
+      "lifecycle_status": "active"
+    },
+    {
+      "id": "NODE-LIB-1",
+      "type": "technology.Node",
+      "version": "1.0",
+      "name": "Library server 1",
+      "lifecycle_status": "active"
+    },
+    {
+      "id": "ENV-PROD",
+      "type": "technology.DeploymentEnvironment",
+      "version": "1.0",
+      "name": "Production",
+      "lifecycle_status": "active"
+    },
+    {
+      "id": "NET-LIB",
+      "type": "technology.CommunicationNetwork",
+      "version": "1.0",
+      "name": "Library network",
+      "lifecycle_status": "active"
+    },
+    {
+      "id": "DEP-CIRC-PROD",
+      "type": "technology.Deployment",
+      "version": "1.0",
+      "name": "Circulation system — production",
+      "lifecycle_status": "active",
+      "attributes": {
+        "component_id": "APP-CIRC",
+        "environment_id": "ENV-PROD",
+        "platform_id": "SYS-CIRC-RUNTIME"
+      }
+    },
+    {
+      "id": "ZONE-LIB-ONPREM",
+      "type": "technology.NetworkZone",
+      "version": "1.0",
+      "name": "On premises — library",
+      "lifecycle_status": "active",
+      "attributes": {
+        "zone_level": 0,
+        "zone_kind": "on_premises"
+      }
+    },
+    {
+      "id": "ZONE-LIB-INTERNAL",
+      "type": "technology.NetworkZone",
+      "version": "1.0",
+      "name": "Internal network — library",
+      "lifecycle_status": "active",
+      "attributes": {
+        "zone_level": 1,
+        "zone_kind": "internal"
+      }
+    }
+  ],
+  "relationships": [
+    {
+      "source": "ENV-PROD",
+      "kind": "aggregation",
+      "target": "SYS-CIRC-RUNTIME"
+    },
+    {
+      "source": "ENV-PROD",
+      "kind": "aggregation",
+      "target": "DEP-CIRC-PROD"
+    },
+    {
+      "source": "SYS-CIRC-RUNTIME",
+      "kind": "assignment",
+      "target": "DEP-CIRC-PROD"
+    },
+    {
+      "source": "NODE-LIB-1",
+      "kind": "association",
+      "target": "NET-LIB"
+    },
+    {
+      "source": "SYS-CIRC-RUNTIME",
+      "kind": "association",
+      "target": "NET-LIB"
+    },
+    {
+      "source": "NODE-LIB-1",
+      "kind": "assignment",
+      "target": "SYS-CATALOGUE-DB"
+    },
+    {
+      "source": "NODE-LIB-1",
+      "kind": "assignment",
+      "target": "SYS-CIRC-RUNTIME"
+    },
+    {
+      "source": "ZONE-LIB-ONPREM",
+      "kind": "composition",
+      "target": "ZONE-LIB-INTERNAL"
+    },
+    {
+      "source": "ZONE-LIB-INTERNAL",
+      "kind": "aggregation",
+      "target": "SYS-CIRC-RUNTIME"
+    },
+    {
+      "source": "ZONE-LIB-INTERNAL",
+      "kind": "aggregation",
+      "target": "SYS-CATALOGUE-DB"
+    },
+    {
+      "source": "ZONE-LIB-INTERNAL",
+      "kind": "aggregation",
+      "target": "NODE-LIB-1"
+    }
+  ]
+}

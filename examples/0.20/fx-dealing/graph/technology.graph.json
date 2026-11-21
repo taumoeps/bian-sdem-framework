@@ -1,0 +1,945 @@
+{
+  "graph": {
+    "id": "sdem:harbourline-fx-a4",
+    "type": "sdem.local",
+    "label": "A5 local knowledge graph (harbourline-fx-a4)",
+    "directed": true,
+    "metadata": {
+      "sdem_store_version": "1.0",
+      "export_sha256": "cfc46eac6f25327a0a6b0179a3b19894604cdd3b682438a4d95c99a1a9ade3a0",
+      "level": "A5",
+      "model_id": "harbourline-fx-a4",
+      "model_version": "2026.11",
+      "metamodel_version": "0.17.0",
+      "source_system": "SYNTHETIC-CMDB"
+    },
+    "nodes": {
+      "A5:ENV-FX-PROD@1.0": {
+        "label": "Markets production",
+        "metadata": {
+          "level": "A5",
+          "type": "A5.DeploymentEnvironment",
+          "id": "ENV-FX-PROD",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Production runtime for the markets estate, primary data centre.",
+          "attributes": {
+            "environment_kind": "production",
+            "country": "XA",
+            "cloud_deployment_model": "private"
+          }
+        }
+      },
+      "A5:ENV-FX-UAT@1.0": {
+        "label": "Markets UAT",
+        "metadata": {
+          "level": "A5",
+          "type": "A5.DeploymentEnvironment",
+          "id": "ENV-FX-UAT",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "User-acceptance test runtime for the markets estate.",
+          "attributes": {
+            "environment_kind": "test",
+            "country": "XA",
+            "cloud_deployment_model": "private"
+          }
+        }
+      },
+      "A5:SYS-K8S-MKT-PROD@1.30": {
+        "label": "Markets container platform (production)",
+        "metadata": {
+          "level": "A5",
+          "type": "A5.SystemSoftware",
+          "id": "SYS-K8S-MKT-PROD",
+          "version": "1.30",
+          "lifecycle_status": "active",
+          "description": "Kubernetes cluster shared by the markets applications in production.",
+          "attributes": {
+            "product_version": "1.30",
+            "license": "Apache-2.0",
+            "end_of_support": "2027-06-28",
+            "hosts": [
+              "APP-AURORA",
+              "APP-LEDGERLINE",
+              "APP-CRDS"
+            ]
+          }
+        }
+      },
+      "A5:SYS-K8S-MKT-UAT@1.30": {
+        "label": "Markets container platform (UAT)",
+        "metadata": {
+          "level": "A5",
+          "type": "A5.SystemSoftware",
+          "id": "SYS-K8S-MKT-UAT",
+          "version": "1.30",
+          "lifecycle_status": "active",
+          "description": "Kubernetes cluster for markets user-acceptance testing.",
+          "attributes": {
+            "product_version": "1.30",
+            "license": "Apache-2.0",
+            "end_of_support": "2027-06-28"
+          }
+        }
+      },
+      "A5:SYS-PG-FX-PROD@16": {
+        "label": "FX trading database (production)",
+        "metadata": {
+          "level": "A5",
+          "type": "A5.SystemSoftware",
+          "id": "SYS-PG-FX-PROD",
+          "version": "16",
+          "lifecycle_status": "active",
+          "description": "PostgreSQL cluster for pricing and booking data.",
+          "attributes": {
+            "product_version": "16.4",
+            "license": "PostgreSQL",
+            "end_of_support": "2028-11-09"
+          }
+        }
+      },
+      "A5:SYS-PG-STL-PROD@15": {
+        "label": "Settlement database (production)",
+        "metadata": {
+          "level": "A5",
+          "type": "A5.SystemSoftware",
+          "id": "SYS-PG-STL-PROD",
+          "version": "15",
+          "lifecycle_status": "active",
+          "description": "PostgreSQL instance for FX settlement data.",
+          "attributes": {
+            "product_version": "15.8",
+            "license": "PostgreSQL",
+            "end_of_support": "2027-11-11"
+          }
+        }
+      },
+      "A5:SYS-PG-REF-PROD@16": {
+        "label": "Reference data database (production)",
+        "metadata": {
+          "level": "A5",
+          "type": "A5.SystemSoftware",
+          "id": "SYS-PG-REF-PROD",
+          "version": "16",
+          "lifecycle_status": "active",
+          "description": "PostgreSQL instance for counterparty reference data.",
+          "attributes": {
+            "product_version": "16.4",
+            "license": "PostgreSQL",
+            "end_of_support": "2028-11-09"
+          }
+        }
+      },
+      "A5:SYS-SQL-CONF-PROD@19": {
+        "label": "Confirmations package database (production)",
+        "metadata": {
+          "level": "A5",
+          "type": "A5.SystemSoftware",
+          "id": "SYS-SQL-CONF-PROD",
+          "version": "19",
+          "lifecycle_status": "active",
+          "description": "Relational database supplied with the confirmations package.",
+          "attributes": {
+            "product_version": "19.3",
+            "license": "LicenseRef-vendor-embedded",
+            "end_of_support": "2027-04-30"
+          }
+        }
+      },
+      "A5:NODE-CONF-01@1.0": {
+        "label": "lnx-conf-p01",
+        "metadata": {
+          "level": "A5",
+          "type": "A5.Node",
+          "id": "NODE-CONF-01",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Linux virtual machine running the confirmations package in production.",
+          "attributes": {
+            "virtualisation": "virtual machine",
+            "hosts": [
+              "APP-CONFIRMHUB"
+            ]
+          }
+        }
+      },
+      "A5:NODE-FXSM-01@1.0": {
+        "label": "lnx-fxsm-p01",
+        "metadata": {
+          "level": "A5",
+          "type": "A5.Node",
+          "id": "NODE-FXSM-01",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Linux virtual machine running the settlement manager in production.",
+          "attributes": {
+            "virtualisation": "virtual machine"
+          }
+        }
+      },
+      "A5:NODE-RATEGW-01@1.0": {
+        "label": "mdgw-colo-p01",
+        "metadata": {
+          "level": "A5",
+          "type": "A5.Node",
+          "id": "NODE-RATEGW-01",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Physical low-latency server in the exchange co-location rack, running the rates gateway.",
+          "attributes": {
+            "virtualisation": "physical",
+            "hosts": [
+              "APP-RATEGW"
+            ]
+          }
+        }
+      },
+      "A5:TS-EVENT-STREAM@1.0": {
+        "label": "Markets event streaming",
+        "metadata": {
+          "level": "A5",
+          "type": "A5.TechnologyService",
+          "id": "TS-EVENT-STREAM",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Managed event-streaming service carrying deal and rate events.",
+          "attributes": {
+            "cloud_service_model": "PaaS"
+          }
+        }
+      },
+      "A5:TS-PAYMENT-GATEWAY@1.0": {
+        "label": "Interbank payment messaging gateway",
+        "metadata": {
+          "level": "A5",
+          "type": "A5.TechnologyService",
+          "id": "TS-PAYMENT-GATEWAY",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Shared gateway that sends payment and confirmation messages to other banks.",
+          "attributes": {
+            "cloud_service_model": "PaaS"
+          }
+        }
+      },
+      "A5:NET-MKT-PRIVATE@1.0": {
+        "label": "Markets private network",
+        "metadata": {
+          "level": "A5",
+          "type": "A5.CommunicationNetwork",
+          "id": "NET-MKT-PRIVATE",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Private network segment for trading systems.",
+          "attributes": {
+            "address_range": [
+              "10.44.0.0/16"
+            ]
+          }
+        }
+      },
+      "A5:NET-COLO-LL@1.0": {
+        "label": "Co-location low-latency network",
+        "metadata": {
+          "level": "A5",
+          "type": "A5.CommunicationNetwork",
+          "id": "NET-COLO-LL",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Cross-connect from the co-location rack to rate contributors.",
+          "attributes": {
+            "address_range": [
+              "172.30.8.0/24"
+            ]
+          }
+        }
+      },
+      "A5:DEP-AURORA-PROD@1.0": {
+        "label": "Aurora Pricing Engine — production",
+        "metadata": {
+          "level": "A5",
+          "type": "A5.Deployment",
+          "id": "DEP-AURORA-PROD",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Aurora Pricing Engine in production.",
+          "attributes": {
+            "component_id": "APP-AURORA",
+            "environment_id": "ENV-FX-PROD",
+            "platform_id": "SYS-K8S-MKT-PROD"
+          }
+        }
+      },
+      "A5:DEP-AURORA-UAT@1.0": {
+        "label": "Aurora Pricing Engine — UAT",
+        "metadata": {
+          "level": "A5",
+          "type": "A5.Deployment",
+          "id": "DEP-AURORA-UAT",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Aurora Pricing Engine in UAT.",
+          "attributes": {
+            "component_id": "APP-AURORA",
+            "environment_id": "ENV-FX-UAT",
+            "platform_id": "SYS-K8S-MKT-UAT"
+          }
+        }
+      },
+      "A5:DEP-LEDGERLINE-PROD@1.0": {
+        "label": "Ledgerline FX Booking — production",
+        "metadata": {
+          "level": "A5",
+          "type": "A5.Deployment",
+          "id": "DEP-LEDGERLINE-PROD",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Ledgerline FX Booking in production.",
+          "attributes": {
+            "component_id": "APP-LEDGERLINE",
+            "environment_id": "ENV-FX-PROD",
+            "platform_id": "SYS-K8S-MKT-PROD"
+          }
+        }
+      },
+      "A5:DEP-LEDGERLINE-UAT@1.0": {
+        "label": "Ledgerline FX Booking — UAT",
+        "metadata": {
+          "level": "A5",
+          "type": "A5.Deployment",
+          "id": "DEP-LEDGERLINE-UAT",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Ledgerline FX Booking in UAT.",
+          "attributes": {
+            "component_id": "APP-LEDGERLINE",
+            "environment_id": "ENV-FX-UAT",
+            "platform_id": "SYS-K8S-MKT-UAT"
+          }
+        }
+      },
+      "A5:DEP-CRDS-PROD@1.0": {
+        "label": "Counterparty Reference Data Service — production",
+        "metadata": {
+          "level": "A5",
+          "type": "A5.Deployment",
+          "id": "DEP-CRDS-PROD",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Counterparty Reference Data Service in production.",
+          "attributes": {
+            "component_id": "APP-CRDS",
+            "environment_id": "ENV-FX-PROD",
+            "platform_id": "SYS-K8S-MKT-PROD"
+          }
+        }
+      },
+      "A5:DEP-CONFIRMHUB-PROD@1.0": {
+        "label": "ConfirmHub — production",
+        "metadata": {
+          "level": "A5",
+          "type": "A5.Deployment",
+          "id": "DEP-CONFIRMHUB-PROD",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "ConfirmHub in production.",
+          "attributes": {
+            "component_id": "APP-CONFIRMHUB",
+            "environment_id": "ENV-FX-PROD",
+            "platform_id": "NODE-CONF-01"
+          }
+        }
+      },
+      "A5:DEP-FXSM-PROD@1.0": {
+        "label": "FX Settlement Manager — production",
+        "metadata": {
+          "level": "A5",
+          "type": "A5.Deployment",
+          "id": "DEP-FXSM-PROD",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "FX Settlement Manager in production.",
+          "attributes": {
+            "component_id": "APP-FXSM",
+            "environment_id": "ENV-FX-PROD",
+            "platform_id": "NODE-FXSM-01"
+          }
+        }
+      },
+      "A5:DEP-RATEGW-PROD@1.0": {
+        "label": "Contributor Rates Gateway — production",
+        "metadata": {
+          "level": "A5",
+          "type": "A5.Deployment",
+          "id": "DEP-RATEGW-PROD",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Contributor Rates Gateway in production.",
+          "attributes": {
+            "component_id": "APP-RATEGW",
+            "environment_id": "ENV-FX-PROD",
+            "platform_id": "NODE-RATEGW-01"
+          }
+        }
+      },
+      "A5:ZONE-FX-ONPREM@1.0": {
+        "label": "On premises — markets",
+        "metadata": {
+          "level": "A5",
+          "type": "A5.NetworkZone",
+          "id": "ZONE-FX-ONPREM",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "The bank's primary data centre (made up), running the markets private cloud.",
+          "attributes": {
+            "zone_level": 0,
+            "zone_kind": "on_premises"
+          }
+        }
+      },
+      "A5:ZONE-FX-ONPREM-INTERNAL@1.0": {
+        "label": "Internal network — on premises (markets)",
+        "metadata": {
+          "level": "A5",
+          "type": "A5.NetworkZone",
+          "id": "ZONE-FX-ONPREM-INTERNAL",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "The internal network of the on-premises site.",
+          "attributes": {
+            "zone_level": 1,
+            "zone_kind": "internal"
+          }
+        }
+      },
+      "A5:ZONE-FX-COLO@1.0": {
+        "label": "Co-location rack — markets",
+        "metadata": {
+          "level": "A5",
+          "type": "A5.NetworkZone",
+          "id": "ZONE-FX-COLO",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "The low-latency rack in the exchange co-location facility, reached from the data centre over a private cross-connect.",
+          "attributes": {
+            "zone_level": 2,
+            "zone_kind": "private"
+          }
+        }
+      },
+      "A5:ZONE-FX-CLOUD@1.0": {
+        "label": "Cloud — markets",
+        "metadata": {
+          "level": "A5",
+          "type": "A5.NetworkZone",
+          "id": "ZONE-FX-CLOUD",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "The markets cloud deployment (made up).",
+          "attributes": {
+            "zone_level": 0,
+            "zone_kind": "cloud"
+          }
+        }
+      },
+      "A5:ZONE-FX-INTERNAL@1.0": {
+        "label": "Internal network — markets",
+        "metadata": {
+          "level": "A5",
+          "type": "A5.NetworkZone",
+          "id": "ZONE-FX-INTERNAL",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "The internal network inside the cloud deployment; nothing in it is reached from the internet.",
+          "attributes": {
+            "zone_level": 1,
+            "zone_kind": "internal"
+          }
+        }
+      }
+    },
+    "edges": [
+      {
+        "id": "A5:ENV-FX-PROD-aggregation-DEP-AURORA-PROD",
+        "source": "A5:ENV-FX-PROD@1.0",
+        "target": "A5:DEP-AURORA-PROD@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-31"
+        }
+      },
+      {
+        "id": "A5:SYS-K8S-MKT-PROD-assignment-DEP-AURORA-PROD",
+        "source": "A5:SYS-K8S-MKT-PROD@1.30",
+        "target": "A5:DEP-AURORA-PROD@1.0",
+        "relation": "assignment",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-21"
+        }
+      },
+      {
+        "id": "A5:ENV-FX-UAT-aggregation-DEP-AURORA-UAT",
+        "source": "A5:ENV-FX-UAT@1.0",
+        "target": "A5:DEP-AURORA-UAT@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-31"
+        }
+      },
+      {
+        "id": "A5:SYS-K8S-MKT-UAT-assignment-DEP-AURORA-UAT",
+        "source": "A5:SYS-K8S-MKT-UAT@1.30",
+        "target": "A5:DEP-AURORA-UAT@1.0",
+        "relation": "assignment",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-21"
+        }
+      },
+      {
+        "id": "A5:ENV-FX-PROD-aggregation-DEP-LEDGERLINE-PROD",
+        "source": "A5:ENV-FX-PROD@1.0",
+        "target": "A5:DEP-LEDGERLINE-PROD@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-31"
+        }
+      },
+      {
+        "id": "A5:SYS-K8S-MKT-PROD-assignment-DEP-LEDGERLINE-PROD",
+        "source": "A5:SYS-K8S-MKT-PROD@1.30",
+        "target": "A5:DEP-LEDGERLINE-PROD@1.0",
+        "relation": "assignment",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-21"
+        }
+      },
+      {
+        "id": "A5:ENV-FX-UAT-aggregation-DEP-LEDGERLINE-UAT",
+        "source": "A5:ENV-FX-UAT@1.0",
+        "target": "A5:DEP-LEDGERLINE-UAT@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-31"
+        }
+      },
+      {
+        "id": "A5:SYS-K8S-MKT-UAT-assignment-DEP-LEDGERLINE-UAT",
+        "source": "A5:SYS-K8S-MKT-UAT@1.30",
+        "target": "A5:DEP-LEDGERLINE-UAT@1.0",
+        "relation": "assignment",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-21"
+        }
+      },
+      {
+        "id": "A5:ENV-FX-PROD-aggregation-DEP-CRDS-PROD",
+        "source": "A5:ENV-FX-PROD@1.0",
+        "target": "A5:DEP-CRDS-PROD@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-31"
+        }
+      },
+      {
+        "id": "A5:SYS-K8S-MKT-PROD-assignment-DEP-CRDS-PROD",
+        "source": "A5:SYS-K8S-MKT-PROD@1.30",
+        "target": "A5:DEP-CRDS-PROD@1.0",
+        "relation": "assignment",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-21"
+        }
+      },
+      {
+        "id": "A5:ENV-FX-PROD-aggregation-DEP-CONFIRMHUB-PROD",
+        "source": "A5:ENV-FX-PROD@1.0",
+        "target": "A5:DEP-CONFIRMHUB-PROD@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-31"
+        }
+      },
+      {
+        "id": "A5:NODE-CONF-01-assignment-DEP-CONFIRMHUB-PROD",
+        "source": "A5:NODE-CONF-01@1.0",
+        "target": "A5:DEP-CONFIRMHUB-PROD@1.0",
+        "relation": "assignment",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-11"
+        }
+      },
+      {
+        "id": "A5:ENV-FX-PROD-aggregation-DEP-FXSM-PROD",
+        "source": "A5:ENV-FX-PROD@1.0",
+        "target": "A5:DEP-FXSM-PROD@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-31"
+        }
+      },
+      {
+        "id": "A5:NODE-FXSM-01-assignment-DEP-FXSM-PROD",
+        "source": "A5:NODE-FXSM-01@1.0",
+        "target": "A5:DEP-FXSM-PROD@1.0",
+        "relation": "assignment",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-11"
+        }
+      },
+      {
+        "id": "A5:ENV-FX-PROD-aggregation-DEP-RATEGW-PROD",
+        "source": "A5:ENV-FX-PROD@1.0",
+        "target": "A5:DEP-RATEGW-PROD@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-31"
+        }
+      },
+      {
+        "id": "A5:NODE-RATEGW-01-assignment-DEP-RATEGW-PROD",
+        "source": "A5:NODE-RATEGW-01@1.0",
+        "target": "A5:DEP-RATEGW-PROD@1.0",
+        "relation": "assignment",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-11"
+        }
+      },
+      {
+        "id": "A5:ENV-FX-PROD-aggregation-SYS-K8S-MKT-PROD",
+        "source": "A5:ENV-FX-PROD@1.0",
+        "target": "A5:SYS-K8S-MKT-PROD@1.30",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-34"
+        }
+      },
+      {
+        "id": "A5:ENV-FX-PROD-aggregation-SYS-PG-FX-PROD",
+        "source": "A5:ENV-FX-PROD@1.0",
+        "target": "A5:SYS-PG-FX-PROD@16",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-34"
+        }
+      },
+      {
+        "id": "A5:ENV-FX-PROD-aggregation-SYS-PG-STL-PROD",
+        "source": "A5:ENV-FX-PROD@1.0",
+        "target": "A5:SYS-PG-STL-PROD@15",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-34"
+        }
+      },
+      {
+        "id": "A5:ENV-FX-PROD-aggregation-SYS-PG-REF-PROD",
+        "source": "A5:ENV-FX-PROD@1.0",
+        "target": "A5:SYS-PG-REF-PROD@16",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-34"
+        }
+      },
+      {
+        "id": "A5:ENV-FX-PROD-aggregation-SYS-SQL-CONF-PROD",
+        "source": "A5:ENV-FX-PROD@1.0",
+        "target": "A5:SYS-SQL-CONF-PROD@19",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-34"
+        }
+      },
+      {
+        "id": "A5:ENV-FX-PROD-aggregation-NODE-CONF-01",
+        "source": "A5:ENV-FX-PROD@1.0",
+        "target": "A5:NODE-CONF-01@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-32"
+        }
+      },
+      {
+        "id": "A5:ENV-FX-PROD-aggregation-NODE-FXSM-01",
+        "source": "A5:ENV-FX-PROD@1.0",
+        "target": "A5:NODE-FXSM-01@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-32"
+        }
+      },
+      {
+        "id": "A5:ENV-FX-PROD-aggregation-NODE-RATEGW-01",
+        "source": "A5:ENV-FX-PROD@1.0",
+        "target": "A5:NODE-RATEGW-01@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-32"
+        }
+      },
+      {
+        "id": "A5:ENV-FX-UAT-aggregation-SYS-K8S-MKT-UAT",
+        "source": "A5:ENV-FX-UAT@1.0",
+        "target": "A5:SYS-K8S-MKT-UAT@1.30",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-34"
+        }
+      },
+      {
+        "id": "A5:NODE-CONF-01-assignment-SYS-SQL-CONF-PROD",
+        "source": "A5:NODE-CONF-01@1.0",
+        "target": "A5:SYS-SQL-CONF-PROD@19",
+        "relation": "assignment",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-04"
+        }
+      },
+      {
+        "id": "A5:TS-EVENT-STREAM-serving-SYS-K8S-MKT-PROD",
+        "source": "A5:TS-EVENT-STREAM@1.0",
+        "target": "A5:SYS-K8S-MKT-PROD@1.30",
+        "relation": "serving",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-20"
+        }
+      },
+      {
+        "id": "A5:TS-PAYMENT-GATEWAY-serving-NODE-FXSM-01",
+        "source": "A5:TS-PAYMENT-GATEWAY@1.0",
+        "target": "A5:NODE-FXSM-01@1.0",
+        "relation": "serving",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-10"
+        }
+      },
+      {
+        "id": "A5:TS-PAYMENT-GATEWAY-serving-NODE-CONF-01",
+        "source": "A5:TS-PAYMENT-GATEWAY@1.0",
+        "target": "A5:NODE-CONF-01@1.0",
+        "relation": "serving",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-10"
+        }
+      },
+      {
+        "id": "A5:NODE-CONF-01-association-NET-MKT-PRIVATE",
+        "source": "A5:NODE-CONF-01@1.0",
+        "target": "A5:NET-MKT-PRIVATE@1.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-37"
+        }
+      },
+      {
+        "id": "A5:NODE-FXSM-01-association-NET-MKT-PRIVATE",
+        "source": "A5:NODE-FXSM-01@1.0",
+        "target": "A5:NET-MKT-PRIVATE@1.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-37"
+        }
+      },
+      {
+        "id": "A5:NODE-RATEGW-01-association-NET-COLO-LL",
+        "source": "A5:NODE-RATEGW-01@1.0",
+        "target": "A5:NET-COLO-LL@1.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-37"
+        }
+      },
+      {
+        "id": "A5:ZONE-FX-ONPREM-composition-ZONE-FX-ONPREM-INTERNAL",
+        "source": "A5:ZONE-FX-ONPREM@1.0",
+        "target": "A5:ZONE-FX-ONPREM-INTERNAL@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-39"
+        }
+      },
+      {
+        "id": "A5:ZONE-FX-ONPREM-INTERNAL-composition-ZONE-FX-COLO",
+        "source": "A5:ZONE-FX-ONPREM-INTERNAL@1.0",
+        "target": "A5:ZONE-FX-COLO@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-39"
+        }
+      },
+      {
+        "id": "A5:ZONE-FX-CLOUD-composition-ZONE-FX-INTERNAL",
+        "source": "A5:ZONE-FX-CLOUD@1.0",
+        "target": "A5:ZONE-FX-INTERNAL@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-39"
+        }
+      },
+      {
+        "id": "A5:ZONE-FX-ONPREM-INTERNAL-aggregation-SYS-K8S-MKT-PROD",
+        "source": "A5:ZONE-FX-ONPREM-INTERNAL@1.0",
+        "target": "A5:SYS-K8S-MKT-PROD@1.30",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-38"
+        }
+      },
+      {
+        "id": "A5:ZONE-FX-ONPREM-INTERNAL-aggregation-SYS-K8S-MKT-UAT",
+        "source": "A5:ZONE-FX-ONPREM-INTERNAL@1.0",
+        "target": "A5:SYS-K8S-MKT-UAT@1.30",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-38"
+        }
+      },
+      {
+        "id": "A5:ZONE-FX-ONPREM-INTERNAL-aggregation-SYS-PG-FX-PROD",
+        "source": "A5:ZONE-FX-ONPREM-INTERNAL@1.0",
+        "target": "A5:SYS-PG-FX-PROD@16",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-38"
+        }
+      },
+      {
+        "id": "A5:ZONE-FX-ONPREM-INTERNAL-aggregation-SYS-PG-REF-PROD",
+        "source": "A5:ZONE-FX-ONPREM-INTERNAL@1.0",
+        "target": "A5:SYS-PG-REF-PROD@16",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-38"
+        }
+      },
+      {
+        "id": "A5:ZONE-FX-ONPREM-INTERNAL-aggregation-SYS-PG-STL-PROD",
+        "source": "A5:ZONE-FX-ONPREM-INTERNAL@1.0",
+        "target": "A5:SYS-PG-STL-PROD@15",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-38"
+        }
+      },
+      {
+        "id": "A5:ZONE-FX-ONPREM-INTERNAL-aggregation-NODE-CONF-01",
+        "source": "A5:ZONE-FX-ONPREM-INTERNAL@1.0",
+        "target": "A5:NODE-CONF-01@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-38"
+        }
+      },
+      {
+        "id": "A5:ZONE-FX-ONPREM-INTERNAL-aggregation-NODE-FXSM-01",
+        "source": "A5:ZONE-FX-ONPREM-INTERNAL@1.0",
+        "target": "A5:NODE-FXSM-01@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-38"
+        }
+      },
+      {
+        "id": "A5:ZONE-FX-COLO-aggregation-NODE-RATEGW-01",
+        "source": "A5:ZONE-FX-COLO@1.0",
+        "target": "A5:NODE-RATEGW-01@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-38"
+        }
+      },
+      {
+        "id": "A5:ZONE-FX-INTERNAL-aggregation-TS-EVENT-STREAM",
+        "source": "A5:ZONE-FX-INTERNAL@1.0",
+        "target": "A5:TS-EVENT-STREAM@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-38"
+        }
+      },
+      {
+        "id": "A5:ZONE-FX-INTERNAL-aggregation-TS-PAYMENT-GATEWAY",
+        "source": "A5:ZONE-FX-INTERNAL@1.0",
+        "target": "A5:TS-PAYMENT-GATEWAY@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-38"
+        }
+      },
+      {
+        "id": "A5:SYS-K8S-MKT-PROD-association-SYS-PG-FX-PROD",
+        "source": "A5:SYS-K8S-MKT-PROD@1.30",
+        "target": "A5:SYS-PG-FX-PROD@16",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "association"
+        }
+      },
+      {
+        "id": "A5:SYS-K8S-MKT-PROD-association-SYS-PG-REF-PROD",
+        "source": "A5:SYS-K8S-MKT-PROD@1.30",
+        "target": "A5:SYS-PG-REF-PROD@16",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "association"
+        }
+      },
+      {
+        "id": "A5:NODE-FXSM-01-association-SYS-PG-STL-PROD",
+        "source": "A5:NODE-FXSM-01@1.0",
+        "target": "A5:SYS-PG-STL-PROD@15",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "association"
+        }
+      }
+    ]
+  }
+}

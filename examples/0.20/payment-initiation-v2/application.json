@@ -1,0 +1,451 @@
+{
+  "level": "application",
+  "model_id": "synthetic-bank-payments-v2-a3",
+  "model_version": "2026.10",
+  "metamodel_version": "0.17.0",
+  "source_system": "SYNTHETIC-APM",
+  "instances": [
+    {
+      "id": "APP-PAY-HUB",
+      "type": "application.ApplicationComponent",
+      "version": "7.1",
+      "name": "Payments Hub",
+      "lifecycle_status": "active",
+      "description": "The bank's payment initiation platform: captures instructions from channels, validates and authorises them, and hands them to execution.",
+      "attributes": {
+        "vendor": "in-house",
+        "deployed_on": [
+          "INF-K8S-PAY-PROD",
+          "INF-K8S-PAY-UAT"
+        ],
+        "deployed_as": [
+          "DEP-PAYHUB-PROD",
+          "DEP-PAYHUB-UAT"
+        ],
+        "release_version": "7.1.0",
+        "license": "LicenseRef-proprietary",
+        "hosting_model": "PaaS",
+        "recovery_time_objective": "2h",
+        "recovery_point_objective": "5m",
+        "disposition": "enhance",
+        "owner": "ROLE-PAY-OFFICER"
+      }
+    },
+    {
+      "id": "CMP-PAY-CAPTURE",
+      "type": "application.ApplicationComponent",
+      "version": "7.1",
+      "name": "Instruction Capture",
+      "lifecycle_status": "active",
+      "description": "Receives payment instructions from channels and creates the instruction record."
+    },
+    {
+      "id": "CMP-PAY-VALIDATE",
+      "type": "application.ApplicationComponent",
+      "version": "7.1",
+      "name": "Instruction Validation",
+      "lifecycle_status": "active",
+      "description": "Checks instructions against limits, mandates and sanctions lists; records authorisation."
+    },
+    {
+      "id": "CMP-PAY-EXEC",
+      "type": "application.ApplicationComponent",
+      "version": "3.4",
+      "name": "Execution Gateway",
+      "lifecycle_status": "active",
+      "description": "Hands authorised instructions to scheme execution and tracks execution references.",
+      "attributes": {
+        "deployed_on": [
+          "INF-K8S-PAY-PROD"
+        ],
+        "deployed_as": [
+          "DEP-PAYEXEC-PROD"
+        ]
+      }
+    },
+    {
+      "id": "SVC-PAY-INIT",
+      "type": "application.ApplicationService",
+      "version": "2.0",
+      "name": "Payment Initiation Service",
+      "lifecycle_status": "active",
+      "description": "The externally exposed payment-initiation behaviour of the hub.",
+      "attributes": {
+        "consumes": [
+          "TS-SECRETS",
+          "TS-MQ"
+        ]
+      }
+    },
+    {
+      "id": "IFC-PAY-API",
+      "type": "application.ApplicationInterface",
+      "version": "2.0",
+      "name": "Payments API v2",
+      "lifecycle_status": "active",
+      "description": "REST interface for payment instructions.",
+      "attributes": {
+        "contract_format": "OpenAPI 3.1",
+        "security_scheme": "oauth2",
+        "protocol": "https",
+        "internet_facing": true
+      }
+    },
+    {
+      "id": "API-PI-01",
+      "type": "application.APIOperation",
+      "version": "2.0",
+      "name": "Create payment instruction",
+      "lifecycle_status": "active",
+      "description": "Creates a payment instruction from the customer's details.",
+      "attributes": {
+        "method": "POST",
+        "path": "/payment-instructions",
+        "payload_fields": [
+          "debtor_account_reference",
+          "creditor_account_reference",
+          "amount",
+          "currency",
+          "value_date",
+          "remittance_information",
+          "payment_instruction_reference",
+          "payment_status"
+        ],
+        "operation_id": "createPaymentInstruction",
+        "deprecated": false,
+        "request_fields": [
+          "F-PAY-INSTR-DEBTOR-ACCOUNT-REFERENCE",
+          "F-PAY-INSTR-CREDITOR-ACCOUNT-REFERENCE",
+          "F-PAY-INSTR-AMOUNT",
+          "F-PAY-INSTR-CURRENCY",
+          "F-PAY-INSTR-VALUE-DATE",
+          "F-PAY-INSTR-REMITTANCE-INFORMATION",
+          "F-PAY-INSTR-PAYMENT-INSTRUCTION-REFERENCE",
+          "F-PAY-INSTR-PAYMENT-STATUS"
+        ],
+        "response_fields": [
+          "F-PAY-INSTR-DEBTOR-ACCOUNT-REFERENCE",
+          "F-PAY-INSTR-CREDITOR-ACCOUNT-REFERENCE",
+          "F-PAY-INSTR-AMOUNT",
+          "F-PAY-INSTR-CURRENCY",
+          "F-PAY-INSTR-VALUE-DATE",
+          "F-PAY-INSTR-REMITTANCE-INFORMATION",
+          "F-PAY-INSTR-PAYMENT-INSTRUCTION-REFERENCE",
+          "F-PAY-INSTR-PAYMENT-STATUS"
+        ],
+        "responses": [
+          "201",
+          "400",
+          "404"
+        ],
+        "parameters": []
+      }
+    },
+    {
+      "id": "API-PI-02",
+      "type": "application.APIOperation",
+      "version": "2.0",
+      "name": "Validate payment instruction",
+      "lifecycle_status": "active",
+      "description": "Runs validation and records the authorisation outcome.",
+      "attributes": {
+        "method": "POST",
+        "path": "/payment-instructions/{id}/validation",
+        "payload_fields": [
+          "payment_instruction_reference",
+          "authorisation_status",
+          "payment_status",
+          "validation_result"
+        ],
+        "request_fields": [
+          "F-PAY-INSTR-PAYMENT-INSTRUCTION-REFERENCE",
+          "F-PAY-INSTR-AUTHORISATION-STATUS",
+          "F-PAY-INSTR-PAYMENT-STATUS"
+        ],
+        "response_fields": [
+          "F-PAY-INSTR-PAYMENT-INSTRUCTION-REFERENCE",
+          "F-PAY-INSTR-AUTHORISATION-STATUS",
+          "F-PAY-INSTR-PAYMENT-STATUS"
+        ],
+        "responses": [
+          "201",
+          "400",
+          "404"
+        ],
+        "parameters": [
+          "id"
+        ]
+      }
+    },
+    {
+      "id": "API-PI-03",
+      "type": "application.APIOperation",
+      "version": "2.0",
+      "name": "Execute payment instruction",
+      "lifecycle_status": "active",
+      "description": "Hands the instruction to execution.",
+      "attributes": {
+        "method": "PUT",
+        "path": "/payment-instructions/{id}/execution",
+        "payload_fields": [
+          "payment_instruction_reference",
+          "execution_reference",
+          "payment_status"
+        ],
+        "request_fields": [
+          "F-PAY-INSTR-PAYMENT-INSTRUCTION-REFERENCE",
+          "F-PAY-INSTR-EXECUTION-REFERENCE",
+          "F-PAY-INSTR-PAYMENT-STATUS"
+        ],
+        "response_fields": [
+          "F-PAY-INSTR-PAYMENT-INSTRUCTION-REFERENCE",
+          "F-PAY-INSTR-EXECUTION-REFERENCE",
+          "F-PAY-INSTR-PAYMENT-STATUS"
+        ],
+        "responses": [
+          "201",
+          "400",
+          "404"
+        ],
+        "parameters": [
+          "id"
+        ]
+      }
+    },
+    {
+      "id": "API-PI-04",
+      "type": "application.APIOperation",
+      "version": "2.0",
+      "name": "Get payment instruction",
+      "lifecycle_status": "active",
+      "description": "Returns the instruction and its status. NOTE: implemented as POST for legacy channel reasons.",
+      "attributes": {
+        "method": "POST",
+        "path": "/payment-instructions/{id}",
+        "payload_fields": [
+          "payment_instruction_reference",
+          "payment_status",
+          "execution_reference",
+          "authorisation_status"
+        ],
+        "operation_id": "getPaymentInstruction",
+        "deprecated": false,
+        "request_fields": [
+          "F-PAY-INSTR-PAYMENT-INSTRUCTION-REFERENCE",
+          "F-PAY-INSTR-PAYMENT-STATUS",
+          "F-PAY-INSTR-EXECUTION-REFERENCE",
+          "F-PAY-INSTR-AUTHORISATION-STATUS"
+        ],
+        "response_fields": [
+          "F-PAY-INSTR-PAYMENT-INSTRUCTION-REFERENCE",
+          "F-PAY-INSTR-PAYMENT-STATUS",
+          "F-PAY-INSTR-EXECUTION-REFERENCE",
+          "F-PAY-INSTR-AUTHORISATION-STATUS"
+        ],
+        "responses": [
+          "201",
+          "400",
+          "404"
+        ],
+        "parameters": [
+          "id"
+        ]
+      }
+    },
+    {
+      "id": "API-PI-05",
+      "type": "application.APIOperation",
+      "version": "2.0",
+      "name": "Amend payment instruction",
+      "lifecycle_status": "active",
+      "description": "Amends amount, date or creditor before execution.",
+      "attributes": {
+        "method": "PATCH",
+        "path": "/payment-instructions/{id}",
+        "payload_fields": [
+          "payment_instruction_reference",
+          "amount",
+          "value_date",
+          "creditor_account_reference",
+          "payment_status"
+        ],
+        "request_fields": [
+          "F-PAY-INSTR-PAYMENT-INSTRUCTION-REFERENCE",
+          "F-PAY-INSTR-AMOUNT",
+          "F-PAY-INSTR-VALUE-DATE",
+          "F-PAY-INSTR-CREDITOR-ACCOUNT-REFERENCE",
+          "F-PAY-INSTR-PAYMENT-STATUS"
+        ],
+        "response_fields": [
+          "F-PAY-INSTR-PAYMENT-INSTRUCTION-REFERENCE",
+          "F-PAY-INSTR-AMOUNT",
+          "F-PAY-INSTR-VALUE-DATE",
+          "F-PAY-INSTR-CREDITOR-ACCOUNT-REFERENCE",
+          "F-PAY-INSTR-PAYMENT-STATUS"
+        ],
+        "responses": [
+          "201",
+          "400",
+          "404"
+        ],
+        "parameters": [
+          "id"
+        ]
+      }
+    },
+    {
+      "id": "API-PI-06",
+      "type": "application.APIOperation",
+      "version": "2.0",
+      "name": "List payment instruction events",
+      "lifecycle_status": "active",
+      "description": "Returns the event history of an instruction.",
+      "attributes": {
+        "method": "GET",
+        "path": "/payment-instructions/{id}/events",
+        "payload_fields": [
+          "event_id",
+          "payment_instruction_reference",
+          "event_type",
+          "occurred_at"
+        ],
+        "request_fields": [],
+        "response_fields": [
+          "F-PAY-EVENT-EVENT-ID",
+          "F-PAY-EVENT-PAYMENT-INSTRUCTION-REFERENCE",
+          "F-PAY-EVENT-EVENT-TYPE",
+          "F-PAY-EVENT-OCCURRED-AT"
+        ],
+        "responses": [
+          "200",
+          "400",
+          "404"
+        ],
+        "parameters": [
+          "id"
+        ]
+      }
+    },
+    {
+      "id": "EVT-PAY-STATUS",
+      "type": "application.Event",
+      "version": "2.0",
+      "name": "PaymentStatusChanged",
+      "lifecycle_status": "active",
+      "description": "Published when an instruction changes state.",
+      "attributes": {
+        "event_type": "payment.status.changed",
+        "event_source": "APP-PAY-HUB",
+        "schema_uri": "https://example.org/schemas/payment-status-changed.json"
+      }
+    },
+    {
+      "id": "AFN-PAY-VALIDATE",
+      "type": "application.ApplicationFunction",
+      "version": "1.0",
+      "name": "Validate payment instruction",
+      "lifecycle_status": "active",
+      "description": "Checks an instruction: account, funds, limits, sanctions (made-up)",
+      "attributes": {
+        "consumes": [
+          "TS-SECRETS"
+        ]
+      }
+    },
+    {
+      "id": "SBB-PAYMENTS",
+      "type": "application.SolutionBuildingBlock",
+      "version": "1.0",
+      "name": "Payments platform",
+      "lifecycle_status": "active",
+      "description": "The reusable building block for payments (made-up)",
+      "attributes": {
+        "components": [
+          "APP-PAY-HUB"
+        ]
+      }
+    }
+  ],
+  "relationships": [
+    {
+      "source": "APP-PAY-HUB",
+      "kind": "composition",
+      "target": "CMP-PAY-CAPTURE"
+    },
+    {
+      "source": "APP-PAY-HUB",
+      "kind": "composition",
+      "target": "CMP-PAY-VALIDATE"
+    },
+    {
+      "source": "APP-PAY-HUB",
+      "kind": "composition",
+      "target": "CMP-PAY-EXEC"
+    },
+    {
+      "source": "APP-PAY-HUB",
+      "kind": "realization",
+      "target": "SVC-PAY-INIT"
+    },
+    {
+      "source": "IFC-PAY-API",
+      "kind": "assignment",
+      "target": "SVC-PAY-INIT"
+    },
+    {
+      "source": "IFC-PAY-API",
+      "kind": "composition",
+      "target": "API-PI-01"
+    },
+    {
+      "source": "IFC-PAY-API",
+      "kind": "composition",
+      "target": "API-PI-02"
+    },
+    {
+      "source": "IFC-PAY-API",
+      "kind": "composition",
+      "target": "API-PI-03"
+    },
+    {
+      "source": "IFC-PAY-API",
+      "kind": "composition",
+      "target": "API-PI-04"
+    },
+    {
+      "source": "IFC-PAY-API",
+      "kind": "composition",
+      "target": "API-PI-05"
+    },
+    {
+      "source": "IFC-PAY-API",
+      "kind": "composition",
+      "target": "API-PI-06"
+    },
+    {
+      "source": "APP-PAY-HUB",
+      "kind": "triggering",
+      "target": "EVT-PAY-STATUS"
+    },
+    {
+      "source": "APP-PAY-HUB",
+      "kind": "composition",
+      "target": "IFC-PAY-API"
+    },
+    {
+      "source": "CMP-PAY-VALIDATE",
+      "kind": "assignment",
+      "target": "AFN-PAY-VALIDATE"
+    },
+    {
+      "source": "AFN-PAY-VALIDATE",
+      "kind": "realization",
+      "target": "SVC-PAY-INIT"
+    },
+    {
+      "source": "SBB-PAYMENTS",
+      "kind": "aggregation",
+      "target": "APP-PAY-HUB"
+    }
+  ]
+}

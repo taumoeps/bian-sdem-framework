@@ -1,0 +1,229 @@
+{
+  "graph": {
+    "id": "sdem:library-holds-a4",
+    "type": "sdem.local",
+    "label": "A5 local knowledge graph (library-holds-a4)",
+    "directed": true,
+    "metadata": {
+      "sdem_store_version": "1.0",
+      "export_sha256": "8b68b2f0ffc0b9eebe446c27203888733baec0e9ee6abc24d4d0d69df670ffbc",
+      "level": "A5",
+      "model_id": "library-holds-a4",
+      "model_version": "2026.11",
+      "metamodel_version": "0.17.0",
+      "source_system": "SYNTHETIC-DESIGN"
+    },
+    "nodes": {
+      "A5:SYS-CIRC-RUNTIME@1.0": {
+        "label": "Application runtime — circulation",
+        "metadata": {
+          "level": "A5",
+          "type": "A5.SystemSoftware",
+          "id": "SYS-CIRC-RUNTIME",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "attributes": {
+            "hosts": [
+              "APP-CIRC"
+            ]
+          }
+        }
+      },
+      "A5:SYS-CATALOGUE-DB@1.0": {
+        "label": "Catalogue database",
+        "metadata": {
+          "level": "A5",
+          "type": "A5.SystemSoftware",
+          "id": "SYS-CATALOGUE-DB",
+          "version": "1.0",
+          "lifecycle_status": "active"
+        }
+      },
+      "A5:NODE-LIB-1@1.0": {
+        "label": "Library server 1",
+        "metadata": {
+          "level": "A5",
+          "type": "A5.Node",
+          "id": "NODE-LIB-1",
+          "version": "1.0",
+          "lifecycle_status": "active"
+        }
+      },
+      "A5:ENV-PROD@1.0": {
+        "label": "Production",
+        "metadata": {
+          "level": "A5",
+          "type": "A5.DeploymentEnvironment",
+          "id": "ENV-PROD",
+          "version": "1.0",
+          "lifecycle_status": "active"
+        }
+      },
+      "A5:NET-LIB@1.0": {
+        "label": "Library network",
+        "metadata": {
+          "level": "A5",
+          "type": "A5.CommunicationNetwork",
+          "id": "NET-LIB",
+          "version": "1.0",
+          "lifecycle_status": "active"
+        }
+      },
+      "A5:DEP-CIRC-PROD@1.0": {
+        "label": "Circulation system — production",
+        "metadata": {
+          "level": "A5",
+          "type": "A5.Deployment",
+          "id": "DEP-CIRC-PROD",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "attributes": {
+            "component_id": "APP-CIRC",
+            "environment_id": "ENV-PROD",
+            "platform_id": "SYS-CIRC-RUNTIME"
+          }
+        }
+      },
+      "A5:ZONE-LIB-ONPREM@1.0": {
+        "label": "On premises — library",
+        "metadata": {
+          "level": "A5",
+          "type": "A5.NetworkZone",
+          "id": "ZONE-LIB-ONPREM",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "attributes": {
+            "zone_level": 0,
+            "zone_kind": "on_premises"
+          }
+        }
+      },
+      "A5:ZONE-LIB-INTERNAL@1.0": {
+        "label": "Internal network — library",
+        "metadata": {
+          "level": "A5",
+          "type": "A5.NetworkZone",
+          "id": "ZONE-LIB-INTERNAL",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "attributes": {
+            "zone_level": 1,
+            "zone_kind": "internal"
+          }
+        }
+      }
+    },
+    "edges": [
+      {
+        "id": "A5:ENV-PROD-aggregation-SYS-CIRC-RUNTIME",
+        "source": "A5:ENV-PROD@1.0",
+        "target": "A5:SYS-CIRC-RUNTIME@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-34"
+        }
+      },
+      {
+        "id": "A5:ENV-PROD-aggregation-DEP-CIRC-PROD",
+        "source": "A5:ENV-PROD@1.0",
+        "target": "A5:DEP-CIRC-PROD@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-31"
+        }
+      },
+      {
+        "id": "A5:SYS-CIRC-RUNTIME-assignment-DEP-CIRC-PROD",
+        "source": "A5:SYS-CIRC-RUNTIME@1.0",
+        "target": "A5:DEP-CIRC-PROD@1.0",
+        "relation": "assignment",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-21"
+        }
+      },
+      {
+        "id": "A5:NODE-LIB-1-association-NET-LIB",
+        "source": "A5:NODE-LIB-1@1.0",
+        "target": "A5:NET-LIB@1.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-37"
+        }
+      },
+      {
+        "id": "A5:SYS-CIRC-RUNTIME-association-NET-LIB",
+        "source": "A5:SYS-CIRC-RUNTIME@1.0",
+        "target": "A5:NET-LIB@1.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-37"
+        }
+      },
+      {
+        "id": "A5:NODE-LIB-1-assignment-SYS-CATALOGUE-DB",
+        "source": "A5:NODE-LIB-1@1.0",
+        "target": "A5:SYS-CATALOGUE-DB@1.0",
+        "relation": "assignment",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-04"
+        }
+      },
+      {
+        "id": "A5:NODE-LIB-1-assignment-SYS-CIRC-RUNTIME",
+        "source": "A5:NODE-LIB-1@1.0",
+        "target": "A5:SYS-CIRC-RUNTIME@1.0",
+        "relation": "assignment",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-04"
+        }
+      },
+      {
+        "id": "A5:ZONE-LIB-ONPREM-composition-ZONE-LIB-INTERNAL",
+        "source": "A5:ZONE-LIB-ONPREM@1.0",
+        "target": "A5:ZONE-LIB-INTERNAL@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-39"
+        }
+      },
+      {
+        "id": "A5:ZONE-LIB-INTERNAL-aggregation-SYS-CIRC-RUNTIME",
+        "source": "A5:ZONE-LIB-INTERNAL@1.0",
+        "target": "A5:SYS-CIRC-RUNTIME@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-38"
+        }
+      },
+      {
+        "id": "A5:ZONE-LIB-INTERNAL-aggregation-SYS-CATALOGUE-DB",
+        "source": "A5:ZONE-LIB-INTERNAL@1.0",
+        "target": "A5:SYS-CATALOGUE-DB@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-38"
+        }
+      },
+      {
+        "id": "A5:ZONE-LIB-INTERNAL-aggregation-NODE-LIB-1",
+        "source": "A5:ZONE-LIB-INTERNAL@1.0",
+        "target": "A5:NODE-LIB-1@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-38"
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "level": "application",
+  "model_id": "library-holds-a3",
+  "model_version": "2026.11",
+  "metamodel_version": "0.17.0",
+  "source_system": "SYNTHETIC-DESIGN",
+  "instances": [
+    {
+      "id": "APP-CIRC",
+      "type": "application.ApplicationComponent",
+      "version": "3.1",
+      "name": "Circulation system",
+      "lifecycle_status": "active",
+      "attributes": {
+        "vendor": "in-house",
+        "deployed_on": [
+          "SYS-CIRC-RUNTIME"
+        ],
+        "deployed_as": [
+          "DEP-CIRC-PROD"
+        ]
+      },
+      "description": "Keeps loans, renewals and holds for every branch."
+    },
+    {
+      "id": "APS-HOLDS",
+      "type": "application.ApplicationService",
+      "version": "1.0",
+      "name": "Hold placement",
+      "lifecycle_status": "active",
+      "description": "Places, queues and releases holds."
+    },
+    {
+      "id": "IFC-HOLDS-API",
+      "type": "application.ApplicationInterface",
+      "version": "1.0",
+      "name": "Holds API",
+      "lifecycle_status": "active",
+      "description": "Used by the member app and the branch desk."
+    },
+    {
+      "id": "POST /holds",
+      "type": "application.APIOperation",
+      "version": "1.0",
+      "name": "Place a hold",
+      "lifecycle_status": "active",
+      "attributes": {
+        "method": "POST",
+        "path": "/holds",
+        "payload_fields": [
+          "hold_reference",
+          "member_reference",
+          "item_reference",
+          "branch_code"
+        ]
+      }
+    }
+  ],
+  "relationships": [
+    {
+      "source": "APP-CIRC",
+      "kind": "composition",
+      "target": "IFC-HOLDS-API"
+    },
+    {
+      "source": "IFC-HOLDS-API",
+      "kind": "composition",
+      "target": "POST /holds"
+    }
+  ]
+}

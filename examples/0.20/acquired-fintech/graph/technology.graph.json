@@ -1,0 +1,449 @@
+{
+  "graph": {
+    "id": "sdem:synthetic-fintech-a4",
+    "type": "sdem.local",
+    "label": "A5 local knowledge graph (synthetic-fintech-a4)",
+    "directed": true,
+    "metadata": {
+      "sdem_store_version": "1.0",
+      "export_sha256": "2a716017499b179daf23f3e1de19647f29963ade0e58799a53b80907098db2d7",
+      "level": "A5",
+      "model_id": "synthetic-fintech-a4",
+      "model_version": "2026.10",
+      "metamodel_version": "0.17.0",
+      "source_system": "SYNTHETIC-K8S-MANIFEST"
+    },
+    "nodes": {
+      "A5:INF-EKS-ZIPPA-PROD@1.30": {
+        "label": "EKS cluster zippa-prod",
+        "metadata": {
+          "level": "A5",
+          "type": "A5.SystemSoftware",
+          "id": "INF-EKS-ZIPPA-PROD",
+          "version": "1.30",
+          "lifecycle_status": "active",
+          "description": "Managed Kubernetes.",
+          "attributes": {
+            "hosts": [
+              "svc-flow",
+              "svc-zap",
+              "svc-pots",
+              "svc-buddies",
+              "svc-vaults",
+              "svc-perks",
+              "svc-shield"
+            ]
+          }
+        }
+      },
+      "A5:INF-PG-ZIPPA-PROD@16": {
+        "label": "RDS PostgreSQL zippa",
+        "metadata": {
+          "level": "A5",
+          "type": "A5.SystemSoftware",
+          "id": "INF-PG-ZIPPA-PROD",
+          "version": "16",
+          "lifecycle_status": "active",
+          "description": "Managed PostgreSQL."
+        }
+      },
+      "A5:INF-REDIS-ZIPPA-PROD@7": {
+        "label": "ElastiCache Redis zippa",
+        "metadata": {
+          "level": "A5",
+          "type": "A5.SystemSoftware",
+          "id": "INF-REDIS-ZIPPA-PROD",
+          "version": "7",
+          "lifecycle_status": "active",
+          "description": "Managed Redis."
+        }
+      },
+      "A5:TS-QUEUE@1.0": {
+        "label": "Queue",
+        "metadata": {
+          "level": "A5",
+          "type": "A5.TechnologyService",
+          "id": "TS-QUEUE",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Managed queue."
+        }
+      },
+      "A5:ENV-ZIPPA-PROD@1.0": {
+        "label": "prod",
+        "metadata": {
+          "level": "A5",
+          "type": "A5.DeploymentEnvironment",
+          "id": "ENV-ZIPPA-PROD",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Production namespace."
+        }
+      },
+      "A5:DEP-FLOW-PROD@1.0": {
+        "label": "flow-svc (prod)",
+        "metadata": {
+          "level": "A5",
+          "type": "A5.Deployment",
+          "id": "DEP-FLOW-PROD",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Deployment from manifest.",
+          "attributes": {
+            "component_id": "svc-flow",
+            "environment_id": "ENV-ZIPPA-PROD",
+            "platform_id": "INF-EKS-ZIPPA-PROD"
+          }
+        }
+      },
+      "A5:DEP-ZAP-PROD@1.0": {
+        "label": "zap-svc (prod)",
+        "metadata": {
+          "level": "A5",
+          "type": "A5.Deployment",
+          "id": "DEP-ZAP-PROD",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Deployment from manifest.",
+          "attributes": {
+            "component_id": "svc-zap",
+            "environment_id": "ENV-ZIPPA-PROD",
+            "platform_id": "INF-EKS-ZIPPA-PROD"
+          }
+        }
+      },
+      "A5:DEP-POTS-PROD@1.0": {
+        "label": "pots-svc (prod)",
+        "metadata": {
+          "level": "A5",
+          "type": "A5.Deployment",
+          "id": "DEP-POTS-PROD",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Deployment from manifest.",
+          "attributes": {
+            "component_id": "svc-pots",
+            "environment_id": "ENV-ZIPPA-PROD",
+            "platform_id": "INF-EKS-ZIPPA-PROD"
+          }
+        }
+      },
+      "A5:DEP-BUDDIES-PROD@1.0": {
+        "label": "buddies-svc (prod)",
+        "metadata": {
+          "level": "A5",
+          "type": "A5.Deployment",
+          "id": "DEP-BUDDIES-PROD",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Deployment from manifest.",
+          "attributes": {
+            "component_id": "svc-buddies",
+            "environment_id": "ENV-ZIPPA-PROD",
+            "platform_id": "INF-EKS-ZIPPA-PROD"
+          }
+        }
+      },
+      "A5:DEP-VAULTS-PROD@1.0": {
+        "label": "vaults-svc (prod)",
+        "metadata": {
+          "level": "A5",
+          "type": "A5.Deployment",
+          "id": "DEP-VAULTS-PROD",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Deployment from manifest.",
+          "attributes": {
+            "component_id": "svc-vaults",
+            "environment_id": "ENV-ZIPPA-PROD",
+            "platform_id": "INF-EKS-ZIPPA-PROD"
+          }
+        }
+      },
+      "A5:DEP-PERKS-PROD@1.0": {
+        "label": "perks-svc (prod)",
+        "metadata": {
+          "level": "A5",
+          "type": "A5.Deployment",
+          "id": "DEP-PERKS-PROD",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Deployment from manifest.",
+          "attributes": {
+            "component_id": "svc-perks",
+            "environment_id": "ENV-ZIPPA-PROD",
+            "platform_id": "INF-EKS-ZIPPA-PROD"
+          }
+        }
+      },
+      "A5:DEP-SHIELD-PROD@1.0": {
+        "label": "shield-svc (prod)",
+        "metadata": {
+          "level": "A5",
+          "type": "A5.Deployment",
+          "id": "DEP-SHIELD-PROD",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Deployment from manifest.",
+          "attributes": {
+            "component_id": "svc-shield",
+            "environment_id": "ENV-ZIPPA-PROD",
+            "platform_id": "INF-EKS-ZIPPA-PROD"
+          }
+        }
+      },
+      "A5:ZONE-FIN-CLOUD@1.0": {
+        "label": "Cloud — Zippa",
+        "metadata": {
+          "level": "A5",
+          "type": "A5.NetworkZone",
+          "id": "ZONE-FIN-CLOUD",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "The Zippa cloud deployment (made up).",
+          "attributes": {
+            "zone_level": 0,
+            "zone_kind": "cloud"
+          }
+        }
+      },
+      "A5:ZONE-FIN-INTERNAL@1.0": {
+        "label": "Internal network — Zippa",
+        "metadata": {
+          "level": "A5",
+          "type": "A5.NetworkZone",
+          "id": "ZONE-FIN-INTERNAL",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "The internal network inside the cloud deployment; nothing in it is reached from the internet.",
+          "attributes": {
+            "zone_level": 1,
+            "zone_kind": "internal"
+          }
+        }
+      }
+    },
+    "edges": [
+      {
+        "id": "A5:ENV-ZIPPA-PROD-aggregation-DEP-FLOW-PROD",
+        "source": "A5:ENV-ZIPPA-PROD@1.0",
+        "target": "A5:DEP-FLOW-PROD@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-31"
+        }
+      },
+      {
+        "id": "A5:ENV-ZIPPA-PROD-aggregation-DEP-ZAP-PROD",
+        "source": "A5:ENV-ZIPPA-PROD@1.0",
+        "target": "A5:DEP-ZAP-PROD@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-31"
+        }
+      },
+      {
+        "id": "A5:ENV-ZIPPA-PROD-aggregation-DEP-POTS-PROD",
+        "source": "A5:ENV-ZIPPA-PROD@1.0",
+        "target": "A5:DEP-POTS-PROD@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-31"
+        }
+      },
+      {
+        "id": "A5:ENV-ZIPPA-PROD-aggregation-DEP-BUDDIES-PROD",
+        "source": "A5:ENV-ZIPPA-PROD@1.0",
+        "target": "A5:DEP-BUDDIES-PROD@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-31"
+        }
+      },
+      {
+        "id": "A5:ENV-ZIPPA-PROD-aggregation-DEP-VAULTS-PROD",
+        "source": "A5:ENV-ZIPPA-PROD@1.0",
+        "target": "A5:DEP-VAULTS-PROD@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-31"
+        }
+      },
+      {
+        "id": "A5:ENV-ZIPPA-PROD-aggregation-DEP-PERKS-PROD",
+        "source": "A5:ENV-ZIPPA-PROD@1.0",
+        "target": "A5:DEP-PERKS-PROD@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-31"
+        }
+      },
+      {
+        "id": "A5:ENV-ZIPPA-PROD-aggregation-DEP-SHIELD-PROD",
+        "source": "A5:ENV-ZIPPA-PROD@1.0",
+        "target": "A5:DEP-SHIELD-PROD@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-31"
+        }
+      },
+      {
+        "id": "A5:INF-EKS-ZIPPA-PROD-assignment-DEP-BUDDIES-PROD",
+        "source": "A5:INF-EKS-ZIPPA-PROD@1.30",
+        "target": "A5:DEP-BUDDIES-PROD@1.0",
+        "relation": "assignment",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-21"
+        }
+      },
+      {
+        "id": "A5:INF-EKS-ZIPPA-PROD-assignment-DEP-FLOW-PROD",
+        "source": "A5:INF-EKS-ZIPPA-PROD@1.30",
+        "target": "A5:DEP-FLOW-PROD@1.0",
+        "relation": "assignment",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-21"
+        }
+      },
+      {
+        "id": "A5:INF-EKS-ZIPPA-PROD-assignment-DEP-PERKS-PROD",
+        "source": "A5:INF-EKS-ZIPPA-PROD@1.30",
+        "target": "A5:DEP-PERKS-PROD@1.0",
+        "relation": "assignment",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-21"
+        }
+      },
+      {
+        "id": "A5:INF-EKS-ZIPPA-PROD-assignment-DEP-POTS-PROD",
+        "source": "A5:INF-EKS-ZIPPA-PROD@1.30",
+        "target": "A5:DEP-POTS-PROD@1.0",
+        "relation": "assignment",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-21"
+        }
+      },
+      {
+        "id": "A5:INF-EKS-ZIPPA-PROD-assignment-DEP-SHIELD-PROD",
+        "source": "A5:INF-EKS-ZIPPA-PROD@1.30",
+        "target": "A5:DEP-SHIELD-PROD@1.0",
+        "relation": "assignment",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-21"
+        }
+      },
+      {
+        "id": "A5:INF-EKS-ZIPPA-PROD-assignment-DEP-VAULTS-PROD",
+        "source": "A5:INF-EKS-ZIPPA-PROD@1.30",
+        "target": "A5:DEP-VAULTS-PROD@1.0",
+        "relation": "assignment",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-21"
+        }
+      },
+      {
+        "id": "A5:INF-EKS-ZIPPA-PROD-assignment-DEP-ZAP-PROD",
+        "source": "A5:INF-EKS-ZIPPA-PROD@1.30",
+        "target": "A5:DEP-ZAP-PROD@1.0",
+        "relation": "assignment",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-21"
+        }
+      },
+      {
+        "id": "A5:INF-EKS-ZIPPA-PROD-association-INF-PG-ZIPPA-PROD",
+        "source": "A5:INF-EKS-ZIPPA-PROD@1.30",
+        "target": "A5:INF-PG-ZIPPA-PROD@16",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "association"
+        }
+      },
+      {
+        "id": "A5:INF-EKS-ZIPPA-PROD-association-INF-REDIS-ZIPPA-PROD",
+        "source": "A5:INF-EKS-ZIPPA-PROD@1.30",
+        "target": "A5:INF-REDIS-ZIPPA-PROD@7",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "association"
+        }
+      },
+      {
+        "id": "A5:TS-QUEUE-serving-INF-EKS-ZIPPA-PROD",
+        "source": "A5:TS-QUEUE@1.0",
+        "target": "A5:INF-EKS-ZIPPA-PROD@1.30",
+        "relation": "serving",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-20"
+        }
+      },
+      {
+        "id": "A5:ZONE-FIN-CLOUD-composition-ZONE-FIN-INTERNAL",
+        "source": "A5:ZONE-FIN-CLOUD@1.0",
+        "target": "A5:ZONE-FIN-INTERNAL@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-39"
+        }
+      },
+      {
+        "id": "A5:ZONE-FIN-INTERNAL-aggregation-INF-EKS-ZIPPA-PROD",
+        "source": "A5:ZONE-FIN-INTERNAL@1.0",
+        "target": "A5:INF-EKS-ZIPPA-PROD@1.30",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-38"
+        }
+      },
+      {
+        "id": "A5:ZONE-FIN-INTERNAL-aggregation-INF-PG-ZIPPA-PROD",
+        "source": "A5:ZONE-FIN-INTERNAL@1.0",
+        "target": "A5:INF-PG-ZIPPA-PROD@16",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-38"
+        }
+      },
+      {
+        "id": "A5:ZONE-FIN-INTERNAL-aggregation-INF-REDIS-ZIPPA-PROD",
+        "source": "A5:ZONE-FIN-INTERNAL@1.0",
+        "target": "A5:INF-REDIS-ZIPPA-PROD@7",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-38"
+        }
+      },
+      {
+        "id": "A5:ZONE-FIN-INTERNAL-aggregation-TS-QUEUE",
+        "source": "A5:ZONE-FIN-INTERNAL@1.0",
+        "target": "A5:TS-QUEUE@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-38"
+        }
+      }
+    ]
+  }
+}

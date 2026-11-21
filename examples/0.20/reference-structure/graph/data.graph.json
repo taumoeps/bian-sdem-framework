@@ -1,0 +1,141 @@
+{
+  "graph": {
+    "id": "sdem:reference-structure-a3-data",
+    "type": "sdem.local",
+    "label": "A3 local knowledge graph (reference-structure-a3-data)",
+    "directed": true,
+    "metadata": {
+      "sdem_store_version": "1.0",
+      "export_sha256": "2fd465c389b169905f06d36540ca8e2255dcce2a53707f6b6bc1dff149c277f8",
+      "level": "A3",
+      "model_id": "reference-structure-a3-data",
+      "model_version": "2026.10",
+      "metamodel_version": "0.17.0",
+      "source_system": "SDEM-GENERATED-FROM-RECORD"
+    },
+    "nodes": {
+      "A3:RS-DataEntity-1@1.0": {
+        "label": "DataEntity 1 (structure conformance)",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.DataEntity",
+          "id": "RS-DataEntity-1",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic instance of A3.DataEntity carrying one relationship per constraint row of A3; no business meaning.",
+          "attributes": {
+            "attributes": [
+              "structure"
+            ]
+          }
+        }
+      },
+      "A3:RS-DataEntity-2@1.0": {
+        "label": "DataEntity 2 (structure conformance)",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.DataEntity",
+          "id": "RS-DataEntity-2",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic instance of A3.DataEntity carrying one relationship per constraint row of A3; no business meaning.",
+          "attributes": {
+            "attributes": [
+              "structure"
+            ]
+          }
+        }
+      },
+      "A3:RS-DataAttribute-1@1.0": {
+        "label": "DataAttribute 1 (structure conformance)",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.DataAttribute",
+          "id": "RS-DataAttribute-1",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic instance of A3.DataAttribute carrying one relationship per constraint row of A3; no business meaning."
+        }
+      },
+      "A3:RS-DataAttribute-2@1.0": {
+        "label": "DataAttribute 2 (structure conformance)",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.DataAttribute",
+          "id": "RS-DataAttribute-2",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic instance of A3.DataAttribute carrying one relationship per constraint row of A3; no business meaning."
+        }
+      }
+    },
+    "edges": [
+      {
+        "id": "A3:RS-DataEntity-1-composition-RS-DataEntity-2",
+        "source": "A3:RS-DataEntity-1@1.0",
+        "target": "A3:RS-DataEntity-2@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-19"
+        },
+        "label": "RA3-19"
+      },
+      {
+        "id": "A3:RS-DataEntity-1-aggregation-RS-DataEntity-2",
+        "source": "A3:RS-DataEntity-1@1.0",
+        "target": "A3:RS-DataEntity-2@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-20"
+        },
+        "label": "RA3-20"
+      },
+      {
+        "id": "A3:RS-DataEntity-1-specialization-RS-DataEntity-2",
+        "source": "A3:RS-DataEntity-1@1.0",
+        "target": "A3:RS-DataEntity-2@1.0",
+        "relation": "specialization",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-21"
+        },
+        "label": "RA3-21"
+      },
+      {
+        "id": "A3:RS-DataEntity-1-association-RS-DataEntity-2",
+        "source": "A3:RS-DataEntity-1@1.0",
+        "target": "A3:RS-DataEntity-2@1.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-32"
+        },
+        "label": "RA3-32"
+      },
+      {
+        "id": "A3:RS-DataEntity-1-composition-RS-DataAttribute-1",
+        "source": "A3:RS-DataEntity-1@1.0",
+        "target": "A3:RS-DataAttribute-1@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-33"
+        },
+        "label": "RA3-33"
+      },
+      {
+        "id": "A3:RS-DataAttribute-1-association-RS-DataEntity-1",
+        "source": "A3:RS-DataAttribute-1@1.0",
+        "target": "A3:RS-DataEntity-1@1.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-34"
+        },
+        "label": "RA3-34"
+      }
+    ]
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "level": "data",
+  "model_id": "library-holds-a3-data",
+  "model_version": "2026.11",
+  "metamodel_version": "0.17.0",
+  "source_system": "SYNTHETIC-DESIGN",
+  "instances": [
+    {
+      "id": "DE-HOLD",
+      "type": "data.DataEntity",
+      "version": "1.0",
+      "name": "hold",
+      "lifecycle_status": "active",
+      "attributes": {
+        "stored_in": [
+          "SYS-CATALOGUE-DB"
+        ],
+        "attributes": [
+          "hold_reference",
+          "member_reference",
+          "item_reference",
+          "branch_code",
+          "hold_status",
+          "placed_on",
+          "expires_on"
+        ]
+      },
+      "description": "One reservation: member, item, branch, status and dates."
+    }
+  ],
+  "relationships": []
+}

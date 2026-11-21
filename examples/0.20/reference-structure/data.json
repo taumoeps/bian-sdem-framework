@@ -1,0 +1,89 @@
+{
+  "level": "data",
+  "model_id": "reference-structure-a3-data",
+  "model_version": "2026.10",
+  "metamodel_version": "0.17.0",
+  "source_system": "SDEM-GENERATED-FROM-RECORD",
+  "instances": [
+    {
+      "id": "RS-DataEntity-1",
+      "type": "data.DataEntity",
+      "version": "1.0",
+      "name": "DataEntity 1 (structure conformance)",
+      "lifecycle_status": "active",
+      "description": "Synthetic instance of A3.DataEntity carrying one relationship per constraint row of A3; no business meaning.",
+      "attributes": {
+        "attributes": [
+          "structure"
+        ]
+      }
+    },
+    {
+      "id": "RS-DataEntity-2",
+      "type": "data.DataEntity",
+      "version": "1.0",
+      "name": "DataEntity 2 (structure conformance)",
+      "lifecycle_status": "active",
+      "description": "Synthetic instance of A3.DataEntity carrying one relationship per constraint row of A3; no business meaning.",
+      "attributes": {
+        "attributes": [
+          "structure"
+        ]
+      }
+    },
+    {
+      "id": "RS-DataAttribute-1",
+      "type": "data.DataAttribute",
+      "version": "1.0",
+      "name": "DataAttribute 1 (structure conformance)",
+      "lifecycle_status": "active",
+      "description": "Synthetic instance of A3.DataAttribute carrying one relationship per constraint row of A3; no business meaning."
+    },
+    {
+      "id": "RS-DataAttribute-2",
+      "type": "data.DataAttribute",
+      "version": "1.0",
+      "name": "DataAttribute 2 (structure conformance)",
+      "lifecycle_status": "active",
+      "description": "Synthetic instance of A3.DataAttribute carrying one relationship per constraint row of A3; no business meaning."
+    }
+  ],
+  "relationships": [
+    {
+      "source": "RS-DataEntity-1",
+      "kind": "composition",
+      "target": "RS-DataEntity-2",
+      "name": "RA3-19"
+    },
+    {
+      "source": "RS-DataEntity-1",
+      "kind": "aggregation",
+      "target": "RS-DataEntity-2",
+      "name": "RA3-20"
+    },
+    {
+      "source": "RS-DataEntity-1",
+      "kind": "specialization",
+      "target": "RS-DataEntity-2",
+      "name": "RA3-21"
+    },
+    {
+      "source": "RS-DataEntity-1",
+      "kind": "association",
+      "target": "RS-DataEntity-2",
+      "name": "RA3-32"
+    },
+    {
+      "source": "RS-DataEntity-1",
+      "kind": "composition",
+      "target": "RS-DataAttribute-1",
+      "name": "RA3-33"
+    },
+    {
+      "source": "RS-DataAttribute-1",
+      "kind": "association",
+      "target": "RS-DataEntity-1",
+      "name": "RA3-34"
+    }
+  ]
+}

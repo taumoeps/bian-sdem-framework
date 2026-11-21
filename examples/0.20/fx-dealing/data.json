@@ -1,0 +1,309 @@
+{
+  "level": "data",
+  "model_id": "harbourline-fx-a3-data",
+  "model_version": "2026.11",
+  "metamodel_version": "0.17.0",
+  "source_system": "SYNTHETIC-APM",
+  "instances": [
+    {
+      "id": "ENT-FX-QUOTE",
+      "type": "data.DataEntity",
+      "version": "1.0",
+      "name": "fx_quote",
+      "lifecycle_status": "active",
+      "description": "Aurora table of quotes issued to clients.",
+      "attributes": {
+        "attributes": [
+          "quote_id",
+          "client_lei",
+          "currency_pair",
+          "side",
+          "notional_amount",
+          "notional_currency",
+          "value_date",
+          "all_in_rate",
+          "valid_until",
+          "quote_status"
+        ],
+        "personal_information": false,
+        "system_of_record": true,
+        "retention_period": "2y",
+        "stored_in": [
+          "SYS-PG-FX-PROD"
+        ]
+      }
+    },
+    {
+      "id": "ENT-FX-DEAL",
+      "type": "data.DataEntity",
+      "version": "1.0",
+      "name": "fx_deal",
+      "lifecycle_status": "active",
+      "description": "Ledgerline table of client deals.",
+      "attributes": {
+        "attributes": [
+          "deal_ref",
+          "quote_id",
+          "counterparty_lei",
+          "currency_pair",
+          "buy_sell",
+          "dealt_currency",
+          "dealt_amount",
+          "contra_amount",
+          "rate",
+          "trade_date",
+          "value_date",
+          "product_type",
+          "book_code",
+          "deal_status"
+        ],
+        "personal_information": false,
+        "system_of_record": true,
+        "retention_period": "10y",
+        "stored_in": [
+          "SYS-PG-FX-PROD"
+        ]
+      }
+    },
+    {
+      "id": "ENT-IB-TRADE",
+      "type": "data.DataEntity",
+      "version": "1.0",
+      "name": "interbank_trade",
+      "lifecycle_status": "active",
+      "description": "Ledgerline table of interbank cover trades.",
+      "attributes": {
+        "attributes": [
+          "trade_ref",
+          "counterparty_lei",
+          "currency_pair",
+          "buy_sell",
+          "dealt_amount",
+          "rate",
+          "value_date",
+          "trader_id",
+          "book_code",
+          "execution_venue"
+        ],
+        "personal_information": false,
+        "system_of_record": true,
+        "retention_period": "10y",
+        "stored_in": [
+          "SYS-PG-FX-PROD"
+        ]
+      }
+    },
+    {
+      "id": "ENT-DESK-POSITION",
+      "type": "data.DataEntity",
+      "version": "1.0",
+      "name": "desk_position",
+      "lifecycle_status": "active",
+      "description": "Ledgerline running net open position per desk and currency.",
+      "attributes": {
+        "attributes": [
+          "desk_id",
+          "currency",
+          "net_open_position",
+          "as_of"
+        ],
+        "personal_information": false,
+        "system_of_record": true,
+        "retention_period": "1y",
+        "stored_in": [
+          "SYS-PG-FX-PROD"
+        ]
+      }
+    },
+    {
+      "id": "ENT-DEALER-LIMIT",
+      "type": "data.DataEntity",
+      "version": "1.0",
+      "name": "dealer_limit",
+      "lifecycle_status": "active",
+      "description": "Ledgerline dealer limits and their utilisation.",
+      "attributes": {
+        "attributes": [
+          "trader_id",
+          "currency_pair",
+          "limit_amount",
+          "utilised_amount"
+        ],
+        "personal_information": false,
+        "system_of_record": true,
+        "retention_period": "7y",
+        "stored_in": [
+          "SYS-PG-FX-PROD"
+        ]
+      }
+    },
+    {
+      "id": "ENT-CONFIRMATION",
+      "type": "data.DataEntity",
+      "version": "1.0",
+      "name": "CONF_MESSAGE",
+      "lifecycle_status": "active",
+      "description": "ConfirmHub store of outgoing and incoming confirmations.",
+      "attributes": {
+        "attributes": [
+          "confirmation_id",
+          "deal_ref",
+          "counterparty_lei",
+          "direction",
+          "match_status",
+          "sent_at",
+          "matched_at"
+        ],
+        "personal_information": false,
+        "system_of_record": true,
+        "retention_period": "10y",
+        "stored_in": [
+          "SYS-SQL-CONF-PROD"
+        ]
+      }
+    },
+    {
+      "id": "ENT-MATCH-BREAK",
+      "type": "data.DataEntity",
+      "version": "1.0",
+      "name": "CONF_BREAK",
+      "lifecycle_status": "active",
+      "description": "ConfirmHub queue of unmatched-trade cases.",
+      "attributes": {
+        "attributes": [
+          "break_id",
+          "confirmation_id",
+          "age_days",
+          "assigned_to",
+          "break_status",
+          "escalation_level"
+        ],
+        "personal_information": false,
+        "system_of_record": true,
+        "retention_period": "7y",
+        "stored_in": [
+          "SYS-SQL-CONF-PROD"
+        ]
+      }
+    },
+    {
+      "id": "ENT-SETTLEMENT-INSTR",
+      "type": "data.DataEntity",
+      "version": "1.0",
+      "name": "settlement_instruction",
+      "lifecycle_status": "active",
+      "description": "Settlement Manager instruction per currency leg.",
+      "attributes": {
+        "attributes": [
+          "settlement_ref",
+          "deal_ref",
+          "currency",
+          "amount",
+          "value_date",
+          "beneficiary_bic",
+          "nostro_account",
+          "settlement_status"
+        ],
+        "personal_information": false,
+        "system_of_record": true,
+        "retention_period": "10y",
+        "stored_in": [
+          "SYS-PG-STL-PROD"
+        ]
+      }
+    },
+    {
+      "id": "ENT-NOSTRO-ADVICE",
+      "type": "data.DataEntity",
+      "version": "1.0",
+      "name": "nostro_advice",
+      "lifecycle_status": "active",
+      "description": "Settlement Manager record of incoming nostro advices.",
+      "attributes": {
+        "attributes": [
+          "advice_ref",
+          "nostro_account",
+          "currency",
+          "amount",
+          "value_date",
+          "settlement_ref"
+        ],
+        "personal_information": false,
+        "system_of_record": true,
+        "retention_period": "10y",
+        "stored_in": [
+          "SYS-PG-STL-PROD"
+        ]
+      }
+    },
+    {
+      "id": "ENT-COUNTERPARTY",
+      "type": "data.DataEntity",
+      "version": "1.0",
+      "name": "counterparty",
+      "lifecycle_status": "active",
+      "description": "CRDS golden record of a wholesale counterparty.",
+      "attributes": {
+        "attributes": [
+          "counterparty_lei",
+          "legal_name",
+          "country",
+          "status",
+          "onboarded_by"
+        ],
+        "personal_information": false,
+        "system_of_record": true,
+        "retention_period": "10y",
+        "stored_in": [
+          "SYS-PG-REF-PROD"
+        ]
+      }
+    },
+    {
+      "id": "ENT-SSI",
+      "type": "data.DataEntity",
+      "version": "1.0",
+      "name": "standing_settlement_instruction",
+      "lifecycle_status": "active",
+      "description": "CRDS standing settlement instructions per counterparty and currency.",
+      "attributes": {
+        "attributes": [
+          "counterparty_lei",
+          "currency",
+          "beneficiary_bic",
+          "intermediary_bic",
+          "account_number",
+          "effective_from"
+        ],
+        "personal_information": false,
+        "system_of_record": true,
+        "retention_period": "10y",
+        "stored_in": [
+          "SYS-PG-REF-PROD"
+        ]
+      }
+    },
+    {
+      "id": "ENT-RATE-SNAPSHOT",
+      "type": "data.DataEntity",
+      "version": "1.0",
+      "name": "rate_snapshot",
+      "lifecycle_status": "active",
+      "description": "Rates Gateway in-memory cache of the latest cleaned rate per pair.",
+      "attributes": {
+        "attributes": [
+          "currency_pair",
+          "bid",
+          "ask",
+          "mid",
+          "source",
+          "timestamp"
+        ],
+        "personal_information": false,
+        "system_of_record": false,
+        "retention_period": "1d"
+      }
+    }
+  ],
+  "relationships": []
+}

@@ -1,0 +1,4656 @@
+{
+  "graph": {
+    "id": "sdem:synthetic-bank-payments-v2-a2",
+    "type": "sdem.local",
+    "label": "A2 local knowledge graph (synthetic-bank-payments-v2-a2)",
+    "directed": true,
+    "metadata": {
+      "sdem_store_version": "1.0",
+      "export_sha256": "dfa2cfe9b5505a613dab3f184411f9231f2fa55e58672ede9f0553fdf904400a",
+      "level": "A2",
+      "model_id": "synthetic-bank-payments-v2-a2",
+      "model_version": "2026.10",
+      "metamodel_version": "0.17.0",
+      "source_system": "SYNTHETIC-BIAN-WORKBENCH"
+    },
+    "nodes": {
+      "A2:BD-PAYMENTS@1.0": {
+        "label": "Payments (synthetic grouping)",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessDomain",
+          "id": "BD-PAYMENTS",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic stand-in for a BIAN payments business domain."
+        }
+      },
+      "A2:SD-PI@1.0": {
+        "label": "Payment Initiation (synthetic selection)",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceDomain",
+          "id": "SD-PI",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "canonical_id": "BIAN-PAYMENT-INITIATION",
+          "description": "Synthetic stand-in for a BIAN payment-initiation Service Domain: captures, validates, authorises and hands over customer payment instructions.",
+          "attributes": {
+            "asset_type": "AT-PAY-INSTR",
+            "functional_pattern": "FP-FULFIL",
+            "adoption_status": "adopted",
+            "owner": "ROLE-PAY-OFFICER",
+            "conforms_to": [
+              "BIAN 14.0"
+            ]
+          }
+        }
+      },
+      "A2:SD-PE@1.0": {
+        "label": "Payment Execution (synthetic selection)",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceDomain",
+          "id": "SD-PE",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "canonical_id": "BIAN-PAYMENT-EXECUTION",
+          "description": "Synthetic stand-in for a BIAN payment-execution Service Domain: executes authorised instructions through schemes.",
+          "attributes": {
+            "asset_type": "AT-PAY-TXN",
+            "functional_pattern": "FP-FULFIL",
+            "adoption_status": "partly adopted"
+          }
+        }
+      },
+      "A2:SD-PA@1.0": {
+        "label": "Party Authentication (synthetic selection)",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceDomain",
+          "id": "SD-PA",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "canonical_id": "BIAN-PARTY-AUTH",
+          "description": "Synthetic stand-in for a BIAN party-authentication Service Domain: verifies a party's identity for a session or transaction.",
+          "attributes": {
+            "asset_type": "AT-AUTH",
+            "functional_pattern": "FP-ASSESS",
+            "adoption_status": "planned"
+          }
+        }
+      },
+      "A2:AT-PAY-INSTR@1.0": {
+        "label": "Payment Instruction",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.AssetType",
+          "id": "AT-PAY-INSTR",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "The customer payment instruction the domain fulfils.",
+          "attributes": {
+            "aliases": [
+              "payment",
+              "instruction"
+            ]
+          }
+        }
+      },
+      "A2:AT-PAY-TXN@1.0": {
+        "label": "Payment Transaction",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.AssetType",
+          "id": "AT-PAY-TXN",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "The executed transfer.",
+          "attributes": {
+            "aliases": [
+              "payment",
+              "transaction",
+              "transfer"
+            ]
+          }
+        }
+      },
+      "A2:AT-AUTH@1.0": {
+        "label": "Authentication",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.AssetType",
+          "id": "AT-AUTH",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "An authentication of a party.",
+          "attributes": {
+            "aliases": [
+              "authentication",
+              "login",
+              "credential"
+            ]
+          }
+        }
+      },
+      "A2:FP-FULFIL@1.0": {
+        "label": "Fulfil",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.FunctionalPattern",
+          "id": "FP-FULFIL",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic stand-in for a BIAN functional pattern: complete a request through a procedure.",
+          "attributes": {
+            "generic_artefact": "Arrangement",
+            "behavior_qualifier_type": "Features"
+          }
+        }
+      },
+      "A2:FP-ASSESS@1.0": {
+        "label": "Assess",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.FunctionalPattern",
+          "id": "FP-ASSESS",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic stand-in: evaluate something and record the result.",
+          "attributes": {
+            "generic_artefact": "Assessment",
+            "behavior_qualifier_type": "Tests"
+          }
+        }
+      },
+      "A2:CR-PI@1.0": {
+        "label": "Payment Initiation Procedure",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ControlRecord",
+          "id": "CR-PI",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Lifecycle record of one payment instruction from capture to hand-over.",
+          "attributes": {
+            "attributes": [
+              "payment_instruction_reference",
+              "debtor_account_reference",
+              "creditor_account_reference",
+              "amount",
+              "currency",
+              "value_date",
+              "payment_status",
+              "authorisation_status",
+              "execution_reference",
+              "remittance_information"
+            ]
+          }
+        }
+      },
+      "A2:BQ-VALIDATION@1.0": {
+        "label": "Validation",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BehaviorQualifier",
+          "id": "BQ-VALIDATION",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "The validation and authorisation partition of the procedure."
+        }
+      },
+      "A2:BQ-EXECUTION@1.0": {
+        "label": "Execution",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BehaviorQualifier",
+          "id": "BQ-EXECUTION",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "The hand-over-to-execution partition of the procedure."
+        }
+      },
+      "A2:SG-PI-1@1.0": {
+        "label": "Instruction",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceGroup",
+          "id": "SG-PI-1",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Operations that create and maintain the instruction."
+        }
+      },
+      "A2:SG-PI-2@1.0": {
+        "label": "Processing",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceGroup",
+          "id": "SG-PI-2",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Operations that validate, execute and report."
+        }
+      },
+      "A2:SO-PI-01@1.0": {
+        "label": "Initiate Payment Instruction",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-PI-01",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Create a new payment instruction procedure from the customer's details.",
+          "attributes": {
+            "action_term": "Initiate",
+            "behavior_qualifier": null,
+            "input_attributes": [
+              "debtor_account_reference",
+              "creditor_account_reference",
+              "amount",
+              "currency",
+              "value_date",
+              "remittance_information"
+            ],
+            "output_attributes": [
+              "payment_instruction_reference",
+              "payment_status"
+            ]
+          }
+        }
+      },
+      "A2:SO-PI-05@1.0": {
+        "label": "Update Payment Instruction",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-PI-05",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Amend an instruction before execution.",
+          "attributes": {
+            "action_term": "Update",
+            "behavior_qualifier": null,
+            "input_attributes": [
+              "payment_instruction_reference",
+              "amount",
+              "value_date",
+              "creditor_account_reference"
+            ],
+            "output_attributes": [
+              "payment_instruction_reference",
+              "payment_status"
+            ]
+          }
+        }
+      },
+      "A2:SO-PI-02@1.0": {
+        "label": "Evaluate Payment Instruction Validation",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-PI-02",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Validate the instruction and record the authorisation outcome.",
+          "attributes": {
+            "action_term": "Evaluate",
+            "behavior_qualifier": "Validation",
+            "input_attributes": [
+              "payment_instruction_reference"
+            ],
+            "output_attributes": [
+              "authorisation_status",
+              "payment_status"
+            ]
+          }
+        }
+      },
+      "A2:SO-PI-03@1.0": {
+        "label": "Execute Payment Instruction Execution",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-PI-03",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Hand the authorised instruction to execution.",
+          "attributes": {
+            "action_term": "Execute",
+            "behavior_qualifier": "Execution",
+            "input_attributes": [
+              "payment_instruction_reference"
+            ],
+            "output_attributes": [
+              "execution_reference",
+              "payment_status"
+            ]
+          }
+        }
+      },
+      "A2:SO-PI-04@1.0": {
+        "label": "Retrieve Payment Instruction",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-PI-04",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Return the current state of the instruction.",
+          "attributes": {
+            "action_term": "Retrieve",
+            "behavior_qualifier": null,
+            "input_attributes": [
+              "payment_instruction_reference"
+            ],
+            "output_attributes": [
+              "payment_status",
+              "execution_reference",
+              "authorisation_status"
+            ]
+          }
+        }
+      },
+      "A2:SO-PI-06@1.0": {
+        "label": "Notify Payment Instruction",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-PI-06",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Notify an interested party of a change in the instruction's state.",
+          "attributes": {
+            "action_term": "Notify",
+            "behavior_qualifier": null,
+            "input_attributes": [
+              "payment_instruction_reference"
+            ],
+            "output_attributes": [
+              "payment_status"
+            ]
+          }
+        }
+      },
+      "A2:BS-CREDIT-TRANSFER@1.0": {
+        "label": "Customer credit transfer",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessScenario",
+          "id": "BS-CREDIT-TRANSFER",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "canonical_id": "BIAN-SCENARIO-CREDIT-TRANSFER",
+          "description": "A customer initiates a credit transfer; it is validated, executed and its status reported.",
+          "attributes": {
+            "operation_sequence": [
+              "SO-PI-01",
+              "SO-PI-02",
+              "SO-PI-03",
+              "SO-PI-04"
+            ],
+            "trigger_event": "customer submits a credit transfer"
+          }
+        }
+      },
+      "A2:BBO-PAY-INSTR@1.0": {
+        "label": "Payment Instruction",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObject",
+          "id": "BBO-PAY-INSTR",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "canonical_id": "BIAN-BO-PAYMENT-INSTRUCTION",
+          "description": "Canonical payment instruction object.",
+          "attributes": {
+            "attributes": [
+              "payment_instruction_reference",
+              "debtor_account_reference",
+              "creditor_account_reference",
+              "amount",
+              "currency",
+              "value_date",
+              "remittance_information",
+              "payment_status"
+            ],
+            "personal_information": true
+          }
+        }
+      },
+      "A2:BBO-PARTY@1.0": {
+        "label": "Party",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObject",
+          "id": "BBO-PARTY",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "canonical_id": "BIAN-BO-PARTY",
+          "description": "Canonical party object.",
+          "attributes": {
+            "attributes": [
+              "party_reference",
+              "party_name",
+              "party_type"
+            ],
+            "personal_information": true
+          }
+        }
+      },
+      "A2:BBOA-AMOUNT@1.0": {
+        "label": "amount",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-AMOUNT",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Monetary amount of the instruction.",
+          "attributes": {
+            "personal_information": false,
+            "data_type": "amount"
+          }
+        }
+      },
+      "A2:BA-OPS-EXEC@1.0": {
+        "label": "Operations and Execution",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessArea",
+          "id": "BA-OPS-EXEC",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "BIAN's business area for the operational domains, payments among them (BIAN Service Landscape; the business area is not in SDEM's shipped Semantic API catalogue)."
+        }
+      },
+      "A2:CR-PA@14.0.0": {
+        "label": "Party Authentication Assessment",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ControlRecord",
+          "id": "CR-PA",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "attributes": [
+              "CustomerReference",
+              "PartyReference",
+              "PartyAuthenticationAssessmentProfile",
+              "AuthenticationType",
+              "PartyAuthenticationConsolidationRecord",
+              "CustomerContactAuthenticationLevel",
+              "AuthorisationTokenReference",
+              "RefreshTokenReference"
+            ],
+            "source_id": "bian-semantic-api:14.0.0:PartyAuthentication.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BQ-PA-PASSWORD@14.0.0": {
+        "label": "Password",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BehaviorQualifier",
+          "id": "BQ-PA-PASSWORD",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "source_id": "bian-semantic-api:14.0.0:PartyAuthentication.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BQ-PA-QUESTION@14.0.0": {
+        "label": "Question",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BehaviorQualifier",
+          "id": "BQ-PA-QUESTION",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "source_id": "bian-semantic-api:14.0.0:PartyAuthentication.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BQ-PA-DOCUMENT@14.0.0": {
+        "label": "Document",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BehaviorQualifier",
+          "id": "BQ-PA-DOCUMENT",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "source_id": "bian-semantic-api:14.0.0:PartyAuthentication.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BQ-PA-DEVICE@14.0.0": {
+        "label": "Device",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BehaviorQualifier",
+          "id": "BQ-PA-DEVICE",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "source_id": "bian-semantic-api:14.0.0:PartyAuthentication.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BQ-PA-BIOMETRIC@14.0.0": {
+        "label": "Biometric",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BehaviorQualifier",
+          "id": "BQ-PA-BIOMETRIC",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "source_id": "bian-semantic-api:14.0.0:PartyAuthentication.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BQ-PA-BEHAVIOR@14.0.0": {
+        "label": "Behavior",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BehaviorQualifier",
+          "id": "BQ-PA-BEHAVIOR",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "source_id": "bian-semantic-api:14.0.0:PartyAuthentication.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:SG-PA-1@14.0.0": {
+        "label": "Party Authentication Assessment",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceGroup",
+          "id": "SG-PA-1",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "The operations BIAN tags 'PartyAuthenticationAssessment' in Party Authentication.",
+          "attributes": {
+            "source_id": "bian-semantic-api:14.0.0:PartyAuthentication.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:SO-PA-01@14.0.0": {
+        "label": "Party Authentication: Update",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-PA-01",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "canonical_id": "BIAN-PARTY-AUTHENTICATION-UPDATE",
+          "description": "PUT /PartyAuthentication/{partyauthenticationid}/Update in BIAN's Semantic API 14.0.0.",
+          "attributes": {
+            "action_term": "Update",
+            "http_method": "PUT",
+            "input_attributes": [
+              "CustomerReference",
+              "PartyReference",
+              "PartyAuthenticationAssessmentProfile",
+              "AuthenticationType",
+              "PartyAuthenticationConsolidationRecord",
+              "CustomerContactAuthenticationLevel",
+              "AuthorisationTokenReference",
+              "RefreshTokenReference"
+            ],
+            "output_attributes": [
+              "CustomerReference",
+              "PartyReference",
+              "PartyAuthenticationAssessmentProfile",
+              "AuthenticationType",
+              "PartyAuthenticationConsolidationRecord",
+              "CustomerContactAuthenticationLevel",
+              "AuthorisationTokenReference",
+              "RefreshTokenReference"
+            ],
+            "source_id": "bian-semantic-api:14.0.0:PartyAuthentication.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:SO-PA-02@14.0.0": {
+        "label": "Party Authentication: Evaluate",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-PA-02",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "canonical_id": "BIAN-PARTY-AUTHENTICATION-EVALUATE",
+          "description": "POST /PartyAuthentication/Evaluate in BIAN's Semantic API 14.0.0.",
+          "attributes": {
+            "action_term": "Evaluate",
+            "http_method": "POST",
+            "input_attributes": [
+              "CustomerReference",
+              "PartyReference",
+              "PartyAuthenticationAssessmentProfile",
+              "AuthenticationType",
+              "PartyAuthenticationConsolidationRecord",
+              "CustomerContactAuthenticationLevel",
+              "AuthorisationTokenReference",
+              "RefreshTokenReference"
+            ],
+            "output_attributes": [
+              "CustomerReference",
+              "PartyReference",
+              "PartyAuthenticationAssessmentProfile",
+              "AuthenticationType",
+              "PartyAuthenticationConsolidationRecord",
+              "CustomerContactAuthenticationLevel",
+              "AuthorisationTokenReference",
+              "RefreshTokenReference"
+            ],
+            "source_id": "bian-semantic-api:14.0.0:PartyAuthentication.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:SO-PA-03@14.0.0": {
+        "label": "Party Authentication: Exchange",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-PA-03",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "canonical_id": "BIAN-PARTY-AUTHENTICATION-EXCHANGE",
+          "description": "PUT /PartyAuthentication/{partyauthenticationid}/Exchange in BIAN's Semantic API 14.0.0.",
+          "attributes": {
+            "action_term": "Exchange",
+            "http_method": "PUT",
+            "input_attributes": [
+              "CustomerReference",
+              "PartyReference",
+              "PartyAuthenticationAssessmentProfile",
+              "AuthenticationType",
+              "PartyAuthenticationConsolidationRecord",
+              "CustomerContactAuthenticationLevel",
+              "AuthorisationTokenReference",
+              "RefreshTokenReference"
+            ],
+            "output_attributes": [
+              "CustomerReference",
+              "PartyReference",
+              "PartyAuthenticationAssessmentProfile",
+              "AuthenticationType",
+              "PartyAuthenticationConsolidationRecord",
+              "CustomerContactAuthenticationLevel",
+              "AuthorisationTokenReference",
+              "RefreshTokenReference"
+            ],
+            "source_id": "bian-semantic-api:14.0.0:PartyAuthentication.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:SO-PA-04@14.0.0": {
+        "label": "Party Authentication: Execute",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-PA-04",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "canonical_id": "BIAN-PARTY-AUTHENTICATION-EXECUTE",
+          "description": "PUT /PartyAuthentication/{partyauthenticationid}/Execute in BIAN's Semantic API 14.0.0.",
+          "attributes": {
+            "action_term": "Execute",
+            "http_method": "PUT",
+            "input_attributes": [
+              "CustomerReference",
+              "PartyReference",
+              "PartyAuthenticationAssessmentProfile",
+              "AuthenticationType",
+              "PartyAuthenticationConsolidationRecord",
+              "CustomerContactAuthenticationLevel",
+              "AuthorisationTokenReference",
+              "RefreshTokenReference"
+            ],
+            "output_attributes": [
+              "CustomerReference",
+              "PartyReference",
+              "PartyAuthenticationAssessmentProfile",
+              "AuthenticationType",
+              "PartyAuthenticationConsolidationRecord",
+              "CustomerContactAuthenticationLevel",
+              "AuthorisationTokenReference",
+              "RefreshTokenReference"
+            ],
+            "source_id": "bian-semantic-api:14.0.0:PartyAuthentication.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:SO-PA-05@14.0.0": {
+        "label": "Party Authentication: Request",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-PA-05",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "canonical_id": "BIAN-PARTY-AUTHENTICATION-REQUEST",
+          "description": "PUT /PartyAuthentication/{partyauthenticationid}/Request in BIAN's Semantic API 14.0.0.",
+          "attributes": {
+            "action_term": "Request",
+            "http_method": "PUT",
+            "input_attributes": [
+              "CustomerReference",
+              "PartyReference",
+              "PartyAuthenticationAssessmentProfile",
+              "AuthenticationType",
+              "PartyAuthenticationConsolidationRecord",
+              "CustomerContactAuthenticationLevel",
+              "AuthorisationTokenReference",
+              "RefreshTokenReference"
+            ],
+            "output_attributes": [
+              "CustomerReference",
+              "PartyReference",
+              "PartyAuthenticationAssessmentProfile",
+              "AuthenticationType",
+              "PartyAuthenticationConsolidationRecord",
+              "CustomerContactAuthenticationLevel",
+              "AuthorisationTokenReference",
+              "RefreshTokenReference"
+            ],
+            "source_id": "bian-semantic-api:14.0.0:PartyAuthentication.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:SO-PA-06@14.0.0": {
+        "label": "Party Authentication: Grant",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-PA-06",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "canonical_id": "BIAN-PARTY-AUTHENTICATION-GRANT",
+          "description": "PUT /PartyAuthentication/{partyauthenticationid}/Grant in BIAN's Semantic API 14.0.0.",
+          "attributes": {
+            "action_term": "Grant",
+            "http_method": "PUT",
+            "input_attributes": [
+              "CustomerReference",
+              "PartyReference",
+              "PartyAuthenticationAssessmentProfile",
+              "AuthenticationType",
+              "PartyAuthenticationConsolidationRecord",
+              "CustomerContactAuthenticationLevel",
+              "AuthorisationTokenReference",
+              "RefreshTokenReference"
+            ],
+            "output_attributes": [
+              "CustomerReference",
+              "PartyReference",
+              "PartyAuthenticationAssessmentProfile",
+              "AuthenticationType",
+              "PartyAuthenticationConsolidationRecord",
+              "CustomerContactAuthenticationLevel",
+              "AuthorisationTokenReference",
+              "RefreshTokenReference"
+            ],
+            "source_id": "bian-semantic-api:14.0.0:PartyAuthentication.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:SO-PA-07@14.0.0": {
+        "label": "Party Authentication: Retrieve",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-PA-07",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "canonical_id": "BIAN-PARTY-AUTHENTICATION-RETRIEVE",
+          "description": "GET /PartyAuthentication/{partyauthenticationid}/Retrieve in BIAN's Semantic API 14.0.0.",
+          "attributes": {
+            "action_term": "Retrieve",
+            "http_method": "GET",
+            "input_attributes": [],
+            "output_attributes": [
+              "CustomerReference",
+              "PartyReference",
+              "PartyAuthenticationAssessmentProfile",
+              "AuthenticationType",
+              "PartyAuthenticationConsolidationRecord",
+              "CustomerContactAuthenticationLevel",
+              "AuthorisationTokenReference",
+              "RefreshTokenReference"
+            ],
+            "source_id": "bian-semantic-api:14.0.0:PartyAuthentication.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:CR-PE@1.0": {
+        "label": "Payment Execution Operating Session",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ControlRecord",
+          "id": "CR-PE",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic: the session in which payment instructions are executed, cleared and settled (modelled on BIAN 14.0.0 Payment Rail).",
+          "attributes": {
+            "attributes": [
+              "execution_reference",
+              "payment_instruction_reference",
+              "amount",
+              "currency",
+              "settlement_date",
+              "execution_status"
+            ]
+          }
+        }
+      },
+      "A2:BQ-PE-CLEARING@1.0": {
+        "label": "Clearing and Settlement",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BehaviorQualifier",
+          "id": "BQ-PE-CLEARING",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic: clearing the payment and settling it between institutions."
+        }
+      },
+      "A2:BQ-PE-OUTBOUND@1.0": {
+        "label": "Outbound Transaction",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BehaviorQualifier",
+          "id": "BQ-PE-OUTBOUND",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic: sending the payment to the receiving institution."
+        }
+      },
+      "A2:SG-PE-1@1.0": {
+        "label": "Execution",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceGroup",
+          "id": "SG-PE-1",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic: operations that execute and report a payment."
+        }
+      },
+      "A2:SO-PE-01@1.0": {
+        "label": "Initiate Payment Execution",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-PE-01",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic: initiate payment execution (in the style of BIAN 14.0.0 Payment Rail).",
+          "attributes": {
+            "action_term": "Initiate",
+            "behavior_qualifier": null,
+            "input_attributes": [
+              "payment_instruction_reference",
+              "amount",
+              "currency"
+            ],
+            "output_attributes": [
+              "execution_reference",
+              "execution_status"
+            ]
+          }
+        }
+      },
+      "A2:SO-PE-02@1.0": {
+        "label": "Execute Payment Clearing and Settlement",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-PE-02",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic: execute payment clearing and settlement (in the style of BIAN 14.0.0 Payment Rail).",
+          "attributes": {
+            "action_term": "Execute",
+            "behavior_qualifier": null,
+            "input_attributes": [
+              "execution_reference"
+            ],
+            "output_attributes": [
+              "execution_status",
+              "settlement_date"
+            ]
+          }
+        }
+      },
+      "A2:SO-PE-03@1.0": {
+        "label": "Retrieve Payment Execution",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.ServiceOperation",
+          "id": "SO-PE-03",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic: retrieve payment execution (in the style of BIAN 14.0.0 Payment Rail).",
+          "attributes": {
+            "action_term": "Retrieve",
+            "behavior_qualifier": null,
+            "input_attributes": [
+              "execution_reference"
+            ],
+            "output_attributes": [
+              "execution_status",
+              "settlement_date"
+            ]
+          }
+        }
+      },
+      "A2:BBOA-PARTY-REF@1.0": {
+        "label": "party reference",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-PARTY-REF",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "The reference that identifies the party (PartyReference in BIAN 14.0.0 Semantic APIs, e.g. Party Authentication).",
+          "attributes": {
+            "personal_information": false,
+            "data_type": "string"
+          }
+        }
+      },
+      "A2:BBO-COMPLIANCE-CHECK@14.0.0": {
+        "label": "Compliance Check",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObject",
+          "id": "BBO-COMPLIANCE-CHECK",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "canonical_id": "BIAN-BO-COMPLIANCE-CHECK",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "attributes": [
+              "ComplianceCheckType"
+            ],
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BBOA-COMPLIANCE-CHECK-COMPLIANCE-CHECK-TYPE@14.0.0": {
+        "label": "ComplianceCheckType",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-COMPLIANCE-CHECK-COMPLIANCE-CHECK-TYPE",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "data_type": "string",
+            "required": false,
+            "multiplicity": "0..1",
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BBO-FUNDING-CHECK@14.0.0": {
+        "label": "Funding Check",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObject",
+          "id": "BBO-FUNDING-CHECK",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "canonical_id": "BIAN-BO-FUNDING-CHECK",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "attributes": [
+              "AssessmentType",
+              "AssessmentMethod",
+              "AssessmentSchedule",
+              "AssessmentDescription",
+              "AssessmentModel",
+              "AssessmentDateTime",
+              "AssessmentResult",
+              "AssessmentSupportingDocument",
+              "AssessmentRepresentingDocument",
+              "AssessmentRequiredAdjustment",
+              "AssessmentRequirement",
+              "AssessmentExpiryDate",
+              "AssessmentStatus",
+              "AssessmentIdentification"
+            ],
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BBOA-FUNDING-CHECK-ASSESSMENT-TYPE@14.0.0": {
+        "label": "AssessmentType",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-FUNDING-CHECK-ASSESSMENT-TYPE",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "data_type": "enum",
+            "required": false,
+            "multiplicity": "0..1",
+            "allowed_values": [
+              "Valuation",
+              "Matching",
+              "Authorization",
+              "Authentication",
+              "QualityAssurance",
+              "Audit",
+              "ComplianceCheck",
+              "FundingCheck",
+              "SuitabilityCheck",
+              "PerformanceCheck",
+              "ImpactAssessment",
+              "RiskAssessment",
+              "Rating",
+              "UnderwritingAssessment",
+              "Qualification",
+              "Verification",
+              "KYCAssessment",
+              "PEPAssessment",
+              "AMLAssessment",
+              "EligibilityCheck",
+              "ExternalAgencyCheck",
+              "EntitlementCheck"
+            ],
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BBOA-FUNDING-CHECK-ASSESSMENT-METHOD@14.0.0": {
+        "label": "AssessmentMethod",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-FUNDING-CHECK-ASSESSMENT-METHOD",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "data_type": "string",
+            "required": false,
+            "multiplicity": "0..1",
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BBOA-FUNDING-CHECK-ASSESSMENT-SCHEDULE@14.0.0": {
+        "label": "AssessmentSchedule",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-FUNDING-CHECK-ASSESSMENT-SCHEDULE",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "data_type": "reference",
+            "required": false,
+            "multiplicity": "0..1",
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BBOA-FUNDING-CHECK-ASSESSMENT-DESCRIPTION@14.0.0": {
+        "label": "AssessmentDescription",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-FUNDING-CHECK-ASSESSMENT-DESCRIPTION",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "data_type": "string",
+            "required": false,
+            "multiplicity": "0..1",
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BBOA-FUNDING-CHECK-ASSESSMENT-MODEL@14.0.0": {
+        "label": "AssessmentModel",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-FUNDING-CHECK-ASSESSMENT-MODEL",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "data_type": "reference",
+            "required": false,
+            "multiplicity": "0..1",
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BBOA-FUNDING-CHECK-ASSESSMENT-DATE-TIME@14.0.0": {
+        "label": "AssessmentDateTime",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-FUNDING-CHECK-ASSESSMENT-DATE-TIME",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "data_type": "datetime",
+            "required": false,
+            "multiplicity": "0..1",
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BBOA-FUNDING-CHECK-ASSESSMENT-RESULT@14.0.0": {
+        "label": "AssessmentResult",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-FUNDING-CHECK-ASSESSMENT-RESULT",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "data_type": "string",
+            "required": false,
+            "multiplicity": "0..1",
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BBOA-FUNDING-CHECK-ASSESSMENT-SUPPORTING-DOCUMENT@14.0.0": {
+        "label": "AssessmentSupportingDocument",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-FUNDING-CHECK-ASSESSMENT-SUPPORTING-DOCUMENT",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "data_type": "reference",
+            "required": false,
+            "multiplicity": "0..1",
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BBOA-FUNDING-CHECK-ASSESSMENT-REPRESENTING-DOCUMENT@14.0.0": {
+        "label": "AssessmentRepresentingDocument",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-FUNDING-CHECK-ASSESSMENT-REPRESENTING-DOCUMENT",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "data_type": "reference",
+            "required": false,
+            "multiplicity": "0..1",
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BBOA-FUNDING-CHECK-ASSESSMENT-REQUIRED-ADJUSTMENT@14.0.0": {
+        "label": "AssessmentRequiredAdjustment",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-FUNDING-CHECK-ASSESSMENT-REQUIRED-ADJUSTMENT",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "data_type": "string",
+            "required": false,
+            "multiplicity": "0..1",
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BBOA-FUNDING-CHECK-ASSESSMENT-REQUIREMENT@14.0.0": {
+        "label": "AssessmentRequirement",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-FUNDING-CHECK-ASSESSMENT-REQUIREMENT",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "data_type": "reference",
+            "required": false,
+            "multiplicity": "0..1",
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BBOA-FUNDING-CHECK-ASSESSMENT-EXPIRY-DATE@14.0.0": {
+        "label": "AssessmentExpiryDate",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-FUNDING-CHECK-ASSESSMENT-EXPIRY-DATE",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "data_type": "date",
+            "required": false,
+            "multiplicity": "0..1",
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BBOA-FUNDING-CHECK-ASSESSMENT-STATUS@14.0.0": {
+        "label": "AssessmentStatus",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-FUNDING-CHECK-ASSESSMENT-STATUS",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "data_type": "reference",
+            "required": false,
+            "multiplicity": "0..1",
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BBOA-FUNDING-CHECK-ASSESSMENT-IDENTIFICATION@14.0.0": {
+        "label": "AssessmentIdentification",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-FUNDING-CHECK-ASSESSMENT-IDENTIFICATION",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "data_type": "identifier",
+            "required": false,
+            "multiplicity": "0..1",
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BBOA-PARTY-PARTY-NAME@14.0.0": {
+        "label": "PartyName",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-PARTY-PARTY-NAME",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "data_type": "string",
+            "required": false,
+            "multiplicity": "0..1",
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BBOA-PARTY-PARTY-TYPE@14.0.0": {
+        "label": "PartyType",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-PARTY-PARTY-TYPE",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "data_type": "enum",
+            "required": false,
+            "multiplicity": "0..1",
+            "allowed_values": [
+              "Person",
+              "Organisation"
+            ],
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BBOA-PARTY-PARTY-DATE-TIME@14.0.0": {
+        "label": "PartyDateTime",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-PARTY-PARTY-DATE-TIME",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "data_type": "datetime",
+            "required": false,
+            "multiplicity": "0..1",
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BBOA-PARTY-PARTY-IDENTIFICATION@14.0.0": {
+        "label": "PartyIdentification",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-PARTY-PARTY-IDENTIFICATION",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "data_type": "reference",
+            "required": false,
+            "multiplicity": "0..1",
+            "identifier": true,
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BBOA-PARTY-PARTY-LEGAL-STRUCTURE-TYPE@14.0.0": {
+        "label": "PartyLegalStructureType",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-PARTY-PARTY-LEGAL-STRUCTURE-TYPE",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "data_type": "enum",
+            "required": false,
+            "multiplicity": "0..1",
+            "allowed_values": [
+              "Individual",
+              "CommunityInterestCompany",
+              "CharitableIncorporatedOrganisation",
+              "Co-Operative",
+              "Charity",
+              "GeneralPartnership",
+              "LimitedLiabilityPartnership",
+              "ScottishLimitedPartnership",
+              "LimitedPartnership",
+              "PrivateLimitedCompany",
+              "PublicLimitedCompany",
+              "Sole(SoleTrader)"
+            ],
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BBOA-PARTY-PARTY-ACTIVITY-INDICATOR@14.0.0": {
+        "label": "PartyActivityIndicator",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-PARTY-PARTY-ACTIVITY-INDICATOR",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "data_type": "reference",
+            "required": false,
+            "multiplicity": "0..1",
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BBO-ACCOUNT@14.0.0": {
+        "label": "Account",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObject",
+          "id": "BBO-ACCOUNT",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "canonical_id": "BIAN-BO-ACCOUNT",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "attributes": [
+              "AccountStatus",
+              "AccountIdentification",
+              "AccountDate",
+              "AccountType",
+              "AccountPurpose",
+              "AccountBalance",
+              "AccountCurrency",
+              "AccountDescription",
+              "AccountName",
+              "LogType",
+              "LogPeriod",
+              "LogDate",
+              "LogIdentification"
+            ],
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BBOA-ACCOUNT-ACCOUNT-STATUS@14.0.0": {
+        "label": "AccountStatus",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-ACCOUNT-ACCOUNT-STATUS",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "data_type": "reference",
+            "required": false,
+            "multiplicity": "0..1",
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BBOA-ACCOUNT-ACCOUNT-IDENTIFICATION@14.0.0": {
+        "label": "AccountIdentification",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-ACCOUNT-ACCOUNT-IDENTIFICATION",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "data_type": "reference",
+            "required": false,
+            "multiplicity": "0..1",
+            "identifier": true,
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BBOA-ACCOUNT-ACCOUNT-DATE@14.0.0": {
+        "label": "AccountDate",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-ACCOUNT-ACCOUNT-DATE",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "data_type": "reference",
+            "required": false,
+            "multiplicity": "0..1",
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BBOA-ACCOUNT-ACCOUNT-TYPE@14.0.0": {
+        "label": "AccountType",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-ACCOUNT-ACCOUNT-TYPE",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "data_type": "enum",
+            "required": false,
+            "multiplicity": "0..1",
+            "allowed_values": [
+              "DebitAccount",
+              "CreditAccount",
+              "VostroAcount",
+              "NostroAccount",
+              "PaymentAccount",
+              "SettlementAccount",
+              "SavingAccount",
+              "CurrentAccount",
+              "CashAccount",
+              "LoanAccount",
+              "IndividualAccount",
+              "JointAccount",
+              "LiquidationAccount",
+              "ProvisionAccount",
+              "PartnershipAccount",
+              "InvestmentAccount"
+            ],
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BBOA-ACCOUNT-ACCOUNT-PURPOSE@14.0.0": {
+        "label": "AccountPurpose",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-ACCOUNT-ACCOUNT-PURPOSE",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "data_type": "string",
+            "required": false,
+            "multiplicity": "0..1",
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BBOA-ACCOUNT-ACCOUNT-BALANCE@14.0.0": {
+        "label": "AccountBalance",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-ACCOUNT-ACCOUNT-BALANCE",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "data_type": "reference",
+            "required": false,
+            "multiplicity": "0..1",
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BBOA-ACCOUNT-ACCOUNT-CURRENCY@14.0.0": {
+        "label": "AccountCurrency",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-ACCOUNT-ACCOUNT-CURRENCY",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "data_type": "reference",
+            "required": false,
+            "multiplicity": "0..1",
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BBOA-ACCOUNT-ACCOUNT-DESCRIPTION@14.0.0": {
+        "label": "AccountDescription",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-ACCOUNT-ACCOUNT-DESCRIPTION",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "data_type": "string",
+            "required": false,
+            "multiplicity": "0..1",
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BBOA-ACCOUNT-ACCOUNT-NAME@14.0.0": {
+        "label": "AccountName",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-ACCOUNT-ACCOUNT-NAME",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "data_type": "string",
+            "required": false,
+            "multiplicity": "0..1",
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BBOA-ACCOUNT-LOG-TYPE@14.0.0": {
+        "label": "LogType",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-ACCOUNT-LOG-TYPE",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "data_type": "string",
+            "required": false,
+            "multiplicity": "0..1",
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BBOA-ACCOUNT-LOG-PERIOD@14.0.0": {
+        "label": "LogPeriod",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-ACCOUNT-LOG-PERIOD",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "data_type": "reference",
+            "required": false,
+            "multiplicity": "0..1",
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BBOA-ACCOUNT-LOG-DATE@14.0.0": {
+        "label": "LogDate",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-ACCOUNT-LOG-DATE",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "data_type": "datetime",
+            "required": false,
+            "multiplicity": "0..1",
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BBOA-ACCOUNT-LOG-IDENTIFICATION@14.0.0": {
+        "label": "LogIdentification",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-ACCOUNT-LOG-IDENTIFICATION",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "data_type": "identifier",
+            "required": false,
+            "multiplicity": "0..1",
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BBO-PAYMENT-TRANSACTION@14.0.0": {
+        "label": "Payment Transaction",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObject",
+          "id": "BBO-PAYMENT-TRANSACTION",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "canonical_id": "BIAN-BO-PAYMENT-TRANSACTION",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "attributes": [
+              "PaymentTransactionType",
+              "PaymentTransactionAmount",
+              "PaymentTransactionIdentification",
+              "PaymentTransactionUsedMechanism",
+              "PaymentTransactionDatetime",
+              "PaymentTransactionPurpose",
+              "PaymentTransactionStatus",
+              "PaymentTransactionAppliedFeeAmount",
+              "PaymentTransactionCurrency",
+              "PaymentTransactionCreditDebitIndicator",
+              "TransactionIdentification",
+              "TransactionDate",
+              "TransactionType",
+              "TransactionDescription",
+              "TransactionStatus",
+              "TransactionName",
+              "UndertakingTransactionType",
+              "MoneyTransferTransactionAmount",
+              "MoneyTransferTransactionCurrency",
+              "MoneyTransferTransactionSourceAccount",
+              "MoneyTransferTransactionTargetAccount",
+              "MoneyTransferInstructionReference",
+              "MoneyTransferUsedMethod",
+              "MoneyTransferValueDate",
+              "FinancialTransactionType",
+              "FinancialTransactionCurrency",
+              "FinancialTransactionAmount",
+              "FinancialTransactionFromAccount",
+              "FinancialTransactionTargetAccount",
+              "FinancialTransactionDateTime"
+            ],
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-TYPE@14.0.0": {
+        "label": "PaymentTransactionType",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-TYPE",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "data_type": "enum",
+            "required": false,
+            "multiplicity": "0..1",
+            "allowed_values": [
+              "Cashtransaction",
+              "Domesticpayment",
+              "Domestichighvaluepayment",
+              "Domesticprioritypayment",
+              "Crossborderpayment",
+              "Crossborderprioritypayment",
+              "Crossborderhighvaluepayment",
+              "Thirdcurrencypayment",
+              "Thirdcurrencyhighvaluepayment",
+              "Thirdcurrencyprioritypayment",
+              "Tradesettlementpayment",
+              "Foreignexchange",
+              "Equivalentamount",
+              "Loan",
+              "Loanrepayment",
+              "Securities",
+              "Lockbox",
+              "Dividend",
+              "Crossedcheque",
+              "Opencheque",
+              "Ordercheque",
+              "Circularcheque",
+              "Travellerscheques",
+              "Bankdraft",
+              "Documentarycredit",
+              "Billofexchange",
+              "Collection",
+              "Cashmanagementtransfer",
+              "Topaccount",
+              "Zerobalanceaccount",
+              "Standingfacilities",
+              "Standardservicelevelcredit",
+              "Liquiditytransfer",
+              "Advancepayment",
+              "Valuedateadjustment",
+              "Dvpgross",
+              "Dvpnet",
+              "Netting",
+              "Limitpayment",
+              "Backup",
+              "Expresspayment",
+              "Centralbankoperation",
+              "Clspayment",
+              "Eurodomesticpayment",
+              "Agriculturaltransfer",
+              "Alimonypayment",
+              "Balanceretail",
+              "Bonuspayment.",
+              "Brokeragefee",
+              "Capitalbuilding",
+              "Charitypayment",
+              "Childbenefit",
+              "Commercialcredit",
+              "Commission",
+              "Commoditytransfer",
+              "Costs",
+              "Copyright",
+              "Governmentpayment",
+              "Instalmenthirepurchaseagreement",
+              "Insurancepremium",
+              "Intracompanypayment",
+              "Interest",
+              "Licensefee",
+              "Metals",
+              "Pensionpayment",
+              "Purchasesaleofgoods",
+              "Refund",
+              "Rent",
+              "Royalties",
+              "Purchasesaleofservices",
+              "Salarypayment",
+              "Socialsecuritybenefit",
+              "Standingorder",
+              "Subscription",
+              "Treasurystatepayment",
+              "Unemploymentdisabilitybenefit",
+              "Valueaddedtaxpayment",
+              "Taxpayment",
+              "Overnightdeposit",
+              "Marginallending",
+              "Other",
+              "Upfront",
+              "Unwind",
+              "Principalexchange"
+            ],
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-AMOUNT@14.0.0": {
+        "label": "PaymentTransactionAmount",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-AMOUNT",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "data_type": "amount",
+            "required": false,
+            "multiplicity": "0..1",
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-IDENTIFICATION@14.0.0": {
+        "label": "PaymentTransactionIdentification",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-IDENTIFICATION",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "data_type": "reference",
+            "required": false,
+            "multiplicity": "0..1",
+            "identifier": true,
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-USED-MECHANISM@14.0.0": {
+        "label": "PaymentTransactionUsedMechanism",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-USED-MECHANISM",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "data_type": "string",
+            "required": false,
+            "multiplicity": "0..1",
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-DATETIME@14.0.0": {
+        "label": "PaymentTransactionDatetime",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-DATETIME",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "data_type": "datetime",
+            "required": false,
+            "multiplicity": "0..1",
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-PURPOSE@14.0.0": {
+        "label": "PaymentTransactionPurpose",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-PURPOSE",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "data_type": "enum",
+            "required": false,
+            "multiplicity": "0..1",
+            "allowed_values": [
+              "Salarypayment",
+              "Treasurypayment",
+              "Advancepayment",
+              "Agriculturaltransfer",
+              "Alimonypayment",
+              "Childbenefit",
+              "Unemploymentdisabilitybenefit",
+              "Bonuspayment.",
+              "Cashmanagementtransfer",
+              "Capitalbuilding",
+              "Charitypayment",
+              "Collectionpayment",
+              "Commoditytransfer",
+              "Commercialpayment",
+              "Commission",
+              "Costs",
+              "Copyright",
+              "Dividend",
+              "Foreignexchange",
+              "Purchasesaleofgoods",
+              "Governmentpayment",
+              "Instalmenthirepurchaseagreement",
+              "Intracompanypayment",
+              "Insurancepremium",
+              "Interest",
+              "Licensefee",
+              "Loan",
+              "Loanrepayment",
+              "Netting",
+              "Payroll",
+              "Pensionpayment",
+              "Refund",
+              "Rent",
+              "Royalties",
+              "Purchasesaleofservices",
+              "Securities",
+              "Socialsecuritybenefit",
+              "Subscription",
+              "Taxpayment",
+              "Valueaddedtaxpayment",
+              "Consumerthirdpartyconsolidatedpayment",
+              "Debitcollectionpayment",
+              "Supplierpayment",
+              "Hedging",
+              "Multipleservicetypes",
+              "Nototherwisespecified",
+              "Cardpayment",
+              "Creditcardbill",
+              "Ferry",
+              "Air",
+              "Bus",
+              "Railway",
+              "Convalescentcarefacility",
+              "Dentalservices",
+              "Anesthesiaservices",
+              "Homehealthcare",
+              "Hospitalcare",
+              "Intermediatecarefacility",
+              "Longtermcarefacility",
+              "Medicalservices",
+              "Visioncare",
+              "Durablemedicaleequipment",
+              "Cabletvbill",
+              "Electricitybill",
+              "Gasbill",
+              "Telephonebill",
+              "Othertelecomrelatedbill",
+              "Waterbill",
+              "Study",
+              "Pricepayment",
+              "Installment",
+              "Recurringinstallmentpayment",
+              "Openingfee",
+              "Cancellationfee",
+              "Governmentinsurance",
+              "Insurancepremiumcar",
+              "Laborinsurance",
+              "Lifeinsurance",
+              "Propertyinsurance",
+              "Healthinsurance",
+              "Carloanprincipalrepayment",
+              "Housingloanrepayment",
+              "Companysocialloanpaymenttobank",
+              "Estatetax",
+              "Housingtax",
+              "Incometax",
+              "Netincometax",
+              "Businessexpenses",
+              "Trustfund",
+              "Networkcharge",
+              "Networkcommunication",
+              "Receiptpayment",
+              "Paymentterms",
+              "Other",
+              "Withholding"
+            ],
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-STATUS@14.0.0": {
+        "label": "PaymentTransactionStatus",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-STATUS",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "data_type": "reference",
+            "required": false,
+            "multiplicity": "0..1",
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-APPLIED-FEE-AMOUNT@14.0.0": {
+        "label": "PaymentTransactionAppliedFeeAmount",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-APPLIED-FEE-AMOUNT",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "data_type": "amount",
+            "required": false,
+            "multiplicity": "0..1",
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-CURRENCY@14.0.0": {
+        "label": "PaymentTransactionCurrency",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-CURRENCY",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "data_type": "enum",
+            "required": false,
+            "multiplicity": "0..1",
+            "allowed_values": [
+              "BaseCurrency",
+              "ReportingCurrency",
+              "SecondaryCurrency",
+              "TransferCurrency",
+              "SettlementCurrency"
+            ],
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-CREDIT-DEBIT-INDICATOR@14.0.0": {
+        "label": "PaymentTransactionCreditDebitIndicator",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-CREDIT-DEBIT-INDICATOR",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "data_type": "enum",
+            "required": false,
+            "multiplicity": "0..1",
+            "allowed_values": [
+              "Debit",
+              "Credit"
+            ],
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BBOA-PAYMENT-TRANSACTION-TRANSACTION-IDENTIFICATION@14.0.0": {
+        "label": "TransactionIdentification",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-PAYMENT-TRANSACTION-TRANSACTION-IDENTIFICATION",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "data_type": "identifier",
+            "required": false,
+            "multiplicity": "0..1",
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BBOA-PAYMENT-TRANSACTION-TRANSACTION-DATE@14.0.0": {
+        "label": "TransactionDate",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-PAYMENT-TRANSACTION-TRANSACTION-DATE",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "data_type": "reference",
+            "required": false,
+            "multiplicity": "0..1",
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BBOA-PAYMENT-TRANSACTION-TRANSACTION-TYPE@14.0.0": {
+        "label": "TransactionType",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-PAYMENT-TRANSACTION-TRANSACTION-TYPE",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "data_type": "enum",
+            "required": false,
+            "multiplicity": "0..1",
+            "allowed_values": [
+              "FinancialTransaction",
+              "BusinessTransaction",
+              "BankingTransaction",
+              "AccountingTransaction",
+              "BookingTransaction",
+              "AllocationTransaction",
+              "DeliveryTransaction",
+              "ProductionTransaction"
+            ],
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BBOA-PAYMENT-TRANSACTION-TRANSACTION-DESCRIPTION@14.0.0": {
+        "label": "TransactionDescription",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-PAYMENT-TRANSACTION-TRANSACTION-DESCRIPTION",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "data_type": "string",
+            "required": false,
+            "multiplicity": "0..1",
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BBOA-PAYMENT-TRANSACTION-TRANSACTION-STATUS@14.0.0": {
+        "label": "TransactionStatus",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-PAYMENT-TRANSACTION-TRANSACTION-STATUS",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "data_type": "reference",
+            "required": false,
+            "multiplicity": "0..1",
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BBOA-PAYMENT-TRANSACTION-TRANSACTION-NAME@14.0.0": {
+        "label": "TransactionName",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-PAYMENT-TRANSACTION-TRANSACTION-NAME",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "data_type": "string",
+            "required": false,
+            "multiplicity": "0..1",
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BBOA-PAYMENT-TRANSACTION-UNDERTAKING-TRANSACTION-TYPE@14.0.0": {
+        "label": "UndertakingTransactionType",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-PAYMENT-TRANSACTION-UNDERTAKING-TRANSACTION-TYPE",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "data_type": "enum",
+            "required": false,
+            "multiplicity": "0..1",
+            "allowed_values": [
+              "PaymentTransaction",
+              "IssuingTransaction",
+              "BookingTransaction",
+              "CollateralAllocationTransaction",
+              "TerminationTransaction",
+              "AmendmentTransaction"
+            ],
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BBOA-PAYMENT-TRANSACTION-MONEY-TRANSFER-TRANSACTION-AMOUNT@14.0.0": {
+        "label": "MoneyTransferTransactionAmount",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-PAYMENT-TRANSACTION-MONEY-TRANSFER-TRANSACTION-AMOUNT",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "data_type": "amount",
+            "required": false,
+            "multiplicity": "0..1",
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BBOA-PAYMENT-TRANSACTION-MONEY-TRANSFER-TRANSACTION-CURRENCY@14.0.0": {
+        "label": "MoneyTransferTransactionCurrency",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-PAYMENT-TRANSACTION-MONEY-TRANSFER-TRANSACTION-CURRENCY",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "data_type": "string",
+            "required": false,
+            "multiplicity": "0..1",
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BBOA-PAYMENT-TRANSACTION-MONEY-TRANSFER-TRANSACTION-SOURCE-ACCOUNT@14.0.0": {
+        "label": "MoneyTransferTransactionSourceAccount",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-PAYMENT-TRANSACTION-MONEY-TRANSFER-TRANSACTION-SOURCE-ACCOUNT",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "data_type": "string",
+            "required": false,
+            "multiplicity": "0..1",
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BBOA-PAYMENT-TRANSACTION-MONEY-TRANSFER-TRANSACTION-TARGET-ACCOUNT@14.0.0": {
+        "label": "MoneyTransferTransactionTargetAccount",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-PAYMENT-TRANSACTION-MONEY-TRANSFER-TRANSACTION-TARGET-ACCOUNT",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "data_type": "string",
+            "required": false,
+            "multiplicity": "0..1",
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BBOA-PAYMENT-TRANSACTION-MONEY-TRANSFER-INSTRUCTION-REFERENCE@14.0.0": {
+        "label": "MoneyTransferInstructionReference",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-PAYMENT-TRANSACTION-MONEY-TRANSFER-INSTRUCTION-REFERENCE",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "data_type": "string",
+            "required": false,
+            "multiplicity": "0..1",
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BBOA-PAYMENT-TRANSACTION-MONEY-TRANSFER-USED-METHOD@14.0.0": {
+        "label": "MoneyTransferUsedMethod",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-PAYMENT-TRANSACTION-MONEY-TRANSFER-USED-METHOD",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "data_type": "string",
+            "required": false,
+            "multiplicity": "0..1",
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BBOA-PAYMENT-TRANSACTION-MONEY-TRANSFER-VALUE-DATE@14.0.0": {
+        "label": "MoneyTransferValueDate",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-PAYMENT-TRANSACTION-MONEY-TRANSFER-VALUE-DATE",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "data_type": "string",
+            "required": false,
+            "multiplicity": "0..1",
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BBOA-PAYMENT-TRANSACTION-FINANCIAL-TRANSACTION-TYPE@14.0.0": {
+        "label": "FinancialTransactionType",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-PAYMENT-TRANSACTION-FINANCIAL-TRANSACTION-TYPE",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "data_type": "enum",
+            "required": false,
+            "multiplicity": "0..1",
+            "allowed_values": [
+              "PricingTransaction",
+              "FeeTransaction",
+              "WithdrawalTransaction",
+              "DepositTransaction",
+              "PaymentTransaction",
+              "ClearingTransaction",
+              "SettlementTransaction",
+              "Reconciliationtransaction",
+              "Updatetransaction",
+              "Securitiestransaction",
+              "RepaymentTransaction"
+            ],
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BBOA-PAYMENT-TRANSACTION-FINANCIAL-TRANSACTION-CURRENCY@14.0.0": {
+        "label": "FinancialTransactionCurrency",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-PAYMENT-TRANSACTION-FINANCIAL-TRANSACTION-CURRENCY",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "data_type": "currency_code",
+            "required": false,
+            "multiplicity": "0..1",
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BBOA-PAYMENT-TRANSACTION-FINANCIAL-TRANSACTION-AMOUNT@14.0.0": {
+        "label": "FinancialTransactionAmount",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-PAYMENT-TRANSACTION-FINANCIAL-TRANSACTION-AMOUNT",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "data_type": "amount",
+            "required": false,
+            "multiplicity": "0..1",
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BBOA-PAYMENT-TRANSACTION-FINANCIAL-TRANSACTION-FROM-ACCOUNT@14.0.0": {
+        "label": "FinancialTransactionFromAccount",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-PAYMENT-TRANSACTION-FINANCIAL-TRANSACTION-FROM-ACCOUNT",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "data_type": "reference",
+            "required": false,
+            "multiplicity": "0..1",
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BBOA-PAYMENT-TRANSACTION-FINANCIAL-TRANSACTION-TARGET-ACCOUNT@14.0.0": {
+        "label": "FinancialTransactionTargetAccount",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-PAYMENT-TRANSACTION-FINANCIAL-TRANSACTION-TARGET-ACCOUNT",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "data_type": "reference",
+            "required": false,
+            "multiplicity": "0..1",
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BBOA-PAYMENT-TRANSACTION-FINANCIAL-TRANSACTION-DATE-TIME@14.0.0": {
+        "label": "FinancialTransactionDateTime",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-PAYMENT-TRANSACTION-FINANCIAL-TRANSACTION-DATE-TIME",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "data_type": "datetime",
+            "required": false,
+            "multiplicity": "0..1",
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BBO-PAYER@14.0.0": {
+        "label": "Payer",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObject",
+          "id": "BBO-PAYER",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "canonical_id": "BIAN-BO-PAYER",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "attributes": [
+              "PayerIdentifier",
+              "PaymentInstructionInvolvementType"
+            ],
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BBOA-PAYER-PAYER-IDENTIFIER@14.0.0": {
+        "label": "PayerIdentifier",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-PAYER-PAYER-IDENTIFIER",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "data_type": "string",
+            "required": false,
+            "multiplicity": "0..1",
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BBOA-PAYER-PAYMENT-INSTRUCTION-INVOLVEMENT-TYPE@14.0.0": {
+        "label": "PaymentInstructionInvolvementType",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-PAYER-PAYMENT-INSTRUCTION-INVOLVEMENT-TYPE",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "data_type": "enum",
+            "required": false,
+            "multiplicity": "0..1",
+            "allowed_values": [
+              "PayerOrDebtor",
+              "PayeeBankOrCreditorAgent",
+              "PayeeOrCreditor",
+              "PayerBankOrDebtorAgent",
+              "Initiator",
+              "PSU",
+              "PSP",
+              "UltimateDebtor",
+              "UltimateCreditor"
+            ],
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BBO-PAYER-BANK@14.0.0": {
+        "label": "Payer Bank",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObject",
+          "id": "BBO-PAYER-BANK",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "canonical_id": "BIAN-BO-PAYER-BANK",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "attributes": [
+              "PayerBankIdentifier",
+              "PaymentInstructionInvolvementType"
+            ],
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BBOA-PAYER-BANK-PAYER-BANK-IDENTIFIER@14.0.0": {
+        "label": "PayerBankIdentifier",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-PAYER-BANK-PAYER-BANK-IDENTIFIER",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "data_type": "string",
+            "required": false,
+            "multiplicity": "0..1",
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BBOA-PAYER-BANK-PAYMENT-INSTRUCTION-INVOLVEMENT-TYPE@14.0.0": {
+        "label": "PaymentInstructionInvolvementType",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-PAYER-BANK-PAYMENT-INSTRUCTION-INVOLVEMENT-TYPE",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "data_type": "enum",
+            "required": false,
+            "multiplicity": "0..1",
+            "allowed_values": [
+              "PayerOrDebtor",
+              "PayeeBankOrCreditorAgent",
+              "PayeeOrCreditor",
+              "PayerBankOrDebtorAgent",
+              "Initiator",
+              "PSU",
+              "PSP",
+              "UltimateDebtor",
+              "UltimateCreditor"
+            ],
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BBO-PAYEE@14.0.0": {
+        "label": "Payee",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObject",
+          "id": "BBO-PAYEE",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "canonical_id": "BIAN-BO-PAYEE",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "attributes": [
+              "PayeeIdentifier",
+              "PaymentInstructionInvolvementType"
+            ],
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BBOA-PAYEE-PAYEE-IDENTIFIER@14.0.0": {
+        "label": "PayeeIdentifier",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-PAYEE-PAYEE-IDENTIFIER",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "data_type": "string",
+            "required": false,
+            "multiplicity": "0..1",
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BBOA-PAYEE-PAYMENT-INSTRUCTION-INVOLVEMENT-TYPE@14.0.0": {
+        "label": "PaymentInstructionInvolvementType",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-PAYEE-PAYMENT-INSTRUCTION-INVOLVEMENT-TYPE",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "data_type": "enum",
+            "required": false,
+            "multiplicity": "0..1",
+            "allowed_values": [
+              "PayerOrDebtor",
+              "PayeeBankOrCreditorAgent",
+              "PayeeOrCreditor",
+              "PayerBankOrDebtorAgent",
+              "Initiator",
+              "PSU",
+              "PSP",
+              "UltimateDebtor",
+              "UltimateCreditor"
+            ],
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BBO-PAYEE-BANK@14.0.0": {
+        "label": "Payee Bank",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObject",
+          "id": "BBO-PAYEE-BANK",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "canonical_id": "BIAN-BO-PAYEE-BANK",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "attributes": [
+              "PayeeBankIdentifier",
+              "PaymentInstructionInvolvementType",
+              "PartyRoleType",
+              "PartyRoleName",
+              "PartyRoleValidityPeriod",
+              "PartyInvolvementType"
+            ],
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BBOA-PAYEE-BANK-PAYEE-BANK-IDENTIFIER@14.0.0": {
+        "label": "PayeeBankIdentifier",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-PAYEE-BANK-PAYEE-BANK-IDENTIFIER",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "data_type": "string",
+            "required": false,
+            "multiplicity": "0..1",
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BBOA-PAYEE-BANK-PAYMENT-INSTRUCTION-INVOLVEMENT-TYPE@14.0.0": {
+        "label": "PaymentInstructionInvolvementType",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-PAYEE-BANK-PAYMENT-INSTRUCTION-INVOLVEMENT-TYPE",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "data_type": "enum",
+            "required": false,
+            "multiplicity": "0..1",
+            "allowed_values": [
+              "PayerOrDebtor",
+              "PayeeBankOrCreditorAgent",
+              "PayeeOrCreditor",
+              "PayerBankOrDebtorAgent",
+              "Initiator",
+              "PSU",
+              "PSP",
+              "UltimateDebtor",
+              "UltimateCreditor"
+            ],
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BBOA-PAYEE-BANK-PARTY-ROLE-TYPE@14.0.0": {
+        "label": "PartyRoleType",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-PAYEE-BANK-PARTY-ROLE-TYPE",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "data_type": "string",
+            "required": false,
+            "multiplicity": "0..1",
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BBOA-PAYEE-BANK-PARTY-ROLE-NAME@14.0.0": {
+        "label": "PartyRoleName",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-PAYEE-BANK-PARTY-ROLE-NAME",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "data_type": "string",
+            "required": false,
+            "multiplicity": "0..1",
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BBOA-PAYEE-BANK-PARTY-ROLE-VALIDITY-PERIOD@14.0.0": {
+        "label": "PartyRoleValidityPeriod",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-PAYEE-BANK-PARTY-ROLE-VALIDITY-PERIOD",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "data_type": "reference",
+            "required": false,
+            "multiplicity": "0..1",
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      },
+      "A2:BBOA-PAYEE-BANK-PARTY-INVOLVEMENT-TYPE@14.0.0": {
+        "label": "PartyInvolvementType",
+        "metadata": {
+          "level": "A2",
+          "type": "A2.BusinessObjectAttribute",
+          "id": "BBOA-PAYEE-BANK-PARTY-INVOLVEMENT-TYPE",
+          "version": "14.0.0",
+          "lifecycle_status": "active",
+          "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+          "attributes": {
+            "data_type": "enum",
+            "required": false,
+            "multiplicity": "0..1",
+            "allowed_values": [
+              "AgreementInvolvement",
+              "PartyInvolvement",
+              "ArrangementInvolvement",
+              "DesignSpecificationInvolvement",
+              "RelationshipInvolvement",
+              "LocationInvolvement",
+              "BankGuaranteeInvolvement"
+            ],
+            "source_id": "bian-semantic-api:14.0.0:PaymentOrderInitiation.yaml",
+            "conforms_to": [
+              "BIAN 14.0.0"
+            ]
+          }
+        }
+      }
+    },
+    "edges": [
+      {
+        "id": "A2:BD-PAYMENTS-composition-SD-PI",
+        "source": "A2:BD-PAYMENTS@1.0",
+        "target": "A2:SD-PI@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-02"
+        }
+      },
+      {
+        "id": "A2:BD-PAYMENTS-composition-SD-PE",
+        "source": "A2:BD-PAYMENTS@1.0",
+        "target": "A2:SD-PE@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-02"
+        }
+      },
+      {
+        "id": "A2:BD-PAYMENTS-composition-SD-PA",
+        "source": "A2:BD-PAYMENTS@1.0",
+        "target": "A2:SD-PA@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-02"
+        }
+      },
+      {
+        "id": "A2:SD-PI-association-AT-PAY-INSTR",
+        "source": "A2:SD-PI@1.0",
+        "target": "A2:AT-PAY-INSTR@1.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-07"
+        }
+      },
+      {
+        "id": "A2:SD-PI-association-FP-FULFIL",
+        "source": "A2:SD-PI@1.0",
+        "target": "A2:FP-FULFIL@1.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-06"
+        }
+      },
+      {
+        "id": "A2:SD-PE-association-AT-PAY-TXN",
+        "source": "A2:SD-PE@1.0",
+        "target": "A2:AT-PAY-TXN@1.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-07"
+        }
+      },
+      {
+        "id": "A2:SD-PE-association-FP-FULFIL",
+        "source": "A2:SD-PE@1.0",
+        "target": "A2:FP-FULFIL@1.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-06"
+        }
+      },
+      {
+        "id": "A2:SD-PA-association-AT-AUTH",
+        "source": "A2:SD-PA@1.0",
+        "target": "A2:AT-AUTH@1.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-07"
+        }
+      },
+      {
+        "id": "A2:SD-PA-association-FP-ASSESS",
+        "source": "A2:SD-PA@1.0",
+        "target": "A2:FP-ASSESS@1.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-06"
+        }
+      },
+      {
+        "id": "A2:SD-PI-aggregation-CR-PI",
+        "source": "A2:SD-PI@1.0",
+        "target": "A2:CR-PI@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-05"
+        }
+      },
+      {
+        "id": "A2:CR-PI-composition-BQ-VALIDATION",
+        "source": "A2:CR-PI@1.0",
+        "target": "A2:BQ-VALIDATION@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-11"
+        }
+      },
+      {
+        "id": "A2:CR-PI-composition-BQ-EXECUTION",
+        "source": "A2:CR-PI@1.0",
+        "target": "A2:BQ-EXECUTION@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-11"
+        }
+      },
+      {
+        "id": "A2:CR-PI-association-BBO-PAY-INSTR",
+        "source": "A2:CR-PI@1.0",
+        "target": "A2:BBO-PAY-INSTR@1.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-12"
+        }
+      },
+      {
+        "id": "A2:SD-PI-composition-SG-PI-1",
+        "source": "A2:SD-PI@1.0",
+        "target": "A2:SG-PI-1@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-03"
+        }
+      },
+      {
+        "id": "A2:SD-PI-composition-SG-PI-2",
+        "source": "A2:SD-PI@1.0",
+        "target": "A2:SG-PI-2@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-03"
+        }
+      },
+      {
+        "id": "A2:SG-PI-1-composition-SO-PI-01",
+        "source": "A2:SG-PI-1@1.0",
+        "target": "A2:SO-PI-01@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-04"
+        }
+      },
+      {
+        "id": "A2:SG-PI-1-composition-SO-PI-05",
+        "source": "A2:SG-PI-1@1.0",
+        "target": "A2:SO-PI-05@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-04"
+        }
+      },
+      {
+        "id": "A2:SG-PI-2-composition-SO-PI-02",
+        "source": "A2:SG-PI-2@1.0",
+        "target": "A2:SO-PI-02@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-04"
+        }
+      },
+      {
+        "id": "A2:SG-PI-2-composition-SO-PI-03",
+        "source": "A2:SG-PI-2@1.0",
+        "target": "A2:SO-PI-03@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-04"
+        }
+      },
+      {
+        "id": "A2:SG-PI-2-composition-SO-PI-04",
+        "source": "A2:SG-PI-2@1.0",
+        "target": "A2:SO-PI-04@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-04"
+        }
+      },
+      {
+        "id": "A2:SG-PI-2-composition-SO-PI-06",
+        "source": "A2:SG-PI-2@1.0",
+        "target": "A2:SO-PI-06@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-04"
+        }
+      },
+      {
+        "id": "A2:SO-PI-01-access-CR-PI",
+        "source": "A2:SO-PI-01@1.0",
+        "target": "A2:CR-PI@1.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-13"
+        }
+      },
+      {
+        "id": "A2:SO-PI-02-access-CR-PI",
+        "source": "A2:SO-PI-02@1.0",
+        "target": "A2:CR-PI@1.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-13"
+        }
+      },
+      {
+        "id": "A2:SO-PI-03-access-CR-PI",
+        "source": "A2:SO-PI-03@1.0",
+        "target": "A2:CR-PI@1.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-13"
+        }
+      },
+      {
+        "id": "A2:SO-PI-04-access-CR-PI",
+        "source": "A2:SO-PI-04@1.0",
+        "target": "A2:CR-PI@1.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-13"
+        }
+      },
+      {
+        "id": "A2:SO-PI-05-access-CR-PI",
+        "source": "A2:SO-PI-05@1.0",
+        "target": "A2:CR-PI@1.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-13"
+        }
+      },
+      {
+        "id": "A2:SO-PI-06-access-CR-PI",
+        "source": "A2:SO-PI-06@1.0",
+        "target": "A2:CR-PI@1.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-13"
+        }
+      },
+      {
+        "id": "A2:BS-CREDIT-TRANSFER-aggregation-SO-PI-01",
+        "source": "A2:BS-CREDIT-TRANSFER@1.0",
+        "target": "A2:SO-PI-01@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-09"
+        }
+      },
+      {
+        "id": "A2:BS-CREDIT-TRANSFER-aggregation-SO-PI-02",
+        "source": "A2:BS-CREDIT-TRANSFER@1.0",
+        "target": "A2:SO-PI-02@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-09"
+        }
+      },
+      {
+        "id": "A2:BS-CREDIT-TRANSFER-aggregation-SO-PI-03",
+        "source": "A2:BS-CREDIT-TRANSFER@1.0",
+        "target": "A2:SO-PI-03@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-09"
+        }
+      },
+      {
+        "id": "A2:BS-CREDIT-TRANSFER-aggregation-SO-PI-04",
+        "source": "A2:BS-CREDIT-TRANSFER@1.0",
+        "target": "A2:SO-PI-04@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-09"
+        }
+      },
+      {
+        "id": "A2:BBO-PAY-INSTR-composition-BBOA-AMOUNT",
+        "source": "A2:BBO-PAY-INSTR@1.0",
+        "target": "A2:BBOA-AMOUNT@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
+        }
+      },
+      {
+        "id": "A2:SD-PI-flow-SD-PE",
+        "source": "A2:SD-PI@1.0",
+        "target": "A2:SD-PE@1.0",
+        "relation": "flow",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-14"
+        }
+      },
+      {
+        "id": "A2:CR-PI-association-BBO-PARTY",
+        "source": "A2:CR-PI@1.0",
+        "target": "A2:BBO-PARTY@1.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-12"
+        }
+      },
+      {
+        "id": "A2:BA-OPS-EXEC-composition-BD-PAYMENTS",
+        "source": "A2:BA-OPS-EXEC@1.0",
+        "target": "A2:BD-PAYMENTS@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-01"
+        }
+      },
+      {
+        "id": "A2:SD-PA-aggregation-CR-PA",
+        "source": "A2:SD-PA@1.0",
+        "target": "A2:CR-PA@14.0.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-05"
+        }
+      },
+      {
+        "id": "A2:CR-PA-composition-BQ-PA-PASSWORD",
+        "source": "A2:CR-PA@14.0.0",
+        "target": "A2:BQ-PA-PASSWORD@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-11"
+        }
+      },
+      {
+        "id": "A2:CR-PA-composition-BQ-PA-QUESTION",
+        "source": "A2:CR-PA@14.0.0",
+        "target": "A2:BQ-PA-QUESTION@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-11"
+        }
+      },
+      {
+        "id": "A2:CR-PA-composition-BQ-PA-DOCUMENT",
+        "source": "A2:CR-PA@14.0.0",
+        "target": "A2:BQ-PA-DOCUMENT@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-11"
+        }
+      },
+      {
+        "id": "A2:CR-PA-composition-BQ-PA-DEVICE",
+        "source": "A2:CR-PA@14.0.0",
+        "target": "A2:BQ-PA-DEVICE@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-11"
+        }
+      },
+      {
+        "id": "A2:CR-PA-composition-BQ-PA-BIOMETRIC",
+        "source": "A2:CR-PA@14.0.0",
+        "target": "A2:BQ-PA-BIOMETRIC@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-11"
+        }
+      },
+      {
+        "id": "A2:CR-PA-composition-BQ-PA-BEHAVIOR",
+        "source": "A2:CR-PA@14.0.0",
+        "target": "A2:BQ-PA-BEHAVIOR@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-11"
+        }
+      },
+      {
+        "id": "A2:SD-PA-composition-SG-PA-1",
+        "source": "A2:SD-PA@1.0",
+        "target": "A2:SG-PA-1@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-03"
+        }
+      },
+      {
+        "id": "A2:SG-PA-1-composition-SO-PA-01",
+        "source": "A2:SG-PA-1@14.0.0",
+        "target": "A2:SO-PA-01@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-04"
+        }
+      },
+      {
+        "id": "A2:SO-PA-01-access-CR-PA",
+        "source": "A2:SO-PA-01@14.0.0",
+        "target": "A2:CR-PA@14.0.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-13"
+        }
+      },
+      {
+        "id": "A2:SG-PA-1-composition-SO-PA-02",
+        "source": "A2:SG-PA-1@14.0.0",
+        "target": "A2:SO-PA-02@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-04"
+        }
+      },
+      {
+        "id": "A2:SO-PA-02-access-CR-PA",
+        "source": "A2:SO-PA-02@14.0.0",
+        "target": "A2:CR-PA@14.0.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-13"
+        }
+      },
+      {
+        "id": "A2:SG-PA-1-composition-SO-PA-03",
+        "source": "A2:SG-PA-1@14.0.0",
+        "target": "A2:SO-PA-03@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-04"
+        }
+      },
+      {
+        "id": "A2:SO-PA-03-access-CR-PA",
+        "source": "A2:SO-PA-03@14.0.0",
+        "target": "A2:CR-PA@14.0.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-13"
+        }
+      },
+      {
+        "id": "A2:SG-PA-1-composition-SO-PA-04",
+        "source": "A2:SG-PA-1@14.0.0",
+        "target": "A2:SO-PA-04@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-04"
+        }
+      },
+      {
+        "id": "A2:SO-PA-04-access-CR-PA",
+        "source": "A2:SO-PA-04@14.0.0",
+        "target": "A2:CR-PA@14.0.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-13"
+        }
+      },
+      {
+        "id": "A2:SG-PA-1-composition-SO-PA-05",
+        "source": "A2:SG-PA-1@14.0.0",
+        "target": "A2:SO-PA-05@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-04"
+        }
+      },
+      {
+        "id": "A2:SO-PA-05-access-CR-PA",
+        "source": "A2:SO-PA-05@14.0.0",
+        "target": "A2:CR-PA@14.0.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-13"
+        }
+      },
+      {
+        "id": "A2:SG-PA-1-composition-SO-PA-06",
+        "source": "A2:SG-PA-1@14.0.0",
+        "target": "A2:SO-PA-06@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-04"
+        }
+      },
+      {
+        "id": "A2:SO-PA-06-access-CR-PA",
+        "source": "A2:SO-PA-06@14.0.0",
+        "target": "A2:CR-PA@14.0.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-13"
+        }
+      },
+      {
+        "id": "A2:SG-PA-1-composition-SO-PA-07",
+        "source": "A2:SG-PA-1@14.0.0",
+        "target": "A2:SO-PA-07@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-04"
+        }
+      },
+      {
+        "id": "A2:SO-PA-07-access-CR-PA",
+        "source": "A2:SO-PA-07@14.0.0",
+        "target": "A2:CR-PA@14.0.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-13"
+        }
+      },
+      {
+        "id": "A2:SD-PE-aggregation-CR-PE",
+        "source": "A2:SD-PE@1.0",
+        "target": "A2:CR-PE@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-05"
+        }
+      },
+      {
+        "id": "A2:CR-PE-composition-BQ-PE-CLEARING",
+        "source": "A2:CR-PE@1.0",
+        "target": "A2:BQ-PE-CLEARING@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-11"
+        }
+      },
+      {
+        "id": "A2:CR-PE-composition-BQ-PE-OUTBOUND",
+        "source": "A2:CR-PE@1.0",
+        "target": "A2:BQ-PE-OUTBOUND@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-11"
+        }
+      },
+      {
+        "id": "A2:SD-PE-composition-SG-PE-1",
+        "source": "A2:SD-PE@1.0",
+        "target": "A2:SG-PE-1@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-03"
+        }
+      },
+      {
+        "id": "A2:SG-PE-1-composition-SO-PE-01",
+        "source": "A2:SG-PE-1@1.0",
+        "target": "A2:SO-PE-01@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-04"
+        }
+      },
+      {
+        "id": "A2:SO-PE-01-access-CR-PE",
+        "source": "A2:SO-PE-01@1.0",
+        "target": "A2:CR-PE@1.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-13"
+        }
+      },
+      {
+        "id": "A2:SG-PE-1-composition-SO-PE-02",
+        "source": "A2:SG-PE-1@1.0",
+        "target": "A2:SO-PE-02@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-04"
+        }
+      },
+      {
+        "id": "A2:SO-PE-02-access-CR-PE",
+        "source": "A2:SO-PE-02@1.0",
+        "target": "A2:CR-PE@1.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-13"
+        }
+      },
+      {
+        "id": "A2:SG-PE-1-composition-SO-PE-03",
+        "source": "A2:SG-PE-1@1.0",
+        "target": "A2:SO-PE-03@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-04"
+        }
+      },
+      {
+        "id": "A2:SO-PE-03-access-CR-PE",
+        "source": "A2:SO-PE-03@1.0",
+        "target": "A2:CR-PE@1.0",
+        "relation": "access",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-13"
+        }
+      },
+      {
+        "id": "A2:BBO-PARTY-composition-BBOA-PARTY-REF",
+        "source": "A2:BBO-PARTY@1.0",
+        "target": "A2:BBOA-PARTY-REF@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
+        }
+      },
+      {
+        "id": "A2:BBO-COMPLIANCE-CHECK-composition-BBOA-COMPLIANCE-CHECK-COMPLIANCE-CHECK-TYPE",
+        "source": "A2:BBO-COMPLIANCE-CHECK@14.0.0",
+        "target": "A2:BBOA-COMPLIANCE-CHECK-COMPLIANCE-CHECK-TYPE@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
+        }
+      },
+      {
+        "id": "A2:BBO-FUNDING-CHECK-composition-BBOA-FUNDING-CHECK-ASSESSMENT-TYPE",
+        "source": "A2:BBO-FUNDING-CHECK@14.0.0",
+        "target": "A2:BBOA-FUNDING-CHECK-ASSESSMENT-TYPE@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
+        }
+      },
+      {
+        "id": "A2:BBO-FUNDING-CHECK-composition-BBOA-FUNDING-CHECK-ASSESSMENT-METHOD",
+        "source": "A2:BBO-FUNDING-CHECK@14.0.0",
+        "target": "A2:BBOA-FUNDING-CHECK-ASSESSMENT-METHOD@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
+        }
+      },
+      {
+        "id": "A2:BBO-FUNDING-CHECK-composition-BBOA-FUNDING-CHECK-ASSESSMENT-SCHEDULE",
+        "source": "A2:BBO-FUNDING-CHECK@14.0.0",
+        "target": "A2:BBOA-FUNDING-CHECK-ASSESSMENT-SCHEDULE@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
+        }
+      },
+      {
+        "id": "A2:BBO-FUNDING-CHECK-composition-BBOA-FUNDING-CHECK-ASSESSMENT-DESCRIPTION",
+        "source": "A2:BBO-FUNDING-CHECK@14.0.0",
+        "target": "A2:BBOA-FUNDING-CHECK-ASSESSMENT-DESCRIPTION@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
+        }
+      },
+      {
+        "id": "A2:BBO-FUNDING-CHECK-composition-BBOA-FUNDING-CHECK-ASSESSMENT-MODEL",
+        "source": "A2:BBO-FUNDING-CHECK@14.0.0",
+        "target": "A2:BBOA-FUNDING-CHECK-ASSESSMENT-MODEL@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
+        }
+      },
+      {
+        "id": "A2:BBO-FUNDING-CHECK-composition-BBOA-FUNDING-CHECK-ASSESSMENT-DATE-TIME",
+        "source": "A2:BBO-FUNDING-CHECK@14.0.0",
+        "target": "A2:BBOA-FUNDING-CHECK-ASSESSMENT-DATE-TIME@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
+        }
+      },
+      {
+        "id": "A2:BBO-FUNDING-CHECK-composition-BBOA-FUNDING-CHECK-ASSESSMENT-RESULT",
+        "source": "A2:BBO-FUNDING-CHECK@14.0.0",
+        "target": "A2:BBOA-FUNDING-CHECK-ASSESSMENT-RESULT@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
+        }
+      },
+      {
+        "id": "A2:BBO-FUNDING-CHECK-composition-BBOA-FUNDING-CHECK-ASSESSMENT-SUPPORTING-DOCUMENT",
+        "source": "A2:BBO-FUNDING-CHECK@14.0.0",
+        "target": "A2:BBOA-FUNDING-CHECK-ASSESSMENT-SUPPORTING-DOCUMENT@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
+        }
+      },
+      {
+        "id": "A2:BBO-FUNDING-CHECK-composition-BBOA-FUNDING-CHECK-ASSESSMENT-REPRESENTING-DOCUMENT",
+        "source": "A2:BBO-FUNDING-CHECK@14.0.0",
+        "target": "A2:BBOA-FUNDING-CHECK-ASSESSMENT-REPRESENTING-DOCUMENT@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
+        }
+      },
+      {
+        "id": "A2:BBO-FUNDING-CHECK-composition-BBOA-FUNDING-CHECK-ASSESSMENT-REQUIRED-ADJUSTMENT",
+        "source": "A2:BBO-FUNDING-CHECK@14.0.0",
+        "target": "A2:BBOA-FUNDING-CHECK-ASSESSMENT-REQUIRED-ADJUSTMENT@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
+        }
+      },
+      {
+        "id": "A2:BBO-FUNDING-CHECK-composition-BBOA-FUNDING-CHECK-ASSESSMENT-REQUIREMENT",
+        "source": "A2:BBO-FUNDING-CHECK@14.0.0",
+        "target": "A2:BBOA-FUNDING-CHECK-ASSESSMENT-REQUIREMENT@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
+        }
+      },
+      {
+        "id": "A2:BBO-FUNDING-CHECK-composition-BBOA-FUNDING-CHECK-ASSESSMENT-EXPIRY-DATE",
+        "source": "A2:BBO-FUNDING-CHECK@14.0.0",
+        "target": "A2:BBOA-FUNDING-CHECK-ASSESSMENT-EXPIRY-DATE@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
+        }
+      },
+      {
+        "id": "A2:BBO-FUNDING-CHECK-composition-BBOA-FUNDING-CHECK-ASSESSMENT-STATUS",
+        "source": "A2:BBO-FUNDING-CHECK@14.0.0",
+        "target": "A2:BBOA-FUNDING-CHECK-ASSESSMENT-STATUS@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
+        }
+      },
+      {
+        "id": "A2:BBO-FUNDING-CHECK-composition-BBOA-FUNDING-CHECK-ASSESSMENT-IDENTIFICATION",
+        "source": "A2:BBO-FUNDING-CHECK@14.0.0",
+        "target": "A2:BBOA-FUNDING-CHECK-ASSESSMENT-IDENTIFICATION@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
+        }
+      },
+      {
+        "id": "A2:BBO-PARTY-composition-BBOA-PARTY-PARTY-NAME",
+        "source": "A2:BBO-PARTY@1.0",
+        "target": "A2:BBOA-PARTY-PARTY-NAME@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
+        }
+      },
+      {
+        "id": "A2:BBO-PARTY-composition-BBOA-PARTY-PARTY-TYPE",
+        "source": "A2:BBO-PARTY@1.0",
+        "target": "A2:BBOA-PARTY-PARTY-TYPE@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
+        }
+      },
+      {
+        "id": "A2:BBO-PARTY-composition-BBOA-PARTY-PARTY-DATE-TIME",
+        "source": "A2:BBO-PARTY@1.0",
+        "target": "A2:BBOA-PARTY-PARTY-DATE-TIME@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
+        }
+      },
+      {
+        "id": "A2:BBO-PARTY-composition-BBOA-PARTY-PARTY-IDENTIFICATION",
+        "source": "A2:BBO-PARTY@1.0",
+        "target": "A2:BBOA-PARTY-PARTY-IDENTIFICATION@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
+        }
+      },
+      {
+        "id": "A2:BBO-PARTY-composition-BBOA-PARTY-PARTY-LEGAL-STRUCTURE-TYPE",
+        "source": "A2:BBO-PARTY@1.0",
+        "target": "A2:BBOA-PARTY-PARTY-LEGAL-STRUCTURE-TYPE@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
+        }
+      },
+      {
+        "id": "A2:BBO-PARTY-composition-BBOA-PARTY-PARTY-ACTIVITY-INDICATOR",
+        "source": "A2:BBO-PARTY@1.0",
+        "target": "A2:BBOA-PARTY-PARTY-ACTIVITY-INDICATOR@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
+        }
+      },
+      {
+        "id": "A2:BBO-ACCOUNT-composition-BBOA-ACCOUNT-ACCOUNT-STATUS",
+        "source": "A2:BBO-ACCOUNT@14.0.0",
+        "target": "A2:BBOA-ACCOUNT-ACCOUNT-STATUS@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
+        }
+      },
+      {
+        "id": "A2:BBO-ACCOUNT-composition-BBOA-ACCOUNT-ACCOUNT-IDENTIFICATION",
+        "source": "A2:BBO-ACCOUNT@14.0.0",
+        "target": "A2:BBOA-ACCOUNT-ACCOUNT-IDENTIFICATION@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
+        }
+      },
+      {
+        "id": "A2:BBO-ACCOUNT-composition-BBOA-ACCOUNT-ACCOUNT-DATE",
+        "source": "A2:BBO-ACCOUNT@14.0.0",
+        "target": "A2:BBOA-ACCOUNT-ACCOUNT-DATE@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
+        }
+      },
+      {
+        "id": "A2:BBO-ACCOUNT-composition-BBOA-ACCOUNT-ACCOUNT-TYPE",
+        "source": "A2:BBO-ACCOUNT@14.0.0",
+        "target": "A2:BBOA-ACCOUNT-ACCOUNT-TYPE@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
+        }
+      },
+      {
+        "id": "A2:BBO-ACCOUNT-composition-BBOA-ACCOUNT-ACCOUNT-PURPOSE",
+        "source": "A2:BBO-ACCOUNT@14.0.0",
+        "target": "A2:BBOA-ACCOUNT-ACCOUNT-PURPOSE@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
+        }
+      },
+      {
+        "id": "A2:BBO-ACCOUNT-composition-BBOA-ACCOUNT-ACCOUNT-BALANCE",
+        "source": "A2:BBO-ACCOUNT@14.0.0",
+        "target": "A2:BBOA-ACCOUNT-ACCOUNT-BALANCE@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
+        }
+      },
+      {
+        "id": "A2:BBO-ACCOUNT-composition-BBOA-ACCOUNT-ACCOUNT-CURRENCY",
+        "source": "A2:BBO-ACCOUNT@14.0.0",
+        "target": "A2:BBOA-ACCOUNT-ACCOUNT-CURRENCY@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
+        }
+      },
+      {
+        "id": "A2:BBO-ACCOUNT-composition-BBOA-ACCOUNT-ACCOUNT-DESCRIPTION",
+        "source": "A2:BBO-ACCOUNT@14.0.0",
+        "target": "A2:BBOA-ACCOUNT-ACCOUNT-DESCRIPTION@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
+        }
+      },
+      {
+        "id": "A2:BBO-ACCOUNT-composition-BBOA-ACCOUNT-ACCOUNT-NAME",
+        "source": "A2:BBO-ACCOUNT@14.0.0",
+        "target": "A2:BBOA-ACCOUNT-ACCOUNT-NAME@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
+        }
+      },
+      {
+        "id": "A2:BBO-ACCOUNT-composition-BBOA-ACCOUNT-LOG-TYPE",
+        "source": "A2:BBO-ACCOUNT@14.0.0",
+        "target": "A2:BBOA-ACCOUNT-LOG-TYPE@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
+        }
+      },
+      {
+        "id": "A2:BBO-ACCOUNT-composition-BBOA-ACCOUNT-LOG-PERIOD",
+        "source": "A2:BBO-ACCOUNT@14.0.0",
+        "target": "A2:BBOA-ACCOUNT-LOG-PERIOD@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
+        }
+      },
+      {
+        "id": "A2:BBO-ACCOUNT-composition-BBOA-ACCOUNT-LOG-DATE",
+        "source": "A2:BBO-ACCOUNT@14.0.0",
+        "target": "A2:BBOA-ACCOUNT-LOG-DATE@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
+        }
+      },
+      {
+        "id": "A2:BBO-ACCOUNT-composition-BBOA-ACCOUNT-LOG-IDENTIFICATION",
+        "source": "A2:BBO-ACCOUNT@14.0.0",
+        "target": "A2:BBOA-ACCOUNT-LOG-IDENTIFICATION@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
+        }
+      },
+      {
+        "id": "A2:BBO-PAYMENT-TRANSACTION-composition-BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-TYPE",
+        "source": "A2:BBO-PAYMENT-TRANSACTION@14.0.0",
+        "target": "A2:BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-TYPE@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
+        }
+      },
+      {
+        "id": "A2:BBO-PAYMENT-TRANSACTION-composition-BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-AMOUNT",
+        "source": "A2:BBO-PAYMENT-TRANSACTION@14.0.0",
+        "target": "A2:BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-AMOUNT@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
+        }
+      },
+      {
+        "id": "A2:BBO-PAYMENT-TRANSACTION-composition-BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-IDENTIFICATION",
+        "source": "A2:BBO-PAYMENT-TRANSACTION@14.0.0",
+        "target": "A2:BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-IDENTIFICATION@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
+        }
+      },
+      {
+        "id": "A2:BBO-PAYMENT-TRANSACTION-composition-BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-USED-MECHANISM",
+        "source": "A2:BBO-PAYMENT-TRANSACTION@14.0.0",
+        "target": "A2:BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-USED-MECHANISM@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
+        }
+      },
+      {
+        "id": "A2:BBO-PAYMENT-TRANSACTION-composition-BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-DATETIME",
+        "source": "A2:BBO-PAYMENT-TRANSACTION@14.0.0",
+        "target": "A2:BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-DATETIME@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
+        }
+      },
+      {
+        "id": "A2:BBO-PAYMENT-TRANSACTION-composition-BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-PURPOSE",
+        "source": "A2:BBO-PAYMENT-TRANSACTION@14.0.0",
+        "target": "A2:BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-PURPOSE@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
+        }
+      },
+      {
+        "id": "A2:BBO-PAYMENT-TRANSACTION-composition-BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-STATUS",
+        "source": "A2:BBO-PAYMENT-TRANSACTION@14.0.0",
+        "target": "A2:BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-STATUS@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
+        }
+      },
+      {
+        "id": "A2:BBO-PAYMENT-TRANSACTION-composition-BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-APPLIED-FEE-AMOUNT",
+        "source": "A2:BBO-PAYMENT-TRANSACTION@14.0.0",
+        "target": "A2:BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-APPLIED-FEE-AMOUNT@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
+        }
+      },
+      {
+        "id": "A2:BBO-PAYMENT-TRANSACTION-composition-BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-CURRENCY",
+        "source": "A2:BBO-PAYMENT-TRANSACTION@14.0.0",
+        "target": "A2:BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-CURRENCY@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
+        }
+      },
+      {
+        "id": "A2:BBO-PAYMENT-TRANSACTION-composition-BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-CREDIT-DEBIT-INDICATOR",
+        "source": "A2:BBO-PAYMENT-TRANSACTION@14.0.0",
+        "target": "A2:BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-CREDIT-DEBIT-INDICATOR@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
+        }
+      },
+      {
+        "id": "A2:BBO-PAYMENT-TRANSACTION-composition-BBOA-PAYMENT-TRANSACTION-TRANSACTION-IDENTIFICATION",
+        "source": "A2:BBO-PAYMENT-TRANSACTION@14.0.0",
+        "target": "A2:BBOA-PAYMENT-TRANSACTION-TRANSACTION-IDENTIFICATION@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
+        }
+      },
+      {
+        "id": "A2:BBO-PAYMENT-TRANSACTION-composition-BBOA-PAYMENT-TRANSACTION-TRANSACTION-DATE",
+        "source": "A2:BBO-PAYMENT-TRANSACTION@14.0.0",
+        "target": "A2:BBOA-PAYMENT-TRANSACTION-TRANSACTION-DATE@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
+        }
+      },
+      {
+        "id": "A2:BBO-PAYMENT-TRANSACTION-composition-BBOA-PAYMENT-TRANSACTION-TRANSACTION-TYPE",
+        "source": "A2:BBO-PAYMENT-TRANSACTION@14.0.0",
+        "target": "A2:BBOA-PAYMENT-TRANSACTION-TRANSACTION-TYPE@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
+        }
+      },
+      {
+        "id": "A2:BBO-PAYMENT-TRANSACTION-composition-BBOA-PAYMENT-TRANSACTION-TRANSACTION-DESCRIPTION",
+        "source": "A2:BBO-PAYMENT-TRANSACTION@14.0.0",
+        "target": "A2:BBOA-PAYMENT-TRANSACTION-TRANSACTION-DESCRIPTION@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
+        }
+      },
+      {
+        "id": "A2:BBO-PAYMENT-TRANSACTION-composition-BBOA-PAYMENT-TRANSACTION-TRANSACTION-STATUS",
+        "source": "A2:BBO-PAYMENT-TRANSACTION@14.0.0",
+        "target": "A2:BBOA-PAYMENT-TRANSACTION-TRANSACTION-STATUS@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
+        }
+      },
+      {
+        "id": "A2:BBO-PAYMENT-TRANSACTION-composition-BBOA-PAYMENT-TRANSACTION-TRANSACTION-NAME",
+        "source": "A2:BBO-PAYMENT-TRANSACTION@14.0.0",
+        "target": "A2:BBOA-PAYMENT-TRANSACTION-TRANSACTION-NAME@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
+        }
+      },
+      {
+        "id": "A2:BBO-PAYMENT-TRANSACTION-composition-BBOA-PAYMENT-TRANSACTION-UNDERTAKING-TRANSACTION-TYPE",
+        "source": "A2:BBO-PAYMENT-TRANSACTION@14.0.0",
+        "target": "A2:BBOA-PAYMENT-TRANSACTION-UNDERTAKING-TRANSACTION-TYPE@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
+        }
+      },
+      {
+        "id": "A2:BBO-PAYMENT-TRANSACTION-composition-BBOA-PAYMENT-TRANSACTION-MONEY-TRANSFER-TRANSACTION-AMOUNT",
+        "source": "A2:BBO-PAYMENT-TRANSACTION@14.0.0",
+        "target": "A2:BBOA-PAYMENT-TRANSACTION-MONEY-TRANSFER-TRANSACTION-AMOUNT@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
+        }
+      },
+      {
+        "id": "A2:BBO-PAYMENT-TRANSACTION-composition-BBOA-PAYMENT-TRANSACTION-MONEY-TRANSFER-TRANSACTION-CURRENCY",
+        "source": "A2:BBO-PAYMENT-TRANSACTION@14.0.0",
+        "target": "A2:BBOA-PAYMENT-TRANSACTION-MONEY-TRANSFER-TRANSACTION-CURRENCY@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
+        }
+      },
+      {
+        "id": "A2:BBO-PAYMENT-TRANSACTION-composition-BBOA-PAYMENT-TRANSACTION-MONEY-TRANSFER-TRANSACTION-SOURCE-ACCOUNT",
+        "source": "A2:BBO-PAYMENT-TRANSACTION@14.0.0",
+        "target": "A2:BBOA-PAYMENT-TRANSACTION-MONEY-TRANSFER-TRANSACTION-SOURCE-ACCOUNT@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
+        }
+      },
+      {
+        "id": "A2:BBO-PAYMENT-TRANSACTION-composition-BBOA-PAYMENT-TRANSACTION-MONEY-TRANSFER-TRANSACTION-TARGET-ACCOUNT",
+        "source": "A2:BBO-PAYMENT-TRANSACTION@14.0.0",
+        "target": "A2:BBOA-PAYMENT-TRANSACTION-MONEY-TRANSFER-TRANSACTION-TARGET-ACCOUNT@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
+        }
+      },
+      {
+        "id": "A2:BBO-PAYMENT-TRANSACTION-composition-BBOA-PAYMENT-TRANSACTION-MONEY-TRANSFER-INSTRUCTION-REFERENCE",
+        "source": "A2:BBO-PAYMENT-TRANSACTION@14.0.0",
+        "target": "A2:BBOA-PAYMENT-TRANSACTION-MONEY-TRANSFER-INSTRUCTION-REFERENCE@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
+        }
+      },
+      {
+        "id": "A2:BBO-PAYMENT-TRANSACTION-composition-BBOA-PAYMENT-TRANSACTION-MONEY-TRANSFER-USED-METHOD",
+        "source": "A2:BBO-PAYMENT-TRANSACTION@14.0.0",
+        "target": "A2:BBOA-PAYMENT-TRANSACTION-MONEY-TRANSFER-USED-METHOD@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
+        }
+      },
+      {
+        "id": "A2:BBO-PAYMENT-TRANSACTION-composition-BBOA-PAYMENT-TRANSACTION-MONEY-TRANSFER-VALUE-DATE",
+        "source": "A2:BBO-PAYMENT-TRANSACTION@14.0.0",
+        "target": "A2:BBOA-PAYMENT-TRANSACTION-MONEY-TRANSFER-VALUE-DATE@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
+        }
+      },
+      {
+        "id": "A2:BBO-PAYMENT-TRANSACTION-composition-BBOA-PAYMENT-TRANSACTION-FINANCIAL-TRANSACTION-TYPE",
+        "source": "A2:BBO-PAYMENT-TRANSACTION@14.0.0",
+        "target": "A2:BBOA-PAYMENT-TRANSACTION-FINANCIAL-TRANSACTION-TYPE@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
+        }
+      },
+      {
+        "id": "A2:BBO-PAYMENT-TRANSACTION-composition-BBOA-PAYMENT-TRANSACTION-FINANCIAL-TRANSACTION-CURRENCY",
+        "source": "A2:BBO-PAYMENT-TRANSACTION@14.0.0",
+        "target": "A2:BBOA-PAYMENT-TRANSACTION-FINANCIAL-TRANSACTION-CURRENCY@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
+        }
+      },
+      {
+        "id": "A2:BBO-PAYMENT-TRANSACTION-composition-BBOA-PAYMENT-TRANSACTION-FINANCIAL-TRANSACTION-AMOUNT",
+        "source": "A2:BBO-PAYMENT-TRANSACTION@14.0.0",
+        "target": "A2:BBOA-PAYMENT-TRANSACTION-FINANCIAL-TRANSACTION-AMOUNT@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
+        }
+      },
+      {
+        "id": "A2:BBO-PAYMENT-TRANSACTION-composition-BBOA-PAYMENT-TRANSACTION-FINANCIAL-TRANSACTION-FROM-ACCOUNT",
+        "source": "A2:BBO-PAYMENT-TRANSACTION@14.0.0",
+        "target": "A2:BBOA-PAYMENT-TRANSACTION-FINANCIAL-TRANSACTION-FROM-ACCOUNT@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
+        }
+      },
+      {
+        "id": "A2:BBOA-PAYMENT-TRANSACTION-FINANCIAL-TRANSACTION-FROM-ACCOUNT-association-BBO-ACCOUNT",
+        "source": "A2:BBOA-PAYMENT-TRANSACTION-FINANCIAL-TRANSACTION-FROM-ACCOUNT@14.0.0",
+        "target": "A2:BBO-ACCOUNT@14.0.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-22"
+        }
+      },
+      {
+        "id": "A2:BBO-PAYMENT-TRANSACTION-association-BBO-ACCOUNT",
+        "source": "A2:BBO-PAYMENT-TRANSACTION@14.0.0",
+        "target": "A2:BBO-ACCOUNT@14.0.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-21"
+        }
+      },
+      {
+        "id": "A2:BBO-PAYMENT-TRANSACTION-composition-BBOA-PAYMENT-TRANSACTION-FINANCIAL-TRANSACTION-TARGET-ACCOUNT",
+        "source": "A2:BBO-PAYMENT-TRANSACTION@14.0.0",
+        "target": "A2:BBOA-PAYMENT-TRANSACTION-FINANCIAL-TRANSACTION-TARGET-ACCOUNT@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
+        }
+      },
+      {
+        "id": "A2:BBOA-PAYMENT-TRANSACTION-FINANCIAL-TRANSACTION-TARGET-ACCOUNT-association-BBO-ACCOUNT",
+        "source": "A2:BBOA-PAYMENT-TRANSACTION-FINANCIAL-TRANSACTION-TARGET-ACCOUNT@14.0.0",
+        "target": "A2:BBO-ACCOUNT@14.0.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-22"
+        }
+      },
+      {
+        "id": "A2:BBO-PAYMENT-TRANSACTION-composition-BBOA-PAYMENT-TRANSACTION-FINANCIAL-TRANSACTION-DATE-TIME",
+        "source": "A2:BBO-PAYMENT-TRANSACTION@14.0.0",
+        "target": "A2:BBOA-PAYMENT-TRANSACTION-FINANCIAL-TRANSACTION-DATE-TIME@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
+        }
+      },
+      {
+        "id": "A2:BBO-PAYER-composition-BBOA-PAYER-PAYER-IDENTIFIER",
+        "source": "A2:BBO-PAYER@14.0.0",
+        "target": "A2:BBOA-PAYER-PAYER-IDENTIFIER@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
+        }
+      },
+      {
+        "id": "A2:BBO-PAYER-composition-BBOA-PAYER-PAYMENT-INSTRUCTION-INVOLVEMENT-TYPE",
+        "source": "A2:BBO-PAYER@14.0.0",
+        "target": "A2:BBOA-PAYER-PAYMENT-INSTRUCTION-INVOLVEMENT-TYPE@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
+        }
+      },
+      {
+        "id": "A2:BBO-PAYER-BANK-composition-BBOA-PAYER-BANK-PAYER-BANK-IDENTIFIER",
+        "source": "A2:BBO-PAYER-BANK@14.0.0",
+        "target": "A2:BBOA-PAYER-BANK-PAYER-BANK-IDENTIFIER@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
+        }
+      },
+      {
+        "id": "A2:BBO-PAYER-BANK-composition-BBOA-PAYER-BANK-PAYMENT-INSTRUCTION-INVOLVEMENT-TYPE",
+        "source": "A2:BBO-PAYER-BANK@14.0.0",
+        "target": "A2:BBOA-PAYER-BANK-PAYMENT-INSTRUCTION-INVOLVEMENT-TYPE@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
+        }
+      },
+      {
+        "id": "A2:BBO-PAYEE-composition-BBOA-PAYEE-PAYEE-IDENTIFIER",
+        "source": "A2:BBO-PAYEE@14.0.0",
+        "target": "A2:BBOA-PAYEE-PAYEE-IDENTIFIER@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
+        }
+      },
+      {
+        "id": "A2:BBO-PAYEE-composition-BBOA-PAYEE-PAYMENT-INSTRUCTION-INVOLVEMENT-TYPE",
+        "source": "A2:BBO-PAYEE@14.0.0",
+        "target": "A2:BBOA-PAYEE-PAYMENT-INSTRUCTION-INVOLVEMENT-TYPE@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
+        }
+      },
+      {
+        "id": "A2:BBO-PAYEE-BANK-composition-BBOA-PAYEE-BANK-PAYEE-BANK-IDENTIFIER",
+        "source": "A2:BBO-PAYEE-BANK@14.0.0",
+        "target": "A2:BBOA-PAYEE-BANK-PAYEE-BANK-IDENTIFIER@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
+        }
+      },
+      {
+        "id": "A2:BBO-PAYEE-BANK-composition-BBOA-PAYEE-BANK-PAYMENT-INSTRUCTION-INVOLVEMENT-TYPE",
+        "source": "A2:BBO-PAYEE-BANK@14.0.0",
+        "target": "A2:BBOA-PAYEE-BANK-PAYMENT-INSTRUCTION-INVOLVEMENT-TYPE@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
+        }
+      },
+      {
+        "id": "A2:BBO-PAYEE-BANK-composition-BBOA-PAYEE-BANK-PARTY-ROLE-TYPE",
+        "source": "A2:BBO-PAYEE-BANK@14.0.0",
+        "target": "A2:BBOA-PAYEE-BANK-PARTY-ROLE-TYPE@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
+        }
+      },
+      {
+        "id": "A2:BBO-PAYEE-BANK-composition-BBOA-PAYEE-BANK-PARTY-ROLE-NAME",
+        "source": "A2:BBO-PAYEE-BANK@14.0.0",
+        "target": "A2:BBOA-PAYEE-BANK-PARTY-ROLE-NAME@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
+        }
+      },
+      {
+        "id": "A2:BBO-PAYEE-BANK-composition-BBOA-PAYEE-BANK-PARTY-ROLE-VALIDITY-PERIOD",
+        "source": "A2:BBO-PAYEE-BANK@14.0.0",
+        "target": "A2:BBOA-PAYEE-BANK-PARTY-ROLE-VALIDITY-PERIOD@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
+        }
+      },
+      {
+        "id": "A2:BBO-PAYEE-BANK-composition-BBOA-PAYEE-BANK-PARTY-INVOLVEMENT-TYPE",
+        "source": "A2:BBO-PAYEE-BANK@14.0.0",
+        "target": "A2:BBOA-PAYEE-BANK-PARTY-INVOLVEMENT-TYPE@14.0.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-10"
+        }
+      },
+      {
+        "id": "A2:CR-PI-association-BBO-PAYMENT-TRANSACTION",
+        "source": "A2:CR-PI@1.0",
+        "target": "A2:BBO-PAYMENT-TRANSACTION@14.0.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-12"
+        }
+      },
+      {
+        "id": "A2:CR-PI-association-BBO-PAYER",
+        "source": "A2:CR-PI@1.0",
+        "target": "A2:BBO-PAYER@14.0.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-12"
+        }
+      },
+      {
+        "id": "A2:CR-PI-association-BBO-PAYEE",
+        "source": "A2:CR-PI@1.0",
+        "target": "A2:BBO-PAYEE@14.0.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-12"
+        }
+      },
+      {
+        "id": "A2:CR-PI-association-BBO-PAYER-BANK",
+        "source": "A2:CR-PI@1.0",
+        "target": "A2:BBO-PAYER-BANK@14.0.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-12"
+        }
+      },
+      {
+        "id": "A2:CR-PI-association-BBO-PAYEE-BANK",
+        "source": "A2:CR-PI@1.0",
+        "target": "A2:BBO-PAYEE-BANK@14.0.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-12"
+        }
+      },
+      {
+        "id": "A2:CR-PI-association-BBO-FUNDING-CHECK",
+        "source": "A2:CR-PI@1.0",
+        "target": "A2:BBO-FUNDING-CHECK@14.0.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-12"
+        }
+      },
+      {
+        "id": "A2:CR-PI-association-BBO-COMPLIANCE-CHECK",
+        "source": "A2:CR-PI@1.0",
+        "target": "A2:BBO-COMPLIANCE-CHECK@14.0.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA2-12"
+        }
+      }
+    ]
+  }
+}

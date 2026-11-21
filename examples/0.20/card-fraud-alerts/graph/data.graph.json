@@ -1,0 +1,19 @@
+{
+  "graph": {
+    "id": "sdem:synthetic-bank-a3-data",
+    "type": "sdem.local",
+    "label": "A3 local knowledge graph (synthetic-bank-a3-data)",
+    "directed": true,
+    "metadata": {
+      "sdem_store_version": "1.0",
+      "export_sha256": "c566a356231f91d0eecb2f9c1ba753e21fda2d20c51beb7b6360211cc4eb2968",
+      "level": "A3",
+      "model_id": "synthetic-bank-a3-data",
+      "model_version": "2026.10",
+      "metamodel_version": "0.17.0",
+      "source_system": "SYNTHETIC-APM"
+    },
+    "nodes": {},
+    "edges": []
+  }
+}

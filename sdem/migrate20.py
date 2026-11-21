@@ -216,13 +216,14 @@ def rollback(ws, keep_backup=False):
 def export_019(ws, out):
     """A workspace in the 0.20 form written to `out` as 0.19 held it — Data's records in the Application file, each approved
     ACCESSED_BY as access inside it, 0.19's file names and type names — for a consumer built on 0.19's form (the DESNRE publisher,
-    DL-23). The workspace itself is only read."""
+    DL-23). The workspace itself is only read. The copy is the design, not its history: its change sets stay with the workspace, where
+    they are checked (CTL-20) — their fingerprints are of the 0.20 files; the copy's ledger names the export as what wrote its files."""
     from . import parts
     from .identity import load, _derived
     ws, out = Path(ws), Path(out)
     parts.reset()   # no workspace active: 0.19's stack — every name read as 0.19 named it
     docs, reg, _ = to_019(ws)
-    shutil.copytree(ws, out, ignore=shutil.ignore_patterns(BACKUP, 'graph', '*.graph.json'))
+    shutil.copytree(ws, out, ignore=shutil.ignore_patterns(BACKUP, 'graph', '*.graph.json', 'coordination'))
     raw = lambda p, d: Path(p).write_bytes((json.dumps(d, indent=2, ensure_ascii=False) + '\n').encode('utf-8'))
     rec = json.loads((ws / 'workspace.json').read_text(encoding='utf-8')) if (ws / 'workspace.json').is_file() else None
     if rec is not None: raw(out / 'workspace.json', {k: v for k, v in rec.items() if k not in ('names', 'migrated', 'core_only')})   # 0.19's stack in the copy
@@ -239,7 +240,10 @@ def export_019(ws, out):
     done = set(docs) | {'mappings.json', 'workspace.json'}
     for p in sorted(ws.rglob('*.json')):   # every other design file: 0.19's names
         rel = p.relative_to(ws)
-        if BACKUP in rel.parts or _derived(p) or rel.as_posix() in done or p.name in {f'{l}.json' for l in ('business', 'bian', 'data', 'application', 'technology')}: continue
+        if BACKUP in rel.parts or 'coordination' in rel.parts or _derived(p) or rel.as_posix() in done or p.name in {f'{l}.json' for l in ('business', 'bian', 'data', 'application', 'technology')}: continue
         try: raw(out / rel, load(p))
         except ValueError: pass
+    from .files import record, TRACKED, LEDGER
+    if (out / LEDGER).exists():   # AF-07: the copy's files as the export wrote them — not edits outside SDEM
+        record([out / f for f in TRACKED if (out / f).exists()], by=f'sdem export_019 (from the 0.20 workspace {ws.name})')
     return out

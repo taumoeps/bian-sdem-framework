@@ -57,7 +57,7 @@ def collect(ws, d=None, graph=None, now=None, home=None, fw=None):
     from .agents import Estate, CoordinationError
     ws = Path(ws)
     d = d or dash_collect(ws, graph=graph, now=now)
-    present = [l for l in CORE if (ws / FILES[l]).exists()]
+    present = [l for l in CORE if l in FILES and (ws / FILES[l]).exists()]   # a layer not in use (BIAN, off) has no file to read
     docs, records, rels = {}, [], {}
     for l in CORE:
         if l not in present: rels[l] = []; continue

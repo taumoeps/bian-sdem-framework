@@ -1,0 +1,195 @@
+{
+  "graph": {
+    "id": "sdem:synthetic-bank-onboarding-a3",
+    "type": "sdem.local",
+    "label": "A4 local knowledge graph (synthetic-bank-onboarding-a3)",
+    "directed": true,
+    "metadata": {
+      "sdem_store_version": "1.0",
+      "export_sha256": "5004b3c4177f491d78b4250e861b9ba207762abd81338b2f6308afda69bccb23",
+      "level": "A4",
+      "model_id": "synthetic-bank-onboarding-a3",
+      "model_version": "2026.10",
+      "metamodel_version": "0.17.0",
+      "source_system": "SYNTHETIC-APM"
+    },
+    "nodes": {
+      "A4:APP-001@1.0": {
+        "label": "Onboarding Portal",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.ApplicationComponent",
+          "id": "APP-001",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Captures applicant identity, orchestrates verification, creates the customer record.",
+          "attributes": {
+            "deployed_on": [
+              "INF-001"
+            ],
+            "deployed_as": [
+              "DEP-001"
+            ]
+          }
+        }
+      },
+      "A4:IFC-001@2.3": {
+        "label": "Onboarding API v2.3",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.ApplicationInterface",
+          "id": "IFC-001",
+          "version": "2.3",
+          "lifecycle_status": "active",
+          "description": "REST interface.",
+          "attributes": {
+            "internet_facing": true
+          }
+        }
+      },
+      "A4:API-001@2.3": {
+        "label": "Create onboarding",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.APIOperation",
+          "id": "API-001",
+          "version": "2.3",
+          "lifecycle_status": "active",
+          "description": "Starts an onboarding.",
+          "attributes": {
+            "method": "POST",
+            "path": "/onboardings",
+            "payload_fields": [
+              "legal_name",
+              "date_of_birth",
+              "national_id",
+              "address",
+              "onboarding_reference",
+              "onboarding_status"
+            ]
+          }
+        }
+      },
+      "A4:API-002@2.3": {
+        "label": "Get onboarding",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.APIOperation",
+          "id": "API-002",
+          "version": "2.3",
+          "lifecycle_status": "active",
+          "description": "Returns an onboarding.",
+          "attributes": {
+            "method": "GET",
+            "path": "/onboardings/{id}",
+            "payload_fields": [
+              "onboarding_reference",
+              "onboarding_status",
+              "verification_status",
+              "customer_reference"
+            ]
+          }
+        }
+      },
+      "A4:ASV-001@1.0": {
+        "label": "Identity verification service",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.ApplicationService",
+          "id": "ASV-001",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Verifies a customer's identity documents (made-up)"
+        }
+      },
+      "A4:AFN-001@1.0": {
+        "label": "Verify identity documents",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.ApplicationFunction",
+          "id": "AFN-001",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Reads and checks the documents a customer gives (made-up)"
+        }
+      },
+      "A4:EVT-001@1.0": {
+        "label": "CustomerOnboarded",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.Event",
+          "id": "EVT-001",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Raised when a customer is onboarded (made-up)",
+          "attributes": {
+            "event_type": "domain",
+            "event_source": "APP-001"
+          }
+        }
+      }
+    },
+    "edges": [
+      {
+        "id": "A4:APP-001-composition-IFC-001",
+        "source": "A4:APP-001@1.0",
+        "target": "A4:IFC-001@2.3",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-03"
+        }
+      },
+      {
+        "id": "A4:IFC-001-composition-API-001",
+        "source": "A4:IFC-001@2.3",
+        "target": "A4:API-001@2.3",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-27"
+        }
+      },
+      {
+        "id": "A4:IFC-001-composition-API-002",
+        "source": "A4:IFC-001@2.3",
+        "target": "A4:API-002@2.3",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-27"
+        }
+      },
+      {
+        "id": "A4:APP-001-assignment-AFN-001",
+        "source": "A4:APP-001@1.0",
+        "target": "A4:AFN-001@1.0",
+        "relation": "assignment",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-04"
+        }
+      },
+      {
+        "id": "A4:AFN-001-realization-ASV-001",
+        "source": "A4:AFN-001@1.0",
+        "target": "A4:ASV-001@1.0",
+        "relation": "realization",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-05"
+        }
+      },
+      {
+        "id": "A4:APP-001-triggering-EVT-001",
+        "source": "A4:APP-001@1.0",
+        "target": "A4:EVT-001@1.0",
+        "relation": "triggering",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-22"
+        }
+      }
+    ]
+  }
+}

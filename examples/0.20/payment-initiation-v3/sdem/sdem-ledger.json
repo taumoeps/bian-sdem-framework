@@ -1,0 +1,35 @@
+{
+  "format": "sdem-ledger/1",
+  "files": {
+    "application.json": {
+      "sha256": "d0dc08705617539af3a9c58739e0e185935a5b9b2a0cecbb54c5ce531aac7ab4",
+      "by": "sdem migrate",
+      "at": "2026-11-21T15:04:48"
+    },
+    "bian.json": {
+      "sha256": "399e8e367703b8eec00c1c412cc0a79ed9b458bf793b4f106d863625848b46d7",
+      "by": "sdem migrate",
+      "at": "2026-11-21T15:04:48"
+    },
+    "business.json": {
+      "sha256": "c7a7826536c675b41ec44bb863c32d81d1fc64c8be6da327d0765c0d6ba24007",
+      "by": "sdem migrate",
+      "at": "2026-11-21T15:04:48"
+    },
+    "data.json": {
+      "sha256": "b8a3a5fc3ab80dac74050a74cad47bab85e42306d0514839ac3aa748e8a3735f",
+      "by": "sdem migrate",
+      "at": "2026-11-21T15:04:48"
+    },
+    "mappings.json": {
+      "sha256": "adac37f671eb3d2829c68b82b22eaae5432feba87de449e7c7ebfb3f3d91b648",
+      "by": "sdem migrate",
+      "at": "2026-11-21T15:04:48"
+    },
+    "technology.json": {
+      "sha256": "2eff0a9444fa67b2ceb552126aad17d913550bab6d4231bd8043d2244dc583b2",
+      "by": "sdem migrate",
+      "at": "2026-11-21T15:04:48"
+    }
+  }
+}

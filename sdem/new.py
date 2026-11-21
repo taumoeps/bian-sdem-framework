@@ -303,7 +303,8 @@ def main(argv=None):
             pr = record.get('profile') or {}
             print(f"organisation {record['organisation']['name']} — profile {' → '.join(pr.get('chain') or []) or 'none'}"
                   + (f" v{pr['version']}" if pr.get('version') is not None else '') + (f" (from {pr['from']})" if pr.get('from') not in (None, 'organisation') else ''))
-        if a.source:
+        if a.source and not a.dry_run and getattr(a, 'form', '0.19') == '0.20': pass   # said after the migration, in the numbering the workspace has then
+        elif a.source:
             n = {d['level']: len(d['instances']) for d in docs.values()}
             print(f"{'would start' if a.dry_run else 'started'} {a.estate} from the baseline {record['baseline']['from']}: "
                   + ', '.join(f'{k} {v} record(s)' for k, v in sorted(n.items())) + f", {len(registry.get('mappings', []))} connection(s)"
@@ -331,6 +332,13 @@ def main(argv=None):
         from .migrate20 import migrate as _m20, Migrate20Error
         try: _m20(a.estate, a.person, access=access, keep_backup=False)
         except Migrate20Error as e: print(f'ERROR: the new workspace could not take the 0.20 form: {e}', file=sys.stderr); return 1
+        if a.source and not a.json:   # the records per layer as the workspace now numbers them — Data its own layer
+            from .identity import stack as _st, layer as _lc, F as _f
+            from . import profile as _pf; _pf.activate_from(ws)   # the migration leaves the process as it found it: open the workspace in its new form
+            n = {_lc(i): len(_jload(ws / _f(i)).get('instances', [])) for i in _st() if (ws / _f(i)).exists()}
+            mp = _jload(ws / 'mappings.json').get('mappings', [])
+            print(f"started {a.estate} from the baseline {record['baseline']['from']}: " + ', '.join(f'{k} {v} record(s)' for k, v in sorted(n.items()))
+                  + f", {len(mp)} connection(s)" + (f", {len(extra['requirements.json']['requirements'])} requirement(s)" if 'requirements.json' in extra else '') + ' — checked')
     if a.explore: return explore(a.estate, a.json, record=record)
     if not a.json and a.source:
         print(f'Next — sdem build --workspace {a.estate} --out {a.estate}/graph, then sdem trace <id or {_L("business")}…{_L("technology")}> --graph {a.estate}/graph, '

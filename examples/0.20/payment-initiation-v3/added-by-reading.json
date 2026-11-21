@@ -1,0 +1,730 @@
+[
+ {
+  "source": "PROC-CONSENT",
+  "link": "realization",
+  "target": "ST-CONSENT",
+  "section": 3,
+  "basis": "implied",
+  "why": "the value stream moves through consent, payment submission and status enquiry; the processes are listed in that order"
+ },
+ {
+  "source": "PROC-AUTH",
+  "link": "realization",
+  "target": "ST-CONSENT",
+  "section": 3,
+  "basis": "implied",
+  "why": "the value stream moves through consent, payment submission and status enquiry; the processes are listed in that order"
+ },
+ {
+  "source": "PROC-SUBMIT",
+  "link": "realization",
+  "target": "ST-SUBMIT",
+  "section": 3,
+  "basis": "implied",
+  "why": "the value stream moves through consent, payment submission and status enquiry; the processes are listed in that order"
+ },
+ {
+  "source": "PROC-VALIDATE",
+  "link": "realization",
+  "target": "ST-SUBMIT",
+  "section": 3,
+  "basis": "implied",
+  "why": "the value stream moves through consent, payment submission and status enquiry; the processes are listed in that order"
+ },
+ {
+  "source": "PROC-RISK",
+  "link": "realization",
+  "target": "ST-SUBMIT",
+  "section": 3,
+  "basis": "implied",
+  "why": "the value stream moves through consent, payment submission and status enquiry; the processes are listed in that order"
+ },
+ {
+  "source": "PROC-DEBIT",
+  "link": "realization",
+  "target": "ST-SUBMIT",
+  "section": 3,
+  "basis": "implied",
+  "why": "the value stream moves through consent, payment submission and status enquiry; the processes are listed in that order"
+ },
+ {
+  "source": "PROC-HANDOFF",
+  "link": "realization",
+  "target": "ST-SUBMIT",
+  "section": 3,
+  "basis": "implied",
+  "why": "the value stream moves through consent, payment submission and status enquiry; the processes are listed in that order"
+ },
+ {
+  "source": "PROC-STATUS",
+  "link": "realization",
+  "target": "ST-STATUS",
+  "section": 3,
+  "basis": "implied",
+  "why": "the value stream moves through consent, payment submission and status enquiry; the processes are listed in that order"
+ },
+ {
+  "source": "PROC-CONSENT",
+  "link": "realization",
+  "target": "CAP-CONSENT",
+  "section": 3,
+  "basis": "implied",
+  "why": "the capability named for what the process does: customer payment consent, payment risk control, domestic payment initiation"
+ },
+ {
+  "source": "PROC-AUTH",
+  "link": "realization",
+  "target": "CAP-CONSENT",
+  "section": 3,
+  "basis": "implied",
+  "why": "the capability named for what the process does: customer payment consent, payment risk control, domestic payment initiation"
+ },
+ {
+  "source": "PROC-RISK",
+  "link": "realization",
+  "target": "CAP-RISK",
+  "section": 3,
+  "basis": "implied",
+  "why": "the capability named for what the process does: customer payment consent, payment risk control, domestic payment initiation"
+ },
+ {
+  "source": "PROC-SUBMIT",
+  "link": "realization",
+  "target": "CAP-PAY",
+  "section": 3,
+  "basis": "implied",
+  "why": "the capability named for what the process does: customer payment consent, payment risk control, domestic payment initiation"
+ },
+ {
+  "source": "PROC-VALIDATE",
+  "link": "realization",
+  "target": "CAP-PAY",
+  "section": 3,
+  "basis": "implied",
+  "why": "the capability named for what the process does: customer payment consent, payment risk control, domestic payment initiation"
+ },
+ {
+  "source": "PROC-DEBIT",
+  "link": "realization",
+  "target": "CAP-PAY",
+  "section": 3,
+  "basis": "implied",
+  "why": "the capability named for what the process does: customer payment consent, payment risk control, domestic payment initiation"
+ },
+ {
+  "source": "PROC-HANDOFF",
+  "link": "realization",
+  "target": "CAP-PAY",
+  "section": 3,
+  "basis": "implied",
+  "why": "the capability named for what the process does: customer payment consent, payment risk control, domestic payment initiation"
+ },
+ {
+  "source": "PROC-STATUS",
+  "link": "realization",
+  "target": "CAP-PAY",
+  "section": 3,
+  "basis": "implied",
+  "why": "the capability named for what the process does: customer payment consent, payment risk control, domestic payment initiation"
+ },
+ {
+  "source": "PROC-AUTH",
+  "link": "realization",
+  "target": "SVC-AUTH",
+  "section": 3,
+  "basis": "implied",
+  "why": "the consent authorisation service is what authenticating and authorising provides"
+ },
+ {
+  "source": "PROC-CONSENT",
+  "link": "realization",
+  "target": "SVC-INIT",
+  "section": 3,
+  "basis": "implied",
+  "why": "the business initiation service is what the provider-facing steps provide"
+ },
+ {
+  "source": "PROC-SUBMIT",
+  "link": "realization",
+  "target": "SVC-INIT",
+  "section": 3,
+  "basis": "implied",
+  "why": "the business initiation service is what the provider-facing steps provide"
+ },
+ {
+  "source": "PROC-STATUS",
+  "link": "realization",
+  "target": "SVC-INIT",
+  "section": 3,
+  "basis": "implied",
+  "why": "the business initiation service is what the provider-facing steps provide"
+ },
+ {
+  "source": "PROC-HANDOFF",
+  "link": "flow",
+  "target": "PROC-STATUS",
+  "section": 3,
+  "basis": "implied",
+  "why": "the processes are listed in order; status enquiries follow the handoff"
+ },
+ {
+  "source": "SVC-INIT",
+  "link": "serving",
+  "target": "ACTOR-TPP",
+  "section": 1,
+  "basis": "implied",
+  "why": "the accredited third-party provider is the one that creates consents and submits payments (R-01, R-11)"
+ },
+ {
+  "source": "SVC-AUTH",
+  "link": "serving",
+  "target": "ACTOR-CUSTOMER",
+  "section": 1,
+  "basis": "implied",
+  "why": "the customer is redirected to the bank to authenticate and authorise"
+ },
+ {
+  "source": "PROC-CONSENT",
+  "link": "realization",
+  "target": "R-01",
+  "section": 2,
+  "basis": "implied",
+  "why": "creating the consent is capturing it"
+ },
+ {
+  "source": "PROC-AUTH",
+  "link": "realization",
+  "target": "R-02",
+  "section": 2,
+  "basis": "implied",
+  "why": "the redirect flow authenticates the customer and accepts or rejects the consent"
+ },
+ {
+  "source": "PROC-SUBMIT",
+  "link": "realization",
+  "target": "R-03",
+  "section": 2,
+  "basis": "implied",
+  "why": "section 5: on submission one transaction checks the authorised and unconsumed consent"
+ },
+ {
+  "source": "PROC-SUBMIT",
+  "link": "realization",
+  "target": "R-04",
+  "section": 2,
+  "basis": "implied",
+  "why": "section 5: submission checks the consent is authorised"
+ },
+ {
+  "source": "PROC-SUBMIT",
+  "link": "realization",
+  "target": "R-05",
+  "section": 2,
+  "basis": "implied",
+  "why": "section 5: submission records the idempotency key scoped to the third party"
+ },
+ {
+  "source": "PROC-VALIDATE",
+  "link": "realization",
+  "target": "R-06",
+  "section": 2,
+  "basis": "implied",
+  "why": "validates data/account"
+ },
+ {
+  "source": "PROC-VALIDATE",
+  "link": "realization",
+  "target": "R-07",
+  "section": 2,
+  "basis": "implied",
+  "why": "section 5: before debit the hub validates account eligibility"
+ },
+ {
+  "source": "PROC-RISK",
+  "link": "realization",
+  "target": "R-08",
+  "section": 2,
+  "basis": "implied",
+  "why": "screens fraud before the debit"
+ },
+ {
+  "source": "PROC-DEBIT",
+  "link": "realization",
+  "target": "R-09",
+  "section": 2,
+  "basis": "implied",
+  "why": "posts one debit"
+ },
+ {
+  "source": "PROC-HANDOFF",
+  "link": "realization",
+  "target": "R-10",
+  "section": 2,
+  "basis": "implied",
+  "why": "hands off for execution"
+ },
+ {
+  "source": "PROC-STATUS",
+  "link": "realization",
+  "target": "R-11",
+  "section": 2,
+  "basis": "implied",
+  "why": "responds to status enquiries"
+ },
+ {
+  "source": "PROC-AUTH",
+  "link": "realization",
+  "target": "R-12",
+  "section": 2,
+  "basis": "implied",
+  "why": "section 7: a decline or failed authentication leaves no usable consent, so no payment and no debit"
+ },
+ {
+  "source": "PROC-STATUS",
+  "link": "realization",
+  "target": "R-19",
+  "section": 2,
+  "basis": "implied",
+  "why": "section 3: AcceptedSettlementInProcess is reported as acceptance for execution, not completion"
+ },
+ {
+  "source": "PROC-AUTH",
+  "link": "realization",
+  "target": "R-21",
+  "section": 2,
+  "basis": "implied",
+  "why": "only the redirect flow is designed in S1"
+ },
+ {
+  "source": "PROC-SUBMIT",
+  "link": "realization",
+  "target": "R-23",
+  "section": 2,
+  "basis": "implied",
+  "why": "status and expiry are checked before submission"
+ },
+ {
+  "source": "APP-EDGE",
+  "link": "access",
+  "target": "DATA-AUDIT",
+  "section": 5,
+  "basis": "implied",
+  "why": "APP-EDGE produces correlated security events; SecurityEventLog is where security events are kept"
+ },
+ {
+  "source": "APP-EDGE",
+  "link": "flow",
+  "target": "APP-PAYHUB",
+  "section": 5,
+  "basis": "implied",
+  "why": "the ingress terminates the provider channel; the hub orchestrates initiation"
+ },
+ {
+  "source": "APP-EDGE",
+  "link": "flow",
+  "target": "APP-CONSENT",
+  "section": 5,
+  "basis": "implied",
+  "why": "consent creation and read arrive at the ingress; APP-CONSENT controls the consent lifecycle"
+ },
+ {
+  "source": "APP-IDENT",
+  "link": "flow",
+  "target": "APP-CONSENT",
+  "section": 5,
+  "basis": "implied",
+  "why": "authentication accepts or rejects the consent that APP-CONSENT holds"
+ },
+ {
+  "source": "APP-PAYHUB",
+  "link": "flow",
+  "target": "APP-NOTIFY",
+  "section": 5,
+  "basis": "implied",
+  "why": "APP-NOTIFY is a downstream notification component"
+ },
+ {
+  "source": "APP-PAYHUB",
+  "link": "triggering",
+  "target": "EVT-HANDOFF",
+  "section": 5,
+  "basis": "implied",
+  "why": "upon recorded acceptance the hub persists AcceptedSettlementInProcess and emits a durable handoff event"
+ },
+ {
+  "source": "API-DEBTOR-READ",
+  "link": "access",
+  "target": "DATA-CONSENT",
+  "section": 5,
+  "basis": "implied",
+  "why": "the debtor account is a column of the ConsentLedger"
+ },
+ {
+  "source": "PATH-EDGE",
+  "link": "association",
+  "target": "NODE-EDGE",
+  "section": 6,
+  "basis": "implied",
+  "why": "HTTPS/TLS crosses the external boundary at the API ingress"
+ },
+ {
+  "source": "PATH-DATA",
+  "link": "association",
+  "target": "NODE-APP",
+  "section": 6,
+  "basis": "implied",
+  "why": "application-to-SQL traffic: application compute to the database nodes"
+ },
+ {
+  "source": "PATH-DATA",
+  "link": "association",
+  "target": "NODE-DATA",
+  "section": 6,
+  "basis": "implied",
+  "why": "application-to-SQL traffic: application compute to the database nodes"
+ },
+ {
+  "source": "PATH-KEY",
+  "link": "association",
+  "target": "NODE-APP",
+  "section": 6,
+  "basis": "implied",
+  "why": "secret retrieval: by the applications, from identity/secrets"
+ },
+ {
+  "source": "PATH-KEY",
+  "link": "association",
+  "target": "NODE-SEC",
+  "section": 6,
+  "basis": "implied",
+  "why": "secret retrieval: by the applications, from identity/secrets"
+ },
+ {
+  "source": "PATH-HANDOFF",
+  "link": "association",
+  "target": "NODE-APP",
+  "section": 6,
+  "basis": "implied",
+  "why": "payment handoff: to ledger/execution integration"
+ },
+ {
+  "source": "PATH-HANDOFF",
+  "link": "association",
+  "target": "NODE-INT",
+  "section": 6,
+  "basis": "implied",
+  "why": "payment handoff: to ledger/execution integration"
+ },
+ {
+  "source": "NODE-DATA",
+  "link": "assignment",
+  "target": "SYS-DB",
+  "section": 6,
+  "basis": "implied",
+  "why": "the managed database is what the database nodes run"
+ },
+ {
+  "source": "NODE-SEC",
+  "link": "assignment",
+  "target": "SYS-KMS",
+  "section": 6,
+  "basis": "implied",
+  "why": "managed key custody is on the identity/secrets node"
+ },
+ {
+  "source": "NODE-EDGE",
+  "link": "assignment",
+  "target": "DEP-EDGE",
+  "section": 6,
+  "basis": "implied",
+  "why": "the API ingress"
+ },
+ {
+  "source": "NODE-SEC",
+  "link": "assignment",
+  "target": "DEP-IDENT",
+  "section": 6,
+  "basis": "implied",
+  "why": "identity is on the identity/secrets node"
+ },
+ {
+  "source": "NODE-APP",
+  "link": "assignment",
+  "target": "DEP-CONSENT",
+  "section": 6,
+  "basis": "implied",
+  "why": "application compute"
+ },
+ {
+  "source": "NODE-APP",
+  "link": "assignment",
+  "target": "DEP-PAYHUB",
+  "section": 6,
+  "basis": "implied",
+  "why": "application compute"
+ },
+ {
+  "source": "NODE-APP",
+  "link": "assignment",
+  "target": "DEP-RISK",
+  "section": 6,
+  "basis": "implied",
+  "why": "application compute"
+ },
+ {
+  "source": "NODE-APP",
+  "link": "assignment",
+  "target": "DEP-NOTIFY",
+  "section": 6,
+  "basis": "implied",
+  "why": "application compute"
+ },
+ {
+  "source": "NODE-INT",
+  "link": "assignment",
+  "target": "DEP-LEDGER",
+  "section": 6,
+  "basis": "implied",
+  "why": "ledger/execution integration"
+ },
+ {
+  "source": "NODE-INT",
+  "link": "assignment",
+  "target": "DEP-OUT",
+  "section": 6,
+  "basis": "implied",
+  "why": "ledger/execution integration"
+ },
+ {
+  "source": "PROC-SUBMIT",
+  "link": "USES_DOMAIN",
+  "target": "Payment Order Initiation",
+  "section": 4,
+  "basis": "implied",
+  "why": "receiving the payment is initiating the payment order"
+ },
+ {
+  "source": "PROC-STATUS",
+  "link": "USES_DOMAIN",
+  "target": "Payment Order Initiation",
+  "section": 4,
+  "basis": "implied",
+  "why": "status enquiries retrieve the payment order initiation transaction"
+ },
+ {
+  "source": "PROC-AUTH",
+  "link": "USES_DOMAIN",
+  "target": "Party Authentication",
+  "section": 4,
+  "basis": "stated",
+  "why": "we align the customer authentication concern to that domain"
+ },
+ {
+  "source": "CAP-PAY",
+  "link": "SUPPORTED_BY",
+  "target": "Payment Order Initiation",
+  "section": 4,
+  "basis": "implied",
+  "why": "the service domain for the capability of the same name"
+ },
+ {
+  "source": "Payment Order Initiation",
+  "link": "REALIZED_BY",
+  "target": "APP-PAYHUB",
+  "section": 5,
+  "basis": "implied",
+  "why": "APP-PAYHUB validates and orchestrates initiation; AD-02: a single payment orchestrator"
+ },
+ {
+  "source": "Party Authentication",
+  "link": "REALIZED_BY",
+  "target": "APP-IDENT",
+  "section": 5,
+  "basis": "implied",
+  "why": "APP-IDENT handles customer authentication"
+ },
+ {
+  "source": "Payment Order Initiation: Initiate",
+  "link": "IMPLEMENTED_BY",
+  "target": "API-PAYMENT-CREATE",
+  "section": 5,
+  "basis": "implied",
+  "why": "POST /domestic-payments initiates the payment"
+ },
+ {
+  "source": "Payment Order Initiation: Retrieve",
+  "link": "IMPLEMENTED_BY",
+  "target": "API-PAYMENT-READ",
+  "section": 5,
+  "basis": "implied",
+  "why": "GET /domestic-payments/{id} retrieves it"
+ },
+ {
+  "source": "IF-TPP",
+  "link": "REALIZED_BY",
+  "target": "IFC-PAYMENT-INITIATION",
+  "section": 5,
+  "basis": "implied",
+  "why": "the provider API channel is the Payment Initiation API"
+ },
+ {
+  "source": "IFC-PAYMENT-INITIATION",
+  "link": "EXPOSED_THROUGH",
+  "target": "NODE-EDGE",
+  "section": 6,
+  "basis": "implied",
+  "why": "HTTPS crosses the external boundary at the redundant API ingress"
+ },
+ {
+  "source": "APP-EDGE",
+  "link": "DEPLOYED_AS",
+  "target": "DEP-EDGE",
+  "section": 6,
+  "basis": "stated",
+  "why": "every application component has a named deployment"
+ },
+ {
+  "source": "APP-IDENT",
+  "link": "DEPLOYED_AS",
+  "target": "DEP-IDENT",
+  "section": 6,
+  "basis": "stated",
+  "why": "every application component has a named deployment"
+ },
+ {
+  "source": "APP-CONSENT",
+  "link": "DEPLOYED_AS",
+  "target": "DEP-CONSENT",
+  "section": 6,
+  "basis": "stated",
+  "why": "every application component has a named deployment"
+ },
+ {
+  "source": "APP-PAYHUB",
+  "link": "DEPLOYED_AS",
+  "target": "DEP-PAYHUB",
+  "section": 6,
+  "basis": "stated",
+  "why": "every application component has a named deployment"
+ },
+ {
+  "source": "APP-RISK",
+  "link": "DEPLOYED_AS",
+  "target": "DEP-RISK",
+  "section": 6,
+  "basis": "stated",
+  "why": "every application component has a named deployment"
+ },
+ {
+  "source": "APP-LEDGER",
+  "link": "DEPLOYED_AS",
+  "target": "DEP-LEDGER",
+  "section": 6,
+  "basis": "stated",
+  "why": "every application component has a named deployment"
+ },
+ {
+  "source": "APP-NOTIFY",
+  "link": "DEPLOYED_AS",
+  "target": "DEP-NOTIFY",
+  "section": 6,
+  "basis": "stated",
+  "why": "every application component has a named deployment"
+ },
+ {
+  "source": "APP-OUTBOUND",
+  "link": "DEPLOYED_AS",
+  "target": "DEP-OUT",
+  "section": 6,
+  "basis": "stated",
+  "why": "every application component has a named deployment"
+ },
+ {
+  "source": "APP-EDGE",
+  "link": "DEPLOYED_ON",
+  "target": "NODE-EDGE",
+  "section": 6,
+  "basis": "implied",
+  "why": "the node its deployment runs on"
+ },
+ {
+  "source": "APP-IDENT",
+  "link": "DEPLOYED_ON",
+  "target": "NODE-SEC",
+  "section": 6,
+  "basis": "implied",
+  "why": "the node its deployment runs on"
+ },
+ {
+  "source": "APP-CONSENT",
+  "link": "DEPLOYED_ON",
+  "target": "NODE-APP",
+  "section": 6,
+  "basis": "implied",
+  "why": "the node its deployment runs on"
+ },
+ {
+  "source": "APP-PAYHUB",
+  "link": "DEPLOYED_ON",
+  "target": "NODE-APP",
+  "section": 6,
+  "basis": "implied",
+  "why": "the node its deployment runs on"
+ },
+ {
+  "source": "APP-RISK",
+  "link": "DEPLOYED_ON",
+  "target": "NODE-APP",
+  "section": 6,
+  "basis": "implied",
+  "why": "the node its deployment runs on"
+ },
+ {
+  "source": "APP-NOTIFY",
+  "link": "DEPLOYED_ON",
+  "target": "NODE-APP",
+  "section": 6,
+  "basis": "implied",
+  "why": "the node its deployment runs on"
+ },
+ {
+  "source": "APP-LEDGER",
+  "link": "DEPLOYED_ON",
+  "target": "NODE-INT",
+  "section": 6,
+  "basis": "implied",
+  "why": "the node its deployment runs on"
+ },
+ {
+  "source": "APP-OUTBOUND",
+  "link": "DEPLOYED_ON",
+  "target": "NODE-INT",
+  "section": 6,
+  "basis": "implied",
+  "why": "the node its deployment runs on"
+ },
+ {
+  "source": "DATA-CONSENT",
+  "link": "STORED_IN",
+  "target": "SYS-DB",
+  "section": 6,
+  "basis": "stated",
+  "why": "the consent and payment tables share a restricted storage service"
+ },
+ {
+  "source": "DATA-PAYMENT",
+  "link": "STORED_IN",
+  "target": "SYS-DB",
+  "section": 6,
+  "basis": "stated",
+  "why": "the consent and payment tables share a restricted storage service"
+ },
+ {
+  "source": "DATA-IDEMP",
+  "link": "STORED_IN",
+  "target": "SYS-DB",
+  "section": 6,
+  "basis": "implied",
+  "why": "section 5: the same database transaction records the idempotency key"
+ }
+]

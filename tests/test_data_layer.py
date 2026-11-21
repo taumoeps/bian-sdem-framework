@@ -127,18 +127,27 @@ class Boundary(unittest.TestCase):   # DL-10…DL-13, DL-20
 
 
 
-class Reconciled(unittest.TestCase):   # DL-20: the payment example, 0.19 against 0.20 — the data, not only the answers
+class Reconciled(unittest.TestCase):   # DL-20: each example, 0.19 against 0.20 — the data, not only the answers
     def test_every_record_field_and_link_of_0_19_is_in_the_migrated_example(self):
+        examples = sorted(p.name for p in (ROOT / 'examples' / '0.20').iterdir() if p.is_dir() and (ROOT / 'examples' / p.name).is_dir())
+        self.assertIn('payment-initiation', examples)
+        for name in examples:
+            old, new = ROOT / 'examples' / name, ROOT / 'examples' / '0.20' / name
+            if (old / 'sdem').is_dir(): old, new = old / 'sdem', new / 'sdem'   # payment-initiation-v3: its workspace beside the package it was taken in from
+            with self.subTest(example=name): self.reconcile(old, new)
+
+    def reconcile(self, old, new):
         from sdem import identity as I
-        old, new = ROOT / 'examples' / 'payment-initiation', ROOT / 'examples' / '0.20' / 'payment-initiation'
         j = lambda f: json.loads(f.read_text(encoding='utf-8'))
         o_recs, o_rels = {}, set()
         for f in ('a1-business.json', 'a2-service-domain.json', 'a3-application.json', 'a4-technology.json'):
+            if not (old / f).exists(): continue   # an example may lack a layer
             d = j(old / f)
             o_recs.update({r['id']: {**r, 'type': I.type_id(r['type'])} for r in d['instances']})
             o_rels |= {(r['source'], r.get('kind'), r['target']) for r in d.get('relationships', [])}
         n_recs, n_rels, where = {}, set(), {}
         for lid in ('business', 'bian', 'data', 'application', 'technology'):
+            if not (new / f'{lid}.json').exists(): continue
             d = j(new / f'{lid}.json')
             for r in d['instances']: n_recs[r['id']] = r; where[r['id']] = lid
             n_rels |= {(r['source'], r.get('kind'), r['target']) for r in d.get('relationships', [])}
@@ -150,11 +159,8 @@ class Reconciled(unittest.TestCase):   # DL-20: the payment example, 0.19 agains
         self.assertEqual({(m['target']['id'], 'access', m['source']['id']) for m in n_m if m['relationship'] == 'ACCESSED_BY' and m['status'] == 'approved'}, acc)   # DL-13
         norm = lambda m: json.dumps({**m, 'source': {**m['source'], 'type': I.type_id(m['source']['type'])}, 'target': {**m['target'], 'type': I.type_id(m['target']['type'])}}, sort_keys=True)
         self.assertEqual({norm(m) for m in n_m if m['relationship'] != 'ACCESSED_BY'}, {norm(m) for m in o_m})   # every link between layers as it was
-        self.assertEqual([r['id'] for r in j(new / 'requirements.json')['requirements']], [r['id'] for r in j(old / 'requirements.json')['requirements']])
-
-
-if __name__ == '__main__':
-    unittest.main()
+        if (old / 'requirements.json').exists():
+            self.assertEqual([r['id'] for r in j(new / 'requirements.json')['requirements']], [r['id'] for r in j(old / 'requirements.json')['requirements']])
 
 
 class NamedInEitherForm(unittest.TestCase):   # DL-25: a layer named in a change set or a profile means one layer, in either form
@@ -212,3 +218,7 @@ class NamedInEitherForm(unittest.TestCase):   # DL-25: a layer named in a change
         msg = json.loads(r.stdout)['error']['message']
         self.assertIn('A3 is Data', msg); self.assertIn("'application'", msg)
         self.assertEqual(self.change('0.20', 'A4', 'sdem-a3-application').returncode, 0)   # the workspace's own number
+
+
+if __name__ == '__main__':
+    unittest.main()

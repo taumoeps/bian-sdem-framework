@@ -1,0 +1,304 @@
+{
+  "graph": {
+    "id": "sdem:synthetic-bank-onboarding-a4",
+    "type": "sdem.local",
+    "label": "A5 local knowledge graph (synthetic-bank-onboarding-a4)",
+    "directed": true,
+    "metadata": {
+      "sdem_store_version": "1.0",
+      "export_sha256": "8a7a3a7b1ccd8b1a081a534713a0e8c722f75e59d11c9157e050a50b17f914db",
+      "level": "A5",
+      "model_id": "synthetic-bank-onboarding-a4",
+      "model_version": "2026.10",
+      "metamodel_version": "0.17.0",
+      "source_system": "SYNTHETIC-CMDB"
+    },
+    "nodes": {
+      "A5:INF-001@1.0": {
+        "label": "Managed Kubernetes — channels (production)",
+        "metadata": {
+          "level": "A5",
+          "type": "A5.SystemSoftware",
+          "id": "INF-001",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Current production platform.",
+          "attributes": {
+            "hosts": [
+              "APP-001"
+            ]
+          }
+        }
+      },
+      "A5:INF-000@1.0": {
+        "label": "Legacy VM cluster — channels",
+        "metadata": {
+          "level": "A5",
+          "type": "A5.Node",
+          "id": "INF-000",
+          "version": "1.0",
+          "lifecycle_status": "retired",
+          "description": "Previous hosting, decommissioned."
+        }
+      },
+      "A5:INF-002@16": {
+        "label": "Managed PostgreSQL — channels",
+        "metadata": {
+          "level": "A5",
+          "type": "A5.SystemSoftware",
+          "id": "INF-002",
+          "version": "16",
+          "lifecycle_status": "active",
+          "description": "Production database."
+        }
+      },
+      "A5:ENV-001@1.0": {
+        "label": "Production",
+        "metadata": {
+          "level": "A5",
+          "type": "A5.DeploymentEnvironment",
+          "id": "ENV-001",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Production environment."
+        }
+      },
+      "A5:DEP-001@1.0": {
+        "label": "Onboarding Portal — production",
+        "metadata": {
+          "level": "A5",
+          "type": "A5.Deployment",
+          "id": "DEP-001",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Portal 1.0 on the channels cluster.",
+          "attributes": {
+            "component_id": "APP-001",
+            "environment_id": "ENV-001",
+            "platform_id": "INF-001"
+          }
+        }
+      },
+      "A5:INF-003@1.0": {
+        "label": "Edge API gateway — channels",
+        "metadata": {
+          "level": "A5",
+          "type": "A5.Node",
+          "id": "INF-003",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Internet-facing gateway in front of the channel APIs (made up).",
+          "attributes": {
+            "internet_facing": true
+          }
+        }
+      },
+      "A5:ZONE-ONB-CLOUD@1.0": {
+        "label": "Cloud — onboarding",
+        "metadata": {
+          "level": "A5",
+          "type": "A5.NetworkZone",
+          "id": "ZONE-ONB-CLOUD",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "The onboarding cloud deployment (made up).",
+          "attributes": {
+            "zone_level": 0,
+            "zone_kind": "cloud"
+          }
+        }
+      },
+      "A5:ZONE-ONB-INTERNAL@1.0": {
+        "label": "Internal network — onboarding",
+        "metadata": {
+          "level": "A5",
+          "type": "A5.NetworkZone",
+          "id": "ZONE-ONB-INTERNAL",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "The internal network inside the cloud deployment; nothing in it is reached from the internet.",
+          "attributes": {
+            "zone_level": 1,
+            "zone_kind": "internal"
+          }
+        }
+      },
+      "A5:ZONE-ONB-DMZ@1.0": {
+        "label": "Security zone (DMZ) — onboarding",
+        "metadata": {
+          "level": "A5",
+          "type": "A5.NetworkZone",
+          "id": "ZONE-ONB-DMZ",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "The internet-facing zone; firewalls form its boundary.",
+          "attributes": {
+            "zone_level": 1,
+            "zone_kind": "dmz"
+          }
+        }
+      },
+      "A5:ART-001@1.0": {
+        "label": "onboarding-portal:1.0",
+        "metadata": {
+          "level": "A5",
+          "type": "A5.Artifact",
+          "id": "ART-001",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Container image of the onboarding portal (made up).",
+          "attributes": {
+            "artifact_kind": "container image",
+            "of_component": "APP-001"
+          }
+        }
+      },
+      "A5:TSV-001@1.0": {
+        "label": "Managed event streaming — channels",
+        "metadata": {
+          "level": "A5",
+          "type": "A5.TechnologyService",
+          "id": "TSV-001",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "The platform's event streaming service (made-up)",
+          "attributes": {
+            "cloud_service_model": "PaaS"
+          }
+        }
+      }
+    },
+    "edges": [
+      {
+        "id": "A5:ENV-001-aggregation-DEP-001",
+        "source": "A5:ENV-001@1.0",
+        "target": "A5:DEP-001@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-31"
+        }
+      },
+      {
+        "id": "A5:INF-001-assignment-DEP-001",
+        "source": "A5:INF-001@1.0",
+        "target": "A5:DEP-001@1.0",
+        "relation": "assignment",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-21"
+        }
+      },
+      {
+        "id": "A5:INF-003-association-DEP-001",
+        "source": "A5:INF-003@1.0",
+        "target": "A5:DEP-001@1.0",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "association"
+        }
+      },
+      {
+        "id": "A5:INF-001-association-INF-002",
+        "source": "A5:INF-001@1.0",
+        "target": "A5:INF-002@16",
+        "relation": "association",
+        "metadata": {
+          "scope": "within-level",
+          "row": "association"
+        }
+      },
+      {
+        "id": "A5:ZONE-ONB-CLOUD-composition-ZONE-ONB-INTERNAL",
+        "source": "A5:ZONE-ONB-CLOUD@1.0",
+        "target": "A5:ZONE-ONB-INTERNAL@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-39"
+        }
+      },
+      {
+        "id": "A5:ZONE-ONB-CLOUD-composition-ZONE-ONB-DMZ",
+        "source": "A5:ZONE-ONB-CLOUD@1.0",
+        "target": "A5:ZONE-ONB-DMZ@1.0",
+        "relation": "composition",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-39"
+        }
+      },
+      {
+        "id": "A5:ZONE-ONB-INTERNAL-aggregation-INF-001",
+        "source": "A5:ZONE-ONB-INTERNAL@1.0",
+        "target": "A5:INF-001@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-38"
+        }
+      },
+      {
+        "id": "A5:ZONE-ONB-INTERNAL-aggregation-INF-002",
+        "source": "A5:ZONE-ONB-INTERNAL@1.0",
+        "target": "A5:INF-002@16",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-38"
+        }
+      },
+      {
+        "id": "A5:ZONE-ONB-DMZ-aggregation-INF-003",
+        "source": "A5:ZONE-ONB-DMZ@1.0",
+        "target": "A5:INF-003@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-38"
+        }
+      },
+      {
+        "id": "A5:INF-001-assignment-ART-001",
+        "source": "A5:INF-001@1.0",
+        "target": "A5:ART-001@1.0",
+        "relation": "assignment",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-17"
+        }
+      },
+      {
+        "id": "A5:DEP-001-aggregation-ART-001",
+        "source": "A5:DEP-001@1.0",
+        "target": "A5:ART-001@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-35"
+        }
+      },
+      {
+        "id": "A5:INF-001-realization-TSV-001",
+        "source": "A5:INF-001@1.0",
+        "target": "A5:TSV-001@1.0",
+        "relation": "realization",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-18"
+        }
+      },
+      {
+        "id": "A5:ZONE-ONB-INTERNAL-aggregation-TSV-001",
+        "source": "A5:ZONE-ONB-INTERNAL@1.0",
+        "target": "A5:TSV-001@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA4-38"
+        }
+      }
+    ]
+  }
+}

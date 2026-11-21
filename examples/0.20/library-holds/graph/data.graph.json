@@ -1,0 +1,45 @@
+{
+  "graph": {
+    "id": "sdem:library-holds-a3-data",
+    "type": "sdem.local",
+    "label": "A3 local knowledge graph (library-holds-a3-data)",
+    "directed": true,
+    "metadata": {
+      "sdem_store_version": "1.0",
+      "export_sha256": "0f6d88212c197af64120aecd0d36004ecbc1c325c204826f67b181adad977799",
+      "level": "A3",
+      "model_id": "library-holds-a3-data",
+      "model_version": "2026.11",
+      "metamodel_version": "0.17.0",
+      "source_system": "SYNTHETIC-DESIGN"
+    },
+    "nodes": {
+      "A3:DE-HOLD@1.0": {
+        "label": "hold",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.DataEntity",
+          "id": "DE-HOLD",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "One reservation: member, item, branch, status and dates.",
+          "attributes": {
+            "stored_in": [
+              "SYS-CATALOGUE-DB"
+            ],
+            "attributes": [
+              "hold_reference",
+              "member_reference",
+              "item_reference",
+              "branch_code",
+              "hold_status",
+              "placed_on",
+              "expires_on"
+            ]
+          }
+        }
+      }
+    },
+    "edges": []
+  }
+}

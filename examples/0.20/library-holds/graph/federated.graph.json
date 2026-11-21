@@ -1,0 +1,335 @@
+{
+  "graph": {
+    "id": "sdem:federated",
+    "type": "sdem.federated",
+    "label": "Federated knowledge graph (approved cross-level links)",
+    "directed": true,
+    "metadata": {
+      "sdem_store_version": "1.0",
+      "metamodel_version": "0.17.0",
+      "levels": {
+        "A1": "2026.11",
+        "A3": "2026.11",
+        "A4": "2026.11",
+        "A5": "2026.11"
+      },
+      "registries": [
+        {
+          "file": "mappings.json",
+          "sha256": "e94c903a55c9378adbf8d6b2595d13a8cdf2de15b21f4870f8e24634299c6559",
+          "registry_version": "0.4.0",
+          "metamodel_version": "0.17.0"
+        }
+      ],
+      "statuses": [
+        "approved"
+      ]
+    },
+    "nodes": {
+      "A1:PRC-PLACE-HOLD@1.0": {
+        "label": "Place a hold",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessProcess",
+          "id": "PRC-PLACE-HOLD",
+          "version": "1.0",
+          "stub": true,
+          "graph": "business.graph.json"
+        }
+      },
+      "A4:APS-HOLDS@1.0": {
+        "label": "Hold placement",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.ApplicationService",
+          "id": "APS-HOLDS",
+          "version": "1.0",
+          "stub": true,
+          "graph": "application.graph.json"
+        }
+      },
+      "A1:BSV-HOLDS@1.0": {
+        "label": "Reserve an item",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessService",
+          "id": "BSV-HOLDS",
+          "version": "1.0",
+          "stub": true,
+          "graph": "business.graph.json"
+        }
+      },
+      "A4:APP-CIRC@3.1": {
+        "label": "Circulation system",
+        "metadata": {
+          "level": "A4",
+          "type": "A4.ApplicationComponent",
+          "id": "APP-CIRC",
+          "version": "3.1",
+          "stub": true,
+          "graph": "application.graph.json"
+        }
+      },
+      "A1:BO-HOLD@1.0": {
+        "label": "Hold",
+        "metadata": {
+          "level": "A1",
+          "type": "A1.BusinessObject",
+          "id": "BO-HOLD",
+          "version": "1.0",
+          "stub": true,
+          "graph": "business.graph.json"
+        }
+      },
+      "A3:DE-HOLD@1.0": {
+        "label": "hold",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.DataEntity",
+          "id": "DE-HOLD",
+          "version": "1.0",
+          "stub": true,
+          "graph": "data.graph.json"
+        }
+      },
+      "A5:SYS-CIRC-RUNTIME@1.0": {
+        "label": "Application runtime — circulation",
+        "metadata": {
+          "level": "A5",
+          "type": "A5.SystemSoftware",
+          "id": "SYS-CIRC-RUNTIME",
+          "version": "1.0",
+          "stub": true,
+          "graph": "technology.graph.json"
+        }
+      },
+      "A5:DEP-CIRC-PROD@1.0": {
+        "label": "Circulation system — production",
+        "metadata": {
+          "level": "A5",
+          "type": "A5.Deployment",
+          "id": "DEP-CIRC-PROD",
+          "version": "1.0",
+          "stub": true,
+          "graph": "technology.graph.json"
+        }
+      },
+      "A5:SYS-CATALOGUE-DB@1.0": {
+        "label": "Catalogue database",
+        "metadata": {
+          "level": "A5",
+          "type": "A5.SystemSoftware",
+          "id": "SYS-CATALOGUE-DB",
+          "version": "1.0",
+          "stub": true,
+          "graph": "technology.graph.json"
+        }
+      }
+    },
+    "edges": [
+      {
+        "id": "LIB-001",
+        "source": "A1:PRC-PLACE-HOLD@1.0",
+        "target": "A4:APS-HOLDS@1.0",
+        "relation": "SERVED_BY",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "PRC-PLACE-HOLD",
+            "type": "A1.BusinessProcess",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "APS-HOLDS",
+            "type": "A4.ApplicationService",
+            "version": "1.0"
+          },
+          "perspective": "process",
+          "status": "approved",
+          "evidence": [
+            "process_model:LIB-HOLDS-DESIGN#s1"
+          ],
+          "rationale": "Placing a hold runs on the hold placement service",
+          "baseline_id": "LIB-2026-Q4",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-11-21"
+        }
+      },
+      {
+        "id": "LIB-002",
+        "source": "A1:BSV-HOLDS@1.0",
+        "target": "A4:APP-CIRC@3.1",
+        "relation": "REALIZED_BY",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "BSV-HOLDS",
+            "type": "A1.BusinessService",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "APP-CIRC",
+            "type": "A4.ApplicationComponent",
+            "version": "3.1"
+          },
+          "perspective": "architecture",
+          "status": "approved",
+          "evidence": [
+            "application_architecture_document:LIB-HOLDS-DESIGN#s2"
+          ],
+          "rationale": "The circulation system provides the reserve-an-item service",
+          "baseline_id": "LIB-2026-Q4",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-11-21"
+        }
+      },
+      {
+        "id": "LIB-003",
+        "source": "A1:BO-HOLD@1.0",
+        "target": "A3:DE-HOLD@1.0",
+        "relation": "MAPPED_TO",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "BO-HOLD",
+            "type": "A1.BusinessObject",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "DE-HOLD",
+            "type": "A3.DataEntity",
+            "version": "1.0"
+          },
+          "perspective": "information",
+          "status": "approved",
+          "evidence": [
+            "data_model:LIB-HOLDS-DESIGN#s3"
+          ],
+          "rationale": "The hold the business speaks of is the hold data entity",
+          "baseline_id": "LIB-2026-Q4",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-11-21"
+        }
+      },
+      {
+        "id": "LIB-004",
+        "source": "A4:APP-CIRC@3.1",
+        "target": "A5:SYS-CIRC-RUNTIME@1.0",
+        "relation": "DEPLOYED_ON",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "APP-CIRC",
+            "type": "A4.ApplicationComponent",
+            "version": "3.1"
+          },
+          "target_ref": {
+            "id": "SYS-CIRC-RUNTIME",
+            "type": "A5.SystemSoftware",
+            "version": "1.0"
+          },
+          "perspective": "architecture",
+          "status": "approved",
+          "evidence": [
+            "deployment_design:LIB-HOLDS-DESIGN#s4"
+          ],
+          "rationale": "The circulation system runs on the application runtime",
+          "baseline_id": "LIB-2026-Q4",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-11-21"
+        }
+      },
+      {
+        "id": "LIB-005",
+        "source": "A4:APP-CIRC@3.1",
+        "target": "A5:DEP-CIRC-PROD@1.0",
+        "relation": "DEPLOYED_AS",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "APP-CIRC",
+            "type": "A4.ApplicationComponent",
+            "version": "3.1"
+          },
+          "target_ref": {
+            "id": "DEP-CIRC-PROD",
+            "type": "A5.Deployment",
+            "version": "1.0"
+          },
+          "perspective": "architecture",
+          "status": "approved",
+          "evidence": [
+            "deployment_design:LIB-HOLDS-DESIGN#s5"
+          ],
+          "rationale": "Its production deployment",
+          "baseline_id": "LIB-2026-Q4",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-11-21"
+        }
+      },
+      {
+        "id": "LIB-006",
+        "source": "A3:DE-HOLD@1.0",
+        "target": "A5:SYS-CATALOGUE-DB@1.0",
+        "relation": "STORED_IN",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "DE-HOLD",
+            "type": "A3.DataEntity",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "SYS-CATALOGUE-DB",
+            "type": "A5.SystemSoftware",
+            "version": "1.0"
+          },
+          "perspective": "information",
+          "status": "approved",
+          "evidence": [
+            "deployment_design:LIB-HOLDS-DESIGN#s6"
+          ],
+          "rationale": "Holds are kept in the catalogue database",
+          "baseline_id": "LIB-2026-Q4",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-11-21"
+        }
+      },
+      {
+        "id": "LIB-007",
+        "source": "A3:DE-HOLD@1.0",
+        "target": "A4:APP-CIRC@3.1",
+        "relation": "ACCESSED_BY",
+        "metadata": {
+          "scope": "cross-level",
+          "registry": "mappings.json",
+          "source_ref": {
+            "id": "DE-HOLD",
+            "type": "A3.DataEntity",
+            "version": "1.0"
+          },
+          "target_ref": {
+            "id": "APP-CIRC",
+            "type": "A4.ApplicationComponent",
+            "version": "3.1"
+          },
+          "perspective": "information",
+          "status": "approved",
+          "evidence": [
+            "application_architecture_document:LIB-HOLDS-DESIGN#s7"
+          ],
+          "rationale": "The circulation system reads and writes holds",
+          "baseline_id": "LIB-2026-Q4",
+          "reviewer_id": "jane.architect",
+          "approved_at": "2026-11-21"
+        }
+      }
+    ]
+  }
+}

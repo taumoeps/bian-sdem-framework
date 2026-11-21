@@ -1,0 +1,120 @@
+{
+  "store": "graph",
+  "entries": [
+    {
+      "build": 1,
+      "at": "2026-11-21T02:04:34+00:00",
+      "inputs": [
+        {
+          "path": "examples/0.20/fx-dealing/business.json",
+          "kind": "export",
+          "level": "A1",
+          "model_id": "harbourline-fx-a1",
+          "model_version": "2026.11",
+          "sha256": "94b2e0215f29108dc4c4c9cdb45bdf4b08af809f7124791194182abd4bdaf613"
+        },
+        {
+          "path": "examples/0.20/fx-dealing/bian.json",
+          "kind": "export",
+          "level": "A2",
+          "model_id": "harbourline-fx-a2",
+          "model_version": "2026.11",
+          "sha256": "17b4c10457c72729aa9d587e9993685f2a5c6bc9260f6e616ef72d013360641d"
+        },
+        {
+          "path": "examples/0.20/fx-dealing/data.json",
+          "kind": "export",
+          "level": "A3",
+          "model_id": "harbourline-fx-a3-data",
+          "model_version": "2026.11",
+          "sha256": "3451a11029c535d9a299ff28ebeaed0d414c00bbfe04db0676391c5be630f1e4"
+        },
+        {
+          "path": "examples/0.20/fx-dealing/application.json",
+          "kind": "export",
+          "level": "A4",
+          "model_id": "harbourline-fx-a3",
+          "model_version": "2026.11",
+          "sha256": "7e21bbc2d8c0aa3986fe2bdea1e052d84d7cda811795f70f55aa793faec8267a"
+        },
+        {
+          "path": "examples/0.20/fx-dealing/technology.json",
+          "kind": "export",
+          "level": "A5",
+          "model_id": "harbourline-fx-a4",
+          "model_version": "2026.11",
+          "sha256": "cfc46eac6f25327a0a6b0179a3b19894604cdd3b682438a4d95c99a1a9ade3a0"
+        },
+        {
+          "path": "examples/0.20/fx-dealing/mappings.json",
+          "kind": "registry",
+          "registry_version": "0.4.0",
+          "sha256": "9bbd0c2873ed8f27407b9069a281c02962d1cf8e5e4d68806ab8e5853c2e05e7"
+        }
+      ],
+      "metamodel_version": "0.17.0",
+      "errors": [],
+      "warnings": [
+        "level A1 (harbourline-fx-a1): instance PRC-FX-01: attribute 'triggered_by' refers to 'client requests a rate on the portal or by phone', which is not a A1.BusinessEvent in this architecture dataset (LC-07)",
+        "level A1 (harbourline-fx-a1): instance PRC-FX-02: attribute 'triggered_by' refers to \"net open position moves past the desk's comfort level\", which is not a A1.BusinessEvent in this architecture dataset (LC-07)",
+        "level A1 (harbourline-fx-a1): instance PRC-FX-03: attribute 'triggered_by' refers to 'a deal is booked', which is not a A1.BusinessEvent in this architecture dataset (LC-07)",
+        "level A1 (harbourline-fx-a1): instance PRC-FX-04: attribute 'triggered_by' refers to 'a matched deal approaches value date', which is not a A1.BusinessEvent in this architecture dataset (LC-07)",
+        "level A2 (harbourline-fx-a2): instance SD-DEALER-DESK: 0 composition links with A2.BusinessDomain, RA2-02 expects at least 1 (LC-10m)",
+        "level A2 (harbourline-fx-a2): instance SD-CURRENCY-EXCHANGE: 0 composition links with A2.BusinessDomain, RA2-02 expects at least 1 (LC-10m)",
+        "level A2 (harbourline-fx-a2): instance SD-TRADE-CONFIRMATION-MATCHING: 0 composition links with A2.BusinessDomain, RA2-02 expects at least 1 (LC-10m)",
+        "level A2 (harbourline-fx-a2): instance SD-TRADE-SETTLEMENT: 0 composition links with A2.BusinessDomain, RA2-02 expects at least 1 (LC-10m)",
+        "level A2 (harbourline-fx-a2): instance SD-TRADER-POSITION-OPERATIONS: 0 composition links with A2.BusinessDomain, RA2-02 expects at least 1 (LC-10m)",
+        "level A2 (harbourline-fx-a2): instance SD-COUNTERPARTY-ADMINISTRATION: 0 composition links with A2.BusinessDomain, RA2-02 expects at least 1 (LC-10m)",
+        "level A2 (harbourline-fx-a2): instance SD-MARKET-DATA-SWITCH-OPERATION: 0 composition links with A2.BusinessDomain, RA2-02 expects at least 1 (LC-10m)",
+        "level A4 (harbourline-fx-a3): instance EVT-FX-DEAL-BOOKED: attribute 'event_source' refers to '/ledgerline', which is not a A4.ApplicationComponent in this architecture dataset (LC-07)",
+        "level A4 (harbourline-fx-a3): instance EVT-RATE-TICK: attribute 'event_source' refers to '/rates-gateway', which is not a A4.ApplicationComponent in this architecture dataset (LC-07)"
+      ],
+      "result": "accepted",
+      "stack": [
+        "business",
+        "bian",
+        "data",
+        "application",
+        "technology"
+      ],
+      "outputs": [
+        {
+          "file": "application.graph.json",
+          "sha256": "f7626cacc22cb67eac551c210a019f169ba39518fbc0daf5d35d9d4db3ed63a1",
+          "nodes": 42,
+          "edges": 46
+        },
+        {
+          "file": "bian.graph.json",
+          "sha256": "a929c6aefa623e4d8c85847319a569a894fe8c3c7c69591e8fac0380fefc33e8",
+          "nodes": 261,
+          "edges": 575
+        },
+        {
+          "file": "business.graph.json",
+          "sha256": "3e886395c8042ead917ed76155040ada9c3327cf9a62a33b3b2d66472817b28a",
+          "nodes": 42,
+          "edges": 55
+        },
+        {
+          "file": "data.graph.json",
+          "sha256": "4a6e130a84a89da87fa93cb079a3d1d9091a032ecb8dda7042351633013e2f53",
+          "nodes": 12,
+          "edges": 0
+        },
+        {
+          "file": "federated.graph.json",
+          "sha256": "9ce6136b3c070c5bb9c3b5b0c2b4121d378aefbdb348c47feb9ef8554f21203e",
+          "nodes": 18,
+          "edges": 13
+        },
+        {
+          "file": "technology.graph.json",
+          "sha256": "e9e872257d332f639652c80e56a8f033e16ec3713d281c1eb0800fa8c5b99e33",
+          "nodes": 28,
+          "edges": 48
+        }
+      ]
+    }
+  ]
+}

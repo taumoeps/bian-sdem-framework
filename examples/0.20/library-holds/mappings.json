@@ -1,0 +1,167 @@
+{
+  "registry_version": "0.4.0",
+  "metamodel_version": "0.17.0",
+  "mappings": [
+    {
+      "mapping_id": "LIB-001",
+      "source": {
+        "id": "PRC-PLACE-HOLD",
+        "type": "business.BusinessProcess",
+        "version": "1.0"
+      },
+      "relationship": "SERVED_BY",
+      "target": {
+        "id": "APS-HOLDS",
+        "type": "application.ApplicationService",
+        "version": "1.0"
+      },
+      "perspective": "process",
+      "status": "approved",
+      "evidence": [
+        "process_model:LIB-HOLDS-DESIGN#s1"
+      ],
+      "rationale": "Placing a hold runs on the hold placement service",
+      "baseline_id": "LIB-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-11-21"
+    },
+    {
+      "mapping_id": "LIB-002",
+      "source": {
+        "id": "BSV-HOLDS",
+        "type": "business.BusinessService",
+        "version": "1.0"
+      },
+      "relationship": "REALIZED_BY",
+      "target": {
+        "id": "APP-CIRC",
+        "type": "application.ApplicationComponent",
+        "version": "3.1"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "application_architecture_document:LIB-HOLDS-DESIGN#s2"
+      ],
+      "rationale": "The circulation system provides the reserve-an-item service",
+      "baseline_id": "LIB-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-11-21"
+    },
+    {
+      "mapping_id": "LIB-003",
+      "source": {
+        "id": "BO-HOLD",
+        "type": "business.BusinessObject",
+        "version": "1.0"
+      },
+      "relationship": "MAPPED_TO",
+      "target": {
+        "id": "DE-HOLD",
+        "type": "data.DataEntity",
+        "version": "1.0"
+      },
+      "perspective": "information",
+      "status": "approved",
+      "evidence": [
+        "data_model:LIB-HOLDS-DESIGN#s3"
+      ],
+      "rationale": "The hold the business speaks of is the hold data entity",
+      "baseline_id": "LIB-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-11-21"
+    },
+    {
+      "mapping_id": "LIB-004",
+      "source": {
+        "id": "APP-CIRC",
+        "type": "application.ApplicationComponent",
+        "version": "3.1"
+      },
+      "relationship": "DEPLOYED_ON",
+      "target": {
+        "id": "SYS-CIRC-RUNTIME",
+        "type": "technology.SystemSoftware",
+        "version": "1.0"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "deployment_design:LIB-HOLDS-DESIGN#s4"
+      ],
+      "rationale": "The circulation system runs on the application runtime",
+      "baseline_id": "LIB-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-11-21"
+    },
+    {
+      "mapping_id": "LIB-005",
+      "source": {
+        "id": "APP-CIRC",
+        "type": "application.ApplicationComponent",
+        "version": "3.1"
+      },
+      "relationship": "DEPLOYED_AS",
+      "target": {
+        "id": "DEP-CIRC-PROD",
+        "type": "technology.Deployment",
+        "version": "1.0"
+      },
+      "perspective": "architecture",
+      "status": "approved",
+      "evidence": [
+        "deployment_design:LIB-HOLDS-DESIGN#s5"
+      ],
+      "rationale": "Its production deployment",
+      "baseline_id": "LIB-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-11-21"
+    },
+    {
+      "mapping_id": "LIB-006",
+      "source": {
+        "id": "DE-HOLD",
+        "type": "data.DataEntity",
+        "version": "1.0"
+      },
+      "relationship": "STORED_IN",
+      "target": {
+        "id": "SYS-CATALOGUE-DB",
+        "type": "technology.SystemSoftware",
+        "version": "1.0"
+      },
+      "perspective": "information",
+      "status": "approved",
+      "evidence": [
+        "deployment_design:LIB-HOLDS-DESIGN#s6"
+      ],
+      "rationale": "Holds are kept in the catalogue database",
+      "baseline_id": "LIB-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-11-21"
+    },
+    {
+      "mapping_id": "LIB-007",
+      "source": {
+        "id": "DE-HOLD",
+        "type": "data.DataEntity",
+        "version": "1.0"
+      },
+      "relationship": "ACCESSED_BY",
+      "target": {
+        "id": "APP-CIRC",
+        "type": "application.ApplicationComponent",
+        "version": "3.1"
+      },
+      "perspective": "information",
+      "status": "approved",
+      "evidence": [
+        "application_architecture_document:LIB-HOLDS-DESIGN#s7"
+      ],
+      "rationale": "The circulation system reads and writes holds",
+      "baseline_id": "LIB-2026-Q4",
+      "reviewer_id": "jane.architect",
+      "approved_at": "2026-11-21"
+    }
+  ]
+}
