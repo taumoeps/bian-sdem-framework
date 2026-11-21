@@ -376,15 +376,33 @@ def text_019(v):
     def rep(m):
         if m.group(2):
             n = f'{m.group(1)}.{m.group(2)}'
-            return T(by_old[n]) if n in by_old else m.group(0)
-        return layer(of_code[m.group(1)]) if m.group(1) in of_code else m.group(0)
+            if n not in by_old: return m.group(0)
+            t = T(by_old[n])
+            return by_old[n] if t.startswith('(') else t   # a type of a layer not in use: its id (bian.ServiceOperation), never '(bian).…'
+        if m.group(1) not in of_code: return m.group(0)
+        c = layer(of_code[m.group(1)])
+        return NOT_IN_USE.get(of_code[m.group(1)], of_code[m.group(1)]) if c.startswith('(') else c   # a layer not in use: named, never marked '(bian)'
     return _TEXT.sub(rep, v)
 
 
+NOT_IN_USE = {'bian': 'BIAN'}   # how prose names a layer the design does not have
+HISTORY_KEYS = frozenset({'approved', 'values_approved', 'required_unless_approved'})   # a decision recorded as it was taken
+_DATED = None
+
+
+def _historic(v):
+    """Text that tells what was true at a version or date ('From 0.16.0 it names an A4.NetworkZone', 'since 0.10.0') — history, kept as
+    written (never re-numbered, as a release never rewrites a past version's notes)."""
+    import re
+    global _DATED
+    if _DATED is None: _DATED = re.compile(r'\b(?:from|since|until|before|in|as of|as at)\s+v?\d+\.\d+(?:\.\d+)?\b|\b\d{4}-\d{2}-\d{2}\b', re.I)
+    return bool(_DATED.search(v))
+
+
 def _walk_text(x, key=None):
-    if isinstance(x, dict): return {k: _walk_text(v, k) for k, v in x.items()}
+    if isinstance(x, dict): return {k: (v if k in HISTORY_KEYS else _walk_text(v, k)) for k, v in x.items()}   # a recorded decision: as it was taken
     if isinstance(x, list): return [_walk_text(v, key) for v in x]
-    if isinstance(x, str) and ' ' in x and key not in LAYER_KEYS: return text_019(x)   # prose only: a value with a space in it
+    if isinstance(x, str) and ' ' in x and key not in LAYER_KEYS and not _historic(x): return text_019(x)   # prose only: a value with a space in it — never history
     return x
 
 

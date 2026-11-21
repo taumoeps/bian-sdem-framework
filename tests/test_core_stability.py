@@ -64,7 +64,9 @@ class StableCore(unittest.TestCase):
 
     def test_the_core_s_prose_differs_only_in_layer_numbers(self):   # descriptions name layers by the number shown now (DL-07) — nothing else in them moves
         import re
-        num = lambda t: re.sub(r'\bA[1-9]\b|\(bian\)', 'A#', t)   # a layer's number, or the mark of a layer not in use
+        num = lambda t: re.sub(r'\bA[1-9]\b|\bBIAN\b', 'A#', t)   # a layer's number — or, for a layer not in use, its name
+        for step in self.S:   # never the mark of a layer not in use (it is named instead)
+            with self.subTest(step=step, check='no (bian) mark'): self.assertNotIn('(bian)', ''.join(self.S[step]['attribute_text'].values()))
         core = {k for k in self.S['core']['attribute_text'] if C.is_core('attributes', k, {'entity': k.rsplit('.', 1)[0]})}
         for step in self.S:
             with self.subTest(step=step):
@@ -73,13 +75,13 @@ class StableCore(unittest.TestCase):
     def test_an_extension_adds_only_what_names_its_own_types(self):
         own = {'+bian': ('bian.',), '+bian+security': ('bian.', 'SEC.')}
         for step, prefixes in ((k, v) for k, v in own.items() if k in self.S):
-            for kind in ('entities', 'link_types', 'rules'):
+            for kind in ('entities', 'attributes', 'link_types', 'rules'):
                 added = set(self.split[step][kind][1]) - set(self.split['core'][kind][1])
                 with self.subTest(step=step, part=kind):
                     self.assertTrue(added, f'{step} adds no {kind}')
                     for k in added:
                         item = self.S[step][kind][k]
-                        named = [k] if kind == 'entities' else [item['source'], item['target']]
+                        named = [k] if kind == 'entities' else [item['entity']] if kind == 'attributes' else [item['source'], item['target']]
                         self.assertTrue(any(str(n).startswith(prefixes) for n in named), f'{step}: {kind} {k} names no type of its own: {named}')
 
     def test_removing_an_extension_leaves_the_metamodel_as_before_it(self):
@@ -87,6 +89,10 @@ class StableCore(unittest.TestCase):
             with self.subTest(part=kind):
                 if SECURITY: self.assertEqual(self.S['-security'][kind], self.S['+bian'][kind])   # security off: as with BIAN alone
                 self.assertEqual(self.S['-bian'][kind], self.S['core'][kind])        # BIAN off too: as the core alone — nothing left behind
+
+    def test_the_core_alone_carries_nothing_of_an_extension(self):   # BX-04: BIAN's types, links, rules and attributes come with BIAN
+        for kind in ('entities', 'attributes', 'link_types', 'rules'):
+            with self.subTest(part=kind): self.assertEqual(self.split['core'][kind][1], {}, f'the core alone has extension {kind}')
 
     def test_the_layers_in_use_follow_the_extensions(self):
         self.assertEqual(self.S['core']['layers'], ['business', 'data', 'application', 'technology'] if self.FORM == '0.20' else ['business', 'application', 'technology'])

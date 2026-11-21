@@ -90,8 +90,12 @@ def owner_of(iid, want, mm, local, parents, depth=4):
 def model(base=False):
     """Attribute definitions by entity type, the common attributes, and the cardinality rows that are enforced — with the active
     organisation profile's attributes added (base=True: SDEM's alone)."""
+    from . import parts
     rec = _j(MM_DIR / 'entity-attributes.json'); byent = {}
-    for a in rec['attributes']: byent.setdefault(a['entity'], {})[a['name']] = a
+    rows = parts.splice(rec['attributes'], lambda a: parts.a2(a.get('entity')), lambda a: (a.get('entity'), a.get('name')), 'attributes')   # BP-02: the installed sdem-bian's, if it carries them
+    for a in rows:
+        if parts.a2(a.get('entity')) and not parts.bian_on(): continue   # BX-04: BIAN's attributes come with BIAN — a design without it has none of them
+        byent.setdefault(a['entity'], {})[a['name']] = a
     if not base:
         from . import profile as _p
         for ent, defs in _p.profile_attributes().items(): byent.setdefault(ent, {}).update(defs)

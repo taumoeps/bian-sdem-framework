@@ -78,6 +78,7 @@ def keep(rows, ends):
 
 # ---- step 2 of 0.20: BIAN in its own package, sdem-bian (docs/design/sdem-bian-package-spec.md, BP-01…BP-11)
 PKG_FILES = {'metamodel': A2_FILE, 'within': 'within-layer-rules.json', 'link_types': 'link-types.json', 'rules': 'inference-rules.json'}
+PKG_OPTIONAL = {'attributes': 'attributes.json'}   # a package built before carries none: then SDEM's own copy is used (BP-10)
 CATALOGUE = 'catalogue'   # the BIAN catalogue, its inferences and licence, in the package's data folder
 
 
@@ -100,7 +101,8 @@ def builtin_data():
     return {'metamodel': rd('metamodel', A2_FILE),
             'within': [c for c in rd('metamodel', 'level-relationships.json')['constraints'] if bian_constraint(c)],
             'link_types': [r for r in rd('schema', 'relationship-types.json')['relationships'] if bian_link(r)],
-            'rules': [m for m in rd('metamodel', 'relationship-rules.json')['mappings'] if bian_rule(m)]}
+            'rules': [m for m in rd('metamodel', 'relationship-rules.json')['mappings'] if bian_rule(m)],
+            'attributes': [x for x in rd('metamodel', 'entity-attributes.json')['attributes'] if a2(x.get('entity'))]}   # BIAN's attributes, with BIAN
 
 
 def write_package_data(pkg):
@@ -110,7 +112,7 @@ def write_package_data(pkg):
     from .paths import DATA_ROOT
     pkg = Path(pkg); out = pkg / 'data'; out.mkdir(parents=True, exist_ok=True)
     for k, v in builtin_data().items():
-        (out / PKG_FILES[k]).write_bytes((json.dumps(v, indent=1, ensure_ascii=False) + '\n').encode('utf-8'))   # LF on every platform (BP-11)
+        (out / {**PKG_FILES, **PKG_OPTIONAL}[k]).write_bytes((json.dumps(v, indent=1, ensure_ascii=False) + '\n').encode('utf-8'))   # LF on every platform (BP-11)
     for f, src in package_code().items():   # ST-22: the commands, beside the data folder (sdem_bian/<file>)
         (pkg / f).write_bytes(src.encode('utf-8'))
     if (out / CATALOGUE).exists(): shutil.rmtree(out / CATALOGUE)
@@ -150,7 +152,7 @@ def _pkg_data():
     key = ('data', identity._VERSION[0])   # its names read in the numbering now in use (DL-22): a workspace in the 0.20 form numbers Application A4
     if key not in _PKG:
         for k in [k for k in _PKG if isinstance(k, tuple) and k[0] == 'data']: del _PKG[k]
-        _PKG[key] = {k: _jload(p['data'] / f) for k, f in PKG_FILES.items()}
+        _PKG[key] = {**{k: _jload(p['data'] / f) for k, f in PKG_FILES.items()}, **{k: _jload(p['data'] / f) for k, f in PKG_OPTIONAL.items() if (p['data'] / f).is_file()}}
     return _PKG[key]
 
 
@@ -158,7 +160,7 @@ def splice(rows, is_bian, key, kind):
     """BP-02: SDEM's rows with BIAN's from the installed package — in SDEM's order: each BIAN row is replaced by the package's row of
     the same key; a row the package adds comes after; one it drops is gone. Without the package (BP-10), the rows as they are."""
     d = _pkg_data()
-    if d is None or not bian_on(): return rows
+    if d is None or not bian_on() or kind not in d: return rows   # a package without this kind (built before it carried one): SDEM's own rows
     by = {key(r): r for r in d[kind]}; used, out = set(), []
     for r in rows:
         if not is_bian(r): out.append(r)
