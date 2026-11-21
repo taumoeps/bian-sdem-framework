@@ -51,7 +51,9 @@ class EstateTemplateTests(unittest.TestCase):
     def test_the_pin_is_the_current_release(self):
         pin = re.search(r'@v([\d.]+)\s*$', (T / 'requirements.txt').read_text(), re.M).group(1)
         version = re.search(r'^version = "([^"]+)"', (ROOT / 'pyproject.toml').read_text(), re.M).group(1)
-        self.assertEqual(pin, version, 'update templates/workspace-repo/requirements.txt when releasing')
+        dev = re.match(r'(\d+\.\d+\.\d+)\.dev\d+$', version)   # a development build (0.20.0.dev1): the template pins the last release until its own (UF-03)
+        if dev: self.assertLess(tuple(map(int, pin.split('.'))), tuple(map(int, dev.group(1).split('.'))), 'the pin is a release before this development build')
+        else: self.assertEqual(pin, version, 'update templates/workspace-repo/requirements.txt when releasing')
 
     def test_the_template_is_safe(self):
         ignored = (T / '.gitignore').read_text().split('\n')

@@ -2285,6 +2285,97 @@
           "edges": 41
         }
       ]
+    },
+    {
+      "build": 28,
+      "at": "2026-11-21T02:33:50+00:00",
+      "inputs": [
+        {
+          "path": "examples/acquired-fintech/a2-service-domain.json",
+          "kind": "export",
+          "level": "A2",
+          "model_id": "synthetic-fintech-a2",
+          "model_version": "2026.10",
+          "sha256": "a1d710196b7fb4df6617214042c900fcbd8f23f596b992e96183682b2df5739a"
+        },
+        {
+          "path": "examples/acquired-fintech/a3-application.json",
+          "kind": "export",
+          "level": "A3",
+          "model_id": "synthetic-fintech-a3",
+          "model_version": "2026.10",
+          "sha256": "558955130db76e1532974a6fc614412e52826f239e826ed40badd3a983ce9b7e"
+        },
+        {
+          "path": "examples/acquired-fintech/a4-technology.json",
+          "kind": "export",
+          "level": "A4",
+          "model_id": "synthetic-fintech-a4",
+          "model_version": "2026.10",
+          "sha256": "03f1818b2c41c725ca14d5ab9a98fc65d1b2e415df28c553ca7b762bb191d71c"
+        },
+        {
+          "path": "examples/acquired-fintech/mappings.json",
+          "kind": "registry",
+          "registry_version": "0.4.0",
+          "sha256": "3b92d336734b6051195e8fd9b3bd1861a735804bb574bde6e7ba04e53f7d97a7"
+        }
+      ],
+      "metamodel_version": "0.18.0",
+      "errors": [],
+      "warnings": [
+        "level A2 (synthetic-fintech-a2): instance BD-PAY: 0 composition links with A2.BusinessArea, RA2-01 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-fintech-a2): instance BD-ACCT: 0 composition links with A2.BusinessArea, RA2-01 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-fintech-a2): instance BD-REF: 0 composition links with A2.BusinessArea, RA2-01 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-fintech-a2): instance BD-RISK: 0 composition links with A2.BusinessArea, RA2-01 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-fintech-a2): instance BBO-PAY-INSTR: 0 composition links with A2.BusinessObjectAttribute, RA2-10 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-fintech-a2): instance BBO-PAYMENT-TXN: 0 composition links with A2.BusinessObjectAttribute, RA2-10 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-fintech-a2): instance BBO-ACCOUNT: 0 composition links with A2.BusinessObjectAttribute, RA2-10 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-fintech-a2): instance BBO-PARTY: 0 composition links with A2.BusinessObjectAttribute, RA2-10 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-fintech-a2): instance BBO-SAVINGS: 0 composition links with A2.BusinessObjectAttribute, RA2-10 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-fintech-a2): instance BBO-FRAUD-CASE: 0 composition links with A2.BusinessObjectAttribute, RA2-10 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-fintech-a2): instance BBO-PAY-INSTR: is thin — its 8 field(s) are names only; give each as a record (BusinessObjectAttribute, composed of BBO-PAY-INSTR) — sdem bian import --objects or sdem aid fills them (LC-23)",
+        "level A2 (synthetic-fintech-a2): instance BBO-PAYMENT-TXN: is thin — its 8 field(s) are names only; give each as a record (BusinessObjectAttribute, composed of BBO-PAYMENT-TXN) — sdem bian import --objects or sdem aid fills them (LC-23)",
+        "level A2 (synthetic-fintech-a2): instance BBO-ACCOUNT: is thin — its 8 field(s) are names only; give each as a record (BusinessObjectAttribute, composed of BBO-ACCOUNT) — sdem bian import --objects or sdem aid fills them (LC-23)",
+        "level A2 (synthetic-fintech-a2): instance BBO-PARTY: is thin — its 6 field(s) are names only; give each as a record (BusinessObjectAttribute, composed of BBO-PARTY) — sdem bian import --objects or sdem aid fills them (LC-23)",
+        "level A2 (synthetic-fintech-a2): instance BBO-SAVINGS: is thin — its 8 field(s) are names only; give each as a record (BusinessObjectAttribute, composed of BBO-SAVINGS) — sdem bian import --objects or sdem aid fills them (LC-23)",
+        "level A2 (synthetic-fintech-a2): instance BBO-FRAUD-CASE: is thin — its 5 field(s) are names only; give each as a record (BusinessObjectAttribute, composed of BBO-FRAUD-CASE) — sdem bian import --objects or sdem aid fills them (LC-23)",
+        "level A3 (synthetic-fintech-a3): instance ENT-FLOWS: is thin — its 9 field(s) are names only; give each as a record (DataAttribute, composed of ENT-FLOWS) — sdem bian import --objects or sdem aid fills them (LC-23)",
+        "level A3 (synthetic-fintech-a3): instance ENT-ZAPS: is thin — its 8 field(s) are names only; give each as a record (DataAttribute, composed of ENT-ZAPS) — sdem bian import --objects or sdem aid fills them (LC-23)",
+        "level A3 (synthetic-fintech-a3): instance ENT-POTS: is thin — its 8 field(s) are names only; give each as a record (DataAttribute, composed of ENT-POTS) — sdem bian import --objects or sdem aid fills them (LC-23)",
+        "level A3 (synthetic-fintech-a3): instance ENT-MEMBERS: is thin — its 7 field(s) are names only; give each as a record (DataAttribute, composed of ENT-MEMBERS) — sdem bian import --objects or sdem aid fills them (LC-23)",
+        "level A3 (synthetic-fintech-a3): instance ENT-BUDDIES: is thin — its 3 field(s) are names only; give each as a record (DataAttribute, composed of ENT-BUDDIES) — sdem bian import --objects or sdem aid fills them (LC-23)",
+        "level A3 (synthetic-fintech-a3): instance ENT-VAULTS: is thin — its 8 field(s) are names only; give each as a record (DataAttribute, composed of ENT-VAULTS) — sdem bian import --objects or sdem aid fills them (LC-23)",
+        "level A3 (synthetic-fintech-a3): instance ENT-PERKS: is thin — its 4 field(s) are names only; give each as a record (DataAttribute, composed of ENT-PERKS) — sdem bian import --objects or sdem aid fills them (LC-23)",
+        "level A3 (synthetic-fintech-a3): instance ENT-SCORES: is thin — its 4 field(s) are names only; give each as a record (DataAttribute, composed of ENT-SCORES) — sdem bian import --objects or sdem aid fills them (LC-23)"
+      ],
+      "result": "accepted",
+      "outputs": [
+        {
+          "file": "a2-service-domain.graph.json",
+          "sha256": "7bbf984531e5ed26d241f5a6b5902a023e2b0e0d10f1f9fb0a5487b148fc996c",
+          "nodes": 59,
+          "edges": 79
+        },
+        {
+          "file": "a3-application.graph.json",
+          "sha256": "c182c1f7bc6f7cc531fd226d7a5e8ccfefce47405e8b0c31bb50f9b9839261d0",
+          "nodes": 45,
+          "edges": 39
+        },
+        {
+          "file": "a4-technology.graph.json",
+          "sha256": "63929b52f6aaaf77568f678011d930687055362fc52c01d0e2b14e9009e8d91a",
+          "nodes": 14,
+          "edges": 22
+        },
+        {
+          "file": "federated.graph.json",
+          "sha256": "dd1e38fb46a0deb3491863059d0e699ce56309010f55e503983a17f5e4b5c6ec",
+          "nodes": 64,
+          "edges": 41
+        }
+      ]
     }
   ]
 }

@@ -6,11 +6,11 @@
     "directed": true,
     "metadata": {
       "sdem_store_version": "1.0",
-      "export_sha256": "d0bab1f8c371d5b83afdc387ad9cfa30ff50610166dcaee19052fc07f0f4b6e1",
+      "export_sha256": "d011f6377b48c1e4af75a43f6377de73aa358009527d21354871cf0d3d3fcd48",
       "level": "A3",
       "model_id": "reference-structure-a3",
       "model_version": "2026.10",
-      "metamodel_version": "0.17.0",
+      "metamodel_version": "0.18.0",
       "source_system": "SDEM-GENERATED-FROM-RECORD"
     },
     "nodes": {

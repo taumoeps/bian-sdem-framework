@@ -104,6 +104,110 @@
           "edges": 49
         }
       ]
+    },
+    {
+      "build": 2,
+      "at": "2026-11-21T02:33:50+00:00",
+      "inputs": [
+        {
+          "path": "examples/0.20/payment-initiation-v2/business.json",
+          "kind": "export",
+          "level": "A1",
+          "model_id": "synthetic-bank-payments-v2-a1",
+          "model_version": "2026.10",
+          "sha256": "ebe39c58ce8ab3b2544cb8016ee5d9bf99971b29ecfad8d6243174dadbe9e0ec"
+        },
+        {
+          "path": "examples/0.20/payment-initiation-v2/bian.json",
+          "kind": "export",
+          "level": "A2",
+          "model_id": "synthetic-bank-payments-v2-a2",
+          "model_version": "2026.10",
+          "sha256": "17354b5818c8446b990298accbbc0cb97f3a1bd4a98ba5f109c931d10f30738c"
+        },
+        {
+          "path": "examples/0.20/payment-initiation-v2/data.json",
+          "kind": "export",
+          "level": "A3",
+          "model_id": "synthetic-bank-payments-v2-a3-data",
+          "model_version": "2026.10",
+          "sha256": "fcb712ac5e43b3a64b656d92199ad5369a503ecfa8ee40e13f7599119be4d36b"
+        },
+        {
+          "path": "examples/0.20/payment-initiation-v2/application.json",
+          "kind": "export",
+          "level": "A4",
+          "model_id": "synthetic-bank-payments-v2-a3",
+          "model_version": "2026.10",
+          "sha256": "f95e6cf812163730d404df382ffee1b8ff3f986215949afb31146b59881e6940"
+        },
+        {
+          "path": "examples/0.20/payment-initiation-v2/technology.json",
+          "kind": "export",
+          "level": "A5",
+          "model_id": "synthetic-bank-payments-v2-a4",
+          "model_version": "2026.10",
+          "sha256": "7178faede74fd377193355bf5ec8e78dd864100e35592b43f8d9e8dc7d154a76"
+        },
+        {
+          "path": "examples/0.20/payment-initiation-v2/mappings.json",
+          "kind": "registry",
+          "registry_version": "0.4.0",
+          "sha256": "0e5f26a42bb91f819a7f0e2480b3849b8d067767be1b86be128f3ab0f1530879"
+        }
+      ],
+      "metamodel_version": "0.18.0",
+      "errors": [],
+      "warnings": [
+        "level A2 (synthetic-bank-payments-v2-a2): instance BBO-PAY-INSTR: its field names and its field records disagree — no record for creditor_account_reference, currency, debtor_account_reference, payment_instruction_reference, payment_status, remittance_information, value_date (LC-24)",
+        "level A2 (synthetic-bank-payments-v2-a2): instance BBO-PARTY: its field names and its field records disagree — no record for party_name, party_reference, party_type — not in its list: PartyActivityIndicator, PartyDateTime, PartyIdentification, PartyLegalStructureType, PartyName, PartyType, party reference (LC-24)"
+      ],
+      "result": "accepted",
+      "stack": [
+        "business",
+        "bian",
+        "data",
+        "application",
+        "technology"
+      ],
+      "outputs": [
+        {
+          "file": "application.graph.json",
+          "sha256": "ae96fb3b26670ff0f2af5a07ded1d574747c01959ee01d70fcca1647aaa7a7f5",
+          "nodes": 15,
+          "edges": 16
+        },
+        {
+          "file": "bian.graph.json",
+          "sha256": "9a58681c6a2260c2399758501522ab143f149fe90922f80886b5f70b9924dc59",
+          "nodes": 132,
+          "edges": 154
+        },
+        {
+          "file": "business.graph.json",
+          "sha256": "00614574cefecbe54fbbf69413d9c887ef4fb0926919272944839a81b0c52b08",
+          "nodes": 26,
+          "edges": 31
+        },
+        {
+          "file": "data.graph.json",
+          "sha256": "b38c544fabc2d016cbba08581a27a8505bee685c43bd6604d6eb08a89803fe73",
+          "nodes": 43,
+          "edges": 41
+        },
+        {
+          "file": "federated.graph.json",
+          "sha256": "068392eb0b07db945af847f09fd64e47155df3c48ec21f9e9331644610fdf3ca",
+          "nodes": 109,
+          "edges": 79
+        },
+        {
+          "file": "technology.graph.json",
+          "sha256": "8664efed57cb1e64f4b29dd54c229863d25dc0d738806a35426586ea7bfb0447",
+          "nodes": 28,
+          "edges": 49
+        }
+      ]
     }
   ]
 }

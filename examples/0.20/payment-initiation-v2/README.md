@@ -2,7 +2,7 @@
 
 **Not a bank.** A synthetic design: no real organisation's architecture. It extends the starter example
 [`payment-initiation`](../payment-initiation/) (kept as it is — its records are the sealed evaluation set the engine is scored against)
-into a **full A1–A4 design** for metamodel 0.17.0 — the test of [Metamodel 0.15.0–0.17.0: a full design](../../docs/design/sdem-full-design-metamodel-design.md) (V2-01…V2-07).
+into a **full A1–A4 design** for metamodel 0.17.0 — the test of [Metamodel 0.15.0–0.17.0: a full design](../../../docs/design/sdem-full-design-metamodel-design.md) (V2-01…V2-07).
 
 ## What it holds
 
@@ -23,13 +23,13 @@ into a **full A1–A4 design** for metamodel 0.17.0 — the test of [Metamodel 0
 
 ## How it was built — the SDEM CLI only
 
-The record is in [`docs/evidence/payment-initiation-v2/`](../../docs/evidence/payment-initiation-v2/):
+The record is in [`docs/evidence/payment-initiation-v2/`](../../../docs/evidence/payment-initiation-v2/):
 
 1. `sdem bian import <BIAN 14.0.0 folder> --only "Payment Order Initiation" --object …` — BIAN's own typed objects (the extract:
    `bian-14.0.0-payment-objects.json`; BIAN, Apache-2.0).
 2. `sdem change propose` — one change set per layer (`cs-a2-objects.json` with `--catalogue`, `cs-a1.json`, `cs-a3.json`, `cs-a4.json`).
 3. `sdem aid` — inferred 9 data tables with typed fields and keys and proposed 90 links (AID-001).
-4. **The owner's review** — [`review-v2.sh`](../../docs/evidence/payment-initiation-v2/review-v2.sh): `sdem aid confirm|reject`,
+4. **The owner's review** — [`review-v2.sh`](../../../docs/evidence/payment-initiation-v2/review-v2.sh): `sdem aid confirm|reject`,
    `sdem approve`, `sdem connect`. The owner accepted the recommendations in that script as the owner's decisions without reviewing each line
    (2026-11-16); the approvals are recorded under the owner's name.
 5. `sdem check` — clean (two advisory warnings: the starter's own made-up BIAN objects list field names without field records, LC-24).

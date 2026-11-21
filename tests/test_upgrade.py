@@ -30,7 +30,8 @@ class ReleaseNotesTests(unittest.TestCase):
         doc = json.loads(U.NOTES.read_text())
         noted = [r['version'] for r in doc['releases']]
         self.assertEqual(noted, sorted(noted, key=U._v))
-        self.assertIn(version(), noted)                                                                   # this release is noted
+        if U.is_dev(version()): self.assertTrue(all(U._v(n) < U._v(version()) for n in noted))   # a development build: every release noted is before it; its own notes come with its release (UF-03)
+        else: self.assertIn(version(), noted)                                                             # this release is noted
         changelog = re.findall(r'^## (\d+\.\d+\.\d+) ', (ROOT / 'CHANGELOG.md').read_text(), flags=re.M)
         self.assertEqual(sorted((v for v in changelog if U._v(v) >= U._v(doc['first'])), key=U._v), noted)
         for r in doc['releases']:
@@ -40,7 +41,10 @@ class ReleaseNotesTests(unittest.TestCase):
     def test_the_notes_agree_with_the_metamodel_and_its_migrations(self):  # UF-03, UF-05
         from sdem.metamodel import Metamodel
         doc = json.loads(U.NOTES.read_text())
-        self.assertEqual(doc['releases'][-1]['metamodel'], Metamodel.base().version)
+        if U.is_dev(version()):   # a development build: its metamodel is the coming release's — recorded as a migration, announced with that release (UF-03)
+            migs0 = json.loads((ROOT / 'metamodel' / 'migrations.json').read_text())['migrations']
+            self.assertEqual((migs0[-1]['from'], migs0[-1]['to']), (doc['releases'][-1]['metamodel'], Metamodel.base().version))
+        else: self.assertEqual(doc['releases'][-1]['metamodel'], Metamodel.base().version)
         from sdem.migrate import chain
         migs = json.loads((ROOT / 'metamodel' / 'migrations.json').read_text())['migrations']
         prev = None

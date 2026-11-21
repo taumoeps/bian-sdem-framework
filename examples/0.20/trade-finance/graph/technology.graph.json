@@ -6,11 +6,11 @@
     "directed": true,
     "metadata": {
       "sdem_store_version": "1.0",
-      "export_sha256": "e0bcddf7d79aec015d8a5e53128d7103c5fe550395de5d7376287a76d176690e",
+      "export_sha256": "605a6a1305e3e452789dfd8ccc4f7a9153ae86bfa68fd2aabdc1a912ecf50027",
       "level": "A5",
       "model_id": "synthetic-bank-trade-a4",
       "model_version": "2026.10",
-      "metamodel_version": "0.17.0",
+      "metamodel_version": "0.18.0",
       "source_system": "SYNTHETIC-CMDB"
     },
     "nodes": {

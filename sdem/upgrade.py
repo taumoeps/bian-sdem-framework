@@ -18,9 +18,17 @@ NOTES = Path(__file__).parent / 'releases.json'
 
 
 def _v(s):
-    """'0.16.1' → (0, 16, 1); anything unreadable sorts first."""
-    m = re.match(r'v?(\d+)\.(\d+)(?:\.(\d+))?', str(s or ''))
-    return tuple(int(x or 0) for x in m.groups()) if m else (0, 0, 0)
+    """'0.16.1' → (0, 16, 1, 0, 0); a development build between releases, '0.20.0.dev1' → (0, 20, 0, -1, 1) — before 0.20.0 and after
+    every 0.19 (UF-03); anything unreadable sorts first."""
+    m = re.match(r'v?(\d+)\.(\d+)(?:\.(\d+))?(?:\.?dev(\d+))?', str(s or ''))
+    if not m: return (0, 0, 0, 0, 0)
+    a, b, c, dev = m.groups()
+    return (int(a), int(b), int(c or 0), -1 if dev is not None else 0, int(dev or 0))
+
+
+def is_dev(s):
+    """A development build between releases (0.20.0.dev1): its release notes are written when its release is (UF-03)."""
+    return _v(s)[3] < 0
 
 
 def satisfies(ver, spec):

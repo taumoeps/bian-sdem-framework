@@ -104,6 +104,110 @@
           "edges": 22
         }
       ]
+    },
+    {
+      "build": 2,
+      "at": "2026-11-21T02:33:49+00:00",
+      "inputs": [
+        {
+          "path": "examples/0.20/acquired-fintech/bian.json",
+          "kind": "export",
+          "level": "A2",
+          "model_id": "synthetic-fintech-a2",
+          "model_version": "2026.10",
+          "sha256": "eb7adc6968c874c687712f70530ae817ef6dc1b226995ab3ffe91a1fca18948f"
+        },
+        {
+          "path": "examples/0.20/acquired-fintech/data.json",
+          "kind": "export",
+          "level": "A3",
+          "model_id": "synthetic-fintech-a3-data",
+          "model_version": "2026.10",
+          "sha256": "9b35e627f430a89a2fd57c8663c13e88aca9263c4757d90f66a813cc9f9ad0d2"
+        },
+        {
+          "path": "examples/0.20/acquired-fintech/application.json",
+          "kind": "export",
+          "level": "A4",
+          "model_id": "synthetic-fintech-a3",
+          "model_version": "2026.10",
+          "sha256": "ae49096563d5af0cf6c8cece86c28fabad30239342841c409bc2f50621092a58"
+        },
+        {
+          "path": "examples/0.20/acquired-fintech/technology.json",
+          "kind": "export",
+          "level": "A5",
+          "model_id": "synthetic-fintech-a4",
+          "model_version": "2026.10",
+          "sha256": "d0c15a2353a6865da42f83672129cd98373334223fbcd06a0d6764fb3d6193f2"
+        },
+        {
+          "path": "examples/0.20/acquired-fintech/mappings.json",
+          "kind": "registry",
+          "registry_version": "0.4.0",
+          "sha256": "232d228dd96abad050f26e9223c588af9f4be2d4bfb6824ec8ee60f6ddaee649"
+        }
+      ],
+      "metamodel_version": "0.18.0",
+      "errors": [],
+      "warnings": [
+        "level A2 (synthetic-fintech-a2): instance BD-PAY: 0 composition links with A2.BusinessArea, RA2-01 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-fintech-a2): instance BD-ACCT: 0 composition links with A2.BusinessArea, RA2-01 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-fintech-a2): instance BD-REF: 0 composition links with A2.BusinessArea, RA2-01 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-fintech-a2): instance BD-RISK: 0 composition links with A2.BusinessArea, RA2-01 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-fintech-a2): instance BBO-PAY-INSTR: 0 composition links with A2.BusinessObjectAttribute, RA2-10 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-fintech-a2): instance BBO-PAYMENT-TXN: 0 composition links with A2.BusinessObjectAttribute, RA2-10 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-fintech-a2): instance BBO-ACCOUNT: 0 composition links with A2.BusinessObjectAttribute, RA2-10 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-fintech-a2): instance BBO-PARTY: 0 composition links with A2.BusinessObjectAttribute, RA2-10 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-fintech-a2): instance BBO-SAVINGS: 0 composition links with A2.BusinessObjectAttribute, RA2-10 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-fintech-a2): instance BBO-FRAUD-CASE: 0 composition links with A2.BusinessObjectAttribute, RA2-10 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-fintech-a2): instance BBO-PAY-INSTR: is thin — its 8 field(s) are names only; give each as a record (BusinessObjectAttribute, composed of BBO-PAY-INSTR) — sdem bian import --objects or sdem aid fills them (LC-23)",
+        "level A2 (synthetic-fintech-a2): instance BBO-PAYMENT-TXN: is thin — its 8 field(s) are names only; give each as a record (BusinessObjectAttribute, composed of BBO-PAYMENT-TXN) — sdem bian import --objects or sdem aid fills them (LC-23)",
+        "level A2 (synthetic-fintech-a2): instance BBO-ACCOUNT: is thin — its 8 field(s) are names only; give each as a record (BusinessObjectAttribute, composed of BBO-ACCOUNT) — sdem bian import --objects or sdem aid fills them (LC-23)",
+        "level A2 (synthetic-fintech-a2): instance BBO-PARTY: is thin — its 6 field(s) are names only; give each as a record (BusinessObjectAttribute, composed of BBO-PARTY) — sdem bian import --objects or sdem aid fills them (LC-23)",
+        "level A2 (synthetic-fintech-a2): instance BBO-SAVINGS: is thin — its 8 field(s) are names only; give each as a record (BusinessObjectAttribute, composed of BBO-SAVINGS) — sdem bian import --objects or sdem aid fills them (LC-23)",
+        "level A2 (synthetic-fintech-a2): instance BBO-FRAUD-CASE: is thin — its 5 field(s) are names only; give each as a record (BusinessObjectAttribute, composed of BBO-FRAUD-CASE) — sdem bian import --objects or sdem aid fills them (LC-23)"
+      ],
+      "result": "accepted",
+      "stack": [
+        "business",
+        "bian",
+        "data",
+        "application",
+        "technology"
+      ],
+      "outputs": [
+        {
+          "file": "application.graph.json",
+          "sha256": "774718cdc38216a20ff99b6a8ee5c0edbe82e53058f8f75d60537d32661a305e",
+          "nodes": 37,
+          "edges": 31
+        },
+        {
+          "file": "bian.graph.json",
+          "sha256": "efef8dc7637e7fe5f3203f75e6682261e772c6a2871e7c45226d026a9809d80d",
+          "nodes": 59,
+          "edges": 79
+        },
+        {
+          "file": "data.graph.json",
+          "sha256": "a6962ea4772920e41b38c602054b92ba66fb825b413cefa78851dee02ecd4923",
+          "nodes": 8,
+          "edges": 0
+        },
+        {
+          "file": "federated.graph.json",
+          "sha256": "e44d09c6f17831cdff5d1c4ac375a2c77bc8a61a5b641f77879b7877f72fd276",
+          "nodes": 67,
+          "edges": 49
+        },
+        {
+          "file": "technology.graph.json",
+          "sha256": "ab6625ed9db1e9030b4c7d357f043cb4710d4fb707ecc9634f8cc18553b32bb4",
+          "nodes": 14,
+          "edges": 22
+        }
+      ]
     }
   ]
 }

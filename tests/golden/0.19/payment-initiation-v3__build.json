@@ -20,7 +20,7 @@
     "model_id": "SDEM-A1",
     "model_version": "2026-11-18",
     "path": "<tmp>/v3/a1-business.json",
-    "sha256": "1cc8b64c4702ff27f9d537feead2c18ce0e804a5e1a5a6d43c416c906b943a13"
+    "sha256": "f87359e528d2167da2ec293472ba791e84f5f81b824a7c2cc803200c01e8c903"
    },
    {
     "kind": "export",
@@ -28,7 +28,7 @@
     "model_id": "SDEM-A2",
     "model_version": "2026-11-18",
     "path": "<tmp>/v3/a2-service-domain.json",
-    "sha256": "1c4b6cc37c3ea0d5698eddc7d9185a71ad430fbd79acdecb3c48e602ddf03137"
+    "sha256": "07d57746ce1615bfa1ff1fae7e8cfd58ac039a8944571fb4e49a87aa467ad2f1"
    },
    {
     "kind": "export",
@@ -36,7 +36,7 @@
     "model_id": "SDEM-A3",
     "model_version": "2026-11-18",
     "path": "<tmp>/v3/a3-application.json",
-    "sha256": "4d76bcf8f0edceb6b9cdb2c28ea92d6e2eae2bfd2d679891f91095542fdedbf6"
+    "sha256": "041c315513c135b081209f8c4dc2cda2904c389dc997b26c91e8b8b98fb9eeb6"
    },
    {
     "kind": "export",
@@ -44,47 +44,47 @@
     "model_id": "SDEM-A4",
     "model_version": "2026-11-18",
     "path": "<tmp>/v3/a4-technology.json",
-    "sha256": "bef2db3a8bf8f00a3189dc9cad65df8a1c8a1a7991ae2c0d009a6d579c2a4742"
+    "sha256": "29c3383652c56f0378c6d5c8c498a49d5f52efc34f1b078b1fb880eaa50bf5ff"
    },
    {
     "kind": "registry",
     "path": "<tmp>/v3/mappings.json",
     "registry_version": "0.4.0",
-    "sha256": "688b7d4f31420758251913e1b68085803a5afe84ba18d08290e2ec25616e32d7"
+    "sha256": "f79c171f94f23215cf7682f44a0e129d8414828d252b402fc6adbb62b1a7c5b9"
    }
   ],
-  "metamodel_version": "0.17.0",
+  "metamodel_version": "0.18.0",
   "next": "sdem trace <id> --graph <tmp>/payment-initiation-v3-graph",
   "outputs": [
    {
     "edges": 72,
     "file": "a1-business.graph.json",
     "nodes": 48,
-    "sha256": "0628f4ae19ffa3e9c2258251eafdc28fdfc3610f9bdda3be3af4b9f7b318f120"
+    "sha256": "79f4e7b28b5d005fe20382a94f5f8c9dc4fb7fcbc06646449e230d3205dc8321"
    },
    {
     "edges": 120,
     "file": "a2-service-domain.graph.json",
     "nodes": 70,
-    "sha256": "c2bb349039fac680e06f54e80738713861b295b46d6b1503f9ad7af4ea8f7e85"
+    "sha256": "e9584b034978be61b818fc4883465e054142d155a833083e3f264344ea14e174"
    },
    {
     "edges": 55,
     "file": "a3-application.graph.json",
     "nodes": 49,
-    "sha256": "b42f0200fbac63b1409a2d4b21910af1fd5d6c2ca3a304540d2f0323506cf01a"
+    "sha256": "7f3d66e8a7bce68e217b30323e37c1a03e30c3fc60d9a2f0a9dc45f4051307eb"
    },
    {
     "edges": 42,
     "file": "a4-technology.graph.json",
     "nodes": 28,
-    "sha256": "92e8e6885d482d77c996350a833acef7d153d2ee2ecde9f266c7a37b674fdc84"
+    "sha256": "dd84cceb46abb401ad7e348cdea1aba7bc47b249cfcedcdd064427d7e575412f"
    },
    {
     "edges": 32,
     "file": "federated.graph.json",
     "nodes": 40,
-    "sha256": "5eb8852807d0c7a71db212124d34beb782dc4ac8e89c9c27e8051647b3741a04"
+    "sha256": "0b70187f2c6dbb9befac759be03b7381aa54d2e34fc588ef6b9aeb2e511cc613"
    }
   ],
   "profile": {

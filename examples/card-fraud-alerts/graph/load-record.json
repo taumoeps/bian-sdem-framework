@@ -2330,6 +2330,89 @@
           "edges": 7
         }
       ]
+    },
+    {
+      "build": 29,
+      "at": "2026-11-21T02:33:50+00:00",
+      "inputs": [
+        {
+          "path": "examples/card-fraud-alerts/a1-business.json",
+          "kind": "export",
+          "level": "A1",
+          "model_id": "synthetic-bank-a1",
+          "model_version": "2026.10",
+          "sha256": "3e75c82999654a52b31e3393aabc6c1dd42be9dc24909d92162159949e33be9f"
+        },
+        {
+          "path": "examples/card-fraud-alerts/a2-service-domain.json",
+          "kind": "export",
+          "level": "A2",
+          "model_id": "synthetic-bank-a2",
+          "model_version": "2026.10",
+          "sha256": "3cf74a4f73b0dce3c8121f1c5c88e18564881d22a04b554a5164f83ef4c42eb6"
+        },
+        {
+          "path": "examples/card-fraud-alerts/a3-application.json",
+          "kind": "export",
+          "level": "A3",
+          "model_id": "synthetic-bank-a3",
+          "model_version": "2026.10",
+          "sha256": "36153a39ec624a2130d8b02ee56feb9b2c311b70a29a92be44611ee1698292f2"
+        },
+        {
+          "path": "examples/card-fraud-alerts/a4-technology.json",
+          "kind": "export",
+          "level": "A4",
+          "model_id": "synthetic-bank-a4",
+          "model_version": "2026.10",
+          "sha256": "0d24871bfac7c6d68385134ef7d39197faadc957ea19a900bbaa3cfe62529e2e"
+        },
+        {
+          "path": "examples/card-fraud-alerts/mappings.json",
+          "kind": "registry",
+          "registry_version": "0.4.0",
+          "sha256": "3064c81174a6378be72b28cb86934bf3b05a080d34d074e731fe788c02943ef6"
+        }
+      ],
+      "metamodel_version": "0.18.0",
+      "errors": [],
+      "warnings": [
+        "level A2 (synthetic-bank-a2): instance BD-FRAUD: 0 composition links with A2.BusinessArea, RA2-01 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-bank-a2): instance SO-044-07: 0 access links with A2.ControlRecord, RA2-13 expects at least 1 (LC-10m)"
+      ],
+      "result": "accepted",
+      "outputs": [
+        {
+          "file": "a1-business.graph.json",
+          "sha256": "681aee73acbab7b025be4ea24bf334412df0be948fceed04ca67f9d3aaaaefa1",
+          "nodes": 9,
+          "edges": 7
+        },
+        {
+          "file": "a2-service-domain.graph.json",
+          "sha256": "b004e56a816f0e8d3bbfd6a03e9b662970827b7afa8721404db18585fd0e813b",
+          "nodes": 8,
+          "edges": 7
+        },
+        {
+          "file": "a3-application.graph.json",
+          "sha256": "4cb960e947d51dc9f6bd25c13beb24a87733afee8b0f013480aaada07d64c4f5",
+          "nodes": 4,
+          "edges": 3
+        },
+        {
+          "file": "a4-technology.graph.json",
+          "sha256": "824040447438142891ba666fd5379bcf3dd7188ddaea5a317a66131bfb230741",
+          "nodes": 9,
+          "edges": 9
+        },
+        {
+          "file": "federated.graph.json",
+          "sha256": "0b49ede022b09afc07c2b6a40fd374b4afe38c2ffd7208ffb2e3effbd4a66aff",
+          "nodes": 10,
+          "edges": 7
+        }
+      ]
     }
   ]
 }

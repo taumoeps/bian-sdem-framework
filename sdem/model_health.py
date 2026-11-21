@@ -131,7 +131,9 @@ def snapshot():
     """The core as it now is: every entity type, cross-layer link type, within-layer rule and attribute, with its status."""
     ents = {e['type']: e.get('status', 'active') for e in _entities()}
     reg = _j(LINKS)
-    links = {r['mapping_type_id']: r.get('status', 'active') for r in reg['relationships'] + reg.get('deprecated_relationships', [])}
+    data = LINKS.with_name('relationship-types-data.json')   # DL-04: the Data layer's link types (ACCESSED_BY) are core link types too (MS-04)
+    extra = _j(data)['relationships'] if data.exists() else []
+    links = {r['mapping_type_id']: r.get('status', 'active') for r in reg['relationships'] + reg.get('deprecated_relationships', []) + extra}
     rules = {c['id']: c.get('status', 'active') for c in _j(MM / 'level-relationships.json')['constraints']}
     ea = _j(MM / 'entity-attributes.json')
     attrs = {a['id']: a.get('status', 'active') for a in ea['attributes'] + ea.get('common_attributes', [])}   # common attributes (CA-…) are core too (MS-04)

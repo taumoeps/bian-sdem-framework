@@ -112,6 +112,118 @@
           "edges": 7
         }
       ]
+    },
+    {
+      "build": 2,
+      "at": "2026-11-21T02:33:50+00:00",
+      "inputs": [
+        {
+          "path": "examples/0.20/legacy-core-ledger/business.json",
+          "kind": "export",
+          "level": "A1",
+          "model_id": "synthetic-bank-ledger-a1-draft",
+          "model_version": "2026.10",
+          "sha256": "a5b034688b545e808ee7bd056b203766f65210c3371af094cc400326567a8ba2"
+        },
+        {
+          "path": "examples/0.20/legacy-core-ledger/bian.json",
+          "kind": "export",
+          "level": "A2",
+          "model_id": "synthetic-bank-ledger-a2",
+          "model_version": "2026.10",
+          "sha256": "b83e0054f0b55cdce22d1eb7e605469f571762408bfc54d0760fc8217c75ba6b"
+        },
+        {
+          "path": "examples/0.20/legacy-core-ledger/data.json",
+          "kind": "export",
+          "level": "A3",
+          "model_id": "synthetic-bank-ledger-a3-data",
+          "model_version": "2026.10",
+          "sha256": "194cc4221491096fa4473f42e55ffb67c6a23c6e7ddb1679c66bd7b79ec09ca1"
+        },
+        {
+          "path": "examples/0.20/legacy-core-ledger/application.json",
+          "kind": "export",
+          "level": "A4",
+          "model_id": "synthetic-bank-ledger-a3",
+          "model_version": "2026.10",
+          "sha256": "f2840b044c78c16552e1545f538fa805927dd0ea05783c949f8db6ccfef64130"
+        },
+        {
+          "path": "examples/0.20/legacy-core-ledger/technology.json",
+          "kind": "export",
+          "level": "A5",
+          "model_id": "synthetic-bank-ledger-a4",
+          "model_version": "2026.10",
+          "sha256": "56f543b1d6d53afaecee8df51abf8241bef12823406e1a7b87995ad6bc2affab"
+        },
+        {
+          "path": "examples/0.20/legacy-core-ledger/mappings.json",
+          "kind": "registry",
+          "registry_version": "0.4.0",
+          "sha256": "c0a7ba48b4d22b15c75e54984a6b604c4c870babee54fbaf993796ffff04138b"
+        }
+      ],
+      "metamodel_version": "0.18.0",
+      "errors": [],
+      "warnings": [
+        "level A2 (synthetic-bank-ledger-a2): instance BD-OPS: 0 composition links with A2.BusinessArea, RA2-01 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-bank-ledger-a2): instance BD-REF: 0 composition links with A2.BusinessArea, RA2-01 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-bank-ledger-a2): instance BBO-ACCOUNT: 0 composition links with A2.BusinessObjectAttribute, RA2-10 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-bank-ledger-a2): instance BBO-POSTING: 0 composition links with A2.BusinessObjectAttribute, RA2-10 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-bank-ledger-a2): instance BBO-PAYMENT-TXN: 0 composition links with A2.BusinessObjectAttribute, RA2-10 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-bank-ledger-a2): instance BBO-PARTY: 0 composition links with A2.BusinessObjectAttribute, RA2-10 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-bank-ledger-a2): instance BBO-ACCOUNT: is thin — its 8 field(s) are names only; give each as a record (BusinessObjectAttribute, composed of BBO-ACCOUNT) — sdem bian import --objects or sdem aid fills them (LC-23)",
+        "level A2 (synthetic-bank-ledger-a2): instance BBO-POSTING: is thin — its 7 field(s) are names only; give each as a record (BusinessObjectAttribute, composed of BBO-POSTING) — sdem bian import --objects or sdem aid fills them (LC-23)",
+        "level A2 (synthetic-bank-ledger-a2): instance BBO-PAYMENT-TXN: is thin — its 8 field(s) are names only; give each as a record (BusinessObjectAttribute, composed of BBO-PAYMENT-TXN) — sdem bian import --objects or sdem aid fills them (LC-23)",
+        "level A2 (synthetic-bank-ledger-a2): instance BBO-PARTY: is thin — its 6 field(s) are names only; give each as a record (BusinessObjectAttribute, composed of BBO-PARTY) — sdem bian import --objects or sdem aid fills them (LC-23)"
+      ],
+      "result": "accepted",
+      "stack": [
+        "business",
+        "bian",
+        "data",
+        "application",
+        "technology"
+      ],
+      "outputs": [
+        {
+          "file": "application.graph.json",
+          "sha256": "2d1bfd4d0567877ea2060947cbd482589db4880d8be122a7ee16e0058a978c35",
+          "nodes": 27,
+          "edges": 26
+        },
+        {
+          "file": "bian.graph.json",
+          "sha256": "bae81f92ffce8366946ef7cf0702552b82d6fc5fd5b606d13721038277defb88",
+          "nodes": 42,
+          "edges": 57
+        },
+        {
+          "file": "business.graph.json",
+          "sha256": "df3292d88e01e5ceafa6a66a3dcbc30e96962ba406c7a0758f4be94dd7f6ec2f",
+          "nodes": 6,
+          "edges": 0
+        },
+        {
+          "file": "data.graph.json",
+          "sha256": "606b186fca30bae9fe943220761a2438d844e1ee5b3562ecff268f9a11b0f54f",
+          "nodes": 5,
+          "edges": 0
+        },
+        {
+          "file": "federated.graph.json",
+          "sha256": "e3563563b7e8fc4497691385779238f05f0be2f62c1ca99e050b23debc2fb08a",
+          "nodes": 53,
+          "edges": 34
+        },
+        {
+          "file": "technology.graph.json",
+          "sha256": "51d3b87e6ecdf8ff1cbf7ce3598bbd23e7f99ad300c3b0ecc9bd7059dc284f5b",
+          "nodes": 8,
+          "edges": 7
+        }
+      ]
     }
   ]
 }

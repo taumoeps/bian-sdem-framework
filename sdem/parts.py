@@ -146,10 +146,12 @@ def package():
 def _pkg_data():
     p = package()
     if not (p and p.get('data')): return None
-    if 'data' not in _PKG:
-        import json
-        _PKG['data'] = {k: _jload(p['data'] / f) for k, f in PKG_FILES.items()}
-    return _PKG['data']
+    from . import identity
+    key = ('data', identity._VERSION[0])   # its names read in the numbering now in use (DL-22): a workspace in the 0.20 form numbers Application A4
+    if key not in _PKG:
+        for k in [k for k in _PKG if isinstance(k, tuple) and k[0] == 'data']: del _PKG[k]
+        _PKG[key] = {k: _jload(p['data'] / f) for k, f in PKG_FILES.items()}
+    return _PKG[key]
 
 
 def splice(rows, is_bian, key, kind):

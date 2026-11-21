@@ -1,8 +1,8 @@
 {
   "note": "The core of SDEM's metamodel at its last freeze (docs/design/sdem-metamodel-stability.md). Written by `sdem model freeze` after an approved, versioned change; CI fails if the core changes without one.",
   "frozen_by": "the SDEM owner",
-  "frozen_at": "2026-11-16",
-  "metamodel_version": "0.17.0",
+  "frozen_at": "2026-11-21",
+  "metamodel_version": "0.18.0",
   "entity_types": {
     "A1.BusinessCapability": "active",
     "A1.ValueStream": "active",
@@ -86,7 +86,12 @@
     "DATA_ENTITY_STORED_IN_SYSTEM_SOFTWARE": "active",
     "BUSINESS_EVENT_REALIZED_BY_EVENT": "active",
     "CHANNEL_REALIZED_BY_APPLICATION_INTERFACE": "active",
-    "VALUE_STREAM_STAGE_ALIGNED_TO_SCENARIO": "active"
+    "VALUE_STREAM_STAGE_ALIGNED_TO_SCENARIO": "active",
+    "DATA_ENTITY_ACCESSED_BY_APPLICATION_COMPONENT": "active",
+    "DATA_ENTITY_ACCESSED_BY_APPLICATION_FUNCTION": "active",
+    "DATA_ENTITY_ACCESSED_BY_APPLICATION_SERVICE": "active",
+    "DATA_ENTITY_ACCESSED_BY_EVENT": "active",
+    "DATA_ENTITY_ACCESSED_BY_API_OPERATION": "active"
   },
   "within_layer_rules": {
     "RA2-01": "active",

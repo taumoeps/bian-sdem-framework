@@ -27,7 +27,7 @@ def no_sha(x, k=None):
 NAMED = {
     'check': {'.output.report.level A3 (*)': 'the Data layer is checked on its own', '.output.warnings.level A4 (*)': "warnings about data records move to Data's level"},
     'build': {'.output.inputs': 'data.json is read too', '.output.outputs': 'data.graph.json is written too', '.output.stack': 'the store records the layers it was built with (DL-12)',
-              '.output.warnings': "warnings about data records move to Data's level"},
+              '.output.warnings': "warnings about data records move to Data's level", '.output.metamodel_version': 'metamodel 0.18.0 (the owner, 2026-11-21) — 0.20 itself, not the Data layer'},
     'status': {'.output.layers': 'five layers', '.output.connections.by_status.approved': "0.19's access links are approved links between Data and Application (DL-13)",
                '.output.connections.links': 'the same', '.output.counts.warnings': "warnings about data records move to Data's level", '.output.warnings': 'the same',
                '.output.sources.links_without_source': 'the access links left the layer file (DL-13)'},
