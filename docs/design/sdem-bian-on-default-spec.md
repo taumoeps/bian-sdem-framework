@@ -1,6 +1,6 @@
 # SDEM 0.20 step 5 — BIAN on the default: five layers
 
-> **Status: built — decision BD-D1 for the owner.** Step 5 of the [0.20 plan](sdem-0.20-plan.md) (PL-D4: *this spec decides, link by link,
+> **Status: built and approved — BD-D1 decided by the owner (2026-11-21).** Step 5 of the [0.20 plan](sdem-0.20-plan.md) (PL-D4: *this spec decides, link by link,
 > how service domain → application connections cross the Data layer*). Made-up data only.
 
 ## 1. What it is
@@ -39,8 +39,8 @@ layer between is not on these links' path; what a service domain's records hold 
 (`tests/test_data_layer.py`, `NAMED`). No difference is about BD-03…BD-05: the traces and impacts through service domain → application are
 0.19's. And every example with BIAN reconciles record by record (`Reconciled`).
 
-## 4. Decision for the owner
+## 4. Decision
 
 | # | Decision | Recommended |
 |---|---|---|
-| BD-D1 | The three links from BIAN to Application (BD-03…BD-05) stay direct links, over the Data layer, as in 0.19 | **yes** — their meaning is BIAN → application; nothing to migrate |
+| BD-D1 | The three links from BIAN to Application (BD-03…BD-05) stay direct links, over the Data layer, as in 0.19 | **yes** — the owner, 2026-11-21 ("Yes, stay direct"): their meaning is BIAN → application; nothing to migrate |
