@@ -2,7 +2,7 @@
 
 > **Generated** from the code by `sdem model regenerate` (`sdem/clidoc.py`), from the same catalogue as `sdem commands --json`; `sdem model check` fails in CI when it is stale — **do not edit by hand**. Each command's `--help` has the same options and a worked example. For *when* to use which command, in order, see the [scenarios](../sdem-scenarios.md); for what each does to your data, the [user guide](../sdem-workbench-user-guide.md#7-command-reference).
 
-132 commands and subcommands.
+133 commands and subcommands.
 
 ## Every command takes
 
@@ -54,6 +54,7 @@
 | [`sdem bian inference reject`](#cmd-bian-inference-reject) 👤 | reject an entry |
 | [`sdem bian inference show`](#cmd-bian-inference-show) | one entry: values, sources, reasoning, history |
 | [`sdem bian list`](#cmd-bian-list) | the service domains in the base, a pack or a folder; writes nothing |
+| [`sdem bian objects`](#cmd-bian-objects) | BIAN business objects for a design's data |
 | [`sdem bian pack`](#cmd-bian-pack) | pack a folder of BIAN-format files into one file |
 | [`sdem bian search`](#cmd-bian-search) | BIAN service domains and operations for plain words |
 | [`sdem bian select`](#cmd-bian-select) 👤 | set exactly which BIAN service domains one workspace holds |
@@ -460,7 +461,7 @@ sdem baseline release-1 --graph work/graph
 
 the BIAN (A2) layer: from the base BIAN that ships with SDEM, your own BIAN pack, or BIAN's files — list, search, import the service domains you choose (checked), add one to a workspace or select exactly which it holds, pack
 
-Subcommands: [`sdem bian add`](#cmd-bian-add) · [`sdem bian custom`](#cmd-bian-custom) · [`sdem bian impact`](#cmd-bian-impact) · [`sdem bian import`](#cmd-bian-import) · [`sdem bian inference`](#cmd-bian-inference) · [`sdem bian list`](#cmd-bian-list) · [`sdem bian pack`](#cmd-bian-pack) · [`sdem bian search`](#cmd-bian-search) · [`sdem bian select`](#cmd-bian-select) · [`sdem bian update`](#cmd-bian-update)
+Subcommands: [`sdem bian add`](#cmd-bian-add) · [`sdem bian custom`](#cmd-bian-custom) · [`sdem bian impact`](#cmd-bian-impact) · [`sdem bian import`](#cmd-bian-import) · [`sdem bian inference`](#cmd-bian-inference) · [`sdem bian list`](#cmd-bian-list) · [`sdem bian objects`](#cmd-bian-objects) · [`sdem bian pack`](#cmd-bian-pack) · [`sdem bian search`](#cmd-bian-search) · [`sdem bian select`](#cmd-bian-select) · [`sdem bian update`](#cmd-bian-update)
 
 ### sdem bian add
 
@@ -716,6 +717,25 @@ sdem bian list [<folder>] [--base BASE]
 |---|---|---|
 | `<folder>` |  | a folder of BIAN-format files (e.g. a release downloaded from BIAN's GitHub) |
 | `--base` |  | the base BIAN that ships with SDEM — or, with FILE, your own packed BIAN |
+| `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
+
+### sdem bian objects
+
+<a id="cmd-bian-objects"></a>
+
+BIAN business objects for a design's data — suggest which BIAN object each data entity may be; writes nothing (BO-04)
+
+```
+sdem bian objects <action> --workspace WORKSPACE [--top TOP]
+```
+
+*JSON: native · dry run: sandbox*
+
+| Argument | Required | What it is |
+|---|---|---|
+| `<action>` | yes | suggest: for each data entity, up to three BIAN business objects it may be, with the evidence and the commands for a person |
+| `--workspace` | yes | the workspace folder — found from the current folder when you are inside one (WS-11) |
+| `--top` |  | how many per data entity (default 3) |
 | `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
 
 ### sdem bian pack

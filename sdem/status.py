@@ -90,6 +90,14 @@ def collect(ws):
         step(f'sdem aid --workspace {w} --person <you> --dry-run', f"infer what is missing ({', '.join(gone)}) from the business design — every record marked inferred until a person confirms it; then without --dry-run when the person agrees")
     if not blocking and not unresolved and not (complete and (complete['gaps'] or complete.get('inferred_to_confirm'))) and not any(p['open'] for p in pats): step(f'sdem document --workspace {w} --layer all', 'nothing blocks the design or waits on a person: write it up, or look at it all: sdem workbench --workspace ' + w)
 
+    try:
+        from .bian import objects_gap   # BO-06: the BIAN module's own finding — said here, never worked out here
+        gap = objects_gap(ws)
+    except Exception: gap = None
+    if gap:
+        warnings.append(_item('bian_objects_missing', f"BIAN: {gap['service_domains']} service domain(s) but no BIAN business object — the design's BIAN → Data connections are empty (BO-06)"))
+        step(f'sdem bian objects suggest --workspace {w}', 'which BIAN business object each data entity may be — a person brings one in (--object) and states the link (sdem connect … MAPPED_TO …)')
+
     state = 'blocked' if blocking else 'open' if unresolved or (complete and (complete['gaps'] or complete.get('inferred_to_confirm'))) or any(p['open'] for p in pats) else 'clear'
     return {'workspace': w, 'name': h['name'], 'state': state,
             'layers': h['layers'], 'missing_layers': [m['level'] for m in h['missing_layers']], 'connections': h['registry'],

@@ -30,7 +30,7 @@
   "counts": {
    "blocking": 0,
    "unresolved": 0,
-   "warnings": 15
+   "warnings": 16
   },
   "layers": [
    {
@@ -66,6 +66,12 @@
     "person_decides": false,
     "who": "you, or an agent",
     "why": "nothing blocks the design or waits on a person: write it up, or look at it all: sdem workbench --workspace <tmp>/v3"
+   },
+   {
+    "command": "sdem bian objects suggest --workspace <tmp>/v3",
+    "person_decides": false,
+    "who": "you, or an agent",
+    "why": "which BIAN business object each data entity may be — a person brings one in (--object) and states the link (sdem connect … MAPPED_TO …)"
    }
   ],
   "patterns": [
@@ -172,6 +178,10 @@
     "kind": "advice",
     "layer": "A4",
     "text": "A4: instance DEP-NOTIFY: planned instance — required attribute 'platform_id' not yet known (LC-04)"
+   },
+   {
+    "kind": "bian_objects_missing",
+    "text": "BIAN: 3 service domain(s) but no BIAN business object — the design's BIAN → Data connections are empty (BO-06)"
    }
   ],
   "workspace": "<tmp>/v3"

@@ -181,14 +181,15 @@ class RealBianShapesTests(unittest.TestCase):   # found importing BIAN 14.0.0's 
         errors, _, _ = check_level(two, mm)
         self.assertEqual([e for e in errors if 'LC-09' in e], [])   # the same field name in two objects is two fields
 
-    def test_bian_add_objects_needs_bian_files(self):
-        import io, contextlib
-        from sdem.bian import main, BianError
+    def test_bian_add_objects_needs_an_object_index(self):   # BO-03 (was BB-D2): the base has its index; a pack of one's own has none
+        import io, contextlib, shutil
+        from sdem.bian import main, BianError, base_file
         ws = Path(tempfile.mkdtemp())
         (ws / 'mappings.json').write_text('{"mappings": []}')
+        own = ws / 'own' / base_file().name; own.parent.mkdir(); shutil.copy(base_file(), own)   # the same pack, with no index beside it
         with self.assertRaises(BianError) as e, contextlib.redirect_stdout(io.StringIO()):
-            main(['add', 'Payment Order', '--workspace', str(ws), '--person', 'a tester', '--objects'])
-        self.assertIn('--folder', str(e.exception))
+            main(['add', 'Payment Order', '--workspace', str(ws), '--person', 'a tester', '--objects', '--base', str(own)])
+        self.assertIn('--folder', str(e.exception)); self.assertIn('object index', str(e.exception))
 
 
 if __name__ == '__main__':

@@ -33,6 +33,7 @@ METHODS = ('get', 'put', 'post', 'patch', 'delete')
 
 
 PACK_FORMAT = 'sdem-bian-pack/1'
+INDEX_FORMAT = 'sdem-bian-objects/1'   # BO-01: BIAN's business objects, typed fields only — beside the base
 
 
 class BianError(ValueError):
@@ -280,6 +281,37 @@ def dump_pack(p):
     return head + ', "domains": [\n' + ',\n'.join(json.dumps(d, ensure_ascii=False, separators=(',', ':')) for d in p['domains']) + '\n]}\n'
 
 
+def object_index(domains):
+    """BO-01: every domain's business objects with their typed fields (IM-09) — no descriptions or other BIAN prose; each distinct
+    definition once (BIAN defines one object differently in different domains, and each domain keeps its own)."""
+    releases = sorted({d['release'] for d in domains}); defs, at, by = [], {}, {}
+    for d in sorted(domains, key=lambda d: d['name']):
+        m = {}
+        for name, fields in sorted((d.get('object_fields') or {}).items()):
+            if name == d.get('control_record'): continue   # in the base already
+            k = json.dumps(fields, sort_keys=True, ensure_ascii=False)
+            if k not in at: at[k] = len(defs); defs.append(fields)
+            m[name] = at[k]
+        by[d['name']] = m
+    return {'format': INDEX_FORMAT, 'release': releases[-1] if releases else '', 'definitions': defs, 'domains': by}
+
+
+def dump_index(ix):
+    """One definition per line, one domain per line — a new release reads as a diff."""
+    head = json.dumps({'format': ix['format'], 'release': ix['release']}, ensure_ascii=False)[:-1]
+    defs = ',\n'.join(json.dumps(x, ensure_ascii=False, separators=(',', ':')) for x in ix['definitions'])
+    doms = ',\n'.join(json.dumps(k, ensure_ascii=False) + ':' + json.dumps(v, ensure_ascii=False, separators=(',', ':')) for k, v in ix['domains'].items())
+    return head + ', "definitions": [\n' + defs + '\n], "domains": {\n' + doms + '\n}}\n'
+
+
+def index_for(pack_path, release):
+    """BO-03: the object index beside a pack, for its release — the base's ships with SDEM; a pack of one's own has none."""
+    f = Path(pack_path).parent / f'objects-{release}.json'
+    if not f.is_file(): return None
+    ix = _jload(f)
+    return ix if isinstance(ix, dict) and ix.get('format') == INDEX_FORMAT else None
+
+
 def read_pack(path):
     """A packed BIAN (the base, or your own from `sdem bian pack`) → its service domains, as read_release gives them."""
     path = Path(path)
@@ -287,7 +319,93 @@ def read_pack(path):
     except (OSError, ValueError) as e: raise BianError(f'{path}: not a readable BIAN pack ({e})')
     if not isinstance(p, dict) or p.get('format') != PACK_FORMAT:
         raise BianError(f'{path}: not a BIAN pack (expected format {PACK_FORMAT}) — make one with `sdem bian pack <folder> -o <file>`')
-    return [{**d, 'description': None, 'objects': {}} for d in p['domains']]
+    ix = index_for(path, p.get('release') or '')   # BO-03: the business objects, when the index is beside it
+    def objs(d):
+        m = ((ix or {}).get('domains') or {}).get(d['name']) or {}
+        f = {n: ix['definitions'][i] for n, i in m.items()}
+        return {'objects': {n: [x['name'] for x in fs] for n, fs in f.items()}, 'object_fields': f}
+    return [{**d, 'description': None, **objs(d)} for d in p['domains']]
+
+
+# ---------------------------------------------------------------- suggesting business objects for data entities (BO-04, BO-05)
+EQUIV = {'identification': 'id', 'identifier': 'id', 'reference': 'id', 'ref': 'id', 'datetime': 'date', 'time': 'date', 'at': 'date',
+         'value': 'amount'}   # BO-05: read as one word — the whole list; nothing is learned
+QUIET = {'the', 'of', 'a', 'an', 'and', 'for', 'type'}   # BO-05: words that say nothing about what a column holds
+
+
+def words(name):
+    """BO-05: a name's words — snake_case and CamelCase split, lowercase, the equivalents read as one, the quiet ones left out."""
+    t = re.sub(r'([A-Z]+)([A-Z][a-z])', r'\1 \2', re.sub(r'([a-z0-9])([A-Z])', r'\1 \2', str(name or '')))
+    out = []
+    for w in re.split(r'[^A-Za-z0-9]+', t.lower()):
+        if not w or w in QUIET: continue
+        w = EQUIV.get(w, w)
+        out.append(w[:-1] if len(w) > 3 and w.endswith('s') and not w.endswith('ss') else w)
+    return out
+
+
+def objects_gap(workspace):
+    """BO-06: a design that holds BIAN service domains but no BIAN business object — its BIAN → Data connections are empty. None
+    otherwise. Read-only; said by sdem status as a warning, never a failure."""
+    ws = Path(workspace)
+    from . import profile as _prof; _prof.activate_from(ws)   # the design's own layers and types (ST-01); sdem.api's profile in sdem-bian (ST-21)
+    p = ws / _F('bian')
+    if not p.is_file(): return None
+    recs = [i for i in (_jload(p).get('instances') or []) if isinstance(i, dict)]
+    sds = sum(1 for i in recs if i.get('type') == _T('bian.ServiceDomain'))
+    if not sds or any(i.get('type') == _T('bian.BusinessObject') for i in recs): return None
+    return {'service_domains': sds}
+
+
+def suggest_objects(workspace, top=3):
+    """BO-04: for each data entity of a workspace, up to `top` BIAN business objects it may be — from the index beside the base, never
+    written anywhere (BO-02, BO-07). Evidence: the entity's columns whose words are all in one of the object's fields, and the words
+    the entity's name shares with the object's; objects of the design's own service domains first."""
+    ws = Path(workspace)
+    from . import profile as _prof; _prof.activate_from(ws)   # the design's own layers and types (ST-01); sdem.api's profile in sdem-bian (ST-21)
+    source = base_file(); ix = index_for(source, _jload(source).get('release') or '')
+    if not ix: raise BianError('no BIAN object index beside the base BIAN — this SDEM or its sdem-bian package predates it (BO-08)')
+    recs = []
+    for f in dict.fromkeys(_F(l) for l in ('data', 'application', 'bian')):
+        p = ws / f
+        if p.is_file(): recs += [i for i in (_jload(p).get('instances') or []) if isinstance(i, dict)]
+    mine = {re.sub(r'\s*\(.*\)$', '', i.get('name') or '') for i in recs if i.get('type') == _T('bian.ServiceDomain')}
+    have = {i.get('name'): i.get('id') for i in recs if i.get('type') == _T('bian.BusinessObject')}   # already in the design: its own id
+    objs = {}   # name -> (fields, [domains])
+    for dom, m in ix['domains'].items():
+        for name, k in m.items():
+            fs = ix['definitions'][k]
+            if name in DATATYPES or len(fs) < 3: continue   # a BIAN data type, or a wrapper — a type, not an object (IM-09)
+            o = objs.setdefault(name, [fs, []]); o[1].append(dom)
+            if dom in mine: o[0] = fs   # the design's own domain's definition
+    out = []
+    for e in (i for i in recs if i.get('type') == _T('data.DataEntity')):
+        cols = [c for c in ((e.get('attributes') or {}).get('attributes') or []) if isinstance(c, str)]
+        if not cols: continue
+        ew = set(words(e.get('name')))
+        rows = []
+        for name, (fs, doms) in objs.items():
+            fw = [(f['name'], set(words(f['name']))) for f in fs]
+            hits = []
+            for c in cols:
+                cw = set(words(c))
+                hit = next((fn for fn, s in fw if cw and cw <= s), None)
+                if hit: hits.append([c, hit])
+            if not hits: continue
+            nw = set(words(name)); shared = sorted(ew & nw)
+            own = sorted(d for d in doms if d in mine)
+            near = lambda d: (-len(nw & set(words(d))), d)   # the domain whose name is nearest the object's, then by name
+            rows.append({'object': name, 'id': have.get(_words(name)) or f'BBO-{_key(_words(name))}', 'score': round(len(hits) / len(cols), 2), 'columns_matched': hits,
+                         'name_words_shared': shared, 'extra_name_words': len(nw - ew), 'domains': own or sorted(doms, key=near)[:3], 'in_the_design': bool(own),
+                         'already_here': _words(name) in have})
+        rows.sort(key=lambda x: (-x['score'], -len(x['name_words_shared']), x['extra_name_words'], not x['in_the_design'], x['object']))   # BO-05: on a tie, the plainer name
+        picks = []
+        for x in rows[:top]:
+            dom = x['domains'][0]
+            picks.append({**x, 'commands': ([] if x['already_here'] else [f'sdem bian add "{dom}" --object {x["object"]} --workspace {ws} --person <you>'])
+                          + [f'sdem connect {x["id"]} MAPPED_TO {e["id"]} --workspace {ws} --person <you> --evidence data_model:<your data model> --rationale "<why this table is BIAN\'s {_words(x["object"])}>"']})
+        out.append({'entity': e['id'], 'name': e.get('name'), 'columns': len(cols), 'suggestions': picks})
+    return {'release': ix.get('release'), 'note': 'suggestions only — not links: a person brings in an object and states the link (BO-07)', 'entities': out}
 
 
 # ---------------------------------------------------------------- building the A2 dataset (BI-W01…W07)
@@ -718,6 +836,9 @@ def main(argv=None):
     se.add_argument('words', nargs='+', help='e.g. ledger posting')
     se.add_argument('--base', nargs='?', const='', metavar='FILE', help='the base BIAN (default) — or your own pack'); se.add_argument('--folder', metavar='DIR', help='a downloaded BIAN release instead')
     se.add_argument('--top', type=int, default=5, help='how many service domains (default 5)'); se.add_argument('--all-operations', action='store_true', help="every operation of each domain found, not only those matching the words"); se.add_argument('--json', action='store_true')
+    ob = sub.add_parser('objects', help="BIAN business objects for a design's data — suggest which BIAN object each data entity may be; writes nothing (BO-04)")
+    ob.add_argument('action', choices=['suggest'], help='suggest: for each data entity, up to three BIAN business objects it may be, with the evidence and the commands for a person')
+    ob.add_argument('--workspace', required=True, metavar='DIR'); ob.add_argument('--top', type=int, default=3, help='how many per data entity (default 3)'); ob.add_argument('--json', action='store_true')
     ip = sub.add_parser('impact', help='before an update: what in each workspace points at BIAN records the new layer drops, renames or changes — read-only')
     w2 = ip.add_mutually_exclusive_group(required=True)
     w2.add_argument('--workspace', dest='estate', metavar='DIR'); w2.add_argument('--root', metavar='DIR', help='every workspace in a folder')
@@ -743,10 +864,10 @@ def main(argv=None):
         ws = Path(a.estate)
         if not (ws / 'mappings.json').exists(): raise BianError(f'{ws}: no workspace here — start one with sdem new')
         if getattr(a, 'object', None): a.objects = set(a.object)   # --object NAME …: only these
-        if getattr(a, 'objects', False) and not a.folder:   # BB-D2: the shipped base leaves business objects out
-            raise BianError('--objects needs BIAN\'s own files: --folder <a downloaded BIAN release> (the base that ships with SDEM leaves business objects out)')
         if a.base is None and not a.folder: a.base = ''
         source = Path(a.base) if a.base else base_file()
+        if getattr(a, 'objects', False) and not a.folder and not index_for(source, _jload(source).get('release') or ''):   # BO-03: from the index, when there is one
+            raise BianError('--objects needs BIAN\'s business objects: this BIAN pack has no object index beside it — import from BIAN\'s own files with --folder <a downloaded BIAN release>')
         domains = read_pack(source) if a.base is not None else read_release(a.folder)[0]
         from .metamodel import Metamodel
         chosen = select(domains, a.add or a.only, None if a.add else a.from_file, False if a.add else a.all)
@@ -781,6 +902,19 @@ def main(argv=None):
         verb = ('would add' if a.dry_run else 'added') + f" {len(chosen)} service domain(s)" if a.add else ('would set' if a.dry_run else 'set') + ' the BIAN layer to exactly the domains chosen'
         print(f"{ws}: {verb} — now {sum(1 for i in dataset['instances'] if i['type'] == _T('bian.ServiceDomain'))} service domain(s)" + (f" ({c['id']})" if c.get('id') else '')
               + f" — added {len(c['added'])}, dropped {len(c['dropped'])} records; checked" + ('' if a.dry_run else '. Next: commit on a branch and open a pull request.'))
+        return 0
+    if a.cmd == 'objects':   # BO-04: read-only
+        res = suggest_objects(a.workspace, a.top)
+        if a.json: print(json.dumps(res, indent=2, ensure_ascii=False)); return 0
+        print(f"BIAN business objects each data entity may be (BIAN {res['release']}) — {res['note']}")
+        for e in res['entities']:
+            print(f"\n  {e['entity']} {e['name']} ({e['columns']} columns)")
+            if not e['suggestions']: print('    none — no column matches a field of any BIAN business object'); continue
+            for x in e['suggestions']:
+                print(f"    {x['score']:.0%}  {x['object']}  ({', '.join(x['domains'])}{'' if x['in_the_design'] else ' — not in this design'})"
+                      + f"  columns: {', '.join(c + ' = ' + f for c, f in x['columns_matched'])}" + (f"  name: {', '.join(x['name_words_shared'])}" if x['name_words_shared'] else ''))
+            best = e['suggestions'][0]
+            for c in best['commands']: print(f"      a person: {c}")
         return 0
     if a.cmd == 'search':   # TS-04
         if a.folder: domains, _ = read_release(a.folder)
@@ -861,8 +995,10 @@ def main(argv=None):
         source = Path(a.base) if a.base else base_file()
         domains, refused, where = read_pack(source), [], f'--base {a.base}' if a.base else '--base'
         described = f'your BIAN pack {a.base}' if a.base else f"the base BIAN that ships with SDEM ({source.name})"
-        if a.cmd == 'import' and (a.descriptions or a.objects):
-            raise BianError('the base leaves out BIAN\'s descriptions and object schemas — for --descriptions or --objects, import from BIAN\'s files (a downloaded release folder)')
+        if a.cmd == 'import' and a.descriptions:
+            raise BianError('the base leaves out BIAN\'s descriptions — for --descriptions, import from BIAN\'s files (a downloaded release folder)')
+        if a.cmd == 'import' and (a.objects or a.object) and not index_for(source, _jload(source).get('release') or ''):   # BO-03
+            raise BianError('this BIAN pack has no object index beside it — for --objects, import from BIAN\'s files (a downloaded release folder)')
     else:
         domains, refused = read_release(a.folder); where = a.folder; described = f'the BIAN files in {a.folder}'
     if a.cmd == 'list':

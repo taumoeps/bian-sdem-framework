@@ -268,6 +268,9 @@ sdem bian list --base                                           # all 258 servic
 sdem bian add --workspace workspaces/ledger "Financial Accounting" --person your.name
 sdem bian select --workspace workspaces/ledger --only "Financial Accounting" --person your.name   # exactly these; never strands an approved connection
 sdem bian impact --workspace workspaces/ledger                  # before an update: what the new layer drops or renames
+sdem bian objects suggest --workspace workspaces/ledger         # which BIAN business object each data entity may be — writes nothing (BO-04)
+sdem bian add --workspace workspaces/ledger "Payment Order Initiation" --object PaymentTransaction --person your.name   # one object, from the base
+sdem connect BBO-PAYMENT-TRANSACTION MAPPED_TO DATA-PAYMENT --workspace workspaces/ledger --person your.name --evidence data_model:<ref> --rationale "<why>"   # a person states the link
 sdem bian inference list                                        # inferred asset types and patterns
 sdem bian inference show INF-001
 sdem bian inference accept INF-001 --person your.name --reason "checked on the BIAN portal"
