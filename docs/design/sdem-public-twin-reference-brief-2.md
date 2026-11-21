@@ -2,7 +2,7 @@
 
 > For the assistant the owner asks to write the reference for the public twin's **second scenario** — see the [plan](sdem-public-twin-benchmark-plan.md) and the [first run's report](../evidence/payment-initiation-v3/report.md). Complete on its own: the owner can hand this over without anything else. It replaces the [first brief](sdem-public-twin-reference-brief.md) for new work and is stricter, because of what the first run showed (section "What changed since the first brief"). It contains none of the answers.
 >
-> **Status: proposed — the owner chooses the scenario (below) before handing it over.**
+> **Status: accepted (the owner, 2026-11-22: "accept") — the recommended scenario, the decoupled flow with an enduring payment consent. Ready to hand over.**
 
 ## What this is for
 
@@ -14,7 +14,7 @@ Two things follow, as before: **do not write towards SDEM** — do not look for 
 
 The same made-up New Zealand retail bank as the first scenario, a **new, self-contained design** — do not assume the reader has the first one.
 
-**Recommended (the owner decides): the decoupled authorisation flow with an enduring payment consent.** A customer sets up a standing arrangement with a merchant's payment provider: the provider asks the bank for an enduring payment consent (limits on amount and frequency, an expiry); the customer authorises it on their own device in the bank's app — the standard's decoupled flow, not a redirect; later the provider initiates payments under the consent without the customer present; the bank checks each against the consent's limits, validates, screens and debits; the customer can see and revoke the consent. Cover the unhappy paths: the customer does not respond, declines, or revokes; a payment exceeds a limit; the consent has expired; the same payment is submitted twice.
+**Chosen (the owner, 2026-11-22): the decoupled authorisation flow with an enduring payment consent.** A customer sets up a standing arrangement with a merchant's payment provider: the provider asks the bank for an enduring payment consent (limits on amount and frequency, an expiry); the customer authorises it on their own device in the bank's app — the standard's decoupled flow, not a redirect; later the provider initiates payments under the consent without the customer present; the bank checks each against the consent's limits, validates, screens and debits; the customer can see and revoke the consent. Cover the unhappy paths: the customer does not respond, declines, or revokes; a payment exceeds a limit; the consent has expired; the same payment is submitted twice.
 
 *Why this one:* it is the other authorisation flow the regulated standard requires, it is documented in the same public standard (v2.3.3), and it brings what the first scenario did not — a long-lived consent with limits, a second channel (the bank's app), notifications, and state that changes over time.
 
