@@ -240,6 +240,7 @@ The federated knowledge graph points into the local knowledge graphs by id. Thes
 | KG-Q-06 Stats | counts of nodes, edges and statuses per level | `sdem stats` | built |
 | KG-Q-07 Climb to the whole | an upward trace with part-whole following also climbs from a part to its whole inside a level (an API operation's operation to its Service Domain), so a trace from an API reaches the capability | knowledge-graph-design.md, limit of path F2 | not built |
 | KG-Q-08 Networks | a platform depends on the communication network it is connected to (RA4-37) — its own, or that of the node it runs on — so a trace down reaches the network and the impact of a change to a network reaches the platforms on it, what is deployed on them and on up to A1; each such hop is `CONNECTED_TO` via RA4-37; from metamodel 0.10.0 also a shape to the network zone that holds it (RA4-38) and a zone to the zone it is part of (RA4-39 — RA4-27 before zones were re-aligned to ArchiMate Grouping), so a change to a zone reaches everything in it (owner's decisions, 2026-11-14) | `FederatedGraph.network_edges`, `sdem trace`, `sdem impact` | built |
+| KG-Q-09 Impact by the shortest path | a record impact reaches by several paths is classified by its shortest — a control enforced by the changed application is up1 (review_required), never no_impact because a longer path through its service domain was walked first (found validating security, 2026-11-22) | `sdem impact` | built |
 
 ## 7. Load and refresh
 
@@ -709,7 +710,7 @@ One subsection per service the graphs depend on. Each gives the purpose, interfa
 
 ## 13. Requirements index
 
-44 requirements — built 27, not 15, partly 2. Groups: A architecture, L local knowledge graph, F federated knowledge graph, I identity, V versions, Q queries, R load and refresh, C components, G governance, S services.
+45 requirements — built 28, not 15, partly 2. Groups: A architecture, L local knowledge graph, F federated knowledge graph, I identity, V versions, Q queries, R load and refresh, C components, G governance, S services.
 
 | ID | Requirement | Basis | Status |
 |---|---|---|---|
@@ -740,6 +741,7 @@ One subsection per service the graphs depend on. Each gives the purpose, interfa
 | KG-Q-06 | Stats: counts of nodes, edges and statuses per level. | `sdem stats` | built |
 | KG-Q-07 | Climb to the whole: an upward trace with part-whole following also climbs from a part to its whole inside a level (an API operation's operation to its Service Domain), so a trace from an API reaches the capability. | knowledge-graph-design.md, limit of path F2 | not built |
 | KG-Q-08 | Networks: a platform depends on the communication network it is connected to (RA4-37) — its own, or that of the node it runs on — so a trace down reaches the network and the impact of a change to a network reaches the platforms on it, what is deployed on them and on up to A1; each such hop is `CONNECTED_TO` via RA4-37; from metamodel 0.10.0 also a shape to the network zone that holds it (RA4-38) and a zone to the zone it is part of (RA4-39 — RA4-27 before zones were re-aligned to ArchiMate Grouping), so a change to a zone reaches everything in it (owner's decisions, 2026-11-14). | `FederatedGraph.network_edges`, `sdem trace`, `sdem impact` | built |
+| KG-Q-09 | Impact by the shortest path: a record impact reaches by several paths is classified by its shortest — a control enforced by the changed application is up1 (review_required), never no_impact because a longer path through its service domain was walked first (found validating security, 2026-11-22). | `sdem impact` | built |
 | KG-R-01 | An adapter per source tool translates its records to an architecture dataset; adapters are institution-specific and live in the institution's private repository. | §7 | not built (examples are hand-written architecture datasets) |
 | KG-R-02 | A local knowledge graph is rebuilt in full from its architecture dataset; incremental update is an optimisation, not a requirement. | §7 | built (full rebuild) |
 | KG-R-03 | A failed architecture dataset validation leaves the previous local knowledge graph in place and raises an alert. | §7 | built (graph store: rejected build recorded, store unchanged) |

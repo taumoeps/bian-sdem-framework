@@ -56,6 +56,22 @@ class FullTrace(unittest.TestCase):
         self.assertNotIn('PROC-VALIDATE', up)                                                         # never to the stage's other processes
         self.assertEqual(self.trace('ST-SUBMIT', 'down', '--direct-only'), {'ST-SUBMIT'})               # the links between layers alone: none
 
+    def test_a_path_reaches_the_nodes_it_connects(self):   # FT-10
+        up = self.trace('PATH-DATA', 'up')
+        self.assertTrue({'NODE-APP', 'NODE-DATA'} <= up)                                              # its ends
+        self.assertTrue(any(i.startswith('APP-') for i in up))                                        # what runs on them
+        self.assertIn('PATH-KEY', self.trace('NODE-APP', 'up'))                                        # a node climbs to the paths it is on
+        self.assertEqual(self.trace('PATH-DATA', 'up', '--direct-only'), {'PATH-DATA'})                  # the links between layers alone: none
+
+    def test_impact_classifies_a_record_by_its_shortest_path(self):   # KG-Q-09
+        ms = json.loads((self.tmp / 'ws' / 'mappings.json').read_text(encoding='utf-8'))['mappings']
+        for rid in ('APP-PAYHUB', 'SD-PAYMENT-ORDER-INITIATION', 'DATA-PAYMENT'):
+            direct = {m['source']['id'] if m['target']['id'] == rid else m['target']['id'] for m in ms
+                      if m.get('status') == 'approved' and rid in (m['source']['id'], m['target']['id'])}
+            rows = json.loads(sdem('impact', rid, '--change', 'modify', '--graph', self.g, '--json'))['instances']
+            for r in rows:
+                if r['id'] in direct: self.assertIn(r['relation'], ('up1', 'down1'), (rid, r['id'], r['via']))
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -212,6 +212,13 @@ class FederatedGraph:
         t = lambda i: (self.instance(i) or {}).get('type', '')
         return self.mm.is_a(t(r['source']), _T('bian.ControlRecord')) and self.mm.is_a(t(r['target']), _T('bian.BusinessObject'))
 
+    def path_joins(self, r):
+        """FT-10: a path's association with a node it connects (ArchiMate 3.2 §10.2.4: a path is associated with the nodes it connects) — the
+        path is the whole, its nodes its ends, so a threat to the path reaches what runs on them."""
+        if r['kind'] != 'association': return False
+        t = lambda i: (self.instance(i) or {}).get('type', '')
+        return self.mm.is_a(t(r['source']), _T('technology.Path')) and self.mm.is_a(t(r['target']), _T('technology.Node'))
+
     def structure(self, iid):
         """FT-02, FT-07, FT-08: the links inside a layer the trace walks, as (whole, part, label when climbing, label when stepping down):
         composition and aggregation, and a BIAN control record's business object (the whole is the source); realization (the realised is
@@ -226,6 +233,7 @@ class FederatedGraph:
                 a, b, k = r['source'], r['target'], r['kind']
                 if iid not in (a, b) or a == b: continue
                 if k in ('composition', 'aggregation') or self.bian_holds(r): out.append((a, b, 'PART_OF', 'HAS_PART'))
+                elif self.path_joins(r): out.append((a, b, 'ON_PATH', 'CONNECTS'))   # FT-10
                 elif k == 'realization': out.append((b, a, 'REALIZES', 'REALIZED_BY'))
                 elif k == 'assignment': out.append((a, b, 'ASSIGNED_FROM', 'ASSIGNED_TO'))
                 elif k == 'triggering' and ev(a) != ev(b): out.append((b, a, 'TRIGGERS', 'TRIGGERED_BY') if ev(a) else (a, b, 'TRIGGERED_BY', 'TRIGGERS'))
@@ -438,12 +446,14 @@ class FederatedGraph:
                          'classification': cls, 'via': [v for v in path if v],
                          'rule': f'{kind}/{relation} → {cls} (impact rules {_IMPACT["$schema_version"]})'})   # IV-E02: why
         add(changed, 'self', [])
+        best = {}   # KG-Q-09: each record by its shortest path — a record linked directly is up1/down1 even where a longer path reaches it first
         for direction, key in (('up', 'up'), ('down', 'down')):
             for p in tree_paths(walk(edges, changed, direction)):
                 for depth, (iid, via) in enumerate(p[1:], 1):
-                    relation = f'{key}1' if depth == 1 else f'{key}2+'
-                    if not any(r['id'] == iid for r in rows):
-                        add(iid, relation, [v['mapping_id'] for _, v in p[1:depth + 1]])
+                    if iid == changed or (iid in best and best[iid][0] <= depth): continue
+                    best[iid] = (depth, f'{key}1' if depth == 1 else f'{key}2+', [v['mapping_id'] for _, v in p[1:depth + 1]])
+        for iid, (_, relation, via) in sorted(best.items(), key=lambda x: (x[1][0], x[1][1][:2] != 'up')):
+            add(iid, relation, via)
         for e in edges:
             if changed in (e['source']['id'], e['target']['id']) and kind in SUPERSEDE_FOR and e['status'] != 'structural':
                 touched.append(e['mapping_id'])
