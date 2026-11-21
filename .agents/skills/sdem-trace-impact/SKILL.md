@@ -30,7 +30,7 @@ sdem impact <id> --change modify|rehost|replace|retire --graph <graph>
 
 `via` lists the approved links of the path; **mappings to supersede** are links an architect must replace with new ones. The last line is always true: *the classification is structural; an architect confirms before any design changes.*
 
-| Kind | Effect (from [`schema/impact-rules.json`](https://github.com/taumoeps/bian-sdem-framework/blob/v0.19.0/schema/impact-rules.json)) |
+| Kind | Effect (from [`schema/impact-rules.json`](https://github.com/taumoeps/bian-sdem-framework/blob/v0.20.0/schema/impact-rules.json)) |
 |---|---|
 | modify | the record itself; direct neighbours review |
 | rehost | hosting only: the record and its direct dependents need design change; functional layers unaffected; its links superseded |

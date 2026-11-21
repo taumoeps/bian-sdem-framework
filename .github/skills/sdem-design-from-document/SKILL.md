@@ -36,6 +36,7 @@ Draft each layer's change set in `<workspace>/coordination/drafts/` (format: `sd
 
 ```
 sdem change propose <draft> --workspace <ws> --agent sdem-a1-business --person <architect> --dry-run --json   # then without --dry-run
+sdem change propose <draft> --workspace <ws> --agent sdem-data --person <architect> --dry-run --json            # SDEM 0.20's form: data entities are the Data layer's
 sdem change propose <draft> --workspace <ws> --agent sdem-a3-application --person <architect> --dry-run --json
 sdem change propose <draft> --workspace <ws> --agent sdem-a4-technology --person <architect> --dry-run --json
 sdem requirements propose <draft> --workspace <ws> --person <architect> --dry-run --json

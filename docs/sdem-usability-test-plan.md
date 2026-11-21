@@ -1,11 +1,11 @@
 # SDEM first-time architect usability test — plan and recording template
 
-> **Status: ready to run (v0.19.0); no sessions run yet — no results exist.** For a facilitator running a pilot. It tests whether an architect who has never used SDEM can understand it, explore the synthetic Payments architecture, trace a dependency, tell proposals from approved connections, and explain where the architecture lives. Passing SDEM's automated tests shows the software works as designed; only sessions like these show whether people can use it.
+> **Status: ready to run (v0.20.0); no sessions run yet — no results exist.** For a facilitator running a pilot. It tests whether an architect who has never used SDEM can understand it, explore the synthetic Payments architecture, trace a dependency, tell proposals from approved connections, and explain where the architecture lives. Passing SDEM's automated tests shows the software works as designed; only sessions like these show whether people can use it.
 
 ## Who and how
 
 - **Participants:** 3–5 enterprise or solution architects with **no prior knowledge of SDEM** (not people who built or reviewed it). One at a time, 45 minutes each.
-- **Set-up (before the session, by the facilitator):** a machine with SDEM v0.19.0 installed, a terminal open in an empty folder, a browser. The Payments data is **synthetic** — made up; no real organisation's data is used, and none is collected.
+- **Set-up (before the session, by the facilitator):** a machine with SDEM v0.20.0 installed, a terminal open in an empty folder, a browser. The Payments data is **synthetic** — made up; no real organisation's data is used, and none is collected.
 - **The participant may use** the README, the documentation and SDEM's own output. **The facilitator** reads each scenario aloud, then watches; does not hint; notes every question and where the participant hesitated. If the participant is stuck for 3 minutes, the facilitator may give the **smallest** help and records it.
 - **Assistance levels:** **0** none · **1** pointed to a document or page · **2** told which command or tab · **3** did it for them (the scenario counts as not completed).
 
@@ -25,7 +25,7 @@ Copy this block once per participant.
 
 ```
 Participant: P__        Date: ____    Role: enterprise / solution architect    Years in architecture: __
-SDEM version: 0.19.0    Facilitator: ____    Prior SDEM knowledge: none (confirm)
+SDEM version: 0.20.0    Facilitator: ____    Prior SDEM knowledge: none (confirm)
 
 | Scenario | Completed (yes / partly / no) | Time (mm:ss) | Assistance (0–3) and what | Errors (what they did wrong) | Confusion (what they asked or hesitated on) | Recommended improvement |
 |---|---|---|---|---|---|---|

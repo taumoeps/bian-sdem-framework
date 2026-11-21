@@ -307,6 +307,41 @@
         }
       ],
       "summary": "A full design: the information model (typed fields, keys, field-level lineage), the links between and inside layers ArchiMate defines (direct A1→A3 by the owner's D9), business events, products, channels and locations; Payment Initiation v2."
+    },
+    {
+      "version": "0.20.0",
+      "date": "2026-11-21",
+      "kind": "minor",
+      "metamodel": "0.18.0",
+      "migration": {
+        "from": "0.17.0",
+        "to": "0.18.0",
+        "automatic": true,
+        "note": "0.17.0 → 0.18.0: stable identity — every layer and type has an id that never changes (metamodel/identity.json), the A-number is computed from the layers in use; BIAN a built-in extension (ext:bian), also its own package sdem-bian; the Data layer — data entities and their fields a layer of their own in a workspace in the 0.20 form, with ACCESSED_BY for what was access inside the Application layer. Additive: a workspace's records do not change; moving it to the 0.20 form is its own step, a person's (sdem migrate --to 0.20)."
+      },
+      "breaking": [
+        "sdem new makes a workspace in the 0.20 form: layer files named by layer id (business.json, data.json, application.json, technology.json, bian.json), records that store type ids (application.ApplicationComponent), Data its own layer — a script that reads a new workspace's files by 0.19's names (a3-application.json) reads it through sdem.api (load, export_019) or makes the workspace with --form 0.19. An existing workspace keeps its form until a person migrates it."
+      ],
+      "deprecations": [],
+      "actions": [
+        {
+          "when": "always",
+          "do": "sdem migrate --workspace <your workspace> --person <you> — 0.17.0 → 0.18.0, version only: nothing in your data changes"
+        },
+        {
+          "when": "always",
+          "do": "sdem agents install — a Data layer agent (sdem-data); every agent writes a layer by its id (--layer application), the same in either form"
+        },
+        {
+          "when": "you want the Data layer",
+          "do": "sdem migrate --to 0.20 --workspace <your workspace> --person <you> --dry-run, then without — a backup is kept, and sdem migrate --rollback restores it; each access link inside Application becomes an approved ACCESSED_BY, listed for review"
+        },
+        {
+          "when": "you publish to DESNRE, use sdem-security or sdem-bian",
+          "do": "update them with SDEM: sdem-desnre 0.9.0, sdem-security 0.3.0, sdem-bian 1.0.0 (optional — BIAN stays built in)"
+        }
+      ],
+      "summary": "The Data layer, stable identity and BIAN as an extension: SDEM's default is any organisation's design in four layers — Business, Data, Application, Technology — and a bank adds BIAN for five; every layer and type has an id that never changes; new workspaces take the 0.20 form, existing ones move when a person migrates them."
     }
   ]
 }

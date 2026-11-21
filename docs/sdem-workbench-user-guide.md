@@ -1,6 +1,6 @@
 # SDEM Workbench — User Guide
 
-> **Status: current guide (v0.19.0) — the one full command reference is §7.**
+> **Status: current guide (v0.20.0) — the one full command reference is §7.**
 
 > For architects who are new to SDEM. No prior knowledge assumed. Every command and output in this guide was run on the examples in this project (2026-10-28).
 >
@@ -904,7 +904,7 @@ sdem --version                # its version
 python3 -m pip show sdem      # what this Python has installed
 ```
 
-Activate the environment you mean (`source .venv/bin/activate`) or call it by its path. Two versions matter: the **package** version (`sdem --version`, e.g. 0.19.0) and the **metamodel** version — the format of your data. SDEM 0.15.0 and later use **metamodel 0.8.0**; a workspace written for 0.7.0 is refused until it is migrated — SDEM never migrates your data by itself, and the dashboard shows the graph as *cannot be built yet* with the command:
+Activate the environment you mean (`source .venv/bin/activate`) or call it by its path. Two versions matter: the **package** version (`sdem --version`, e.g. 0.20.0) and the **metamodel** version — the format of your data. SDEM 0.15.0 and later use **metamodel 0.8.0**; a workspace written for 0.7.0 is refused until it is migrated — SDEM never migrates your data by itself, and the dashboard shows the graph as *cannot be built yet* with the command:
 
 ```bash
 sdem migrate --workspace workspaces/payments-phaseb --person Steven --dry-run    # what would change; the workspace checked as it would be; nothing written

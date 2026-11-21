@@ -12,7 +12,7 @@ Every record in an architecture dataset (`instances` list) has:
 | Field | Required | Notes |
 |---|---|---|
 | `id` | yes | unique across the workspace; never `PRJ-` or `DSN-` (those are plans) |
-| `type` | yes | `A1.…`, `A2.…`, `A3.…` or `A4.…` — the entity types are in [`metamodel/a1-business.json`](https://github.com/taumoeps/bian-sdem-framework/blob/v0.19.0/metamodel/a1-business.json) … `a4-technology.json` |
+| `type` | yes | `A1.…`, `A2.…`, `A3.…` or `A4.…` — the entity types are in [`metamodel/a1-business.json`](https://github.com/taumoeps/bian-sdem-framework/blob/v0.20.0/metamodel/a1-business.json) … `a4-technology.json` |
 | `version` | yes | approved links point to a record's version |
 | `name` | yes | plain language |
 | `lifecycle_status` | no | `planned`, `active`, `deprecated`, `retired` |
@@ -23,7 +23,7 @@ Every record in an architecture dataset (`instances` list) has:
 
 **Where it came from:** a record cites its source in `attributes.source_id` (`document:<file>#<section>`, `confluence:<page>`); a value that came from another section or document cites it in `attributes.sources` (`{"integration_type": "document:DESIGN.md#4.2"}`, CA-13, checked by LC-14); a link cites its source in its own `source_id`.
 
-Links **inside** a layer go in the dataset's `relationships` list: `{"source": "…", "kind": "composition", "target": "…", "source_id": "document:DESIGN.md#4"}` (`source_id` optional); which kinds are allowed between which types is in [`metamodel/level-relationships.json`](https://github.com/taumoeps/bian-sdem-framework/blob/v0.19.0/metamodel/level-relationships.json).
+Links **inside** a layer go in the dataset's `relationships` list: `{"source": "…", "kind": "composition", "target": "…", "source_id": "document:DESIGN.md#4"}` (`source_id` optional); which kinds are allowed between which types is in [`metamodel/level-relationships.json`](https://github.com/taumoeps/bian-sdem-framework/blob/v0.20.0/metamodel/level-relationships.json).
 
 ## Before you write
 
@@ -60,6 +60,6 @@ Every A4 shape sits in a network zone and is connected inside A4 — `sdem check
 
 Records loaded from a Confluence export (`sdem transform` → `sdem load`) have ids `HIS-<layer>-<NAME>` and `attributes.source_id` = `confluence:<page ids>`. They are real records once loaded — change them through change sets like any other — but they were **read from a document**: links the engine proposes for them are capped at low (DEC-E-11). The transform's own output folder holds **candidates**, not data: never copy from it into a dataset, and a graph store refuses it (CTL-23). Skill **sdem-onboard-designs**.
 
-Example records to copy: [`examples/payment-initiation/`](https://github.com/taumoeps/bian-sdem-framework/tree/v0.19.0/examples/payment-initiation) (the user guide §6.2 explains two of them).
+Example records to copy: [`examples/payment-initiation/`](https://github.com/taumoeps/bian-sdem-framework/tree/v0.20.0/examples/payment-initiation) (the user guide §6.2 explains two of them).
 
 `sdem check --workspace <workspace>` names any missing field as `$.instances[N]: missing required property '…'` — `N` counts from 0.
