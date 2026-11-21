@@ -4,6 +4,8 @@ The scenario the fourth new-architect walkthrough could not complete: an onboard
 and a person who knows which application realises a BIAN service domain — ending in a trace from capability to technology."""
 import json, shutil, subprocess, sys, tempfile, unittest
 from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from forms import lf   # noqa: E402 — a layer's file in either form
 
 ROOT = Path(__file__).resolve().parents[1]
 ME = 'jane.architect'
@@ -88,7 +90,7 @@ class BianUpdateAndConnectTests(unittest.TestCase):
         code, out = self.sdem('bian', 'update', '--root', 'workspaces', '--a2', shared, '--person', ME)
         self.assertEqual(code, 0, out); self.assertIn('unchanged', out)                  # nothing changed for the domains it holds
         est = self.w / 'workspaces' / 'payments'
-        names = lambda: {i['name'] for i in json.loads((est / 'a2-service-domain.json').read_text())['instances'] if i['type'] == 'A2.ServiceDomain'}
+        names = lambda: {i['name'] for i in json.loads(lf(est, 'bian').read_text())['instances'] if i['type'] in ('A2.ServiceDomain', 'bian.ServiceDomain')}
         self.assertNotIn('Account Reconciliation', names())                               # nothing else is brought in
         d = json.loads(shared.read_text())                                                # the shared layer changes a held domain
         op = next(i for i in d['instances'] if i['type'] == 'A2.ServiceOperation' and i['id'].startswith('SO-PAYMENT-RAIL-')); op['name'] = op['name'] + ' (renamed)'
@@ -106,13 +108,13 @@ class BianUpdateAndConnectTests(unittest.TestCase):
         self.assertEqual(self.sdem('bian', 'import', '--base', '--only', 'Payment Rail', '-o', 'smaller.json')[0], 0)
         code, out = self.sdem('bian', 'update', '--workspace', 'workspaces/payments', '--a2', 'smaller.json', '--person', ME)
         self.assertEqual(code, 0, out); self.assertIn('not in the shared layer — kept', out); self.assertIn('Payment Order Initiation', out)
-        a2 = json.loads((self.w / 'workspaces' / 'payments' / 'a2-service-domain.json').read_text())
+        a2 = json.loads(lf(self.w / 'workspaces' / 'payments', 'bian').read_text())
         self.assertIn('SD-PAYMENT-ORDER-INITIATION', {i['id'] for i in a2['instances']})
 
     def test_update_is_a_persons_decision_and_needs_an_a2_file(self):  # BU-05, BU-01
         code, out = self.sdem('bian', 'update', '--workspace', 'workspaces/payments', '--a2', 'bian/a2-service-domain.json', '--person', 'copilot')
         self.assertEqual(code, 2); self.assertIn("person's decision", out)
-        code, out = self.sdem('bian', 'update', '--workspace', 'workspaces/payments', '--a2', 'workspaces/payments/a3-application.json', '--person', ME)
+        code, out = self.sdem('bian', 'update', '--workspace', 'workspaces/payments', '--a2', lf(self.w / 'workspaces' / 'payments', 'application'), '--person', ME)
         self.assertEqual(code, 2); self.assertIn('not an A2 dataset', out)
 
 

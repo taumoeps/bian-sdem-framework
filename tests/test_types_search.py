@@ -6,7 +6,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT)); sys.path.insert(0, str(Path(__file__).resolve().parent))
 from forms import lf  # noqa: E402 — a layer's file in either form
-FORM_020 = os.environ.get('SDEM_FORM') == '0.20'   # DL-D9: without a workspace, SDEM shows the stack `sdem new` would make
+FORM_020 = (os.environ.get('SDEM_FORM') or '0.20') == '0.20'   # DL-D9: without a workspace, SDEM shows the stack `sdem new` would make
 ENV = {**os.environ, 'PYTHONPATH': str(ROOT) + os.pathsep + os.environ.get('PYTHONPATH', '')}
 
 

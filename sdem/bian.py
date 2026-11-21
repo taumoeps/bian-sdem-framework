@@ -829,6 +829,7 @@ def main(argv=None):
         import tempfile
         plans = []
         for e in estates:   # WS-04: each workspace refreshes the service domains it holds — nothing else is brought in
+            from . import profile as _pr; _pr.activate_from(e)   # DL-10: each workspace in its own form (a root may hold both)
             own = _jload(e / _F('bian')) if (e / _F('bian')).exists() else None
             held = {i['name'] for i in (own or {}).get('instances', []) if i['type'] == _T('bian.ServiceDomain')}
             if not held: print(f"{e}: holds no BIAN service domains — nothing to refresh (sdem aid brings in the ones its design needs)"); continue

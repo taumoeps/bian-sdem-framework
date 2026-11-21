@@ -1914,7 +1914,7 @@ sdem new [--workspace WORKSPACE] [--organisation ORGANISATION] --person PERSON [
 | `--person` | yes | your name — a person |
 | `--bian` |  | start with exactly this BIAN layer in A2 (default: A2 empty; sdem aid brings in the domains your design needs from bian/a2-service-domain.json if it exists, else the base BIAN) |
 | `--no-bian` |  | start without a BIAN layer (add it later); business then does not connect to applications |
-| `--form` {0.20, 0.19} |  | 0.20: the Data layer of its own, files named by layer, records that store type ids (DL-D9 — opt-in until every SDEM feature works in it); 0.19 (the default for now): as SDEM 0.19 made them — migrate later with sdem migrate --to 0.20 |
+| `--form` {0.20, 0.19} |  | 0.20 (the default; DL-D9): the Data layer of its own, files named by layer, records that store type ids; 0.19: as SDEM 0.19 made them — migrate later with sdem migrate --to 0.20. SDEM_FORM sets the default |
 | `--core` |  | a core-only design: SDEM's core layers A1, A3 and A4 and no BIAN — switch BIAN on later with sdem profile include ext:bian (BX-13) |
 | `--example` {payment-initiation} |  | start with a synthetic example that ships with SDEM as the baseline (made-up data, for learning) — the same as --from its folder |
 | `--from` |  | start with this content as the baseline: the four layers, mappings.json and requirements.json found in DIR — checked first, recorded in the ledger and as a decision; only when the workspace is created (a baseline is never re-taken) |

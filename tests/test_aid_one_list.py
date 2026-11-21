@@ -40,7 +40,7 @@ class AidOneListTests(unittest.TestCase):
         a3['instances'] = [rec('APP-GL', 'A3.ApplicationComponent', 'General Ledger'), rec('DE-ACC', 'A3.DataEntity', 'account_cache')]
         a3['relationships'] = [{'source': 'APP-GL', 'kind': 'access', 'target': 'DE-ACC'}]
         lf(ws, 'application').write_text(json.dumps(a3))
-        if os.environ.get('SDEM_FORM') == '0.20':   # SDEM 0.20: the same design migrated — the data entity in the Data layer, its access an approved ACCESSED_BY (DL-04)
+        if (os.environ.get('SDEM_FORM') or '0.20') == '0.20':   # SDEM 0.20: the same design migrated — the data entity in the Data layer, its access an approved ACCESSED_BY (DL-04)
             assert sdem('change', 'adopt', '--workspace', W, '--layer', 'application', '--person', 'jane.architect', '--reason', 'test design', cwd=cls.d)[0] in (0, 2)
             assert sdem('migrate', '--to', '0.20', '--workspace', W, '--person', 'jane.architect', cwd=cls.d)[0] == 0
         cls.aid = sdem('aid', '--workspace', W, '--person', 'jane.architect', cwd=cls.d)

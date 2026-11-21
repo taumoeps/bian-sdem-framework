@@ -1,5 +1,5 @@
 """A test workspace's layer files, whichever form it is in (DL-10): SDEM 0.19's names (a1-business.json …) in a workspace that has
-not been migrated, the layer ids (business.json …) in one in SDEM 0.20's form — which `sdem new` makes when SDEM_FORM is 0.20 (DL-D9a).
+not been migrated, the layer ids (business.json …) in one in SDEM 0.20's form — which `sdem new` makes by default (DL-D9; SDEM_FORM=0.19 keeps 0.19's).
 A test names a layer by its id (ST-01), which means the same layer in either form."""
 import json
 from pathlib import Path

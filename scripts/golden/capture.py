@@ -6,7 +6,9 @@ from pathlib import Path
 
 ROOT = Path(os.environ.get('SDEM_GOLDEN_ROOT') or Path(__file__).resolve().parents[2])   # SDEM_GOLDEN_ROOT: capture another checkout, e.g. v0.19.0 (BP-D5)
 ENV = {**os.environ, 'PYTHONPATH': str(ROOT), 'PYTHONIOENCODING': 'utf-8'}   # SDEM writes UTF-8 on every platform
-FORM = ['--form', '0.20'] if os.environ.get('SDEM_GOLDEN_P2') == '1' else []
+_HAS_FORM = "'--form'" in (ROOT / 'sdem' / 'new.py').read_text(encoding='utf-8')   # a checkout from before 0.20 (v0.19.0) has no --form
+FORM = (['--form', '0.20'] if os.environ.get('SDEM_GOLDEN_P2') == '1' else ['--form', '0.19']) if _HAS_FORM else []   # P1: 0.19's answers, whatever the default (DL-D9)
+if os.environ.get('SDEM_GOLDEN_P2') != '1': ENV['SDEM_FORM'] = '0.19'
 if os.environ.get('SDEM_GOLDEN_P2') == '1' and (ROOT / 'examples' / '0.20').is_dir():   # P2: the 0.20 form, opted in (DL-D9), from the migrated example
     ENV.update({'SDEM_FORM': '0.20', 'SDEM_EXAMPLES': str(ROOT / 'examples' / '0.20')})
 VOLATILE = re.compile(r'^(at|generated_at|written_at|recorded_at|started_at|ended_at|built_at|date|created|timestamp|now|as_of|run_id|id_run|fingerprint|duration_ms|seconds|elapsed)$')

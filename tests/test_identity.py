@@ -42,7 +42,7 @@ class IdentityTests(unittest.TestCase):
         d = json.loads(r.stdout)
         self.assertIn({'id': 'bian.ServiceDomain', 'name': 'A2.ServiceDomain'}, d['types'])
         r = subprocess.run([sys.executable, '-m', 'sdem', 'types', 'technology.Node', '--json'], capture_output=True, text=True, cwd=ROOT)
-        self.assertEqual(json.loads(r.stdout)['type'], 'A5.Node' if os.environ.get('SDEM_FORM') == '0.20' else 'A4.Node')   # without a workspace: the stack `sdem new` would make (DL-D9) — 0.20's has Data, Technology A5
+        self.assertEqual(json.loads(r.stdout)['type'], 'A5.Node' if (os.environ.get('SDEM_FORM') or '0.20') == '0.20' else 'A4.Node')   # without a workspace: the stack `sdem new` would make (DL-D9) — 0.20's has Data, Technology A5
 
 
 
