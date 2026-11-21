@@ -62,7 +62,7 @@ class Metamodel:
         cons = []
         for c in rels.get('constraints', []):
             ls, lt = layer_of_type(c.get('source_type')), layer_of_type(c.get('target_type'))
-            if ls and lt and ls != lt: continue   # DL-04: its ends are in two layers now — a link between them (ACCESSES), not a rule inside one
+            if ls and lt and ls != lt: continue   # DL-04: its ends are in two layers now — a link between them (ACCESSED_BY, Data → Application), not a rule inside one
             cons.append({**c, 'level': ls} if ls else c)
         rels = {**rels, 'constraints': cons}
         return cls(ents, rels, versions.pop())
