@@ -8,6 +8,7 @@
 - **History is no longer re-numbered.** SDEM shows layer numbers as the design numbers them (DL-07), but text about a past version or date ("From 0.16.0 it names an A4.NetworkZone") and recorded approvals are now kept as written.
 - **A design without BIAN never shows "(bian)".** Prose that names BIAN's layer now says "BIAN".
 - **Extensions and the AI agent** (XA-01…XA-09, approved 2026-11-22): an extension's reports and a short guide for the AI agent come from its own manifest; the contract (EXT-05) lists the two optional fields. Built in sdem-security 0.3.1, sdem-desnre 0.10.0 and the DESNRE site's agent — a future extension needs no change to either.
+- **An extension's report names each record's layer as the design numbers it** (XA-10): `design_layer` beside its own numbers, so a reader never translates one, and a publisher runs reports on the design itself — built in sdem-security 0.3.2 and sdem-desnre 0.10.1 after the DESNRE agent labelled two A5 paths A4.
 - **BIAN's attributes come and go with BIAN** (BX-04): a design without BIAN has none of its 31 attribute definitions; an `sdem-bian` package may carry them (`attributes.json`), and a package built before still works (BP-10).
 
 ## 0.20.0 — the Data layer, stable identity and BIAN as an extension (2026-11-21)
