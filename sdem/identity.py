@@ -87,6 +87,12 @@ def layer(layer_id):
 def _layer_row(layer_id): return next((l for l in table()['layers'] if l['id'] == layer_id), {})
 
 
+def as_code(x):
+    """DL-25: a layer as a person or agent names it — its id (`application`), the same in either form, or its code as this workspace numbers
+    it — as the code. For a command's --layer and a change set's layer."""
+    return layer(x) if x in _index()[0] and x in stack() else x
+
+
 def layer_id(code_or_id):
     """The layer id for an A-code as read now, or a layer id: 'A3' → 'application'. None for a layer the table does not hold (a profile's own)."""
     code = _index()[0]

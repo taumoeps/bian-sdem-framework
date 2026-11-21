@@ -852,7 +852,7 @@ Copilot is optional: everything in this guide works without it.
 
 ### 9a. The SDEM agents
 
-The project includes five Copilot agents (`.github/agents/`): **sdem-orchestrator** and one per architecture — **sdem-a1-business**, **sdem-a2-bian**, **sdem-a3-application**, **sdem-a4-technology**. Pick one in the Copilot Chat agent picker.
+The project includes six Copilot agents (`.github/agents/`): **sdem-orchestrator** and one per architecture — **sdem-a1-business**, **sdem-a2-bian**, **sdem-data** (the Data layer, in a workspace in SDEM 0.20's form), **sdem-a3-application**, **sdem-a4-technology**. Pick one in the Copilot Chat agent picker.
 
 - A **layer agent** changes only its own architecture, and only through a checked **change set** (`sdem change propose`). Every change records the agent and **you** as the person.
 - The **orchestrator** turns a change's impact into **work items**, calls the layer agents to do them, and reports to you. It never changes data and never approves.

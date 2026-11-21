@@ -37,6 +37,11 @@ class RequirementsError(ValueError):
     pass
 
 
+
+def _as_code(x):
+    from .identity import as_code
+    return as_code(x)   # DL-25: a layer's id reads as its code here
+
 def _now(): return datetime.datetime.now(datetime.timezone.utc).replace(microsecond=0).isoformat()
 
 
@@ -335,7 +340,7 @@ def main(argv=None):
                                         '  sdem requirements evaluate --workspace ws --event CE-001\n  sdem requirements trace REQ-AV-01 --workspace ws')
     sub = ap.add_subparsers(dest='cmd', required=True)
     def ws(p): p.add_argument('--workspace', dest='estate', required=True, metavar='DIR'); p.add_argument('--json', action='store_true')
-    l = sub.add_parser('list', help='the requirements, with status and subject'); ws(l); l.add_argument('--layer', choices=LEVELS); l.add_argument('--status')
+    l = sub.add_parser('list', help='the requirements, with status and subject'); ws(l); l.add_argument('--layer', type=_as_code, choices=LEVELS); l.add_argument('--status')
     s = sub.add_parser('show', help='one requirement: condition, evidence, history and its measurements'); s.add_argument('id', help='the requirement id (e.g. REQ-001)'); ws(s)
     c = sub.add_parser('check', help='the registry against its schema and the workspace'); ws(c)
     t = sub.add_parser('trace', help='a requirement through the layers: its subject and allocations, what they depend on and serve, and the requirements it derives from'); t.add_argument('id', help='the requirement id (e.g. REQ-001)'); ws(t)

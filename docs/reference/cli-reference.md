@@ -847,7 +847,7 @@ Subcommands: [`sdem change adopt`](#cmd-change-adopt) · [`sdem change diff`](#c
 record a person's direct edit of a layer as a change set (AG-S08)
 
 ```
-sdem change adopt --workspace WORKSPACE --layer {A1,A2,A3,A4,business,bian,data,application,technology,registry,requirements} --person PERSON --reason REASON
+sdem change adopt --workspace WORKSPACE --layer {A1,A2,A3,A4,registry,requirements} --person PERSON --reason REASON
 ```
 
 *JSON: native · dry run: sandbox · 👤 a person's own name*
@@ -856,7 +856,7 @@ sdem change adopt --workspace WORKSPACE --layer {A1,A2,A3,A4,business,bian,data,
 |---|---|---|
 | `--workspace` | yes | the workspace folder (a1…a4 datasets, mappings.json) |
 | `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
-| `--layer` {A1, A2, A3, A4, business, bian, data, application, technology, registry, requirements} | yes | the layer: A1 business, A2 BIAN, A3 application, A4 technology (or a layer your profile adds) |
+| `--layer` {A1, A2, A3, A4, registry, requirements} | yes | the layer: A1 business, A2 BIAN, A3 application, A4 technology (or a layer your profile adds) |
 | `--person` | yes | who made the edit |
 | `--reason` | yes | why — recorded with the decision |
 
@@ -1369,7 +1369,7 @@ sdem events show <event> --workspace WORKSPACE
 
 <a id="cmd-events-validate"></a>
 
-orchestrator or architect: open the impact validation of a change event — all four layers
+orchestrator or architect: open the impact validation of a change event — every layer
 
 ```
 sdem events validate <event> --workspace WORKSPACE --agent AGENT --person PERSON
@@ -1632,7 +1632,7 @@ sdem layout --layer {A1,A2,A3,A4} --workspace WORKSPACE [--environment ENVIRONME
 
 | Argument | Required | What it is |
 |---|---|---|
-| `--layer` {A1, A2, A3, A4} | yes | the layer |
+| `--layer` {A1, A2, A3, A4} | yes | the layer: its code here, or its id (business, bian, data, application, technology — DL-25) |
 | `--workspace` | yes | the workspace folder — found from the current folder when you are inside one (WS-11) |
 | `--environment` |  | A4 only: the one environment drawn (default production; all for every one) |
 | `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |

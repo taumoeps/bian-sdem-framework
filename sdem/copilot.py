@@ -175,10 +175,11 @@ def layer_agents(workspaces):
         for l in layers():
             if l['core']: continue
             t = src.read_text(encoding='utf-8')
-            t = '\n'.join(x for x in t.split('\n') if 'Past designs' not in x and 'AID' not in x)
+            t = '\n'.join(x for x in t.split('\n') if 'Past designs' not in x and 'AID' not in x and 'Name your layer by its id' not in x)   # a profile layer is named by its code
             from .identity import _index
-            tc = _index()[0]['technology']   # the template is SDEM's own text, in 0.19's numbering (DL-07)
-            t = t.replace('sdem-a4-technology', l['agent']).replace(f'{tc} Technology', l['name']).replace('the technology architecture', f"the {l['name']} layer")
+            tc = _index()[0]['technology']   # the template is SDEM's own text, in 0.19's numbering (DL-07), its layer named in words (DL-24)
+            t = t.replace('sdem-a4-technology', l['agent']).replace('SDEM Technology agent', f"SDEM {l['name']} agent").replace('the technology architecture (the Technology layer)', f"the {l['name']} layer ({l['code']})")
+            t = t.replace('--layer technology', f"--layer {l['code']}").replace('`layer: "technology"`', f'`layer: "{l["code"]}"`').replace('the Technology layer', f"the {l['name']} layer").replace('the technology architecture', f"the {l['name']} layer")
             t = re.sub(r'(You own the \*\*.*?\*\* architecture of an SDEM workspace): .*', lambda m: m.group(1) + f": {l.get('description') or 'the records of this layer'} "
                        f"(a layer your organisation's profile adds — {l['source']}).", t)
             t = re.sub(rf'\b{tc}\b', l['code'], t)
@@ -188,7 +189,7 @@ def layer_agents(workspaces):
         o = files()['agents/sdem-orchestrator.agent.md'].read_text(encoding='utf-8')
         extra_agents = ''.join(f", '{Path(r).name.split('.')[0]}'" for r in sorted(out))
         out['agents/sdem-orchestrator.agent.md'] = o.replace("'sdem-a4-technology']", "'sdem-a4-technology'" + extra_agents + "]", 1).replace(
-            f'calls the {_L("business")}–{_L("technology")} layer agents', f"calls the layer agents ({_L('business')}–{_L('technology')} and the layers the workspace's profile adds)", 1)
+            'calls the layer agents', "calls the layer agents (and the agents of the layers the workspace's profile adds)", 1)
     _p.deactivate()
     return out
 

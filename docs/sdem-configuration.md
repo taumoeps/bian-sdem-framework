@@ -113,7 +113,7 @@ If your organisation allows GitHub Copilot, SDEM's Copilot files make it useful 
 | Folder | Holds |
 |---|---|
 | `.github/copilot-instructions.md` | the rules Copilot follows in this project (suggest commands, never approve) |
-| `.github/agents/` | five agents: one per layer (A1–A4) and an orchestrator |
+| `.github/agents/` | one agent per layer — Business, BIAN, Data (SDEM 0.20), Application, Technology — and an orchestrator |
 | `.github/prompts/` | prompts (9 installed into a workspace repository; the SDEM project also has one for its made-up example): `/sdem-explain`, `/sdem-fix`, `/sdem-review`, `/sdem-onboarding-review` … |
 | `.github/skills/` | five skills: change sets, records, approving links, trace and impact, onboarding designs |
 

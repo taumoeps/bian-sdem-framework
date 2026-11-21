@@ -31,7 +31,7 @@ class CopilotSetupTests(unittest.TestCase):
             self.assertEqual(f.get('name'), p.name[:-len('.agent.md')], p.name)
             self.assertTrue(f.get('description'), p.name)
             names.add(f['name'])
-        self.assertEqual(len(names), 5)
+        self.assertEqual(len(names), 6)   # the orchestrator and one per layer — Data's too (DL-24)
 
     def test_prompts_name_a_real_agent(self):
         agents = {p.name[:-len('.agent.md')] for p in (GH / 'agents').glob('*.agent.md')}

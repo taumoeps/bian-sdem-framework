@@ -54,10 +54,9 @@ MAX_ROUNDS = 3                            # AG-S07 / AG-Q02
 
 
 def layer_code(x):
-    """DL-25: a layer as a change set or command names it — its id (`application`), the same in either form, or its code as this
-    workspace numbers it — read as the code."""
-    from .identity import _index, stack, layer
-    return layer(x) if x in _index()[0] and x in stack() else x
+    """DL-25: a layer as a change set or command names it — its id or its code here — read as the code (identity.as_code)."""
+    from .identity import as_code
+    return as_code(x)
 
 
 def scope_error(agent, layer, verb):
@@ -431,7 +430,7 @@ class Estate:
     def _save_validation(self, v): _w(self.coord / 'validations' / f"{v['id']}.json", v)
 
     def request_validation(self, event_id, agent, person):
-        """AG-V03: open the validation of a change event — all four layers, including those with no detected impact. Idempotent."""
+        """AG-V03: open the validation of a change event — every layer, including those with no detected impact. Idempotent."""
         from . import validation as V
         if agent not in (ORCHESTRATOR, HUMAN): raise CoordinationError(f'only the orchestrator (or an architect) requests impact validation, not {agent}')
         if not is_person(person): raise CoordinationError('CTL-20: requesting validation needs the person behind it (a person, never an agent or tool)')
@@ -759,7 +758,8 @@ def change_main(argv=None):
     x.add_argument('--complete', action='store_true', help='the file is the whole layer: records it leaves out become retirement candidates (listed, never applied) and its records are compared field by field')
     x.add_argument('-o', '--out', metavar='FILE', help='write the change set here, for sdem change propose')
     d = sub.add_parser('adopt', help="record a person's direct edit of a layer as a change set (AG-S08)"); _common(d, who=False)
-    d.add_argument('--layer', required=True, choices=list(CODES) + ['business', 'bian', 'data', 'application', 'technology', 'registry', 'requirements']); d.add_argument('--person', required=True, help='who made the edit'); d.add_argument('--reason', required=True)
+    d.add_argument('--layer', required=True, type=layer_code, choices=list(CODES) + ['registry', 'requirements']);   # DL-25: or a core layer's id
+    d.add_argument('--person', required=True, help='who made the edit'); d.add_argument('--reason', required=True)
     a = ap.parse_args(argv)
     try:
         est = Estate(a.estate)
@@ -863,12 +863,12 @@ def events_main(argv=None):
                                         '  sdem events show CE-001 --workspace W\n'
                                         '  sdem events accept CE-001 --reason "…" --authorise --workspace W --person jane.architect')
     sub = ap.add_subparsers(dest='cmd', required=True)
-    v = sub.add_parser('validate', help='orchestrator or architect: open the impact validation of a change event — all four layers'); v.add_argument('event'); _common(v)
+    v = sub.add_parser('validate', help='orchestrator or architect: open the impact validation of a change event — every layer'); v.add_argument('event'); _common(v)
     an = sub.add_parser('analyse', help='recompute the requirements evaluation and risk findings after new evidence, links or requirements (assessments made against other evidence become stale)')
     an.add_argument('event'); _common(an)
-    pe = sub.add_parser('pending', help='layers still to assess — for a layer agent: its own'); _common(pe, who=False); pe.add_argument('--layer', choices=list(FILES)); pe.add_argument('--event')
+    pe = sub.add_parser('pending', help='layers still to assess — for a layer agent: its own'); _common(pe, who=False); pe.add_argument('--layer', type=layer_code, choices=list(FILES)); pe.add_argument('--event')
     x = sub.add_parser('assess', help="a layer agent records its layer's assessment of the calculated impact"); x.add_argument('event'); _common(x)
-    x.add_argument('--layer', required=True, choices=CODES)
+    x.add_argument('--layer', required=True, type=layer_code, choices=CODES)
     x.add_argument('--status', required=True, choices=['impact_confirmed', 'no_impact_confirmed', 'further_investigation_required', 'impact_disputed'])
     x.add_argument('--recommend', choices=['design_change_required', 'review_required', 'no_impact'], help='your classification for the layer (implied for the two *_confirmed statuses)')
     x.add_argument('--evidence', action='extend', nargs='+', default=[], metavar='KIND:REF', help='what you checked — a record, a document, a design (required to confirm no impact or to dispute)')
@@ -966,7 +966,7 @@ def work_main(argv=None):
     sub = ap.add_subparsers(dest='cmd', required=True)
     p = sub.add_parser('plan', help='orchestrator: turn a change event\'s impact into work items'); p.add_argument('--event', required=True); _common(p)
     p.add_argument('--max-rounds', type=int, default=MAX_ROUNDS, help=f'stop and ask the architect after this many rounds (default and most {MAX_ROUNDS}; only the architect may raise it)')
-    l = sub.add_parser('list', help='work items'); _common(l, who=False); l.add_argument('--layer', choices=CODES); l.add_argument('--status', choices=['open', 'in_progress', 'done', 'blocked', 'cancelled'])
+    l = sub.add_parser('list', help='work items'); _common(l, who=False); l.add_argument('--layer', type=layer_code, choices=CODES); l.add_argument('--status', choices=['open', 'in_progress', 'done', 'blocked', 'cancelled'])
     for name, hlp in (('claim', 'a layer agent takes a work item'), ('block', 'a work item cannot proceed — say why'), ('cancel', 'drop a work item — say why'), ('reopen', 'return a work item to open')):
         x = sub.add_parser(name, help=hlp); x.add_argument('id', help='the work item id (e.g. W-001) — sdem work list shows them'); _common(x); x.add_argument('--note', default='')
     a = ap.parse_args(argv)

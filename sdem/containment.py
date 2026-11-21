@@ -260,7 +260,8 @@ def main(argv=None):
                                  description='A layer drawn by what owns what — each region an existing standard record, nesting only through structural links '
                                              f'(the containment layout; {_L("technology")} by its network zones). The layout every drawing uses. Read-only.',
                                  epilog=__doc__.split('\n\n')[-1])
-    ap.add_argument('--layer', required=True, choices=sorted(FILES), help='the layer')
+    from .identity import as_code
+    ap.add_argument('--layer', required=True, type=as_code, choices=sorted(FILES), help="the layer: its code here, or its id (business, bian, data, application, technology — DL-25)")
     ap.add_argument('--workspace', dest='estate', required=True, metavar='DIR')
     ap.add_argument('--environment', default='production', metavar='NAME', help=f'{_L("technology")} only: the one environment drawn (default production; all for every one)')
     ap.add_argument('--json', action='store_true')

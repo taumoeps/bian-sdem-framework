@@ -263,6 +263,7 @@ The agent runs `sdem impact INF-K8S-PAY-PROD --change rehost --graph workspaces/
 | `sdem-orchestrator` | coordination: change events, work items, reporting — changes no layer |
 | `sdem-a1-business` | business capabilities, processes and activities |
 | `sdem-a2-bian` | BIAN service domains and operations |
+| `sdem-data` | data entities and their fields — the Data layer of a workspace in SDEM 0.20's form |
 | `sdem-a3-application` | applications, components and interfaces |
 | `sdem-a4-technology` | technology: platforms, infrastructure and deployments |
 
@@ -364,7 +365,7 @@ Fails if a layer file or the registry changed since SDEM last wrote it. A person
 - [ ] your agent completes a trace and explains an impact correctly
 
 **Copilot's SDEM agents** — the [spike checklist](sdem-agent-platform-spike.md), twelve steps (S1–S12)
-- [ ] the five agents appear; each completes a read-only review of its layer
+- [ ] the agents appear (one per layer — six with Data — and the orchestrator); each completes a read-only review of its layer
 - [ ] the orchestrator calls a layer agent as a subagent and gets its findings back
 - [ ] before any work, the orchestrator has all four layers assess the impact and stops for your acceptance (step S12)
 - [ ] work items and change events are recorded; ownership holds; nothing is approved or accepted by an agent
