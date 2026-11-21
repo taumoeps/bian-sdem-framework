@@ -65,7 +65,9 @@ class CliTests(unittest.TestCase):
         f = Path(tempfile.mkdtemp()) / 'chains.csv'
         code, out, _ = run('trace', 'A1', '--direction', 'downstream', '--csv', str(f), '--graph', G)
         self.assertEqual(code, 0); rows = f.read_text().splitlines()
-        self.assertEqual(rows[0].split(',')[:3], ['direction', 'start_layer', 'start_id']); self.assertTrue(any('gap: connected to nothing' in r for r in rows))
+        self.assertEqual(rows[0].split(',')[:3], ['direction', 'start_layer', 'start_id']); self.assertFalse(any('gap: connected to nothing' in r for r in rows))   # FT-08: the role reaches down through the process it is assigned to
+        code, out, _ = run('trace', 'A1', '--direction', 'downstream', '--direct-only', '--graph', G)
+        self.assertIn("(gaps): 11 — ", out); self.assertIn("ROLE-PAY-OFFICER", out)                     # the links between layers alone: 11 records, the role among them
 
     def test_help_lists_every_journey(self):
         code, out, _ = run('--help')

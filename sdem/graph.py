@@ -212,24 +212,28 @@ class FederatedGraph:
         t = lambda i: (self.instance(i) or {}).get('type', '')
         return self.mm.is_a(t(r['source']), _T('bian.ControlRecord')) and self.mm.is_a(t(r['target']), _T('bian.BusinessObject'))
 
-    def wholes(self, iid):
-        """FT-02: what a record is part of inside its layer (composition, aggregation: the whole is the source) — and, as before, a
-        requirement a record realises (ArchiMate 3.2 ch. 6)."""
+    def structure(self, iid):
+        """FT-02, FT-07, FT-08: the links inside a layer the trace walks, as (whole, part, label when climbing, label when stepping down):
+        composition and aggregation, and a BIAN control record's business object (the whole is the source); realization (the realised is
+        the whole: a stage and the process that realises it, a requirement and what meets it); assignment (the assigned-from is the
+        whole: a node and its system software, a role and its process); an event's triggering (the behaviour is the whole). All ArchiMate
+        3.2's own links (SDEM's metamodel cites each); how the trace walks them is SDEM's rule."""
+        t = lambda i: (self.instance(i) or {}).get('type', '') or ''
+        ev = lambda i: t(i).split('.')[-1] in ('BusinessEvent', 'Event', 'ApplicationEvent', 'TechnologyEvent')
         out = []
         for g in self.levels.values():
             for r in g.relationships:
-                if (r['kind'] in ('composition', 'aggregation') or self.bian_holds(r)) and r['target'] == iid: out.append(r['source'])
-                elif r['kind'] == 'realization' and r['source'] == iid and self.mm.is_a((self.instance(r['target']) or {}).get('type', ''), _T('business.BusinessRequirement')): out.append(r['target'])
+                a, b, k = r['source'], r['target'], r['kind']
+                if iid not in (a, b) or a == b: continue
+                if k in ('composition', 'aggregation') or self.bian_holds(r): out.append((a, b, 'PART_OF', 'HAS_PART'))
+                elif k == 'realization': out.append((b, a, 'REALIZES', 'REALIZED_BY'))
+                elif k == 'assignment': out.append((a, b, 'ASSIGNED_FROM', 'ASSIGNED_TO'))
+                elif k == 'triggering' and ev(a) != ev(b): out.append((b, a, 'TRIGGERS', 'TRIGGERED_BY') if ev(a) else (a, b, 'TRIGGERED_BY', 'TRIGGERS'))
         return out
 
-    def parts(self, iid):
-        """FT-02: a record's parts inside its layer — and what realises a requirement."""
-        out = []
-        for g in self.levels.values():
-            for r in g.relationships:
-                if (r['kind'] in ('composition', 'aggregation') or self.bian_holds(r)) and r['source'] == iid: out.append(r['target'])
-                elif r['kind'] == 'realization' and r['target'] == iid and self.mm.is_a((self.instance(iid) or {}).get('type', ''), _T('business.BusinessRequirement')): out.append(r['source'])
-        return out
+    def wholes(self, iid): return [w for w, p, *_ in self.structure(iid) if p == iid]
+
+    def parts(self, iid): return [p for w, p, *_ in self.structure(iid) if w == iid]
 
     def composition_hops(self, iid, direction):
         """Within-level part-whole links (composition and aggregation) as virtual hops: downstream climbs to the
@@ -370,8 +374,26 @@ class FederatedGraph:
                     hop(p, x, 'RA4-38' if self.mm.is_a((self.instance(x) or {}).get('type', ''), _T('technology.NetworkZone')) else 'RA4-37')
         return out
 
-    def trace(self, start, direction='down', statuses=('approved',), follow_composition=False):
+    def across(self, iid):
+        """FT-09: is this a record of a layer that cuts across the design — one a profile or extension places "across" (LR-11: security),
+        not above or below the stack (a profile's strategy or physical layer is part of the chain)?"""
+        if not hasattr(self, '_across_levels'):
+            from .layers import layers
+            self._across_levels = {l['code'] for l in layers() if l.get('across')}
+        return self.mm.level((self.instance(iid) or {}).get('type', '') or '') in self._across_levels
+
+    def trace(self, start, direction='down', statuses=('approved',), follow_composition=False, _design_only=False):
         edges = self.edges(statuses) + self.network_edges()
+        if _design_only: edges = [e for e in edges if not (self.across(e['source']['id']) or self.across(e['target']['id']))]   # FT-09: never on into another control or threat
+        if follow_composition and self.across(start):
+            # FT-09: a security record is about the design records it links to: its trace is theirs, each traced as if it were the one asked
+            root = self.enrich(walk([], start, direction))
+            for e in edges:
+                if start not in (e['source']['id'], e['target']['id']): continue
+                other = e['target'] if e['source']['id'] == start else e['source']
+                if self.across(other['id']): continue
+                root['children'].append({'via': dict(e), 'node': self.trace(other['id'], direction, statuses, True, _design_only=True)})
+            return root
         if follow_composition:
             # FT-01, FT-02 (docs/design/sdem-full-trace-spec.md): virtual part-whole hops so a chain passes through a record's whole (and,
             # where it should, its parts): climb from every record reached; step down only from the record traced and — upstream —
@@ -389,14 +411,15 @@ class FederatedGraph:
                 for e in edges:
                     a, b = (e['source'], e['target']) if direction == 'down' else (e['target'], e['source'])
                     if a['id'] == n: frontier.append((b['id'], 'cross'))
-                for whole in self.wholes(n):
-                    req = self.mm.is_a((self.instance(whole) or {}).get('type', ''), _T('business.BusinessRequirement'))
-                    if frozenset((n, whole)) not in joined: hop(n, whole, 'REALIZES' if req else 'PART_OF')
+                st = self.structure(n)
+                for whole, part, up_label, _ in st:
+                    if part != n: continue
+                    if frozenset((n, whole)) not in joined: hop(n, whole, up_label)
                     frontier.append((whole, 'climb'))
                 if how in ('start', 'down') or (direction == 'up' and how == 'cross'):
-                    req = self.mm.is_a((self.instance(n) or {}).get('type', ''), _T('business.BusinessRequirement'))
-                    for part in self.parts(n):
-                        if frozenset((n, part)) not in joined: hop(n, part, 'REALIZED_BY' if req else 'HAS_PART' if direction == 'down' else 'COMPOSES')
+                    for whole, part, _, down_label in st:
+                        if whole != n: continue
+                        if frozenset((n, part)) not in joined: hop(n, part, down_label if down_label != 'HAS_PART' or direction == 'down' else 'COMPOSES')
                         frontier.append((part, 'down'))
             edges = edges + virtual
         return self.enrich(walk(edges, start, direction))

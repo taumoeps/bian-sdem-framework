@@ -47,6 +47,15 @@ class FullTrace(unittest.TestCase):
         self.assertEqual(self.trace('SO-PAYMENT-ORDER-INITIATION-RETRIEVE', 'up', '--direct-only'), {'SO-PAYMENT-ORDER-INITIATION-RETRIEVE'})
         self.assertEqual(self.trace('SO-PAYMENT-ORDER-INITIATION-RETRIEVE', 'down', '--direct-only'), {'SO-PAYMENT-ORDER-INITIATION-RETRIEVE', 'API-PAYMENT-READ'})
 
+    def test_realization_and_assignment_are_walked(self):   # FT-08
+        stage, role = self.trace('ST-SUBMIT', 'down'), self.trace('ROLE-BANK', 'down')
+        self.assertIn('PROC-SUBMIT', stage); self.assertTrue(any(i.startswith('SD-') for i in stage))   # a stage reaches A2 through the processes that realise it
+        self.assertIn('PROC-STATUS', role); self.assertTrue(any(i.startswith('SD-') for i in role))     # a role through the processes it is assigned to
+        up = self.trace('PROC-SUBMIT', 'up')
+        self.assertIn('ST-SUBMIT', up); self.assertIn('ROLE-BANK', up)                                 # a process climbs to its stage and its role
+        self.assertNotIn('PROC-VALIDATE', up)                                                         # never to the stage's other processes
+        self.assertEqual(self.trace('ST-SUBMIT', 'down', '--direct-only'), {'ST-SUBMIT'})               # the links between layers alone: none
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -20,11 +20,15 @@ KINDS = ('modify', 'rehost', 'replace', 'retire')
 def _j(p): return _jload(Path(p))
 
 
-def _compact(tree, fg):
-    """A trace tree, compact for display: the id, and per child the link id and relationship — the page names each record from its records table."""
-    out = {'id': tree['id'], 'children': []}   # UX-Q04: a record's name and type once, in the records table — not in every tree it appears in (the full trace repeats it, FT-03)
+def _compact(tree, fg, _done=None):
+    """A trace tree, compact for display: the id, and per child the link id and relationship — the page names each record from its records table.
+    UX-Q04: a record's branch is shown once per tree; where the full trace reaches it again (FT-03, FT-08) it is named, marked `again`, without its branch."""
+    done = set() if _done is None else _done
+    out = {'id': tree['id'], 'children': []}
+    if tree['id'] in done and _done is not None: out['again'] = True; return out
+    done.add(tree['id'])
     for c in tree.get('children', []):
-        out['children'].append({'rel': c['via']['relationship'], 'link': c['via']['mapping_id'], 'node': _compact(c['node'], fg)})
+        out['children'].append({'rel': c['via']['relationship'], 'link': c['via']['mapping_id'], 'node': _compact(c['node'], fg, done)})
     return out
 
 
