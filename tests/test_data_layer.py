@@ -35,7 +35,7 @@ NAMED = {
     'document-A3': {'.output.sections': 'Application no longer holds the data entities', '.output.summary.*': 'the same', '.output.gaps.no_connection': 'the same'},
     'comply': {'.output.findings[].layer': "findings about data records are in Data's layer", '.output.findings[].detail': "'access link(s)' is 'ACCESSED_BY link(s)' (DL-04)"},
     'aid': {'.output.added.A3': "inferred data records are added to Data", '.output.added.A4': 'the same', '.output.would_write[]': 'data.json among the files, in another order'},
-    'trace': {'.output.items[].chains': 'the access links between Data and Application add chains', '.output.items[].reach.A3': 'trace reaches Data', '.output.items[].reach.A5': 'and through it'},
+    'trace': {'.output.items[].chains': 'the access links between Data and Application add chains — and the full trace (FT-D1, 2026-11-22) adds the chains through a record\'s whole', '.output.items[].reach.A3': 'trace reaches Data', '.output.items[].reach.A5': 'and through it'},
     'impact': {'.output.coverage.A3': 'impact is seen on Data', '.output.coverage.A4.*': "Application's coverage without the data records"},
     'types': {'.output.types': "Application's types without Data's (DL-02) — sdem types A4 lists Application in the 0.20 stack (DL-D9)"},
 }

@@ -52,11 +52,14 @@ class CliTests(unittest.TestCase):
     def test_trace_a_whole_layer(self):   # TR-L01…L04
         G = str(ROOT / 'examples' / 'payment-initiation' / 'graph')
         code, out, _ = run('trace', 'A4', '--direction', 'upstream', '--graph', G)
-        self.assertEqual(code, 0); self.assertIn('A4 Technology — 20 record(s), traced up', out); self.assertIn('connected from above: 14 of 20', out)   # the network too, through its platforms (KG-Q-08); the gateway through EXPOSED_THROUGH
-        self.assertIn("INF-PG-PAY-PROD 'Managed PostgreSQL — payments'", out)                       # a gap: supports nothing above
+        self.assertEqual(code, 0); self.assertIn('A4 Technology — 20 record(s), traced up', out); self.assertIn('connected from above: 17 of 20', out)   # FT-D1 (2026-11-22): 14 before the full trace   # the network too, through its platforms (KG-Q-08); the gateway through EXPOSED_THROUGH
+        self.assertIn("INF-CORE-LEDGER-HOST 'Core banking ledger host'", out)                         # a gap: supports nothing above
+        self.assertNotIn("connected to nothing above (gaps): 3 — INF-PG-PAY-PROD", out)              # FT-D1: Managed PostgreSQL reaches up through the platform it is part of
         self.assertIn('Payments Hub ← Payment Initiation (synthetic selection) ← Initiate Payment', out)
         code, out, _ = run('trace', 'a2', '--direction', 'up', '--only-gaps', '--graph', G)            # only kinds that can connect up count as gaps
-        self.assertIn('(gaps): 3', out); self.assertIn("SD-PE 'Payment Execution (synthetic selection)'", out); self.assertNotIn('AT-AUTH', out); self.assertNotIn('CHAINS', out)
+        self.assertIn('(gaps): 0', out); self.assertNotIn('AT-AUTH', out); self.assertNotIn('CHAINS', out)   # FT-D1: each domain reaches A1 through its business objects (aligned to A1's); 3 before
+        code, out, _ = run('trace', 'a2', '--direction', 'up', '--only-gaps', '--direct-only', '--graph', G)   # the links between layers alone: as before
+        self.assertIn('(gaps): 3', out); self.assertIn("SD-PE 'Payment Execution (synthetic selection)'", out)
         code, out, _ = run('trace', 'A2', '--direction', 'all', '--to', 'A3', '--graph', G)            # --to applies only in its own direction
         self.assertIn('traced down to A3 Application', out); self.assertIn('A2 BIAN — 48 record(s), traced up\n', out)
         f = Path(tempfile.mkdtemp()) / 'chains.csv'

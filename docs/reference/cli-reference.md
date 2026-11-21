@@ -2501,7 +2501,7 @@ sdem status --workspace examples/payment-initiation
 trace what a record depends on (down) or what depends on it (up)
 
 ```
-sdem trace <entity> [<paths>] [--graph GRAPH] [--status STATUS] [--direction {down,up,both,downstream,upstream,all}] [--tree] [--only-gaps] [--to {A1,A2,A3,A4}] [--csv CSV] [--follow-composition] [--projection PROJECTION]
+sdem trace <entity> [<paths>] [--graph GRAPH] [--status STATUS] [--direction {down,up,both,downstream,upstream,all}] [--tree] [--only-gaps] [--to {A1,A2,A3,A4}] [--csv CSV] [--direct-only] [--follow-composition] [--projection PROJECTION]
 ```
 
 *JSON: native · dry run: sandbox*
@@ -2518,7 +2518,8 @@ sdem trace <entity> [<paths>] [--graph GRAPH] [--status STATUS] [--direction {do
 | `--only-gaps` |  | a whole layer: only the records with no connection in that direction |
 | `--to` {A1, A2, A3, A4} |  | a whole layer: stop the chains at this layer |
 | `--csv` |  | a whole layer: also write the chains as CSV |
-| `--follow-composition` |  | continue a chain through within-level part-whole links — composition and aggregation (part -> whole downstream, whole -> parts upstream) |
+| `--direct-only` |  | only the links between layers — not through a record's whole or parts in its own layer (the full trace is the default, FT-03) |
+| `--follow-composition` |  | the default now (FT-03): a chain continues through part-whole links inside a layer — kept so older commands still work |
 | `--projection` |  | also follow the links of an AID projection package, labelled PROJECTED (AID-O06) |
 | `--workspace` |  | the workspace folder, in place of the list of files (its layer datasets and mappings.json) |
 

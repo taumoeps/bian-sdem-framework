@@ -14,6 +14,1506 @@
     "chains": [
      {
       "start": {
+       "id": "ACT-PAY-01a",
+       "level": "A1",
+       "name": "Capture instruction"
+      },
+      "steps": [
+       {
+        "id": "PRC-PAY-01",
+        "level": "A1",
+        "name": "Capture and validate payment instruction",
+        "via": "composition"
+       },
+       {
+        "id": "SD-PI",
+        "level": "A2",
+        "name": "Payment Initiation (synthetic selection)",
+        "via": "PAY-003"
+       },
+       {
+        "id": "APP-PAY-HUB",
+        "level": "A3",
+        "name": "Payments Hub",
+        "via": "PAY-106"
+       },
+       {
+        "id": "INF-K8S-PAY-PROD",
+        "level": "A4",
+        "name": "Managed Kubernetes — payments (production)",
+        "via": "PAY-108"
+       },
+       {
+        "id": "ZONE-PAY-PRIVATE",
+        "level": "A4",
+        "name": "Payments private network zone",
+        "via": "RA4-38"
+       },
+       {
+        "id": "ZONE-PAY-INTERNAL",
+        "level": "A4",
+        "name": "Internal network — payments",
+        "via": "RA4-39"
+       },
+       {
+        "id": "ZONE-PAY-CLOUD",
+        "level": "A4",
+        "name": "Cloud — payments",
+        "via": "RA4-39"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "ACT-PAY-01a",
+       "level": "A1",
+       "name": "Capture instruction"
+      },
+      "steps": [
+       {
+        "id": "PRC-PAY-01",
+        "level": "A1",
+        "name": "Capture and validate payment instruction",
+        "via": "composition"
+       },
+       {
+        "id": "SD-PI",
+        "level": "A2",
+        "name": "Payment Initiation (synthetic selection)",
+        "via": "PAY-003"
+       },
+       {
+        "id": "APP-PAY-HUB",
+        "level": "A3",
+        "name": "Payments Hub",
+        "via": "PAY-106"
+       },
+       {
+        "id": "INF-K8S-PAY-PROD",
+        "level": "A4",
+        "name": "Managed Kubernetes — payments (production)",
+        "via": "PAY-108"
+       },
+       {
+        "id": "NET-PAY-PRIVATE",
+        "level": "A4",
+        "name": "Payments private network",
+        "via": "RA4-37"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "ACT-PAY-01a",
+       "level": "A1",
+       "name": "Capture instruction"
+      },
+      "steps": [
+       {
+        "id": "PRC-PAY-01",
+        "level": "A1",
+        "name": "Capture and validate payment instruction",
+        "via": "composition"
+       },
+       {
+        "id": "SD-PI",
+        "level": "A2",
+        "name": "Payment Initiation (synthetic selection)",
+        "via": "PAY-003"
+       },
+       {
+        "id": "APP-PAY-HUB",
+        "level": "A3",
+        "name": "Payments Hub",
+        "via": "PAY-106"
+       },
+       {
+        "id": "DEP-PAYHUB-PROD",
+        "level": "A4",
+        "name": "Payments Hub — production",
+        "via": "PAY-109"
+       },
+       {
+        "id": "ENV-PAY-PROD",
+        "level": "A4",
+        "name": "Production",
+        "via": "composition"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "ACT-PAY-01a",
+       "level": "A1",
+       "name": "Capture instruction"
+      },
+      "steps": [
+       {
+        "id": "PRC-PAY-01",
+        "level": "A1",
+        "name": "Capture and validate payment instruction",
+        "via": "composition"
+       },
+       {
+        "id": "SD-PI",
+        "level": "A2",
+        "name": "Payment Initiation (synthetic selection)",
+        "via": "PAY-003"
+       },
+       {
+        "id": "APP-PAY-HUB",
+        "level": "A3",
+        "name": "Payments Hub",
+        "via": "PAY-106"
+       },
+       {
+        "id": "DEP-PAYHUB-UAT",
+        "level": "A4",
+        "name": "Payments Hub — UAT",
+        "via": "PAY-110"
+       },
+       {
+        "id": "ENV-PAY-UAT",
+        "level": "A4",
+        "name": "UAT",
+        "via": "composition"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "ACT-PAY-01a",
+       "level": "A1",
+       "name": "Capture instruction"
+      },
+      "steps": [
+       {
+        "id": "PRC-PAY-01",
+        "level": "A1",
+        "name": "Capture and validate payment instruction",
+        "via": "composition"
+       },
+       {
+        "id": "SD-PI",
+        "level": "A2",
+        "name": "Payment Initiation (synthetic selection)",
+        "via": "PAY-003"
+       },
+       {
+        "id": "APP-PAY-HUB",
+        "level": "A3",
+        "name": "Payments Hub",
+        "via": "PAY-106"
+       },
+       {
+        "id": "INF-K8S-PAY-UAT",
+        "level": "A4",
+        "name": "Managed Kubernetes — payments (UAT)",
+        "via": "PAY-113"
+       },
+       {
+        "id": "ZONE-PAY-PRIVATE",
+        "level": "A4",
+        "name": "Payments private network zone",
+        "via": "RA4-38"
+       },
+       {
+        "id": "ZONE-PAY-INTERNAL",
+        "level": "A4",
+        "name": "Internal network — payments",
+        "via": "RA4-39"
+       },
+       {
+        "id": "ZONE-PAY-CLOUD",
+        "level": "A4",
+        "name": "Cloud — payments",
+        "via": "RA4-39"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "ACT-PAY-01a",
+       "level": "A1",
+       "name": "Capture instruction"
+      },
+      "steps": [
+       {
+        "id": "PRC-PAY-01",
+        "level": "A1",
+        "name": "Capture and validate payment instruction",
+        "via": "composition"
+       },
+       {
+        "id": "SD-PI",
+        "level": "A2",
+        "name": "Payment Initiation (synthetic selection)",
+        "via": "PAY-003"
+       },
+       {
+        "id": "APP-PAY-HUB",
+        "level": "A3",
+        "name": "Payments Hub",
+        "via": "PAY-106"
+       },
+       {
+        "id": "INF-K8S-PAY-UAT",
+        "level": "A4",
+        "name": "Managed Kubernetes — payments (UAT)",
+        "via": "PAY-113"
+       },
+       {
+        "id": "NET-PAY-PRIVATE",
+        "level": "A4",
+        "name": "Payments private network",
+        "via": "RA4-37"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "ACT-PAY-01a",
+       "level": "A1",
+       "name": "Capture instruction"
+      },
+      "steps": [
+       {
+        "id": "PRC-PAY-01",
+        "level": "A1",
+        "name": "Capture and validate payment instruction",
+        "via": "composition"
+       },
+       {
+        "id": "SD-PI",
+        "level": "A2",
+        "name": "Payment Initiation (synthetic selection)",
+        "via": "PAY-003"
+       },
+       {
+        "id": "APP-PAY-HUB",
+        "level": "A3",
+        "name": "Payments Hub",
+        "via": "PAY-106"
+       },
+       {
+        "id": "INF-K8S-PAY-UAT",
+        "level": "A4",
+        "name": "Managed Kubernetes — payments (UAT)",
+        "via": "PAY-113"
+       },
+       {
+        "id": "ENV-PAY-UAT",
+        "level": "A4",
+        "name": "UAT",
+        "via": "composition"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "ACT-PAY-01a",
+       "level": "A1",
+       "name": "Capture instruction"
+      },
+      "steps": [
+       {
+        "id": "PRC-PAY-01",
+        "level": "A1",
+        "name": "Capture and validate payment instruction",
+        "via": "composition"
+       },
+       {
+        "id": "SD-PI",
+        "level": "A2",
+        "name": "Payment Initiation (synthetic selection)",
+        "via": "PAY-003"
+       },
+       {
+        "id": "APP-PAY-HUB",
+        "level": "A3",
+        "name": "Payments Hub",
+        "via": "PAY-106"
+       },
+       {
+        "id": "ART-PAYHUB-IMG",
+        "level": "A4",
+        "name": "payments-hub:7.1",
+        "via": "PAY-115"
+       },
+       {
+        "id": "DEP-PAYHUB-PROD",
+        "level": "A4",
+        "name": "Payments Hub — production",
+        "via": "composition"
+       },
+       {
+        "id": "ENV-PAY-PROD",
+        "level": "A4",
+        "name": "Production",
+        "via": "composition"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "ACT-PAY-01a",
+       "level": "A1",
+       "name": "Capture instruction"
+      },
+      "steps": [
+       {
+        "id": "PRC-PAY-01",
+        "level": "A1",
+        "name": "Capture and validate payment instruction",
+        "via": "composition"
+       },
+       {
+        "id": "SD-PI",
+        "level": "A2",
+        "name": "Payment Initiation (synthetic selection)",
+        "via": "PAY-003"
+       },
+       {
+        "id": "BD-PAYMENTS",
+        "level": "A2",
+        "name": "Payments (synthetic grouping)",
+        "via": "composition"
+       },
+       {
+        "id": "BA-OPS-EXEC",
+        "level": "A2",
+        "name": "Operations and Execution",
+        "via": "composition"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "ACT-PAY-01b",
+       "level": "A1",
+       "name": "Validate instruction"
+      },
+      "steps": [
+       {
+        "id": "PRC-PAY-01",
+        "level": "A1",
+        "name": "Capture and validate payment instruction",
+        "via": "composition"
+       },
+       {
+        "id": "SD-PI",
+        "level": "A2",
+        "name": "Payment Initiation (synthetic selection)",
+        "via": "PAY-003"
+       },
+       {
+        "id": "APP-PAY-HUB",
+        "level": "A3",
+        "name": "Payments Hub",
+        "via": "PAY-106"
+       },
+       {
+        "id": "INF-K8S-PAY-PROD",
+        "level": "A4",
+        "name": "Managed Kubernetes — payments (production)",
+        "via": "PAY-108"
+       },
+       {
+        "id": "ZONE-PAY-PRIVATE",
+        "level": "A4",
+        "name": "Payments private network zone",
+        "via": "RA4-38"
+       },
+       {
+        "id": "ZONE-PAY-INTERNAL",
+        "level": "A4",
+        "name": "Internal network — payments",
+        "via": "RA4-39"
+       },
+       {
+        "id": "ZONE-PAY-CLOUD",
+        "level": "A4",
+        "name": "Cloud — payments",
+        "via": "RA4-39"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "ACT-PAY-01b",
+       "level": "A1",
+       "name": "Validate instruction"
+      },
+      "steps": [
+       {
+        "id": "PRC-PAY-01",
+        "level": "A1",
+        "name": "Capture and validate payment instruction",
+        "via": "composition"
+       },
+       {
+        "id": "SD-PI",
+        "level": "A2",
+        "name": "Payment Initiation (synthetic selection)",
+        "via": "PAY-003"
+       },
+       {
+        "id": "APP-PAY-HUB",
+        "level": "A3",
+        "name": "Payments Hub",
+        "via": "PAY-106"
+       },
+       {
+        "id": "INF-K8S-PAY-PROD",
+        "level": "A4",
+        "name": "Managed Kubernetes — payments (production)",
+        "via": "PAY-108"
+       },
+       {
+        "id": "NET-PAY-PRIVATE",
+        "level": "A4",
+        "name": "Payments private network",
+        "via": "RA4-37"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "ACT-PAY-01b",
+       "level": "A1",
+       "name": "Validate instruction"
+      },
+      "steps": [
+       {
+        "id": "PRC-PAY-01",
+        "level": "A1",
+        "name": "Capture and validate payment instruction",
+        "via": "composition"
+       },
+       {
+        "id": "SD-PI",
+        "level": "A2",
+        "name": "Payment Initiation (synthetic selection)",
+        "via": "PAY-003"
+       },
+       {
+        "id": "APP-PAY-HUB",
+        "level": "A3",
+        "name": "Payments Hub",
+        "via": "PAY-106"
+       },
+       {
+        "id": "DEP-PAYHUB-PROD",
+        "level": "A4",
+        "name": "Payments Hub — production",
+        "via": "PAY-109"
+       },
+       {
+        "id": "ENV-PAY-PROD",
+        "level": "A4",
+        "name": "Production",
+        "via": "composition"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "ACT-PAY-01b",
+       "level": "A1",
+       "name": "Validate instruction"
+      },
+      "steps": [
+       {
+        "id": "PRC-PAY-01",
+        "level": "A1",
+        "name": "Capture and validate payment instruction",
+        "via": "composition"
+       },
+       {
+        "id": "SD-PI",
+        "level": "A2",
+        "name": "Payment Initiation (synthetic selection)",
+        "via": "PAY-003"
+       },
+       {
+        "id": "APP-PAY-HUB",
+        "level": "A3",
+        "name": "Payments Hub",
+        "via": "PAY-106"
+       },
+       {
+        "id": "DEP-PAYHUB-UAT",
+        "level": "A4",
+        "name": "Payments Hub — UAT",
+        "via": "PAY-110"
+       },
+       {
+        "id": "ENV-PAY-UAT",
+        "level": "A4",
+        "name": "UAT",
+        "via": "composition"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "ACT-PAY-01b",
+       "level": "A1",
+       "name": "Validate instruction"
+      },
+      "steps": [
+       {
+        "id": "PRC-PAY-01",
+        "level": "A1",
+        "name": "Capture and validate payment instruction",
+        "via": "composition"
+       },
+       {
+        "id": "SD-PI",
+        "level": "A2",
+        "name": "Payment Initiation (synthetic selection)",
+        "via": "PAY-003"
+       },
+       {
+        "id": "APP-PAY-HUB",
+        "level": "A3",
+        "name": "Payments Hub",
+        "via": "PAY-106"
+       },
+       {
+        "id": "INF-K8S-PAY-UAT",
+        "level": "A4",
+        "name": "Managed Kubernetes — payments (UAT)",
+        "via": "PAY-113"
+       },
+       {
+        "id": "ZONE-PAY-PRIVATE",
+        "level": "A4",
+        "name": "Payments private network zone",
+        "via": "RA4-38"
+       },
+       {
+        "id": "ZONE-PAY-INTERNAL",
+        "level": "A4",
+        "name": "Internal network — payments",
+        "via": "RA4-39"
+       },
+       {
+        "id": "ZONE-PAY-CLOUD",
+        "level": "A4",
+        "name": "Cloud — payments",
+        "via": "RA4-39"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "ACT-PAY-01b",
+       "level": "A1",
+       "name": "Validate instruction"
+      },
+      "steps": [
+       {
+        "id": "PRC-PAY-01",
+        "level": "A1",
+        "name": "Capture and validate payment instruction",
+        "via": "composition"
+       },
+       {
+        "id": "SD-PI",
+        "level": "A2",
+        "name": "Payment Initiation (synthetic selection)",
+        "via": "PAY-003"
+       },
+       {
+        "id": "APP-PAY-HUB",
+        "level": "A3",
+        "name": "Payments Hub",
+        "via": "PAY-106"
+       },
+       {
+        "id": "INF-K8S-PAY-UAT",
+        "level": "A4",
+        "name": "Managed Kubernetes — payments (UAT)",
+        "via": "PAY-113"
+       },
+       {
+        "id": "NET-PAY-PRIVATE",
+        "level": "A4",
+        "name": "Payments private network",
+        "via": "RA4-37"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "ACT-PAY-01b",
+       "level": "A1",
+       "name": "Validate instruction"
+      },
+      "steps": [
+       {
+        "id": "PRC-PAY-01",
+        "level": "A1",
+        "name": "Capture and validate payment instruction",
+        "via": "composition"
+       },
+       {
+        "id": "SD-PI",
+        "level": "A2",
+        "name": "Payment Initiation (synthetic selection)",
+        "via": "PAY-003"
+       },
+       {
+        "id": "APP-PAY-HUB",
+        "level": "A3",
+        "name": "Payments Hub",
+        "via": "PAY-106"
+       },
+       {
+        "id": "INF-K8S-PAY-UAT",
+        "level": "A4",
+        "name": "Managed Kubernetes — payments (UAT)",
+        "via": "PAY-113"
+       },
+       {
+        "id": "ENV-PAY-UAT",
+        "level": "A4",
+        "name": "UAT",
+        "via": "composition"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "ACT-PAY-01b",
+       "level": "A1",
+       "name": "Validate instruction"
+      },
+      "steps": [
+       {
+        "id": "PRC-PAY-01",
+        "level": "A1",
+        "name": "Capture and validate payment instruction",
+        "via": "composition"
+       },
+       {
+        "id": "SD-PI",
+        "level": "A2",
+        "name": "Payment Initiation (synthetic selection)",
+        "via": "PAY-003"
+       },
+       {
+        "id": "APP-PAY-HUB",
+        "level": "A3",
+        "name": "Payments Hub",
+        "via": "PAY-106"
+       },
+       {
+        "id": "ART-PAYHUB-IMG",
+        "level": "A4",
+        "name": "payments-hub:7.1",
+        "via": "PAY-115"
+       },
+       {
+        "id": "DEP-PAYHUB-PROD",
+        "level": "A4",
+        "name": "Payments Hub — production",
+        "via": "composition"
+       },
+       {
+        "id": "ENV-PAY-PROD",
+        "level": "A4",
+        "name": "Production",
+        "via": "composition"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "ACT-PAY-01b",
+       "level": "A1",
+       "name": "Validate instruction"
+      },
+      "steps": [
+       {
+        "id": "PRC-PAY-01",
+        "level": "A1",
+        "name": "Capture and validate payment instruction",
+        "via": "composition"
+       },
+       {
+        "id": "SD-PI",
+        "level": "A2",
+        "name": "Payment Initiation (synthetic selection)",
+        "via": "PAY-003"
+       },
+       {
+        "id": "BD-PAYMENTS",
+        "level": "A2",
+        "name": "Payments (synthetic grouping)",
+        "via": "composition"
+       },
+       {
+        "id": "BA-OPS-EXEC",
+        "level": "A2",
+        "name": "Operations and Execution",
+        "via": "composition"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "ACT-PAY-02a",
+       "level": "A1",
+       "name": "Execute payment"
+      },
+      "steps": [
+       {
+        "id": "PRC-PAY-02",
+        "level": "A1",
+        "name": "Execute and confirm payment",
+        "via": "composition"
+       },
+       {
+        "id": "SD-PI",
+        "level": "A2",
+        "name": "Payment Initiation (synthetic selection)",
+        "via": "PAY-004"
+       },
+       {
+        "id": "APP-PAY-HUB",
+        "level": "A3",
+        "name": "Payments Hub",
+        "via": "PAY-106"
+       },
+       {
+        "id": "INF-K8S-PAY-PROD",
+        "level": "A4",
+        "name": "Managed Kubernetes — payments (production)",
+        "via": "PAY-108"
+       },
+       {
+        "id": "ZONE-PAY-PRIVATE",
+        "level": "A4",
+        "name": "Payments private network zone",
+        "via": "RA4-38"
+       },
+       {
+        "id": "ZONE-PAY-INTERNAL",
+        "level": "A4",
+        "name": "Internal network — payments",
+        "via": "RA4-39"
+       },
+       {
+        "id": "ZONE-PAY-CLOUD",
+        "level": "A4",
+        "name": "Cloud — payments",
+        "via": "RA4-39"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "ACT-PAY-02a",
+       "level": "A1",
+       "name": "Execute payment"
+      },
+      "steps": [
+       {
+        "id": "PRC-PAY-02",
+        "level": "A1",
+        "name": "Execute and confirm payment",
+        "via": "composition"
+       },
+       {
+        "id": "SD-PI",
+        "level": "A2",
+        "name": "Payment Initiation (synthetic selection)",
+        "via": "PAY-004"
+       },
+       {
+        "id": "APP-PAY-HUB",
+        "level": "A3",
+        "name": "Payments Hub",
+        "via": "PAY-106"
+       },
+       {
+        "id": "INF-K8S-PAY-PROD",
+        "level": "A4",
+        "name": "Managed Kubernetes — payments (production)",
+        "via": "PAY-108"
+       },
+       {
+        "id": "NET-PAY-PRIVATE",
+        "level": "A4",
+        "name": "Payments private network",
+        "via": "RA4-37"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "ACT-PAY-02a",
+       "level": "A1",
+       "name": "Execute payment"
+      },
+      "steps": [
+       {
+        "id": "PRC-PAY-02",
+        "level": "A1",
+        "name": "Execute and confirm payment",
+        "via": "composition"
+       },
+       {
+        "id": "SD-PI",
+        "level": "A2",
+        "name": "Payment Initiation (synthetic selection)",
+        "via": "PAY-004"
+       },
+       {
+        "id": "APP-PAY-HUB",
+        "level": "A3",
+        "name": "Payments Hub",
+        "via": "PAY-106"
+       },
+       {
+        "id": "DEP-PAYHUB-PROD",
+        "level": "A4",
+        "name": "Payments Hub — production",
+        "via": "PAY-109"
+       },
+       {
+        "id": "ENV-PAY-PROD",
+        "level": "A4",
+        "name": "Production",
+        "via": "composition"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "ACT-PAY-02a",
+       "level": "A1",
+       "name": "Execute payment"
+      },
+      "steps": [
+       {
+        "id": "PRC-PAY-02",
+        "level": "A1",
+        "name": "Execute and confirm payment",
+        "via": "composition"
+       },
+       {
+        "id": "SD-PI",
+        "level": "A2",
+        "name": "Payment Initiation (synthetic selection)",
+        "via": "PAY-004"
+       },
+       {
+        "id": "APP-PAY-HUB",
+        "level": "A3",
+        "name": "Payments Hub",
+        "via": "PAY-106"
+       },
+       {
+        "id": "DEP-PAYHUB-UAT",
+        "level": "A4",
+        "name": "Payments Hub — UAT",
+        "via": "PAY-110"
+       },
+       {
+        "id": "ENV-PAY-UAT",
+        "level": "A4",
+        "name": "UAT",
+        "via": "composition"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "ACT-PAY-02a",
+       "level": "A1",
+       "name": "Execute payment"
+      },
+      "steps": [
+       {
+        "id": "PRC-PAY-02",
+        "level": "A1",
+        "name": "Execute and confirm payment",
+        "via": "composition"
+       },
+       {
+        "id": "SD-PI",
+        "level": "A2",
+        "name": "Payment Initiation (synthetic selection)",
+        "via": "PAY-004"
+       },
+       {
+        "id": "APP-PAY-HUB",
+        "level": "A3",
+        "name": "Payments Hub",
+        "via": "PAY-106"
+       },
+       {
+        "id": "INF-K8S-PAY-UAT",
+        "level": "A4",
+        "name": "Managed Kubernetes — payments (UAT)",
+        "via": "PAY-113"
+       },
+       {
+        "id": "ZONE-PAY-PRIVATE",
+        "level": "A4",
+        "name": "Payments private network zone",
+        "via": "RA4-38"
+       },
+       {
+        "id": "ZONE-PAY-INTERNAL",
+        "level": "A4",
+        "name": "Internal network — payments",
+        "via": "RA4-39"
+       },
+       {
+        "id": "ZONE-PAY-CLOUD",
+        "level": "A4",
+        "name": "Cloud — payments",
+        "via": "RA4-39"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "ACT-PAY-02a",
+       "level": "A1",
+       "name": "Execute payment"
+      },
+      "steps": [
+       {
+        "id": "PRC-PAY-02",
+        "level": "A1",
+        "name": "Execute and confirm payment",
+        "via": "composition"
+       },
+       {
+        "id": "SD-PI",
+        "level": "A2",
+        "name": "Payment Initiation (synthetic selection)",
+        "via": "PAY-004"
+       },
+       {
+        "id": "APP-PAY-HUB",
+        "level": "A3",
+        "name": "Payments Hub",
+        "via": "PAY-106"
+       },
+       {
+        "id": "INF-K8S-PAY-UAT",
+        "level": "A4",
+        "name": "Managed Kubernetes — payments (UAT)",
+        "via": "PAY-113"
+       },
+       {
+        "id": "NET-PAY-PRIVATE",
+        "level": "A4",
+        "name": "Payments private network",
+        "via": "RA4-37"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "ACT-PAY-02a",
+       "level": "A1",
+       "name": "Execute payment"
+      },
+      "steps": [
+       {
+        "id": "PRC-PAY-02",
+        "level": "A1",
+        "name": "Execute and confirm payment",
+        "via": "composition"
+       },
+       {
+        "id": "SD-PI",
+        "level": "A2",
+        "name": "Payment Initiation (synthetic selection)",
+        "via": "PAY-004"
+       },
+       {
+        "id": "APP-PAY-HUB",
+        "level": "A3",
+        "name": "Payments Hub",
+        "via": "PAY-106"
+       },
+       {
+        "id": "INF-K8S-PAY-UAT",
+        "level": "A4",
+        "name": "Managed Kubernetes — payments (UAT)",
+        "via": "PAY-113"
+       },
+       {
+        "id": "ENV-PAY-UAT",
+        "level": "A4",
+        "name": "UAT",
+        "via": "composition"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "ACT-PAY-02a",
+       "level": "A1",
+       "name": "Execute payment"
+      },
+      "steps": [
+       {
+        "id": "PRC-PAY-02",
+        "level": "A1",
+        "name": "Execute and confirm payment",
+        "via": "composition"
+       },
+       {
+        "id": "SD-PI",
+        "level": "A2",
+        "name": "Payment Initiation (synthetic selection)",
+        "via": "PAY-004"
+       },
+       {
+        "id": "APP-PAY-HUB",
+        "level": "A3",
+        "name": "Payments Hub",
+        "via": "PAY-106"
+       },
+       {
+        "id": "ART-PAYHUB-IMG",
+        "level": "A4",
+        "name": "payments-hub:7.1",
+        "via": "PAY-115"
+       },
+       {
+        "id": "DEP-PAYHUB-PROD",
+        "level": "A4",
+        "name": "Payments Hub — production",
+        "via": "composition"
+       },
+       {
+        "id": "ENV-PAY-PROD",
+        "level": "A4",
+        "name": "Production",
+        "via": "composition"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "ACT-PAY-02a",
+       "level": "A1",
+       "name": "Execute payment"
+      },
+      "steps": [
+       {
+        "id": "PRC-PAY-02",
+        "level": "A1",
+        "name": "Execute and confirm payment",
+        "via": "composition"
+       },
+       {
+        "id": "SD-PI",
+        "level": "A2",
+        "name": "Payment Initiation (synthetic selection)",
+        "via": "PAY-004"
+       },
+       {
+        "id": "BD-PAYMENTS",
+        "level": "A2",
+        "name": "Payments (synthetic grouping)",
+        "via": "composition"
+       },
+       {
+        "id": "BA-OPS-EXEC",
+        "level": "A2",
+        "name": "Operations and Execution",
+        "via": "composition"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "ACT-PAY-02b",
+       "level": "A1",
+       "name": "Retrieve status"
+      },
+      "steps": [
+       {
+        "id": "PRC-PAY-02",
+        "level": "A1",
+        "name": "Execute and confirm payment",
+        "via": "composition"
+       },
+       {
+        "id": "SD-PI",
+        "level": "A2",
+        "name": "Payment Initiation (synthetic selection)",
+        "via": "PAY-004"
+       },
+       {
+        "id": "APP-PAY-HUB",
+        "level": "A3",
+        "name": "Payments Hub",
+        "via": "PAY-106"
+       },
+       {
+        "id": "INF-K8S-PAY-PROD",
+        "level": "A4",
+        "name": "Managed Kubernetes — payments (production)",
+        "via": "PAY-108"
+       },
+       {
+        "id": "ZONE-PAY-PRIVATE",
+        "level": "A4",
+        "name": "Payments private network zone",
+        "via": "RA4-38"
+       },
+       {
+        "id": "ZONE-PAY-INTERNAL",
+        "level": "A4",
+        "name": "Internal network — payments",
+        "via": "RA4-39"
+       },
+       {
+        "id": "ZONE-PAY-CLOUD",
+        "level": "A4",
+        "name": "Cloud — payments",
+        "via": "RA4-39"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "ACT-PAY-02b",
+       "level": "A1",
+       "name": "Retrieve status"
+      },
+      "steps": [
+       {
+        "id": "PRC-PAY-02",
+        "level": "A1",
+        "name": "Execute and confirm payment",
+        "via": "composition"
+       },
+       {
+        "id": "SD-PI",
+        "level": "A2",
+        "name": "Payment Initiation (synthetic selection)",
+        "via": "PAY-004"
+       },
+       {
+        "id": "APP-PAY-HUB",
+        "level": "A3",
+        "name": "Payments Hub",
+        "via": "PAY-106"
+       },
+       {
+        "id": "INF-K8S-PAY-PROD",
+        "level": "A4",
+        "name": "Managed Kubernetes — payments (production)",
+        "via": "PAY-108"
+       },
+       {
+        "id": "NET-PAY-PRIVATE",
+        "level": "A4",
+        "name": "Payments private network",
+        "via": "RA4-37"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "ACT-PAY-02b",
+       "level": "A1",
+       "name": "Retrieve status"
+      },
+      "steps": [
+       {
+        "id": "PRC-PAY-02",
+        "level": "A1",
+        "name": "Execute and confirm payment",
+        "via": "composition"
+       },
+       {
+        "id": "SD-PI",
+        "level": "A2",
+        "name": "Payment Initiation (synthetic selection)",
+        "via": "PAY-004"
+       },
+       {
+        "id": "APP-PAY-HUB",
+        "level": "A3",
+        "name": "Payments Hub",
+        "via": "PAY-106"
+       },
+       {
+        "id": "DEP-PAYHUB-PROD",
+        "level": "A4",
+        "name": "Payments Hub — production",
+        "via": "PAY-109"
+       },
+       {
+        "id": "ENV-PAY-PROD",
+        "level": "A4",
+        "name": "Production",
+        "via": "composition"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "ACT-PAY-02b",
+       "level": "A1",
+       "name": "Retrieve status"
+      },
+      "steps": [
+       {
+        "id": "PRC-PAY-02",
+        "level": "A1",
+        "name": "Execute and confirm payment",
+        "via": "composition"
+       },
+       {
+        "id": "SD-PI",
+        "level": "A2",
+        "name": "Payment Initiation (synthetic selection)",
+        "via": "PAY-004"
+       },
+       {
+        "id": "APP-PAY-HUB",
+        "level": "A3",
+        "name": "Payments Hub",
+        "via": "PAY-106"
+       },
+       {
+        "id": "DEP-PAYHUB-UAT",
+        "level": "A4",
+        "name": "Payments Hub — UAT",
+        "via": "PAY-110"
+       },
+       {
+        "id": "ENV-PAY-UAT",
+        "level": "A4",
+        "name": "UAT",
+        "via": "composition"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "ACT-PAY-02b",
+       "level": "A1",
+       "name": "Retrieve status"
+      },
+      "steps": [
+       {
+        "id": "PRC-PAY-02",
+        "level": "A1",
+        "name": "Execute and confirm payment",
+        "via": "composition"
+       },
+       {
+        "id": "SD-PI",
+        "level": "A2",
+        "name": "Payment Initiation (synthetic selection)",
+        "via": "PAY-004"
+       },
+       {
+        "id": "APP-PAY-HUB",
+        "level": "A3",
+        "name": "Payments Hub",
+        "via": "PAY-106"
+       },
+       {
+        "id": "INF-K8S-PAY-UAT",
+        "level": "A4",
+        "name": "Managed Kubernetes — payments (UAT)",
+        "via": "PAY-113"
+       },
+       {
+        "id": "ZONE-PAY-PRIVATE",
+        "level": "A4",
+        "name": "Payments private network zone",
+        "via": "RA4-38"
+       },
+       {
+        "id": "ZONE-PAY-INTERNAL",
+        "level": "A4",
+        "name": "Internal network — payments",
+        "via": "RA4-39"
+       },
+       {
+        "id": "ZONE-PAY-CLOUD",
+        "level": "A4",
+        "name": "Cloud — payments",
+        "via": "RA4-39"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "ACT-PAY-02b",
+       "level": "A1",
+       "name": "Retrieve status"
+      },
+      "steps": [
+       {
+        "id": "PRC-PAY-02",
+        "level": "A1",
+        "name": "Execute and confirm payment",
+        "via": "composition"
+       },
+       {
+        "id": "SD-PI",
+        "level": "A2",
+        "name": "Payment Initiation (synthetic selection)",
+        "via": "PAY-004"
+       },
+       {
+        "id": "APP-PAY-HUB",
+        "level": "A3",
+        "name": "Payments Hub",
+        "via": "PAY-106"
+       },
+       {
+        "id": "INF-K8S-PAY-UAT",
+        "level": "A4",
+        "name": "Managed Kubernetes — payments (UAT)",
+        "via": "PAY-113"
+       },
+       {
+        "id": "NET-PAY-PRIVATE",
+        "level": "A4",
+        "name": "Payments private network",
+        "via": "RA4-37"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "ACT-PAY-02b",
+       "level": "A1",
+       "name": "Retrieve status"
+      },
+      "steps": [
+       {
+        "id": "PRC-PAY-02",
+        "level": "A1",
+        "name": "Execute and confirm payment",
+        "via": "composition"
+       },
+       {
+        "id": "SD-PI",
+        "level": "A2",
+        "name": "Payment Initiation (synthetic selection)",
+        "via": "PAY-004"
+       },
+       {
+        "id": "APP-PAY-HUB",
+        "level": "A3",
+        "name": "Payments Hub",
+        "via": "PAY-106"
+       },
+       {
+        "id": "INF-K8S-PAY-UAT",
+        "level": "A4",
+        "name": "Managed Kubernetes — payments (UAT)",
+        "via": "PAY-113"
+       },
+       {
+        "id": "ENV-PAY-UAT",
+        "level": "A4",
+        "name": "UAT",
+        "via": "composition"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "ACT-PAY-02b",
+       "level": "A1",
+       "name": "Retrieve status"
+      },
+      "steps": [
+       {
+        "id": "PRC-PAY-02",
+        "level": "A1",
+        "name": "Execute and confirm payment",
+        "via": "composition"
+       },
+       {
+        "id": "SD-PI",
+        "level": "A2",
+        "name": "Payment Initiation (synthetic selection)",
+        "via": "PAY-004"
+       },
+       {
+        "id": "APP-PAY-HUB",
+        "level": "A3",
+        "name": "Payments Hub",
+        "via": "PAY-106"
+       },
+       {
+        "id": "ART-PAYHUB-IMG",
+        "level": "A4",
+        "name": "payments-hub:7.1",
+        "via": "PAY-115"
+       },
+       {
+        "id": "DEP-PAYHUB-PROD",
+        "level": "A4",
+        "name": "Payments Hub — production",
+        "via": "composition"
+       },
+       {
+        "id": "ENV-PAY-PROD",
+        "level": "A4",
+        "name": "Production",
+        "via": "composition"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "ACT-PAY-02b",
+       "level": "A1",
+       "name": "Retrieve status"
+      },
+      "steps": [
+       {
+        "id": "PRC-PAY-02",
+        "level": "A1",
+        "name": "Execute and confirm payment",
+        "via": "composition"
+       },
+       {
+        "id": "SD-PI",
+        "level": "A2",
+        "name": "Payment Initiation (synthetic selection)",
+        "via": "PAY-004"
+       },
+       {
+        "id": "BD-PAYMENTS",
+        "level": "A2",
+        "name": "Payments (synthetic grouping)",
+        "via": "composition"
+       },
+       {
+        "id": "BA-OPS-EXEC",
+        "level": "A2",
+        "name": "Operations and Execution",
+        "via": "composition"
+       }
+      ]
+     },
+     {
+      "start": {
        "id": "BO-PAY-INSTR",
        "level": "A1",
        "name": "Payment Instruction"
@@ -35,6 +1535,1335 @@
      },
      {
       "start": {
+       "id": "BO-PAY-INSTR",
+       "level": "A1",
+       "name": "Payment Instruction"
+      },
+      "steps": [
+       {
+        "id": "BBO-PAY-INSTR",
+        "level": "A2",
+        "name": "Payment Instruction",
+        "via": "PAY-005"
+       },
+       {
+        "id": "CR-PI",
+        "level": "A2",
+        "name": "Payment Initiation Procedure",
+        "via": "composition"
+       },
+       {
+        "id": "SD-PI",
+        "level": "A2",
+        "name": "Payment Initiation (synthetic selection)",
+        "via": "composition"
+       },
+       {
+        "id": "APP-PAY-HUB",
+        "level": "A3",
+        "name": "Payments Hub",
+        "via": "PAY-106"
+       },
+       {
+        "id": "INF-K8S-PAY-PROD",
+        "level": "A4",
+        "name": "Managed Kubernetes — payments (production)",
+        "via": "PAY-108"
+       },
+       {
+        "id": "ZONE-PAY-PRIVATE",
+        "level": "A4",
+        "name": "Payments private network zone",
+        "via": "RA4-38"
+       },
+       {
+        "id": "ZONE-PAY-INTERNAL",
+        "level": "A4",
+        "name": "Internal network — payments",
+        "via": "RA4-39"
+       },
+       {
+        "id": "ZONE-PAY-CLOUD",
+        "level": "A4",
+        "name": "Cloud — payments",
+        "via": "RA4-39"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "BO-PAY-INSTR",
+       "level": "A1",
+       "name": "Payment Instruction"
+      },
+      "steps": [
+       {
+        "id": "BBO-PAY-INSTR",
+        "level": "A2",
+        "name": "Payment Instruction",
+        "via": "PAY-005"
+       },
+       {
+        "id": "CR-PI",
+        "level": "A2",
+        "name": "Payment Initiation Procedure",
+        "via": "composition"
+       },
+       {
+        "id": "SD-PI",
+        "level": "A2",
+        "name": "Payment Initiation (synthetic selection)",
+        "via": "composition"
+       },
+       {
+        "id": "APP-PAY-HUB",
+        "level": "A3",
+        "name": "Payments Hub",
+        "via": "PAY-106"
+       },
+       {
+        "id": "INF-K8S-PAY-PROD",
+        "level": "A4",
+        "name": "Managed Kubernetes — payments (production)",
+        "via": "PAY-108"
+       },
+       {
+        "id": "NET-PAY-PRIVATE",
+        "level": "A4",
+        "name": "Payments private network",
+        "via": "RA4-37"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "BO-PAY-INSTR",
+       "level": "A1",
+       "name": "Payment Instruction"
+      },
+      "steps": [
+       {
+        "id": "BBO-PAY-INSTR",
+        "level": "A2",
+        "name": "Payment Instruction",
+        "via": "PAY-005"
+       },
+       {
+        "id": "CR-PI",
+        "level": "A2",
+        "name": "Payment Initiation Procedure",
+        "via": "composition"
+       },
+       {
+        "id": "SD-PI",
+        "level": "A2",
+        "name": "Payment Initiation (synthetic selection)",
+        "via": "composition"
+       },
+       {
+        "id": "APP-PAY-HUB",
+        "level": "A3",
+        "name": "Payments Hub",
+        "via": "PAY-106"
+       },
+       {
+        "id": "DEP-PAYHUB-PROD",
+        "level": "A4",
+        "name": "Payments Hub — production",
+        "via": "PAY-109"
+       },
+       {
+        "id": "ENV-PAY-PROD",
+        "level": "A4",
+        "name": "Production",
+        "via": "composition"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "BO-PAY-INSTR",
+       "level": "A1",
+       "name": "Payment Instruction"
+      },
+      "steps": [
+       {
+        "id": "BBO-PAY-INSTR",
+        "level": "A2",
+        "name": "Payment Instruction",
+        "via": "PAY-005"
+       },
+       {
+        "id": "CR-PI",
+        "level": "A2",
+        "name": "Payment Initiation Procedure",
+        "via": "composition"
+       },
+       {
+        "id": "SD-PI",
+        "level": "A2",
+        "name": "Payment Initiation (synthetic selection)",
+        "via": "composition"
+       },
+       {
+        "id": "APP-PAY-HUB",
+        "level": "A3",
+        "name": "Payments Hub",
+        "via": "PAY-106"
+       },
+       {
+        "id": "DEP-PAYHUB-UAT",
+        "level": "A4",
+        "name": "Payments Hub — UAT",
+        "via": "PAY-110"
+       },
+       {
+        "id": "ENV-PAY-UAT",
+        "level": "A4",
+        "name": "UAT",
+        "via": "composition"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "BO-PAY-INSTR",
+       "level": "A1",
+       "name": "Payment Instruction"
+      },
+      "steps": [
+       {
+        "id": "BBO-PAY-INSTR",
+        "level": "A2",
+        "name": "Payment Instruction",
+        "via": "PAY-005"
+       },
+       {
+        "id": "CR-PI",
+        "level": "A2",
+        "name": "Payment Initiation Procedure",
+        "via": "composition"
+       },
+       {
+        "id": "SD-PI",
+        "level": "A2",
+        "name": "Payment Initiation (synthetic selection)",
+        "via": "composition"
+       },
+       {
+        "id": "APP-PAY-HUB",
+        "level": "A3",
+        "name": "Payments Hub",
+        "via": "PAY-106"
+       },
+       {
+        "id": "INF-K8S-PAY-UAT",
+        "level": "A4",
+        "name": "Managed Kubernetes — payments (UAT)",
+        "via": "PAY-113"
+       },
+       {
+        "id": "ZONE-PAY-PRIVATE",
+        "level": "A4",
+        "name": "Payments private network zone",
+        "via": "RA4-38"
+       },
+       {
+        "id": "ZONE-PAY-INTERNAL",
+        "level": "A4",
+        "name": "Internal network — payments",
+        "via": "RA4-39"
+       },
+       {
+        "id": "ZONE-PAY-CLOUD",
+        "level": "A4",
+        "name": "Cloud — payments",
+        "via": "RA4-39"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "BO-PAY-INSTR",
+       "level": "A1",
+       "name": "Payment Instruction"
+      },
+      "steps": [
+       {
+        "id": "BBO-PAY-INSTR",
+        "level": "A2",
+        "name": "Payment Instruction",
+        "via": "PAY-005"
+       },
+       {
+        "id": "CR-PI",
+        "level": "A2",
+        "name": "Payment Initiation Procedure",
+        "via": "composition"
+       },
+       {
+        "id": "SD-PI",
+        "level": "A2",
+        "name": "Payment Initiation (synthetic selection)",
+        "via": "composition"
+       },
+       {
+        "id": "APP-PAY-HUB",
+        "level": "A3",
+        "name": "Payments Hub",
+        "via": "PAY-106"
+       },
+       {
+        "id": "INF-K8S-PAY-UAT",
+        "level": "A4",
+        "name": "Managed Kubernetes — payments (UAT)",
+        "via": "PAY-113"
+       },
+       {
+        "id": "NET-PAY-PRIVATE",
+        "level": "A4",
+        "name": "Payments private network",
+        "via": "RA4-37"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "BO-PAY-INSTR",
+       "level": "A1",
+       "name": "Payment Instruction"
+      },
+      "steps": [
+       {
+        "id": "BBO-PAY-INSTR",
+        "level": "A2",
+        "name": "Payment Instruction",
+        "via": "PAY-005"
+       },
+       {
+        "id": "CR-PI",
+        "level": "A2",
+        "name": "Payment Initiation Procedure",
+        "via": "composition"
+       },
+       {
+        "id": "SD-PI",
+        "level": "A2",
+        "name": "Payment Initiation (synthetic selection)",
+        "via": "composition"
+       },
+       {
+        "id": "APP-PAY-HUB",
+        "level": "A3",
+        "name": "Payments Hub",
+        "via": "PAY-106"
+       },
+       {
+        "id": "INF-K8S-PAY-UAT",
+        "level": "A4",
+        "name": "Managed Kubernetes — payments (UAT)",
+        "via": "PAY-113"
+       },
+       {
+        "id": "ENV-PAY-UAT",
+        "level": "A4",
+        "name": "UAT",
+        "via": "composition"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "BO-PAY-INSTR",
+       "level": "A1",
+       "name": "Payment Instruction"
+      },
+      "steps": [
+       {
+        "id": "BBO-PAY-INSTR",
+        "level": "A2",
+        "name": "Payment Instruction",
+        "via": "PAY-005"
+       },
+       {
+        "id": "CR-PI",
+        "level": "A2",
+        "name": "Payment Initiation Procedure",
+        "via": "composition"
+       },
+       {
+        "id": "SD-PI",
+        "level": "A2",
+        "name": "Payment Initiation (synthetic selection)",
+        "via": "composition"
+       },
+       {
+        "id": "APP-PAY-HUB",
+        "level": "A3",
+        "name": "Payments Hub",
+        "via": "PAY-106"
+       },
+       {
+        "id": "ART-PAYHUB-IMG",
+        "level": "A4",
+        "name": "payments-hub:7.1",
+        "via": "PAY-115"
+       },
+       {
+        "id": "DEP-PAYHUB-PROD",
+        "level": "A4",
+        "name": "Payments Hub — production",
+        "via": "composition"
+       },
+       {
+        "id": "ENV-PAY-PROD",
+        "level": "A4",
+        "name": "Production",
+        "via": "composition"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "BO-PAY-INSTR",
+       "level": "A1",
+       "name": "Payment Instruction"
+      },
+      "steps": [
+       {
+        "id": "BBO-PAY-INSTR",
+        "level": "A2",
+        "name": "Payment Instruction",
+        "via": "PAY-005"
+       },
+       {
+        "id": "CR-PI",
+        "level": "A2",
+        "name": "Payment Initiation Procedure",
+        "via": "composition"
+       },
+       {
+        "id": "SD-PI",
+        "level": "A2",
+        "name": "Payment Initiation (synthetic selection)",
+        "via": "composition"
+       },
+       {
+        "id": "BD-PAYMENTS",
+        "level": "A2",
+        "name": "Payments (synthetic grouping)",
+        "via": "composition"
+       },
+       {
+        "id": "BA-OPS-EXEC",
+        "level": "A2",
+        "name": "Operations and Execution",
+        "via": "composition"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "BO-PAY-INSTR",
+       "level": "A1",
+       "name": "Payment Instruction"
+      },
+      "steps": [
+       {
+        "id": "BO-PAYEE",
+        "level": "A1",
+        "name": "Payee",
+        "via": "composition"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "BO-PAYEE",
+       "level": "A1",
+       "name": "Payee"
+      },
+      "steps": [
+       {
+        "id": "BO-PAY-INSTR",
+        "level": "A1",
+        "name": "Payment Instruction",
+        "via": "composition"
+       },
+       {
+        "id": "BBO-PAY-INSTR",
+        "level": "A2",
+        "name": "Payment Instruction",
+        "via": "PAY-005"
+       },
+       {
+        "id": "ENT-PAY-INSTR",
+        "level": "A3",
+        "name": "payment_instruction",
+        "via": "PAY-107"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "BO-PAYEE",
+       "level": "A1",
+       "name": "Payee"
+      },
+      "steps": [
+       {
+        "id": "BO-PAY-INSTR",
+        "level": "A1",
+        "name": "Payment Instruction",
+        "via": "composition"
+       },
+       {
+        "id": "BBO-PAY-INSTR",
+        "level": "A2",
+        "name": "Payment Instruction",
+        "via": "PAY-005"
+       },
+       {
+        "id": "CR-PI",
+        "level": "A2",
+        "name": "Payment Initiation Procedure",
+        "via": "composition"
+       },
+       {
+        "id": "SD-PI",
+        "level": "A2",
+        "name": "Payment Initiation (synthetic selection)",
+        "via": "composition"
+       },
+       {
+        "id": "APP-PAY-HUB",
+        "level": "A3",
+        "name": "Payments Hub",
+        "via": "PAY-106"
+       },
+       {
+        "id": "INF-K8S-PAY-PROD",
+        "level": "A4",
+        "name": "Managed Kubernetes — payments (production)",
+        "via": "PAY-108"
+       },
+       {
+        "id": "ZONE-PAY-PRIVATE",
+        "level": "A4",
+        "name": "Payments private network zone",
+        "via": "RA4-38"
+       },
+       {
+        "id": "ZONE-PAY-INTERNAL",
+        "level": "A4",
+        "name": "Internal network — payments",
+        "via": "RA4-39"
+       },
+       {
+        "id": "ZONE-PAY-CLOUD",
+        "level": "A4",
+        "name": "Cloud — payments",
+        "via": "RA4-39"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "BO-PAYEE",
+       "level": "A1",
+       "name": "Payee"
+      },
+      "steps": [
+       {
+        "id": "BO-PAY-INSTR",
+        "level": "A1",
+        "name": "Payment Instruction",
+        "via": "composition"
+       },
+       {
+        "id": "BBO-PAY-INSTR",
+        "level": "A2",
+        "name": "Payment Instruction",
+        "via": "PAY-005"
+       },
+       {
+        "id": "CR-PI",
+        "level": "A2",
+        "name": "Payment Initiation Procedure",
+        "via": "composition"
+       },
+       {
+        "id": "SD-PI",
+        "level": "A2",
+        "name": "Payment Initiation (synthetic selection)",
+        "via": "composition"
+       },
+       {
+        "id": "APP-PAY-HUB",
+        "level": "A3",
+        "name": "Payments Hub",
+        "via": "PAY-106"
+       },
+       {
+        "id": "INF-K8S-PAY-PROD",
+        "level": "A4",
+        "name": "Managed Kubernetes — payments (production)",
+        "via": "PAY-108"
+       },
+       {
+        "id": "NET-PAY-PRIVATE",
+        "level": "A4",
+        "name": "Payments private network",
+        "via": "RA4-37"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "BO-PAYEE",
+       "level": "A1",
+       "name": "Payee"
+      },
+      "steps": [
+       {
+        "id": "BO-PAY-INSTR",
+        "level": "A1",
+        "name": "Payment Instruction",
+        "via": "composition"
+       },
+       {
+        "id": "BBO-PAY-INSTR",
+        "level": "A2",
+        "name": "Payment Instruction",
+        "via": "PAY-005"
+       },
+       {
+        "id": "CR-PI",
+        "level": "A2",
+        "name": "Payment Initiation Procedure",
+        "via": "composition"
+       },
+       {
+        "id": "SD-PI",
+        "level": "A2",
+        "name": "Payment Initiation (synthetic selection)",
+        "via": "composition"
+       },
+       {
+        "id": "APP-PAY-HUB",
+        "level": "A3",
+        "name": "Payments Hub",
+        "via": "PAY-106"
+       },
+       {
+        "id": "DEP-PAYHUB-PROD",
+        "level": "A4",
+        "name": "Payments Hub — production",
+        "via": "PAY-109"
+       },
+       {
+        "id": "ENV-PAY-PROD",
+        "level": "A4",
+        "name": "Production",
+        "via": "composition"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "BO-PAYEE",
+       "level": "A1",
+       "name": "Payee"
+      },
+      "steps": [
+       {
+        "id": "BO-PAY-INSTR",
+        "level": "A1",
+        "name": "Payment Instruction",
+        "via": "composition"
+       },
+       {
+        "id": "BBO-PAY-INSTR",
+        "level": "A2",
+        "name": "Payment Instruction",
+        "via": "PAY-005"
+       },
+       {
+        "id": "CR-PI",
+        "level": "A2",
+        "name": "Payment Initiation Procedure",
+        "via": "composition"
+       },
+       {
+        "id": "SD-PI",
+        "level": "A2",
+        "name": "Payment Initiation (synthetic selection)",
+        "via": "composition"
+       },
+       {
+        "id": "APP-PAY-HUB",
+        "level": "A3",
+        "name": "Payments Hub",
+        "via": "PAY-106"
+       },
+       {
+        "id": "DEP-PAYHUB-UAT",
+        "level": "A4",
+        "name": "Payments Hub — UAT",
+        "via": "PAY-110"
+       },
+       {
+        "id": "ENV-PAY-UAT",
+        "level": "A4",
+        "name": "UAT",
+        "via": "composition"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "BO-PAYEE",
+       "level": "A1",
+       "name": "Payee"
+      },
+      "steps": [
+       {
+        "id": "BO-PAY-INSTR",
+        "level": "A1",
+        "name": "Payment Instruction",
+        "via": "composition"
+       },
+       {
+        "id": "BBO-PAY-INSTR",
+        "level": "A2",
+        "name": "Payment Instruction",
+        "via": "PAY-005"
+       },
+       {
+        "id": "CR-PI",
+        "level": "A2",
+        "name": "Payment Initiation Procedure",
+        "via": "composition"
+       },
+       {
+        "id": "SD-PI",
+        "level": "A2",
+        "name": "Payment Initiation (synthetic selection)",
+        "via": "composition"
+       },
+       {
+        "id": "APP-PAY-HUB",
+        "level": "A3",
+        "name": "Payments Hub",
+        "via": "PAY-106"
+       },
+       {
+        "id": "INF-K8S-PAY-UAT",
+        "level": "A4",
+        "name": "Managed Kubernetes — payments (UAT)",
+        "via": "PAY-113"
+       },
+       {
+        "id": "ZONE-PAY-PRIVATE",
+        "level": "A4",
+        "name": "Payments private network zone",
+        "via": "RA4-38"
+       },
+       {
+        "id": "ZONE-PAY-INTERNAL",
+        "level": "A4",
+        "name": "Internal network — payments",
+        "via": "RA4-39"
+       },
+       {
+        "id": "ZONE-PAY-CLOUD",
+        "level": "A4",
+        "name": "Cloud — payments",
+        "via": "RA4-39"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "BO-PAYEE",
+       "level": "A1",
+       "name": "Payee"
+      },
+      "steps": [
+       {
+        "id": "BO-PAY-INSTR",
+        "level": "A1",
+        "name": "Payment Instruction",
+        "via": "composition"
+       },
+       {
+        "id": "BBO-PAY-INSTR",
+        "level": "A2",
+        "name": "Payment Instruction",
+        "via": "PAY-005"
+       },
+       {
+        "id": "CR-PI",
+        "level": "A2",
+        "name": "Payment Initiation Procedure",
+        "via": "composition"
+       },
+       {
+        "id": "SD-PI",
+        "level": "A2",
+        "name": "Payment Initiation (synthetic selection)",
+        "via": "composition"
+       },
+       {
+        "id": "APP-PAY-HUB",
+        "level": "A3",
+        "name": "Payments Hub",
+        "via": "PAY-106"
+       },
+       {
+        "id": "INF-K8S-PAY-UAT",
+        "level": "A4",
+        "name": "Managed Kubernetes — payments (UAT)",
+        "via": "PAY-113"
+       },
+       {
+        "id": "NET-PAY-PRIVATE",
+        "level": "A4",
+        "name": "Payments private network",
+        "via": "RA4-37"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "BO-PAYEE",
+       "level": "A1",
+       "name": "Payee"
+      },
+      "steps": [
+       {
+        "id": "BO-PAY-INSTR",
+        "level": "A1",
+        "name": "Payment Instruction",
+        "via": "composition"
+       },
+       {
+        "id": "BBO-PAY-INSTR",
+        "level": "A2",
+        "name": "Payment Instruction",
+        "via": "PAY-005"
+       },
+       {
+        "id": "CR-PI",
+        "level": "A2",
+        "name": "Payment Initiation Procedure",
+        "via": "composition"
+       },
+       {
+        "id": "SD-PI",
+        "level": "A2",
+        "name": "Payment Initiation (synthetic selection)",
+        "via": "composition"
+       },
+       {
+        "id": "APP-PAY-HUB",
+        "level": "A3",
+        "name": "Payments Hub",
+        "via": "PAY-106"
+       },
+       {
+        "id": "INF-K8S-PAY-UAT",
+        "level": "A4",
+        "name": "Managed Kubernetes — payments (UAT)",
+        "via": "PAY-113"
+       },
+       {
+        "id": "ENV-PAY-UAT",
+        "level": "A4",
+        "name": "UAT",
+        "via": "composition"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "BO-PAYEE",
+       "level": "A1",
+       "name": "Payee"
+      },
+      "steps": [
+       {
+        "id": "BO-PAY-INSTR",
+        "level": "A1",
+        "name": "Payment Instruction",
+        "via": "composition"
+       },
+       {
+        "id": "BBO-PAY-INSTR",
+        "level": "A2",
+        "name": "Payment Instruction",
+        "via": "PAY-005"
+       },
+       {
+        "id": "CR-PI",
+        "level": "A2",
+        "name": "Payment Initiation Procedure",
+        "via": "composition"
+       },
+       {
+        "id": "SD-PI",
+        "level": "A2",
+        "name": "Payment Initiation (synthetic selection)",
+        "via": "composition"
+       },
+       {
+        "id": "APP-PAY-HUB",
+        "level": "A3",
+        "name": "Payments Hub",
+        "via": "PAY-106"
+       },
+       {
+        "id": "ART-PAYHUB-IMG",
+        "level": "A4",
+        "name": "payments-hub:7.1",
+        "via": "PAY-115"
+       },
+       {
+        "id": "DEP-PAYHUB-PROD",
+        "level": "A4",
+        "name": "Payments Hub — production",
+        "via": "composition"
+       },
+       {
+        "id": "ENV-PAY-PROD",
+        "level": "A4",
+        "name": "Production",
+        "via": "composition"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "BO-PAYEE",
+       "level": "A1",
+       "name": "Payee"
+      },
+      "steps": [
+       {
+        "id": "BO-PAY-INSTR",
+        "level": "A1",
+        "name": "Payment Instruction",
+        "via": "composition"
+       },
+       {
+        "id": "BBO-PAY-INSTR",
+        "level": "A2",
+        "name": "Payment Instruction",
+        "via": "PAY-005"
+       },
+       {
+        "id": "CR-PI",
+        "level": "A2",
+        "name": "Payment Initiation Procedure",
+        "via": "composition"
+       },
+       {
+        "id": "SD-PI",
+        "level": "A2",
+        "name": "Payment Initiation (synthetic selection)",
+        "via": "composition"
+       },
+       {
+        "id": "BD-PAYMENTS",
+        "level": "A2",
+        "name": "Payments (synthetic grouping)",
+        "via": "composition"
+       },
+       {
+        "id": "BA-OPS-EXEC",
+        "level": "A2",
+        "name": "Operations and Execution",
+        "via": "composition"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "CAP-PAY-000",
+       "level": "A1",
+       "name": "Payments"
+      },
+      "steps": [
+       {
+        "id": "CAP-PAY-010",
+        "level": "A1",
+        "name": "Initiate Payment",
+        "via": "composition"
+       },
+       {
+        "id": "SD-PI",
+        "level": "A2",
+        "name": "Payment Initiation (synthetic selection)",
+        "via": "PAY-001"
+       },
+       {
+        "id": "APP-PAY-HUB",
+        "level": "A3",
+        "name": "Payments Hub",
+        "via": "PAY-106"
+       },
+       {
+        "id": "INF-K8S-PAY-PROD",
+        "level": "A4",
+        "name": "Managed Kubernetes — payments (production)",
+        "via": "PAY-108"
+       },
+       {
+        "id": "ZONE-PAY-PRIVATE",
+        "level": "A4",
+        "name": "Payments private network zone",
+        "via": "RA4-38"
+       },
+       {
+        "id": "ZONE-PAY-INTERNAL",
+        "level": "A4",
+        "name": "Internal network — payments",
+        "via": "RA4-39"
+       },
+       {
+        "id": "ZONE-PAY-CLOUD",
+        "level": "A4",
+        "name": "Cloud — payments",
+        "via": "RA4-39"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "CAP-PAY-000",
+       "level": "A1",
+       "name": "Payments"
+      },
+      "steps": [
+       {
+        "id": "CAP-PAY-010",
+        "level": "A1",
+        "name": "Initiate Payment",
+        "via": "composition"
+       },
+       {
+        "id": "SD-PI",
+        "level": "A2",
+        "name": "Payment Initiation (synthetic selection)",
+        "via": "PAY-001"
+       },
+       {
+        "id": "APP-PAY-HUB",
+        "level": "A3",
+        "name": "Payments Hub",
+        "via": "PAY-106"
+       },
+       {
+        "id": "INF-K8S-PAY-PROD",
+        "level": "A4",
+        "name": "Managed Kubernetes — payments (production)",
+        "via": "PAY-108"
+       },
+       {
+        "id": "NET-PAY-PRIVATE",
+        "level": "A4",
+        "name": "Payments private network",
+        "via": "RA4-37"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "CAP-PAY-000",
+       "level": "A1",
+       "name": "Payments"
+      },
+      "steps": [
+       {
+        "id": "CAP-PAY-010",
+        "level": "A1",
+        "name": "Initiate Payment",
+        "via": "composition"
+       },
+       {
+        "id": "SD-PI",
+        "level": "A2",
+        "name": "Payment Initiation (synthetic selection)",
+        "via": "PAY-001"
+       },
+       {
+        "id": "APP-PAY-HUB",
+        "level": "A3",
+        "name": "Payments Hub",
+        "via": "PAY-106"
+       },
+       {
+        "id": "DEP-PAYHUB-PROD",
+        "level": "A4",
+        "name": "Payments Hub — production",
+        "via": "PAY-109"
+       },
+       {
+        "id": "ENV-PAY-PROD",
+        "level": "A4",
+        "name": "Production",
+        "via": "composition"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "CAP-PAY-000",
+       "level": "A1",
+       "name": "Payments"
+      },
+      "steps": [
+       {
+        "id": "CAP-PAY-010",
+        "level": "A1",
+        "name": "Initiate Payment",
+        "via": "composition"
+       },
+       {
+        "id": "SD-PI",
+        "level": "A2",
+        "name": "Payment Initiation (synthetic selection)",
+        "via": "PAY-001"
+       },
+       {
+        "id": "APP-PAY-HUB",
+        "level": "A3",
+        "name": "Payments Hub",
+        "via": "PAY-106"
+       },
+       {
+        "id": "DEP-PAYHUB-UAT",
+        "level": "A4",
+        "name": "Payments Hub — UAT",
+        "via": "PAY-110"
+       },
+       {
+        "id": "ENV-PAY-UAT",
+        "level": "A4",
+        "name": "UAT",
+        "via": "composition"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "CAP-PAY-000",
+       "level": "A1",
+       "name": "Payments"
+      },
+      "steps": [
+       {
+        "id": "CAP-PAY-010",
+        "level": "A1",
+        "name": "Initiate Payment",
+        "via": "composition"
+       },
+       {
+        "id": "SD-PI",
+        "level": "A2",
+        "name": "Payment Initiation (synthetic selection)",
+        "via": "PAY-001"
+       },
+       {
+        "id": "APP-PAY-HUB",
+        "level": "A3",
+        "name": "Payments Hub",
+        "via": "PAY-106"
+       },
+       {
+        "id": "INF-K8S-PAY-UAT",
+        "level": "A4",
+        "name": "Managed Kubernetes — payments (UAT)",
+        "via": "PAY-113"
+       },
+       {
+        "id": "ZONE-PAY-PRIVATE",
+        "level": "A4",
+        "name": "Payments private network zone",
+        "via": "RA4-38"
+       },
+       {
+        "id": "ZONE-PAY-INTERNAL",
+        "level": "A4",
+        "name": "Internal network — payments",
+        "via": "RA4-39"
+       },
+       {
+        "id": "ZONE-PAY-CLOUD",
+        "level": "A4",
+        "name": "Cloud — payments",
+        "via": "RA4-39"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "CAP-PAY-000",
+       "level": "A1",
+       "name": "Payments"
+      },
+      "steps": [
+       {
+        "id": "CAP-PAY-010",
+        "level": "A1",
+        "name": "Initiate Payment",
+        "via": "composition"
+       },
+       {
+        "id": "SD-PI",
+        "level": "A2",
+        "name": "Payment Initiation (synthetic selection)",
+        "via": "PAY-001"
+       },
+       {
+        "id": "APP-PAY-HUB",
+        "level": "A3",
+        "name": "Payments Hub",
+        "via": "PAY-106"
+       },
+       {
+        "id": "INF-K8S-PAY-UAT",
+        "level": "A4",
+        "name": "Managed Kubernetes — payments (UAT)",
+        "via": "PAY-113"
+       },
+       {
+        "id": "NET-PAY-PRIVATE",
+        "level": "A4",
+        "name": "Payments private network",
+        "via": "RA4-37"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "CAP-PAY-000",
+       "level": "A1",
+       "name": "Payments"
+      },
+      "steps": [
+       {
+        "id": "CAP-PAY-010",
+        "level": "A1",
+        "name": "Initiate Payment",
+        "via": "composition"
+       },
+       {
+        "id": "SD-PI",
+        "level": "A2",
+        "name": "Payment Initiation (synthetic selection)",
+        "via": "PAY-001"
+       },
+       {
+        "id": "APP-PAY-HUB",
+        "level": "A3",
+        "name": "Payments Hub",
+        "via": "PAY-106"
+       },
+       {
+        "id": "INF-K8S-PAY-UAT",
+        "level": "A4",
+        "name": "Managed Kubernetes — payments (UAT)",
+        "via": "PAY-113"
+       },
+       {
+        "id": "ENV-PAY-UAT",
+        "level": "A4",
+        "name": "UAT",
+        "via": "composition"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "CAP-PAY-000",
+       "level": "A1",
+       "name": "Payments"
+      },
+      "steps": [
+       {
+        "id": "CAP-PAY-010",
+        "level": "A1",
+        "name": "Initiate Payment",
+        "via": "composition"
+       },
+       {
+        "id": "SD-PI",
+        "level": "A2",
+        "name": "Payment Initiation (synthetic selection)",
+        "via": "PAY-001"
+       },
+       {
+        "id": "APP-PAY-HUB",
+        "level": "A3",
+        "name": "Payments Hub",
+        "via": "PAY-106"
+       },
+       {
+        "id": "ART-PAYHUB-IMG",
+        "level": "A4",
+        "name": "payments-hub:7.1",
+        "via": "PAY-115"
+       },
+       {
+        "id": "DEP-PAYHUB-PROD",
+        "level": "A4",
+        "name": "Payments Hub — production",
+        "via": "composition"
+       },
+       {
+        "id": "ENV-PAY-PROD",
+        "level": "A4",
+        "name": "Production",
+        "via": "composition"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "CAP-PAY-000",
+       "level": "A1",
+       "name": "Payments"
+      },
+      "steps": [
+       {
+        "id": "CAP-PAY-010",
+        "level": "A1",
+        "name": "Initiate Payment",
+        "via": "composition"
+       },
+       {
+        "id": "SD-PI",
+        "level": "A2",
+        "name": "Payment Initiation (synthetic selection)",
+        "via": "PAY-001"
+       },
+       {
+        "id": "BD-PAYMENTS",
+        "level": "A2",
+        "name": "Payments (synthetic grouping)",
+        "via": "composition"
+       },
+       {
+        "id": "BA-OPS-EXEC",
+        "level": "A2",
+        "name": "Operations and Execution",
+        "via": "composition"
+       }
+      ]
+     },
+     {
+      "start": {
        "id": "CAP-PAY-010",
        "level": "A1",
        "name": "Initiate Payment"
@@ -135,6 +2964,12 @@
         "level": "A4",
         "name": "Payments Hub — production",
         "via": "PAY-109"
+       },
+       {
+        "id": "ENV-PAY-PROD",
+        "level": "A4",
+        "name": "Production",
+        "via": "composition"
        }
       ]
      },
@@ -162,6 +2997,12 @@
         "level": "A4",
         "name": "Payments Hub — UAT",
         "via": "PAY-110"
+       },
+       {
+        "id": "ENV-PAY-UAT",
+        "level": "A4",
+        "name": "UAT",
+        "via": "composition"
        }
       ]
      },
@@ -263,10 +3104,97 @@
         "via": "PAY-106"
        },
        {
+        "id": "INF-K8S-PAY-UAT",
+        "level": "A4",
+        "name": "Managed Kubernetes — payments (UAT)",
+        "via": "PAY-113"
+       },
+       {
+        "id": "ENV-PAY-UAT",
+        "level": "A4",
+        "name": "UAT",
+        "via": "composition"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "CAP-PAY-010",
+       "level": "A1",
+       "name": "Initiate Payment"
+      },
+      "steps": [
+       {
+        "id": "SD-PI",
+        "level": "A2",
+        "name": "Payment Initiation (synthetic selection)",
+        "via": "PAY-001"
+       },
+       {
+        "id": "APP-PAY-HUB",
+        "level": "A3",
+        "name": "Payments Hub",
+        "via": "PAY-106"
+       },
+       {
         "id": "ART-PAYHUB-IMG",
         "level": "A4",
         "name": "payments-hub:7.1",
         "via": "PAY-115"
+       },
+       {
+        "id": "DEP-PAYHUB-PROD",
+        "level": "A4",
+        "name": "Payments Hub — production",
+        "via": "composition"
+       },
+       {
+        "id": "ENV-PAY-PROD",
+        "level": "A4",
+        "name": "Production",
+        "via": "composition"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "CAP-PAY-010",
+       "level": "A1",
+       "name": "Initiate Payment"
+      },
+      "steps": [
+       {
+        "id": "SD-PI",
+        "level": "A2",
+        "name": "Payment Initiation (synthetic selection)",
+        "via": "PAY-001"
+       },
+       {
+        "id": "BD-PAYMENTS",
+        "level": "A2",
+        "name": "Payments (synthetic grouping)",
+        "via": "composition"
+       },
+       {
+        "id": "BA-OPS-EXEC",
+        "level": "A2",
+        "name": "Operations and Execution",
+        "via": "composition"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "CAP-PAY-010",
+       "level": "A1",
+       "name": "Initiate Payment"
+      },
+      "steps": [
+       {
+        "id": "CAP-PAY-000",
+        "level": "A1",
+        "name": "Payments",
+        "via": "composition"
        }
       ]
      },
@@ -372,6 +3300,12 @@
         "level": "A4",
         "name": "Payments Hub — production",
         "via": "PAY-109"
+       },
+       {
+        "id": "ENV-PAY-PROD",
+        "level": "A4",
+        "name": "Production",
+        "via": "composition"
        }
       ]
      },
@@ -399,6 +3333,12 @@
         "level": "A4",
         "name": "Payments Hub — UAT",
         "via": "PAY-110"
+       },
+       {
+        "id": "ENV-PAY-UAT",
+        "level": "A4",
+        "name": "UAT",
+        "via": "composition"
        }
       ]
      },
@@ -500,10 +3440,112 @@
         "via": "PAY-106"
        },
        {
+        "id": "INF-K8S-PAY-UAT",
+        "level": "A4",
+        "name": "Managed Kubernetes — payments (UAT)",
+        "via": "PAY-113"
+       },
+       {
+        "id": "ENV-PAY-UAT",
+        "level": "A4",
+        "name": "UAT",
+        "via": "composition"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "PRC-PAY-01",
+       "level": "A1",
+       "name": "Capture and validate payment instruction"
+      },
+      "steps": [
+       {
+        "id": "SD-PI",
+        "level": "A2",
+        "name": "Payment Initiation (synthetic selection)",
+        "via": "PAY-003"
+       },
+       {
+        "id": "APP-PAY-HUB",
+        "level": "A3",
+        "name": "Payments Hub",
+        "via": "PAY-106"
+       },
+       {
         "id": "ART-PAYHUB-IMG",
         "level": "A4",
         "name": "payments-hub:7.1",
         "via": "PAY-115"
+       },
+       {
+        "id": "DEP-PAYHUB-PROD",
+        "level": "A4",
+        "name": "Payments Hub — production",
+        "via": "composition"
+       },
+       {
+        "id": "ENV-PAY-PROD",
+        "level": "A4",
+        "name": "Production",
+        "via": "composition"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "PRC-PAY-01",
+       "level": "A1",
+       "name": "Capture and validate payment instruction"
+      },
+      "steps": [
+       {
+        "id": "SD-PI",
+        "level": "A2",
+        "name": "Payment Initiation (synthetic selection)",
+        "via": "PAY-003"
+       },
+       {
+        "id": "BD-PAYMENTS",
+        "level": "A2",
+        "name": "Payments (synthetic grouping)",
+        "via": "composition"
+       },
+       {
+        "id": "BA-OPS-EXEC",
+        "level": "A2",
+        "name": "Operations and Execution",
+        "via": "composition"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "PRC-PAY-01",
+       "level": "A1",
+       "name": "Capture and validate payment instruction"
+      },
+      "steps": [
+       {
+        "id": "ACT-PAY-01a",
+        "level": "A1",
+        "name": "Capture instruction",
+        "via": "composition"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "PRC-PAY-01",
+       "level": "A1",
+       "name": "Capture and validate payment instruction"
+      },
+      "steps": [
+       {
+        "id": "ACT-PAY-01b",
+        "level": "A1",
+        "name": "Validate instruction",
+        "via": "composition"
        }
       ]
      },
@@ -609,6 +3651,12 @@
         "level": "A4",
         "name": "Payments Hub — production",
         "via": "PAY-109"
+       },
+       {
+        "id": "ENV-PAY-PROD",
+        "level": "A4",
+        "name": "Production",
+        "via": "composition"
        }
       ]
      },
@@ -636,6 +3684,12 @@
         "level": "A4",
         "name": "Payments Hub — UAT",
         "via": "PAY-110"
+       },
+       {
+        "id": "ENV-PAY-UAT",
+        "level": "A4",
+        "name": "UAT",
+        "via": "composition"
        }
       ]
      },
@@ -737,10 +3791,112 @@
         "via": "PAY-106"
        },
        {
+        "id": "INF-K8S-PAY-UAT",
+        "level": "A4",
+        "name": "Managed Kubernetes — payments (UAT)",
+        "via": "PAY-113"
+       },
+       {
+        "id": "ENV-PAY-UAT",
+        "level": "A4",
+        "name": "UAT",
+        "via": "composition"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "PRC-PAY-02",
+       "level": "A1",
+       "name": "Execute and confirm payment"
+      },
+      "steps": [
+       {
+        "id": "SD-PI",
+        "level": "A2",
+        "name": "Payment Initiation (synthetic selection)",
+        "via": "PAY-004"
+       },
+       {
+        "id": "APP-PAY-HUB",
+        "level": "A3",
+        "name": "Payments Hub",
+        "via": "PAY-106"
+       },
+       {
         "id": "ART-PAYHUB-IMG",
         "level": "A4",
         "name": "payments-hub:7.1",
         "via": "PAY-115"
+       },
+       {
+        "id": "DEP-PAYHUB-PROD",
+        "level": "A4",
+        "name": "Payments Hub — production",
+        "via": "composition"
+       },
+       {
+        "id": "ENV-PAY-PROD",
+        "level": "A4",
+        "name": "Production",
+        "via": "composition"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "PRC-PAY-02",
+       "level": "A1",
+       "name": "Execute and confirm payment"
+      },
+      "steps": [
+       {
+        "id": "SD-PI",
+        "level": "A2",
+        "name": "Payment Initiation (synthetic selection)",
+        "via": "PAY-004"
+       },
+       {
+        "id": "BD-PAYMENTS",
+        "level": "A2",
+        "name": "Payments (synthetic grouping)",
+        "via": "composition"
+       },
+       {
+        "id": "BA-OPS-EXEC",
+        "level": "A2",
+        "name": "Operations and Execution",
+        "via": "composition"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "PRC-PAY-02",
+       "level": "A1",
+       "name": "Execute and confirm payment"
+      },
+      "steps": [
+       {
+        "id": "ACT-PAY-02a",
+        "level": "A1",
+        "name": "Execute payment",
+        "via": "composition"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "PRC-PAY-02",
+       "level": "A1",
+       "name": "Execute and confirm payment"
+      },
+      "steps": [
+       {
+        "id": "ACT-PAY-02b",
+        "level": "A1",
+        "name": "Retrieve status",
+        "via": "composition"
        }
       ]
      },
@@ -758,83 +3914,478 @@
         "via": "PAY-002"
        }
       ]
+     },
+     {
+      "start": {
+       "id": "VS-MAKE-PAYMENT",
+       "level": "A1",
+       "name": "Make a Payment"
+      },
+      "steps": [
+       {
+        "id": "VSS-P1",
+        "level": "A1",
+        "name": "Capture payment instruction",
+        "via": "composition"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "VS-MAKE-PAYMENT",
+       "level": "A1",
+       "name": "Make a Payment"
+      },
+      "steps": [
+       {
+        "id": "VSS-P2",
+        "level": "A1",
+        "name": "Validate and authorise",
+        "via": "composition"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "VS-MAKE-PAYMENT",
+       "level": "A1",
+       "name": "Make a Payment"
+      },
+      "steps": [
+       {
+        "id": "VSS-P3",
+        "level": "A1",
+        "name": "Execute transfer",
+        "via": "composition"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "VS-MAKE-PAYMENT",
+       "level": "A1",
+       "name": "Make a Payment"
+      },
+      "steps": [
+       {
+        "id": "VSS-P4",
+        "level": "A1",
+        "name": "Confirm to customer",
+        "via": "composition"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "VSS-P1",
+       "level": "A1",
+       "name": "Capture payment instruction"
+      },
+      "steps": [
+       {
+        "id": "VS-MAKE-PAYMENT",
+        "level": "A1",
+        "name": "Make a Payment",
+        "via": "composition"
+       },
+       {
+        "id": "BS-CREDIT-TRANSFER",
+        "level": "A2",
+        "name": "Customer credit transfer",
+        "via": "PAY-002"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "VSS-P2",
+       "level": "A1",
+       "name": "Validate and authorise"
+      },
+      "steps": [
+       {
+        "id": "VS-MAKE-PAYMENT",
+        "level": "A1",
+        "name": "Make a Payment",
+        "via": "composition"
+       },
+       {
+        "id": "BS-CREDIT-TRANSFER",
+        "level": "A2",
+        "name": "Customer credit transfer",
+        "via": "PAY-002"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "VSS-P3",
+       "level": "A1",
+       "name": "Execute transfer"
+      },
+      "steps": [
+       {
+        "id": "VS-MAKE-PAYMENT",
+        "level": "A1",
+        "name": "Make a Payment",
+        "via": "composition"
+       },
+       {
+        "id": "BS-CREDIT-TRANSFER",
+        "level": "A2",
+        "name": "Customer credit transfer",
+        "via": "PAY-002"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "VSS-P4",
+       "level": "A1",
+       "name": "Confirm to customer"
+      },
+      "steps": [
+       {
+        "id": "VS-MAKE-PAYMENT",
+        "level": "A1",
+        "name": "Make a Payment",
+        "via": "composition"
+       },
+       {
+        "id": "BS-CREDIT-TRANSFER",
+        "level": "A2",
+        "name": "Customer credit transfer",
+        "via": "PAY-002"
+       }
+      ]
      }
     ],
-    "connected": 5,
+    "connected": 15,
     "direction": "down",
     "level": "A1",
     "not_applicable": 0,
     "orphans": [
      {
-      "id": "ACT-PAY-01a",
-      "name": "Capture instruction",
-      "type": "A1.BusinessActivity"
-     },
-     {
-      "id": "ACT-PAY-01b",
-      "name": "Validate instruction",
-      "type": "A1.BusinessActivity"
-     },
-     {
-      "id": "ACT-PAY-02a",
-      "name": "Execute payment",
-      "type": "A1.BusinessActivity"
-     },
-     {
-      "id": "ACT-PAY-02b",
-      "name": "Retrieve status",
-      "type": "A1.BusinessActivity"
-     },
-     {
-      "id": "BO-PAYEE",
-      "name": "Payee",
-      "type": "A1.BusinessObject"
-     },
-     {
-      "id": "CAP-PAY-000",
-      "name": "Payments",
-      "type": "A1.BusinessCapability"
-     },
-     {
       "id": "ROLE-PAY-OFFICER",
       "name": "Payments Operations Officer",
       "type": "A1.BusinessRole"
-     },
-     {
-      "id": "VSS-P1",
-      "name": "Capture payment instruction",
-      "type": "A1.ValueStreamStage"
-     },
-     {
-      "id": "VSS-P2",
-      "name": "Validate and authorise",
-      "type": "A1.ValueStreamStage"
-     },
-     {
-      "id": "VSS-P3",
-      "name": "Execute transfer",
-      "type": "A1.ValueStreamStage"
-     },
-     {
-      "id": "VSS-P4",
-      "name": "Confirm to customer",
-      "type": "A1.ValueStreamStage"
      }
     ],
     "reach": {
-     "A2": 5,
-     "A3": 4,
-     "A4": 3
+     "A2": 15,
+     "A3": 10,
+     "A4": 10
     },
     "records": 16,
     "to": null
    },
    {
-    "chains": [],
-    "connected": 0,
+    "chains": [
+     {
+      "start": {
+       "id": "ACT-PAY-01a",
+       "level": "A1",
+       "name": "Capture instruction"
+      },
+      "steps": [
+       {
+        "id": "PRC-PAY-01",
+        "level": "A1",
+        "name": "Capture and validate payment instruction",
+        "via": "composition"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "ACT-PAY-01b",
+       "level": "A1",
+       "name": "Validate instruction"
+      },
+      "steps": [
+       {
+        "id": "PRC-PAY-01",
+        "level": "A1",
+        "name": "Capture and validate payment instruction",
+        "via": "composition"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "ACT-PAY-02a",
+       "level": "A1",
+       "name": "Execute payment"
+      },
+      "steps": [
+       {
+        "id": "PRC-PAY-02",
+        "level": "A1",
+        "name": "Execute and confirm payment",
+        "via": "composition"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "ACT-PAY-02b",
+       "level": "A1",
+       "name": "Retrieve status"
+      },
+      "steps": [
+       {
+        "id": "PRC-PAY-02",
+        "level": "A1",
+        "name": "Execute and confirm payment",
+        "via": "composition"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "BO-PAY-INSTR",
+       "level": "A1",
+       "name": "Payment Instruction"
+      },
+      "steps": [
+       {
+        "id": "BO-PAYEE",
+        "level": "A1",
+        "name": "Payee",
+        "via": "composition"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "BO-PAYEE",
+       "level": "A1",
+       "name": "Payee"
+      },
+      "steps": [
+       {
+        "id": "BO-PAY-INSTR",
+        "level": "A1",
+        "name": "Payment Instruction",
+        "via": "composition"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "CAP-PAY-000",
+       "level": "A1",
+       "name": "Payments"
+      },
+      "steps": [
+       {
+        "id": "CAP-PAY-010",
+        "level": "A1",
+        "name": "Initiate Payment",
+        "via": "composition"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "CAP-PAY-010",
+       "level": "A1",
+       "name": "Initiate Payment"
+      },
+      "steps": [
+       {
+        "id": "CAP-PAY-000",
+        "level": "A1",
+        "name": "Payments",
+        "via": "composition"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "PRC-PAY-01",
+       "level": "A1",
+       "name": "Capture and validate payment instruction"
+      },
+      "steps": [
+       {
+        "id": "ACT-PAY-01a",
+        "level": "A1",
+        "name": "Capture instruction",
+        "via": "composition"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "PRC-PAY-01",
+       "level": "A1",
+       "name": "Capture and validate payment instruction"
+      },
+      "steps": [
+       {
+        "id": "ACT-PAY-01b",
+        "level": "A1",
+        "name": "Validate instruction",
+        "via": "composition"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "PRC-PAY-02",
+       "level": "A1",
+       "name": "Execute and confirm payment"
+      },
+      "steps": [
+       {
+        "id": "ACT-PAY-02a",
+        "level": "A1",
+        "name": "Execute payment",
+        "via": "composition"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "PRC-PAY-02",
+       "level": "A1",
+       "name": "Execute and confirm payment"
+      },
+      "steps": [
+       {
+        "id": "ACT-PAY-02b",
+        "level": "A1",
+        "name": "Retrieve status",
+        "via": "composition"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "VS-MAKE-PAYMENT",
+       "level": "A1",
+       "name": "Make a Payment"
+      },
+      "steps": [
+       {
+        "id": "VSS-P1",
+        "level": "A1",
+        "name": "Capture payment instruction",
+        "via": "composition"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "VS-MAKE-PAYMENT",
+       "level": "A1",
+       "name": "Make a Payment"
+      },
+      "steps": [
+       {
+        "id": "VSS-P2",
+        "level": "A1",
+        "name": "Validate and authorise",
+        "via": "composition"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "VS-MAKE-PAYMENT",
+       "level": "A1",
+       "name": "Make a Payment"
+      },
+      "steps": [
+       {
+        "id": "VSS-P3",
+        "level": "A1",
+        "name": "Execute transfer",
+        "via": "composition"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "VS-MAKE-PAYMENT",
+       "level": "A1",
+       "name": "Make a Payment"
+      },
+      "steps": [
+       {
+        "id": "VSS-P4",
+        "level": "A1",
+        "name": "Confirm to customer",
+        "via": "composition"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "VSS-P1",
+       "level": "A1",
+       "name": "Capture payment instruction"
+      },
+      "steps": [
+       {
+        "id": "VS-MAKE-PAYMENT",
+        "level": "A1",
+        "name": "Make a Payment",
+        "via": "composition"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "VSS-P2",
+       "level": "A1",
+       "name": "Validate and authorise"
+      },
+      "steps": [
+       {
+        "id": "VS-MAKE-PAYMENT",
+        "level": "A1",
+        "name": "Make a Payment",
+        "via": "composition"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "VSS-P3",
+       "level": "A1",
+       "name": "Execute transfer"
+      },
+      "steps": [
+       {
+        "id": "VS-MAKE-PAYMENT",
+        "level": "A1",
+        "name": "Make a Payment",
+        "via": "composition"
+       }
+      ]
+     },
+     {
+      "start": {
+       "id": "VSS-P4",
+       "level": "A1",
+       "name": "Confirm to customer"
+      },
+      "steps": [
+       {
+        "id": "VS-MAKE-PAYMENT",
+        "level": "A1",
+        "name": "Make a Payment",
+        "via": "composition"
+       }
+      ]
+     }
+    ],
+    "connected": 15,
     "direction": "up",
     "level": "A1",
-    "not_applicable": 16,
+    "not_applicable": 1,
     "orphans": [],
     "reach": {},
     "records": 16,

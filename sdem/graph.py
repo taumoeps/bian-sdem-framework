@@ -205,6 +205,32 @@ class FederatedGraph:
             self.enrich(c['node'])
         return node
 
+    def bian_holds(self, r):
+        """FT-07: a BIAN control record's link to a business object (B08: its information, BIAN's Business Object Model) — the object
+        is part of its service domain's information, so the trace climbs through it."""
+        if r['kind'] != 'association': return False
+        t = lambda i: (self.instance(i) or {}).get('type', '')
+        return self.mm.is_a(t(r['source']), _T('bian.ControlRecord')) and self.mm.is_a(t(r['target']), _T('bian.BusinessObject'))
+
+    def wholes(self, iid):
+        """FT-02: what a record is part of inside its layer (composition, aggregation: the whole is the source) — and, as before, a
+        requirement a record realises (ArchiMate 3.2 ch. 6)."""
+        out = []
+        for g in self.levels.values():
+            for r in g.relationships:
+                if (r['kind'] in ('composition', 'aggregation') or self.bian_holds(r)) and r['target'] == iid: out.append(r['source'])
+                elif r['kind'] == 'realization' and r['source'] == iid and self.mm.is_a((self.instance(r['target']) or {}).get('type', ''), _T('business.BusinessRequirement')): out.append(r['target'])
+        return out
+
+    def parts(self, iid):
+        """FT-02: a record's parts inside its layer — and what realises a requirement."""
+        out = []
+        for g in self.levels.values():
+            for r in g.relationships:
+                if (r['kind'] in ('composition', 'aggregation') or self.bian_holds(r)) and r['source'] == iid: out.append(r['target'])
+                elif r['kind'] == 'realization' and r['target'] == iid and self.mm.is_a((self.instance(iid) or {}).get('type', ''), _T('business.BusinessRequirement')): out.append(r['source'])
+        return out
+
     def composition_hops(self, iid, direction):
         """Within-level part-whole links (composition and aggregation) as virtual hops: downstream climbs to the
         whole (a module's traceability continues through its application; a component's through its solution
@@ -347,23 +373,31 @@ class FederatedGraph:
     def trace(self, start, direction='down', statuses=('approved',), follow_composition=False):
         edges = self.edges(statuses) + self.network_edges()
         if follow_composition:
-            # add virtual PART_OF / COMPOSES edges so a chain can pass from a part to its whole (and back)
-            seen, frontier, virtual = set(), [start], []
+            # FT-01, FT-02 (docs/design/sdem-full-trace-spec.md): virtual part-whole hops so a chain passes through a record's whole (and,
+            # where it should, its parts): climb from every record reached; step down only from the record traced and — upstream —
+            # from one reached by a link between layers; never down from a record reached by climbing (no siblings)
+            seen, frontier, virtual = set(), [(start, 'start')], []
             joined = {frozenset((e['source']['id'], e['target']['id'])) for e in edges}   # a pair already joined (a zone in its parent zone) gets no second hop
+            ref = lambda i: {'id': i, 'type': (self.instance(i) or {}).get('type'), 'version': (self.instance(i) or {}).get('version')}
+            def hop(a, b, rel):   # a virtual edge the walk takes from a to b in this direction
+                src, tgt = (ref(a), ref(b)) if direction == 'down' else (ref(b), ref(a))
+                virtual.append({'mapping_id': 'composition', 'relationship': rel, 'status': 'structural', 'baseline_id': None, 'source': src, 'target': tgt})
             while frontier:
-                n = frontier.pop()
-                if n in seen: continue
-                seen.add(n)
+                n, how = frontier.pop()
+                if (n, how == 'climb') in seen: continue
+                seen.add((n, how == 'climb'))
                 for e in edges:
                     a, b = (e['source'], e['target']) if direction == 'down' else (e['target'], e['source'])
-                    if a['id'] == n: frontier.append(b['id'])
-                for whole in self.composition_hops(n, direction):
-                    if frozenset((n, whole)) in joined: frontier.append(whole); continue
-                    inst = self.instance(whole) or {}
-                    src, tgt = ({'id': n, 'type': (self.instance(n) or {}).get('type'), 'version': (self.instance(n) or {}).get('version')}, {'id': whole, 'type': inst.get('type'), 'version': inst.get('version')})
-                    if direction == 'up': src, tgt = tgt, src
-                    virtual.append({'mapping_id': 'composition', 'relationship': 'PART_OF' if direction == 'down' else 'COMPOSES', 'status': 'structural', 'baseline_id': None, 'source': src, 'target': tgt})
-                    frontier.append(whole)
+                    if a['id'] == n: frontier.append((b['id'], 'cross'))
+                for whole in self.wholes(n):
+                    req = self.mm.is_a((self.instance(whole) or {}).get('type', ''), _T('business.BusinessRequirement'))
+                    if frozenset((n, whole)) not in joined: hop(n, whole, 'REALIZES' if req else 'PART_OF')
+                    frontier.append((whole, 'climb'))
+                if how in ('start', 'down') or (direction == 'up' and how == 'cross'):
+                    req = self.mm.is_a((self.instance(n) or {}).get('type', ''), _T('business.BusinessRequirement'))
+                    for part in self.parts(n):
+                        if frozenset((n, part)) not in joined: hop(n, part, 'REALIZED_BY' if req else 'HAS_PART' if direction == 'down' else 'COMPOSES')
+                        frontier.append((part, 'down'))
             edges = edges + virtual
         return self.enrich(walk(edges, start, direction))
 
@@ -617,7 +651,8 @@ def main(argv=None):
             sp.add_argument('--only-gaps', action='store_true', help='a whole layer: only the records with no connection in that direction')
             sp.add_argument('--to', metavar='LAYER', type=str.upper, choices=LEVELS, help='a whole layer: stop the chains at this layer')
             sp.add_argument('--csv', metavar='FILE', help='a whole layer: also write the chains as CSV')
-            sp.add_argument('--follow-composition', action='store_true', help='continue a chain through within-level part-whole links — composition and aggregation (part -> whole downstream, whole -> parts upstream)')
+            sp.add_argument('--direct-only', action='store_true', help='only the links between layers — not through a record\'s whole or parts in its own layer (the full trace is the default, FT-03)')
+            sp.add_argument('--follow-composition', action='store_true', help='the default now (FT-03): a chain continues through part-whole links inside a layer — kept so older commands still work')
             sp.add_argument('--projection', metavar='DIR', help='also follow the links of an AID projection package, labelled PROJECTED (AID-O06)')
         if name == 'impact':
             sp.add_argument('--change', choices=sorted(IMPACT_RULES), required=True)
@@ -755,14 +790,14 @@ def main(argv=None):
         args.direction = {'downstream': 'down', 'upstream': 'up', 'all': 'both'}.get(args.direction, args.direction)
     if args.cmd == 'trace' and args.entity.upper() in LEVELS and fg.instance(args.entity) is None:   # TR-L01: a whole layer
         lvl = args.entity.upper(); to = args.to.upper() if args.to else None
-        results = [level_trace(fg, lvl, d, statuses, getattr(args, 'follow_composition', False), to) for d in (['down', 'up'] if args.direction == 'both' else [args.direction])]
+        results = [level_trace(fg, lvl, d, statuses, not getattr(args, 'direct_only', False), to) for d in (['down', 'up'] if args.direction == 'both' else [args.direction])]
         if args.csv: write_level_csv(results, args.csv)
         if args.json: print(json.dumps(results, indent=2)); return EXIT_OK
         for res in results:
             if args.tree:
                 print('DOWNSTREAM (depends on):' if res['direction'] == 'down' else 'UPSTREAM (depended on by):')
                 for rid in sorted({c['start']['id'] for c in res['chains']}):
-                    print(render_trace(fg.trace(rid, res['direction'], statuses, getattr(args, 'follow_composition', False)), res['direction'])); print()
+                    print(render_trace(fg.trace(rid, res['direction'], statuses, not getattr(args, 'direct_only', False)), res['direction'])); print()
             print(render_level_trace(res, args.only_gaps)); print()
         if args.csv: print(f'chains written to {args.csv}')
         return EXIT_OK
@@ -770,7 +805,7 @@ def main(argv=None):
         print(f'ERROR: {args.entity!r} is not an instance in any loaded level model or mapping', file=sys.stderr); return EXIT_ISSUES
     if args.cmd == 'trace':
         dirs = ['down', 'up'] if args.direction == 'both' else [args.direction]
-        trees = {d: fg.trace(args.entity, d, statuses, getattr(args, 'follow_composition', False)) for d in dirs}
+        trees = {d: fg.trace(args.entity, d, statuses, not getattr(args, 'direct_only', False)) for d in dirs}
         if args.json: print(json.dumps(trees, indent=2))
         else:
             for d, t in trees.items():

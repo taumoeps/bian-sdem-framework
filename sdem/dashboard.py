@@ -21,10 +21,8 @@ def _j(p): return _jload(Path(p))
 
 
 def _compact(tree, fg):
-    """A trace tree, compact for display: id, name, type, level, and per child the link id and relationship."""
-    inst = fg.instance(tree['id']) or {}
-    out = {'id': tree['id'], 'name': inst.get('name') or tree.get('name') or tree['id'], 'type': tree.get('type') or inst.get('type'),
-           'level': fg.mm.level(tree.get('type') or inst.get('type') or '') or '?', 'children': []}
+    """A trace tree, compact for display: the id, and per child the link id and relationship — the page names each record from its records table."""
+    out = {'id': tree['id'], 'children': []}   # UX-Q04: a record's name and type once, in the records table — not in every tree it appears in (the full trace repeats it, FT-03)
     for c in tree.get('children', []):
         out['children'].append({'rel': c['via']['relationship'], 'link': c['via']['mapping_id'], 'node': _compact(c['node'], fg)})
     return out
@@ -94,7 +92,7 @@ def collect(estate, proposals=None, projection=None, catalogue=None, graph=None,
     records = {}
     for n in sorted(reader.nodes(), key=lambda n: (n['level'], n['id'])):
         rid = n['id']; rec = {'id': rid, 'name': n.get('name') or rid, 'type': n['type'], 'level': n['level']}
-        rec['down'] = _compact(fg.trace(rid, 'down'), fg); rec['up'] = _compact(fg.trace(rid, 'up'), fg)
+        rec['down'] = _compact(fg.trace(rid, 'down', follow_composition=True), fg); rec['up'] = _compact(fg.trace(rid, 'up', follow_composition=True), fg)   # FT-03: the full trace, as sdem trace
         rec['impact'] = {}
         for k in KINDS:
             r = fg.impact(rid, k)
