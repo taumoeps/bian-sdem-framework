@@ -437,7 +437,7 @@
       "actions": [
         {
           "when": "you publish to DESNRE",
-          "do": "install sdem-desnre 0.11.3 — the Health, Metamodel and Knowledge Graph views draw SDEM's own answer (sdem model integrity)"
+          "do": "install sdem-desnre 0.11.4 — the Health, Metamodel and Knowledge Graph views draw SDEM's own answer (sdem model integrity)"
         }
       ],
       "summary": "The design in the metamodel integrity model: sdem model integrity (the Metamodel Core and whether it is as frozen, each extension merged into it by its pattern, the federated graph's links by ArchiMate kind, each layer's and extension's graph); the Payment example completed to every layer (examples/0.20/payment-initiation-v4); a retired record outside every design rule."
