@@ -81,6 +81,13 @@ class FullTrace(unittest.TestCase):
         self.assertIn('SD-PARTY-AUTHENTICATION', up); self.assertTrue(any(i.startswith('PROC-') for i in up))
         self.assertNotIn('AT-PARTY-AUTHENTICATION', self.trace('PROC-AUTH', 'down'))                                # a domain reached is not opened into its classifiers
 
+    def test_every_records_chain_for_a_view(self):   # MIP-03 (MID-02): one place computes; a view lights what it is given
+        d = json.loads(sdem('trace', 'ALL', '--graph', self.g, '--json'))
+        self.assertEqual(d['format'], 'sdem-chains/1'); self.assertEqual(d['kinds'], ['link', 'part', 'proposed'])
+        ids, rid = d['ids'], 'SO-PAYMENT-ORDER-INITIATION-RETRIEVE'
+        up = d['chains'][str(ids.index(rid))]['up']; reached = {ids[up[i]] for i in range(0, len(up), 4)}
+        self.assertEqual(reached, self.trace(rid, 'up') - {rid})                                                     # the same chain as sdem trace
+
     def test_impact_classifies_a_record_by_its_shortest_path(self):   # KG-Q-09
         ms = json.loads((self.tmp / 'ws' / 'mappings.json').read_text(encoding='utf-8'))['mappings']
         for rid in ('APP-PAYHUB', 'SD-PAYMENT-ORDER-INITIATION', 'DATA-PAYMENT'):

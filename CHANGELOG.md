@@ -4,6 +4,7 @@
 
 ## 0.21.0 — the full trace, the Data Architecture and the stable core (2026-11-22)
 
+- **`sdem trace ALL --graph G --json`: every record's chain, for a view to light** (MIP-03, MID-02). The one place a chain is worked out: `sdem-desnre` 0.10.2 sends it with a published design and the DESNRE site lights it, so the site and `sdem trace` can no longer differ (they did on 91 of 125 records). Compact: records and relationships numbered, one flat list per direction.
 - **The trace reaches Data from Business and BIAN, and leaves no orphan** (FT-11…FT-13; MIP-02). Downstream, a service domain reached by a link is opened to its information — its business objects, and through them the data they map to — never to its other operations; *serving* inside a layer is followed as a dependency; a domain's asset type and functional pattern trace through the domain. On the Payment example: no orphan (9 before); 46 of 48 Business records and 49 of 101 BIAN records reach A1–A5 (0 and 33 before); what is still short is the design's own gaps.
 - **SDEM 0.21.0, metamodel 0.19.0** (the owner, 2026-11-22, MIP-D2): a metamodel change is an SDEM version — 0.20.0 stays as released, with metamodel 0.18.0. Extensions from this release on accept any additive metamodel change; `sdem-bian` 1.0.3, `sdem-security` 0.4.0 and `sdem-desnre` 0.10.2 are the first.
 

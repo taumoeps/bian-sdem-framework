@@ -510,6 +510,37 @@ def _unmapped(fg, level, approved):
     return sorted(set(out))
 
 
+def all_chains(fg, statuses=('approved',), full=True):
+    """MIP-03 (docs/design/metamodel-integrity-planning.md): every record's full trace, up and down, as a view needs it to light a chain —
+    for each record reached, the record it was reached from and the kind of hop: `link` (an approved link between layers), `part` (a hop
+    inside a layer the trace walks — part-of, realization, assignment, serving; FT-01…FT-13), `proposed` (a link not yet approved). The
+    one place a chain is worked out (MID-02): a view lights it, never walks the graph itself."""
+    ids = sorted({i for g in fg.levels.values() for i in g.by_id})
+    out = {}
+    for rid in ids:
+        rec = {}
+        for d in ('down', 'up'):
+            seen, rows, q = {rid}, [], [fg.trace(rid, d, statuses, full)]
+            while q:
+                n = q.pop(0)
+                for c in n.get('children') or []:
+                    v, k = c['node']['id'], c['via']
+                    if v in seen: continue
+                    seen.add(v); q.append(c['node'])
+                    kind = 'part' if k.get('status') == 'structural' else 'link' if k.get('status') == 'approved' else 'proposed'
+                    rows.append([v, n['id'], kind, k.get('relationship')])
+            if rows: rec[d] = rows
+        if rec: out[rid] = rec
+    # compact (a design's chains travel with it): records and relationships as numbers into two lists; each direction one flat list of
+    # (record reached, reached from, kind, relationship) — kind 0 link, 1 part, 2 proposed
+    every = sorted({x for r in out.values() for rows in r.values() for row in rows for x in row[:2]} | set(out))
+    rels = sorted({row[3] or '' for r in out.values() for rows in r.values() for row in rows})
+    at, rt, kt = {x: i for i, x in enumerate(every)}, {x: i for i, x in enumerate(rels)}, {'link': 0, 'part': 1, 'proposed': 2}
+    packed = {str(at[rid]): {d: [n for row in rows for n in (at[row[0]], at[row[1]], kt[row[2]], rt[row[3] or ''])] for d, rows in r.items()} for rid, r in out.items()}
+    return {'format': 'sdem-chains/1', 'statuses': list(statuses), 'full': full, 'records': len(ids), 'ids': every, 'relationships': rels,
+            'kinds': ['link', 'part', 'proposed'], 'chains': packed}
+
+
 def impact_coverage(fg, rows, changed, statuses=('approved',)):
     """IV-E01…E04: what the impact engine could see, layer by layer — never more than it saw. Per layer: whether an approved path
     reached it, the records and the strongest classification with the rule for each, the approved links used, links it did not
@@ -852,6 +883,8 @@ def main(argv=None):
         return EXIT_OK
     if args.cmd == 'trace':
         args.direction = {'downstream': 'down', 'upstream': 'up', 'all': 'both'}.get(args.direction, args.direction)
+    if args.cmd == 'trace' and args.entity.upper() == 'ALL' and fg.instance(args.entity) is None:   # MIP-03: every record's chain, for a view to light
+        print(json.dumps(all_chains(fg, statuses, not getattr(args, 'direct_only', False)), separators=(',', ':') if args.json else None, indent=None if args.json else 1)); return EXIT_OK
     if args.cmd == 'trace' and args.entity.upper() in LEVELS and fg.instance(args.entity) is None:   # TR-L01: a whole layer
         lvl = args.entity.upper(); to = args.to.upper() if args.to else None
         results = [level_trace(fg, lvl, d, statuses, not getattr(args, 'direct_only', False), to) for d in (['down', 'up'] if args.direction == 'both' else [args.direction])]
