@@ -2,6 +2,10 @@
 
 > Entries before 0.7.0 describe the project under its former name, **SDMM (BIAN Service Domain Mapping Model)**, and its former terms; they are kept as written.
 
+## 0.21.5 — the federated graph's joins, by pair (2026-11-22)
+
+- **`sdem model integrity` counts the links between each two graphs** (`federated.pairs`: approved, proposed and rejected, and the approved by type) — DESNRE's Knowledge Graph draws its layer flow and its list of links between graphs from it, the Security extension's graph included.
+
 ## 0.21.4 — the design in the metamodel integrity model (2026-11-22)
 
 - **`sdem model integrity --workspace DIR`: the design in the metamodel integrity reference model** (MID-01…MID-10) — the Metamodel Core (its version and whether it is as frozen), each Metamodel Extension merged into it (its pattern H1 / H2 / V1, what it adds, its link types by ArchiMate kind), the Federated Knowledge Graph (the approved links between layers, each with its ArchiMate relationship) and each layer's and extension's own graph (records, links inside, kinds). Read-only; DESNRE draws its Health, Metamodel and Knowledge Graph views from it (sdem-desnre ships it as `integrity`).

@@ -112,6 +112,7 @@ class FullTrace(unittest.TestCase):
         self.assertEqual({(e['pattern'], e['layer']) for e in d['extensions']}, {('H1', 'A2'), ('V1', 'S')})          # BIAN in the stack, Security beside it
         self.assertEqual({g['code']: g['graph'] for g in d['graphs']}, {'A1': 'layer', 'A2': 'extension', 'A3': 'layer', 'A4': 'layer', 'A5': 'layer', 'S': 'extension'})
         self.assertTrue(all(x['archimate'] for x in d['federated']['by_relationship']))                                   # MID-07 on every link between layers
+        self.assertEqual(sum(x['approved'] for x in d['federated']['pairs']), d['federated']['links']['approved'])        # every approved link in one pair of graphs
 
     def test_impact_classifies_a_record_by_its_shortest_path(self):   # KG-Q-09
         ms = json.loads((self.tmp / 'ws' / 'mappings.json').read_text(encoding='utf-8'))['mappings']

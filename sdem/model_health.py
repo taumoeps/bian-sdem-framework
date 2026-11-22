@@ -286,13 +286,14 @@ def integrity(workspace):
         if s == 'SDEM': return None
         if s == parts.EXT_BIAN: return 'bian'
         return next((a.get('extension') or a.get('name') for a, pk in packs if any(x.get('code') == l['code'] for x in pk.get('layers') or [])), s.split(' ')[0])
-    graphs, by_code = [], {}
+    graphs, by_code, code_of = [], {}, {}
     for l in rows:
         f = ws / l['file']
         try: d = _jload(f) if f.exists() else {}
         except (OSError, ValueError): d = {}
         recs = [i for i in d.get('instances') or [] if isinstance(i, dict)]
         live = [i for i in recs if i.get('lifecycle_status') != 'retired']
+        for i in recs: code_of[i.get('id')] = l['code']
         g = {'code': l['code'], 'name': l.get('name'), 'file': l['file'], 'graph': 'extension' if origin(l) else 'layer', 'extension': origin(l),
              'position': 'across' if l.get('across') else 'stack', 'records': len(live), 'retired': len(recs) - len(live), 'links_inside': len(d.get('relationships') or []),
              'by_type': dict(collections.Counter(str(i.get('type', '')).split('.')[-1] for i in live).most_common()),
@@ -322,6 +323,16 @@ def integrity(workspace):
     except (OSError, ValueError): maps = []
     ok = [m for m in maps if m.get('status') == 'approved']
     by_rel = collections.Counter(m['relationship'] for m in ok)
+    pairs = {}   # the links between each two graphs — what a view draws as the federated graph's joins
+    for m in maps:
+        a, b = code_of.get((m.get('source') or {}).get('id')), code_of.get((m.get('target') or {}).get('id'))
+        if not a or not b or a == b: continue
+        x = pairs.setdefault((a, b), {'from': a, 'to': b, 'approved': 0, 'proposed': 0, 'rejected': 0, 'by_relationship': collections.Counter()})
+        st = m.get('status')
+        if st == 'approved': x['approved'] += 1; x['by_relationship'][m['relationship']] += 1
+        elif st == 'proposed': x['proposed'] += 1
+        elif st in ('rejected', 'superseded'): x['rejected'] += 1
+    order = {g['code']: n for n, g in enumerate(graphs)}
     return {'format': 'sdem-integrity/1', 'design': ws.resolve().name,
             'core': {'metamodel': mm.version, 'stability': stable, 'frozen_at': froz.get('frozen_at'), 'frozen_by': froz.get('frozen_by'),
                      'frozen': {k: len(froz.get(k) or {}) for k in ('entity_types', 'link_types', 'within_layer_rules', 'attributes')},
@@ -329,7 +340,8 @@ def integrity(workspace):
             'extensions': exts,
             'federated': {'links': dict(collections.Counter(m.get('status') for m in maps)), 'link_types_in_use': len(by_rel),
                           'by_relationship': [{'relationship': r, 'archimate': notation.for_relationship(r), 'approved': n} for r, n in by_rel.most_common()],
-                          'graphs': [g['code'] for g in graphs]},
+                          'graphs': [g['code'] for g in graphs],
+                          'pairs': [{**x, 'by_relationship': dict(x['by_relationship'].most_common())} for _, x in sorted(pairs.items(), key=lambda kv: (order.get(kv[0][0], 99), order.get(kv[0][1], 99)))]},
             'graphs': graphs}
 
 
