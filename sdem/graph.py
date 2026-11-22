@@ -510,6 +510,39 @@ def _unmapped(fg, level, approved):
     return sorted(set(out))
 
 
+def design_gaps(fg, statuses=('approved',)):
+    """MIP-05, MID-05 (docs/design/metamodel-integrity-design.md): every record is accounted for — it reaches the design's other layers
+    through the full trace, or it is listed: a **rule gap** when it has links the trace does not walk and reaches nothing (SDEM is fixed), a
+    **design gap** when the design states no link onward from what it reaches (a person decides). Read-only."""
+    from .identity import stack, layer
+    design = [layer(i) for i in stack()]
+    where = {i: lvl for lvl, g in fg.levels.items() for i in g.by_id}
+    linked = {x for g in fg.levels.values() for r in g.relationships for x in (r['source'], r['target'])}
+    linked |= {x for e in fg.edges(statuses) for x in (e['source']['id'], e['target']['id'])}
+    gaps, complete = [], 0
+    for rid in sorted(where):
+        lvl = where[rid]
+        reach = set()
+        for d in ('down', 'up'):
+            q = [fg.trace(rid, d, statuses, True)]
+            while q:
+                n = q.pop()
+                for c in n.get('children') or []:
+                    if c['node']['id'] in where: reach.add(where[c['node']['id']])
+                    q.append(c['node'])
+        want = [x for x in design if x != lvl]
+        missing = [x for x in want if x not in reach]
+        if not missing: complete += 1; continue
+        inst = fg.instance(rid) or {}
+        none = not (reach & set(design))
+        kind = 'rule' if none and rid in linked else 'design'
+        why = ('it has links the trace does not walk, and reaches no other layer' if kind == 'rule' else
+               'the design links it to nothing' if none else f"nothing the design states links it on to {', '.join(missing)}")
+        gaps.append({'id': rid, 'name': inst.get('name'), 'type': inst.get('type'), 'layer': lvl, 'kind': kind, 'missing': missing, 'reason': why})
+    return {'format': 'sdem-gaps/1', 'records': len(where), 'complete': complete, 'design_gaps': sum(g['kind'] == 'design' for g in gaps),
+            'rule_gaps': sum(g['kind'] == 'rule' for g in gaps), 'gaps': gaps}
+
+
 def all_chains(fg, statuses=('approved',), full=True):
     """MIP-03 (docs/design/metamodel-integrity-planning.md): every record's full trace, up and down, as a view needs it to light a chain —
     for each record reached, the record it was reached from and the kind of hop: `link` (an approved link between layers), `part` (a hop
@@ -883,6 +916,12 @@ def main(argv=None):
         return EXIT_OK
     if args.cmd == 'trace':
         args.direction = {'downstream': 'down', 'upstream': 'up', 'all': 'both'}.get(args.direction, args.direction)
+    if args.cmd == 'trace' and args.entity.upper() == 'GAPS' and fg.instance(args.entity) is None:   # MIP-05: every record accounted for
+        g = design_gaps(fg, statuses)
+        if args.json: print(json.dumps(g, indent=2)); return EXIT_OK
+        print(f"{g['records']} record(s): {g['complete']} reach every other layer; {g['design_gaps']} design gap(s) — a person decides; {g['rule_gaps']} rule gap(s) — SDEM is fixed")
+        for x in g['gaps']: print(f"  {x['kind']:6} {x['layer']:3} {x['id']}  {x.get('name') or ''} — {x['reason']}")
+        return EXIT_OK
     if args.cmd == 'trace' and args.entity.upper() == 'ALL' and fg.instance(args.entity) is None:   # MIP-03: every record's chain, for a view to light
         print(json.dumps(all_chains(fg, statuses, not getattr(args, 'direct_only', False)), separators=(',', ':') if args.json else None, indent=None if args.json else 1)); return EXIT_OK
     if args.cmd == 'trace' and args.entity.upper() in LEVELS and fg.instance(args.entity) is None:   # TR-L01: a whole layer

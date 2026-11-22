@@ -221,15 +221,25 @@ def include_pack(merged, name, _seen=(), local=None):
     if any(a['name'] == name for a in merged.setdefault('aspects', [])): return
     p = resolve(f, _seen)
     from . import parts
+    # BX-50, MID-10 (docs/design/metamodel-integrity-design.md): anything an extension adds may require another extension ("requires":
+    # "ext:<name>", or a list) — kept only where that one is on (BIAN: BIAN on; any other: included before it), else left out and said, never an error
+    def off(x):
+        req = x.get('requires') if isinstance(x, dict) else None
+        for r in ([req] if isinstance(req, str) else req or []):
+            on = parts.bian_on() if r == parts.EXT_BIAN else any(a.get('name') == r for a in merged.get('aspects') or [])
+            if not on: return r
+        return None
+    def said(k, x):
+        if k == 'link_types': return {'link_type': f"{_readable(x.get('source_type'))} {x.get('relationship')} {_readable(x.get('target_type'))}"}
+        return {k[:-1]: x.get('type') or x.get('id') or x.get('name') or x.get('code')}
     for k in LISTS:
         if k in ('attributes', 'rules'): continue
-        rows = p[k]
-        if k == 'link_types' and not parts.bian_on():   # BX-50: a link type that requires BIAN applies only where BIAN is on — said, not an error
-            kept = [x for x in rows if x.get('requires') != parts.EXT_BIAN]
-            merged.setdefault('left_out', []).extend({'extension': m['name'], 'link_type': f"{_readable(x.get('source_type'))} {x.get('relationship')} {_readable(x.get('target_type'))}", 'requires': parts.EXT_BIAN} for x in rows if x not in kept)
-            rows = kept
+        rows = [x for x in p[k] if not off(x)]
+        merged.setdefault('left_out', []).extend({'extension': m['name'], **said(k, x), 'requires': off(x)} for x in p[k] if off(x))
         merged[k] += [{**x, 'source': x.get('source') or f"metamodel extension {m['name']} {m.get('version', '')}".strip()} if k == 'layers' else dict(x) for x in rows]
-    _add(merged, {'attributes': p['attributes'], 'rules': p['rules']}, f"{name} ({f.name})")
+    ar = {k: [x for x in p[k] if not off(x)] for k in ('attributes', 'rules')}
+    merged.setdefault('left_out', []).extend({'extension': m['name'], **said(k, x), 'requires': off(x)} for k in ('attributes', 'rules') for x in p[k] if off(x))
+    _add(merged, ar, f"{name} ({f.name})")
     for k in ('layers', 'types'): merged['names'][k].update(p['names'][k])
     merged['included'] += [x for x in p['included'] if x['file'] not in {y['file'] for y in merged['included']}]
     # MX-17: rules the extension computes itself (its own commands, not sdem comply) — named so a person can grant an exception to one

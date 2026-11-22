@@ -125,13 +125,29 @@ when it adds a layer, its own knowledge graph, joined to the others by the regis
 | Stable-core test | MID-03 | `tests/test_core_stability.py` |
 | `sdem model check` | the generated documents match the metamodel | CI |
 | `sdem check` / graph build | MID-04: each graph and the registry pass the metamodel | per workspace; CI on the examples |
-| The completeness test | MID-05 | MIP-05 (planned) |
-| Site against CLI | MID-02: the view's chain equals `sdem trace` | MIP-03 (planned) |
-| ArchiMate export | MID-07 | MIP-08 (planned) |
+| The completeness test | MID-05 | `sdem trace GAPS` — every record traced, or a design gap or a rule gap; no example has a rule gap (`tests/test_full_trace.py`) |
+| Site against CLI | MID-02: the view's chain equals `sdem trace` | `sdem trace ALL` sent with the design; the site lights it (`tests/test_full_trace.py`, DW-78) |
+| An extension requiring another | MID-10 | `tests/test_metamodel_extensions.py` (`ExtensionRequiresAnother`) |
+| ArchiMate export | MID-07 | **SDEM has no ArchiMate export yet** — building one (Open Exchange Format) is a feature to decide (MIP-08) |
 
-## 6. Related
+## 6. Conformance (2026-11-22, SDEM 0.21.1 and after)
+
+| Rule | Met | Evidence — or what is missing |
+|---|---|---|
+| MID-01 Two sources of truth | ✅ | views read the published design and SDEM's answers |
+| MID-02 One place computes | 🟡 | traces: the site lights SDEM's chains (MIP-03). Still worked out on the site: a record's *inherited* protection in the Security view, the zones a lit record sits in, Health's counts |
+| MID-03 The core is not changed by an extension | ✅ | the stable-core test |
+| MID-04 Graphs built from entities, checked by the metamodel | ✅ | `sdem check`, graph stores current, CI |
+| MID-05 Every shape accounted for | ✅ | `sdem trace GAPS`; no rule gap in any example (tested); the Payment example: 152 of 255 records reach every other layer, 103 design gaps for a person, 0 rule gaps |
+| MID-06 Views are of the source | ✅ | a design in 0.20's form published and shown in its own form (MIP-04, DW-79) |
+| MID-07 Links and types labelled by their standard | 🟡 | every type carries its source; a trace hop says whether it is an approved link or a part-of hop. No ArchiMate export to check (MIP-08) |
+| MID-08 Extensions by pattern, not by name | ❌ | 27 code paths in SDEM name BIAN — among them two trace rules (FT-07 a control record's business objects, FT-13 a domain's classification) that should be declared by BIAN's pack, not written into the core (G1) |
+| MID-09 A vertical extension is an overlay | ❌ | Security is its own 3D stack on the site (G2, MIP-06) |
+| MID-10 An extension may require another | ✅ | `requires` for any extension, on anything it adds — left out and said when the other is off (tested) |
+
+## 7. Related
 
 - [Metamodel integrity — the analysis](sdem-metamodel-integrity-analysis.md): MI-Q0…MI-Q13, findings and recommendations.
-- [Metamodel integrity — the plan](metamodel-integrity-planning.md): MIP-00…MIP-09 and the owner's decisions MIP-D1…D5.
+- [Metamodel integrity — the plan](metamodel-integrity-planning.md): MIP-00…MIP-10 and the owner's decisions MIP-D1…D6.
 - [Knowledge graph specification](knowledge-graph-spec.md), [the data layer](sdem-data-layer-spec.md), [stable identity](sdem-stable-identity-spec.md),
   [metamodel extensions](sdem-metamodel-extensions-spec.md), [the full trace](sdem-full-trace-spec.md).

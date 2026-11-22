@@ -169,3 +169,27 @@ class MetamodelExtensionTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+class ExtensionRequiresAnother(unittest.TestCase):   # MID-10: an extension may require another — kept where it is on, else left out and said
+    def merged(self, includes):
+        t = Path(tempfile.mkdtemp()); self.addCleanup(shutil.rmtree, t, True)
+        net = {'format': 'sdem-profile/1', 'name': 'networks', 'version': 1,
+               'types': [{'type': 'NET.A4.Firewall', 'extends': ['A4.Node'], 'description': 'a firewall (made-up)', 'archimate': 'Node'}]}
+        dr = {'format': 'sdem-profile/1', 'name': 'recovery', 'version': 1,
+              'types': [{'type': 'DRX.A4.ReplicaGroup', 'extends': ['A4.Node'], 'description': 'a recovery group (made-up)', 'archimate': 'Node'},
+                        {'type': 'DRX.A4.FailoverGate', 'extends': ['A4.Node'], 'description': 'needs the networks extension', 'archimate': 'Node', 'requires': 'file:net.json'}]}
+        (t / 'net.json').write_text(json.dumps(net)); (t / 'dr.json').write_text(json.dumps(dr))
+        (t / 'profile.json').write_text(json.dumps({'format': 'sdem-profile/1', 'name': 'team', 'version': 1, 'includes': includes}))
+        return P.resolve(t / 'profile.json')
+
+    def test_kept_where_the_other_is_on(self):
+        m = self.merged(['net.json', 'dr.json'])
+        self.assertIn('DRX.A4.FailoverGate', {x['type'] for x in m['types']})
+
+    def test_left_out_and_said_where_it_is_not(self):
+        m = self.merged(['dr.json'])
+        types = {x['type'] for x in m['types']}
+        self.assertIn('DRX.A4.ReplicaGroup', types); self.assertNotIn('DRX.A4.FailoverGate', types)       # the rest of the extension stays
+        self.assertIn({'extension': 'recovery', 'type': 'DRX.A4.FailoverGate', 'requires': 'file:net.json'},
+                      [{k: x.get(k) for k in ('extension', 'type', 'requires')} for x in m.get('left_out', [])])

@@ -88,6 +88,12 @@ class FullTrace(unittest.TestCase):
         up = d['chains'][str(ids.index(rid))]['up']; reached = {ids[up[i]] for i in range(0, len(up), 4)}
         self.assertEqual(reached, self.trace(rid, 'up') - {rid})                                                     # the same chain as sdem trace
 
+    def test_every_record_is_accounted_for_and_no_rule_gap(self):   # MIP-05, MID-05: traced through, or listed as a design gap — never a rule gap
+        g = json.loads(sdem('trace', 'GAPS', '--graph', self.g, '--json'))
+        self.assertEqual(g['format'], 'sdem-gaps/1'); self.assertEqual(g['records'], g['complete'] + len(g['gaps']))
+        self.assertEqual([x['id'] for x in g['gaps'] if x['kind'] == 'rule'], [])                             # every link the design states is walked
+        self.assertTrue(all(x['missing'] and x['reason'] for x in g['gaps']))                                  # each gap says what it misses and why
+
     def test_impact_classifies_a_record_by_its_shortest_path(self):   # KG-Q-09
         ms = json.loads((self.tmp / 'ws' / 'mappings.json').read_text(encoding='utf-8'))['mappings']
         for rid in ('APP-PAYHUB', 'SD-PAYMENT-ORDER-INITIATION', 'DATA-PAYMENT'):

@@ -2,6 +2,12 @@
 
 > Entries before 0.7.0 describe the project under its former name, **SDMM (BIAN Service Domain Mapping Model)**, and its former terms; they are kept as written.
 
+## Unreleased — the metamodel integrity design, met
+
+- **An extension may require another** (MID-10). Anything an extension adds — a type, a link type, an attribute, a rule — may say `"requires": "ext:<name>"` (or a list); it is kept where that extension is on and left out where it is not, and said in the profile's `left_out` — never an error. Until now only "requires BIAN" was understood.
+- **The metamodel integrity design records its conformance** (§6): which rules are met and what is missing for the rest.
+- **`sdem trace GAPS --graph G`: every record accounted for** (MIP-05, MID-05). Each record either reaches the design's other layers through the full trace, or is listed — a *design gap* (the design states no link onward from what it reaches: a person decides) or a *rule gap* (it has links the trace does not walk: SDEM is fixed). The examples have no rule gap, tested. On the Payment example: 152 of 255 records reach every other layer; 103 design gaps; 0 rule gaps.
+
 ## 0.21.1 — the design in its own form (2026-11-22)
 
 - **A design in its own form, end to end** (MIP-04, MID-06): the Data layer laid out by domain (`sdem layout --layer <Data>`); each Architecture viewpoint plate names its layer by stable id. With `sdem-desnre` 0.11.0 a design in 0.20's form is published as it is — its own layers and files, its 3D model built from them — and the DESNRE site reads it so; no 0.19-shaped copy.
