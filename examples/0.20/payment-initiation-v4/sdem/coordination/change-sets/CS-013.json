@@ -1,0 +1,49 @@
+{
+  "id": "CS-013",
+  "layer": "technology",
+  "reason": "The owner's decision (2026-11-22): the notification service is taken out of this design — an existing, non-critical system the payment journey never uses (design §1, §5)",
+  "changes": [
+    {
+      "op": "retire",
+      "record": {
+        "id": "DEP-NOTIFY",
+        "type": "technology.Deployment",
+        "version": "1",
+        "name": "APP-NOTIFY — production",
+        "lifecycle_status": "retired",
+        "attributes": {
+          "component_id": "APP-NOTIFY",
+          "environment_id": "ENV-PROD",
+          "location": "LOC-NZ",
+          "source_id": "document:design.md#6"
+        }
+      }
+    }
+  ],
+  "relationships": {
+    "remove": [
+      {
+        "source": "ENV-PROD",
+        "kind": "aggregation",
+        "target": "DEP-NOTIFY"
+      },
+      {
+        "source": "NODE-APP",
+        "kind": "assignment",
+        "target": "DEP-NOTIFY"
+      }
+    ]
+  },
+  "agent": "sdem-a4-technology",
+  "person": "steven.taumoepeau",
+  "created_at": "2026-11-22T05:54:44+00:00",
+  "work_items": [],
+  "event": "CE-013",
+  "branch": null,
+  "trigger": "initial",
+  "dataset": {
+    "file": "technology.json",
+    "before_sha256": "e92d0d782db511f0a8faa94919e7784d2db7d99af0b094cb35837d51c86f7b01",
+    "after_sha256": "18f7324df0ba4affe25b3d7b73ff35ed6451a04696b9451365a20fd87fe03d91"
+  }
+}

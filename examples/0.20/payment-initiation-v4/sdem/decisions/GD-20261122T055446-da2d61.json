@@ -1,0 +1,14 @@
+{
+  "id": "GD-20261122T055446-da2d61",
+  "kind": "accept_impact",
+  "subject": "CE-013",
+  "named_person": "steven.taumoepeau",
+  "at": "2026-11-22T05:54:46+00:00",
+  "recorded_by": {
+    "os_user": "taumoeps",
+    "git_user": "Steven Taumoepeau",
+    "git_email": "steven.taumoepeau@gmail.com"
+  },
+  "level": "attributed",
+  "note": "a typed name — attribution, not authentication; verified only by a signed commit from the approver (sdem governance verify)"
+}

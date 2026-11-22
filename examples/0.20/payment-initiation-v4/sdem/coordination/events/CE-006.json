@@ -1,0 +1,399 @@
+{
+  "id": "CE-006",
+  "change_set": "CS-006",
+  "layer": "data",
+  "round": 1,
+  "at": "2026-11-22T05:36:21+00:00",
+  "agent": "sdem-data",
+  "person": "steven.taumoepeau",
+  "impact": {
+    "records": [
+      {
+        "id": "DATA-AUTH",
+        "level": "data",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "DATA-AUTH added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "DATA-RISK",
+        "level": "data",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "DATA-RISK added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "F-AUTH-AUTH-ID",
+        "level": "data",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "F-AUTH-AUTH-ID added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "F-AUTH-AUTHENTICATED-AT",
+        "level": "data",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "F-AUTH-AUTHENTICATED-AT added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "F-AUTH-CONSENT-ID",
+        "level": "data",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "F-AUTH-CONSENT-ID added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "F-AUTH-LEVEL",
+        "level": "data",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "F-AUTH-LEVEL added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "F-AUTH-METHOD",
+        "level": "data",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "F-AUTH-METHOD added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "F-AUTH-RESULT",
+        "level": "data",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "F-AUTH-RESULT added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "F-RISK-DECISION",
+        "level": "data",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "F-RISK-DECISION added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "F-RISK-DECISION-ID",
+        "level": "data",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "F-RISK-DECISION-ID added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "F-RISK-EVALUATED-AT",
+        "level": "data",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "F-RISK-EVALUATED-AT added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "F-RISK-PAYMENT-ID",
+        "level": "data",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "F-RISK-PAYMENT-ID added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "F-RISK-REASON-CODE",
+        "level": "data",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "F-RISK-REASON-CODE added",
+        "rule": "add → design_change_required"
+      }
+    ],
+    "mappings_to_supersede": [],
+    "changed": [
+      "DATA-AUTH",
+      "F-AUTH-AUTH-ID",
+      "F-AUTH-CONSENT-ID",
+      "F-AUTH-METHOD",
+      "F-AUTH-LEVEL",
+      "F-AUTH-RESULT",
+      "F-AUTH-AUTHENTICATED-AT",
+      "DATA-RISK",
+      "F-RISK-DECISION-ID",
+      "F-RISK-PAYMENT-ID",
+      "F-RISK-DECISION",
+      "F-RISK-REASON-CODE",
+      "F-RISK-EVALUATED-AT"
+    ],
+    "coverage": {
+      "A1": {
+        "present": true,
+        "reached": false,
+        "result": "evidence_incomplete",
+        "classification": "no_impact",
+        "related_within_layer": [],
+        "records": [],
+        "paths": [],
+        "unapproved_links": [],
+        "unmapped_records": [
+          "ACTOR-CUSTOMER",
+          "ACTOR-MERCHANT",
+          "ACTOR-TPP",
+          "CAP-CONSENT",
+          "CAP-RISK",
+          "IF-WEB",
+          "PROC-CONSENT",
+          "PROC-HANDOFF",
+          "PROC-VALIDATE",
+          "ST-CONSENT",
+          "ST-STATUS",
+          "ST-SUBMIT",
+          "SVC-AUTH",
+          "SVC-INIT",
+          "VS-MERCHANT"
+        ],
+        "unmapped_count": 15,
+        "evidence": "incomplete",
+        "confirmed": false,
+        "reason": "no approved path reaches this layer, and its links are incomplete — impact through the missing links cannot be seen"
+      },
+      "A2": {
+        "present": true,
+        "reached": false,
+        "result": "evidence_incomplete",
+        "classification": "no_impact",
+        "related_within_layer": [],
+        "records": [],
+        "paths": [],
+        "unapproved_links": [],
+        "unmapped_records": [
+          "BBOA-PAYMENT-TRANSACTION-FINANCIAL-TRANSACTION-AMOUNT",
+          "BBOA-PAYMENT-TRANSACTION-FINANCIAL-TRANSACTION-CURRENCY",
+          "BBOA-PAYMENT-TRANSACTION-FINANCIAL-TRANSACTION-DATE-TIME",
+          "BBOA-PAYMENT-TRANSACTION-FINANCIAL-TRANSACTION-FROM-ACCOUNT",
+          "BBOA-PAYMENT-TRANSACTION-FINANCIAL-TRANSACTION-TARGET-ACCOUNT",
+          "BBOA-PAYMENT-TRANSACTION-FINANCIAL-TRANSACTION-TYPE",
+          "BBOA-PAYMENT-TRANSACTION-MONEY-TRANSFER-INSTRUCTION-REFERENCE",
+          "BBOA-PAYMENT-TRANSACTION-MONEY-TRANSFER-TRANSACTION-AMOUNT",
+          "BBOA-PAYMENT-TRANSACTION-MONEY-TRANSFER-TRANSACTION-CURRENCY",
+          "BBOA-PAYMENT-TRANSACTION-MONEY-TRANSFER-TRANSACTION-SOURCE-ACCOUNT",
+          "BBOA-PAYMENT-TRANSACTION-MONEY-TRANSFER-TRANSACTION-TARGET-ACCOUNT",
+          "BBOA-PAYMENT-TRANSACTION-MONEY-TRANSFER-USED-METHOD",
+          "BBOA-PAYMENT-TRANSACTION-MONEY-TRANSFER-VALUE-DATE",
+          "BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-AMOUNT",
+          "BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-APPLIED-FEE-AMOUNT",
+          "BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-CREDIT-DEBIT-INDICATOR",
+          "BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-CURRENCY",
+          "BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-DATETIME",
+          "BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-IDENTIFICATION",
+          "BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-PURPOSE",
+          "BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-STATUS",
+          "BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-TYPE",
+          "BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-USED-MECHANISM",
+          "BBOA-PAYMENT-TRANSACTION-TRANSACTION-DATE",
+          "BBOA-PAYMENT-TRANSACTION-TRANSACTION-DESCRIPTION"
+        ],
+        "unmapped_count": 62,
+        "evidence": "incomplete",
+        "confirmed": false,
+        "reason": "no approved path reaches this layer, and its links are incomplete — impact through the missing links cannot be seen"
+      },
+      "A3": {
+        "present": true,
+        "reached": true,
+        "result": "impact_detected",
+        "classification": "design_change_required",
+        "related_within_layer": [
+          "DOM-CONSENT",
+          "DOM-PAYMENT-PROCESSING"
+        ],
+        "records": [
+          {
+            "id": "DATA-AUTH",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "DATA-RISK",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "F-AUTH-AUTH-ID",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "F-AUTH-AUTHENTICATED-AT",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "F-AUTH-CONSENT-ID",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "F-AUTH-LEVEL",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "F-AUTH-METHOD",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "F-AUTH-RESULT",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "F-RISK-DECISION",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "F-RISK-DECISION-ID",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "F-RISK-EVALUATED-AT",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "F-RISK-PAYMENT-ID",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "F-RISK-REASON-CODE",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          }
+        ],
+        "paths": [],
+        "unapproved_links": [],
+        "unmapped_records": [
+          "DATA-AUTH",
+          "DATA-RISK",
+          "F-AUDIT-ACTION",
+          "F-AUDIT-ACTOR-REF",
+          "F-AUDIT-CORRELATION-ID",
+          "F-AUDIT-EVENT-ID",
+          "F-AUDIT-RECORDED-AT",
+          "F-AUTH-AUTH-ID",
+          "F-AUTH-AUTHENTICATED-AT",
+          "F-AUTH-CONSENT-ID",
+          "F-AUTH-LEVEL",
+          "F-AUTH-METHOD",
+          "F-AUTH-RESULT",
+          "F-CONSENT-AMOUNT",
+          "F-CONSENT-CONSENT-ID",
+          "F-CONSENT-CREDITOR-ACCOUNT",
+          "F-CONSENT-CURRENCY",
+          "F-CONSENT-CUSTOMER-ID",
+          "F-CONSENT-DEBTOR-ACCOUNT",
+          "F-CONSENT-END-TO-END-IDENTIFICATION",
+          "F-CONSENT-EXPIRES-AT",
+          "F-CONSENT-INSTRUCTION-IDENTIFICATION",
+          "F-CONSENT-STATUS",
+          "F-CONSENT-THIRD-PARTY-ID",
+          "F-IDEMP-EXPIRES-AT"
+        ],
+        "unmapped_count": 43,
+        "evidence": "incomplete",
+        "confirmed": false,
+        "reason": "13 record(s) reached through approved links; the strongest rule gives design_change_required; evidence incomplete: 0 link(s) not approved, 43 record(s) with no approved link where one is expected; 2 record(s) linked inside the layer to the changed record(s) are not followed by the impact rules: DOM-CONSENT, DOM-PAYMENT-PROCESSING"
+      },
+      "A4": {
+        "present": true,
+        "reached": false,
+        "result": "evidence_incomplete",
+        "classification": "no_impact",
+        "related_within_layer": [],
+        "records": [],
+        "paths": [],
+        "unapproved_links": [],
+        "unmapped_records": [
+          "EVT-HANDOFF"
+        ],
+        "unmapped_count": 1,
+        "evidence": "incomplete",
+        "confirmed": false,
+        "reason": "no approved path reaches this layer, and its links are incomplete — impact through the missing links cannot be seen"
+      },
+      "A5": {
+        "present": true,
+        "reached": false,
+        "result": "evidence_incomplete",
+        "classification": "no_impact",
+        "related_within_layer": [],
+        "records": [],
+        "paths": [],
+        "unapproved_links": [],
+        "unmapped_records": [
+          "ENV-PROD",
+          "NODE-DATA",
+          "SYS-MQ",
+          "ZONE-APP",
+          "ZONE-DATA",
+          "ZONE-INTEG",
+          "ZONE-SEC"
+        ],
+        "unmapped_count": 7,
+        "evidence": "incomplete",
+        "confirmed": false,
+        "reason": "no approved path reaches this layer, and its links are incomplete — impact through the missing links cannot be seen"
+      },
+      "S": {
+        "present": true,
+        "reached": false,
+        "result": "no_impact_detected",
+        "classification": "no_impact",
+        "related_within_layer": [],
+        "records": [],
+        "paths": [],
+        "unapproved_links": [],
+        "unmapped_records": [],
+        "unmapped_count": 0,
+        "evidence": "complete",
+        "confirmed": false,
+        "reason": "no approved path reaches this layer — no impact detected (not confirmed)"
+      }
+    },
+    "basis": {
+      "rules_version": "0.5.0",
+      "files": {
+        "business.json": "56741908c861ec08f6d365cf777bf7da2f45cd0d491f2cb4828baa19fa8620fa",
+        "bian.json": "46582d58457d56a43c847e2a0aa8a537aecab629fe15e7c6ceeedfec29257879",
+        "data.json": "72970c301a5ddb3cb209ac98fb67dbfba2b26fb7aff8e3b0d6dab486bcc89996",
+        "application.json": "1de5fb712c7c2ec3ef887328b6e402b02a005fb6b36eb8920404de893abe2e78",
+        "technology.json": "685794070022945520196467cc3cd4374a8f48d966db78b650f25059311cba74",
+        "security.json": "14ded9f837ede3839df7a66891d204a14395fb899e40f142ae92b1768ddca4c6",
+        "mappings.json": "00e9f36705133ee4260fcb5c085be1586585be00ac3b2ec6a346dc6644dd717a"
+      },
+      "approved_links": 97,
+      "approved_links_sha256": "c850eac6382114ae394d7f0441ae3aba423bb8e22c44b3fc783da19069ffcada"
+    }
+  }
+}

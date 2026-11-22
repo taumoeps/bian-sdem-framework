@@ -1,0 +1,17 @@
+{
+  "id": "GD-20261121T160140-bb328e",
+  "kind": "state_link",
+  "subject": "MAP-088",
+  "named_person": "steven",
+  "at": "2026-11-21T16:01:40+00:00",
+  "recorded_by": {
+    "os_user": "taumoeps",
+    "git_user": "Steven Taumoepeau",
+    "git_email": "steven.taumoepeau@gmail.com"
+  },
+  "level": "attributed",
+  "note": "a typed name — attribution, not authentication; verified only by a signed commit from the approver (sdem governance verify)",
+  "details": {
+    "link": "BBO-PAYMENT-TRANSACTION MAPPED_TO DATA-PAYMENT"
+  }
+}

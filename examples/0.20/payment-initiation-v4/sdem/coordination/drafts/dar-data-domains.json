@@ -1,0 +1,108 @@
+{
+  "layer": "data",
+  "reason": "Data domains (SDEM DAR-01): the payment data grouped as the design separates it \u2014 consent and payment stores kept apart (AD-01), the security events of the API edge (\u00a75)",
+  "changes": [
+    {
+      "op": "add",
+      "record": {
+        "id": "DOM-PAYMENTS",
+        "type": "data.DataDomain",
+        "version": "1",
+        "name": "Payments",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "domain_kind": "domain",
+          "source_id": "document:design.md#AD-01"
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "DOM-CONSENT",
+        "type": "data.DataDomain",
+        "version": "1",
+        "name": "Consent",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "domain_kind": "subject_area",
+          "source_id": "document:design.md#AD-01"
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "DOM-PAYMENT-PROCESSING",
+        "type": "data.DataDomain",
+        "version": "1",
+        "name": "Payment processing",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "domain_kind": "subject_area",
+          "source_id": "document:design.md#AD-01"
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "DOM-SECURITY-AUDIT",
+        "type": "data.DataDomain",
+        "version": "1",
+        "name": "Security audit",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "domain_kind": "subject_area",
+          "source_id": "document:design.md#5"
+        }
+      }
+    }
+  ],
+  "relationships": {
+    "add": [
+      {
+        "source": "DOM-PAYMENTS",
+        "kind": "aggregation",
+        "target": "DOM-CONSENT",
+        "source_id": "document:design.md#AD-01"
+      },
+      {
+        "source": "DOM-PAYMENTS",
+        "kind": "aggregation",
+        "target": "DOM-PAYMENT-PROCESSING",
+        "source_id": "document:design.md#AD-01"
+      },
+      {
+        "source": "DOM-PAYMENTS",
+        "kind": "aggregation",
+        "target": "DOM-SECURITY-AUDIT",
+        "source_id": "document:design.md#AD-01"
+      },
+      {
+        "source": "DOM-CONSENT",
+        "kind": "aggregation",
+        "target": "DATA-CONSENT",
+        "source_id": "document:design.md#AD-01"
+      },
+      {
+        "source": "DOM-PAYMENT-PROCESSING",
+        "kind": "aggregation",
+        "target": "DATA-PAYMENT",
+        "source_id": "document:design.md#AD-01"
+      },
+      {
+        "source": "DOM-PAYMENT-PROCESSING",
+        "kind": "aggregation",
+        "target": "DATA-IDEMP",
+        "source_id": "document:design.md#6"
+      },
+      {
+        "source": "DOM-SECURITY-AUDIT",
+        "kind": "aggregation",
+        "target": "DATA-AUDIT",
+        "source_id": "document:design.md#5"
+      }
+    ]
+  }
+}

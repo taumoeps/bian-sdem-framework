@@ -1,0 +1,122 @@
+{
+  "id": "CS-010",
+  "layer": "bian",
+  "reason": "BIAN Position Keeping's FinancialTransactionCapture brought in with sdem bian add (the owner's decision 2026-11-22)",
+  "changes": [
+    {
+      "op": "add",
+      "record": {
+        "id": "BBO-FINANCIAL-TRANSACTION-CAPTURE",
+        "type": "bian.BusinessObject",
+        "version": "14.0.0",
+        "name": "Financial Transaction Capture",
+        "lifecycle_status": "active",
+        "canonical_id": "BIAN-BO-FINANCIAL-TRANSACTION-CAPTURE",
+        "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+        "attributes": {
+          "attributes": [
+            "PostingDescription",
+            "PostingTransaction",
+            "PostingValueDate"
+          ],
+          "source_id": "bian-semantic-api:14.0.0:PositionKeeping.yaml",
+          "conforms_to": [
+            "BIAN 14.0.0"
+          ]
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "BBOA-FINANCIAL-TRANSACTION-CAPTURE-POSTING-DESCRIPTION",
+        "type": "bian.BusinessObjectAttribute",
+        "version": "14.0.0",
+        "name": "PostingDescription",
+        "lifecycle_status": "active",
+        "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+        "attributes": {
+          "data_type": "string",
+          "required": false,
+          "multiplicity": "0..1",
+          "source_id": "bian-semantic-api:14.0.0:PositionKeeping.yaml",
+          "conforms_to": [
+            "BIAN 14.0.0"
+          ]
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "BBOA-FINANCIAL-TRANSACTION-CAPTURE-POSTING-TRANSACTION",
+        "type": "bian.BusinessObjectAttribute",
+        "version": "14.0.0",
+        "name": "PostingTransaction",
+        "lifecycle_status": "active",
+        "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+        "attributes": {
+          "data_type": "reference",
+          "required": false,
+          "multiplicity": "0..1",
+          "source_id": "bian-semantic-api:14.0.0:PositionKeeping.yaml",
+          "conforms_to": [
+            "BIAN 14.0.0"
+          ]
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "BBOA-FINANCIAL-TRANSACTION-CAPTURE-POSTING-VALUE-DATE",
+        "type": "bian.BusinessObjectAttribute",
+        "version": "14.0.0",
+        "name": "PostingValueDate",
+        "lifecycle_status": "active",
+        "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+        "attributes": {
+          "data_type": "date",
+          "required": false,
+          "multiplicity": "0..1",
+          "source_id": "bian-semantic-api:14.0.0:PositionKeeping.yaml",
+          "conforms_to": [
+            "BIAN 14.0.0"
+          ]
+        }
+      }
+    }
+  ],
+  "relationships": {
+    "add": [
+      {
+        "source": "BBO-FINANCIAL-TRANSACTION-CAPTURE",
+        "kind": "composition",
+        "target": "BBOA-FINANCIAL-TRANSACTION-CAPTURE-POSTING-DESCRIPTION"
+      },
+      {
+        "source": "BBO-FINANCIAL-TRANSACTION-CAPTURE",
+        "kind": "composition",
+        "target": "BBOA-FINANCIAL-TRANSACTION-CAPTURE-POSTING-TRANSACTION"
+      },
+      {
+        "source": "BBO-FINANCIAL-TRANSACTION-CAPTURE",
+        "kind": "composition",
+        "target": "BBOA-FINANCIAL-TRANSACTION-CAPTURE-POSTING-VALUE-DATE"
+      }
+    ],
+    "remove": []
+  },
+  "adopted": true,
+  "agent": "architect",
+  "person": "steven.taumoepeau",
+  "created_at": "2026-11-22T05:44:41+00:00",
+  "work_items": [],
+  "event": "CE-010",
+  "branch": null,
+  "dataset": {
+    "file": "bian.json",
+    "before_sha256": "94c32e15692acd635fe5548418719456df26b98ffab17c3cf82248a07fe4cdd7",
+    "after_sha256": "c3c2222e20a9d3b0c54493a38bd9f0d668d2a057a120cc8177aa668c0d3bde3f"
+  }
+}

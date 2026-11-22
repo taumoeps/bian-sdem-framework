@@ -1,0 +1,18 @@
+{
+  "id": "GD-20261121T215539-1209c1",
+  "kind": "state_access_mode",
+  "subject": "MIG-020-036",
+  "named_person": "steven.taumoepeau",
+  "at": "2026-11-21T21:55:39+00:00",
+  "recorded_by": {
+    "os_user": "taumoeps",
+    "git_user": "Steven Taumoepeau",
+    "git_email": "steven.taumoepeau@gmail.com"
+  },
+  "level": "attributed",
+  "note": "a typed name — attribution, not authentication; verified only by a signed commit from the approver (sdem governance verify)",
+  "details": {
+    "mode": "read",
+    "rationale": "consent read returns it (design §4, GET /domestic-payment-consents/{ConsentId})"
+  }
+}

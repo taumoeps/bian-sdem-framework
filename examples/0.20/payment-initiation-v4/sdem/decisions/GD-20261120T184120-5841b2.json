@@ -1,0 +1,22 @@
+{
+  "id": "GD-20261120T184120-5841b2",
+  "kind": "adopt_profile",
+  "subject": "sdem",
+  "named_person": "steven.taumoepeau",
+  "at": "2026-11-20T18:41:20+00:00",
+  "recorded_by": {
+    "os_user": "taumoeps",
+    "git_user": "Steven Taumoepeau",
+    "git_email": "steven.taumoepeau@gmail.com"
+  },
+  "level": "attributed",
+  "note": "a typed name — attribution, not authentication; verified only by a signed commit from the approver (sdem governance verify)",
+  "details": {
+    "version": 1,
+    "sha256": "0988e61826f325739f841d440b6fbfa17ad8fafcd71f58f95f18cb7442acd6c8",
+    "reason": "the security layer for this design",
+    "layers_added": [
+      "security.json"
+    ]
+  }
+}

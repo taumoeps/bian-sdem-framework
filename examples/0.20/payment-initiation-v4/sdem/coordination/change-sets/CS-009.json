@@ -1,0 +1,42 @@
+{
+  "id": "CS-009",
+  "layer": "technology",
+  "reason": "The owner's decision (2026-11-22): the restricted storage service the consent and payment tables share (design §6)",
+  "changes": [
+    {
+      "op": "add",
+      "record": {
+        "id": "TSVC-STORAGE",
+        "type": "technology.TechnologyService",
+        "version": "1",
+        "name": "Restricted storage service",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "source_id": "document:design.md#6,decision:owner 2026-11-22"
+        }
+      }
+    }
+  ],
+  "relationships": {
+    "add": [
+      {
+        "source": "SYS-DB",
+        "kind": "realization",
+        "target": "TSVC-STORAGE",
+        "source_id": "document:design.md#6"
+      }
+    ]
+  },
+  "agent": "sdem-a4-technology",
+  "person": "steven.taumoepeau",
+  "created_at": "2026-11-22T05:44:39+00:00",
+  "work_items": [],
+  "event": "CE-009",
+  "branch": null,
+  "trigger": "initial",
+  "dataset": {
+    "file": "technology.json",
+    "before_sha256": "685794070022945520196467cc3cd4374a8f48d966db78b650f25059311cba74",
+    "after_sha256": "e92d0d782db511f0a8faa94919e7784d2db7d99af0b094cb35837d51c86f7b01"
+  }
+}

@@ -2,6 +2,12 @@
 
 > Entries before 0.7.0 describe the project under its former name, **SDMM (BIAN Service Domain Mapping Model)**, and its former terms; they are kept as written.
 
+## Unreleased
+
+- **The Payment example, completed to every layer** — `examples/0.20/payment-initiation-v4`: v3's design with its data architecture, security layer, three BIAN-aligned tables, its applications aligned and the notification service retired — 327 of 327 records reach every other layer, 148 of 148 connected (tested). v3 stays as the 0.19 example's migration twin.
+- **A retired record is outside every design rule** — the completeness count (`sdem status`) no longer counts it, as `sdem trace GAPS` and LC-04 already did not.
+- The MID-07 test reads each example under its own profile, so an extension's links are checked with the kinds its pack gives them.
+
 ## 0.21.3 — the metamodel integrity design, checked on a real design (2026-11-22)
 
 - **An extension's link type says its ArchiMate kind** (MID-07): a pack's link type gives `"archimate"` (one of ArchiMate 3.2's eleven relationships), SDEM reads it wherever it labels a link, and a pack without it is refused — before, the security extension's PROTECTS, ENFORCED_BY, THREATENS and BOUNDS had no ArchiMate kind. **Packs that declare link types must add it** (sdem-security 0.4.3 does: association, realization, influence, aggregation).

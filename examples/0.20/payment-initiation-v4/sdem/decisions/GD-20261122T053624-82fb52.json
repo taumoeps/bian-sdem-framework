@@ -1,0 +1,17 @@
+{
+  "id": "GD-20261122T053624-82fb52",
+  "kind": "state_link",
+  "subject": "MAP-093",
+  "named_person": "steven.taumoepeau",
+  "at": "2026-11-22T05:36:24+00:00",
+  "recorded_by": {
+    "os_user": "taumoeps",
+    "git_user": "Steven Taumoepeau",
+    "git_email": "steven.taumoepeau@gmail.com"
+  },
+  "level": "attributed",
+  "note": "a typed name — attribution, not authentication; verified only by a signed commit from the approver (sdem governance verify)",
+  "details": {
+    "link": "DATA-RISK ACCESSED_BY APP-RISK"
+  }
+}

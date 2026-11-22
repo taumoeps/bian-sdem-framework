@@ -1,0 +1,17 @@
+{
+  "id": "GD-20261122T054439-e22ae3",
+  "kind": "state_link",
+  "subject": "MAP-101",
+  "named_person": "steven.taumoepeau",
+  "at": "2026-11-22T05:44:39+00:00",
+  "recorded_by": {
+    "os_user": "taumoeps",
+    "git_user": "Steven Taumoepeau",
+    "git_email": "steven.taumoepeau@gmail.com"
+  },
+  "level": "attributed",
+  "note": "a typed name — attribution, not authentication; verified only by a signed commit from the approver (sdem governance verify)",
+  "details": {
+    "link": "APP-PAYHUB SERVED_BY TSVC-STORAGE"
+  }
+}

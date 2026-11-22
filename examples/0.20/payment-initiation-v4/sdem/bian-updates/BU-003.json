@@ -1,0 +1,19 @@
+{
+  "id": "BU-003",
+  "at": "2026-11-22T18:36:22",
+  "person": "steven.taumoepeau",
+  "from": "/var/folders/4p/2n5tzvnj2qd_hgncv4wp4trr0000gn/T/tmpx1kt6ec3/bian.json",
+  "source_system": "SDEM-NEW",
+  "model_version": "2026-11-18",
+  "added": [
+    "BBO-PRODUCTION-TRANSACTION",
+    "BBOA-PRODUCTION-TRANSACTION-TRANSACTION-DATE",
+    "BBOA-PRODUCTION-TRANSACTION-TRANSACTION-DESCRIPTION",
+    "BBOA-PRODUCTION-TRANSACTION-TRANSACTION-IDENTIFICATION",
+    "BBOA-PRODUCTION-TRANSACTION-TRANSACTION-NAME",
+    "BBOA-PRODUCTION-TRANSACTION-TRANSACTION-STATUS",
+    "BBOA-PRODUCTION-TRANSACTION-TRANSACTION-TYPE"
+  ],
+  "dropped": [],
+  "renamed": []
+}

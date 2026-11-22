@@ -1,0 +1,177 @@
+{
+  "id": "CS-012",
+  "layer": "data",
+  "reason": "The owner's decision (2026-11-22): the account ledger's one debit per accepted payment (R-09) is recorded — BIAN Position Keeping",
+  "changes": [
+    {
+      "op": "add",
+      "record": {
+        "id": "DATA-POSTING",
+        "type": "data.DataEntity",
+        "version": "1",
+        "name": "LedgerPosting",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "attributes": [
+            "posting_id",
+            "payment_id",
+            "account_ref",
+            "amount",
+            "currency",
+            "posted_at"
+          ],
+          "source_id": "document:design.md#5,decision:owner 2026-11-22"
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "F-POSTING-POSTING-ID",
+        "type": "data.DataAttribute",
+        "version": "1",
+        "name": "posting_id",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "physical_type": "uuid",
+          "primary_key": true,
+          "classification": "internal",
+          "source_id": "document:design.md#5,decision:owner 2026-11-22"
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "F-POSTING-PAYMENT-ID",
+        "type": "data.DataAttribute",
+        "version": "1",
+        "name": "payment_id",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "physical_type": "uuid",
+          "classification": "internal",
+          "source_id": "document:design.md#5,decision:owner 2026-11-22"
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "F-POSTING-ACCOUNT-REF",
+        "type": "data.DataAttribute",
+        "version": "1",
+        "name": "account_ref",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "physical_type": "varchar(34)",
+          "classification": "internal",
+          "source_id": "document:design.md#5,decision:owner 2026-11-22"
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "F-POSTING-AMOUNT",
+        "type": "data.DataAttribute",
+        "version": "1",
+        "name": "amount",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "physical_type": "numeric(18,2)",
+          "classification": "internal",
+          "source_id": "document:design.md#5,decision:owner 2026-11-22"
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "F-POSTING-CURRENCY",
+        "type": "data.DataAttribute",
+        "version": "1",
+        "name": "currency",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "physical_type": "char(3)",
+          "classification": "internal",
+          "source_id": "document:design.md#5,decision:owner 2026-11-22"
+        }
+      }
+    },
+    {
+      "op": "add",
+      "record": {
+        "id": "F-POSTING-POSTED-AT",
+        "type": "data.DataAttribute",
+        "version": "1",
+        "name": "posted_at",
+        "lifecycle_status": "planned",
+        "attributes": {
+          "physical_type": "timestamptz",
+          "classification": "internal",
+          "source_id": "document:design.md#5,decision:owner 2026-11-22"
+        }
+      }
+    }
+  ],
+  "relationships": {
+    "add": [
+      {
+        "source": "DOM-PAYMENT-PROCESSING",
+        "kind": "aggregation",
+        "target": "DATA-POSTING",
+        "source_id": "document:design.md#5,decision:owner 2026-11-22"
+      },
+      {
+        "source": "DATA-POSTING",
+        "kind": "composition",
+        "target": "F-POSTING-POSTING-ID",
+        "source_id": "document:design.md#5,decision:owner 2026-11-22"
+      },
+      {
+        "source": "DATA-POSTING",
+        "kind": "composition",
+        "target": "F-POSTING-PAYMENT-ID",
+        "source_id": "document:design.md#5,decision:owner 2026-11-22"
+      },
+      {
+        "source": "DATA-POSTING",
+        "kind": "composition",
+        "target": "F-POSTING-ACCOUNT-REF",
+        "source_id": "document:design.md#5,decision:owner 2026-11-22"
+      },
+      {
+        "source": "DATA-POSTING",
+        "kind": "composition",
+        "target": "F-POSTING-AMOUNT",
+        "source_id": "document:design.md#5,decision:owner 2026-11-22"
+      },
+      {
+        "source": "DATA-POSTING",
+        "kind": "composition",
+        "target": "F-POSTING-CURRENCY",
+        "source_id": "document:design.md#5,decision:owner 2026-11-22"
+      },
+      {
+        "source": "DATA-POSTING",
+        "kind": "composition",
+        "target": "F-POSTING-POSTED-AT",
+        "source_id": "document:design.md#5,decision:owner 2026-11-22"
+      }
+    ]
+  },
+  "agent": "sdem-data",
+  "person": "steven.taumoepeau",
+  "created_at": "2026-11-22T05:44:42+00:00",
+  "work_items": [],
+  "event": "CE-012",
+  "branch": null,
+  "trigger": "initial",
+  "dataset": {
+    "file": "data.json",
+    "before_sha256": "72970c301a5ddb3cb209ac98fb67dbfba2b26fb7aff8e3b0d6dab486bcc89996",
+    "after_sha256": "ca8f6dd7799633692e6465995be735a247e75a2200d398478e2be1e7aac29062"
+  }
+}

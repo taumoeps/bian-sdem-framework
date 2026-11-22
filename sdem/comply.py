@@ -92,7 +92,7 @@ def evaluate(datasets, maps, mm, rules, exceptions=(), as_of=None):
             if not mm.known(i['type']) or not mm.is_a(i['type'], rule['entity']): continue
             base = {'rule': rule['id'], 'standard': _ref(rule.get('standard')), 'pattern': _ref(rule.get('pattern')), 'layer': layer, 'record': rid,
                     'name': i.get('name'), 'severity': 'warning' if not_yet else sev, 'message': rule.get('message', '')}
-            if not _p.applies(rule, i): out.append({**base, 'outcome': 'not_applicable'}); continue
+            if not _p.applies(rule, i) or i.get('lifecycle_status') == 'retired': out.append({**base, 'outcome': 'not_applicable'}); continue   # a retired record has left the design
             at = i.get('attributes') or {}
             fails, unknown = [], []
             missing = [x for x in rule.get('require', []) if _unknown(at, x)]

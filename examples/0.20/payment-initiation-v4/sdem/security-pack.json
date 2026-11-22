@@ -1,0 +1,711 @@
+{
+ "format": "sdem-profile/1",
+ "name": "sdem-security",
+ "version": 1,
+ "description": "The security architecture (sdem-security, spec security/docs/security-aspect-spec.md): controls, threats and trust boundaries in five security layers S1–S5, the security views of A1, A2, A3 data, A3 application and A4 — on NIST SP 800-53 Rev. 5 and CSF 2.0, STRIDE and Zero Trust (SP 800-207).",
+ "layers": [
+  {
+   "code": "S",
+   "name": "Security Architecture",
+   "position": "across",
+   "file": "security.json",
+   "description": "controls, threats and trust boundaries across every layer of a design, each in one security layer S1–S5",
+   "source": "sdem-security (NIST SP 800-53 Rev. 5, CSF 2.0, STRIDE, SP 800-207)"
+  }
+ ],
+ "types": [
+  {
+   "type": "SEC.S.SecurityControl",
+   "description": "a measure that protects something — an NIST SP 800-53 control as this design applies it",
+   "archimate": "Requirement"
+  },
+  {
+   "type": "SEC.S.Threat",
+   "description": "what could go wrong to what — STRIDE",
+   "archimate": "Assessment"
+  },
+  {
+   "type": "SEC.S.TrustBoundary",
+   "description": "where trust changes and policy is enforced — NIST SP 800-207",
+   "archimate": "Grouping"
+  }
+ ],
+ "attributes": [
+  {
+   "entity": "SEC.S.SecurityControl",
+   "name": "security_layer",
+   "type": "enum",
+   "values": [
+    "S1",
+    "S2",
+    "S3",
+    "S4",
+    "S5"
+   ],
+   "required": true,
+   "description": "S1 Business · S2 Service Domain · S3 Data · S4 Application · S5 Technology security architecture"
+  },
+  {
+   "entity": "SEC.S.SecurityControl",
+   "name": "control_id",
+   "type": "string",
+   "required": true,
+   "description": "its NIST SP 800-53 Rev. 5 id, e.g. SC-28 or IA-2(1) (sdem security catalogue)"
+  },
+  {
+   "entity": "SEC.S.SecurityControl",
+   "name": "csf_function",
+   "type": "enum",
+   "values": [
+    "GV",
+    "ID",
+    "PR",
+    "DE",
+    "RS",
+    "RC"
+   ],
+   "required": true,
+   "description": "NIST CSF 2.0 function: Govern, Identify, Protect, Detect, Respond, Recover"
+  },
+  {
+   "entity": "SEC.S.SecurityControl",
+   "name": "control_kind",
+   "type": "enum",
+   "values": [
+    "preventive",
+    "detective",
+    "corrective"
+   ],
+   "required": true,
+   "description": "what it does"
+  },
+  {
+   "entity": "SEC.S.SecurityControl",
+   "name": "implementation_status",
+   "type": "enum",
+   "values": [
+    "planned",
+    "partial",
+    "implemented",
+    "not_applicable"
+   ],
+   "required": true,
+   "description": "how far it is in place"
+  },
+  {
+   "entity": "SEC.S.SecurityControl",
+   "name": "csf_category",
+   "type": "string",
+   "description": "NIST CSF 2.0 category, e.g. PR.DS"
+  },
+  {
+   "entity": "SEC.S.SecurityControl",
+   "name": "meets_requirements",
+   "type": "list<string>",
+   "description": "ids in requirements.json it meets"
+  },
+  {
+   "entity": "SEC.S.SecurityControl",
+   "name": "control_evidence",
+   "type": "list<string>",
+   "description": "kind:reference — what shows it is in place (needed once implemented)"
+  },
+  {
+   "entity": "SEC.S.Threat",
+   "name": "security_layer",
+   "type": "enum",
+   "values": [
+    "S1",
+    "S2",
+    "S3",
+    "S4",
+    "S5"
+   ],
+   "required": true,
+   "description": "the security layer it belongs to"
+  },
+  {
+   "entity": "SEC.S.Threat",
+   "name": "stride",
+   "type": "list<string>",
+   "required": true,
+   "description": "one or more of S, T, R, I, D, E — Spoofing, Tampering, Repudiation, Information disclosure, Denial of service, Elevation of privilege"
+  },
+  {
+   "entity": "SEC.S.Threat",
+   "name": "likelihood",
+   "type": "enum",
+   "values": [
+    "low",
+    "medium",
+    "high"
+   ],
+   "required": true
+  },
+  {
+   "entity": "SEC.S.Threat",
+   "name": "impact",
+   "type": "enum",
+   "values": [
+    "low",
+    "medium",
+    "high"
+   ],
+   "required": true
+  },
+  {
+   "entity": "SEC.S.Threat",
+   "name": "treatment",
+   "type": "enum",
+   "values": [
+    "mitigate",
+    "accept",
+    "transfer",
+    "avoid"
+   ]
+  },
+  {
+   "entity": "SEC.S.Threat",
+   "name": "attack_ref",
+   "type": "string",
+   "description": "an optional MITRE ATT&CK technique id"
+  },
+  {
+   "entity": "SEC.S.TrustBoundary",
+   "name": "security_layer",
+   "type": "enum",
+   "values": [
+    "S4",
+    "S5"
+   ],
+   "required": true,
+   "description": "S5 for a network boundary; S4 for identity, tenant or process"
+  },
+  {
+   "entity": "SEC.S.TrustBoundary",
+   "name": "boundary_kind",
+   "type": "enum",
+   "values": [
+    "network",
+    "identity",
+    "tenant",
+    "process"
+   ],
+   "required": true
+  },
+  {
+   "entity": "SEC.S.TrustBoundary",
+   "name": "enforcement",
+   "type": "string",
+   "description": "what enforces it — e.g. an API gateway, mutual TLS"
+  },
+  {
+   "entity": "SEC.S.SecurityControl",
+   "name": "also_satisfies",
+   "type": "list<string>",
+   "description": "clauses of other standards this control also meets, by reference only — e.g. 'ISO/IEC 27001:2022 A.8.24', 'APRA CPS 234 para 21', 'PCI DSS 4.0.1 3.5.1', 'OWASP ASVS 5.0 V8' (no standard's text is shipped)"
+  }
+ ],
+ "link_kinds": [
+  {
+   "kind": "mitigates",
+   "source_type": "SEC.S.SecurityControl",
+   "target_type": "SEC.S.Threat",
+   "maps_to": "association",
+   "description": "the control reduces the threat"
+  }
+ ],
+ "link_types": [
+  {
+   "source_type": "SEC.S.SecurityControl",
+   "relationship": "PROTECTS",
+   "target_type": "A1.BusinessProcess",
+   "required_evidence": [
+    "design_document"
+   ],
+   "description": "the control protects it",
+   "archimate": "association"
+  },
+  {
+   "source_type": "SEC.S.SecurityControl",
+   "relationship": "PROTECTS",
+   "target_type": "A1.BusinessObject",
+   "required_evidence": [
+    "design_document"
+   ],
+   "description": "the control protects it",
+   "archimate": "association"
+  },
+  {
+   "source_type": "SEC.S.SecurityControl",
+   "relationship": "PROTECTS",
+   "target_type": "A1.BusinessRole",
+   "required_evidence": [
+    "design_document"
+   ],
+   "description": "the control protects it",
+   "archimate": "association"
+  },
+  {
+   "source_type": "SEC.S.SecurityControl",
+   "relationship": "PROTECTS",
+   "target_type": "A2.ServiceDomain",
+   "required_evidence": [
+    "design_document"
+   ],
+   "description": "the control protects it",
+   "requires": "ext:bian",
+   "archimate": "association"
+  },
+  {
+   "source_type": "SEC.S.SecurityControl",
+   "relationship": "PROTECTS",
+   "target_type": "A2.ControlRecord",
+   "required_evidence": [
+    "design_document"
+   ],
+   "description": "the control protects it",
+   "requires": "ext:bian",
+   "archimate": "association"
+  },
+  {
+   "source_type": "SEC.S.SecurityControl",
+   "relationship": "PROTECTS",
+   "target_type": "A3.DataEntity",
+   "required_evidence": [
+    "design_document"
+   ],
+   "description": "the control protects it",
+   "archimate": "association"
+  },
+  {
+   "source_type": "SEC.S.SecurityControl",
+   "relationship": "PROTECTS",
+   "target_type": "A3.ApplicationComponent",
+   "required_evidence": [
+    "design_document"
+   ],
+   "description": "the control protects it",
+   "archimate": "association"
+  },
+  {
+   "source_type": "SEC.S.SecurityControl",
+   "relationship": "PROTECTS",
+   "target_type": "A3.ApplicationInterface",
+   "required_evidence": [
+    "design_document"
+   ],
+   "description": "the control protects it",
+   "archimate": "association"
+  },
+  {
+   "source_type": "SEC.S.SecurityControl",
+   "relationship": "PROTECTS",
+   "target_type": "A3.APIOperation",
+   "required_evidence": [
+    "design_document"
+   ],
+   "description": "the control protects it",
+   "archimate": "association"
+  },
+  {
+   "source_type": "SEC.S.SecurityControl",
+   "relationship": "PROTECTS",
+   "target_type": "A4.Node",
+   "required_evidence": [
+    "design_document"
+   ],
+   "description": "the control protects it",
+   "archimate": "association"
+  },
+  {
+   "source_type": "SEC.S.SecurityControl",
+   "relationship": "PROTECTS",
+   "target_type": "A4.NetworkZone",
+   "required_evidence": [
+    "design_document"
+   ],
+   "description": "the control protects it",
+   "archimate": "association"
+  },
+  {
+   "source_type": "SEC.S.SecurityControl",
+   "relationship": "PROTECTS",
+   "target_type": "A4.Path",
+   "required_evidence": [
+    "design_document"
+   ],
+   "description": "the control protects it",
+   "archimate": "association"
+  },
+  {
+   "source_type": "SEC.S.SecurityControl",
+   "relationship": "PROTECTS",
+   "target_type": "A4.SystemSoftware",
+   "required_evidence": [
+    "design_document"
+   ],
+   "description": "the control protects it",
+   "archimate": "association"
+  },
+  {
+   "source_type": "SEC.S.SecurityControl",
+   "relationship": "PROTECTS",
+   "target_type": "A4.Deployment",
+   "required_evidence": [
+    "design_document"
+   ],
+   "description": "the control protects it",
+   "archimate": "association"
+  },
+  {
+   "source_type": "SEC.S.SecurityControl",
+   "relationship": "ENFORCED_BY",
+   "target_type": "A3.ApplicationComponent",
+   "required_evidence": [
+    "design_document"
+   ],
+   "description": "it carries the control out",
+   "archimate": "realization"
+  },
+  {
+   "source_type": "SEC.S.SecurityControl",
+   "relationship": "ENFORCED_BY",
+   "target_type": "A3.ApplicationInterface",
+   "required_evidence": [
+    "design_document"
+   ],
+   "description": "it carries the control out",
+   "archimate": "realization"
+  },
+  {
+   "source_type": "SEC.S.SecurityControl",
+   "relationship": "ENFORCED_BY",
+   "target_type": "A4.Node",
+   "required_evidence": [
+    "design_document"
+   ],
+   "description": "it carries the control out",
+   "archimate": "realization"
+  },
+  {
+   "source_type": "SEC.S.SecurityControl",
+   "relationship": "ENFORCED_BY",
+   "target_type": "A4.SystemSoftware",
+   "required_evidence": [
+    "design_document"
+   ],
+   "description": "it carries the control out",
+   "archimate": "realization"
+  },
+  {
+   "source_type": "SEC.S.SecurityControl",
+   "relationship": "ENFORCED_BY",
+   "target_type": "A4.Deployment",
+   "required_evidence": [
+    "design_document"
+   ],
+   "description": "it carries the control out",
+   "archimate": "realization"
+  },
+  {
+   "source_type": "SEC.S.Threat",
+   "relationship": "THREATENS",
+   "target_type": "A1.BusinessProcess",
+   "required_evidence": [
+    "design_document"
+   ],
+   "description": "the threat applies to it",
+   "archimate": "influence"
+  },
+  {
+   "source_type": "SEC.S.Threat",
+   "relationship": "THREATENS",
+   "target_type": "A1.BusinessObject",
+   "required_evidence": [
+    "design_document"
+   ],
+   "description": "the threat applies to it",
+   "archimate": "influence"
+  },
+  {
+   "source_type": "SEC.S.Threat",
+   "relationship": "THREATENS",
+   "target_type": "A1.BusinessRole",
+   "required_evidence": [
+    "design_document"
+   ],
+   "description": "the threat applies to it",
+   "archimate": "influence"
+  },
+  {
+   "source_type": "SEC.S.Threat",
+   "relationship": "THREATENS",
+   "target_type": "A2.ServiceDomain",
+   "required_evidence": [
+    "design_document"
+   ],
+   "description": "the threat applies to it",
+   "requires": "ext:bian",
+   "archimate": "influence"
+  },
+  {
+   "source_type": "SEC.S.Threat",
+   "relationship": "THREATENS",
+   "target_type": "A2.ControlRecord",
+   "required_evidence": [
+    "design_document"
+   ],
+   "description": "the threat applies to it",
+   "requires": "ext:bian",
+   "archimate": "influence"
+  },
+  {
+   "source_type": "SEC.S.Threat",
+   "relationship": "THREATENS",
+   "target_type": "A3.DataEntity",
+   "required_evidence": [
+    "design_document"
+   ],
+   "description": "the threat applies to it",
+   "archimate": "influence"
+  },
+  {
+   "source_type": "SEC.S.Threat",
+   "relationship": "THREATENS",
+   "target_type": "A3.ApplicationComponent",
+   "required_evidence": [
+    "design_document"
+   ],
+   "description": "the threat applies to it",
+   "archimate": "influence"
+  },
+  {
+   "source_type": "SEC.S.Threat",
+   "relationship": "THREATENS",
+   "target_type": "A3.ApplicationInterface",
+   "required_evidence": [
+    "design_document"
+   ],
+   "description": "the threat applies to it",
+   "archimate": "influence"
+  },
+  {
+   "source_type": "SEC.S.Threat",
+   "relationship": "THREATENS",
+   "target_type": "A3.APIOperation",
+   "required_evidence": [
+    "design_document"
+   ],
+   "description": "the threat applies to it",
+   "archimate": "influence"
+  },
+  {
+   "source_type": "SEC.S.Threat",
+   "relationship": "THREATENS",
+   "target_type": "A4.Node",
+   "required_evidence": [
+    "design_document"
+   ],
+   "description": "the threat applies to it",
+   "archimate": "influence"
+  },
+  {
+   "source_type": "SEC.S.Threat",
+   "relationship": "THREATENS",
+   "target_type": "A4.NetworkZone",
+   "required_evidence": [
+    "design_document"
+   ],
+   "description": "the threat applies to it",
+   "archimate": "influence"
+  },
+  {
+   "source_type": "SEC.S.Threat",
+   "relationship": "THREATENS",
+   "target_type": "A4.Path",
+   "required_evidence": [
+    "design_document"
+   ],
+   "description": "the threat applies to it",
+   "archimate": "influence"
+  },
+  {
+   "source_type": "SEC.S.Threat",
+   "relationship": "THREATENS",
+   "target_type": "A4.SystemSoftware",
+   "required_evidence": [
+    "design_document"
+   ],
+   "description": "the threat applies to it",
+   "archimate": "influence"
+  },
+  {
+   "source_type": "SEC.S.Threat",
+   "relationship": "THREATENS",
+   "target_type": "A4.Deployment",
+   "required_evidence": [
+    "design_document"
+   ],
+   "description": "the threat applies to it",
+   "archimate": "influence"
+  },
+  {
+   "source_type": "SEC.S.TrustBoundary",
+   "relationship": "BOUNDS",
+   "target_type": "A4.NetworkZone",
+   "required_evidence": [
+    "design_document"
+   ],
+   "description": "inside the boundary",
+   "archimate": "aggregation"
+  },
+  {
+   "source_type": "SEC.S.TrustBoundary",
+   "relationship": "BOUNDS",
+   "target_type": "A3.ApplicationComponent",
+   "required_evidence": [
+    "design_document"
+   ],
+   "description": "inside the boundary",
+   "archimate": "aggregation"
+  },
+  {
+   "source_type": "SEC.S.TrustBoundary",
+   "relationship": "BOUNDS",
+   "target_type": "A3.ApplicationInterface",
+   "required_evidence": [
+    "design_document"
+   ],
+   "description": "inside the boundary",
+   "archimate": "aggregation"
+  },
+  {
+   "source_type": "SEC.S.SecurityControl",
+   "relationship": "PROTECTS",
+   "target_type": "A3.DataAttribute",
+   "required_evidence": [
+    "design_document"
+   ],
+   "description": "the control protects it",
+   "archimate": "association"
+  },
+  {
+   "source_type": "SEC.S.SecurityControl",
+   "relationship": "PROTECTS",
+   "target_type": "A2.BusinessObject",
+   "required_evidence": [
+    "design_document"
+   ],
+   "description": "the control protects it",
+   "requires": "ext:bian",
+   "archimate": "association"
+  },
+  {
+   "source_type": "SEC.S.SecurityControl",
+   "relationship": "PROTECTS",
+   "target_type": "A4.InfrastructureComponent",
+   "required_evidence": [
+    "design_document"
+   ],
+   "description": "the control protects it",
+   "archimate": "association"
+  },
+  {
+   "source_type": "SEC.S.SecurityControl",
+   "relationship": "PROTECTS",
+   "target_type": "A4.CommunicationNetwork",
+   "required_evidence": [
+    "design_document"
+   ],
+   "description": "the control protects it",
+   "archimate": "association"
+  },
+  {
+   "source_type": "SEC.S.Threat",
+   "relationship": "THREATENS",
+   "target_type": "A1.BusinessActor",
+   "required_evidence": [
+    "design_document"
+   ],
+   "description": "the threat applies to it",
+   "archimate": "influence"
+  },
+  {
+   "source_type": "SEC.S.Threat",
+   "relationship": "THREATENS",
+   "target_type": "A3.DataAttribute",
+   "required_evidence": [
+    "design_document"
+   ],
+   "description": "the threat applies to it",
+   "archimate": "influence"
+  },
+  {
+   "source_type": "SEC.S.Threat",
+   "relationship": "THREATENS",
+   "target_type": "A2.BusinessObject",
+   "required_evidence": [
+    "design_document"
+   ],
+   "description": "the threat applies to it",
+   "requires": "ext:bian",
+   "archimate": "influence"
+  },
+  {
+   "source_type": "SEC.S.Threat",
+   "relationship": "THREATENS",
+   "target_type": "A4.InfrastructureComponent",
+   "required_evidence": [
+    "design_document"
+   ],
+   "description": "the threat applies to it",
+   "archimate": "influence"
+  },
+  {
+   "source_type": "SEC.S.Threat",
+   "relationship": "THREATENS",
+   "target_type": "A4.CommunicationNetwork",
+   "required_evidence": [
+    "design_document"
+   ],
+   "description": "the threat applies to it",
+   "archimate": "influence"
+  }
+ ],
+ "names": {
+  "layers": {
+   "S": "Security Architecture"
+  },
+  "types": {
+   "SEC.S.SecurityControl": "Security control",
+   "SEC.S.Threat": "Threat",
+   "SEC.S.TrustBoundary": "Trust boundary"
+  }
+ },
+ "includes": [
+  "security-standard.json"
+ ],
+ "computed_rules": [
+  {
+   "id": "SEC-S07",
+   "message": "every security requirement is met by a control (meets_requirements) — PL-8, GV.PO",
+   "severity": "warning"
+  },
+  {
+   "id": "SEC-S08",
+   "message": "a component or API operation that accesses personal data is protected by an audit control (AU-2 or AU-12) — DE.CM",
+   "severity": "warning"
+  },
+  {
+   "id": "SEC-S10",
+   "message": "a service domain in the design is protected by at least one control — who may invoke it, the integrity of what it holds (AC-3, SI-7, PR.AA) — S2; only where BIAN is on (DL-22)",
+   "severity": "warning"
+  },
+  {
+   "id": "SEC-S11",
+   "message": "an application records the data it reads or writes, so the data's protection reaches it (CM-12 information location, ID.AM-07) — S3",
+   "severity": "warning"
+  }
+ ]
+}

@@ -1,0 +1,450 @@
+{
+  "id": "CE-001",
+  "change_set": "CS-001",
+  "layer": "S",
+  "round": 1,
+  "at": "2026-11-20T18:41:29+00:00",
+  "agent": "sdem-layer-s",
+  "person": "steven.taumoepeau",
+  "impact": {
+    "records": [
+      {
+        "id": "SEC-AC5",
+        "level": "S",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "SEC-AC5 added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "SEC-AU12",
+        "level": "S",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "SEC-AU12 added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "SEC-IA2",
+        "level": "S",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "SEC-IA2 added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "SEC-IA8",
+        "level": "S",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "SEC-IA8 added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "SEC-SC12",
+        "level": "S",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "SEC-SC12 added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "SEC-SC28",
+        "level": "S",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "SEC-SC28 added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "SEC-SC7",
+        "level": "S",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "SEC-SC7 added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "SEC-SC8",
+        "level": "S",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "SEC-SC8 added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "SEC-SI10",
+        "level": "S",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "SEC-SI10 added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "TB-INTERNET-EDGE",
+        "level": "S",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "TB-INTERNET-EDGE added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "THR-DISCLOSE-CONSENT",
+        "level": "S",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "THR-DISCLOSE-CONSENT added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "THR-FLOOD-EDGE",
+        "level": "S",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "THR-FLOOD-EDGE added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "THR-REPUDIATE-CONSENT",
+        "level": "S",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "THR-REPUDIATE-CONSENT added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "THR-SPOOF-TPP",
+        "level": "S",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "THR-SPOOF-TPP added",
+        "rule": "add → design_change_required"
+      },
+      {
+        "id": "THR-TAMPER-HANDOFF",
+        "level": "S",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "THR-TAMPER-HANDOFF added",
+        "rule": "add → design_change_required"
+      }
+    ],
+    "mappings_to_supersede": [],
+    "changed": [
+      "SEC-IA2",
+      "SEC-IA8",
+      "SEC-SC8",
+      "SEC-SC28",
+      "SEC-SC12",
+      "SEC-SC7",
+      "SEC-SI10",
+      "SEC-AU12",
+      "SEC-AC5",
+      "THR-SPOOF-TPP",
+      "THR-TAMPER-HANDOFF",
+      "THR-REPUDIATE-CONSENT",
+      "THR-DISCLOSE-CONSENT",
+      "THR-FLOOD-EDGE",
+      "TB-INTERNET-EDGE"
+    ],
+    "coverage": {
+      "A1": {
+        "present": true,
+        "reached": false,
+        "result": "evidence_incomplete",
+        "classification": "no_impact",
+        "related_within_layer": [],
+        "records": [],
+        "paths": [],
+        "unapproved_links": [],
+        "unmapped_records": [
+          "ACTOR-CUSTOMER",
+          "ACTOR-MERCHANT",
+          "ACTOR-TPP",
+          "CAP-CONSENT",
+          "CAP-RISK",
+          "IF-WEB",
+          "PROC-CONSENT",
+          "PROC-DEBIT",
+          "PROC-HANDOFF",
+          "PROC-VALIDATE",
+          "ROLE-BANK",
+          "ST-CONSENT",
+          "ST-STATUS",
+          "ST-SUBMIT",
+          "SVC-AUTH",
+          "SVC-INIT",
+          "VS-MERCHANT"
+        ],
+        "unmapped_count": 17,
+        "evidence": "incomplete",
+        "confirmed": false,
+        "reason": "no approved path reaches this layer, and its links are incomplete — impact through the missing links cannot be seen"
+      },
+      "A2": {
+        "present": true,
+        "reached": false,
+        "result": "evidence_incomplete",
+        "classification": "no_impact",
+        "related_within_layer": [],
+        "records": [],
+        "paths": [],
+        "unapproved_links": [],
+        "unmapped_records": [
+          "CR-FRAUD-EVALUATION",
+          "CR-PARTY-AUTHENTICATION",
+          "CR-PAYMENT-ORDER-INITIATION",
+          "SO-FRAUD-EVALUATION-EVALUATE",
+          "SO-FRAUD-EVALUATION-EXCHANGE",
+          "SO-FRAUD-EVALUATION-EXECUTE",
+          "SO-FRAUD-EVALUATION-GRANT",
+          "SO-FRAUD-EVALUATION-REQUEST",
+          "SO-FRAUD-EVALUATION-RETRIEVE",
+          "SO-FRAUD-EVALUATION-RETRIEVE-MODELS",
+          "SO-FRAUD-EVALUATION-RETRIEVE-RULE-SETSAND-DECISION-TREES",
+          "SO-PARTY-AUTHENTICATION-EVALUATE",
+          "SO-PARTY-AUTHENTICATION-EVALUATE-BEHAVIOR",
+          "SO-PARTY-AUTHENTICATION-EVALUATE-BIOMETRIC",
+          "SO-PARTY-AUTHENTICATION-EVALUATE-DEVICE",
+          "SO-PARTY-AUTHENTICATION-EVALUATE-DOCUMENT",
+          "SO-PARTY-AUTHENTICATION-EVALUATE-PASSWORD",
+          "SO-PARTY-AUTHENTICATION-EVALUATE-QUESTION",
+          "SO-PARTY-AUTHENTICATION-EXCHANGE",
+          "SO-PARTY-AUTHENTICATION-EXECUTE",
+          "SO-PARTY-AUTHENTICATION-GRANT",
+          "SO-PARTY-AUTHENTICATION-REQUEST",
+          "SO-PARTY-AUTHENTICATION-RETRIEVE",
+          "SO-PARTY-AUTHENTICATION-RETRIEVE-BEHAVIOR",
+          "SO-PARTY-AUTHENTICATION-RETRIEVE-BIOMETRIC"
+        ],
+        "unmapped_count": 35,
+        "evidence": "incomplete",
+        "confirmed": false,
+        "reason": "no approved path reaches this layer, and its links are incomplete — impact through the missing links cannot be seen"
+      },
+      "A3": {
+        "present": true,
+        "reached": false,
+        "result": "evidence_incomplete",
+        "classification": "no_impact",
+        "related_within_layer": [],
+        "records": [],
+        "paths": [],
+        "unapproved_links": [],
+        "unmapped_records": [
+          "F-AUDIT-ACTION",
+          "F-AUDIT-ACTOR-REF",
+          "F-AUDIT-CORRELATION-ID",
+          "F-AUDIT-EVENT-ID",
+          "F-AUDIT-RECORDED-AT",
+          "F-CONSENT-AMOUNT",
+          "F-CONSENT-CONSENT-ID",
+          "F-CONSENT-CREDITOR-ACCOUNT",
+          "F-CONSENT-CURRENCY",
+          "F-CONSENT-CUSTOMER-ID",
+          "F-CONSENT-DEBTOR-ACCOUNT",
+          "F-CONSENT-END-TO-END-IDENTIFICATION",
+          "F-CONSENT-EXPIRES-AT",
+          "F-CONSENT-INSTRUCTION-IDENTIFICATION",
+          "F-CONSENT-STATUS",
+          "F-CONSENT-THIRD-PARTY-ID",
+          "F-IDEMP-EXPIRES-AT",
+          "F-IDEMP-KEY-HASH",
+          "F-IDEMP-REQUEST-HASH",
+          "F-IDEMP-RESOURCE-ID",
+          "F-IDEMP-THIRD-PARTY-ID",
+          "F-PAYMENT-AMOUNT",
+          "F-PAYMENT-CONSENT-ID",
+          "F-PAYMENT-CREATED-AT",
+          "F-PAYMENT-CURRENCY"
+        ],
+        "unmapped_count": 30,
+        "evidence": "incomplete",
+        "confirmed": false,
+        "reason": "no approved path reaches this layer, and its links are incomplete — impact through the missing links cannot be seen"
+      },
+      "A4": {
+        "present": true,
+        "reached": false,
+        "result": "evidence_incomplete",
+        "classification": "no_impact",
+        "related_within_layer": [],
+        "records": [],
+        "paths": [],
+        "unapproved_links": [],
+        "unmapped_records": [
+          "EVT-HANDOFF"
+        ],
+        "unmapped_count": 1,
+        "evidence": "incomplete",
+        "confirmed": false,
+        "reason": "no approved path reaches this layer, and its links are incomplete — impact through the missing links cannot be seen"
+      },
+      "A5": {
+        "present": true,
+        "reached": false,
+        "result": "evidence_incomplete",
+        "classification": "no_impact",
+        "related_within_layer": [],
+        "records": [],
+        "paths": [],
+        "unapproved_links": [],
+        "unmapped_records": [
+          "ENV-PROD",
+          "NODE-DATA",
+          "PATH-DATA",
+          "PATH-EDGE",
+          "PATH-HANDOFF",
+          "PATH-KEY",
+          "SYS-KMS",
+          "SYS-MQ",
+          "ZONE-APP",
+          "ZONE-DATA",
+          "ZONE-EDGE",
+          "ZONE-INTEG",
+          "ZONE-SEC"
+        ],
+        "unmapped_count": 13,
+        "evidence": "incomplete",
+        "confirmed": false,
+        "reason": "no approved path reaches this layer, and its links are incomplete — impact through the missing links cannot be seen"
+      },
+      "S": {
+        "present": true,
+        "reached": true,
+        "result": "impact_detected",
+        "classification": "design_change_required",
+        "related_within_layer": [],
+        "records": [
+          {
+            "id": "SEC-AC5",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "SEC-AU12",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "SEC-IA2",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "SEC-IA8",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "SEC-SC12",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "SEC-SC28",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "SEC-SC7",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "SEC-SC8",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "SEC-SI10",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "TB-INTERNET-EDGE",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "THR-DISCLOSE-CONSENT",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "THR-FLOOD-EDGE",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "THR-REPUDIATE-CONSENT",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "THR-SPOOF-TPP",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          },
+          {
+            "id": "THR-TAMPER-HANDOFF",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "add → design_change_required"
+          }
+        ],
+        "paths": [],
+        "unapproved_links": [],
+        "unmapped_records": [
+          "SEC-AC5",
+          "SEC-AU12",
+          "SEC-IA2",
+          "SEC-IA8",
+          "SEC-SC12",
+          "SEC-SC28",
+          "SEC-SC7",
+          "SEC-SC8",
+          "SEC-SI10",
+          "TB-INTERNET-EDGE",
+          "THR-DISCLOSE-CONSENT",
+          "THR-FLOOD-EDGE",
+          "THR-REPUDIATE-CONSENT",
+          "THR-SPOOF-TPP",
+          "THR-TAMPER-HANDOFF"
+        ],
+        "unmapped_count": 15,
+        "evidence": "incomplete",
+        "confirmed": false,
+        "reason": "15 record(s) reached through approved links; the strongest rule gives design_change_required; evidence incomplete: 0 link(s) not approved, 15 record(s) with no approved link where one is expected"
+      }
+    },
+    "basis": {
+      "rules_version": "0.5.0",
+      "files": {
+        "business.json": "c7a7826536c675b41ec44bb863c32d81d1fc64c8be6da327d0765c0d6ba24007",
+        "bian.json": "399e8e367703b8eec00c1c412cc0a79ed9b458bf793b4f106d863625848b46d7",
+        "data.json": "b8a3a5fc3ab80dac74050a74cad47bab85e42306d0514839ac3aa748e8a3735f",
+        "application.json": "d0dc08705617539af3a9c58739e0e185935a5b9b2a0cecbb54c5ce531aac7ab4",
+        "technology.json": "2eff0a9444fa67b2ceb552126aad17d913550bab6d4231bd8043d2244dc583b2",
+        "security.json": "b80705031b366deae3fd42f929556e721cb96db474a4b01ac60f5ecd53749565",
+        "mappings.json": "82d043b6da93034e0a37ffc31f93523914d3312286ac1f5f4e6d70169887a895"
+      },
+      "approved_links": 42,
+      "approved_links_sha256": "272e27d353061ce432451325bc3fc09fade7c642b07c1a7f8d2e28f8052b7195"
+    }
+  }
+}

@@ -1,0 +1,1056 @@
+{
+  "level": "business",
+  "model_id": "SDEM-A1",
+  "model_version": "2026-11-18",
+  "metamodel_version": "0.19.0",
+  "source_system": "SDEM-NEW",
+  "instances": [
+    {
+      "id": "CAP-PAY",
+      "type": "business.BusinessCapability",
+      "version": "1",
+      "name": "Domestic payment initiation",
+      "lifecycle_status": "planned",
+      "attributes": {
+        "level": 1,
+        "source_id": "document:design.md#3"
+      }
+    },
+    {
+      "id": "CAP-CONSENT",
+      "type": "business.BusinessCapability",
+      "version": "1",
+      "name": "Customer payment consent",
+      "lifecycle_status": "planned",
+      "attributes": {
+        "level": 2,
+        "source_id": "document:design.md#3"
+      }
+    },
+    {
+      "id": "CAP-RISK",
+      "type": "business.BusinessCapability",
+      "version": "1",
+      "name": "Payment risk control",
+      "lifecycle_status": "planned",
+      "attributes": {
+        "level": 2,
+        "source_id": "document:design.md#3"
+      }
+    },
+    {
+      "id": "VS-MERCHANT",
+      "type": "business.ValueStream",
+      "version": "1",
+      "name": "Merchant payment",
+      "lifecycle_status": "planned",
+      "attributes": {
+        "stages": [
+          "ST-CONSENT",
+          "ST-SUBMIT",
+          "ST-STATUS"
+        ],
+        "source_id": "document:design.md#3"
+      }
+    },
+    {
+      "id": "ST-CONSENT",
+      "type": "business.ValueStreamStage",
+      "version": "1",
+      "name": "Consent",
+      "lifecycle_status": "planned",
+      "attributes": {
+        "source_id": "document:design.md#3"
+      }
+    },
+    {
+      "id": "ST-SUBMIT",
+      "type": "business.ValueStreamStage",
+      "version": "1",
+      "name": "Payment submission",
+      "lifecycle_status": "planned",
+      "attributes": {
+        "source_id": "document:design.md#3"
+      }
+    },
+    {
+      "id": "ST-STATUS",
+      "type": "business.ValueStreamStage",
+      "version": "1",
+      "name": "Status enquiry",
+      "lifecycle_status": "planned",
+      "attributes": {
+        "source_id": "document:design.md#3"
+      }
+    },
+    {
+      "id": "PROD-ACCOUNT",
+      "type": "business.Product",
+      "version": "1",
+      "name": "Retail account",
+      "lifecycle_status": "planned",
+      "attributes": {
+        "source_id": "document:design.md#3"
+      },
+      "description": "The invented retail account product the bank offers."
+    },
+    {
+      "id": "SVC-INIT",
+      "type": "business.BusinessService",
+      "version": "1",
+      "name": "Business initiation service",
+      "lifecycle_status": "planned",
+      "attributes": {
+        "channels": [
+          "IF-TPP"
+        ],
+        "consumers": [
+          "ACTOR-TPP"
+        ],
+        "source_id": "document:design.md#3"
+      }
+    },
+    {
+      "id": "SVC-AUTH",
+      "type": "business.BusinessService",
+      "version": "1",
+      "name": "Consent authorisation service",
+      "lifecycle_status": "planned",
+      "attributes": {
+        "channels": [
+          "IF-WEB"
+        ],
+        "consumers": [
+          "ACTOR-CUSTOMER"
+        ],
+        "source_id": "document:design.md#3"
+      }
+    },
+    {
+      "id": "ACTOR-CUSTOMER",
+      "type": "business.BusinessActor",
+      "version": "1",
+      "name": "Retail customer",
+      "lifecycle_status": "planned",
+      "attributes": {
+        "actor_kind": "person",
+        "external": true,
+        "source_id": "document:design.md#1,document:design.md#3"
+      }
+    },
+    {
+      "id": "ACTOR-MERCHANT",
+      "type": "business.BusinessActor",
+      "version": "1",
+      "name": "Merchant",
+      "lifecycle_status": "planned",
+      "attributes": {
+        "actor_kind": "formal organisation",
+        "external": true,
+        "source_id": "document:design.md#1,document:design.md#3"
+      }
+    },
+    {
+      "id": "ACTOR-TPP",
+      "type": "business.BusinessActor",
+      "version": "1",
+      "name": "Accredited third-party provider",
+      "lifecycle_status": "planned",
+      "attributes": {
+        "actor_kind": "formal organisation",
+        "external": true,
+        "source_id": "document:design.md#1,document:design.md#3"
+      }
+    },
+    {
+      "id": "ROLE-BANK",
+      "type": "business.BusinessRole",
+      "version": "1",
+      "name": "Bank — account servicing role",
+      "lifecycle_status": "planned",
+      "attributes": {
+        "role_kind": "role",
+        "source_id": "document:design.md#1,document:design.md#3"
+      }
+    },
+    {
+      "id": "IF-TPP",
+      "type": "business.BusinessInterface",
+      "version": "1",
+      "name": "Provider API channel",
+      "lifecycle_status": "planned",
+      "attributes": {
+        "channel_kind": "api",
+        "customer_facing": false,
+        "source_id": "document:design.md#3"
+      }
+    },
+    {
+      "id": "IF-WEB",
+      "type": "business.BusinessInterface",
+      "version": "1",
+      "name": "Redirected authorisation web channel",
+      "lifecycle_status": "planned",
+      "attributes": {
+        "channel_kind": "web",
+        "customer_facing": true,
+        "source_id": "document:design.md#3"
+      }
+    },
+    {
+      "id": "PROC-CONSENT",
+      "type": "business.BusinessProcess",
+      "version": "1",
+      "name": "Capture consent",
+      "lifecycle_status": "planned",
+      "attributes": {
+        "automation_level": "automated",
+        "source_id": "document:design.md#3"
+      }
+    },
+    {
+      "id": "PROC-AUTH",
+      "type": "business.BusinessProcess",
+      "version": "1",
+      "name": "Authenticate and authorise",
+      "lifecycle_status": "planned",
+      "attributes": {
+        "automation_level": "automated",
+        "source_id": "document:design.md#3,document:design.md#4",
+        "invokes": [
+          "SO-PARTY-AUTHENTICATION-EVALUATE"
+        ]
+      }
+    },
+    {
+      "id": "PROC-SUBMIT",
+      "type": "business.BusinessProcess",
+      "version": "1",
+      "name": "Receive the payment",
+      "lifecycle_status": "planned",
+      "attributes": {
+        "automation_level": "automated",
+        "source_id": "document:design.md#3,document:design.md#4",
+        "invokes": [
+          "SO-PAYMENT-ORDER-INITIATION-INITIATE"
+        ]
+      }
+    },
+    {
+      "id": "PROC-VALIDATE",
+      "type": "business.BusinessProcess",
+      "version": "1",
+      "name": "Validate data and account",
+      "lifecycle_status": "planned",
+      "attributes": {
+        "automation_level": "automated",
+        "source_id": "document:design.md#3"
+      }
+    },
+    {
+      "id": "PROC-RISK",
+      "type": "business.BusinessProcess",
+      "version": "1",
+      "name": "Screen fraud",
+      "lifecycle_status": "planned",
+      "attributes": {
+        "automation_level": "automated",
+        "source_id": "document:design.md#3"
+      }
+    },
+    {
+      "id": "PROC-DEBIT",
+      "type": "business.BusinessProcess",
+      "version": "1",
+      "name": "Post one debit",
+      "lifecycle_status": "planned",
+      "attributes": {
+        "automation_level": "automated",
+        "source_id": "document:design.md#3"
+      }
+    },
+    {
+      "id": "PROC-HANDOFF",
+      "type": "business.BusinessProcess",
+      "version": "1",
+      "name": "Hand off for execution",
+      "lifecycle_status": "planned",
+      "attributes": {
+        "automation_level": "automated",
+        "source_id": "document:design.md#3"
+      }
+    },
+    {
+      "id": "PROC-STATUS",
+      "type": "business.BusinessProcess",
+      "version": "1",
+      "name": "Respond to status enquiries",
+      "lifecycle_status": "planned",
+      "attributes": {
+        "automation_level": "automated",
+        "source_id": "document:design.md#3,document:design.md#4",
+        "invokes": [
+          "SO-PAYMENT-ORDER-INITIATION-RETRIEVE"
+        ]
+      }
+    },
+    {
+      "id": "R-01",
+      "type": "business.BusinessRequirement",
+      "version": "1",
+      "name": "The accredited third party can create a one-off domestic payment consent and…",
+      "lifecycle_status": "planned",
+      "attributes": {
+        "requirement_kind": "requirement",
+        "priority": "must",
+        "source_id": "document:design.md#2"
+      },
+      "description": "The accredited third party can create a one-off domestic payment consent and receive a bank-generated identifier. (basis S in the design document)"
+    },
+    {
+      "id": "R-02",
+      "type": "business.BusinessRequirement",
+      "version": "1",
+      "name": "The bank uses the redirect authorisation flow to authenticate the customer…",
+      "lifecycle_status": "planned",
+      "attributes": {
+        "requirement_kind": "requirement",
+        "priority": "must",
+        "source_id": "document:design.md#2"
+      },
+      "description": "The bank uses the redirect authorisation flow to authenticate the customer and accept or reject the complete consent. (basis S in the design document)"
+    },
+    {
+      "id": "R-03",
+      "type": "business.BusinessRequirement",
+      "version": "1",
+      "name": "Unauthorised domestic consent is time-limited to 24 hours; expired consent…",
+      "lifecycle_status": "planned",
+      "attributes": {
+        "requirement_kind": "requirement",
+        "priority": "must",
+        "source_id": "document:design.md#2"
+      },
+      "description": "Unauthorised domestic consent is time-limited to 24 hours; expired consent cannot be used to initiate payment. (basis S in the design document)"
+    },
+    {
+      "id": "R-04",
+      "type": "business.BusinessRequirement",
+      "version": "1",
+      "name": "Only an authorised domestic consent may be used to submit one domestic payment.",
+      "lifecycle_status": "planned",
+      "attributes": {
+        "requirement_kind": "requirement",
+        "priority": "must",
+        "source_id": "document:design.md#2"
+      },
+      "description": "Only an authorised domestic consent may be used to submit one domestic payment. (basis S in the design document)"
+    },
+    {
+      "id": "R-05",
+      "type": "business.BusinessRequirement",
+      "version": "1",
+      "name": "The same payment request will not create a second debit under supported…",
+      "lifecycle_status": "planned",
+      "attributes": {
+        "requirement_kind": "requirement",
+        "priority": "must",
+        "source_id": "document:design.md#2"
+      },
+      "description": "The same payment request will not create a second debit under supported idempotent replay. (basis D in the design document)"
+    },
+    {
+      "id": "R-06",
+      "type": "business.BusinessRequirement",
+      "version": "1",
+      "name": "Payment data use NZD and valid domestic account identification; invalid data…",
+      "lifecycle_status": "planned",
+      "attributes": {
+        "requirement_kind": "requirement",
+        "priority": "must",
+        "source_id": "document:design.md#2"
+      },
+      "description": "Payment data use NZD and valid domestic account identification; invalid data are rejected. (basis S in the design document)"
+    },
+    {
+      "id": "R-07",
+      "type": "business.BusinessRequirement",
+      "version": "1",
+      "name": "The bank checks debtor account eligibility and available funds before posting.",
+      "lifecycle_status": "planned",
+      "attributes": {
+        "requirement_kind": "requirement",
+        "priority": "must",
+        "source_id": "document:design.md#2"
+      },
+      "description": "The bank checks debtor account eligibility and available funds before posting. (basis D in the design document)"
+    },
+    {
+      "id": "R-08",
+      "type": "business.BusinessRequirement",
+      "version": "1",
+      "name": "The bank applies a risk screening decision before debit and execution handoff.",
+      "lifecycle_status": "planned",
+      "attributes": {
+        "requirement_kind": "requirement",
+        "priority": "must",
+        "source_id": "document:design.md#2"
+      },
+      "description": "The bank applies a risk screening decision before debit and execution handoff. (basis D in the design document)"
+    },
+    {
+      "id": "R-09",
+      "type": "business.BusinessRequirement",
+      "version": "1",
+      "name": "The bank commits exactly one ledger debit per successfully accepted payment.",
+      "lifecycle_status": "planned",
+      "attributes": {
+        "requirement_kind": "requirement",
+        "priority": "must",
+        "source_id": "document:design.md#2"
+      },
+      "description": "The bank commits exactly one ledger debit per successfully accepted payment. (basis D in the design document)"
+    },
+    {
+      "id": "R-10",
+      "type": "business.BusinessRequirement",
+      "version": "1",
+      "name": "After the initial checks, the bank hands the accepted instruction to its…",
+      "lifecycle_status": "planned",
+      "attributes": {
+        "requirement_kind": "requirement",
+        "priority": "must",
+        "source_id": "document:design.md#2"
+      },
+      "description": "After the initial checks, the bank hands the accepted instruction to its execution boundary. (basis D in the design document)"
+    },
+    {
+      "id": "R-11",
+      "type": "business.BusinessRequirement",
+      "version": "1",
+      "name": "The third party can retrieve the bank payment resource and its reported status.",
+      "lifecycle_status": "planned",
+      "attributes": {
+        "requirement_kind": "requirement",
+        "priority": "must",
+        "source_id": "document:design.md#2"
+      },
+      "description": "The third party can retrieve the bank payment resource and its reported status. (basis S in the design document)"
+    },
+    {
+      "id": "R-12",
+      "type": "business.BusinessRequirement",
+      "version": "1",
+      "name": "Customer decline, failed authentication or expired consent do not debit…",
+      "lifecycle_status": "planned",
+      "attributes": {
+        "requirement_kind": "requirement",
+        "priority": "must",
+        "source_id": "document:design.md#2"
+      },
+      "description": "Customer decline, failed authentication or expired consent do not debit accounts. (basis D in the design document)"
+    },
+    {
+      "id": "R-13",
+      "type": "business.BusinessRequirement",
+      "version": "1",
+      "name": "Payment API is available at least 99.95% monthly (fictional target).",
+      "lifecycle_status": "planned",
+      "attributes": {
+        "requirement_kind": "requirement",
+        "priority": "must",
+        "source_id": "document:design.md#2"
+      },
+      "description": "Payment API is available at least 99.95% monthly (fictional target). (basis D in the design document)"
+    },
+    {
+      "id": "R-14",
+      "type": "business.BusinessRequirement",
+      "version": "1",
+      "name": "Read p95 response latency at most 500 ms at 200 requests per second…",
+      "lifecycle_status": "planned",
+      "attributes": {
+        "requirement_kind": "requirement",
+        "priority": "must",
+        "source_id": "document:design.md#2"
+      },
+      "description": "Read p95 response latency at most 500 ms at 200 requests per second (fictional target). (basis D in the design document)"
+    },
+    {
+      "id": "R-15",
+      "type": "business.BusinessRequirement",
+      "version": "1",
+      "name": "Payments platform recovery time at most 30 minutes and recovery point at…",
+      "lifecycle_status": "planned",
+      "attributes": {
+        "requirement_kind": "requirement",
+        "priority": "must",
+        "source_id": "document:design.md#2"
+      },
+      "description": "Payments platform recovery time at most 30 minutes and recovery point at most 5 minutes (fictional target). (basis D in the design document)"
+    },
+    {
+      "id": "R-16",
+      "type": "business.BusinessRequirement",
+      "version": "1",
+      "name": "Personal and account information is protected and access to consent and…",
+      "lifecycle_status": "planned",
+      "attributes": {
+        "requirement_kind": "requirement",
+        "priority": "must",
+        "source_id": "document:design.md#2"
+      },
+      "description": "Personal and account information is protected and access to consent and payment resources is scoped. (basis D in the design document)"
+    },
+    {
+      "id": "R-17",
+      "type": "business.BusinessRequirement",
+      "version": "1",
+      "name": "Payment and consent decisions are correlated and auditable.",
+      "lifecycle_status": "planned",
+      "attributes": {
+        "requirement_kind": "requirement",
+        "priority": "must",
+        "source_id": "document:design.md#2"
+      },
+      "description": "Payment and consent decisions are correlated and auditable. (basis D in the design document)"
+    },
+    {
+      "id": "R-18",
+      "type": "business.BusinessRequirement",
+      "version": "1",
+      "name": "The bank uses version 2.3.3 consistently for consent and payment API resources.",
+      "lifecycle_status": "planned",
+      "attributes": {
+        "requirement_kind": "requirement",
+        "priority": "must",
+        "source_id": "document:design.md#2"
+      },
+      "description": "The bank uses version 2.3.3 consistently for consent and payment API resources. (basis S in the design document)"
+    },
+    {
+      "id": "R-19",
+      "type": "business.BusinessRequirement",
+      "version": "1",
+      "name": "A payment accepted for execution is not represented as completed at another…",
+      "lifecycle_status": "planned",
+      "attributes": {
+        "requirement_kind": "requirement",
+        "priority": "must",
+        "source_id": "document:design.md#2"
+      },
+      "description": "A payment accepted for execution is not represented as completed at another bank. (basis S in the design document)"
+    },
+    {
+      "id": "R-20",
+      "type": "business.BusinessRequirement",
+      "version": "1",
+      "name": "Deployments have explicit segment boundaries, private persistence routes and…",
+      "lifecycle_status": "planned",
+      "attributes": {
+        "requirement_kind": "requirement",
+        "priority": "must",
+        "source_id": "document:design.md#2"
+      },
+      "description": "Deployments have explicit segment boundaries, private persistence routes and managed secrets. (basis D in the design document)"
+    },
+    {
+      "id": "R-21",
+      "type": "business.BusinessRequirement",
+      "version": "1",
+      "name": "A regulated deployment must support hybrid redirect and decoupled (CIBA)…",
+      "lifecycle_status": "planned",
+      "attributes": {
+        "requirement_kind": "requirement",
+        "priority": "must",
+        "source_id": "document:design.md#2"
+      },
+      "description": "A regulated deployment must support hybrid redirect and decoupled (CIBA) authorisation; only redirect is designed in S1, so the full regulated implementation remains outside S1. (basis S in the design document)"
+    },
+    {
+      "id": "R-22",
+      "type": "business.BusinessRequirement",
+      "version": "1",
+      "name": "API request throttling (429) and participant identification follow the…",
+      "lifecycle_status": "planned",
+      "attributes": {
+        "requirement_kind": "requirement",
+        "priority": "must",
+        "source_id": "document:design.md#2"
+      },
+      "description": "API request throttling (429) and participant identification follow the MBIE-modified v2.3.3 requirements, not the superseded onboarding and register clauses. (basis S in the design document)"
+    },
+    {
+      "id": "R-23",
+      "type": "business.BusinessRequirement",
+      "version": "1",
+      "name": "An unauthorised domestic payment consent is valid for 24 hours, and status…",
+      "lifecycle_status": "planned",
+      "attributes": {
+        "requirement_kind": "requirement",
+        "priority": "must",
+        "source_id": "document:design.md#2"
+      },
+      "description": "An unauthorised domestic payment consent is valid for 24 hours, and status and expiry are checked before submission. (basis S in the design document)"
+    },
+    {
+      "id": "R-24",
+      "type": "business.BusinessRequirement",
+      "version": "1",
+      "name": "A payment debtor-account read is only returned where DebtorAccountRelease is…",
+      "lifecycle_status": "planned",
+      "attributes": {
+        "requirement_kind": "requirement",
+        "priority": "must",
+        "source_id": "document:design.md#2"
+      },
+      "description": "A payment debtor-account read is only returned where DebtorAccountRelease is true. (basis S in the design document)"
+    }
+  ],
+  "relationships": [
+    {
+      "source": "ROLE-BANK",
+      "kind": "assignment",
+      "target": "PROC-CONSENT",
+      "source_id": "document:design.md#3"
+    },
+    {
+      "source": "ROLE-BANK",
+      "kind": "assignment",
+      "target": "PROC-AUTH",
+      "source_id": "document:design.md#3"
+    },
+    {
+      "source": "ROLE-BANK",
+      "kind": "assignment",
+      "target": "PROC-SUBMIT",
+      "source_id": "document:design.md#3"
+    },
+    {
+      "source": "ROLE-BANK",
+      "kind": "assignment",
+      "target": "PROC-VALIDATE",
+      "source_id": "document:design.md#3"
+    },
+    {
+      "source": "ROLE-BANK",
+      "kind": "assignment",
+      "target": "PROC-RISK",
+      "source_id": "document:design.md#3"
+    },
+    {
+      "source": "ROLE-BANK",
+      "kind": "assignment",
+      "target": "PROC-DEBIT",
+      "source_id": "document:design.md#3"
+    },
+    {
+      "source": "ROLE-BANK",
+      "kind": "assignment",
+      "target": "PROC-HANDOFF",
+      "source_id": "document:design.md#3"
+    },
+    {
+      "source": "ROLE-BANK",
+      "kind": "assignment",
+      "target": "PROC-STATUS",
+      "source_id": "document:design.md#3"
+    },
+    {
+      "source": "PROC-CONSENT",
+      "kind": "flow",
+      "target": "PROC-AUTH",
+      "source_id": "document:design.md#3"
+    },
+    {
+      "source": "PROC-AUTH",
+      "kind": "flow",
+      "target": "PROC-SUBMIT",
+      "source_id": "document:design.md#3"
+    },
+    {
+      "source": "PROC-SUBMIT",
+      "kind": "flow",
+      "target": "PROC-VALIDATE",
+      "source_id": "document:design.md#3"
+    },
+    {
+      "source": "PROC-VALIDATE",
+      "kind": "flow",
+      "target": "PROC-RISK",
+      "source_id": "document:design.md#3"
+    },
+    {
+      "source": "PROC-RISK",
+      "kind": "flow",
+      "target": "PROC-DEBIT",
+      "source_id": "document:design.md#3"
+    },
+    {
+      "source": "PROC-DEBIT",
+      "kind": "flow",
+      "target": "PROC-HANDOFF",
+      "source_id": "document:design.md#3"
+    },
+    {
+      "source": "CAP-PAY",
+      "kind": "aggregation",
+      "target": "CAP-CONSENT",
+      "source_id": "document:design.md#3"
+    },
+    {
+      "source": "CAP-PAY",
+      "kind": "aggregation",
+      "target": "CAP-RISK",
+      "source_id": "document:design.md#3"
+    },
+    {
+      "source": "VS-MERCHANT",
+      "kind": "composition",
+      "target": "ST-CONSENT",
+      "source_id": "document:design.md#3"
+    },
+    {
+      "source": "VS-MERCHANT",
+      "kind": "composition",
+      "target": "ST-SUBMIT",
+      "source_id": "document:design.md#3"
+    },
+    {
+      "source": "VS-MERCHANT",
+      "kind": "composition",
+      "target": "ST-STATUS",
+      "source_id": "document:design.md#3"
+    },
+    {
+      "source": "ST-CONSENT",
+      "kind": "flow",
+      "target": "ST-SUBMIT",
+      "source_id": "document:design.md#3"
+    },
+    {
+      "source": "ST-SUBMIT",
+      "kind": "flow",
+      "target": "ST-STATUS",
+      "source_id": "document:design.md#3"
+    },
+    {
+      "source": "IF-TPP",
+      "kind": "serving",
+      "target": "ACTOR-TPP",
+      "source_id": "document:design.md#3"
+    },
+    {
+      "source": "IF-WEB",
+      "kind": "serving",
+      "target": "ACTOR-CUSTOMER",
+      "source_id": "document:design.md#3"
+    },
+    {
+      "source": "PROC-CONSENT",
+      "kind": "realization",
+      "target": "ST-CONSENT",
+      "source_id": "document:design.md#3"
+    },
+    {
+      "source": "PROC-AUTH",
+      "kind": "realization",
+      "target": "ST-CONSENT",
+      "source_id": "document:design.md#3"
+    },
+    {
+      "source": "PROC-SUBMIT",
+      "kind": "realization",
+      "target": "ST-SUBMIT",
+      "source_id": "document:design.md#3"
+    },
+    {
+      "source": "PROC-VALIDATE",
+      "kind": "realization",
+      "target": "ST-SUBMIT",
+      "source_id": "document:design.md#3"
+    },
+    {
+      "source": "PROC-RISK",
+      "kind": "realization",
+      "target": "ST-SUBMIT",
+      "source_id": "document:design.md#3"
+    },
+    {
+      "source": "PROC-DEBIT",
+      "kind": "realization",
+      "target": "ST-SUBMIT",
+      "source_id": "document:design.md#3"
+    },
+    {
+      "source": "PROC-HANDOFF",
+      "kind": "realization",
+      "target": "ST-SUBMIT",
+      "source_id": "document:design.md#3"
+    },
+    {
+      "source": "PROC-STATUS",
+      "kind": "realization",
+      "target": "ST-STATUS",
+      "source_id": "document:design.md#3"
+    },
+    {
+      "source": "PROC-CONSENT",
+      "kind": "realization",
+      "target": "CAP-CONSENT",
+      "source_id": "document:design.md#3"
+    },
+    {
+      "source": "PROC-AUTH",
+      "kind": "realization",
+      "target": "CAP-CONSENT",
+      "source_id": "document:design.md#3"
+    },
+    {
+      "source": "PROC-RISK",
+      "kind": "realization",
+      "target": "CAP-RISK",
+      "source_id": "document:design.md#3"
+    },
+    {
+      "source": "PROC-SUBMIT",
+      "kind": "realization",
+      "target": "CAP-PAY",
+      "source_id": "document:design.md#3"
+    },
+    {
+      "source": "PROC-VALIDATE",
+      "kind": "realization",
+      "target": "CAP-PAY",
+      "source_id": "document:design.md#3"
+    },
+    {
+      "source": "PROC-DEBIT",
+      "kind": "realization",
+      "target": "CAP-PAY",
+      "source_id": "document:design.md#3"
+    },
+    {
+      "source": "PROC-HANDOFF",
+      "kind": "realization",
+      "target": "CAP-PAY",
+      "source_id": "document:design.md#3"
+    },
+    {
+      "source": "PROC-STATUS",
+      "kind": "realization",
+      "target": "CAP-PAY",
+      "source_id": "document:design.md#3"
+    },
+    {
+      "source": "PROC-AUTH",
+      "kind": "realization",
+      "target": "SVC-AUTH",
+      "source_id": "document:design.md#3"
+    },
+    {
+      "source": "PROC-CONSENT",
+      "kind": "realization",
+      "target": "SVC-INIT",
+      "source_id": "document:design.md#3"
+    },
+    {
+      "source": "PROC-SUBMIT",
+      "kind": "realization",
+      "target": "SVC-INIT",
+      "source_id": "document:design.md#3"
+    },
+    {
+      "source": "PROC-STATUS",
+      "kind": "realization",
+      "target": "SVC-INIT",
+      "source_id": "document:design.md#3"
+    },
+    {
+      "source": "PROC-HANDOFF",
+      "kind": "flow",
+      "target": "PROC-STATUS",
+      "source_id": "document:design.md#3"
+    },
+    {
+      "source": "SVC-INIT",
+      "kind": "serving",
+      "target": "ACTOR-TPP",
+      "source_id": "document:design.md#1"
+    },
+    {
+      "source": "SVC-AUTH",
+      "kind": "serving",
+      "target": "ACTOR-CUSTOMER",
+      "source_id": "document:design.md#1"
+    },
+    {
+      "source": "PROC-CONSENT",
+      "kind": "realization",
+      "target": "R-01",
+      "source_id": "document:design.md#2"
+    },
+    {
+      "source": "PROC-AUTH",
+      "kind": "realization",
+      "target": "R-02",
+      "source_id": "document:design.md#2"
+    },
+    {
+      "source": "PROC-SUBMIT",
+      "kind": "realization",
+      "target": "R-03",
+      "source_id": "document:design.md#2"
+    },
+    {
+      "source": "PROC-SUBMIT",
+      "kind": "realization",
+      "target": "R-04",
+      "source_id": "document:design.md#2"
+    },
+    {
+      "source": "PROC-SUBMIT",
+      "kind": "realization",
+      "target": "R-05",
+      "source_id": "document:design.md#2"
+    },
+    {
+      "source": "PROC-VALIDATE",
+      "kind": "realization",
+      "target": "R-06",
+      "source_id": "document:design.md#2"
+    },
+    {
+      "source": "PROC-VALIDATE",
+      "kind": "realization",
+      "target": "R-07",
+      "source_id": "document:design.md#2"
+    },
+    {
+      "source": "PROC-RISK",
+      "kind": "realization",
+      "target": "R-08",
+      "source_id": "document:design.md#2"
+    },
+    {
+      "source": "PROC-DEBIT",
+      "kind": "realization",
+      "target": "R-09",
+      "source_id": "document:design.md#2"
+    },
+    {
+      "source": "PROC-HANDOFF",
+      "kind": "realization",
+      "target": "R-10",
+      "source_id": "document:design.md#2"
+    },
+    {
+      "source": "PROC-STATUS",
+      "kind": "realization",
+      "target": "R-11",
+      "source_id": "document:design.md#2"
+    },
+    {
+      "source": "PROC-AUTH",
+      "kind": "realization",
+      "target": "R-12",
+      "source_id": "document:design.md#2"
+    },
+    {
+      "source": "PROC-STATUS",
+      "kind": "realization",
+      "target": "R-19",
+      "source_id": "document:design.md#2"
+    },
+    {
+      "source": "PROC-AUTH",
+      "kind": "realization",
+      "target": "R-21",
+      "source_id": "document:design.md#2"
+    },
+    {
+      "source": "PROC-SUBMIT",
+      "kind": "realization",
+      "target": "R-23",
+      "source_id": "document:design.md#2"
+    },
+    {
+      "source": "SVC-INIT",
+      "kind": "realization",
+      "target": "R-13",
+      "source_id": "ai-decision"
+    },
+    {
+      "source": "PROC-STATUS",
+      "kind": "realization",
+      "target": "R-14",
+      "source_id": "ai-decision"
+    },
+    {
+      "source": "SVC-INIT",
+      "kind": "realization",
+      "target": "R-15",
+      "source_id": "ai-decision"
+    },
+    {
+      "source": "PROC-AUTH",
+      "kind": "realization",
+      "target": "R-16",
+      "source_id": "ai-decision"
+    },
+    {
+      "source": "PROC-RISK",
+      "kind": "realization",
+      "target": "R-17",
+      "source_id": "ai-decision"
+    },
+    {
+      "source": "SVC-INIT",
+      "kind": "realization",
+      "target": "R-18",
+      "source_id": "ai-decision"
+    },
+    {
+      "source": "CAP-RISK",
+      "kind": "realization",
+      "target": "R-20",
+      "source_id": "ai-decision"
+    },
+    {
+      "source": "SVC-INIT",
+      "kind": "realization",
+      "target": "R-22",
+      "source_id": "ai-decision"
+    },
+    {
+      "source": "PROC-STATUS",
+      "kind": "realization",
+      "target": "R-24",
+      "source_id": "ai-decision"
+    },
+    {
+      "source": "PROD-ACCOUNT",
+      "kind": "aggregation",
+      "target": "SVC-INIT",
+      "source_id": "ai-decision"
+    },
+    {
+      "source": "SVC-INIT",
+      "kind": "serving",
+      "target": "ACTOR-MERCHANT",
+      "source_id": "ai-decision"
+    },
+    {
+      "source": "IF-TPP",
+      "kind": "association",
+      "target": "SVC-INIT",
+      "source_id": "document:design.md#3"
+    },
+    {
+      "source": "IF-WEB",
+      "kind": "association",
+      "target": "SVC-AUTH",
+      "source_id": "document:design.md#3"
+    }
+  ]
+}

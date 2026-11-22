@@ -1,0 +1,284 @@
+{
+  "id": "CE-014",
+  "change_set": "CS-014",
+  "layer": "application",
+  "round": 1,
+  "at": "2026-11-22T05:54:47+00:00",
+  "agent": "sdem-a3-application",
+  "person": "steven.taumoepeau",
+  "impact": {
+    "records": [
+      {
+        "id": "APP-NOTIFY",
+        "name": "Notification service",
+        "level": "application",
+        "classification": "design_change_required",
+        "via": [],
+        "cause": "retire of APP-NOTIFY",
+        "rule": "retire/self → design_change_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "DEP-NOTIFY",
+        "name": "APP-NOTIFY — production",
+        "level": "technology",
+        "classification": "review_required",
+        "via": [
+          "MAP-017"
+        ],
+        "cause": "retire of APP-NOTIFY",
+        "rule": "retire/down1 → review_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "NODE-APP",
+        "name": "Three-node application compute",
+        "level": "technology",
+        "classification": "review_required",
+        "via": [
+          "MAP-024"
+        ],
+        "cause": "retire of APP-NOTIFY",
+        "rule": "retire/down1 → review_required (impact rules 0.5.0)"
+      },
+      {
+        "id": "ZONE-APP",
+        "name": "Application zone",
+        "level": "technology",
+        "classification": "no_impact",
+        "via": [
+          "MAP-024",
+          "RA4-38"
+        ],
+        "cause": "retire of APP-NOTIFY",
+        "rule": "retire/down2+ → no_impact (impact rules 0.5.0)"
+      }
+    ],
+    "mappings_to_supersede": [
+      "MAP-017",
+      "MAP-024"
+    ],
+    "changed": [
+      "APP-NOTIFY"
+    ],
+    "coverage": {
+      "A1": {
+        "present": true,
+        "reached": false,
+        "result": "evidence_incomplete",
+        "classification": "no_impact",
+        "related_within_layer": [],
+        "records": [],
+        "paths": [],
+        "unapproved_links": [],
+        "unmapped_records": [
+          "ACTOR-CUSTOMER",
+          "ACTOR-MERCHANT",
+          "ACTOR-TPP",
+          "CAP-CONSENT",
+          "CAP-RISK",
+          "IF-WEB",
+          "PROC-CONSENT",
+          "PROC-HANDOFF",
+          "PROC-VALIDATE",
+          "ST-CONSENT",
+          "ST-STATUS",
+          "ST-SUBMIT",
+          "SVC-AUTH",
+          "SVC-INIT",
+          "VS-MERCHANT"
+        ],
+        "unmapped_count": 15,
+        "evidence": "incomplete",
+        "confirmed": false,
+        "reason": "no approved path reaches this layer, and its links are incomplete — impact through the missing links cannot be seen"
+      },
+      "A2": {
+        "present": true,
+        "reached": false,
+        "result": "evidence_incomplete",
+        "classification": "no_impact",
+        "related_within_layer": [],
+        "records": [],
+        "paths": [],
+        "unapproved_links": [],
+        "unmapped_records": [
+          "BBOA-FINANCIAL-TRANSACTION-CAPTURE-POSTING-DESCRIPTION",
+          "BBOA-FINANCIAL-TRANSACTION-CAPTURE-POSTING-TRANSACTION",
+          "BBOA-FINANCIAL-TRANSACTION-CAPTURE-POSTING-VALUE-DATE",
+          "BBOA-PARTY-AUTHENTICATION-ASSESSMENT-DATE-TIME",
+          "BBOA-PARTY-AUTHENTICATION-ASSESSMENT-DESCRIPTION",
+          "BBOA-PARTY-AUTHENTICATION-ASSESSMENT-EXPIRY-DATE",
+          "BBOA-PARTY-AUTHENTICATION-ASSESSMENT-IDENTIFICATION",
+          "BBOA-PARTY-AUTHENTICATION-ASSESSMENT-METHOD",
+          "BBOA-PARTY-AUTHENTICATION-ASSESSMENT-MODEL",
+          "BBOA-PARTY-AUTHENTICATION-ASSESSMENT-REPRESENTING-DOCUMENT",
+          "BBOA-PARTY-AUTHENTICATION-ASSESSMENT-REQUIRED-ADJUSTMENT",
+          "BBOA-PARTY-AUTHENTICATION-ASSESSMENT-REQUIREMENT",
+          "BBOA-PARTY-AUTHENTICATION-ASSESSMENT-RESULT",
+          "BBOA-PARTY-AUTHENTICATION-ASSESSMENT-SCHEDULE",
+          "BBOA-PARTY-AUTHENTICATION-ASSESSMENT-STATUS",
+          "BBOA-PARTY-AUTHENTICATION-ASSESSMENT-SUPPORTING-DOCUMENT",
+          "BBOA-PARTY-AUTHENTICATION-ASSESSMENT-TYPE",
+          "BBOA-PARTY-AUTHENTICATION-AUTHENTICATION-ENTITY",
+          "BBOA-PARTY-AUTHENTICATION-AUTHENTICATION-LEVEL",
+          "BBOA-PARTY-AUTHENTICATION-AUTHENTICATION-METHOD",
+          "BBOA-PARTY-AUTHENTICATION-AUTHENTICATION-RESULT",
+          "BBOA-PARTY-AUTHENTICATION-AUTHENTICATION-TYPE",
+          "BBOA-PARTY-AUTHENTICATION-AUTHENTICATION-VALUE",
+          "BBOA-PARTY-AUTHENTICATION-PARTY-AUTHENTICATION-ENTITY",
+          "BBOA-PARTY-AUTHENTICATION-PARTY-AUTHENTICATION-LEVEL"
+        ],
+        "unmapped_count": 106,
+        "evidence": "incomplete",
+        "confirmed": false,
+        "reason": "no approved path reaches this layer, and its links are incomplete — impact through the missing links cannot be seen"
+      },
+      "A3": {
+        "present": true,
+        "reached": false,
+        "result": "evidence_incomplete",
+        "classification": "no_impact",
+        "related_within_layer": [],
+        "records": [],
+        "paths": [],
+        "unapproved_links": [],
+        "unmapped_records": [
+          "F-AUDIT-ACTION",
+          "F-AUDIT-ACTOR-REF",
+          "F-AUDIT-CORRELATION-ID",
+          "F-AUDIT-EVENT-ID",
+          "F-AUDIT-RECORDED-AT",
+          "F-AUTH-AUTH-ID",
+          "F-AUTH-AUTHENTICATED-AT",
+          "F-AUTH-CONSENT-ID",
+          "F-AUTH-LEVEL",
+          "F-AUTH-METHOD",
+          "F-AUTH-RESULT",
+          "F-CONSENT-AMOUNT",
+          "F-CONSENT-CONSENT-ID",
+          "F-CONSENT-CREDITOR-ACCOUNT",
+          "F-CONSENT-CURRENCY",
+          "F-CONSENT-CUSTOMER-ID",
+          "F-CONSENT-DEBTOR-ACCOUNT",
+          "F-CONSENT-END-TO-END-IDENTIFICATION",
+          "F-CONSENT-EXPIRES-AT",
+          "F-CONSENT-INSTRUCTION-IDENTIFICATION",
+          "F-CONSENT-STATUS",
+          "F-CONSENT-THIRD-PARTY-ID",
+          "F-IDEMP-EXPIRES-AT",
+          "F-IDEMP-KEY-HASH",
+          "F-IDEMP-REQUEST-HASH"
+        ],
+        "unmapped_count": 47,
+        "evidence": "incomplete",
+        "confirmed": false,
+        "reason": "no approved path reaches this layer, and its links are incomplete — impact through the missing links cannot be seen"
+      },
+      "A4": {
+        "present": true,
+        "reached": true,
+        "result": "impact_detected",
+        "classification": "design_change_required",
+        "related_within_layer": [],
+        "records": [
+          {
+            "id": "APP-NOTIFY",
+            "classification": "design_change_required",
+            "via": [],
+            "rule": "retire/self → design_change_required (impact rules 0.5.0)"
+          }
+        ],
+        "paths": [],
+        "unapproved_links": [],
+        "unmapped_records": [
+          "EVT-HANDOFF"
+        ],
+        "unmapped_count": 1,
+        "evidence": "incomplete",
+        "confirmed": false,
+        "reason": "1 record(s) reached through approved links; the strongest rule gives design_change_required; evidence incomplete: 0 link(s) not approved, 1 record(s) with no approved link where one is expected"
+      },
+      "A5": {
+        "present": true,
+        "reached": true,
+        "result": "impact_detected",
+        "classification": "review_required",
+        "related_within_layer": [],
+        "records": [
+          {
+            "id": "DEP-NOTIFY",
+            "classification": "review_required",
+            "via": [
+              "MAP-017"
+            ],
+            "rule": "retire/down1 → review_required (impact rules 0.5.0)"
+          },
+          {
+            "id": "NODE-APP",
+            "classification": "review_required",
+            "via": [
+              "MAP-024"
+            ],
+            "rule": "retire/down1 → review_required (impact rules 0.5.0)"
+          },
+          {
+            "id": "ZONE-APP",
+            "classification": "no_impact",
+            "via": [
+              "MAP-024",
+              "RA4-38"
+            ],
+            "rule": "retire/down2+ → no_impact (impact rules 0.5.0)"
+          }
+        ],
+        "paths": [
+          "MAP-017",
+          "MAP-024",
+          "RA4-38"
+        ],
+        "unapproved_links": [],
+        "unmapped_records": [
+          "ENV-PROD",
+          "NODE-DATA",
+          "SYS-MQ",
+          "ZONE-APP",
+          "ZONE-DATA",
+          "ZONE-INTEG",
+          "ZONE-SEC"
+        ],
+        "unmapped_count": 7,
+        "evidence": "incomplete",
+        "confirmed": false,
+        "reason": "3 record(s) reached through approved links; the strongest rule gives review_required; evidence incomplete: 0 link(s) not approved, 7 record(s) with no approved link where one is expected"
+      },
+      "S": {
+        "present": true,
+        "reached": false,
+        "result": "no_impact_detected",
+        "classification": "no_impact",
+        "related_within_layer": [],
+        "records": [],
+        "paths": [],
+        "unapproved_links": [],
+        "unmapped_records": [],
+        "unmapped_count": 0,
+        "evidence": "complete",
+        "confirmed": false,
+        "reason": "no approved path reaches this layer — no impact detected (not confirmed)"
+      }
+    },
+    "basis": {
+      "rules_version": "0.5.0",
+      "files": {
+        "business.json": "9a4c0ffdf566249ce83d066b94e1b8210bc5cf2ef359970355e8f89dbd30f99d",
+        "bian.json": "b252bc1a1ff7bd2c3d1206fdf9151df9c6673a3c9340051a1d0d25b61028d956",
+        "data.json": "ca8f6dd7799633692e6465995be735a247e75a2200d398478e2be1e7aac29062",
+        "application.json": "0c1e6e203ff86ecbc2f8261e0629bb0d9f672c1cf582865608479111ee925ee3",
+        "technology.json": "18f7324df0ba4affe25b3d7b73ff35ed6451a04696b9451365a20fd87fe03d91",
+        "security.json": "14ded9f837ede3839df7a66891d204a14395fb899e40f142ae92b1768ddca4c6",
+        "mappings.json": "ad6a96c94e4f7931c0b5f9325f6cd0529dcf199f6acd7f5d504ec7f19463aa71"
+      },
+      "approved_links": 113,
+      "approved_links_sha256": "6dd5d08fb8ba29f1783d23d979a389bfefaaacec47a6c2b05dd21a29c153f207"
+    }
+  }
+}

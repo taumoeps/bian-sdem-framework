@@ -31,12 +31,18 @@ class ArchiMateLabels(unittest.TestCase):
         for c in RELS['constraints']:
             self.assertIn(c['kind'], ARCHIMATE_KINDS, c.get('id'))
 
-    def test_every_link_between_layers_is_an_archimate_kind(self):
-        used = {m['relationship'] for f in (ROOT / 'examples').rglob('mappings.json')
-                for m in json.loads(f.read_text(encoding='utf-8')).get('mappings', [])}
-        self.assertTrue(used)
-        for rel in used:
-            self.assertIn(notation.for_relationship(rel), ARCHIMATE_KINDS, f'{rel}: no ArchiMate kind')
+    def test_every_link_between_layers_is_an_archimate_kind(self):   # each example under its own profile — an extension's links get their kind from its pack
+        from sdem import profile as P
+        n = 0
+        try:
+            for f in (ROOT / 'examples').rglob('mappings.json'):
+                P.deactivate()
+                if (f.parent / 'sdem-profile.json').exists(): P.activate_from(f.parent)
+                for rel in {m['relationship'] for m in json.loads(f.read_text(encoding='utf-8')).get('mappings', [])}:
+                    n += 1; self.assertIn(notation.for_relationship(rel), ARCHIMATE_KINDS, f'{f.parent.name}: {rel} has no ArchiMate kind')
+        finally:
+            P.deactivate()
+        self.assertTrue(n)
 
     def test_sdems_own_notation_check_passes(self):
         self.assertEqual(notation.check(MM), [])

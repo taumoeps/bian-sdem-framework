@@ -1,0 +1,17 @@
+{
+  "id": "GD-20261120T185239-b75be2",
+  "kind": "state_link",
+  "subject": "MAP-068",
+  "named_person": "steven",
+  "at": "2026-11-20T18:52:39+00:00",
+  "recorded_by": {
+    "os_user": "taumoeps",
+    "git_user": "Steven Taumoepeau",
+    "git_email": "steven.taumoepeau@gmail.com"
+  },
+  "level": "attributed",
+  "note": "a typed name — attribution, not authentication; verified only by a signed commit from the approver (sdem governance verify)",
+  "details": {
+    "link": "THR-DISCLOSE-CONSENT THREATENS DATA-CONSENT"
+  }
+}

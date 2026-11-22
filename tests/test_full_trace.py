@@ -97,6 +97,14 @@ class FullTrace(unittest.TestCase):
         self.assertEqual(sum(v['records'] for v in g['by_layer'].values()), g['records'])                    # MID-02: a view's per-layer figures
         self.assertTrue(all(v['linked'] <= v['records'] and v['complete'] <= v['records'] for v in g['by_layer'].values()))
 
+    def test_a_completed_design_has_no_gap(self):   # MID-05 on a real design: the Payment example completed to every layer (examples/0.20/payment-initiation-v4)
+        ws = ROOT / 'examples' / '0.20' / 'payment-initiation-v4' / 'sdem'
+        g = Path(tempfile.mkdtemp()) / 'g'; self.addCleanup(shutil.rmtree, g.parent, True)
+        sdem('build', '--workspace', ws, '-o', g)
+        d = json.loads(sdem('trace', 'GAPS', '--graph', g, '--json'))
+        self.assertEqual((d['design_gaps'], d['rule_gaps']), (0, 0), [x['id'] for x in d['gaps']])
+        self.assertEqual(d['complete'], d['records'])
+
     def test_impact_classifies_a_record_by_its_shortest_path(self):   # KG-Q-09
         ms = json.loads((self.tmp / 'ws' / 'mappings.json').read_text(encoding='utf-8'))['mappings']
         for rid in ('APP-PAYHUB', 'SD-PAYMENT-ORDER-INITIATION', 'DATA-PAYMENT'):
