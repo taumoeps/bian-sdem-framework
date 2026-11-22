@@ -89,7 +89,8 @@
         "strategy_document"
       ],
       "description": "the capability realises the outcome",
-      "source": "ArchiMate 3.2 ch. 7 (a capability realises an outcome)"
+      "source": "ArchiMate 3.2 ch. 7 (a capability realises an outcome)",
+      "archimate": "realization"
     },
     {
       "source_type": "A4.InfrastructureComponent",
@@ -99,7 +100,8 @@
         "site_register"
       ],
       "description": "the platform runs in the facility",
-      "source": "ArchiMate 3.2 ch. 11 (a node is assigned to a facility)"
+      "source": "ArchiMate 3.2 ch. 11 (a node is assigned to a facility)",
+      "archimate": "aggregation"
     }
   ]
 }

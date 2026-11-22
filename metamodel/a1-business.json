@@ -376,8 +376,8 @@
       {
         "id": "FT-15",
         "kind": "association",
-        "source_type": "business.BusinessInterface",
-        "target_type": "business.BusinessService",
+        "source_type": "A1.BusinessInterface",
+        "target_type": "A1.BusinessService",
         "whole": "target",
         "up": "EXPOSES",
         "down": "EXPOSED_THROUGH",

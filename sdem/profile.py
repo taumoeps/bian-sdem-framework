@@ -401,6 +401,7 @@ def check(merged, base_mm):
     touching = set()
     for x in merged['link_types']:   # LR-06: links between a profile layer and its neighbour
         name = f"link type {x['source_type']} {x['relationship']} {x['target_type']}"
+        if not x.get('archimate'): issues.append(f"{name}: no ArchiMate relationship — give it \"archimate\" (one of ArchiMate 3.2's eleven, MID-07)"); continue
         ends = [all_types.get(x['source_type']), all_types.get(x['target_type'])]
         if not all(ends): issues.append(f"{name}: {x['source_type'] if not ends[0] else x['target_type']} is not a type"); continue
         a, b = ends[0]['level'], ends[1]['level']
@@ -1151,9 +1152,9 @@ EXAMPLE_LAYERS = _live(lambda: {
                    {'entity': 'BANK.A0.Outcome', 'name': 'target_date', 'type': 'date', 'required': False, 'description': 'when the outcome is due'}],
     'link_kinds': [{'kind': 'realization', 'maps_to': 'realization', 'source_type': 'BANK.A0.Outcome', 'target_type': 'BANK.A0.Goal', 'description': 'an outcome realises a goal'},
                    {'kind': 'composition', 'maps_to': 'composition', 'source_type': 'BANK.A5.Facility', 'target_type': 'BANK.A5.Equipment', 'description': 'a facility contains equipment'}],
-    'link_types': [{'source_type': 'BANK.A0.Outcome', 'relationship': 'REALIZED_BY', 'target_type': _T19('business.BusinessCapability'), 'required_evidence': ['strategy_document'],
+    'link_types': [{'source_type': 'BANK.A0.Outcome', 'relationship': 'REALIZED_BY', 'archimate': 'realization', 'target_type': _T19('business.BusinessCapability'), 'required_evidence': ['strategy_document'],
                     'description': 'the capability realises the outcome', 'source': 'ArchiMate 3.2 ch. 7 (a capability realises an outcome)'},
-                   {'source_type': _T19('technology.InfrastructureComponent'), 'relationship': 'HOUSED_IN', 'target_type': 'BANK.A5.Facility', 'required_evidence': ['site_register'],
+                   {'source_type': _T19('technology.InfrastructureComponent'), 'relationship': 'HOUSED_IN', 'archimate': 'aggregation', 'target_type': 'BANK.A5.Facility', 'required_evidence': ['site_register'],
                     'description': 'the platform runs in the facility', 'source': 'ArchiMate 3.2 ch. 11 (a node is assigned to a facility)'}]})
 
 

@@ -72,7 +72,7 @@ class B1Tests(unittest.TestCase):
         prof = {'format': 'sdem-profile/1', 'name': 'sites', 'version': 1,   # one added layer, no other rules
                 'layers': [{'code': 'A5', 'name': 'A5 Physical', 'position': 'below', 'file': 'a5-physical.json'}],
                 'types': [{'type': 'ORG.A5.Facility', 'definition': 'a site'}],
-                'link_types': [{'source_type': 'A4.InfrastructureComponent', 'relationship': 'HOUSED_IN', 'target_type': 'ORG.A5.Facility', 'required_evidence': ['site_register']}]}
+                'link_types': [{'source_type': 'A4.InfrastructureComponent', 'relationship': 'HOUSED_IN', 'archimate': 'aggregation', 'target_type': 'ORG.A5.Facility', 'required_evidence': ['site_register']}]}
         (self.ws / 'sdem-profile.json').write_text(json.dumps(prof))
         sdem('profile', 'adopt', '--workspace', self.ws, '--person', 'steven', '--reason', 'test', cwd=self.tmp)
         back_to_070(self.ws)

@@ -2,8 +2,9 @@
 
 > Entries before 0.7.0 describe the project under its former name, **SDMM (BIAN Service Domain Mapping Model)**, and its former terms; they are kept as written.
 
-## Unreleased
+## 0.21.3 — the metamodel integrity design, checked on a real design (2026-11-22)
 
+- **An extension's link type says its ArchiMate kind** (MID-07): a pack's link type gives `"archimate"` (one of ArchiMate 3.2's eleven relationships), SDEM reads it wherever it labels a link, and a pack without it is refused — before, the security extension's PROTECTS, ENFORCED_BY, THREATENS and BOUNDS had no ArchiMate kind. **Packs that declare link types must add it** (sdem-security 0.4.3 does: association, realization, influence, aggregation).
 - **A retired record has left the design** (LC-04, MID-05): it is no longer asked for a required fact it never had (a planned deployment retired before it had a platform), and `sdem trace GAPS` no longer counts it.
 - **A channel reaches what its services reach** (FT-15): a business interface associated with a business service (ArchiMate 3.2 §8.2.3, the interface exposes it) is traced through that service — declared in the Business layer's metamodel file, as BIAN's rules are.
 - **`sdem trace GAPS` counts a record through what it is part of** (MID-05: "directly or indirectly"). A BIAN operation, qualifier or service group reaches what its domain reaches — the trace climbs to the domain but never back down into its other parts (FT-02), so each was listed as a gap of its own. Now a record is complete when it or a whole it is part of reaches every other layer; a part whose whole is itself a gap is listed once, under that whole (`parts`, `within_a_gap`). On the Payment example: 97 gaps → 19 (186 complete, 50 inside the 19), 0 rule gaps.

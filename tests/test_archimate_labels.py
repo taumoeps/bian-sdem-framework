@@ -49,3 +49,24 @@ class ArchiMateLabels(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+class PacksSayTheirKinds(unittest.TestCase):   # MID-07 for an extension's own links: each link type says its ArchiMate kind ("archimate")
+    def test_every_shipped_profile_link_type_has_its_kind(self):
+        from sdem import profile as P
+        for f in list((ROOT / 'examples' / 'profiles').glob('*.json')) + list((ROOT / 'standards').glob('*.json')):
+            d = json.loads(f.read_text(encoding='utf-8'))
+            for x in (d.get('link_types') or []) if isinstance(d, dict) else []:
+                self.assertIn(x.get('archimate'), ARCHIMATE_KINDS, f'{f.name}: {x.get("relationship")}')
+        for x in P.example_profiles()['strategy-and-sites-team.json']['link_types'] if hasattr(P, 'example_profiles') else []:
+            self.assertIn(x.get('archimate'), ARCHIMATE_KINDS)
+
+    def test_a_link_type_without_its_kind_is_refused(self):
+        import tempfile
+        from sdem import profile as P
+        t = Path(tempfile.mkdtemp())
+        (t / 'p.json').write_text(json.dumps({'format': 'sdem-profile/1', 'name': 'x', 'version': 1,
+            'layers': [{'code': 'X', 'name': 'X', 'position': 'across', 'file': 'x.json'}], 'types': [{'type': 'XX.X.Thing', 'description': 'made-up', 'archimate': 'Assessment'}],
+            'link_types': [{'source_type': 'XX.X.Thing', 'relationship': 'TOUCHES', 'target_type': 'A3.DataEntity', 'required_evidence': ['memo']}]}))
+        issues = P.check(P.resolve(t / 'p.json'), MM)
+        self.assertTrue(any('no ArchiMate relationship' in i for i in issues), issues)

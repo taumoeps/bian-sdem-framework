@@ -471,6 +471,23 @@
           "requires": {
             "type": "string",
             "description": "BX-50: a part this link type needs, e.g. \"ext:bian\" — left out (and said so) where that part is off"
+          },
+          "archimate": {
+            "type": "string",
+            "enum": [
+              "composition",
+              "aggregation",
+              "assignment",
+              "realization",
+              "serving",
+              "access",
+              "influence",
+              "triggering",
+              "flow",
+              "specialization",
+              "association"
+            ],
+            "description": "MID-07: the ArchiMate 3.2 relationship this link type is (§5) — every link is ArchiMate's kind"
           }
         }
       }

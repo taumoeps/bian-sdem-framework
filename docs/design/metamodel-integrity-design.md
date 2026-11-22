@@ -131,7 +131,9 @@ when it adds a layer, its own knowledge graph, joined to the others by the regis
 | An extension requiring another | MID-10 | `tests/test_metamodel_extensions.py` (`ExtensionRequiresAnother`) |
 | ArchiMate labels | MID-07 | `tests/test_archimate_labels.py`: every type has a source and an ArchiMate element (own or inherited), every link inside and between layers is an ArchiMate kind, every trace rule is SDEM's (FT-…) with its reason; SDEM's own notation check passes. (An Open Exchange Format export, MIP-08, would be a further check — not needed for the rule) |
 
-## 6. Conformance (2026-11-22, SDEM 0.21.1 and after)
+## 6. Conformance (2026-11-22, SDEM 0.21.3)
+
+*Checked on the Payment example, not only SDEM's own: 327 of 327 records reach every other layer (0 design gaps, 0 rule gaps — MID-05), every link type in it has its ArchiMate kind (MID-07). A metamodel change that leaves the core as frozen (a declared trace rule, a notation entry) ships as an SDEM release with the metamodel version unchanged — MS-04/05, MIP-D2; `sdem model stability`: "the core is as frozen" at 0.19.0.*
 
 | Rule | Met | Evidence — or what is missing |
 |---|---|---|
@@ -141,7 +143,7 @@ when it adds a layer, its own knowledge graph, joined to the others by the regis
 | MID-04 Graphs built from entities, checked by the metamodel | ✅ | `sdem check`, graph stores current, CI |
 | MID-05 Every shape accounted for | ✅ | `sdem trace GAPS`; no rule gap in any example (tested); the Payment example: 152 of 255 records reach every other layer, 103 design gaps for a person, 0 rule gaps |
 | MID-06 Views are of the source | ✅ | a design in 0.20's form published and shown in its own form (MIP-04, DW-79) |
-| MID-07 Links and types labelled by their standard | ✅ | checked over the whole metamodel (`tests/test_archimate_labels.py`); it found one gap, now closed — `ACCESSED_BY` (Data → Application) had no ArchiMate kind: it is *access* |
+| MID-07 Links and types labelled by their standard | ✅ | checked over the whole metamodel and every shipped pack (`tests/test_archimate_labels.py`, sdem-security's own test); it found two gaps, both closed — `ACCESSED_BY` (Data → Application) had no ArchiMate kind (it is *access*), and an extension's link types had none (a pack now says each one's, `"archimate"`; Security's four are association, realization, influence, aggregation). On the Payment example every link type in use has its kind |
 | MID-08 Extensions by pattern, not by name | ✅ | three made-up extensions — *Facilities* (H1, a layer below the stack), *Networks* (H2, a kind of Technology node) and *Disaster Recovery* (V1, beside the stack) — switch on, check, link and trace with no SDEM code naming them (`tests/test_extension_patterns.py`); the trace's own rules are declared (`trace_rules`). BIAN keeps its built-in switch (on by default, BX-11, so 0.19 designs read as before) — BIAN's compatibility, not a path another extension needs |
 | MID-09 A vertical extension is an overlay | ✅ | Security is a switch on the one stack — the design's own plates (A1–A5 + security), never S1–S5 (DESNRE DW-80) — drawn as its manifest declares (`viewer.overlay`: plates, shapes and their place, link styles; sdem-security 0.4.2, DW-81) |
 | MID-10 An extension may require another | ✅ | `requires` for any extension, on anything it adds — left out and said when the other is off (tested) |

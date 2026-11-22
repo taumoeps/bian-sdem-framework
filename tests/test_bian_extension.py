@@ -117,7 +117,7 @@ class PackLinkTypes(unittest.TestCase):   # BX-50: a pack's link type that requi
         try:
             import test_metamodel_extensions as T
             pack = json.loads(json.dumps(T.PACK))
-            pack['link_types'].append({'source_type': 'SECT.S.SecurityControl', 'relationship': 'PROTECTS', 'target_type': 'A2.ServiceDomain',
+            pack['link_types'].append({'source_type': 'SECT.S.SecurityControl', 'relationship': 'PROTECTS', 'archimate': 'association', 'target_type': 'A2.ServiceDomain',
                                        'required_evidence': ['design_document'], 'requires': 'ext:bian'})
             orig = T.PACK; T.PACK = pack
             try: fake_extension(tmp / 'bin', 'sectest')

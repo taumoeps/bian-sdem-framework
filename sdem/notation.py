@@ -43,7 +43,10 @@ def for_type(mm, t):
 
 def for_relationship(name):
     """ARV-14: a within-layer link kind or a cross-layer relationship → its ArchiMate relationship (None if not mapped)."""
-    d = load(); return d['within_layer'].get(name) or d['cross_layer'].get(name)
+    d = load(); own = d['within_layer'].get(name) or d['cross_layer'].get(name)
+    if own: return own
+    from . import profile as _p   # MID-07: an extension's link type says its ArchiMate kind in its pack ("archimate")
+    return next((x['archimate'] for x in ((_p.ACTIVE or {}).get('link_types') or []) if x.get('relationship') == name and x.get('archimate')), None)
 
 
 def check(mm, registry=None):

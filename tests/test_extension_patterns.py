@@ -13,18 +13,18 @@ PACKS = {
     'facilities': {'format': 'sdem-profile/1', 'name': 'facilities', 'version': 1,   # H1: a layer in the stack, below Technology
                  'layers': [{'code': 'P', 'name': 'Facilities Architecture', 'position': 'below', 'file': 'facilities.json', 'description': 'sites and racks (made-up)'}],
                  'types': [{'type': 'PHY.P.Site', 'description': 'a data centre site (made-up)', 'archimate': 'Location'}],
-                 'link_types': [{'source_type': 'A4.Node', 'relationship': 'LOCATED_AT', 'target_type': 'PHY.P.Site', 'required_evidence': ['design_document']}]},
+                 'link_types': [{'source_type': 'A4.Node', 'relationship': 'LOCATED_AT', 'archimate': 'aggregation', 'target_type': 'PHY.P.Site', 'required_evidence': ['design_document']}]},
     'networks': {'format': 'sdem-profile/1', 'name': 'networks', 'version': 1,   # H2: a kind of record inside Technology
                  'types': [{'type': 'NET.A4.Firewall', 'extends': 'A4.Node', 'description': 'a firewall (made-up)', 'archimate': 'Node'}]},
     'recovery': {'format': 'sdem-profile/1', 'name': 'recovery', 'version': 1,   # V1: a layer beside the stack
                  'layers': [{'code': 'D', 'name': 'Disaster Recovery', 'position': 'across', 'file': 'recovery.json', 'description': 'recovery plans (made-up)'}],
                  'types': [{'type': 'DRX.D.RecoveryPlan', 'description': 'how something is recovered (made-up)', 'archimate': 'CourseOfAction'}],
-                 'link_types': [{'source_type': 'DRX.D.RecoveryPlan', 'relationship': 'RECOVERS', 'target_type': 'A3.DataEntity', 'required_evidence': ['design_document']}]},
+                 'link_types': [{'source_type': 'DRX.D.RecoveryPlan', 'relationship': 'RECOVERS', 'archimate': 'association', 'target_type': 'A3.DataEntity', 'required_evidence': ['design_document']}]},
     'audit': {'format': 'sdem-profile/1', 'name': 'audit', 'version': 1,   # G4: a second vertical extension linking the first
               'layers': [{'code': 'U', 'name': 'Assurance', 'position': 'across', 'file': 'assurance.json', 'description': 'assurance checks (made-up)'}],
               'types': [{'type': 'AUD.U.AssuranceCheck', 'description': 'a check that something works (made-up)', 'archimate': 'Assessment'}],
-              'link_types': [{'source_type': 'AUD.U.AssuranceCheck', 'relationship': 'VERIFIES', 'target_type': 'DRX.D.RecoveryPlan', 'required_evidence': ['design_document'], 'trace': 'through'},
-                             {'source_type': 'AUD.U.AssuranceCheck', 'relationship': 'SAMPLES', 'target_type': 'DRX.D.RecoveryPlan', 'required_evidence': ['design_document']}]},
+              'link_types': [{'source_type': 'AUD.U.AssuranceCheck', 'relationship': 'VERIFIES', 'archimate': 'association', 'target_type': 'DRX.D.RecoveryPlan', 'required_evidence': ['design_document'], 'trace': 'through'},
+                             {'source_type': 'AUD.U.AssuranceCheck', 'relationship': 'SAMPLES', 'archimate': 'association', 'target_type': 'DRX.D.RecoveryPlan', 'required_evidence': ['design_document']}]},
 }
 
 

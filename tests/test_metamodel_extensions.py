@@ -15,8 +15,8 @@ PACK = {
               {'type': 'SECT.S.Threat', 'description': 'what could go wrong to what', 'archimate': 'Assessment'}],
     'attributes': [{'entity': 'SECT.S.SecurityControl', 'name': 'control_id', 'type': 'string', 'required': True}],
     'link_kinds': [{'kind': 'mitigates', 'source_type': 'SECT.S.SecurityControl', 'target_type': 'SECT.S.Threat', 'maps_to': 'association'}],
-    'link_types': [{'source_type': 'SECT.S.SecurityControl', 'relationship': 'PROTECTS', 'target_type': 'A3.DataEntity', 'required_evidence': ['design_document']},
-                   {'source_type': 'SECT.S.SecurityControl', 'relationship': 'PROTECTS', 'target_type': 'A1.BusinessProcess', 'required_evidence': ['design_document']}],
+    'link_types': [{'source_type': 'SECT.S.SecurityControl', 'relationship': 'PROTECTS', 'archimate': 'association', 'target_type': 'A3.DataEntity', 'required_evidence': ['design_document']},
+                   {'source_type': 'SECT.S.SecurityControl', 'relationship': 'PROTECTS', 'archimate': 'association', 'target_type': 'A1.BusinessProcess', 'required_evidence': ['design_document']}],
     'computed_rules': [{'id': 'SECT-C01', 'message': 'a check the extension computes itself'}]}
 CONTROLS = {'layer': 'S', 'reason': 'security design', 'changes': [
     {'op': 'add', 'record': {'id': 'CTL-SC28', 'type': 'SECT.S.SecurityControl', 'version': '1', 'name': 'Protection at rest', 'lifecycle_status': 'active', 'attributes': {'control_id': 'SC-28'}}},
