@@ -141,6 +141,9 @@ class FullTrace(unittest.TestCase):
         self.assertTrue(all(x['source'] != 'core' for x in m['records'] if x['graph'] in ('S', 'A2')))   # an extension's kinds (Security's, BIAN's) are said to be its, never the core's
         self.assertTrue(all(x['archimate'] for x in m['links']) and m['counts']['between'] > 0)       # every allowed link an ArchiMate relationship
         self.assertEqual(sum(x['records_in_design'] for x in m['records']), g['counts']['records'])   # each kind says how many records the design has of it
+        allowed = {(x['source'], x.get('relationship') or x.get('kind'), x['target']) for x in m['links']}
+        typ = {x['id']: x['type'] for x in g['records']}
+        self.assertEqual([x for x in g['links'] if (typ[x['source']], x.get('relationship') or x.get('kind'), typ[x['target']]) not in allowed], [])   # every link in the design is one the metamodel allows, and draws
 
     def test_impact_classifies_a_record_by_its_shortest_path(self):   # KG-Q-09
         ms = json.loads((self.tmp / 'ws' / 'mappings.json').read_text(encoding='utf-8'))['mappings']

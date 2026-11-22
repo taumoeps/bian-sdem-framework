@@ -2,6 +2,10 @@
 
 > Entries before 0.7.0 describe the project under its former name, **SDMM (BIAN Service Domain Mapping Model)**, and its former terms; they are kept as written.
 
+## 0.21.9 — every link the design has, allowed and drawn (2026-11-22)
+
+- **`sdem model integrity --metamodel` includes the links from a kind to its own kind** (a process flows to the next, a capability holds sub-capabilities, a domain holds a subject area) — 0.21.8 left them out, so 20 of the Payment example's 525 links had no allowed link drawn in the Metamodel view. Now every link in the design is one the Metamodel view shows as allowed (tested): 178 inside a layer, 89 between layers. DESNRE says a kind's links to its own kind on its shape (sdem-desnre 0.11.8).
+
 ## 0.21.8 — the metamodel drawn (2026-11-22)
 
 - **`sdem model integrity --workspace DIR --metamodel --json`**: the Metamodel Core and the Extensions merged into it, drawn — each graph's kinds of record as shapes (where each comes from, the core or an extension; its ArchiMate element; how many records the design has of it), and the links the metamodel allows as lines (the rules inside a layer and the link types between layers, each an ArchiMate relationship). What *may be*; `--graph` is what *is*. DESNRE draws it as the **Metamodel** viewpoint, and the viewpoint that draws the design's records is now called **Knowledge Graph** (sdem-desnre 0.11.7). On the Payment example: 53 kinds in six graphs (18 from extensions), 212 links allowed.

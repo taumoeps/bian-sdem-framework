@@ -1,6 +1,6 @@
 # Designing with AID
 
-> **Status: current (v0.21.8)** — for architects: designing a new solution with SDEM's *Architecture Inference Design* (AID). You write what you know; `sdem aid` fills in what is missing, marked so you can see — and decide on — every record it added.
+> **Status: current (v0.21.9)** — for architects: designing a new solution with SDEM's *Architecture Inference Design* (AID). You write what you know; `sdem aid` fills in what is missing, marked so you can see — and decide on — every record it added.
 
 ## What you give it, what it gives you
 

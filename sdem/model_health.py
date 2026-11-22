@@ -520,9 +520,9 @@ def integrity_metamodel(workspace):
     for c in mm.relationships.get('constraints', []):
         for a in resolve(c.get('source_type')):
             for b in resolve(c.get('target_type')):
-                if kinds.get(a) != kinds.get(b) or a == b and c['kind'] not in ('composition', 'aggregation', 'specialization', 'flow', 'triggering', 'association'): continue
-                key = (a, c['kind'], b)
-                if key in seen or a == b: continue
+                if kinds.get(a) != kinds.get(b): continue
+                key = (a, c['kind'], b)   # a kind may link to its own kind (a process flows to the next, a capability holds sub-capabilities)
+                if key in seen: continue
                 seen.add(key)
                 links.append({'source': a, 'target': b, 'scope': 'inside', 'graph': kinds[a], 'kind': c['kind'], 'rule': c.get('id'),
                               'archimate': notation.for_relationship(c['kind']) or c['kind'], 'status': 'allowed'})
