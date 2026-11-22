@@ -6,7 +6,7 @@
     "directed": true,
     "metadata": {
       "sdem_store_version": "1.0",
-      "export_sha256": "e40251ae4a62e1f8896d98447a02ddfbf436c6014158354ff6261de481568071",
+      "export_sha256": "a89cc52a5bea72c47e4a249f1b212bc78f4342bf25a0939eded2f3e15b83d23a",
       "level": "A3",
       "model_id": "reference-structure-a3",
       "model_version": "2026.10",
@@ -234,6 +234,28 @@
           "version": "1.0",
           "lifecycle_status": "active",
           "description": "Synthetic instance of A3.DataAttribute carrying one relationship per constraint row of A3; no business meaning."
+        }
+      },
+      "A3:RS-DataDomain-1@1.0": {
+        "label": "DataDomain 1 (structure conformance)",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.DataDomain",
+          "id": "RS-DataDomain-1",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic instance of A3.DataDomain carrying one relationship per constraint row of A3; no business meaning."
+        }
+      },
+      "A3:RS-DataDomain-2@1.0": {
+        "label": "DataDomain 2 (structure conformance)",
+        "metadata": {
+          "level": "A3",
+          "type": "A3.DataDomain",
+          "id": "RS-DataDomain-2",
+          "version": "1.0",
+          "lifecycle_status": "active",
+          "description": "Synthetic instance of A3.DataDomain carrying one relationship per constraint row of A3; no business meaning."
         }
       }
     },
@@ -611,6 +633,28 @@
           "row": "RA3-34"
         },
         "label": "RA3-34"
+      },
+      {
+        "id": "A3:RS-DataDomain-1-aggregation-RS-DataEntity-1",
+        "source": "A3:RS-DataDomain-1@1.0",
+        "target": "A3:RS-DataEntity-1@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-35"
+        },
+        "label": "RA3-35"
+      },
+      {
+        "id": "A3:RS-DataDomain-1-aggregation-RS-DataDomain-2",
+        "source": "A3:RS-DataDomain-1@1.0",
+        "target": "A3:RS-DataDomain-2@1.0",
+        "relation": "aggregation",
+        "metadata": {
+          "scope": "within-level",
+          "row": "RA3-36"
+        },
+        "label": "RA3-36"
       }
     ]
   }
