@@ -4,6 +4,7 @@
 
 ## Unreleased
 
+- **`sdem model integrity --workspace DIR`: the design in the metamodel integrity reference model** (MID-01…MID-10) — the Metamodel Core (its version and whether it is as frozen), each Metamodel Extension merged into it (its pattern H1 / H2 / V1, what it adds, its link types by ArchiMate kind), the Federated Knowledge Graph (the approved links between layers, each with its ArchiMate relationship) and each layer's and extension's own graph (records, links inside, kinds). Read-only; DESNRE draws its Health, Metamodel and Knowledge Graph views from it (sdem-desnre ships it as `integrity`).
 - **The Payment example, completed to every layer** — `examples/0.20/payment-initiation-v4`: v3's design with its data architecture, security layer, three BIAN-aligned tables, its applications aligned and the notification service retired — 327 of 327 records reach every other layer, 148 of 148 connected (tested). v3 stays as the 0.19 example's migration twin.
 - **A retired record is outside every design rule** — the completeness count (`sdem status`) no longer counts it, as `sdem trace GAPS` and LC-04 already did not.
 - The MID-07 test reads each example under its own profile, so an extension's links are checked with the kinds its pack gives them.

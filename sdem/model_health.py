@@ -196,6 +196,8 @@ def main(argv=None):
     u = sub.add_parser('usage', help='which types, link types, kinds and attributes the given workspaces use — and which of SDEM\'s no workspace uses')
     u.add_argument('--workspace', dest='estates', action='append', metavar='DIR'); u.add_argument('--root', metavar='DIR', help='every workspace in a folder'); u.add_argument('--json', action='store_true')
     t = sub.add_parser('stability', help='the core against its last freeze — fails if it changed in a way the policy does not allow'); t.add_argument('--json', action='store_true')
+    g = sub.add_parser('integrity', help='a design in the metamodel integrity reference shape: core, extensions, the federated graph and each graph (read-only)')
+    g.add_argument('--workspace', required=True, metavar='DIR'); g.add_argument('--json', action='store_true')
     f = sub.add_parser('freeze', help='record the core as it now is, after an approved change (maintainers)'); f.add_argument('--person', required=True); f.add_argument('--json', action='store_true')
     a = ap.parse_args(argv)
     try:
@@ -236,6 +238,14 @@ def main(argv=None):
             for i in r['issues']: print(f'ERROR: {i}')
             if not r['issues']: print('OK: ' + ('changed as the policy allows — run sdem model freeze --person <owner> to record it' if r['needs_freeze'] else 'the core is as frozen'))
             return 1 if r['issues'] else 0
+        if a.cmd == 'integrity':   # MID-01…MID-10: the reference architecture, filled in for this design
+            r = integrity(a.workspace)
+            if a.json: print(json.dumps(r, indent=2, ensure_ascii=False)); return 0
+            c = r['core']; print(f"Metamodel Core {c['metamodel']} — {c['stability'] or 'stability unknown'}; " + ', '.join(f"{l['code']} {l['types']} kinds" for l in c['layers']))
+            for e in r['extensions']: print(f"Extension {e['name']} {e.get('version') or '(built in)'} — {e['pattern']}, {e['placement']}" + (f", layer {e['layer']}" if e.get('layer') else '') + f", {e['types']} kinds")
+            fd = r['federated']; print(f"Federated Knowledge Graph — {fd['links'].get('approved', 0)} approved links between layers, {fd['link_types_in_use']} link types")
+            for g in r['graphs']: print(f"  {g['code']:<3} {g['graph']:<9} {g['records']:>4} records, {g['links_inside']:>4} links inside" + (f"  ({g['extension']})" if g['extension'] else ''))
+            return 0
         if a.cmd == 'freeze':
             d = freeze(a.person)
             print(json.dumps({'frozen': d['metamodel_version'], 'by': d['frozen_by']}) if a.json else f"froze the core at metamodel {d['metamodel_version']} ({d['frozen_by']}) — metamodel/stability.json")
@@ -246,3 +256,85 @@ def main(argv=None):
 
 if __name__ == '__main__':
     sys.exit(main())
+
+
+def integrity(workspace):
+    """MID-01…MID-10 (docs/design/metamodel-integrity-design.md §1): a design in the reference architecture's own shape, read-only — the
+    Metamodel Core (and whether it is as frozen), the Metamodel Extensions merged into it (each with its pattern, H1 / H2 / V1, and what it
+    adds), the Federated Knowledge Graph (the approved links between layers, each with its ArchiMate kind) and each layer's and extension's
+    own graph (its records and links inside). A view draws it; it works nothing out (MID-02)."""
+    import collections
+    from . import profile as _p, parts, notation
+    from .layers import layers
+    from .identity import load as _jload
+    from .metamodel import Metamodel
+    ws = Path(workspace)
+    _p.activate_from(ws)
+    mm = Metamodel.load()
+    rows = layers()
+    froz = json.loads((Path(__file__).resolve().parents[1] / 'metamodel' / 'stability.json').read_text(encoding='utf-8')) if (Path(__file__).resolve().parents[1] / 'metamodel' / 'stability.json').exists() else {}
+    try: st = stability(); stable = 'as frozen' if not st['issues'] and not st['needs_freeze'] else ('changed as the policy allows' if not st['issues'] else 'changed — ' + '; '.join(st['issues']))
+    except Exception: stable = None
+    packs = []
+    for a in (_p.ACTIVE or {}).get('aspects') or []:
+        try: pk = json.loads(Path(a['file']).read_text(encoding='utf-8'))
+        except (OSError, ValueError, KeyError, TypeError): pk = {}
+        packs.append((a, pk))
+    pack_types = {t['type']: a.get('extension') or a.get('name') for a, pk in packs for t in pk.get('types') or []}
+    def origin(l):
+        s = str(l.get('source') or 'SDEM')
+        if s == 'SDEM': return None
+        if s == parts.EXT_BIAN: return 'bian'
+        return next((a.get('extension') or a.get('name') for a, pk in packs if any(x.get('code') == l['code'] for x in pk.get('layers') or [])), s.split(' ')[0])
+    graphs, by_code = [], {}
+    for l in rows:
+        f = ws / l['file']
+        try: d = _jload(f) if f.exists() else {}
+        except (OSError, ValueError): d = {}
+        recs = [i for i in d.get('instances') or [] if isinstance(i, dict)]
+        live = [i for i in recs if i.get('lifecycle_status') != 'retired']
+        g = {'code': l['code'], 'name': l.get('name'), 'file': l['file'], 'graph': 'extension' if origin(l) else 'layer', 'extension': origin(l),
+             'position': 'across' if l.get('across') else 'stack', 'records': len(live), 'retired': len(recs) - len(live), 'links_inside': len(d.get('relationships') or []),
+             'by_type': dict(collections.Counter(str(i.get('type', '')).split('.')[-1] for i in live).most_common()),
+             'by_kind': dict(collections.Counter(r.get('kind') for r in d.get('relationships') or []).most_common()),
+             'types': sum(1 for e in mm.entities.values() if e.get('level') == l['code'] and not e.get('abstract'))}
+        graphs.append(g); by_code[l['code']] = g
+    core_layers = [{'code': g['code'], 'name': g['name'], 'types': sum(1 for t, e in mm.entities.items() if e.get('level') == g['code'] and not e.get('abstract') and t not in pack_types),
+                    'rules_inside': sum(1 for c in mm.relationships.get('constraints', []) if c.get('level') == g['code'])} for g in graphs if not g['extension']]
+    exts = []
+    if parts.bian_on():
+        a2 = next((g for g in graphs if g['extension'] == 'bian'), None)
+        exts.append({'name': 'bian', 'built_in': True, 'pattern': 'H1', 'placement': 'a layer in the stack', 'layer': a2 and a2['code'],
+                     'types': a2['types'] if a2 else 0, 'rules_inside': sum(1 for c in mm.relationships.get('constraints', []) if a2 and c.get('level') == a2['code']),
+                     'trace_rules': sum(1 for r in mm.trace['rules'] if str(r.get('source_type', '')).startswith(('bian.', 'A2.'))), 'why_on': parts.why()})
+    for a, pk in packs:
+        lay = [x for x in pk.get('layers') or []]
+        h2 = [t for t in pk.get('types') or [] if t.get('extends')]
+        pat = 'V1' if any(x.get('position') == 'across' for x in lay) else 'H1' if lay else 'H2'
+        exts.append({'name': a.get('extension') or a.get('name'), 'version': a.get('version'), 'pattern': pat,
+                     'placement': {'V1': 'a layer beside the stack', 'H1': 'a layer in the stack', 'H2': 'kinds of record inside a layer'}[pat],
+                     'layer': lay[0]['code'] if lay else None, 'types': len(pk.get('types') or []), 'types_in_core_layers': len(h2),
+                     'link_types': len(pk.get('link_types') or []), 'link_kinds': len(pk.get('link_kinds') or []),
+                     'link_types_by_archimate': dict(collections.Counter(x.get('archimate') or '—' for x in pk.get('link_types') or [])),
+                     'trace_rules': len(pk.get('trace_rules') or []), 'rules': len(pk.get('rules') or []), 'computed_rules': len(pk.get('computed_rules') or []),
+                     'requires': sorted({r for k in ('types', 'link_types') for x in pk.get(k) or [] for r in ([x['requires']] if isinstance(x.get('requires'), str) else x.get('requires') or [])})})
+    try: maps = json.loads((ws / 'mappings.json').read_text(encoding='utf-8')).get('mappings') or []
+    except (OSError, ValueError): maps = []
+    ok = [m for m in maps if m.get('status') == 'approved']
+    by_rel = collections.Counter(m['relationship'] for m in ok)
+    return {'format': 'sdem-integrity/1', 'design': ws.resolve().name,
+            'core': {'metamodel': mm.version, 'stability': stable, 'frozen_at': froz.get('frozen_at'), 'frozen_by': froz.get('frozen_by'),
+                     'frozen': {k: len(froz.get(k) or {}) for k in ('entity_types', 'link_types', 'within_layer_rules', 'attributes')},
+                     'layers': core_layers, 'trace_rules': len([r for r in mm.trace['rules'] if not str(r.get('source_type', '')).startswith(('bian.', 'A2.'))])},
+            'extensions': exts,
+            'federated': {'links': dict(collections.Counter(m.get('status') for m in maps)), 'link_types_in_use': len(by_rel),
+                          'by_relationship': [{'relationship': r, 'archimate': notation.for_relationship(r), 'approved': n} for r, n in by_rel.most_common()],
+                          'graphs': [g['code'] for g in graphs]},
+            'graphs': graphs}
+
+
+def _version():
+    try:
+        from . import __version__; return __version__
+    except Exception:
+        return None

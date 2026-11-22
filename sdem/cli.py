@@ -434,9 +434,10 @@ def model(argv):
     sub.add_parser('baseline-pack', help='write the metamodel baseline review pack')
     sub.add_parser('calibrate', help='how often each confidence band and evidence class is right on the acceptance cases (AID-E03)', add_help=False)
     for c, h in (('status', "every part of SDEM's metamodel not yet settled, with its source and what would settle it"), ('usage', 'what the given workspaces use, and what no workspace uses'),
-                 ('stability', 'the core against its last freeze (as CI)'), ('freeze', 'record the core after an approved, versioned change')):
+                 ('stability', 'the core against its last freeze (as CI)'), ('freeze', 'record the core after an approved, versioned change'),
+                 ('integrity', 'a design in the metamodel integrity reference shape — core, extensions, federated and local graphs')):
         sub.add_parser(c, help=h, add_help=False)
-    if argv and argv[0] in ('status', 'usage', 'stability', 'freeze'):   # MS-01…MS-07 (sdem/model_health.py); status and usage work installed too
+    if argv and argv[0] in ('status', 'usage', 'stability', 'freeze', 'integrity'):   # MS-01…MS-07 (sdem/model_health.py); status and usage work installed too
         from . import model_health
         if argv[0] == 'freeze':
             from .paths import CHECKOUT as _co

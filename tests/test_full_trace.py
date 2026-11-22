@@ -105,6 +105,14 @@ class FullTrace(unittest.TestCase):
         self.assertEqual((d['design_gaps'], d['rule_gaps']), (0, 0), [x['id'] for x in d['gaps']])
         self.assertEqual(d['complete'], d['records'])
 
+    def test_the_design_in_the_reference_shape(self):   # MID-01…MID-10: sdem model integrity — core, extensions, federated and local graphs
+        ws = ROOT / 'examples' / '0.20' / 'payment-initiation-v4' / 'sdem'
+        d = json.loads(sdem('model', 'integrity', '--workspace', ws, '--json'))
+        self.assertEqual(d['format'], 'sdem-integrity/1'); self.assertEqual(d['core']['stability'], 'as frozen')
+        self.assertEqual({(e['pattern'], e['layer']) for e in d['extensions']}, {('H1', 'A2'), ('V1', 'S')})          # BIAN in the stack, Security beside it
+        self.assertEqual({g['code']: g['graph'] for g in d['graphs']}, {'A1': 'layer', 'A2': 'extension', 'A3': 'layer', 'A4': 'layer', 'A5': 'layer', 'S': 'extension'})
+        self.assertTrue(all(x['archimate'] for x in d['federated']['by_relationship']))                                   # MID-07 on every link between layers
+
     def test_impact_classifies_a_record_by_its_shortest_path(self):   # KG-Q-09
         ms = json.loads((self.tmp / 'ws' / 'mappings.json').read_text(encoding='utf-8'))['mappings']
         for rid in ('APP-PAYHUB', 'SD-PAYMENT-ORDER-INITIATION', 'DATA-PAYMENT'):

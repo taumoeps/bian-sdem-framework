@@ -2,7 +2,7 @@
 
 > **Generated** from the code by `sdem model regenerate` (`sdem/clidoc.py`), from the same catalogue as `sdem commands --json`; `sdem model check` fails in CI when it is stale — **do not edit by hand**. Each command's `--help` has the same options and a worked example. For *when* to use which command, in order, see the [scenarios](../sdem-scenarios.md); for what each does to your data, the [user guide](../sdem-workbench-user-guide.md#7-command-reference).
 
-136 commands and subcommands.
+137 commands and subcommands.
 
 ## Every command takes
 
@@ -243,6 +243,7 @@
 | [`sdem model eval`](#cmd-model-eval) | score proposals against approved links |
 | [`sdem model examples`](#cmd-model-examples) | re-run use-case examples 1 and 2 (evidence packs and results) |
 | [`sdem model freeze`](#cmd-model-freeze) | record the core after an approved, versioned change |
+| [`sdem model integrity`](#cmd-model-integrity) | a design in the metamodel integrity reference shape |
 | [`sdem model regenerate`](#cmd-model-regenerate) | regenerate every generated document, diagram and schema |
 | [`sdem model stability`](#cmd-model-stability) | the core against its last freeze (as CI) |
 | [`sdem model status`](#cmd-model-status) | every part of SDEM's metamodel not yet settled, with its source and what would settle it |
@@ -1833,7 +1834,7 @@ sdem migrate --workspace workspaces/history --person jane.architect --dry-run
 
 maintainers: regenerate and check generated files, acceptance, evaluation, examples
 
-Subcommands: [`sdem model accept`](#cmd-model-accept) · [`sdem model baseline-pack`](#cmd-model-baseline-pack) · [`sdem model calibrate`](#cmd-model-calibrate) · [`sdem model check`](#cmd-model-check) · [`sdem model eval`](#cmd-model-eval) · [`sdem model examples`](#cmd-model-examples) · [`sdem model freeze`](#cmd-model-freeze) · [`sdem model regenerate`](#cmd-model-regenerate) · [`sdem model stability`](#cmd-model-stability) · [`sdem model status`](#cmd-model-status) · [`sdem model usage`](#cmd-model-usage)
+Subcommands: [`sdem model accept`](#cmd-model-accept) · [`sdem model baseline-pack`](#cmd-model-baseline-pack) · [`sdem model calibrate`](#cmd-model-calibrate) · [`sdem model check`](#cmd-model-check) · [`sdem model eval`](#cmd-model-eval) · [`sdem model examples`](#cmd-model-examples) · [`sdem model freeze`](#cmd-model-freeze) · [`sdem model integrity`](#cmd-model-integrity) · [`sdem model regenerate`](#cmd-model-regenerate) · [`sdem model stability`](#cmd-model-stability) · [`sdem model status`](#cmd-model-status) · [`sdem model usage`](#cmd-model-usage)
 
 ### sdem model accept
 
@@ -1915,6 +1916,18 @@ record the core after an approved, versioned change
 
 ```
 sdem model freeze
+```
+
+*JSON: wrapped · dry run: sandbox*
+
+### sdem model integrity
+
+<a id="cmd-model-integrity"></a>
+
+a design in the metamodel integrity reference shape — core, extensions, federated and local graphs
+
+```
+sdem model integrity
 ```
 
 *JSON: wrapped · dry run: sandbox*
