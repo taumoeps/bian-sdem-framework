@@ -251,6 +251,7 @@
   "association": "association"
  },
  "cross_layer": {
+  "ACCESSED_BY": "access",
   "ALIGNED_TO": "association",
   "AUTOMATED_BY": "realization",
   "BUILT_AS": "realization",

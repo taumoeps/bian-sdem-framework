@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+- **Two vertical extensions may link** (G4, FT-14): a link type between two layers beside the stack (a recovery plan and an assurance check) is accepted — before, SDEM refused it; the trace goes on through the other record only where the link type declares `"trace": "through"`, and otherwise stops there as before.
+- **Every type and link labelled by its ArchiMate kind, tested** (MID-07, `tests/test_archimate_labels.py`). It found one gap, closed: `ACCESSED_BY` (a data entity accessed by an application, DL-04) had no ArchiMate relationship in `archimate-notation.json` — it is *access*.
 - **Extensions by pattern, proved** (MIP-10, MID-08): three made-up extensions — *Facilities* (a layer below the stack), *Networks* (a kind of Technology node) and *Disaster Recovery* (a layer beside the stack) — switch on, check, link and trace with no SDEM code naming them (`tests/test_extension_patterns.py`). Note: an extension may not be called by the name of one of SDEM's own commands (e.g. `physical`) — SDEM refuses it, rightly.
 
 ## 0.21.2 — the metamodel integrity design, met (2026-11-22)

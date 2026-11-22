@@ -405,7 +405,8 @@ def check(merged, base_mm):
         if not all(ends): issues.append(f"{name}: {x['source_type'] if not ends[0] else x['target_type']} is not a type"); continue
         a, b = ends[0]['level'], ends[1]['level']
         if (a in across) != (b in across): pass   # LR-11: a cross-cutting layer's link types may reach any layer
-        elif a in across: issues.append(f"{name}: both ends are in cross-cutting layers — links inside one are its link kinds"); continue
+        elif a in across and a == b: issues.append(f"{name}: both ends are in one cross-cutting layer — links inside it are its link kinds"); continue
+        elif a in across: pass   # G4, FT-14: two cross-cutting layers may link (a recovery plan protected by a control); the trace goes on only where declared
         elif not (a in order and b in order and order.index(b) - order.index(a) == 1): issues.append(f"{name}: links a layer to the layer directly below it ({a} is not directly above {b})")
         elif a not in own_layers and b not in own_layers: issues.append(f"{name}: both layers are SDEM's — links between core layers are SDEM's nine link types")
         elif (x['source_type'], x['relationship'], x['target_type']) in core_edges: issues.append(f"{name}: already an SDEM link type")

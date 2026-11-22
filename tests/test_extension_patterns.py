@@ -20,6 +20,11 @@ PACKS = {
                  'layers': [{'code': 'D', 'name': 'Disaster Recovery', 'position': 'across', 'file': 'recovery.json', 'description': 'recovery plans (made-up)'}],
                  'types': [{'type': 'DRX.D.RecoveryPlan', 'description': 'how something is recovered (made-up)', 'archimate': 'CourseOfAction'}],
                  'link_types': [{'source_type': 'DRX.D.RecoveryPlan', 'relationship': 'RECOVERS', 'target_type': 'A3.DataEntity', 'required_evidence': ['design_document']}]},
+    'audit': {'format': 'sdem-profile/1', 'name': 'audit', 'version': 1,   # G4: a second vertical extension linking the first
+              'layers': [{'code': 'U', 'name': 'Assurance', 'position': 'across', 'file': 'assurance.json', 'description': 'assurance checks (made-up)'}],
+              'types': [{'type': 'AUD.U.AssuranceCheck', 'description': 'a check that something works (made-up)', 'archimate': 'Assessment'}],
+              'link_types': [{'source_type': 'AUD.U.AssuranceCheck', 'relationship': 'VERIFIES', 'target_type': 'DRX.D.RecoveryPlan', 'required_evidence': ['design_document'], 'trace': 'through'},
+                             {'source_type': 'AUD.U.AssuranceCheck', 'relationship': 'SAMPLES', 'target_type': 'DRX.D.RecoveryPlan', 'required_evidence': ['design_document']}]},
 }
 
 
@@ -61,8 +66,13 @@ class ExtensionsByPattern(unittest.TestCase):
             {'op': 'add', 'record': {'id': 'SITE-1', 'type': 'PHY.P.Site', 'version': '1', 'name': 'Site one', 'lifecycle_status': 'planned'}}]}, 'site')
         cls.change({'layer': 'D', 'reason': 'a recovery plan (made-up)', 'changes': [
             {'op': 'add', 'record': {'id': 'DRP-PAY', 'type': 'DRX.D.RecoveryPlan', 'version': '1', 'name': 'Payment data recovery', 'lifecycle_status': 'planned'}}]}, 'drp')
+        cls.change({'layer': 'U', 'reason': 'two checks (made-up)', 'changes': [
+            {'op': 'add', 'record': {'id': 'CHK-RESTORE', 'type': 'AUD.U.AssuranceCheck', 'version': '1', 'name': 'Restore test', 'lifecycle_status': 'planned'}},
+            {'op': 'add', 'record': {'id': 'CHK-SAMPLE', 'type': 'AUD.U.AssuranceCheck', 'version': '1', 'name': 'Plan sample', 'lifecycle_status': 'planned'}}]}, 'chk')
         cls.sdem('connect', node, 'LOCATED_AT', 'SITE-1', '--workspace', ws, '--person', 'steven', '--evidence', 'design_document:made-up#1', '--rationale', 'hosted there')
         cls.sdem('connect', 'DRP-PAY', 'RECOVERS', cls.entity, '--workspace', ws, '--person', 'steven', '--evidence', 'design_document:made-up#2', '--rationale', 'restored from replica')
+        cls.sdem('connect', 'CHK-RESTORE', 'VERIFIES', 'DRP-PAY', '--workspace', ws, '--person', 'steven', '--evidence', 'design_document:made-up#3', '--rationale', 'restores it yearly')
+        cls.sdem('connect', 'CHK-SAMPLE', 'SAMPLES', 'DRP-PAY', '--workspace', ws, '--person', 'steven', '--evidence', 'design_document:made-up#4', '--rationale', 'reads it')
         cls.g = ws / 'graph'; cls.sdem('build', '--workspace', ws, '--out', cls.g)
 
     @classmethod
@@ -84,7 +94,7 @@ class ExtensionsByPattern(unittest.TestCase):
     def tearDownClass(cls): P.deactivate(); shutil.rmtree(cls.tmp, ignore_errors=True)
 
     def trace(self, rid, d):
-        return ids(json.loads(self.sdem('trace', rid, '--graph', self.g, '--direction', d, '--json')[1])[d])
+        return ids(json.loads(self.sdem('trace', rid, '--graph', self.g, '--direction', d, '--json', ok=(0, 1))[1])[d])
 
     def test_the_design_passes_with_all_three_on(self):
         self.assertIn('OK', self.sdem('check', '--workspace', self.ws)[1])
@@ -98,9 +108,13 @@ class ExtensionsByPattern(unittest.TestCase):
     def test_v1_a_layer_beside_the_stack_is_traced_through_what_it_links_to(self):   # Disaster Recovery: FT-09 for any across layer
         self.assertIn(self.entity, self.trace('DRP-PAY', 'down'))
 
+    def test_g4_on_into_another_vertical_record_only_where_declared(self):   # FT-14
+        self.assertIn(self.entity, self.trace('CHK-RESTORE', 'down'))       # VERIFIES says "through": the check reaches what the plan recovers
+        self.assertNotIn(self.entity, self.trace('CHK-SAMPLE', 'down'))     # SAMPLES does not: never on into another vertical record
+
     def test_no_sdem_code_names_them(self):
         code = ''.join(p.read_text(encoding='utf-8') for p in (ROOT / 'sdem').rglob('*.py'))
-        for word in ('PHY.', 'NET.', 'DRX.', "'networks'", "'recovery'"):
+        for word in ('PHY.', 'NET.', 'DRX.', 'AUD.', "'networks'", "'recovery'"):
             self.assertNotIn(word, code)
 
 

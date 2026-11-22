@@ -419,7 +419,13 @@ class FederatedGraph:
             self._across_levels = {l['code'] for l in layers() if l.get('across')}
         return self.mm.level((self.instance(iid) or {}).get('type', '') or '') in self._across_levels
 
-    def trace(self, start, direction='down', statuses=('approved',), follow_composition=False, _design_only=False):
+    def through(self, rel):
+        """FT-14 (G4): does a link between two records beside the stack carry the trace on? Only where the extension's link type declares
+        it ("trace": "through") — e.g. a recovery plan protected by a control; by default a trace never goes on into another vertical record."""
+        from . import profile as _p
+        return any(x.get('relationship') == rel and x.get('trace') == 'through' for x in ((_p.ACTIVE or {}).get('link_types') or []))
+
+    def trace(self, start, direction='down', statuses=('approved',), follow_composition=False, _design_only=False, _seen=None):
         edges = self.edges(statuses) + self.network_edges()
         if _design_only: edges = [e for e in edges if not (self.across(e['source']['id']) or self.across(e['target']['id']))]   # FT-09: never on into another control or threat
         if follow_composition and self.across(start):
@@ -428,7 +434,11 @@ class FederatedGraph:
             for e in edges:
                 if start not in (e['source']['id'], e['target']['id']): continue
                 other = e['target'] if e['source']['id'] == start else e['source']
-                if self.across(other['id']): continue
+                if self.across(other['id']):   # FT-14: on into another vertical record only where its link type says so, each once
+                    seen = (_seen or frozenset()) | {start}
+                    if self.through(e['relationship']) and other['id'] not in seen:
+                        root['children'].append({'via': dict(e), 'node': self.trace(other['id'], direction, statuses, True, _seen=seen)})
+                    continue
                 root['children'].append({'via': dict(e), 'node': self.trace(other['id'], direction, statuses, True, _design_only=True)})
             return root
         if follow_composition:

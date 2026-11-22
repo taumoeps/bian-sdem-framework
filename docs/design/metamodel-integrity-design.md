@@ -99,7 +99,7 @@ when it adds a layer, its own knowledge graph, joined to the others by the regis
 | **G1 — In-stack code written for BIAN** | `parts.bian_on()`, a link type that `requires` BIAN (BX-50), the stack id `bian` in places, the site's four-file layer list with BIAN's plate special | any H1 extension handled as BIAN is: by its id and position, not by name (MID-08) |
 | **G2 — Vertical views are Security's own** | the site's Security view is built for Security alone (`buildSecurity`, its link styles) | a V1 extension is an **overlay on the one stack**, drawn from what its manifest declares — its link types and how each is drawn (MIP-06, MID-09) |
 | **G3 — One extension needing another** | only "requires BIAN" is understood | `requires: [extension]` for any extension (Disaster Recovery needing Networks), said — not an error — when the other is off, as BX-50 does for BIAN |
-| **G4 — Two vertical extensions together** | FT-09 never walks from one vertical record into another (a control never on into a threat) | decide per pair whether they link (a recovery plan protected by a control) and how a trace treats it — the default stays "never on into another vertical record" |
+| **G4 — Two vertical extensions together** | *built (FT-14)*: two vertical layers may link; the trace goes on into the other only where the link type declares `"trace": "through"` | — the default stays "never on into another vertical record" |
 | **G5 — Extensions pinned to a metamodel range** | one additive change needed three releases | MIP-01: an extension accepts additive metamodel minors |
 | **G6 — Horizontal layers the site does not draw** | the publisher and the site know Business, BIAN, Data, Application, Technology | MIP-04: the site draws the stack the design names, whatever its layers |
 
@@ -127,9 +127,9 @@ when it adds a layer, its own knowledge graph, joined to the others by the regis
 | `sdem check` / graph build | MID-04: each graph and the registry pass the metamodel | per workspace; CI on the examples |
 | The completeness test | MID-05 | `sdem trace GAPS` — every record traced, or a design gap or a rule gap; no example has a rule gap (`tests/test_full_trace.py`) |
 | Site against CLI | MID-02: the view's chain equals `sdem trace` | `sdem trace ALL` sent with the design; the site lights it (`tests/test_full_trace.py`, DW-78) |
-| Extensions by pattern | MID-08 | `tests/test_extension_patterns.py` — H1, H2, V1, each made-up |
+| Extensions by pattern | MID-08 | `tests/test_extension_patterns.py` — H1, H2, V1, and two vertical extensions linked (G4, FT-14), each made-up |
 | An extension requiring another | MID-10 | `tests/test_metamodel_extensions.py` (`ExtensionRequiresAnother`) |
-| ArchiMate export | MID-07 | **SDEM has no ArchiMate export yet** — building one (Open Exchange Format) is a feature to decide (MIP-08) |
+| ArchiMate labels | MID-07 | `tests/test_archimate_labels.py`: every type has a source and an ArchiMate element (own or inherited), every link inside and between layers is an ArchiMate kind, every trace rule is SDEM's (FT-…) with its reason; SDEM's own notation check passes. (An Open Exchange Format export, MIP-08, would be a further check — not needed for the rule) |
 
 ## 6. Conformance (2026-11-22, SDEM 0.21.1 and after)
 
@@ -141,7 +141,7 @@ when it adds a layer, its own knowledge graph, joined to the others by the regis
 | MID-04 Graphs built from entities, checked by the metamodel | ✅ | `sdem check`, graph stores current, CI |
 | MID-05 Every shape accounted for | ✅ | `sdem trace GAPS`; no rule gap in any example (tested); the Payment example: 152 of 255 records reach every other layer, 103 design gaps for a person, 0 rule gaps |
 | MID-06 Views are of the source | ✅ | a design in 0.20's form published and shown in its own form (MIP-04, DW-79) |
-| MID-07 Links and types labelled by their standard | 🟡 | every type carries its source; a trace hop says whether it is an approved link or a part-of hop. No ArchiMate export to check (MIP-08) |
+| MID-07 Links and types labelled by their standard | ✅ | checked over the whole metamodel (`tests/test_archimate_labels.py`); it found one gap, now closed — `ACCESSED_BY` (Data → Application) had no ArchiMate kind: it is *access* |
 | MID-08 Extensions by pattern, not by name | ✅ | three made-up extensions — *Facilities* (H1, a layer below the stack), *Networks* (H2, a kind of Technology node) and *Disaster Recovery* (V1, beside the stack) — switch on, check, link and trace with no SDEM code naming them (`tests/test_extension_patterns.py`); the trace's own rules are declared (`trace_rules`). BIAN keeps its built-in switch (on by default, BX-11, so 0.19 designs read as before) — BIAN's compatibility, not a path another extension needs |
 | MID-09 A vertical extension is an overlay | ✅ | Security is a switch on the one stack — the design's own plates (A1–A5 + security), never S1–S5 (DESNRE DW-80) — drawn as its manifest declares (`viewer.overlay`: plates, shapes and their place, link styles; sdem-security 0.4.2, DW-81) |
 | MID-10 An extension may require another | ✅ | `requires` for any extension, on anything it adds — left out and said when the other is off (tested) |
