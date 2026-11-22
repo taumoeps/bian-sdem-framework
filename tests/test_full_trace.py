@@ -131,6 +131,10 @@ class FullTrace(unittest.TestCase):
         self.assertEqual(g['counts']['between'], d['federated']['links'].get('approved', 0))                              # the figures and the graph agree: a retired record's links are in neither
         self.assertTrue(all(0 <= x['at'][0] <= 1 and 0 <= x['at'][1] <= 1 for x in g['records']))                         # placed on its graph's plate
         self.assertTrue(all(x['archimate'] for x in g['links']))                                                          # every link an ArchiMate relationship
+        st = g['store']                                                                                                     # each graph's details, from SDEM's own build
+        self.assertEqual(st['result'], 'accepted'); self.assertEqual(st['errors'], 0)
+        self.assertEqual({x['graph'] for x in st['graphs']}, {x['code'] for x in g['graphs']} | {'federated'})               # every graph's file, and the federated graph's
+        self.assertTrue(all(x.get('built_from') and x['nodes'] >= 0 and x['edges'] >= 0 for x in st['graphs']))            # what each was built from, its nodes and edges
 
     def test_the_metamodel_drawn(self):   # sdem model integrity --metamodel: what may be — each kind of record a shape, each link allowed a line
         v4 = ROOT / 'examples' / '0.20' / 'payment-initiation-v4' / 'sdem'

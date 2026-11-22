@@ -370,6 +370,36 @@ def _version():
         return None
 
 
+def _graph_store(ws, files):
+    """The graph store SDEM builds for the design (`sdem build`): each graph's file with its nodes and edges, the file it was built from (its
+    model version and fingerprint), the build's number, time, result and findings — built in a temporary folder, in this process."""
+    import contextlib, io, tempfile
+    from .cli import main as _main
+    from . import profile as _p
+    with tempfile.TemporaryDirectory() as t:
+        out = io.StringIO()
+        with contextlib.redirect_stdout(out), contextlib.redirect_stderr(io.StringIO()):
+            try: _main(['build', '--workspace', str(ws), '-o', str(Path(t) / 'g'), '--json'])
+            except SystemExit: pass
+    _p.activate_from(ws)
+    try: b = json.loads(out.getvalue())
+    except ValueError: return None
+    by_file = {Path(f).name: c for c, f in files.items()}
+    inputs = {Path(x.get('path', '')).name: x for x in b.get('inputs') or []}
+    graphs = []
+    for o in b.get('outputs') or []:
+        stem = o['file'].split('.graph.json')[0]
+        src = next((f for f in by_file if Path(f).stem == stem), None) or next((Path(f).name for c, f in files.items() if c.lower() == stem), None)   # a profile layer's graph is named by its code (s.graph.json)
+        code = 'federated' if stem == 'federated' else (by_file.get(src) if src else stem.upper())
+        i = inputs.get(src) or {}
+        graphs.append({'graph': code, 'file': o['file'], 'nodes': o.get('nodes'), 'edges': o.get('edges'), 'sha256': o.get('sha256'),
+                       **({'built_from': src, 'model_id': i.get('model_id'), 'model_version': i.get('model_version'), 'input_sha256': i.get('sha256')} if src else
+                          {'built_from': 'mappings.json and the graphs above'} if code == 'federated' else {})})
+    return {'build': b.get('build'), 'at': b.get('at'), 'result': b.get('result') or ('accepted' if not b.get('errors') else 'rejected'),
+            'sdem': (b.get('sdem') or {}).get('version') if isinstance(b.get('sdem'), dict) else b.get('sdem'), 'metamodel': b.get('metamodel_version'),
+            'errors': len(b.get('errors') or []), 'warnings': len(b.get('warnings') or []), 'graphs': graphs}
+
+
 def integrity_check(workspace):
     """MID-01…MID-10 (docs/design/metamodel-integrity-design.md §4): SDEM's verdict on a design — each rule that can be checked from the
     design itself, met or not, with its evidence; the rules about how a view draws the design (MID-01, MID-02, MID-06, MID-09) are said to be
@@ -473,7 +503,8 @@ def integrity_graph(workspace):
         if m.get('status') not in ('approved', 'proposed') or a not in live or b not in live or code_of[a] == code_of[b]: continue
         links.append({'source': a, 'target': b, 'scope': 'between', 'from': code_of[a], 'to': code_of[b], 'relationship': m['relationship'],
                       'archimate': notation.for_relationship(m['relationship']), 'status': m['status']})
-    return {'format': 'sdem-integrity-graph/1', 'design': d['design'],
+    store = _graph_store(ws, files)
+    return {'format': 'sdem-integrity-graph/1', 'design': d['design'], **({'store': store} if store else {}),
             'graphs': [{k: g[k] for k in ('code', 'name', 'graph', 'extension', 'position')} for g in d['graphs']], 'zones': zones,
             'records': records, 'links': links,
             'counts': {'records': len(records), 'inside': sum(1 for x in links if x['scope'] == 'inside'),

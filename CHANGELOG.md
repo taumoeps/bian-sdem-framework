@@ -2,6 +2,10 @@
 
 > Entries before 0.7.0 describe the project under its former name, **SDMM (BIAN Service Domain Mapping Model)**, and its former terms; they are kept as written.
 
+## 0.21.11 — each graph's details (2026-11-22)
+
+- **`sdem model integrity --graph` gives the graph store's details** (`store`): SDEM's own build of the design — each graph's file with its nodes and edges and fingerprint, the file it was built from (its model id and version, its fingerprint), and the build's number, time, result and findings; the federated graph's too, built from the registry and the graphs. Retired records stay in the store as history; the details say how many. DESNRE's Knowledge Graph tab shows each graph's details in its section, always visible.
+
 ## 0.21.10 — the figures and the graph agree (2026-11-22)
 
 - **`sdem model integrity` leaves a retired record's links out of its figures**, as `--graph` already did: the federated graph's counts, link types and pairs are of the design's live records only (the Payment example: 114 approved links between graphs, where 0.21.9 said 116 — two went to the retired notification service). Tested: the figures and the graph agree. DESNRE's Knowledge Graph tab draws its tables from `--graph` (sdem-desnre 0.11.9).
