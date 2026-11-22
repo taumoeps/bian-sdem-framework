@@ -2,6 +2,10 @@
 
 > Entries before 0.7.0 describe the project under its former name, **SDMM (BIAN Service Domain Mapping Model)**, and its former terms; they are kept as written.
 
+## 0.21.8 — the metamodel drawn (2026-11-22)
+
+- **`sdem model integrity --workspace DIR --metamodel --json`**: the Metamodel Core and the Extensions merged into it, drawn — each graph's kinds of record as shapes (where each comes from, the core or an extension; its ArchiMate element; how many records the design has of it), and the links the metamodel allows as lines (the rules inside a layer and the link types between layers, each an ArchiMate relationship). What *may be*; `--graph` is what *is*. DESNRE draws it as the **Metamodel** viewpoint, and the viewpoint that draws the design's records is now called **Knowledge Graph** (sdem-desnre 0.11.7). On the Payment example: 53 kinds in six graphs (18 from extensions), 212 links allowed.
+
 ## 0.21.7 — the Metamodel views drawn from the knowledge graphs (2026-11-22)
 
 - **`sdem model integrity --workspace DIR --graph --json`**: every record of every graph (each layer's and each extension's, retired ones left out), every link inside a graph and every link between graphs — each an ArchiMate relationship — with each record placed on its graph's plate, grouped by kind. DESNRE's Metamodel views (3D and the 2D map) are drawn from it alone (sdem-desnre 0.11.6): on the Payment example 327 records in six graphs, 411 links inside them, 114 between — the Security graph included, the retired notification service gone.

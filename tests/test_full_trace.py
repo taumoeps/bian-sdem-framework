@@ -132,6 +132,16 @@ class FullTrace(unittest.TestCase):
         self.assertTrue(all(0 <= x['at'][0] <= 1 and 0 <= x['at'][1] <= 1 for x in g['records']))                         # placed on its graph's plate
         self.assertTrue(all(x['archimate'] for x in g['links']))                                                          # every link an ArchiMate relationship
 
+    def test_the_metamodel_drawn(self):   # sdem model integrity --metamodel: what may be — each kind of record a shape, each link allowed a line
+        v4 = ROOT / 'examples' / '0.20' / 'payment-initiation-v4' / 'sdem'
+        m = json.loads(sdem('model', 'integrity', '--workspace', v4, '--metamodel', '--json'))
+        g = json.loads(sdem('model', 'integrity', '--workspace', v4, '--graph', '--json'))
+        kinds = {x['id'] for x in m['records']}
+        self.assertTrue({x['type'] for x in g['records']} <= kinds)                                   # every record in the design is of a kind the metamodel draws
+        self.assertTrue(all(x['source'] != 'core' for x in m['records'] if x['graph'] in ('S', 'A2')))   # an extension's kinds (Security's, BIAN's) are said to be its, never the core's
+        self.assertTrue(all(x['archimate'] for x in m['links']) and m['counts']['between'] > 0)       # every allowed link an ArchiMate relationship
+        self.assertEqual(sum(x['records_in_design'] for x in m['records']), g['counts']['records'])   # each kind says how many records the design has of it
+
     def test_impact_classifies_a_record_by_its_shortest_path(self):   # KG-Q-09
         ms = json.loads((self.tmp / 'ws' / 'mappings.json').read_text(encoding='utf-8'))['mappings']
         for rid in ('APP-PAYHUB', 'SD-PAYMENT-ORDER-INITIATION', 'DATA-PAYMENT'):

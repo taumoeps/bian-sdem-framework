@@ -198,6 +198,7 @@ def main(argv=None):
     t = sub.add_parser('stability', help='the core against its last freeze — fails if it changed in a way the policy does not allow'); t.add_argument('--json', action='store_true')
     g = sub.add_parser('integrity', help='a design in the metamodel integrity reference shape: core, extensions, the federated graph and each graph (read-only)')
     g.add_argument('--workspace', required=True, metavar='DIR'); g.add_argument('--json', action='store_true')
+    g.add_argument('--metamodel', action='store_true', help='the Metamodel Core and its Extensions drawn: each kind of record as a shape, each link the metamodel allows as a line — what the Metamodel view draws (JSON)')
     g.add_argument('--graph', action='store_true', help='every record and every link inside and between the graphs, each record placed on its plate — what the Metamodel views draw (JSON)')
     g.add_argument('--check', action='store_true', help="SDEM's verdict: each rule of the metamodel integrity design that can be checked from the design, met or not — exit 1 if one is not")
     f = sub.add_parser('freeze', help='record the core as it now is, after an approved change (maintainers)'); f.add_argument('--person', required=True); f.add_argument('--json', action='store_true')
@@ -240,6 +241,10 @@ def main(argv=None):
             for i in r['issues']: print(f'ERROR: {i}')
             if not r['issues']: print('OK: ' + ('changed as the policy allows — run sdem model freeze --person <owner> to record it' if r['needs_freeze'] else 'the core is as frozen'))
             return 1 if r['issues'] else 0
+        if a.cmd == 'integrity' and a.metamodel:   # what may be: the kinds of record and the links allowed
+            v = integrity_metamodel(a.workspace)
+            if a.json: print(json.dumps(v, ensure_ascii=False)); return 0
+            c = v['counts']; print(f"metamodel {v['metamodel']} ({v['stability']}) with its extensions: {c['records']} kinds of record in {len(v['graphs'])} graphs ({c['from_extensions']} from extensions); {c['inside']} links allowed inside a layer, {c['between']} between layers"); return 0
         if a.cmd == 'integrity' and a.graph:   # the Metamodel views' data: every record and link, from the graphs
             v = integrity_graph(a.workspace)
             if a.json: print(json.dumps(v, ensure_ascii=False)); return 0
@@ -473,3 +478,66 @@ def integrity_graph(workspace):
             'counts': {'records': len(records), 'inside': sum(1 for x in links if x['scope'] == 'inside'),
                        'between': sum(1 for x in links if x['scope'] == 'between' and x['status'] == 'approved'),
                        'proposed': sum(1 for x in links if x['scope'] == 'between' and x['status'] == 'proposed')}}
+
+
+def integrity_metamodel(workspace):
+    """The Metamodel Core and the Extensions merged into it, drawn as SDEM holds them (docs/design/metamodel-integrity-design.md §1, the top
+    of the reference model): each graph's kinds of record as shapes — where each comes from (the core or an extension), its ArchiMate element and
+    how many records the design has of it — and the links the metamodel allows as lines: the rules inside a layer (their ArchiMate kind) and the
+    link types between layers (their ArchiMate relationship), each kind placed on its graph's plate. What *may be*; `--graph` is what *is*."""
+    import collections, math
+    from . import notation
+    from .metamodel import Metamodel
+    from .validate import load_registry
+    d = integrity(workspace)   # activates the workspace's profile: the core with its extensions merged in
+    mm = Metamodel.load()
+    from . import profile as _p
+    ext_of = {}
+    for a in (_p.ACTIVE or {}).get('aspects') or []:
+        try: pk = json.loads(Path(a['file']).read_text(encoding='utf-8'))
+        except (OSError, ValueError, KeyError, TypeError): pk = {}
+        for t in pk.get('types') or []: ext_of[t['type']] = a.get('extension') or a.get('name')
+    gcode = {g['code']: g for g in d['graphs']}
+    count = {}
+    for g in d['graphs']:
+        for k, n in (g.get('by_type') or {}).items(): count[(g['code'], k)] = n
+    kinds, records = {}, []
+    for code, g in gcode.items():
+        ts = sorted(t for t, e in mm.entities.items() if e.get('level') == code and not e.get('abstract'))
+        cols = max(4, math.ceil(math.sqrt(max(1, len(ts))) * 1.4)); rows = math.ceil(len(ts) / cols) or 1
+        for j, t in enumerate(ts):
+            short = t.split('.')[-1]
+            src = ext_of.get(t) or (g['extension'] if g['extension'] else 'core')
+            el = (notation.for_type(mm, t) or {}).get('element')
+            rr, cc = j // cols, j % cols
+            kinds[t] = code
+            records.append({'id': t, 'name': short, 'type': t, 'kind': short, 'graph': code, 'group': src, 'archimate': el, 'source': src,
+                            'records_in_design': count.get((code, short), 0),
+                            'at': [round(0.05 + (cc + 0.5) * 0.9 / cols, 4), round(0.1 + (rr + 0.5) * 0.8 / rows, 4)]})
+    links, seen = [], set()
+    def resolve(t):   # a rule on an abstract kind applies to each concrete kind below it
+        return [t] if t in kinds else [k for k in kinds if mm.is_a(k, t)]
+    for c in mm.relationships.get('constraints', []):
+        for a in resolve(c.get('source_type')):
+            for b in resolve(c.get('target_type')):
+                if kinds.get(a) != kinds.get(b) or a == b and c['kind'] not in ('composition', 'aggregation', 'specialization', 'flow', 'triggering', 'association'): continue
+                key = (a, c['kind'], b)
+                if key in seen or a == b: continue
+                seen.add(key)
+                links.append({'source': a, 'target': b, 'scope': 'inside', 'graph': kinds[a], 'kind': c['kind'], 'rule': c.get('id'),
+                              'archimate': notation.for_relationship(c['kind']) or c['kind'], 'status': 'allowed'})
+    for r in load_registry()['relationships']:
+        for a in resolve(r['source_type']):
+            for b in resolve(r['target_type']):
+                if kinds.get(a) == kinds.get(b): continue
+                key = (a, r['relationship'], b)
+                if key in seen: continue
+                seen.add(key)
+                links.append({'source': a, 'target': b, 'scope': 'between', 'from': kinds[a], 'to': kinds[b], 'relationship': r['relationship'],
+                              'archimate': notation.for_relationship(r['relationship']), 'status': 'allowed', 'evidence_needed': r.get('required_evidence')})
+    zones = {code: [{'id': f'K:{code}', 'label': f"{sum(1 for x in records if x['graph'] == code)} kinds of record", 'rect': [0.02, 0.06, 0.98, 0.94]}] for code in gcode}
+    return {'format': 'sdem-integrity-metamodel/1', 'design': d['design'], 'metamodel': d['core']['metamodel'], 'stability': d['core'].get('stability'),
+            'graphs': [{k: g[k] for k in ('code', 'name', 'graph', 'extension', 'position')} for g in d['graphs']], 'zones': zones,
+            'records': records, 'links': links,
+            'counts': {'records': len(records), 'inside': sum(1 for x in links if x['scope'] == 'inside'), 'between': sum(1 for x in links if x['scope'] == 'between'), 'proposed': 0,
+                       'from_extensions': sum(1 for x in records if x['source'] != 'core')}}

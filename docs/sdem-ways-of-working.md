@@ -1,6 +1,6 @@
 # Ways of working with SDEM — CLI, AI agent, documents
 
-> **Status: current (v0.21.7).** What is available today, and what is planned but not built. SDEM is ready to evaluate on synthetic data; real designs follow a pilot ([what that needs](../README.md#using-sdem-on-real-designs)).
+> **Status: current (v0.21.8).** What is available today, and what is planned but not built. SDEM is ready to evaluate on synthetic data; real designs follow a pilot ([what that needs](../README.md#using-sdem-on-real-designs)).
 
 SDEM's metamodel, CLI and workspace are the same however you work. The workspace is the source of truth; every cross-layer connection needs a person's approval.
 

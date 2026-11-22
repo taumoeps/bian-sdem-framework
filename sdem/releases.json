@@ -493,6 +493,22 @@
         }
       ],
       "summary": "The Metamodel views drawn from the knowledge graphs: sdem model integrity --graph gives every record and every link inside and between the graphs, each placed on its plate."
+    },
+    {
+      "version": "0.21.8",
+      "date": "2026-11-22",
+      "kind": "patch",
+      "metamodel": "0.19.0",
+      "migration": null,
+      "breaking": [],
+      "deprecations": [],
+      "actions": [
+        {
+          "when": "you publish to DESNRE",
+          "do": "install sdem-desnre 0.11.7 — a Metamodel viewpoint drawn from sdem model integrity --metamodel, and the records viewpoint named Knowledge Graph"
+        }
+      ],
+      "summary": "The metamodel drawn: sdem model integrity --metamodel — each kind of record a shape, each link the metamodel allows a line, core and extensions."
     }
   ]
 }
