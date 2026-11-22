@@ -3150,6 +3150,95 @@
           "edges": 20
         }
       ]
+    },
+    {
+      "build": 37,
+      "at": "2026-11-21T21:39:27+00:00",
+      "inputs": [
+        {
+          "path": "examples/payment-initiation//a1-business.json",
+          "kind": "export",
+          "level": "A1",
+          "model_id": "synthetic-bank-payments-a1",
+          "model_version": "2026.10",
+          "sha256": "e4f1267f50539707e7942f56905a5fda5d14e42ac5586700a46ed8fd4a3c9a6f"
+        },
+        {
+          "path": "examples/payment-initiation//a2-service-domain.json",
+          "kind": "export",
+          "level": "A2",
+          "model_id": "synthetic-bank-payments-a2",
+          "model_version": "2026.10",
+          "sha256": "3f43fd02c05c88a4f94ff6531313800d476fcd979770d1d5e718c528aed92200"
+        },
+        {
+          "path": "examples/payment-initiation//a3-application.json",
+          "kind": "export",
+          "level": "A3",
+          "model_id": "synthetic-bank-payments-a3",
+          "model_version": "2026.10",
+          "sha256": "327e1c726626075d5e84643a81ebf6acd3c04f9590af159128d3674f69ab1192"
+        },
+        {
+          "path": "examples/payment-initiation//a4-technology.json",
+          "kind": "export",
+          "level": "A4",
+          "model_id": "synthetic-bank-payments-a4",
+          "model_version": "2026.10",
+          "sha256": "47d3d5bf33c03c6cc85b1d11057a5d06912cafdc6608bef1e9b04cd568048832"
+        },
+        {
+          "path": "examples/payment-initiation//mappings.json",
+          "kind": "registry",
+          "registry_version": "0.4.0",
+          "sha256": "ab0cf1a07f77d838b025c8d36ab66d147ace82792f168ad7157eb2d84623c26a"
+        }
+      ],
+      "metamodel_version": "0.19.0",
+      "errors": [],
+      "warnings": [
+        "level A1 (synthetic-bank-payments-a1): instance PRC-PAY-01: attribute 'triggered_by' refers to 'customer submits a payment', which is not a A1.BusinessEvent in this architecture dataset (LC-07)",
+        "level A1 (synthetic-bank-payments-a1): instance PRC-PAY-02: attribute 'triggered_by' refers to 'instruction authorised', which is not a A1.BusinessEvent in this architecture dataset (LC-07)",
+        "level A3 (synthetic-bank-payments-a3): instance EVT-PAY-STATUS: attribute 'event_source' refers to '/payments-hub', which is not a A3.ApplicationComponent in this architecture dataset (LC-07)",
+        "level A3 (synthetic-bank-payments-a3): instance ENT-PAY-INSTR: is thin — its 11 field(s) are names only; give each as a record (DataAttribute, composed of ENT-PAY-INSTR) — sdem bian import --objects or sdem aid fills them (LC-23)",
+        "level A3 (synthetic-bank-payments-a3): instance ENT-PAY-EVENT: is thin — its 4 field(s) are names only; give each as a record (DataAttribute, composed of ENT-PAY-EVENT) — sdem bian import --objects or sdem aid fills them (LC-23)",
+        "level A3 (synthetic-bank-payments-a3): instance ENT-ACCOUNT-CACHE: is thin — its 5 field(s) are names only; give each as a record (DataAttribute, composed of ENT-ACCOUNT-CACHE) — sdem bian import --objects or sdem aid fills them (LC-23)",
+        "level A2 (synthetic-bank-payments-a2): instance BBO-PAY-INSTR: its field names and its field records disagree — no record for creditor_account_reference, currency, debtor_account_reference, payment_instruction_reference, payment_status, remittance_information, value_date (LC-24)",
+        "level A2 (synthetic-bank-payments-a2): instance BBO-PARTY: its field names and its field records disagree — no record for party_name, party_reference, party_type — not in its list: party reference (LC-24)"
+      ],
+      "result": "accepted",
+      "outputs": [
+        {
+          "file": "a1-business.graph.json",
+          "sha256": "e16dd8bc0318636655718bfba0b799011c9310b8df9a12529a2e6474846ed920",
+          "nodes": 16,
+          "edges": 16
+        },
+        {
+          "file": "a2-service-domain.graph.json",
+          "sha256": "393b3f845b80dfd4501fdf7253a748708c21236fa445cae74638bdf9025758d7",
+          "nodes": 48,
+          "edges": 68
+        },
+        {
+          "file": "a3-application.graph.json",
+          "sha256": "3d6ff7de5456387b54913b79a4de1429f6a23e2db1e1e61fe0380461482da2d3",
+          "nodes": 16,
+          "edges": 19
+        },
+        {
+          "file": "a4-technology.graph.json",
+          "sha256": "3caeec8f4c7ab07b00f891fa010673040f821b77662c6e65449684efc060492d",
+          "nodes": 20,
+          "edges": 30
+        },
+        {
+          "file": "federated.graph.json",
+          "sha256": "13c649da4445b375b912a59814aaf9df8d7c31038439ed4d8e3bf490ce61f088",
+          "nodes": 29,
+          "edges": 20
+        }
+      ]
     }
   ]
 }

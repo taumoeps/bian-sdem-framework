@@ -164,9 +164,11 @@ sdem trace CAP-GL --graph workspaces/ledger/graph --direction down          # wh
 sdem trace INF-K8S-FIN --graph workspaces/ledger/graph --direction up --tree
 sdem impact INF-K8S-FIN --graph workspaces/ledger/graph --change retire     # what retiring the cluster affects
 sdem requirements evaluate --workspace workspaces/ledger --record INF-K8S-FIN --change rehost
+sdem data lineage DATA-LEDGER --workspace workspaces/ledger --json            # where the data comes from and goes — from read and write (DAR-04)
+sdem data mode MAP-012 write --workspace workspaces/ledger --person <a person> --rationale "…"   # a person states an access link's read or write (DAR-03)
 ```
 
-Read-only: nothing is changed. A planned change goes through scenario 9.
+Read-only, except `sdem data mode`, a person's decision: nothing else is changed. A planned change goes through scenario 9.
 
 ## 9. A change event — from change set to accepted, planned work
 

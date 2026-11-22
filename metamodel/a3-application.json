@@ -1,5 +1,5 @@
 {
-  "metamodel_version": "0.18.0",
+  "metamodel_version": "0.19.0",
   "level": "A3",
   "entities": [
     {
@@ -256,6 +256,34 @@
         ],
         "basis": "SDEM",
         "reasoning": "a field is named within the data entity that is composed of it — the same name in two of them is two fields (found importing BIAN 14.0.0, where PaymentIdentification is a field of several objects)"
+      }
+    },
+    {
+      "type": "A3.DataDomain",
+      "level": "A3",
+      "abstract": false,
+      "extends": null,
+      "artefact": false,
+      "definition": "A data domain: a grouping of related data entities — a domain, a subject area inside one, or TOGAF's logical data component",
+      "definition_source": "sdem_extension",
+      "alignment_kind": "specialization",
+      "reference": {
+        "standard": "ArchiMate 3.2",
+        "release": "3.2",
+        "concept": "Grouping",
+        "uri": "https://pubs.opengroup.org/architecture/archimate3-doc/",
+        "locator": "chapter 4 (generic metamodel: Grouping — the concept it specialises)"
+      },
+      "evidence_status": "proposed_extension",
+      "reasoning": "DAR-01 (docs/design/sdem-data-architecture-spec.md; the owner, 2026-11-22: \"approve and build\"): an ArchiMate Grouping that aggregates data objects (SDEM's data entities) and other data domains — so a domain holds subject areas and they hold entities; an entity may sit in more than one. TOGAF's logical data component is the same boundary. Not a store: where data is held stays on Technology (stored_in).",
+      "confidence": "medium",
+      "confidence_basis": "built on a standard concept as SDEM chose to model it",
+      "identifier": {
+        "key": [
+          "name"
+        ],
+        "basis": "SDEM",
+        "reasoning": "no standard key; a unique name within the architecture dataset"
       }
     }
   ]

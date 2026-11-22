@@ -982,6 +982,96 @@
    {
     "abstract": false,
     "archimate": {
+     "element": "Grouping",
+     "from": "SDEM",
+     "layer": "other",
+     "why": "a data domain groups the data entities in it (DAR-01)"
+    },
+    "attributes": [
+     {
+      "allowed_values": [
+       "domain",
+       "subject_area",
+       "logical_component"
+      ],
+      "description": "domain, subject area or logical data component — a label only",
+      "name": "domain_kind",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "the A1 business role or actor accountable for this data",
+      "name": "data_owner",
+      "refers_to": [
+       "A1.BusinessRole",
+       "A1.BusinessActor"
+      ],
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "the A1 business role or actor that looks after this data day to day",
+      "name": "data_steward",
+      "refers_to": [
+       "A1.BusinessRole",
+       "A1.BusinessActor"
+      ],
+      "required": false,
+      "type": "string"
+     }
+    ],
+    "definition": "A data domain: a grouping of related data entities — a domain, a subject area inside one, or TOGAF's logical data component",
+    "extends": [],
+    "identifier": [
+     "name"
+    ],
+    "layer": "A3",
+    "link_types_to_other_layers": [],
+    "links_in": [
+     {
+      "from": "A3.DataDomain",
+      "kind": "aggregation",
+      "rule": "RA3-36"
+     }
+    ],
+    "links_out": [
+     {
+      "kind": "aggregation",
+      "rule": "RA3-36",
+      "to": "A3.DataDomain"
+     },
+     {
+      "kind": "aggregation",
+      "rule": "RA3-35",
+      "to": "A3.DataEntity"
+     }
+    ],
+    "organisation_rules": [],
+    "record_fields": {
+     "lifecycle_status": [
+      "planned",
+      "active",
+      "deprecated",
+      "retired"
+     ],
+     "optional": [
+      "description",
+      "attributes"
+     ],
+     "required": [
+      "id",
+      "type",
+      "version",
+      "name",
+      "lifecycle_status"
+     ]
+    },
+    "source": "ArchiMate 3.2 · Grouping",
+    "type": "A3.DataDomain"
+   },
+   {
+    "abstract": false,
+    "archimate": {
      "element": "Data Object",
      "from": "SDEM",
      "layer": "application"
@@ -1030,6 +1120,26 @@
      {
       "description": "how long the data must be kept (e.g. \"7y\")",
       "name": "retention_period",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "the A1 business role or actor accountable for this data",
+      "name": "data_owner",
+      "refers_to": [
+       "A1.BusinessRole",
+       "A1.BusinessActor"
+      ],
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "the A1 business role or actor that looks after this data day to day",
+      "name": "data_steward",
+      "refers_to": [
+       "A1.BusinessRole",
+       "A1.BusinessActor"
+      ],
       "required": false,
       "type": "string"
      }
@@ -1100,6 +1210,11 @@
       "from": "A3.DataAttribute",
       "kind": "association",
       "rule": "RA3-34"
+     },
+     {
+      "from": "A3.DataDomain",
+      "kind": "aggregation",
+      "rule": "RA3-35"
      },
      {
       "from": "A3.DataEntity",

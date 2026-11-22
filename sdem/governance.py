@@ -18,7 +18,7 @@ from pathlib import Path
 
 DIR = 'decisions'
 POLICY = 'governance.json'
-KINDS = ('approve_link', 'reject_link', 'state_link', 'confirm_requirement', 'retire_requirement', 'accept_impact', 'accept_residual_risk',
+KINDS = ('approve_link', 'reject_link', 'state_link', 'state_access_mode', 'confirm_requirement', 'retire_requirement', 'accept_impact', 'accept_residual_risk',
          'authorise_implementation', 'adopt_edit', 'establish_baseline', 'adopt_profile', 'include_in_profile', 'exclude_from_profile', 'restore_from_archive', 'purge_extension_data', 'grant_exception')
 NOTE = 'a typed name — attribution, not authentication; verified only by a signed commit from the approver (sdem governance verify)'
 

@@ -34,7 +34,7 @@ def estate_errors(docs, registry):
     return [f'{k}: {i}' for k, v in report.items() for i in v]
 
 
-def connect(estate, source, relationship, target, reviewer, evidence, rationale, bian_release=None, new_id=None, date=None):
+def connect(estate, source, relationship, target, reviewer, evidence, rationale, bian_release=None, new_id=None, date=None, access_mode=None):
     """Returns (new registry, the record); raises ApproveError when refused (SC-02…SC-04)."""
     docs, registry = estate_docs(estate)
     records = {i['id']: i for d in docs.values() for i in d.get('instances', [])}
@@ -47,11 +47,15 @@ def connect(estate, source, relationship, target, reviewer, evidence, rationale,
         return {k: i[k] for k in ('id', 'type', 'version', 'canonical_id') if k in i}
 
     rel = relationship.strip().upper()
+    if access_mode and rel != 'ACCESSED_BY': raise ApproveError(f'--access-mode is stated only on ACCESSED_BY (DAR-03), not {rel}')
     stated = {'mapping_id': 'P-STATED-1', 'source': end(source), 'relationship': rel, 'target': end(target), 'status': 'proposed',
               'evidence': [], 'rationale': f'Stated by {reviewer.strip()} (not proposed by the engine): {rationale.strip()}',
               'baseline_id': 'PERSON-STATED', 'created_by': 'sdem connect'}
     from .approve import retired_ids
     new, recs = approve(registry, {'mappings': [stated]}, ['P-STATED-1'], reviewer, evidence, None, new_id, date, bian_release, retired_ids(estate))
+    if access_mode:   # DAR-03: read, write or both — ArchiMate's access types, stated with the link
+        recs[0]['access_mode'] = access_mode
+        next(m for m in new['mappings'] if m['mapping_id'] == recs[0]['mapping_id'])['access_mode'] = access_mode
     errors = estate_errors(docs, new)
     if errors:
         raise ApproveError('the workspace would not pass its checks with this connection — nothing was written:\n  ' + '\n  '.join(errors[:10]))
@@ -75,11 +79,12 @@ def main(argv=None):
     ap.add_argument('--evidence', action='append', default=[], metavar='KIND:REF', help='the document that proves it (repeatable; every kind the type needs)')
     ap.add_argument('--rationale', required=True, help='one sentence: why this connection is true')
     ap.add_argument('--bian-release', metavar='RELEASE', help='for a connection resting on BIAN guidance: the BIAN release (e.g. 14.0.0)')
+    ap.add_argument('--access-mode', choices=['read', 'write', 'read_write'], help='on ACCESSED_BY: whether the application reads, writes or both (DAR-03)')
     ap.add_argument('--id', dest='new_id', metavar='MAPPING_ID'); ap.add_argument('--date')
     ap.add_argument('--dry-run', action='store_true'); ap.add_argument('--json', action='store_true')
     a = ap.parse_args(argv)
     try:
-        new, r = connect(a.estate, a.source, a.relationship, a.target, a.reviewer, a.evidence, a.rationale, a.bian_release, a.new_id, a.date)
+        new, r = connect(a.estate, a.source, a.relationship, a.target, a.reviewer, a.evidence, a.rationale, a.bian_release, a.new_id, a.date, a.access_mode)
     except ApproveError as e:
         print(f'ERROR: {e}', file=sys.stderr); return 1
     if a.json: print(json.dumps(r, indent=2, ensure_ascii=False))

@@ -41,7 +41,7 @@ package "A2 Service Domain (BIAN)  —  detail §5.2, within-level rows: 23 (§6
   rectangle "A2.Wireframe\n«artefact — evidence only»\nbian_reference / exact\nevidence: pending release validation" as a2_wireframe #BBDEFB
   rectangle "A2.SemanticAPI\n«artefact — evidence only»\nbian_aligned / related\nevidence: interpreted from official source" as a2_semanticapi #E3F2FD
 }
-package "A3 Application  —  detail §5.3, within-level rows: 34 (§6.1, G-01 (decided))" as PA3 {
+package "A3 Application  —  detail §5.3, within-level rows: 36 (§6.1, G-01 (decided))" as PA3 {
   rectangle "A3.ApplicationComponent\narchimate_native / exact\nevidence: interpreted from official source" as a3_applicationcomponent #C8E6C9
   rectangle "A3.ApplicationService\narchimate_native / exact\nevidence: interpreted from official source" as a3_applicationservice #C8E6C9
   rectangle "A3.ApplicationInterface\narchimate_native / exact\nevidence: interpreted from official source" as a3_applicationinterface #C8E6C9
@@ -51,6 +51,7 @@ package "A3 Application  —  detail §5.3, within-level rows: 34 (§6.1, G-01 (
   rectangle "A3.Event\narchimate_aligned / related\nevidence: interpreted from official source" as a3_event #E8F5E9
   rectangle "A3.SolutionBuildingBlock\ntogaf_informed / conceptual\nevidence: interpreted from official source" as a3_solutionbuildingblock #FFE0B2
   rectangle "A3.DataAttribute\nsdem_extension / related\nevidence: sdem extension" as a3_dataattribute #EEEEEE
+  rectangle "A3.DataDomain\nsdem_extension / specialization\nevidence: proposed extension" as a3_datadomain #EEEEEE
 }
 package "A4 Technology  [high-level: Infrastructure — G-04 (decided)]  —  detail §5.4, within-level rows: 45 (§6.1, G-01 (decided))" as PA4 {
   rectangle "A4.InfrastructureComponent\n«abstract»\nsdem_extension / none\nevidence: proposed extension" as a4_infrastructurecomponent #EEEEEE
@@ -131,7 +132,7 @@ package "Not built yet — in the high-level spec" as PNB {
 
 package "Beyond the high-level spec — detail §15–19" as PADD {
   rectangle "Relationship Rules Model\n69 plan rows · fill steps · join keys\n§15 — G-11 (decided)" as rules #E1F5FE
-  rectangle "Data model\n9 core · 13 common · 170 specific · 3 derived attributes\n14 logical rules · per-entity JSON Schemas\n§16 — G-12 (decided)" as dm #E1F5FE
+  rectangle "Data model\n9 core · 13 common · 175 specific · 3 derived attributes\n14 logical rules · per-entity JSON Schemas\n§16 — G-12 (decided)" as dm #E1F5FE
   rectangle "Provenance and confidence\nsource · reasoning · confidence on every record\n§17 — G-13 (decided)" as prov #E1F5FE
   rectangle "Inference engine\nsteps 1–5 + design mode\nacceptance 8/8 cases\n§18 — G-14 (decided)" as eng #E1F5FE
   rectangle "Graph store\nJSON Graph Format v2 · load record · baselines\n§19 — G-15 (decided)" as gstore #E1F5FE

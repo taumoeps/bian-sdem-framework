@@ -14,9 +14,9 @@ Generated from `metamodel/level-relationships.json` by `python -m sdem.relations
 |---|---|---|---|---|---|
 | A1 Business Architecture | ArchiMate 3.2 chapters 6 (Motivation), 7 (Strategy) and 8 (Business) | 60 | 60 | 0 | 0 |
 | A2 Service Domain Architecture | BIAN Service Landscape 14 metamodel, Control Record Model, Business Object Model and the Semantic API Practitioner Guide | 23 | 20 | 2 | 1 |
-| A3 Application Architecture | ArchiMate 3.2 chapter 9 (Application) and TOGAF 10 (Solution Building Block); SDEM extension rows for API operations | 34 | 30 | 4 | 0 |
+| A3 Application Architecture | ArchiMate 3.2 chapter 9 (Application) and TOGAF 10 (Solution Building Block); SDEM extension rows for API operations | 36 | 30 | 4 | 2 |
 | A4 Technology Architecture | ArchiMate 3.2 chapter 10 (Technology); SDEM extension rows for Deployment and Deployment Environment | 45 | 43 | 0 | 2 |
-| **Total** | | **162** | 153 | 6 | 3 |
+| **Total** | | **164** | 153 | 6 | 5 |
 
 ## A1 Business Architecture
 
@@ -155,6 +155,8 @@ Reference: ArchiMate 3.2 chapter 9 (Application) and TOGAF 10 (Solution Building
 | RA3-32 | A3.DataEntity | association | A3.DataEntity | One data entity refers to another (a foreign key). | DataObject → DataObject | same-concept association | ArchiMate permits association between these concepts. | high | Archi relationship matrix: DataObject → DataObject must list 'o' | verified_against_archi |
 | RA3-33 | A3.DataEntity | composition | A3.DataAttribute | A data entity is composed of its fields. | Data Object → — (an SDEM field record; ArchiMate has no attribute element) | SDEM: A data entity is composed of its fields. | SDEM's own rule for field records (IM-04, IM-05; the owner's decision D2, 2026-11-16). | medium | none — an SDEM definition, not an ArchiMate relationship | sdem_definition |
 | RA3-34 | A3.DataAttribute | association | A3.DataEntity | A foreign-key field refers to the entity it points at. | Data Object → — (an SDEM field record; ArchiMate has no attribute element) | SDEM: A foreign-key field refers to the entity it points at. | SDEM's own rule for field records (IM-04, IM-05; the owner's decision D2, 2026-11-16). | medium | none — an SDEM definition, not an ArchiMate relationship | sdem_definition |
+| RA3-35 | A3.DataDomain | aggregation | A3.DataEntity | A data domain holds a data entity. | Grouping → Data Object | a grouping aggregates the elements placed in it | ArchiMate 3.2: a Grouping may aggregate any element, a data object and another grouping among them. | high | Archi relationship matrix: Grouping → Data Object must list 'g' (aggregation) | sdem_definition_grounded |
+| RA3-36 | A3.DataDomain | aggregation | A3.DataDomain | A data domain holds a smaller one (a subject area). | Grouping → Grouping | a grouping aggregates the elements placed in it | ArchiMate 3.2: a Grouping may aggregate any element, a data object and another grouping among them. | high | Archi relationship matrix: Grouping → Grouping must list 'g' (aggregation) | sdem_definition_grounded |
 
 ## A4 Technology Architecture
 
@@ -234,9 +236,9 @@ How far each row has been checked, and against what. `verified_against_archi` is
 |---|---|---|
 | verified_against_archi | 137 | concept pair and kind listed by the open-source Archi relationship matrix — an implementation of the ArchiMate 3.2 relationship tables, cited by commit below |
 | verified | 16 | checked against BIAN's public pages (A2) |
+| sdem_definition_grounded | 4 |  |
 | sdem_definition | 4 | follows from an SDEM extension entity's definition |
 | unverified_togaf | 2 | paraphrased from TOGAF; no public oracle |
-| sdem_definition_grounded | 2 |  |
 | sdem_reading | 1 | SDEM's reading of a public BIAN page that states no explicit relationship |
 
 **Oracle.** Archi relationship matrix (open-source implementation of the ArchiMate 3.2 relationship tables): `github.com/archimatetool/archi` › `com.archimatetool.model/model/relationships.xml`, read at commit `9e6a014f9ef6a782a7dda604ef7b4d03d2c7819a` (file last changed `6d236081d9460f063076dbb6225f8645c5f5a7a5`, declares version 3.2), 2026-10-23. Nothing from the oracle is stored in this repository; each test-log entry records only the letters listed for the row's concept pair. verified_against_archi = the row's concept pair and kind are listed by the oracle; distinct from verified (specification text), which needs Open Group access. Calibration: every low-confidence inference tested in Phase 2 (7 at the time) was confirmed — the low band was over-cautious for derived dynamic relationships.
@@ -245,7 +247,7 @@ How far each row has been checked, and against what. `verified_against_archi` is
 
 | Inference confidence | Rows | Oracle verdict |
 |---|---|---|
-| high | 88 | confirmed: 86, not tested: 2 |
+| high | 90 | confirmed: 86, not tested: 4 |
 | medium | 46 | confirmed: 42, not tested: 4 |
 | low | 5 | confirmed: 4, confirmed, alternative accepted: 1 |
 

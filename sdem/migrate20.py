@@ -16,7 +16,7 @@ from .files import dumps, write_text
 
 BACKUP = '.sdem-backup-0.20'
 OLD = {'a1-business.json': 'business', 'a2-service-domain.json': 'bian', 'a3-application.json': 'application', 'a4-technology.json': 'technology'}
-DATA_TYPES = ('data.DataEntity', 'data.DataAttribute')
+DATA_TYPES = ('data.DataEntity', 'data.DataAttribute', 'data.DataDomain')   # DAR-01: a data domain is Data's too
 EVIDENCE = 'application_architecture_document:sdem-migrate-0.20#within-layer-access'
 
 
@@ -48,7 +48,8 @@ def to_019(folder):
             if m.get('relationship') == 'ACCESSED_BY':
                 access.append(m)
                 if m.get('status') == 'approved' and 'a3-application.json' in docs:
-                    docs['a3-application.json']['relationships'].append({'source': m['target']['id'], 'kind': 'access', 'target': m['source']['id']})
+                    docs['a3-application.json']['relationships'].append({'source': m['target']['id'], 'kind': 'access', 'target': m['source']['id'],
+                                                                         **({'access_mode': m['access_mode']} if m.get('access_mode') else {})})   # DAR-03: its mode goes with it
             else: keep.append(m)
         reg = {**reg, 'mappings': keep}
     return docs, reg, access

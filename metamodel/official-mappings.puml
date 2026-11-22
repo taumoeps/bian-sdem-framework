@@ -56,6 +56,7 @@ package "A3 Application Architecture" as A3 {
   rectangle "A3.Event" as a3_event
   rectangle "A3.SolutionBuildingBlock" as a3_solutionbuildingblock
   rectangle "A3.DataAttribute" as a3_dataattribute
+  rectangle "A3.DataDomain" as a3_datadomain
 }
 
 package "A4 Technology Architecture" as A4 {

@@ -9,7 +9,7 @@ skinparam package {
   BorderColor #9E9E9E
 }
 skinparam ArrowFontSize 9
-title Merged view — 162 within-level links (thin, kind only) and 50 cross-level mappings (plan ID, coloured by decision)
+title Merged view — 164 within-level links (thin, kind only) and 50 cross-level mappings (plan ID, coloured by decision)
 
 package "A1 Business Architecture" as A1 {
   rectangle "A1.BusinessCapability" as a1_businesscapability
@@ -140,7 +140,8 @@ package "A3 Application Architecture" as A3 {
   rectangle "A3.Event" as a3_event
   rectangle "A3.SolutionBuildingBlock" as a3_solutionbuildingblock
   rectangle "A3.DataAttribute" as a3_dataattribute #EEEEEE
-  ' within A3 — constraint rows (34)
+  rectangle "A3.DataDomain" as a3_datadomain #EEEEEE
+  ' within A3 — constraint rows (36)
   a3_applicationcomponent -[#B0BEC5]-> a3_applicationcomponent : <size:8>RA3-01 composition</size>
   a3_applicationcomponent -[#B0BEC5]-> a3_applicationcomponent : <size:8>RA3-02 aggregation</size>
   a3_applicationcomponent -[#B0BEC5]-> a3_applicationinterface : <size:8>RA3-03 composition</size>
@@ -175,6 +176,8 @@ package "A3 Application Architecture" as A3 {
   a3_dataentity -[#B0BEC5]-> a3_dataentity : <size:8>RA3-32 association</size>
   a3_dataentity -[#B0BEC5]-> a3_dataattribute : <size:8>RA3-33 composition</size>
   a3_dataattribute -[#B0BEC5]-> a3_dataentity : <size:8>RA3-34 association</size>
+  a3_datadomain -[#B0BEC5]-> a3_dataentity : <size:8>RA3-35 aggregation</size>
+  a3_datadomain -[#B0BEC5]-> a3_datadomain : <size:8>RA3-36 aggregation</size>
 }
 
 package "A4 Technology Architecture" as A4 {

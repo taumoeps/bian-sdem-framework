@@ -378,7 +378,7 @@ class MetamodelTests(unittest.TestCase):
 
     def test_catalogue_self_check(self):
         self.assertEqual(self.mm.validate(), [])
-        self.assertEqual(len(self.mm.entities), 50)   # A4.NetworkZone (0.10.0); A3.DataAttribute (0.15.0); event, product, channel, location (0.17.0)
+        self.assertEqual(len(self.mm.entities), 51)   # A4.NetworkZone (0.10.0); A3.DataAttribute (0.15.0); event, product, channel, location (0.17.0); A3.DataDomain (0.19.0, DAR-01)
         self.assertEqual(sum(1 for e in self.mm.entities.values() if e['artefact']), 3)
 
     def test_all_bian_reference_entities_are_pending(self):

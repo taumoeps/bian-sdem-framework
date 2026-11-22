@@ -34,7 +34,7 @@ An architect designing a payment solution can use SDEM to:
 4. **Design technology (A4):** Model the infrastructure, deployment environments and technology components supporting the applications.
 5. **Validate and govern:** Verify cross-layer relationships, identify architecture gaps, review inferred relationships and assess the impact of proposed changes.
 
-> **v0.20.0** · Apache-2.0 · Ready for evaluation using synthetic data; adoption for real solution designs requires a pilot ([pilot requirements](#using-sdem-on-real-designs)).
+> **v0.21.0** · Apache-2.0 · Ready for evaluation using synthetic data; adoption for real solution designs requires a pilot ([pilot requirements](#using-sdem-on-real-designs)).
 >
 > SDEM uses BIAN's published Semantic APIs under BIAN's applicable licence. SDEM is **not an official BIAN standard and is not endorsed by BIAN**.
 
@@ -349,14 +349,14 @@ An AI agent (GitHub Copilot, Claude Code, OpenAI Codex or Gemini CLI) drives the
 
 To set it up, install SDEM (step 1), then run `sdem agents install` in your workspace repository. See [AI agent setup](docs/sdem-agent-setup.md) and [ways of working](docs/sdem-ways-of-working.md).
 
-**Requirements:** Python 3.10 or later and Git (macOS: `brew install python@3.13`; Windows: `winget install Python.Python.3.13`). Every command below was run as written on SDEM v0.20.0; the ledger is made-up data.
+**Requirements:** Python 3.10 or later and Git (macOS: `brew install python@3.13`; Windows: `winget install Python.Python.3.13`). Every command below was run as written on SDEM v0.21.0; the ledger is made-up data.
 
 ### 1. Install SDEM
 
 ```bash
 mkdir my-sdem && cd my-sdem
 python3 -m venv .venv && source .venv/bin/activate          # Windows PowerShell: .venv\Scripts\Activate.ps1
-python -m pip install "sdem @ git+https://github.com/taumoeps/bian-sdem-framework@v0.20.0"
+python -m pip install "sdem @ git+https://github.com/taumoeps/bian-sdem-framework@v0.21.0"
 sdem --version
 ```
 

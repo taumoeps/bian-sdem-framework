@@ -342,6 +342,35 @@
         }
       ],
       "summary": "The Data layer, stable identity and BIAN as an extension: SDEM's default is any organisation's design in four layers — Business, Data, Application, Technology — and a bank adds BIAN for five; every layer and type has an id that never changes; new workspaces take the 0.20 form, existing ones move when a person migrates them."
+    },
+    {
+      "version": "0.21.0",
+      "date": "2026-11-22",
+      "kind": "minor",
+      "metamodel": "0.19.0",
+      "migration": {
+        "from": "0.18.0",
+        "to": "0.19.0",
+        "automatic": true,
+        "note": "0.18.0 → 0.19.0: the Data Architecture — a data domain (data.DataDomain, an ArchiMate Grouping of data entities and smaller domains), a data owner and steward, read and write on an access link (access_mode), and two requirement categories (data_quality, data_retention). Additive: a workspace's records do not change."
+      },
+      "breaking": [],
+      "deprecations": [],
+      "actions": [
+        {
+          "when": "always",
+          "do": "sdem migrate --workspace <your workspace> --person <you> — 0.18.0 → 0.19.0, version only: nothing in your data changes"
+        },
+        {
+          "when": "you use sdem-bian, sdem-security or sdem-desnre",
+          "do": "install sdem-bian 1.0.3, sdem-security 0.4.0, sdem-desnre 0.10.2 or later — earlier releases do not accept metamodel 0.19.0; from these on, an extension accepts any additive metamodel change"
+        },
+        {
+          "when": "you want the Data Architecture",
+          "do": "sdem data mode, sdem connect --access-mode and sdem data lineage; data domains through a change set; sdem status says what is missing once you use them"
+        }
+      ],
+      "summary": "The full trace (every record's chain through part-of, realization, assignment, triggering, a path's nodes and a security record's subject), impact by the shortest path, the Data Architecture (domains, ownership, read and write, lineage) — metamodel 0.19.0."
     }
   ]
 }

@@ -6,11 +6,11 @@
     "directed": true,
     "metadata": {
       "sdem_store_version": "1.0",
-      "export_sha256": "0456d01450757371269d1764472fdda2da830b08e6eaaad03295196132ba1de2",
+      "export_sha256": "031faac5e27829797495f7886c72c2fc80099eb54ece73e4d9e59398796fdaff",
       "level": "A5",
       "model_id": "library-holds-a4",
       "model_version": "2026.11",
-      "metamodel_version": "0.18.0",
+      "metamodel_version": "0.19.0",
       "source_system": "SYNTHETIC-DESIGN"
     },
     "nodes": {

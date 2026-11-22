@@ -20,7 +20,7 @@
     "model_id": "SDEM-A1",
     "model_version": "2026-11-18",
     "path": "<tmp>/v3/a1-business.json",
-    "sha256": "f87359e528d2167da2ec293472ba791e84f5f81b824a7c2cc803200c01e8c903"
+    "sha256": "182af4a2195ff8edc7ec32aa9daf2eef842fb87f73a279455bf3631b7301b20e"
    },
    {
     "kind": "export",
@@ -28,7 +28,7 @@
     "model_id": "SDEM-A2",
     "model_version": "2026-11-18",
     "path": "<tmp>/v3/a2-service-domain.json",
-    "sha256": "07d57746ce1615bfa1ff1fae7e8cfd58ac039a8944571fb4e49a87aa467ad2f1"
+    "sha256": "3e5107bcd88a6eded6733c9e99055798a2557e2227f5b9c8fdfeb1a3502c09eb"
    },
    {
     "kind": "export",
@@ -36,7 +36,7 @@
     "model_id": "SDEM-A3",
     "model_version": "2026-11-18",
     "path": "<tmp>/v3/a3-application.json",
-    "sha256": "041c315513c135b081209f8c4dc2cda2904c389dc997b26c91e8b8b98fb9eeb6"
+    "sha256": "688e09a7d23638df8a4a54d7bd0f3de97faf0d12580d23cb1a3b2035d033b548"
    },
    {
     "kind": "export",
@@ -44,47 +44,47 @@
     "model_id": "SDEM-A4",
     "model_version": "2026-11-18",
     "path": "<tmp>/v3/a4-technology.json",
-    "sha256": "29c3383652c56f0378c6d5c8c498a49d5f52efc34f1b078b1fb880eaa50bf5ff"
+    "sha256": "a8e9531449718ca3bcb9b0b15816348d674a432572d4e6ed3dc2dc7a4382c3a4"
    },
    {
     "kind": "registry",
     "path": "<tmp>/v3/mappings.json",
     "registry_version": "0.4.0",
-    "sha256": "f79c171f94f23215cf7682f44a0e129d8414828d252b402fc6adbb62b1a7c5b9"
+    "sha256": "54c2cf5d1a9257dda8eac9472d3cc29b46ed32bc42f4961c693ebff3156b1152"
    }
   ],
-  "metamodel_version": "0.18.0",
+  "metamodel_version": "0.19.0",
   "next": "sdem trace <id> --graph <tmp>/payment-initiation-v3-graph",
   "outputs": [
    {
     "edges": 72,
     "file": "a1-business.graph.json",
     "nodes": 48,
-    "sha256": "79f4e7b28b5d005fe20382a94f5f8c9dc4fb7fcbc06646449e230d3205dc8321"
+    "sha256": "302510c36c323b396c92684192a5f606a654f780d88e8b92a06db656fce039dd"
    },
    {
     "edges": 120,
     "file": "a2-service-domain.graph.json",
     "nodes": 70,
-    "sha256": "e9584b034978be61b818fc4883465e054142d155a833083e3f264344ea14e174"
+    "sha256": "e31fd55bde993c8878c588c08decdd087e19cd7c5f362febb89ade1aca99667f"
    },
    {
     "edges": 55,
     "file": "a3-application.graph.json",
     "nodes": 49,
-    "sha256": "7f3d66e8a7bce68e217b30323e37c1a03e30c3fc60d9a2f0a9dc45f4051307eb"
+    "sha256": "f542c9842ce934d38c5b7b4c7a211897e675b61f954501ae035e5dd718121e7f"
    },
    {
     "edges": 42,
     "file": "a4-technology.graph.json",
     "nodes": 28,
-    "sha256": "dd84cceb46abb401ad7e348cdea1aba7bc47b249cfcedcdd064427d7e575412f"
+    "sha256": "781f7598433c452aa3eca9e8b212108fb032c59da2b394171c2ef817606fe7c0"
    },
    {
     "edges": 32,
     "file": "federated.graph.json",
     "nodes": 40,
-    "sha256": "0b70187f2c6dbb9befac759be03b7381aa54d2e34fc588ef6b9aeb2e511cc613"
+    "sha256": "cebd23192cd100d466b24082636bc4d7de9b05a13921f94f4ab1a64c62167599"
    }
   ],
   "profile": {
@@ -92,7 +92,7 @@
     "sdem"
    ],
    "name": "sdem",
-   "sha256": "48881d00157a8c08f0c23cf5914dc11a2a0db5cb0ecfa22b65e852aec0a345b5",
+   "sha256": "fb6a382005def0e270647085a1d267b9f0b9c8c036ca259f3c5afe145d884cf1",
    "version": 1
   },
   "result": "accepted",

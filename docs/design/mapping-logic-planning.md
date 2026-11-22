@@ -619,6 +619,7 @@ package "A3 Application Architecture" as A3 {
   rectangle "A3.Event" as a3_event
   rectangle "A3.SolutionBuildingBlock" as a3_solutionbuildingblock
   rectangle "A3.DataAttribute" as a3_dataattribute
+  rectangle "A3.DataDomain" as a3_datadomain
 }
 
 package "A4 Technology Architecture" as A4 {
@@ -924,6 +925,7 @@ package "A3 Application Architecture" as A3 {
   rectangle "A3.Event" as a3_event
   rectangle "A3.SolutionBuildingBlock" as a3_solutionbuildingblock
   rectangle "A3.DataAttribute\n<size:9><i>no cross-level mapping: no plan row</i></size>" as a3_dataattribute #EEEEEE
+  rectangle "A3.DataDomain\n<size:9><i>no cross-level mapping: no plan row</i></size>" as a3_datadomain #EEEEEE
 }
 
 package "A4 Technology Architecture" as A4 {

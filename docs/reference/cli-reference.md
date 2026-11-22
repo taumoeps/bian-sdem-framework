@@ -2,7 +2,7 @@
 
 > **Generated** from the code by `sdem model regenerate` (`sdem/clidoc.py`), from the same catalogue as `sdem commands --json`; `sdem model check` fails in CI when it is stale — **do not edit by hand**. Each command's `--help` has the same options and a worked example. For *when* to use which command, in order, see the [scenarios](../sdem-scenarios.md); for what each does to your data, the [user guide](../sdem-workbench-user-guide.md#7-command-reference).
 
-133 commands and subcommands.
+136 commands and subcommands.
 
 ## Every command takes
 
@@ -141,6 +141,9 @@
 
 | Command | What it does |
 |---|---|
+| [`sdem data`](#cmd-data) | the Data Architecture: a data entity's lineage through the applications that read and write it, and a person states an access link's read or write (DAR-03 … |
+| [`sdem data lineage`](#cmd-data-lineage) | where a data entity's data comes from and goes |
+| [`sdem data mode`](#cmd-data-mode) 👤 | a person states whether an access link reads, writes or both (DAR-03) |
 | [`sdem impact`](#cmd-impact) | classify what a change to a record affects |
 | [`sdem layout`](#cmd-layout) | a layer drawn by what owns what |
 | [`sdem matrix`](#cmd-matrix) | business → BIAN → application → technology matrices from approved links |
@@ -1019,7 +1022,7 @@ sdem comply --workspace examples/payment-initiation
 a person states a connection the engine did not propose — the same checks as approve, both ends in the workspace
 
 ```
-sdem connect <source> <relationship> <target> --workspace WORKSPACE --reviewer REVIEWER [--evidence EVIDENCE] --rationale RATIONALE [--bian-release BIAN_RELEASE] [--id ID] [--date DATE] [--dry-run]
+sdem connect <source> <relationship> <target> --workspace WORKSPACE --reviewer REVIEWER [--evidence EVIDENCE] --rationale RATIONALE [--bian-release BIAN_RELEASE] [--access-mode {read,write,read_write}] [--id ID] [--date DATE] [--dry-run]
 ```
 
 *JSON: native · dry run: native · 👤 a person's own name*
@@ -1034,6 +1037,7 @@ sdem connect <source> <relationship> <target> --workspace WORKSPACE --reviewer R
 | `--evidence` |  | the document that proves it (repeatable; every kind the type needs) |
 | `--rationale` | yes | one sentence: why this connection is true |
 | `--bian-release` |  | for a connection resting on BIAN guidance: the BIAN release (e.g. 14.0.0) |
+| `--access-mode` {read, write, read_write} |  | on ACCESSED_BY: whether the application reads, writes or both (DAR-03) |
 | `--id` |  | its id |
 | `--date` |  | the date (YYYY-MM-DD) |
 | `--dry-run` |  | nothing written; what would be written is listed under "would_write" |
@@ -1102,6 +1106,54 @@ Example:
 ```bash
 sdem dashboard --workspace examples/payment-initiation -o work/dashboard.html
 ```
+
+### sdem data
+
+<a id="cmd-data"></a>
+
+the Data Architecture: a data entity's lineage through the applications that read and write it, and a person states an access link's read or write (DAR-03, DAR-04)
+
+Subcommands: [`sdem data lineage`](#cmd-data-lineage) · [`sdem data mode`](#cmd-data-mode)
+
+### sdem data lineage
+
+<a id="cmd-data-lineage"></a>
+
+where a data entity's data comes from and goes — from approved access links with a stated read or write (DAR-04)
+
+```
+sdem data lineage <entity> --workspace WORKSPACE
+```
+
+*JSON: native · dry run: sandbox*
+
+| Argument | Required | What it is |
+|---|---|---|
+| `<entity>` | yes | the data entity, e.g. DATA-PAYMENT |
+| `--workspace` | yes | the workspace folder |
+| `--json` |  | the answer as data |
+
+### sdem data mode
+
+<a id="cmd-data-mode"></a>
+
+a person states whether an access link reads, writes or both (DAR-03) — recorded as their decision
+
+```
+sdem data mode <mapping_id> <mode> --workspace WORKSPACE --person PERSON --rationale RATIONALE [--dry-run]
+```
+
+*JSON: native · dry run: native · 👤 a person's own name*
+
+| Argument | Required | What it is |
+|---|---|---|
+| `<mapping_id>` | yes | the ACCESSED_BY link, e.g. MAP-012 (sdem query, or the workbench, shows its id) |
+| `<mode>` | yes | read, write or read_write — ArchiMate access types |
+| `--workspace` | yes | the workspace folder |
+| `--person` | yes | your name — a person (CTL-21) |
+| `--rationale` | yes | one sentence: how you know |
+| `--dry-run` |  | show what would change; write nothing |
+| `--json` |  | the link as data |
 
 ### sdem designs
 

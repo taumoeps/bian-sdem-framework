@@ -1,5 +1,5 @@
 {
-  "metamodel_version": "0.18.0",
+  "metamodel_version": "0.19.0",
   "note": "How a workspace moves from one metamodel (metamodel) version to the next — `sdem migrate --workspace DIR`. Every change to the metamodel that affects data bumps metamodel_version in every metamodel file and adds one entry here, from the old version to the new: its steps are applied to the workspace's datasets and registry, then the workspace is checked; an entry with no steps only moves the version (an additive change — new optional attributes or types). Step kinds: rename_type {from, to}; rename_attribute {type (optional), from, to}; drop_attribute {type (optional), name}; set_attribute {type, name, value} (only where missing); rename_kind {from, to} (a within-architecture link kind); rename_relationship {from, to} (a link type between architectures, in the registry). Policy: docs/sdem-metamodel-versioning.md.",
   "migrations": [
     {
@@ -150,6 +150,14 @@
       "date": "2026-11-21",
       "approved_by": "the SDEM owner",
       "note": "SDEM 0.20 (docs/design/sdem-0.20-plan.md; the owner, 2026-11-21: \"yes\"): stable identity — every layer and type has an id that never changes (metamodel/identity.json; ST-01…ST-05; the A-number is computed from the layers in use); BIAN a built-in extension (ext:bian, BX-*); the Data layer — data.DataEntity and data.DataAttribute their own layer between Business (and BIAN) and Application, in a workspace in the 0.20 form (DL-01…DL-26), and ACCESSED_BY (a data entity accessed by an application element, schema/relationship-types-data.json) for what was access inside the Application layer. Additive — no steps: a workspace's records are unchanged; moving to the 0.20 form is its own step, sdem migrate --to 0.20, a person's.",
+      "steps": []
+    },
+    {
+      "from": "0.18.0",
+      "to": "0.19.0",
+      "date": "2026-11-22",
+      "approved_by": "the SDEM owner",
+      "note": "The Data Architecture (docs/design/sdem-data-architecture-spec.md, DAR-01…DAR-11; the owner, 2026-11-22: \"approve and build\"): a data domain (data.DataDomain, an ArchiMate Grouping of data entities and smaller domains — subject areas, TOGAF's logical data component; RA3-35, RA3-36), a data owner and steward on an entity and a domain (an A1 role or actor), read and write on an ACCESSED_BY link (access_mode — ArchiMate's access types), and two requirement categories, data_quality and data_retention. Additive — no steps: every addition is optional and a workspace's records are unchanged.",
       "steps": []
     }
   ]

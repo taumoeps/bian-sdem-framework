@@ -174,6 +174,93 @@
           "edges": 11
         }
       ]
+    },
+    {
+      "build": 3,
+      "at": "2026-11-21T21:39:28+00:00",
+      "inputs": [
+        {
+          "path": "examples/0.20/library-holds/business.json",
+          "kind": "export",
+          "level": "A1",
+          "model_id": "library-holds-a1",
+          "model_version": "2026.11",
+          "sha256": "03245fa9314d38ee5bb9407edc87fc061be2c6396732f8032d206f28ca019589"
+        },
+        {
+          "path": "examples/0.20/library-holds/data.json",
+          "kind": "export",
+          "level": "A3",
+          "model_id": "library-holds-a3-data",
+          "model_version": "2026.11",
+          "sha256": "704745a66238359149880770492712e71cb0781a9f9b9f9af1a1c12a082b3000"
+        },
+        {
+          "path": "examples/0.20/library-holds/application.json",
+          "kind": "export",
+          "level": "A4",
+          "model_id": "library-holds-a3",
+          "model_version": "2026.11",
+          "sha256": "005ebf0fca972c7e232a8fad2807f63311df4825e9d641a8639a2446fc06e68e"
+        },
+        {
+          "path": "examples/0.20/library-holds/technology.json",
+          "kind": "export",
+          "level": "A5",
+          "model_id": "library-holds-a4",
+          "model_version": "2026.11",
+          "sha256": "031faac5e27829797495f7886c72c2fc80099eb54ece73e4d9e59398796fdaff"
+        },
+        {
+          "path": "examples/0.20/library-holds/mappings.json",
+          "kind": "registry",
+          "registry_version": "0.4.0",
+          "sha256": "197ea888c11bb49ef9d0df7c41fd0bf43d37f97d9c58db83b6c78374f5691df2"
+        }
+      ],
+      "metamodel_version": "0.19.0",
+      "errors": [],
+      "warnings": [],
+      "result": "accepted",
+      "stack": [
+        "business",
+        "bian",
+        "data",
+        "application",
+        "technology"
+      ],
+      "outputs": [
+        {
+          "file": "application.graph.json",
+          "sha256": "2aaf098f4d64e0e12bf4c4a2c7cc8b2560f10239e7e1741896417f098b512765",
+          "nodes": 4,
+          "edges": 2
+        },
+        {
+          "file": "business.graph.json",
+          "sha256": "c22a34901cf4b304546ebc7f0f4fb01941115aaff6d087889d87ce8494984b9b",
+          "nodes": 12,
+          "edges": 6
+        },
+        {
+          "file": "data.graph.json",
+          "sha256": "bf3d7949ea2769ea8ef317f2da65e0b26e6adce0a85c35aacc8410298ebece69",
+          "nodes": 1,
+          "edges": 0
+        },
+        {
+          "file": "federated.graph.json",
+          "sha256": "42161cb5759c78abb882e52de260067cf71648092c24625a9fbf8d0a43d38374",
+          "nodes": 9,
+          "edges": 7
+        },
+        {
+          "file": "technology.graph.json",
+          "sha256": "81e5c8136ffdedd15c50f4eda2d90960f33e09c37336db8077177c53192a44be",
+          "nodes": 8,
+          "edges": 11
+        }
+      ]
     }
   ]
 }

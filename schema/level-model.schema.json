@@ -129,6 +129,14 @@
         "inferred": {
           "type": "object",
           "description": "The link was inferred, not written by a person — by whom, from which evidence, how sure, and whether a person has confirmed it (status: proposed or confirmed). sdem aid proposes zone placements this way (AID-Z01; H5, the owner's decision, 2026-11-14); a person confirms or rejects each with sdem aid confirm|reject."
+        },
+        "access_mode": {
+          "enum": [
+            "read",
+            "write",
+            "read_write"
+          ],
+          "description": "DAR-03 (docs/design/sdem-data-architecture-spec.md): on an access link read in 0.19's shape — the mode its ACCESSED_BY link states"
         }
       }
     }

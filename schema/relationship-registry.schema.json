@@ -140,6 +140,14 @@
             "text"
           ],
           "description": "What kind of evidence the inference rests on, strongest first: attribute_join (a field names the other record), structural (attributes, operations or approved links agree), pattern (a BIAN pattern applied, not observed), name_token (shared words in names or paths), text (shared words in descriptions). Set by the engine and sdem aid; the strongest of a link's reasons (owner's decision D3, 2026-11-09)."
+        },
+        "access_mode": {
+          "enum": [
+            "read",
+            "write",
+            "read_write"
+          ],
+          "description": "DAR-03 (docs/design/sdem-data-architecture-spec.md): on an ACCESSED_BY link only — ArchiMate 3.2's access types, stated by a person; absent means not stated"
         }
       }
     },

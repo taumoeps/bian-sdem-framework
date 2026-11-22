@@ -439,6 +439,42 @@
           },
           "x-sdem-reasoning": "Answers: How long must we keep this data? Driven by law and policy that vary by bank and country; SDEM records the period only.",
           "x-sdem-confidence": "low"
+        },
+        "data_owner": {
+          "type": "string",
+          "description": "the A1 business role or actor accountable for this data",
+          "x-sdem-id": "AT-A3-53",
+          "x-sdem-group": "specific",
+          "x-sdem-kind": "reference",
+          "x-sdem-references": [
+            "A1.BusinessRole",
+            "A1.BusinessActor"
+          ],
+          "x-sdem-source": {
+            "standard": "SDEM-defined",
+            "locator": "docs/design/sdem-data-architecture-spec.md (DAR-02)",
+            "uri": "https://github.com/taumoeps/bian-sdem-framework"
+          },
+          "x-sdem-reasoning": "DAR-02: who decides about this data — an attribute naming an A1 record, so nothing new to approve; a domain's owner is read by its entities that name none.",
+          "x-sdem-confidence": "low"
+        },
+        "data_steward": {
+          "type": "string",
+          "description": "the A1 business role or actor that looks after this data day to day",
+          "x-sdem-id": "AT-A3-54",
+          "x-sdem-group": "specific",
+          "x-sdem-kind": "reference",
+          "x-sdem-references": [
+            "A1.BusinessRole",
+            "A1.BusinessActor"
+          ],
+          "x-sdem-source": {
+            "standard": "SDEM-defined",
+            "locator": "docs/design/sdem-data-architecture-spec.md (DAR-02)",
+            "uri": "https://github.com/taumoeps/bian-sdem-framework"
+          },
+          "x-sdem-reasoning": "DAR-02: who keeps the data correct — beside the owner.",
+          "x-sdem-confidence": "low"
         }
       },
       "additionalProperties": true,

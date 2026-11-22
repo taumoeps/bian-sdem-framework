@@ -1011,7 +1011,7 @@ A Semantic API definition artefact
 
 ## 3. A3 Application Architecture
 
-9 entities. The diagram shows the entities, their key fields and references, and the links between them.
+10 entities. The diagram shows the entities, their key fields and references, and the links between them.
 
 ```mermaid
 erDiagram
@@ -1070,6 +1070,8 @@ erDiagram
         string glossary_uri
         boolean system_of_record
         string retention_period
+        string data_owner FK
+        string data_steward FK
     }
     A3_Event {
         string id PK
@@ -1092,6 +1094,12 @@ erDiagram
         string default
         boolean personal_information
         string classification
+    }
+    A3_DataDomain {
+        string id PK
+        string domain_kind
+        string data_owner FK
+        string data_steward FK
     }
     A3_ApplicationComponent |o--o{ A3_ApplicationComponent : "composition"
     A3_ApplicationComponent }o--o{ A3_ApplicationComponent : "aggregation"
@@ -1127,6 +1135,8 @@ erDiagram
     A3_DataEntity }o--o{ A3_DataEntity : "association"
     A3_DataEntity ||--o{ A3_DataAttribute : "composition"
     A3_DataAttribute }o--o| A3_DataEntity : "association"
+    A3_DataDomain }o--o{ A3_DataEntity : "aggregation"
+    A3_DataDomain }o--o{ A3_DataDomain : "aggregation"
 ```
 
 ### `A3.ApplicationComponent`
@@ -1304,6 +1314,8 @@ A logical data entity held by an application
 | `glossary_uri` | text | no | link to the agreed glossary definition | — |
 | `system_of_record` | boolean | no | whether this application is the authoritative source for the data | — |
 | `retention_period` | text | no | how long the data must be kept (e.g. "7y") | — |
+| `data_owner` | text | no | the A1 business role or actor accountable for this data | `A1.BusinessRole`, `A1.BusinessActor` *(join key)* |
+| `data_steward` | text | no | the A1 business role or actor that looks after this data day to day | `A1.BusinessRole`, `A1.BusinessActor` *(join key)* |
 
 **Links**
 
@@ -1320,6 +1332,7 @@ A logical data entity held by an application
 | association (with itself) | `DataEntity` | any number |
 | composition → | `DataAttribute` | any number |
 | ← association | `DataAttribute` | any number |
+| ← aggregation | `DataDomain` | any number |
 
 ### `A3.Event`
 
@@ -1396,6 +1409,29 @@ A field of a data entity: its physical type, whether it is required, and whether
 |---|---|---|
 | ← composition | `DataEntity` | exactly one |
 | association → | `DataEntity` | at most one |
+
+### `A3.DataDomain`
+
+*entity*
+
+A data domain: a grouping of related data entities — a domain, a subject area inside one, or TOGAF's logical data component
+
+**Identified by:** `name` — no standard key; a unique name within the architecture dataset
+
+**Fields**
+
+| Field | Type | Required | Meaning | Refers to |
+|---|---|---|---|---|
+| `domain_kind` | text | no | domain, subject area or logical data component — a label only | one of: domain, subject_area, logical_component |
+| `data_owner` | text | no | the A1 business role or actor accountable for this data | `A1.BusinessRole`, `A1.BusinessActor` *(join key)* |
+| `data_steward` | text | no | the A1 business role or actor that looks after this data day to day | `A1.BusinessRole`, `A1.BusinessActor` *(join key)* |
+
+**Links**
+
+| Link | With | How many |
+|---|---|---|
+| aggregation → | `DataEntity` | any number |
+| aggregation (with itself) | `DataDomain` | any number |
 
 ## 4. A4 Technology Architecture
 
@@ -1984,7 +2020,7 @@ Each entity's, field's and link's source, reasoning and confidence are in [`arch
 
 | Decision | Count | Basis |
 |---|---|---|
-| Link counts — SDEM default | 110 | no standard sets a number; left open |
+| Link counts — SDEM default | 112 | no standard sets a number; left open |
 | Link counts — ArchiMate composition semantics | 26 | a part belongs to at most one whole (ArchiMate) |
 | Link counts — BIAN | 14 | stated by BIAN |
 | Link counts — SDEM | 6 | a part belongs to at most one whole (ArchiMate) |
@@ -1992,7 +2028,7 @@ Each entity's, field's and link's source, reasoning and confidence are in [`arch
 | Link counts — SDEM reading | 1 | SDEM's reading of a BIAN page |
 | Link counts — ArchiMate aggregation semantics | 1 | a part belongs to at most one whole (ArchiMate) |
 | Link counts — ArchiMate specialization semantics | 1 | a part belongs to at most one whole (ArchiMate) |
-| Identifiers — SDEM | 40 | SDEM recommendation: a unique name |
+| Identifiers — SDEM | 41 | SDEM recommendation: a unique name |
 | Identifiers — BIAN | 5 | BIAN concept ids and operation naming |
 | Identifiers — OpenAPI | 1 | path and method unique per API |
 

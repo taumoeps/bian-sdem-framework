@@ -1,6 +1,6 @@
 # The metamodel in plain words
 
-> **Status: current (v0.20.0)** — what SDEM's metamodel contains and how to read it. The full, generated detail is in [`reference/`](reference/README.md); you do not need it to use SDEM.
+> **Status: current (v0.21.0)** — what SDEM's metamodel contains and how to read it. The full, generated detail is in [`reference/`](reference/README.md); you do not need it to use SDEM.
 
 The **metamodel** decides what SDEM will accept. Every record and every connection is checked against it, and SDEM refuses anything that breaks it. It lives in the `metamodel/` and `schema/` folders, and only the SDEM owner changes it ([how a change is made](sdem-administration.md#when-the-metamodel-changes)).
 
@@ -87,8 +87,8 @@ The same numbers appear in the [rules specification](design/relationship-rules-s
 
 | What | Count | Where in the spec | In the diagram |
 |---|---|---|---|
-| Entity types (boxes) | 50 | §2 | every box |
-| Within-level rows: links allowed *inside* one architecture | 162 | §3.1 (`RA…`) | thin grey arrows |
+| Entity types (boxes) | 51 | §2 | every box |
+| Within-level rows: links allowed *inside* one architecture | 164 | §3.1 (`RA…`) | thin grey arrows |
 | Relationship type catalogue: kinds of link allowed *between* architectures | 24 | §4.1 | named on the blue arrows |
 | Plan rows: rules for finding cross-level relationships | 69 | §4.2 (`S…`, `B…`) | — |
 | …of which drawn as cross-level rules | 50 | §4.3 | coloured arrows |

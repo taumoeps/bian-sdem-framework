@@ -142,7 +142,8 @@ package "A3 Application Architecture" as A3 {
   rectangle "A3.Event" as a3_event
   rectangle "A3.SolutionBuildingBlock" as a3_solutionbuildingblock
   rectangle "A3.DataAttribute" as a3_dataattribute
-  ' constraints from ArchiMate 3.2 ch. 9; TOGAF (SBB) (34)
+  rectangle "A3.DataDomain" as a3_datadomain
+  ' constraints from ArchiMate 3.2 ch. 9; TOGAF (SBB) (36)
   a3_applicationcomponent -[#1565C0]-> a3_applicationcomponent : RA3-01 composition
   a3_applicationcomponent -[#1565C0,dashed]-> a3_applicationcomponent : RA3-02 aggregation
   a3_applicationcomponent -[#1565C0]-> a3_applicationinterface : RA3-03 composition
@@ -177,6 +178,8 @@ package "A3 Application Architecture" as A3 {
   a3_dataentity -[#9E9E9E,dotted]-> a3_dataentity : RA3-32 association
   a3_dataentity -[#1565C0]-> a3_dataattribute : RA3-33 composition
   a3_dataattribute -[#9E9E9E,dotted]-> a3_dataentity : RA3-34 association
+  a3_datadomain -[#1565C0,dashed]-> a3_dataentity : RA3-35 aggregation
+  a3_datadomain -[#1565C0,dashed]-> a3_datadomain : RA3-36 aggregation
 }
 
 package "A4 Technology Architecture" as A4 {

@@ -91,6 +91,8 @@ JOURNEYS = _live(lambda: {
                  'sdem copilot install --dry-run'),
     'connect':  ('J3', 'a person states a connection the engine did not propose — the same checks as approve, both ends in the workspace', 'sdem.connect', [],
                  'sdem connect SD-PAYMENT-ORDER-INITIATION REALIZED_BY HIS-A3-PAYMENTS-HUB --workspace workspaces/payments --reviewer jane.architect --evidence application_architecture_document:PAYHUB-HLD#s2 --rationale "…"'),
+    'data':     ('J5', "the Data Architecture: a data entity's lineage through the applications that read and write it, and a person states an access link's read or write (DAR-03, DAR-04)", 'sdem.dataarch', [],
+                 'sdem data lineage DATA-PAYMENT --workspace work/est'),
     'migrate':  ('—', 'move a workspace to the current metamodel version — recorded migrations applied, checked, written all-or-nothing, recorded', 'sdem.migrate', [],
                  'sdem migrate --workspace workspaces/history --person jane.architect --dry-run'),
     'commands': ('AG', 'every command, its options and what it supports, as data for an agent (with --json; give a command\'s name for only that one); --json, --limit and --dry-run work on every command', None, None,

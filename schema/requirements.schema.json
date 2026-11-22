@@ -144,6 +144,8 @@
             "security",
             "compliance",
             "capacity",
+            "data_quality",
+            "data_retention",
             "other"
           ]
         },

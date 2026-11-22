@@ -231,6 +231,11 @@
   "A4.Location": {
    "element": "Location",
    "layer": "other"
+  },
+  "A3.DataDomain": {
+   "element": "Grouping",
+   "layer": "other",
+   "why": "a data domain groups the data entities in it (DAR-01)"
   }
  },
  "within_layer": {

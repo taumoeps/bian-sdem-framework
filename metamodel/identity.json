@@ -250,6 +250,13 @@
   {
    "id": "technology.Location",
    "name_0_19": "A4.Location"
+  },
+  {
+   "id": "data.DataDomain",
+   "name_0_19": "A3.DataDomain",
+   "aliases": [
+    "application.DataDomain"
+   ]
   }
  ]
 }

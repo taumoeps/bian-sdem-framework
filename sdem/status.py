@@ -98,6 +98,17 @@ def collect(ws):
         warnings.append(_item('bian_objects_missing', f"BIAN: {gap['service_domains']} service domain(s) but no BIAN business object — the design's BIAN → Data connections are empty (BO-06)"))
         step(f'sdem bian objects suggest --workspace {w}', 'which BIAN business object each data entity may be — a person brings one in (--object) and states the link (sdem connect … MAPPED_TO …)')
 
+    try:
+        from .dataarch import gaps as data_gaps   # DAR-07: the Data Architecture's own finding — only once the design uses it
+        dg = data_gaps(ws)
+    except Exception: dg = None
+    if dg:
+        if dg['no_domain']: warnings.append(_item('data_entity_without_domain', f"Data: {len(dg['no_domain'])} data entit(ies) in no data domain — {', '.join(dg['no_domain'][:5])} (DAR-07)"))
+        if dg['no_owner']: warnings.append(_item('personal_data_without_owner', f"Data: {len(dg['no_owner'])} data entit(ies) holding personal data with no data_owner — {', '.join(dg['no_owner'][:5])} (DAR-07)"))
+        if dg['no_mode']:
+            warnings.append(_item('personal_data_access_mode_not_stated', f"Data: {len(dg['no_mode'])} access link(s) to personal data with no read or write stated — {', '.join(dg['no_mode'][:5])} (DAR-07)"))
+            step(f'sdem data mode {dg["no_mode"][0]} read|write|read_write --workspace {w} --person <you> --rationale "…"', 'a person states whether each access to personal data reads, writes or both')
+
     state = 'blocked' if blocking else 'open' if unresolved or (complete and (complete['gaps'] or complete.get('inferred_to_confirm'))) or any(p['open'] for p in pats) else 'clear'
     return {'workspace': w, 'name': h['name'], 'state': state,
             'layers': h['layers'], 'missing_layers': [m['level'] for m in h['missing_layers']], 'connections': h['registry'],

@@ -2,29 +2,29 @@
   "format": "sdem-ledger/1",
   "files": {
     "a1-business.json": {
-      "sha256": "f87359e528d2167da2ec293472ba791e84f5f81b824a7c2cc803200c01e8c903",
+      "sha256": "182af4a2195ff8edc7ec32aa9daf2eef842fb87f73a279455bf3631b7301b20e",
       "by": "sdem migrate",
-      "at": "2026-11-21T15:33:31"
+      "at": "2026-11-22T10:39:08"
     },
     "a2-service-domain.json": {
-      "sha256": "07d57746ce1615bfa1ff1fae7e8cfd58ac039a8944571fb4e49a87aa467ad2f1",
+      "sha256": "3e5107bcd88a6eded6733c9e99055798a2557e2227f5b9c8fdfeb1a3502c09eb",
       "by": "sdem migrate",
-      "at": "2026-11-21T15:33:31"
+      "at": "2026-11-22T10:39:08"
     },
     "a3-application.json": {
-      "sha256": "041c315513c135b081209f8c4dc2cda2904c389dc997b26c91e8b8b98fb9eeb6",
+      "sha256": "688e09a7d23638df8a4a54d7bd0f3de97faf0d12580d23cb1a3b2035d033b548",
       "by": "sdem migrate",
-      "at": "2026-11-21T15:33:31"
+      "at": "2026-11-22T10:39:08"
     },
     "a4-technology.json": {
-      "sha256": "29c3383652c56f0378c6d5c8c498a49d5f52efc34f1b078b1fb880eaa50bf5ff",
+      "sha256": "a8e9531449718ca3bcb9b0b15816348d674a432572d4e6ed3dc2dc7a4382c3a4",
       "by": "sdem migrate",
-      "at": "2026-11-21T15:33:31"
+      "at": "2026-11-22T10:39:08"
     },
     "mappings.json": {
-      "sha256": "f79c171f94f23215cf7682f44a0e129d8414828d252b402fc6adbb62b1a7c5b9",
+      "sha256": "54c2cf5d1a9257dda8eac9472d3cc29b46ed32bc42f4961c693ebff3156b1152",
       "by": "sdem migrate",
-      "at": "2026-11-21T15:33:31"
+      "at": "2026-11-22T10:39:08"
     }
   }
 }

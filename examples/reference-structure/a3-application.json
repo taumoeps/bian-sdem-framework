@@ -2,7 +2,7 @@
   "level": "A3",
   "model_id": "reference-structure-a3",
   "model_version": "2026.10",
-  "metamodel_version": "0.18.0",
+  "metamodel_version": "0.19.0",
   "source_system": "SDEM-GENERATED-FROM-RECORD",
   "instances": [
     {
@@ -172,6 +172,22 @@
       "name": "DataAttribute 2 (structure conformance)",
       "lifecycle_status": "active",
       "description": "Synthetic instance of A3.DataAttribute carrying one relationship per constraint row of A3; no business meaning."
+    },
+    {
+      "id": "RS-DataDomain-1",
+      "type": "A3.DataDomain",
+      "version": "1.0",
+      "name": "DataDomain 1 (structure conformance)",
+      "lifecycle_status": "active",
+      "description": "Synthetic instance of A3.DataDomain carrying one relationship per constraint row of A3; no business meaning."
+    },
+    {
+      "id": "RS-DataDomain-2",
+      "type": "A3.DataDomain",
+      "version": "1.0",
+      "name": "DataDomain 2 (structure conformance)",
+      "lifecycle_status": "active",
+      "description": "Synthetic instance of A3.DataDomain carrying one relationship per constraint row of A3; no business meaning."
     }
   ],
   "relationships": [
@@ -378,6 +394,18 @@
       "kind": "association",
       "target": "RS-DataEntity-1",
       "name": "RA3-34"
+    },
+    {
+      "source": "RS-DataDomain-1",
+      "kind": "aggregation",
+      "target": "RS-DataEntity-1",
+      "name": "RA3-35"
+    },
+    {
+      "source": "RS-DataDomain-1",
+      "kind": "aggregation",
+      "target": "RS-DataDomain-2",
+      "name": "RA3-36"
     }
   ]
 }

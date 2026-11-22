@@ -1,5 +1,5 @@
 {
-  "metamodel_version": "0.18.0",
+  "metamodel_version": "0.19.0",
   "note": "Within-level relationships are held by each level model, never by SDEM mapping documents. 0.5.15: A1, A3 and A4 constraint sets added from each level's reference architecture (previously any catalogued kind was accepted and the diagram showed what the examples happened to use). 0.5.14: artefact rows (B14, B15, BOM → objects). 0.5.17: artefact rows flagged enforceable=false; device composition added (relationships test findings 1, 2). 0.5.20: Phase 2 — 113 rows verified_against_archi (112 direct, RA4-31 via its stated alternative); RA3-30/31 (TOGAF) remain unverified_togaf.",
   "kinds": [
     {
@@ -4559,6 +4559,62 @@
         "target_per_source": "0..*",
         "basis": "SDEM default",
         "reasoning": "a thing is at one place at a time"
+      }
+    },
+    {
+      "level": "A3",
+      "source_type": "A3.DataDomain",
+      "kind": "aggregation",
+      "target_type": "A3.DataEntity",
+      "basis": "SDEM extension (A3.DataDomain = an ArchiMate Grouping of data objects)",
+      "id": "RA3-35",
+      "reference_source": "SDEM extension (A3.DataDomain)",
+      "description": "A data domain holds a data entity.",
+      "reasoning": "DAR-01: a domain or subject area groups the entities that belong to it; an entity may be in more than one (aggregation, not composition).",
+      "confidence": "low",
+      "verification": "sdem_definition_grounded",
+      "confidence_basis": "SDEM reading with no standard relationship; not validated",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "an entity may be in several domains, a domain may hold many"
+      },
+      "inference": {
+        "archimate_source": "Grouping",
+        "archimate_target": "Data Object",
+        "pattern": "a grouping aggregates the elements placed in it",
+        "reasoning": "ArchiMate 3.2: a Grouping may aggregate any element, a data object and another grouping among them.",
+        "confidence": "high",
+        "test": "Archi relationship matrix: Grouping → Data Object must list 'g' (aggregation)"
+      }
+    },
+    {
+      "level": "A3",
+      "source_type": "A3.DataDomain",
+      "kind": "aggregation",
+      "target_type": "A3.DataDomain",
+      "basis": "SDEM extension (A3.DataDomain = an ArchiMate Grouping of data objects)",
+      "id": "RA3-36",
+      "reference_source": "SDEM extension (A3.DataDomain)",
+      "description": "A data domain holds a smaller one (a subject area).",
+      "reasoning": "DAR-01: domains nest — a domain holds subject areas, a subject area holds logical data components.",
+      "confidence": "low",
+      "verification": "sdem_definition_grounded",
+      "confidence_basis": "SDEM reading with no standard relationship; not validated",
+      "cardinality": {
+        "source_per_target": "0..*",
+        "target_per_source": "0..*",
+        "basis": "SDEM default",
+        "reasoning": "an entity may be in several domains, a domain may hold many"
+      },
+      "inference": {
+        "archimate_source": "Grouping",
+        "archimate_target": "Grouping",
+        "pattern": "a grouping aggregates the elements placed in it",
+        "reasoning": "ArchiMate 3.2: a Grouping may aggregate any element, a data object and another grouping among them.",
+        "confidence": "high",
+        "test": "Archi relationship matrix: Grouping → Grouping must list 'g' (aggregation)"
       }
     }
   ],

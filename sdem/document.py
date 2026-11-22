@@ -160,7 +160,7 @@ def document(ws, layer):
                                'condition': q.get('condition'), 'evidence': q.get('evidence', [])})
             if q.get('status') != 'confirmed': gaps['requirements_not_confirmed'].append(q['id'])
     counts = {s['title']: len(s['records']) for s in sections}
-    return {'layer': layer, 'title': LAYER_TITLES.get(layer) or _layer_title(layer), 'workspace': ws.name, 'fingerprint': h.hexdigest()[:12],
+    return {'layer': layer, 'title': LAYER_TITLES.get(layer) or _layer_title(layer), 'workspace': Path(ws).resolve().name, 'fingerprint': h.hexdigest()[:12],
             'summary': {'records': len(recs), 'by_type': counts, 'unconfirmed': len(gaps['unconfirmed']),
                         'with_approved_connection': len(recs) - len(gaps['no_connection'])},
             'sections': sections, 'requirements': layer_reqs, 'gaps': gaps}
@@ -311,11 +311,11 @@ def verify(text, ws):
                     if mp.get('status') != 'approved' and not CAVEAT.search(para):
                         add(line, 'error', 'not_approved', f"[{x}] is a {mp.get('status')} connection, not an approved one — say it is proposed, or leave it out")
                 elif re.fullmatch(r'[A-Z][A-Z0-9]*(-[A-Z0-9]+)+', x):
-                    add(line, 'error', 'unknown_id', f'[{x}] is not a record or a connection in {ws.name}')
+                    add(line, 'error', 'unknown_id', f'[{x}] is not a record or a connection in {Path(ws).resolve().name}')
                 continue
             a, kind, b = parts; cited_total += 1
             for x in (a, b):
-                if x not in recs: add(line, 'error', 'unknown_id', f'[{x}] (in [{m.group(1)}]) is not a record in {ws.name}')
+                if x not in recs: add(line, 'error', 'unknown_id', f'[{x}] (in [{m.group(1)}]) is not a record in {Path(ws).resolve().name}')
             cited |= {a, b}
             if a not in recs or b not in recs: continue
             if (a, kind.lower(), b) in rels: continue
@@ -323,7 +323,7 @@ def verify(text, ws):
             if any(x.get('status') == 'approved' for x in ms): continue
             if ms and CAVEAT.search(para): continue
             add(line, 'error', 'not_approved' if ms else 'unknown_link',
-                f"[{m.group(1)}] — " + (f"a {ms[0].get('status')} connection, not an approved one" if ms else f'no such link: neither a link inside a layer nor a connection between layers in {ws.name}'))
+                f"[{m.group(1)}] — " + (f"a {ms[0].get('status')} connection, not an approved one" if ms else f'no such link: neither a link inside a layer nor a connection between layers in {Path(ws).resolve().name}'))
         if not para.startswith('#'):   # a record named but not cited: longest names first, so 'Payments' inside 'Payments Hub' is that one name
             taken = []
             for n in sorted(names, key=len, reverse=True):
@@ -340,7 +340,7 @@ def verify(text, ws):
     if open_items and not re.search(r'\b(gaps?|open items?|not yet known|still open)\b', text, re.I):
         add(1, 'warning', 'gaps_not_mentioned', 'the workspace has gaps and open items (sdem document lists them) — the narrative does not mention them')
     findings.sort(key=lambda f: (f['line'], f['level'] != 'error', f['code']))
-    return {'workspace': ws.name, 'cited': cited_total, 'errors': sum(f['level'] == 'error' for f in findings),
+    return {'workspace': Path(ws).resolve().name, 'cited': cited_total, 'errors': sum(f['level'] == 'error' for f in findings),
             'warnings': sum(f['level'] == 'warning' for f in findings), 'findings': findings}
 
 

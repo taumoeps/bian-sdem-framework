@@ -1,0 +1,33 @@
+{
+  "id": "MIG-016",
+  "at": "2026-11-22T10:39:06",
+  "person": "sdem.maintainer",
+  "current": "0.19.0",
+  "files": [
+    {
+      "file": "business.json",
+      "from": "0.18.0",
+      "to": "0.19.0",
+      "migrations": [
+        "0.18.0 → 0.19.0"
+      ]
+    },
+    {
+      "file": "bian.json",
+      "from": "0.18.0",
+      "to": "0.19.0",
+      "migrations": [
+        "0.18.0 → 0.19.0"
+      ]
+    },
+    {
+      "file": "mappings.json",
+      "from": "0.18.0",
+      "to": "0.19.0",
+      "migrations": [
+        "0.18.0 → 0.19.0"
+      ]
+    }
+  ],
+  "changes": {}
+}

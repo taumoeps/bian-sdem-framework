@@ -1,5 +1,5 @@
 {
-  "metamodel_version": "0.18.0",
+  "metamodel_version": "0.19.0",
   "note": "Attribute definitions of the Architecture Metamodel: the fields every instance carries (core_fields) and each entity type's own attributes. Source, reasoning, verification and confidence per attribute. Enforced by sdem-graph check (sdem/conformance.py, logical rules LC-04…LC-13) and published as per-entity JSON Schemas (sdem/physical.py); export-conventions.json keys must all appear here (test). Common attributes (common_attributes) apply to every entity type in every architecture; approved in the A1 data-model review 2026-10-24.",
   "confidence_rule": "high   — defined by a public standard and checked (BIAN public material, OpenAPI, or a standard concept or\n           relationship confirmed by the open-source Archi oracle); or an SDEM data-contract field, which SDEM defines\n           authoritatively.\n  medium — built on a standard concept or relationship as SDEM chose to model it; or BIAN intent / target only;\n           or an SDEM definition, a login-gated source, or a cited-but-unverified source that was validated against\n           sealed answers; or institution data under an SDEM convention.\n  low    — no standard basis and not validated against sealed answers; or deprecated.",
   "placeholders": {
@@ -4958,6 +4958,142 @@
         "A4.Location"
       ],
       "reference_scope": "within-level — the record it names"
+    },
+    {
+      "id": "AT-A3-52",
+      "entity": "A3.DataDomain",
+      "name": "domain_kind",
+      "type": "string",
+      "required": false,
+      "description": "domain, subject area or logical data component — a label only",
+      "status": "active",
+      "source": "SDEM",
+      "reference": {
+        "standard": "SDEM-defined",
+        "locator": "docs/design/sdem-data-architecture-spec.md (DAR-01)",
+        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+      },
+      "verification": "SDEM design; approved by the owner 2026-11-22",
+      "reasoning": "DAR-01: says which level of the data landscape a grouping is; nesting carries the structure.",
+      "confidence": "low",
+      "read_by": "sdem status (DAR-07), design documents",
+      "confidence_basis": "SDEM field with no standard concept; not validated",
+      "kind": "enumeration",
+      "values": [
+        "domain",
+        "subject_area",
+        "logical_component"
+      ],
+      "values_source": "SDEM",
+      "question": "Is this a domain, a subject area or a logical data component?"
+    },
+    {
+      "id": "AT-A3-53",
+      "entity": "A3.DataEntity",
+      "name": "data_owner",
+      "type": "string",
+      "required": false,
+      "description": "the A1 business role or actor accountable for this data",
+      "status": "active",
+      "source": "SDEM",
+      "reference": {
+        "standard": "SDEM-defined",
+        "locator": "docs/design/sdem-data-architecture-spec.md (DAR-02)",
+        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+      },
+      "verification": "SDEM design; approved by the owner 2026-11-22",
+      "reasoning": "DAR-02: who decides about this data — an attribute naming an A1 record, so nothing new to approve; a domain's owner is read by its entities that name none.",
+      "confidence": "low",
+      "read_by": "sdem status (DAR-07), design documents",
+      "confidence_basis": "SDEM field with no standard concept; not validated",
+      "kind": "reference",
+      "references": [
+        "A1.BusinessRole",
+        "A1.BusinessActor"
+      ],
+      "reference_scope": "cross-level — names who is accountable; never a federated edge itself",
+      "question": "Who is accountable for this data?"
+    },
+    {
+      "id": "AT-A3-54",
+      "entity": "A3.DataEntity",
+      "name": "data_steward",
+      "type": "string",
+      "required": false,
+      "description": "the A1 business role or actor that looks after this data day to day",
+      "status": "active",
+      "source": "SDEM",
+      "reference": {
+        "standard": "SDEM-defined",
+        "locator": "docs/design/sdem-data-architecture-spec.md (DAR-02)",
+        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+      },
+      "verification": "SDEM design; approved by the owner 2026-11-22",
+      "reasoning": "DAR-02: who keeps the data correct — beside the owner.",
+      "confidence": "low",
+      "read_by": "sdem status (DAR-07), design documents",
+      "confidence_basis": "SDEM field with no standard concept; not validated",
+      "kind": "reference",
+      "references": [
+        "A1.BusinessRole",
+        "A1.BusinessActor"
+      ],
+      "reference_scope": "cross-level — names who is accountable; never a federated edge itself",
+      "question": "Who looks after this data day to day?"
+    },
+    {
+      "id": "AT-A3-55",
+      "entity": "A3.DataDomain",
+      "name": "data_owner",
+      "type": "string",
+      "required": false,
+      "description": "the A1 business role or actor accountable for this data",
+      "status": "active",
+      "source": "SDEM",
+      "reference": {
+        "standard": "SDEM-defined",
+        "locator": "docs/design/sdem-data-architecture-spec.md (DAR-02)",
+        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+      },
+      "verification": "SDEM design; approved by the owner 2026-11-22",
+      "reasoning": "DAR-02: who decides about this data — an attribute naming an A1 record, so nothing new to approve; a domain's owner is read by its entities that name none.",
+      "confidence": "low",
+      "read_by": "sdem status (DAR-07), design documents",
+      "confidence_basis": "SDEM field with no standard concept; not validated",
+      "kind": "reference",
+      "references": [
+        "A1.BusinessRole",
+        "A1.BusinessActor"
+      ],
+      "reference_scope": "cross-level — names who is accountable; never a federated edge itself",
+      "question": "Who is accountable for this data?"
+    },
+    {
+      "id": "AT-A3-56",
+      "entity": "A3.DataDomain",
+      "name": "data_steward",
+      "type": "string",
+      "required": false,
+      "description": "the A1 business role or actor that looks after this data day to day",
+      "status": "active",
+      "source": "SDEM",
+      "reference": {
+        "standard": "SDEM-defined",
+        "locator": "docs/design/sdem-data-architecture-spec.md (DAR-02)",
+        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+      },
+      "verification": "SDEM design; approved by the owner 2026-11-22",
+      "reasoning": "DAR-02: who keeps the data correct — beside the owner.",
+      "confidence": "low",
+      "read_by": "sdem status (DAR-07), design documents",
+      "confidence_basis": "SDEM field with no standard concept; not validated",
+      "kind": "reference",
+      "references": [
+        "A1.BusinessRole",
+        "A1.BusinessActor"
+      ],
+      "reference_scope": "cross-level — names who is accountable; never a federated edge itself",
+      "question": "Who looks after this data day to day?"
     }
   ],
   "common_attributes": [

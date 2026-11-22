@@ -180,45 +180,6 @@
       ]
      },
      {
-      "classification": "no_impact",
-      "id": "ZONE-PAY-PRIVATE",
-      "rule": "retire/down2+ → no_impact (impact rules 0.5.0)",
-      "via": [
-       "PAY-108",
-       "RA4-38"
-      ]
-     },
-     {
-      "classification": "no_impact",
-      "id": "ZONE-PAY-INTERNAL",
-      "rule": "retire/down2+ → no_impact (impact rules 0.5.0)",
-      "via": [
-       "PAY-108",
-       "RA4-38",
-       "RA4-39"
-      ]
-     },
-     {
-      "classification": "no_impact",
-      "id": "ZONE-PAY-CLOUD",
-      "rule": "retire/down2+ → no_impact (impact rules 0.5.0)",
-      "via": [
-       "PAY-108",
-       "RA4-38",
-       "RA4-39",
-       "RA4-39"
-      ]
-     },
-     {
-      "classification": "no_impact",
-      "id": "NET-PAY-PRIVATE",
-      "rule": "retire/down2+ → no_impact (impact rules 0.5.0)",
-      "via": [
-       "PAY-108",
-       "RA4-37"
-      ]
-     },
-     {
       "classification": "review_required",
       "id": "DEP-PAYHUB-PROD",
       "rule": "retire/down1 → review_required (impact rules 0.5.0)",
@@ -248,6 +209,45 @@
       "rule": "retire/down1 → review_required (impact rules 0.5.0)",
       "via": [
        "PAY-115"
+      ]
+     },
+     {
+      "classification": "no_impact",
+      "id": "ZONE-PAY-PRIVATE",
+      "rule": "retire/down2+ → no_impact (impact rules 0.5.0)",
+      "via": [
+       "PAY-108",
+       "RA4-38"
+      ]
+     },
+     {
+      "classification": "no_impact",
+      "id": "NET-PAY-PRIVATE",
+      "rule": "retire/down2+ → no_impact (impact rules 0.5.0)",
+      "via": [
+       "PAY-108",
+       "RA4-37"
+      ]
+     },
+     {
+      "classification": "no_impact",
+      "id": "ZONE-PAY-INTERNAL",
+      "rule": "retire/down2+ → no_impact (impact rules 0.5.0)",
+      "via": [
+       "PAY-108",
+       "RA4-38",
+       "RA4-39"
+      ]
+     },
+     {
+      "classification": "no_impact",
+      "id": "ZONE-PAY-CLOUD",
+      "rule": "retire/down2+ → no_impact (impact rules 0.5.0)",
+      "via": [
+       "PAY-108",
+       "RA4-38",
+       "RA4-39",
+       "RA4-39"
       ]
      }
     ],
@@ -288,45 +288,6 @@
    },
    {
     "classification": "review_required",
-    "id": "CAP-PAY-010",
-    "level": "A1",
-    "name": "Initiate Payment",
-    "relation": "up2+",
-    "rule": "retire/up2+ → review_required (impact rules 0.5.0)",
-    "type": "A1.BusinessCapability",
-    "via": [
-     "PAY-106",
-     "PAY-001"
-    ]
-   },
-   {
-    "classification": "review_required",
-    "id": "PRC-PAY-01",
-    "level": "A1",
-    "name": "Capture and validate payment instruction",
-    "relation": "up2+",
-    "rule": "retire/up2+ → review_required (impact rules 0.5.0)",
-    "type": "A1.BusinessProcess",
-    "via": [
-     "PAY-106",
-     "PAY-003"
-    ]
-   },
-   {
-    "classification": "review_required",
-    "id": "PRC-PAY-02",
-    "level": "A1",
-    "name": "Execute and confirm payment",
-    "relation": "up2+",
-    "rule": "retire/up2+ → review_required (impact rules 0.5.0)",
-    "type": "A1.BusinessProcess",
-    "via": [
-     "PAY-106",
-     "PAY-004"
-    ]
-   },
-   {
-    "classification": "review_required",
     "id": "INF-K8S-PAY-PROD",
     "level": "A4",
     "name": "Managed Kubernetes — payments (production)",
@@ -335,61 +296,6 @@
     "type": "A4.SystemSoftware",
     "via": [
      "PAY-108"
-    ]
-   },
-   {
-    "classification": "no_impact",
-    "id": "ZONE-PAY-PRIVATE",
-    "level": "A4",
-    "name": "Payments private network zone",
-    "relation": "down2+",
-    "rule": "retire/down2+ → no_impact (impact rules 0.5.0)",
-    "type": "A4.NetworkZone",
-    "via": [
-     "PAY-108",
-     "RA4-38"
-    ]
-   },
-   {
-    "classification": "no_impact",
-    "id": "ZONE-PAY-INTERNAL",
-    "level": "A4",
-    "name": "Internal network — payments",
-    "relation": "down2+",
-    "rule": "retire/down2+ → no_impact (impact rules 0.5.0)",
-    "type": "A4.NetworkZone",
-    "via": [
-     "PAY-108",
-     "RA4-38",
-     "RA4-39"
-    ]
-   },
-   {
-    "classification": "no_impact",
-    "id": "ZONE-PAY-CLOUD",
-    "level": "A4",
-    "name": "Cloud — payments",
-    "relation": "down2+",
-    "rule": "retire/down2+ → no_impact (impact rules 0.5.0)",
-    "type": "A4.NetworkZone",
-    "via": [
-     "PAY-108",
-     "RA4-38",
-     "RA4-39",
-     "RA4-39"
-    ]
-   },
-   {
-    "classification": "no_impact",
-    "id": "NET-PAY-PRIVATE",
-    "level": "A4",
-    "name": "Payments private network",
-    "relation": "down2+",
-    "rule": "retire/down2+ → no_impact (impact rules 0.5.0)",
-    "type": "A4.CommunicationNetwork",
-    "via": [
-     "PAY-108",
-     "RA4-37"
     ]
    },
    {
@@ -438,6 +344,100 @@
     "type": "A4.Artifact",
     "via": [
      "PAY-115"
+    ]
+   },
+   {
+    "classification": "review_required",
+    "id": "CAP-PAY-010",
+    "level": "A1",
+    "name": "Initiate Payment",
+    "relation": "up2+",
+    "rule": "retire/up2+ → review_required (impact rules 0.5.0)",
+    "type": "A1.BusinessCapability",
+    "via": [
+     "PAY-106",
+     "PAY-001"
+    ]
+   },
+   {
+    "classification": "review_required",
+    "id": "PRC-PAY-01",
+    "level": "A1",
+    "name": "Capture and validate payment instruction",
+    "relation": "up2+",
+    "rule": "retire/up2+ → review_required (impact rules 0.5.0)",
+    "type": "A1.BusinessProcess",
+    "via": [
+     "PAY-106",
+     "PAY-003"
+    ]
+   },
+   {
+    "classification": "review_required",
+    "id": "PRC-PAY-02",
+    "level": "A1",
+    "name": "Execute and confirm payment",
+    "relation": "up2+",
+    "rule": "retire/up2+ → review_required (impact rules 0.5.0)",
+    "type": "A1.BusinessProcess",
+    "via": [
+     "PAY-106",
+     "PAY-004"
+    ]
+   },
+   {
+    "classification": "no_impact",
+    "id": "ZONE-PAY-PRIVATE",
+    "level": "A4",
+    "name": "Payments private network zone",
+    "relation": "down2+",
+    "rule": "retire/down2+ → no_impact (impact rules 0.5.0)",
+    "type": "A4.NetworkZone",
+    "via": [
+     "PAY-108",
+     "RA4-38"
+    ]
+   },
+   {
+    "classification": "no_impact",
+    "id": "NET-PAY-PRIVATE",
+    "level": "A4",
+    "name": "Payments private network",
+    "relation": "down2+",
+    "rule": "retire/down2+ → no_impact (impact rules 0.5.0)",
+    "type": "A4.CommunicationNetwork",
+    "via": [
+     "PAY-108",
+     "RA4-37"
+    ]
+   },
+   {
+    "classification": "no_impact",
+    "id": "ZONE-PAY-INTERNAL",
+    "level": "A4",
+    "name": "Internal network — payments",
+    "relation": "down2+",
+    "rule": "retire/down2+ → no_impact (impact rules 0.5.0)",
+    "type": "A4.NetworkZone",
+    "via": [
+     "PAY-108",
+     "RA4-38",
+     "RA4-39"
+    ]
+   },
+   {
+    "classification": "no_impact",
+    "id": "ZONE-PAY-CLOUD",
+    "level": "A4",
+    "name": "Cloud — payments",
+    "relation": "down2+",
+    "rule": "retire/down2+ → no_impact (impact rules 0.5.0)",
+    "type": "A4.NetworkZone",
+    "via": [
+     "PAY-108",
+     "RA4-38",
+     "RA4-39",
+     "RA4-39"
     ]
    }
   ],

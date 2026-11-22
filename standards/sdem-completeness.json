@@ -638,6 +638,18 @@
       "severity": "warning",
       "message": "a technology interface belongs to a node or software, or an application interface is exposed through it",
       "reasoning": "an interface of nothing"
+    },
+    {
+      "id": "CPL-A3-09",
+      "entity": "A3.DataDomain",
+      "link": {
+        "kind": "aggregation",
+        "direction": "out",
+        "min": 1
+      },
+      "severity": "warning",
+      "message": "a data domain holds at least one data entity or smaller domain",
+      "reasoning": "an empty domain groups nothing (DAR-01)"
     }
   ]
 }

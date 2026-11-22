@@ -138,12 +138,25 @@
   {
    "code": "A3-1",
    "name": "Data Architecture",
-   "answers": "what is held, and its fields",
+   "answers": "what is held, and its fields, by domain",
    "layout": "nested-groupings",
    "shapes": [
     "A3.DataAttribute"
    ],
    "groupings": [
+    {
+     "type": "A3.DataDomain",
+     "holds": [
+      {
+       "kind": "aggregation",
+       "of": "A3.DataDomain"
+      },
+      {
+       "kind": "aggregation",
+       "of": "A3.DataEntity"
+      }
+     ]
+    },
     {
      "type": "A3.DataEntity",
      "holds": [
