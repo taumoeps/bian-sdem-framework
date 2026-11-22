@@ -457,6 +457,26 @@
         }
       ],
       "summary": "sdem model integrity counts the links between each two graphs (federated.pairs) — the federated graph's joins, the Security extension's included."
+    },
+    {
+      "version": "0.21.6",
+      "date": "2026-11-22",
+      "kind": "patch",
+      "metamodel": "0.19.0",
+      "migration": null,
+      "breaking": [],
+      "deprecations": [],
+      "actions": [
+        {
+          "when": "you publish to DESNRE",
+          "do": "install sdem-desnre 0.11.5 — Health shows SDEM's verdict on the metamodel integrity design"
+        },
+        {
+          "when": "you want CI to hold a design to the metamodel integrity design",
+          "do": "run sdem model integrity --workspace <dir> --check — it exits 1 when a rule is not met"
+        }
+      ],
+      "summary": "SDEM's verdict on the metamodel integrity design: sdem model integrity --check — each rule checkable from the design, met or not, exit 1 when one is not."
     }
   ]
 }

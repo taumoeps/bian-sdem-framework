@@ -44,6 +44,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
+      - name: The metamodel integrity design, met on the completed example
+        run: python -m sdem model integrity --workspace examples/0.20/payment-initiation-v4/sdem --check
       - name: Validate (warnings are errors)
         run: |   # payment-initiation-v2 extends payment-initiation and keeps its ids: validated on its own
           python -m sdem.validate --strict $(ls examples/*/mappings.json | grep -v '/payment-initiation-v2/')

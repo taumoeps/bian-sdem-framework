@@ -114,6 +114,15 @@ class FullTrace(unittest.TestCase):
         self.assertTrue(all(x['archimate'] for x in d['federated']['by_relationship']))                                   # MID-07 on every link between layers
         self.assertEqual(sum(x['approved'] for x in d['federated']['pairs']), d['federated']['links']['approved'])        # every approved link in one pair of graphs
 
+    def test_sdems_verdict_on_the_metamodel_integrity_design(self):   # sdem model integrity --check: met on v4, MID-05 not met on v3 (its design gaps), exit 1
+        v4 = ROOT / 'examples' / '0.20' / 'payment-initiation-v4' / 'sdem'
+        d = json.loads(sdem('model', 'integrity', '--workspace', v4, '--check', '--json'))
+        self.assertTrue(d['met'], d['not_met']); self.assertEqual(d['checked'], 6)
+        self.assertEqual({r['id'] for r in d['rules'] if r['status'] == 'view'}, {'MID-01', 'MID-02', 'MID-06', 'MID-09'})   # the views' to show, never guessed
+        v3 = ROOT / 'examples' / '0.20' / 'payment-initiation-v3' / 'sdem'
+        d = json.loads(sdem('model', 'integrity', '--workspace', v3, '--check', '--json', ok=(1,)))
+        self.assertFalse(d['met']); self.assertEqual(d['not_met'], ['MID-05'])
+
     def test_impact_classifies_a_record_by_its_shortest_path(self):   # KG-Q-09
         ms = json.loads((self.tmp / 'ws' / 'mappings.json').read_text(encoding='utf-8'))['mappings']
         for rid in ('APP-PAYHUB', 'SD-PAYMENT-ORDER-INITIATION', 'DATA-PAYMENT'):

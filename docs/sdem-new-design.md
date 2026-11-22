@@ -1,6 +1,6 @@
 # Create a new design
 
-> **Status: current (v0.21.5)** — for architects: from "I need a design for a new general ledger" to a checked business design, its requirements and SDEM's inference of the other layers — ready for you to review and decide. The steps are the ones three agents followed in the [measurement](evidence/types-search-measurement.md) without a single refused submission. Synthetic examples only.
+> **Status: current (v0.21.6)** — for architects: from "I need a design for a new general ledger" to a checked business design, its requirements and SDEM's inference of the other layers — ready for you to review and decide. The steps are the ones three agents followed in the [measurement](evidence/types-search-measurement.md) without a single refused submission. Synthetic examples only.
 
 ## The idea
 

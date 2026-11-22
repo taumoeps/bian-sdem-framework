@@ -198,6 +198,7 @@ def main(argv=None):
     t = sub.add_parser('stability', help='the core against its last freeze — fails if it changed in a way the policy does not allow'); t.add_argument('--json', action='store_true')
     g = sub.add_parser('integrity', help='a design in the metamodel integrity reference shape: core, extensions, the federated graph and each graph (read-only)')
     g.add_argument('--workspace', required=True, metavar='DIR'); g.add_argument('--json', action='store_true')
+    g.add_argument('--check', action='store_true', help="SDEM's verdict: each rule of the metamodel integrity design that can be checked from the design, met or not — exit 1 if one is not")
     f = sub.add_parser('freeze', help='record the core as it now is, after an approved change (maintainers)'); f.add_argument('--person', required=True); f.add_argument('--json', action='store_true')
     a = ap.parse_args(argv)
     try:
@@ -238,6 +239,12 @@ def main(argv=None):
             for i in r['issues']: print(f'ERROR: {i}')
             if not r['issues']: print('OK: ' + ('changed as the policy allows — run sdem model freeze --person <owner> to record it' if r['needs_freeze'] else 'the core is as frozen'))
             return 1 if r['issues'] else 0
+        if a.cmd == 'integrity' and a.check:   # MID-01…MID-10: SDEM's verdict on the design
+            v = integrity_check(a.workspace)
+            if a.json: print(json.dumps(v, indent=2, ensure_ascii=False)); return 0 if v['met'] else 1
+            print(f"{v['design']}: the metamodel integrity design — " + ('MET' if v['met'] else 'NOT MET: ' + ', '.join(v['not_met'])) + f" ({v['checked']} rules checked from the design)")
+            for x in v['rules']: print(f"  {x['id']:<7} {({'met': 'met', 'not met': 'NOT MET', 'view': 'view'})[x['status']]:<8} {x['title']} — {x['evidence']}")
+            return 0 if v['met'] else 1
         if a.cmd == 'integrity':   # MID-01…MID-10: the reference architecture, filled in for this design
             r = integrity(a.workspace)
             if a.json: print(json.dumps(r, indent=2, ensure_ascii=False)); return 0
@@ -350,3 +357,60 @@ def _version():
         from . import __version__; return __version__
     except Exception:
         return None
+
+
+def integrity_check(workspace):
+    """MID-01…MID-10 (docs/design/metamodel-integrity-design.md §4): SDEM's verdict on a design — each rule that can be checked from the
+    design itself, met or not, with its evidence; the rules about how a view draws the design (MID-01, MID-02, MID-06, MID-09) are said to be
+    the views' to show, never guessed here. Read-only; `sdem model integrity --check` exits 1 when a rule is not met."""
+    import contextlib, io, tempfile, types
+    from . import profile as _p, notation
+    from .metamodel import Metamodel
+    ws = Path(workspace)
+    d = integrity(ws)
+    mm = Metamodel.load()
+    def run(*a):   # SDEM's own commands, in this process — it starts no program (PRIVACY.md §2)
+        from .cli import main as _main
+        out = io.StringIO()
+        with contextlib.redirect_stdout(out), contextlib.redirect_stderr(io.StringIO()):
+            try: rc = _main([str(x) for x in a])
+            except SystemExit as e: rc = e.code if isinstance(e.code, int) else 1
+        _p.activate_from(ws)   # the workspace this verdict is about, again
+        return types.SimpleNamespace(returncode=rc or 0, stdout=out.getvalue())
+    rules = []
+    def rule(i, title, ok, evidence): rules.append({'id': i, 'title': title, 'status': 'met' if ok else 'not met', 'evidence': evidence})
+    # MID-03 — the core is not changed by an extension: it is as frozen
+    st = d['core'].get('stability') or 'unknown'
+    rule('MID-03', 'The core is not changed by an extension', st == 'as frozen' or st.startswith('changed as the policy allows'), f"core {st} at metamodel {d['core']['metamodel']}")
+    # MID-04 — each graph built from its entities and checked by the metamodel; links between layers only through the registry
+    c = run('check', '--workspace', ws, '--json')
+    try: cj = json.loads(c.stdout); errs = sum(len(v or []) for v in (cj.get('report') or {}).values()); ok4 = bool(cj.get('ok', c.returncode == 0)) and not errs
+    except ValueError: cj, errs, ok4 = {}, None, False
+    rule('MID-04', 'Each graph built from its entities and checked by the metamodel', ok4, f"sdem check: {'no errors' if ok4 else (str(errs) + ' error(s)' if errs is not None else 'did not run')}")
+    # MID-05 — every shape accounted for: reached, or listed as a design gap or a rule gap; met when there is neither
+    with tempfile.TemporaryDirectory() as t:
+        b = run('build', '--workspace', ws, '-o', Path(t) / 'g')
+        g = run('trace', 'GAPS', '--graph', Path(t) / 'g', '--json') if b.returncode == 0 else None
+    try: gj = json.loads(g.stdout) if g else {}
+    except ValueError: gj = {}
+    ok5 = bool(gj) and gj.get('rule_gaps') == 0 and gj.get('design_gaps') == 0
+    rule('MID-05', 'Every shape accounted for', ok5, (f"{gj['complete']} of {gj['records']} records reach every other layer; {gj['design_gaps']} design gap(s), {gj['rule_gaps']} rule gap(s)" if gj else 'the graph could not be built'))
+    # MID-07 — every type an ArchiMate element (own or inherited), every link an ArchiMate relationship — the extensions' too
+    no_el = [t for t in mm.entities if t.count('.') >= 1 and not mm.entities[t].get('abstract') and not (notation.for_type(mm, t) or {}).get('element')]
+    no_rel = [x['relationship'] for x in d['federated']['by_relationship'] if not x['archimate']]
+    no_pack = [f"{x.get('source_type')} {x.get('relationship')} {x.get('target_type')}" for x in ((_p.ACTIVE or {}).get('link_types') or []) if not x.get('archimate')]
+    rule('MID-07', 'Every link and type labelled by its standard', not (no_el or no_rel or no_pack),
+         'every type an ArchiMate element and every link an ArchiMate relationship' if not (no_el or no_rel or no_pack) else
+         '; '.join(filter(None, [no_el and f"types with no element: {', '.join(no_el[:5])}", no_rel and f"links with no kind: {', '.join(no_rel)}", no_pack and f"pack link types with no kind: {', '.join(no_pack[:5])}"])))
+    # MID-08 — extensions by pattern: each declares where it sits (H1 / H2 / V1)
+    bad8 = [e['name'] for e in d['extensions'] if e.get('pattern') not in ('H1', 'H2', 'V1')]
+    rule('MID-08', 'Extensions by pattern, not by name', not bad8, ', '.join(f"{e['name']} {e['pattern']}" for e in d['extensions']) or 'no extension' if not bad8 else 'no pattern: ' + ', '.join(bad8))
+    # MID-10 — an extension may require another: what requires one that is off is left out and said, never an error
+    left = [x for x in ((_p.ACTIVE or {}).get('left_out') or []) if x.get('requires')]
+    rule('MID-10', 'An extension may require another', True, (f"{len(left)} item(s) left out and said, each requiring an extension that is off" if left else 'every requirement between extensions is met'))
+    for i, t in (('MID-01', 'Two sources of truth'), ('MID-02', 'One place computes'), ('MID-06', 'Views are of the source'), ('MID-09', 'A vertical extension is an overlay')):
+        rules.append({'id': i, 'title': t, 'status': 'view', 'evidence': 'about how a view draws the design — shown and tested by the view (DESNRE), not decided here'})
+    rules.sort(key=lambda r: int(r['id'].split('-')[1]))
+    checked = [r for r in rules if r['status'] != 'view']
+    return {'format': 'sdem-integrity-check/1', 'design': d['design'], 'met': all(r['status'] == 'met' for r in checked),
+            'checked': len(checked), 'not_met': [r['id'] for r in checked if r['status'] != 'met'], 'rules': rules}
