@@ -371,6 +371,18 @@
     "information": [
       "A1.BusinessObject"
     ],
-    "note": "MID-08 (docs/design/metamodel-integrity-design.md): how the full trace walks this layer's own links, declared here — an extension's pack declares its own the same way (trace_rules, information_types)"
+    "note": "MID-08 (docs/design/metamodel-integrity-design.md): how the full trace walks this layer's own links, declared here — an extension's pack declares its own the same way (trace_rules, information_types)",
+    "rules": [
+      {
+        "id": "FT-15",
+        "kind": "association",
+        "source_type": "business.BusinessInterface",
+        "target_type": "business.BusinessService",
+        "whole": "target",
+        "up": "EXPOSES",
+        "down": "EXPOSED_THROUGH",
+        "reason": "ArchiMate 3.2 §8.2.3: a business interface exposes the business services associated with it — a channel reaches what the services it exposes reach"
+      }
+    ]
   }
 }
