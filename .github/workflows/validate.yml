@@ -1,10 +1,15 @@
 name: Validate SDEM
-on:
+on:   # MIP-07: once per change — a push to main or a pull request; a tag points at a commit main has already tested
   push:
+    branches: [main]
   pull_request:
 jobs:
-  windows:   # AF-10: the same suite on Windows — agents run SDEM there too
+  windows:   # AF-10: the same suite on Windows — agents run SDEM there too; in four parallel parts (ci/shard.py)
     runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        part: [1, 2, 3, 4]
     env:
       PYTHONUTF8: '1'
     steps:
@@ -17,7 +22,7 @@ jobs:
       - name: Tests (no install)
         shell: bash
         run: |
-          code=0; python -m unittest discover -s tests > unittest.log 2>&1 || code=$?   # bash -e: keep going to annotate
+          code=0; python ci/shard.py 4 ${{ matrix.part }} unittest.log || code=$?   # bash -e: keep going to annotate
           tail -3 unittest.log
           # each failure as a public annotation (job logs need admin rights to download)
           python ci/annotate_failures.py unittest.log
@@ -129,7 +134,20 @@ jobs:
           python -m sdem transform run tests/fixtures/confluence-export-sample -o /tmp/history --ocr off
           python -m sdem new --workspace /tmp/history-workspace --person ci.check --no-bian
           python -m sdem load /tmp/history --workspace /tmp/history-workspace --person ci.check --all --dry-run
-      - run: python -m unittest discover -s tests -v
+  suite:   # MIP-07: the whole test suite, in four parallel parts per Python version (ci/shard.py) — together exactly the suite
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.10', '3.11', '3.12', '3.13']
+        part: [1, 2, 3, 4]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: python ci/shard.py 4 ${{ matrix.part }}
   package:
     # SDEM as an organisation installs it: build the wheel, install it in a clean environment, run every journey from
     # outside the repository — catches anything that needs the repository's folders (docs/, examples/, scripts/).
