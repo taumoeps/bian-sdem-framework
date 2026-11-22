@@ -2,6 +2,10 @@
 
 > Entries before 0.7.0 describe the project under its former name, **SDMM (BIAN Service Domain Mapping Model)**, and its former terms; they are kept as written.
 
+## 0.21.7 — the Metamodel views drawn from the knowledge graphs (2026-11-22)
+
+- **`sdem model integrity --workspace DIR --graph --json`**: every record of every graph (each layer's and each extension's, retired ones left out), every link inside a graph and every link between graphs — each an ArchiMate relationship — with each record placed on its graph's plate, grouped by kind. DESNRE's Metamodel views (3D and the 2D map) are drawn from it alone (sdem-desnre 0.11.6): on the Payment example 327 records in six graphs, 411 links inside them, 114 between — the Security graph included, the retired notification service gone.
+
 ## 0.21.6 — SDEM's verdict on the metamodel integrity design (2026-11-22)
 
 - **`sdem model integrity --workspace DIR --check`**: each rule of the metamodel integrity design that can be checked from the design — MID-03 the core as frozen, MID-04 the metamodel check, MID-05 no design or rule gap, MID-07 every type an ArchiMate element and every link (an extension's too) an ArchiMate relationship, MID-08 each extension by its pattern, MID-10 what requires an extension that is off left out and said — met or not, with its evidence; **exit 1 when one is not met**. MID-01, MID-02, MID-06 and MID-09 are about how a view draws the design: said to be the views', never guessed. The Payment example (v4) is met — and CI now requires it; v3 is not (MID-05: its design gaps), tested. DESNRE shows the verdict (sdem-desnre 0.11.5).

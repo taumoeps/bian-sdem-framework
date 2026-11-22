@@ -1,6 +1,6 @@
 # SDEM — Privacy and Data Handling
 
-> **Status: current (v0.21.6)** — how the SDEM software handles the information you give it, as verified against the v0.21.6 code. It describes the software's behaviour; it is not a privacy policy of any organisation or platform, and it makes no claim of compliance with any privacy law or industry regulation. Plain-words licence page: [`docs/sdem-licence-and-use.md`](docs/sdem-licence-and-use.md).
+> **Status: current (v0.21.7)** — how the SDEM software handles the information you give it, as verified against the v0.21.7 code. It describes the software's behaviour; it is not a privacy policy of any organisation or platform, and it makes no claim of compliance with any privacy law or industry regulation. Plain-words licence page: [`docs/sdem-licence-and-use.md`](docs/sdem-licence-and-use.md).
 
 ## 1. Overview
 
@@ -31,7 +31,7 @@ Every SDEM command runs on the machine where you type it.
 
 ## 3. Data collection and telemetry
 
-Verified in the v0.21.6 code:
+Verified in the v0.21.7 code:
 
 | Does SDEM collect … | Answer |
 |---|---|
@@ -76,7 +76,7 @@ Optional tools and services around SDEM are **not** covered by this — each has
 | **Diagram previews** | Mermaid previews render in VS Code. PlantUML previews render locally in this project's setting; a public PlantUML server would receive the diagram text |
 | **Repository hosting and CI** (GitHub or your own) | whatever you commit and push, to the host you choose — keep real workspaces in a **private** repository |
 | **VS Code and its extensions** | under their own terms; this project only recommends three (Python, Copilot Chat, Mermaid preview) |
-| **Future integrations** (planned: reading from EA tools and CMDBs) | not in v0.21.6; each will state its own behaviour when built |
+| **Future integrations** (planned: reading from EA tools and CMDBs) | not in v0.21.7; each will state its own behaviour when built |
 
 ## 6. Organisation data ownership
 

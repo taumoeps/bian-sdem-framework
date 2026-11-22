@@ -198,6 +198,7 @@ def main(argv=None):
     t = sub.add_parser('stability', help='the core against its last freeze — fails if it changed in a way the policy does not allow'); t.add_argument('--json', action='store_true')
     g = sub.add_parser('integrity', help='a design in the metamodel integrity reference shape: core, extensions, the federated graph and each graph (read-only)')
     g.add_argument('--workspace', required=True, metavar='DIR'); g.add_argument('--json', action='store_true')
+    g.add_argument('--graph', action='store_true', help='every record and every link inside and between the graphs, each record placed on its plate — what the Metamodel views draw (JSON)')
     g.add_argument('--check', action='store_true', help="SDEM's verdict: each rule of the metamodel integrity design that can be checked from the design, met or not — exit 1 if one is not")
     f = sub.add_parser('freeze', help='record the core as it now is, after an approved change (maintainers)'); f.add_argument('--person', required=True); f.add_argument('--json', action='store_true')
     a = ap.parse_args(argv)
@@ -239,6 +240,10 @@ def main(argv=None):
             for i in r['issues']: print(f'ERROR: {i}')
             if not r['issues']: print('OK: ' + ('changed as the policy allows — run sdem model freeze --person <owner> to record it' if r['needs_freeze'] else 'the core is as frozen'))
             return 1 if r['issues'] else 0
+        if a.cmd == 'integrity' and a.graph:   # the Metamodel views' data: every record and link, from the graphs
+            v = integrity_graph(a.workspace)
+            if a.json: print(json.dumps(v, ensure_ascii=False)); return 0
+            c = v['counts']; print(f"{v['design']}: {c['records']} records in {len(v['graphs'])} graphs; {c['inside']} links inside the graphs, {c['between']} approved links between them" + (f", {c['proposed']} proposed" if c['proposed'] else '')); return 0
         if a.cmd == 'integrity' and a.check:   # MID-01…MID-10: SDEM's verdict on the design
             v = integrity_check(a.workspace)
             if a.json: print(json.dumps(v, indent=2, ensure_ascii=False)); return 0 if v['met'] else 1
@@ -414,3 +419,57 @@ def integrity_check(workspace):
     checked = [r for r in rules if r['status'] != 'view']
     return {'format': 'sdem-integrity-check/1', 'design': d['design'], 'met': all(r['status'] == 'met' for r in checked),
             'checked': len(checked), 'not_met': [r['id'] for r in checked if r['status'] != 'met'], 'rules': rules}
+
+
+def integrity_graph(workspace):
+    """MID-01, MID-02 (docs/design/metamodel-integrity-design.md): the design's records and links as the knowledge graphs hold them, for a
+    view to draw — every record of every graph (each layer's and each extension's, retired ones left out), every link inside a graph (its kind
+    and ArchiMate relationship) and every link between graphs (approved, or proposed and waiting), each record placed on its graph's plate
+    (fractions 0–1), grouped by its kind. The Metamodel views are drawn from this alone; nothing is worked out by the view."""
+    import collections, math
+    from . import notation
+    from .identity import load as _jload
+    d = integrity(workspace)   # activates the workspace's profile, and names the graphs
+    ws = Path(workspace)
+    from .layers import layers
+    files = {l['code']: l['file'] for l in layers()}
+    records, links, zones, live, code_of = [], [], {}, set(), {}
+    for g in d['graphs']:
+        f = ws / files.get(g['code'], g['file'])
+        try: doc = _jload(f) if f.exists() else {}
+        except (OSError, ValueError): doc = {}
+        recs = [i for i in doc.get('instances') or [] if isinstance(i, dict) and i.get('lifecycle_status') != 'retired']
+        groups = collections.OrderedDict()
+        for k, n in sorted(collections.Counter(str(i.get('type', '')).split('.')[-1] for i in recs).items(), key=lambda kv: (-kv[1], kv[0])): groups[k] = []
+        for i in sorted(recs, key=lambda i: i['id']): groups[str(i.get('type', '')).split('.')[-1]].append(i)
+        cols = max(6, math.ceil(math.sqrt(max(1, len(recs))) * 1.6))
+        rows = sum(math.ceil(len(v) / cols) for v in groups.values()) or 1
+        top, gap = 0.06, 0.88 / rows
+        r0, zs = 0, []
+        for k, items in groups.items():
+            n_rows = math.ceil(len(items) / cols)
+            for j, i in enumerate(items):
+                rr, cc = r0 + j // cols, j % cols
+                records.append({'id': i['id'], 'name': i.get('name') or i['id'], 'type': i.get('type'), 'kind': k, 'graph': g['code'], 'group': k,
+                                'lifecycle_status': i.get('lifecycle_status'), 'at': [round(0.04 + (cc + 0.5) * 0.92 / cols, 4), round(top + (rr + 0.5) * gap, 4)]})
+                live.add(i['id']); code_of[i['id']] = g['code']
+            zs.append({'id': f"T:{g['code']}:{k}", 'label': f"{k} · {len(items)}", 'rect': [0.02, round(top + r0 * gap, 4), 0.98, round(top + (r0 + n_rows) * gap, 4)]})
+            r0 += n_rows
+        zones[g['code']] = zs
+        for x in doc.get('relationships') or []:
+            if x.get('source') in live and x.get('target') in live:
+                links.append({'source': x['source'], 'target': x['target'], 'scope': 'inside', 'graph': g['code'], 'kind': x.get('kind'),
+                              'archimate': notation.for_relationship(x.get('kind')) or x.get('kind'), 'status': 'stated'})
+    try: maps = json.loads((ws / 'mappings.json').read_text(encoding='utf-8')).get('mappings') or []
+    except (OSError, ValueError): maps = []
+    for m in maps:
+        a, b = (m.get('source') or {}).get('id'), (m.get('target') or {}).get('id')
+        if m.get('status') not in ('approved', 'proposed') or a not in live or b not in live or code_of[a] == code_of[b]: continue
+        links.append({'source': a, 'target': b, 'scope': 'between', 'from': code_of[a], 'to': code_of[b], 'relationship': m['relationship'],
+                      'archimate': notation.for_relationship(m['relationship']), 'status': m['status']})
+    return {'format': 'sdem-integrity-graph/1', 'design': d['design'],
+            'graphs': [{k: g[k] for k in ('code', 'name', 'graph', 'extension', 'position')} for g in d['graphs']], 'zones': zones,
+            'records': records, 'links': links,
+            'counts': {'records': len(records), 'inside': sum(1 for x in links if x['scope'] == 'inside'),
+                       'between': sum(1 for x in links if x['scope'] == 'between' and x['status'] == 'approved'),
+                       'proposed': sum(1 for x in links if x['scope'] == 'between' and x['status'] == 'proposed')}}

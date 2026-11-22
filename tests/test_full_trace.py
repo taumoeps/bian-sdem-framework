@@ -123,6 +123,15 @@ class FullTrace(unittest.TestCase):
         d = json.loads(sdem('model', 'integrity', '--workspace', v3, '--check', '--json', ok=(1,)))
         self.assertFalse(d['met']); self.assertEqual(d['not_met'], ['MID-05'])
 
+    def test_the_metamodel_views_data_is_the_graphs_whole(self):   # sdem model integrity --graph: every record and every link, nothing worked out by a view
+        v4 = ROOT / 'examples' / '0.20' / 'payment-initiation-v4' / 'sdem'
+        g = json.loads(sdem('model', 'integrity', '--workspace', v4, '--graph', '--json'))
+        d = json.loads(sdem('model', 'integrity', '--workspace', v4, '--json'))
+        self.assertEqual(g['counts']['records'], sum(x['records'] for x in d['graphs']))                                   # every record of every graph, retired ones left out
+        self.assertEqual(g['counts']['between'], d['federated']['links'].get('approved', 0) - 2)                          # the two links to the retired notification service are not drawn
+        self.assertTrue(all(0 <= x['at'][0] <= 1 and 0 <= x['at'][1] <= 1 for x in g['records']))                         # placed on its graph's plate
+        self.assertTrue(all(x['archimate'] for x in g['links']))                                                          # every link an ArchiMate relationship
+
     def test_impact_classifies_a_record_by_its_shortest_path(self):   # KG-Q-09
         ms = json.loads((self.tmp / 'ws' / 'mappings.json').read_text(encoding='utf-8'))['mappings']
         for rid in ('APP-PAYHUB', 'SD-PAYMENT-ORDER-INITIATION', 'DATA-PAYMENT'):
