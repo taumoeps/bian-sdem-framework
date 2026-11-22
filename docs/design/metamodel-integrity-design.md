@@ -135,7 +135,7 @@ when it adds a layer, its own knowledge graph, joined to the others by the regis
 | Rule | Met | Evidence — or what is missing |
 |---|---|---|
 | MID-01 Two sources of truth | ✅ | views read the published design and SDEM's answers |
-| MID-02 One place computes | 🟡 | traces: the site lights SDEM's chains (MIP-03). Still worked out on the site: a record's *inherited* protection in the Security view, the zones a lit record sits in, Health's counts |
+| MID-02 One place computes | ✅ | the site lights SDEM's chains (MIP-03); Health's per-layer figures are `sdem trace GAPS`'s `by_layer`; the Security view's *inherited* protection is `sdem security coverage`'s `inherited_from`. A zone lit with a record is the record's own zone on the plate — drawn, not computed. Designs published before keep the site's older reckoning until republished |
 | MID-03 The core is not changed by an extension | ✅ | the stable-core test |
 | MID-04 Graphs built from entities, checked by the metamodel | ✅ | `sdem check`, graph stores current, CI |
 | MID-05 Every shape accounted for | ✅ | `sdem trace GAPS`; no rule gap in any example (tested); the Payment example: 152 of 255 records reach every other layer, 103 design gaps for a person, 0 rule gaps |

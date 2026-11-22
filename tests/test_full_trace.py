@@ -93,6 +93,8 @@ class FullTrace(unittest.TestCase):
         self.assertEqual(g['format'], 'sdem-gaps/1'); self.assertEqual(g['records'], g['complete'] + len(g['gaps']))
         self.assertEqual([x['id'] for x in g['gaps'] if x['kind'] == 'rule'], [])                             # every link the design states is walked
         self.assertTrue(all(x['missing'] and x['reason'] for x in g['gaps']))                                  # each gap says what it misses and why
+        self.assertEqual(sum(v['records'] for v in g['by_layer'].values()), g['records'])                    # MID-02: a view's per-layer figures
+        self.assertTrue(all(v['linked'] <= v['records'] and v['complete'] <= v['records'] for v in g['by_layer'].values()))
 
     def test_impact_classifies_a_record_by_its_shortest_path(self):   # KG-Q-09
         ms = json.loads((self.tmp / 'ws' / 'mappings.json').read_text(encoding='utf-8'))['mappings']

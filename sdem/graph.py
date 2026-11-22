@@ -545,8 +545,13 @@ def design_gaps(fg, statuses=('approved',)):
         why = ('it has links the trace does not walk, and reaches no other layer' if kind == 'rule' else
                'the design links it to nothing' if none else f"nothing the design states links it on to {', '.join(missing)}")
         gaps.append({'id': rid, 'name': inst.get('name'), 'type': inst.get('type'), 'layer': lvl, 'kind': kind, 'missing': missing, 'reason': why})
+    cross = {x for e in fg.edges(statuses) for x in (e['source']['id'], e['target']['id'])}
+    gap_ids = {g['id'] for g in gaps}
+    by_layer = {lvl: {'records': sum(1 for i in where if where[i] == lvl), 'relationships': len(g.relationships),   # MID-02: a view's per-layer figures, from here
+                      'linked': sum(1 for i in where if where[i] == lvl and i in cross), 'complete': sum(1 for i in where if where[i] == lvl and i not in gap_ids)}
+                for lvl, g in fg.levels.items()}
     return {'format': 'sdem-gaps/1', 'records': len(where), 'complete': complete, 'design_gaps': sum(g['kind'] == 'design' for g in gaps),
-            'rule_gaps': sum(g['kind'] == 'rule' for g in gaps), 'gaps': gaps}
+            'rule_gaps': sum(g['kind'] == 'rule' for g in gaps), 'by_layer': by_layer, 'gaps': gaps}
 
 
 def all_chains(fg, statuses=('approved',), full=True):
