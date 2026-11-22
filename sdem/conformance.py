@@ -153,6 +153,7 @@ def check_level(doc, mm, estate_index=None):
                     if unless and all(at.get(x) == v for x, v in unless.items()):   # e.g. a BIAN domain whose pattern is not known yet: advise, do not reject
                         n['LC-04 to confirm'] += 1
                         warnings.append(f"{who}: {k!r} not known yet ({', '.join(f'{x} {v}' for x, v in unless.items())}) — give it when known (LC-04)"); continue
+                    if i.get('lifecycle_status') == 'retired': continue   # LC-04: a retired record has left the design — a fact it never had is not asked of it
                     if i.get('lifecycle_status') == 'planned':  # a planned (target-design) record may not know every fact yet: warn, do not reject
                         n['LC-04 planned'] += 1
                         if not unconfirmed: warnings.append(f"{who}: planned instance — required attribute {k!r} not yet known{said} (LC-04)")   # inferred: in the summary

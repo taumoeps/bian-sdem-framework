@@ -4,6 +4,7 @@
 
 ## Unreleased
 
+- **A retired record has left the design** (LC-04, MID-05): it is no longer asked for a required fact it never had (a planned deployment retired before it had a platform), and `sdem trace GAPS` no longer counts it.
 - **A channel reaches what its services reach** (FT-15): a business interface associated with a business service (ArchiMate 3.2 §8.2.3, the interface exposes it) is traced through that service — declared in the Business layer's metamodel file, as BIAN's rules are.
 - **`sdem trace GAPS` counts a record through what it is part of** (MID-05: "directly or indirectly"). A BIAN operation, qualifier or service group reaches what its domain reaches — the trace climbs to the domain but never back down into its other parts (FT-02), so each was listed as a gap of its own. Now a record is complete when it or a whole it is part of reaches every other layer; a part whose whole is itself a gap is listed once, under that whole (`parts`, `within_a_gap`). On the Payment example: 97 gaps → 19 (186 complete, 50 inside the 19), 0 rule gaps.
 - **Two vertical extensions may link** (G4, FT-14): a link type between two layers beside the stack (a recovery plan and an assurance check) is accepted — before, SDEM refused it; the trace goes on through the other record only where the link type declares `"trace": "through"`, and otherwise stops there as before.

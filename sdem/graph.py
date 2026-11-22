@@ -532,7 +532,7 @@ def design_gaps(fg, statuses=('approved',)):
     **design gap** when the design states no link onward from what it reaches (a person decides). Read-only."""
     from .identity import stack, layer
     design = [layer(i) for i in stack()]
-    where = {i: lvl for lvl, g in fg.levels.items() for i in g.by_id}
+    where = {i: lvl for lvl, g in fg.levels.items() for i in g.by_id if (fg.instance(i) or {}).get('lifecycle_status') != 'retired'}   # a retired record is no longer part of the design
     linked = {x for g in fg.levels.values() for r in g.relationships for x in (r['source'], r['target'])}
     linked |= {x for e in fg.edges(statuses) for x in (e['source']['id'], e['target']['id'])}
     reach = {}
