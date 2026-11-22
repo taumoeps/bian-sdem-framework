@@ -31,6 +31,8 @@ def check(mm, d):
         out += [f"{p['code']}: {t} is not a type SDEM knows" for t in here if t not in mm.entities]
         out += [f"{p['code']}: connection {c!r} is neither a link kind nor a relationship SDEM knows" for c in p.get('connections', []) if not c.startswith('type:') and c not in known_k]
         if p.get('layout') not in LAYOUTS: out.append(f"{p['code']}: layout {p.get('layout')!r} is not one viewers implement ({', '.join(sorted(LAYOUTS))})")
+        from .identity import table as _ids
+        if p.get('layer') not in {l['id'] for l in _ids()['layers']}: out.append(f"{p['code']}: layer {p.get('layer')!r} is not a layer id SDEM knows (MIP-04: a viewer draws a plate by its layer's id)")
         layer = p['code'].split('-')[0]
         covered = {t for t in here}
         missing = [t for t, e in mm.entities.items() if e.get('level') == layer and t.count('.') == 1 and not e.get('abstract') and t not in covered

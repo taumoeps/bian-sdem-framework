@@ -76,7 +76,8 @@
      ],
      "why": "not drawn on this plate — listed in the A1 layer document"
     }
-   ]
+   ],
+   "layer": "business"
   },
   {
    "code": "A2",
@@ -133,7 +134,8 @@
      ],
      "why": "BIAN's reference content — in the A2 layer document"
     }
-   ]
+   ],
+   "layer": "bian"
   },
   {
    "code": "A3-1",
@@ -170,7 +172,8 @@
    "connections": [
     "association"
    ],
-   "left_out": []
+   "left_out": [],
+   "layer": "data"
   },
   {
    "code": "A3-2",
@@ -207,7 +210,8 @@
      ],
      "why": "not drawn on this plate — listed in the A3 layer document"
     }
-   ]
+   ],
+   "layer": "application"
   },
   {
    "code": "A4",
@@ -271,7 +275,8 @@
      ],
      "why": "not drawn on this plate yet — listed in the A4 layer document"
     }
-   ]
+   ],
+   "layer": "technology"
   }
  ],
  "between_plates": [

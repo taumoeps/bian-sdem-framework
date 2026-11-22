@@ -90,6 +90,12 @@ class DataArchitecture(unittest.TestCase):
         fresh = self.tmp / 'fresh'; sdem('new', '--workspace', fresh, '--person', 'steven', '--example', 'payment-initiation', '--form', '0.20')
         self.assertNotIn('DAR-07', sdem('status', '--workspace', fresh, '--json', ok=(0, 1)))               # a design that has not started: nothing said
 
+    def test_the_data_layer_is_laid_out_by_domain(self):   # MIP-04: SDEM lays out Data itself — domains hold subject areas and entities
+        d = json.loads(sdem('layout', '--layer', 'A3', '--workspace', self.ws, '--json'))
+        zone = {x['id']: x.get('zone') for x in d['shapes']}
+        self.assertEqual(zone.get('ENT-PAY-INSTR'), 'R:DOM-PAY-INSTR'); self.assertIn('R:DOM-PAY', {z['id'] for z in d['zones']})
+        self.assertNotIn('F-PAY-AMOUNT', zone)                                                              # fields stay with their entity (TL-03)
+
 
 if __name__ == '__main__':
     unittest.main()

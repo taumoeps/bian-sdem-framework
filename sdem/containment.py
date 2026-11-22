@@ -57,6 +57,16 @@ HIERARCHY = _live(lambda: {
                    ('Requirements', [_T('business.BusinessRequirement')])],
         'not_in': 'Not in the capability map',
     },
+    _L('data'): {   # MIP-04, DAR-01: the data landscape — domains hold subject areas and entities; an entity's fields stay with it (TL-03)
+        'nest': [(_T('data.DataDomain'), 'aggregation', _T('data.DataDomain')), (_T('data.DataDomain'), 'aggregation', _T('data.DataEntity')),
+                 (_T('data.DataEntity'), 'composition', _T('data.DataEntity')), (_T('data.DataEntity'), 'aggregation', _T('data.DataEntity'))],
+        'containers': [_T('data.DataDomain')],
+        'always': [],
+        'kinds': {_T('data.DataDomain'): 'Data domain'},
+        'groups': [('Data entities', [_T('data.DataEntity')])],
+        'not_in': 'In no data domain',
+        'skip': [_T('data.DataAttribute')],
+    },
     _L('application'): {   # the application structure (ArchiMate Application Structure viewpoint; TOGAF)
         'nest': [(_T('application.SolutionBuildingBlock'), 'composition', _T('application.SolutionBuildingBlock')), (_T('application.SolutionBuildingBlock'), 'aggregation', _T('application.ApplicationComponent')),
                  (_T('application.ApplicationComponent'), 'composition', _T('application.ApplicationComponent')), (_T('application.ApplicationComponent'), 'aggregation', _T('application.ApplicationComponent')),
