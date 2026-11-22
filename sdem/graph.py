@@ -219,6 +219,28 @@ class FederatedGraph:
         t = lambda i: (self.instance(i) or {}).get('type', '')
         return self.mm.is_a(t(r['source']), _T('technology.Path')) and self.mm.is_a(t(r['target']), _T('technology.Node'))
 
+    def bian_classifies(self, r):
+        """FT-13: a service domain's association with its asset type or functional pattern (BIAN's classification of the domain) — the
+        domain is the whole, so a classifier reaches what the domain reaches, and the domain is not opened into it when reached."""
+        if r['kind'] != 'association': return False
+        t = lambda i: (self.instance(i) or {}).get('type', '')
+        return self.mm.is_a(t(r['source']), _T('bian.ServiceDomain')) and any(self.mm.is_a(t(r['target']), _T(x)) for x in ('bian.AssetType', 'bian.FunctionalPattern'))
+
+    def informational(self, iid):
+        """FT-11: a record that holds information — a BIAN control record, business object or field, a business object, a data entity or
+        field: what a whole's information is made of."""
+        t = (self.instance(iid) or {}).get('type', '') or ''
+        return any(self.mm.is_a(t, _T(x)) for x in ('bian.ControlRecord', 'bian.BusinessObject', 'bian.BusinessObjectAttribute',
+                                                  'business.BusinessObject', 'data.DataEntity', 'data.DataAttribute'))
+
+    def served(self, iid):
+        """FT-12: serving inside a layer — (consumer, provider) pairs that touch iid: what a record is served by, it depends on."""
+        out = []
+        for g in self.levels.values():
+            for r in g.relationships:
+                if r['kind'] == 'serving' and iid in (r['source'], r['target']) and r['source'] != r['target']: out.append((r['target'], r['source']))
+        return out
+
     def structure(self, iid):
         """FT-02, FT-07, FT-08: the links inside a layer the trace walks, as (whole, part, label when climbing, label when stepping down):
         composition and aggregation, and a BIAN control record's business object (the whole is the source); realization (the realised is
@@ -234,6 +256,7 @@ class FederatedGraph:
                 if iid not in (a, b) or a == b: continue
                 if k in ('composition', 'aggregation') or self.bian_holds(r): out.append((a, b, 'PART_OF', 'HAS_PART'))
                 elif self.path_joins(r): out.append((a, b, 'ON_PATH', 'CONNECTS'))   # FT-10
+                elif self.bian_classifies(r): out.append((a, b, 'CLASSIFIES', 'CLASSIFIED_AS'))   # FT-13
                 elif k == 'realization': out.append((b, a, 'REALIZES', 'REALIZED_BY'))
                 elif k == 'assignment': out.append((a, b, 'ASSIGNED_FROM', 'ASSIGNED_TO'))
                 elif k == 'triggering' and ev(a) != ev(b): out.append((b, a, 'TRIGGERS', 'TRIGGERED_BY') if ev(a) else (a, b, 'TRIGGERED_BY', 'TRIGGERS'))
@@ -424,11 +447,19 @@ class FederatedGraph:
                     if part != n: continue
                     if frozenset((n, whole)) not in joined: hop(n, whole, up_label)
                     frontier.append((whole, 'climb'))
-                if how in ('start', 'down') or (direction == 'up' and how == 'cross'):
+                if how in ('start', 'down', 'served') or (direction == 'up' and how == 'cross'):   # FT-12: a provider reached by serving is opened — its consumer depends on what realises it
                     for whole, part, _, down_label in st:
                         if whole != n: continue
                         if frozenset((n, part)) not in joined: hop(n, part, down_label if down_label != 'HAS_PART' or direction == 'down' else 'COMPOSES')
                         frontier.append((part, 'down'))
+                elif direction == 'down' and how in ('cross', 'info', 'climb'):   # FT-11: what depends on a whole, or is part of it, depends on its information too — never its other parts
+                    for whole, part, _, down_label in st:
+                        if whole != n or not self.informational(part): continue
+                        if frozenset((n, part)) not in joined: hop(n, part, down_label)
+                        frontier.append((part, 'info'))
+                for consumer, provider in self.served(n):   # FT-12: serving inside a layer — the consumer depends on its provider
+                    if direction == 'down' and consumer == n: hop(n, provider, 'SERVED_BY'); frontier.append((provider, 'served'))
+                    if direction == 'up' and provider == n: hop(n, consumer, 'SERVES'); frontier.append((consumer, 'cross'))
             edges = edges + virtual
         return self.enrich(walk(edges, start, direction))
 

@@ -63,6 +63,24 @@ class FullTrace(unittest.TestCase):
         self.assertIn('PATH-KEY', self.trace('NODE-APP', 'up'))                                        # a node climbs to the paths it is on
         self.assertEqual(self.trace('PATH-DATA', 'up', '--direct-only'), {'PATH-DATA'})                  # the links between layers alone: none
 
+    def test_a_process_reaches_the_data_of_the_domain_it_uses(self):   # FT-11
+        G = ROOT / 'examples' / 'payment-initiation' / 'graph'
+        j = json.loads(subprocess.run([sys.executable, '-m', 'sdem', 'trace', 'PRC-PAY-01', '--graph', str(G), '--direction', 'down', '--json'],
+                                      capture_output=True, text=True, encoding='utf-8', env={**ENV, 'SDEM_FORM': '0.19'}, cwd=ROOT).stdout)
+        down = ids(j['down'])
+        self.assertIn('SD-PI', down); self.assertIn('BBO-PAY-INSTR', down); self.assertIn('ENT-PAY-INSTR', down)   # through the domain's business object, to Data
+        self.assertNotIn('SO-PI-06', down)                                                                              # the domain's information is opened, never its other operations
+
+    def test_an_actor_reaches_down_through_what_serves_it(self):   # FT-12
+        down = self.trace('ACTOR-TPP', 'down')
+        self.assertIn('SVC-INIT', down); self.assertTrue(any(i.startswith('SD-') for i in down))                    # the service, what realises it, and below
+        self.assertIn('ACTOR-TPP', self.trace('SVC-INIT', 'up'))
+
+    def test_a_domains_classification_is_not_an_orphan(self):   # FT-13
+        up = self.trace('AT-PARTY-AUTHENTICATION', 'up')
+        self.assertIn('SD-PARTY-AUTHENTICATION', up); self.assertTrue(any(i.startswith('PROC-') for i in up))
+        self.assertNotIn('AT-PARTY-AUTHENTICATION', self.trace('PROC-AUTH', 'down'))                                # a domain reached is not opened into its classifiers
+
     def test_impact_classifies_a_record_by_its_shortest_path(self):   # KG-Q-09
         ms = json.loads((self.tmp / 'ws' / 'mappings.json').read_text(encoding='utf-8'))['mappings']
         for rid in ('APP-PAYHUB', 'SD-PAYMENT-ORDER-INITIATION', 'DATA-PAYMENT'):
