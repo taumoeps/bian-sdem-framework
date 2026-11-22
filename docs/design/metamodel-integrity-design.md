@@ -127,6 +127,7 @@ when it adds a layer, its own knowledge graph, joined to the others by the regis
 | `sdem check` / graph build | MID-04: each graph and the registry pass the metamodel | per workspace; CI on the examples |
 | The completeness test | MID-05 | `sdem trace GAPS` — every record traced, or a design gap or a rule gap; no example has a rule gap (`tests/test_full_trace.py`) |
 | Site against CLI | MID-02: the view's chain equals `sdem trace` | `sdem trace ALL` sent with the design; the site lights it (`tests/test_full_trace.py`, DW-78) |
+| Extensions by pattern | MID-08 | `tests/test_extension_patterns.py` — H1, H2, V1, each made-up |
 | An extension requiring another | MID-10 | `tests/test_metamodel_extensions.py` (`ExtensionRequiresAnother`) |
 | ArchiMate export | MID-07 | **SDEM has no ArchiMate export yet** — building one (Open Exchange Format) is a feature to decide (MIP-08) |
 
@@ -141,8 +142,8 @@ when it adds a layer, its own knowledge graph, joined to the others by the regis
 | MID-05 Every shape accounted for | ✅ | `sdem trace GAPS`; no rule gap in any example (tested); the Payment example: 152 of 255 records reach every other layer, 103 design gaps for a person, 0 rule gaps |
 | MID-06 Views are of the source | ✅ | a design in 0.20's form published and shown in its own form (MIP-04, DW-79) |
 | MID-07 Links and types labelled by their standard | 🟡 | every type carries its source; a trace hop says whether it is an approved link or a part-of hop. No ArchiMate export to check (MIP-08) |
-| MID-08 Extensions by pattern, not by name | 🟡 | the trace names no extension: its rules and information types are declared by each layer's metamodel file and by a pack (`trace_rules`, `information_types`). Still naming BIAN: switching its layer on and off (`parts.bian_on`, BX-13) and its package (BP-02) |
-| MID-09 A vertical extension is an overlay | 🟡 | Security is a switch on the one stack: the design's own plates (A1–A5 + security), never S1–S5 (DESNRE DW-80). Still drawn by Security's own code, not from what its manifest declares (G2) |
+| MID-08 Extensions by pattern, not by name | ✅ | three made-up extensions — *Facilities* (H1, a layer below the stack), *Networks* (H2, a kind of Technology node) and *Disaster Recovery* (V1, beside the stack) — switch on, check, link and trace with no SDEM code naming them (`tests/test_extension_patterns.py`); the trace's own rules are declared (`trace_rules`). BIAN keeps its built-in switch (on by default, BX-11, so 0.19 designs read as before) — BIAN's compatibility, not a path another extension needs |
+| MID-09 A vertical extension is an overlay | ✅ | Security is a switch on the one stack — the design's own plates (A1–A5 + security), never S1–S5 (DESNRE DW-80) — drawn as its manifest declares (`viewer.overlay`: plates, shapes and their place, link styles; sdem-security 0.4.2, DW-81) |
 | MID-10 An extension may require another | ✅ | `requires` for any extension, on anything it adds — left out and said when the other is off (tested) |
 
 ## 7. Related

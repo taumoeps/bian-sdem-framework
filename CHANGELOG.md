@@ -2,6 +2,10 @@
 
 > Entries before 0.7.0 describe the project under its former name, **SDMM (BIAN Service Domain Mapping Model)**, and its former terms; they are kept as written.
 
+## Unreleased
+
+- **Extensions by pattern, proved** (MIP-10, MID-08): three made-up extensions — *Facilities* (a layer below the stack), *Networks* (a kind of Technology node) and *Disaster Recovery* (a layer beside the stack) — switch on, check, link and trace with no SDEM code naming them (`tests/test_extension_patterns.py`). Note: an extension may not be called by the name of one of SDEM's own commands (e.g. `physical`) — SDEM refuses it, rightly.
+
 ## 0.21.2 — the metamodel integrity design, met (2026-11-22)
 
 - **An extension may require another** (MID-10). Anything an extension adds — a type, a link type, an attribute, a rule — may say `"requires": "ext:<name>"` (or a list); it is kept where that extension is on and left out where it is not, and said in the profile's `left_out` — never an error. Until now only "requires BIAN" was understood.
