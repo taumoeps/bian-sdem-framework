@@ -33,7 +33,7 @@ SCHEMA = DATA_ROOT / 'schema' / 'profile.schema.json'
 LEVELS = _live(lambda: tuple(dict.fromkeys((_L('business'), _L('bian'), _L('data'), _L('application'), _L('technology')))))
 ATTR_TYPES = ('string', 'integer', 'number', 'boolean', 'date', 'enum', 'list<string>', 'map<string,string>')
 MAP_KINDS = ('shapes', 'connectors', 'zones')   # PR-28: the diagram mapping table — the organisation's shapes, connector labels and zones
-LISTS = ('layers', 'types', 'attributes', 'rules', 'link_kinds', 'link_types', 'requirement_categories')   # what a profile adds to its base
+LISTS = ('layers', 'types', 'attributes', 'rules', 'link_kinds', 'link_types', 'requirement_categories', 'trace_rules', 'information_types')   # MID-08: a pack's own trace rules   # what a profile adds to its base
 ACTIVE = None          # the resolved, merged profile the current command works under (None: SDEM's metamodel alone)
 _ACTIVE_KEY = None     # its content hash — the metamodel cache key
 _RAW = None            # the active profile as resolved, before it is numbered for the workspace (DL-25)
@@ -293,7 +293,7 @@ def resolve(path, _seen=()):
 
 
 def digest(merged):
-    body = {k: v for k, v in merged.items() if k not in PRIVATE}
+    body = {k: v for k, v in merged.items() if k not in PRIVATE and not (k in ('trace_rules', 'information_types') and not v)}   # MID-08: absent when none, so earlier hashes hold
     if merged.get('_numbering'): body['_numbering'] = merged['_numbering']   # DL-25: numbered for another stack, another metamodel
     return hashlib.sha256(json.dumps(body, sort_keys=True).encode()).hexdigest()
 

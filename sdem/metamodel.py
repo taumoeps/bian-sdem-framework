@@ -36,20 +36,25 @@ class Metamodel:
         if cache is None: cache = {}; setattr(cls, '_merged_cache', cache)
         from . import parts
         key = (_p.digest(_p.ACTIVE), parts.bian_on(), parts.migrated())   # DL-12: the workspace's form decides the layers too
-        if key not in cache: cache.clear(); cache[key] = _p.apply(base, _p.ACTIVE)
+        if key not in cache:
+            cache.clear(); cache[key] = _p.apply(base, _p.ACTIVE)
+            cache[key].trace = {'rules': base.trace['rules'] + list(_p.ACTIVE.get('trace_rules') or []),   # MID-08: an extension's pack declares its own
+                                'information': base.trace['information'] + list(_p.ACTIVE.get('information_types') or [])}
         return cache[key]
 
     @classmethod
     def base(cls, mm_dir=MM_DIR):
         """SDEM's own metamodel, as shipped — no profile."""
         from . import parts
-        ents, versions = [], set()
+        ents, versions, trace = [], set(), {'rules': [], 'information': []}
         for name in LEVEL_FILES:
             doc = _jload(Path(mm_dir) / name)
             versions.add(doc['metamodel_version'])
             if name == parts.A2_FILE and not parts.bian_on(): continue   # BX-02, BX-13: BIAN's types belong to ext:bian
-            if name == parts.A2_FILE: doc = parts.metamodel_doc(doc)   # BP-02: the installed sdem-bian's, if any
-            ents += doc['entities']
+            t = doc.get('trace') or {}
+            if name == parts.A2_FILE: doc = parts.metamodel_doc(doc); t = doc.get('trace') or t   # BP-02: the installed sdem-bian's, if any (its own trace, else the shipped one)
+            ents += doc['entities']   # MID-08: how the trace walks this layer's own links — declared by the layer, not written into the trace
+            trace['rules'] += t.get('rules') or []; trace['information'] += t.get('information') or []
         rels = _jload(Path(mm_dir) / 'level-relationships.json')
         versions.add(rels['metamodel_version'])
         rels = {**rels, 'constraints': parts.splice(rels.get('constraints', []), parts.bian_constraint, lambda c: c.get('id'), 'within')}   # BP-02
@@ -65,7 +70,8 @@ class Metamodel:
             if ls and lt and ls != lt: continue   # DL-04: its ends are in two layers now — a link between them (ACCESSED_BY, Data → Application), not a rule inside one
             cons.append({**c, 'level': ls} if ls else c)
         rels = {**rels, 'constraints': cons}
-        return cls(ents, rels, versions.pop())
+        m = cls(ents, rels, versions.pop()); m.trace = trace
+        return m
 
     # ---- hierarchy
     def known(self, t):

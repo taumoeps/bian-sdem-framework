@@ -366,5 +366,11 @@
         "reasoning": "no standard key; SDEM recommends a unique name within the architecture dataset so duplicates can be detected"
       }
     }
-  ]
+  ],
+  "trace": {
+    "information": [
+      "business.BusinessObject"
+    ],
+    "note": "MID-08 (docs/design/metamodel-integrity-design.md): how the full trace walks this layer's own links, declared here — an extension's pack declares its own the same way (trace_rules, information_types)"
+  }
 }

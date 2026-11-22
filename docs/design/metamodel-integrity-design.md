@@ -141,7 +141,7 @@ when it adds a layer, its own knowledge graph, joined to the others by the regis
 | MID-05 Every shape accounted for | ✅ | `sdem trace GAPS`; no rule gap in any example (tested); the Payment example: 152 of 255 records reach every other layer, 103 design gaps for a person, 0 rule gaps |
 | MID-06 Views are of the source | ✅ | a design in 0.20's form published and shown in its own form (MIP-04, DW-79) |
 | MID-07 Links and types labelled by their standard | 🟡 | every type carries its source; a trace hop says whether it is an approved link or a part-of hop. No ArchiMate export to check (MIP-08) |
-| MID-08 Extensions by pattern, not by name | ❌ | 27 code paths in SDEM name BIAN — among them two trace rules (FT-07 a control record's business objects, FT-13 a domain's classification) that should be declared by BIAN's pack, not written into the core (G1) |
+| MID-08 Extensions by pattern, not by name | 🟡 | the trace names no extension: its rules and information types are declared by each layer's metamodel file and by a pack (`trace_rules`, `information_types`). Still naming BIAN: switching its layer on and off (`parts.bian_on`, BX-13) and its package (BP-02) |
 | MID-09 A vertical extension is an overlay | ❌ | Security is its own 3D stack on the site (G2, MIP-06) |
 | MID-10 An extension may require another | ✅ | `requires` for any extension, on anything it adds — left out and said when the other is off (tested) |
 

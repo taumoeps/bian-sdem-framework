@@ -286,5 +286,12 @@
         "reasoning": "no standard key; a unique name within the architecture dataset"
       }
     }
-  ]
+  ],
+  "trace": {
+    "information": [
+      "data.DataEntity",
+      "data.DataAttribute"
+    ],
+    "note": "MID-08 (docs/design/metamodel-integrity-design.md): how the full trace walks this layer's own links, declared here — an extension's pack declares its own the same way (trace_rules, information_types)"
+  }
 }

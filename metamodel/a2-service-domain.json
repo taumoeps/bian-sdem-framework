@@ -419,5 +419,45 @@
         "reasoning": "never instantiated in an architecture dataset, so it has no identifier"
       }
     }
-  ]
+  ],
+  "trace": {
+    "rules": [
+      {
+        "id": "FT-07",
+        "kind": "association",
+        "source_type": "bian.ControlRecord",
+        "target_type": "bian.BusinessObject",
+        "whole": "source",
+        "up": "PART_OF",
+        "down": "HAS_PART",
+        "reason": "a control record's business object is part of its domain's information (BIAN's Business Object Model)"
+      },
+      {
+        "id": "FT-13",
+        "kind": "association",
+        "source_type": "bian.ServiceDomain",
+        "target_type": "bian.AssetType",
+        "whole": "source",
+        "up": "CLASSIFIES",
+        "down": "CLASSIFIED_AS",
+        "reason": "BIAN's classification of a domain: the asset type traces through its domain"
+      },
+      {
+        "id": "FT-13",
+        "kind": "association",
+        "source_type": "bian.ServiceDomain",
+        "target_type": "bian.FunctionalPattern",
+        "whole": "source",
+        "up": "CLASSIFIES",
+        "down": "CLASSIFIED_AS",
+        "reason": "BIAN's classification of a domain: the functional pattern traces through its domain"
+      }
+    ],
+    "information": [
+      "bian.ControlRecord",
+      "bian.BusinessObject",
+      "bian.BusinessObjectAttribute"
+    ],
+    "note": "MID-08 (docs/design/metamodel-integrity-design.md): how the full trace walks this layer's own links, declared here — an extension's pack declares its own the same way (trace_rules, information_types)"
+  }
 }

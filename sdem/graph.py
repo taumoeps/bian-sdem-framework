@@ -205,12 +205,25 @@ class FederatedGraph:
             self.enrich(c['node'])
         return node
 
-    def bian_holds(self, r):
-        """FT-07: a BIAN control record's link to a business object (B08: its information, BIAN's Business Object Model) — the object
-        is part of its service domain's information, so the trace climbs through it."""
-        if r['kind'] != 'association': return False
-        t = lambda i: (self.instance(i) or {}).get('type', '')
-        return self.mm.is_a(t(r['source']), _T('bian.ControlRecord')) and self.mm.is_a(t(r['target']), _T('bian.BusinessObject'))
+    def _trace_decl(self):
+        """MID-08: the trace rules and information types the metamodel's layers and the active extensions' packs declare (their `trace`,
+        `trace_rules`, `information_types`) — no extension is named here."""
+        return getattr(self.mm, 'trace', None) or {'rules': [], 'information': []}
+
+    def _ty(self, x):
+        """A declared type, as a stable id or already numbered (the loader numbers the metamodel files' ids)."""
+        return x if self.mm.known(x) else _T(x)
+
+    def declared(self, r):
+        """FT-07, FT-13 and any rule an extension's pack declares: a link inside a layer the trace walks as whole and part — (whole, part,
+        label when climbing, label when stepping down), or None."""
+        t = lambda i: (self.instance(i) or {}).get('type', '') or ''
+        for d in self._trace_decl()['rules']:
+            if r['kind'] != d.get('kind', 'association'): continue
+            if self.mm.is_a(t(r['source']), self._ty(d['source_type'])) and self.mm.is_a(t(r['target']), self._ty(d['target_type'])):
+                a, b = (r['source'], r['target']) if d.get('whole', 'source') == 'source' else (r['target'], r['source'])
+                return a, b, d.get('up', 'PART_OF'), d.get('down', 'HAS_PART')
+        return None
 
     def path_joins(self, r):
         """FT-10: a path's association with a node it connects (ArchiMate 3.2 §10.2.4: a path is associated with the nodes it connects) — the
@@ -219,19 +232,11 @@ class FederatedGraph:
         t = lambda i: (self.instance(i) or {}).get('type', '')
         return self.mm.is_a(t(r['source']), _T('technology.Path')) and self.mm.is_a(t(r['target']), _T('technology.Node'))
 
-    def bian_classifies(self, r):
-        """FT-13: a service domain's association with its asset type or functional pattern (BIAN's classification of the domain) — the
-        domain is the whole, so a classifier reaches what the domain reaches, and the domain is not opened into it when reached."""
-        if r['kind'] != 'association': return False
-        t = lambda i: (self.instance(i) or {}).get('type', '')
-        return self.mm.is_a(t(r['source']), _T('bian.ServiceDomain')) and any(self.mm.is_a(t(r['target']), _T(x)) for x in ('bian.AssetType', 'bian.FunctionalPattern'))
-
     def informational(self, iid):
         """FT-11: a record that holds information — a BIAN control record, business object or field, a business object, a data entity or
         field: what a whole's information is made of."""
         t = (self.instance(iid) or {}).get('type', '') or ''
-        return any(self.mm.is_a(t, _T(x)) for x in ('bian.ControlRecord', 'bian.BusinessObject', 'bian.BusinessObjectAttribute',
-                                                  'business.BusinessObject', 'data.DataEntity', 'data.DataAttribute'))
+        return any(self.mm.is_a(t, self._ty(x)) for x in self._trace_decl()['information'])   # MID-08: each layer and pack declares its own
 
     def served(self, iid):
         """FT-12: serving inside a layer — (consumer, provider) pairs that touch iid: what a record is served by, it depends on."""
@@ -254,9 +259,10 @@ class FederatedGraph:
             for r in g.relationships:
                 a, b, k = r['source'], r['target'], r['kind']
                 if iid not in (a, b) or a == b: continue
-                if k in ('composition', 'aggregation') or self.bian_holds(r): out.append((a, b, 'PART_OF', 'HAS_PART'))
+                d = self.declared(r)   # FT-07, FT-13, an extension's own: declared by its layer or pack (MID-08)
+                if k in ('composition', 'aggregation'): out.append((a, b, 'PART_OF', 'HAS_PART'))
+                elif d: out.append(d)
                 elif self.path_joins(r): out.append((a, b, 'ON_PATH', 'CONNECTS'))   # FT-10
-                elif self.bian_classifies(r): out.append((a, b, 'CLASSIFIES', 'CLASSIFIED_AS'))   # FT-13
                 elif k == 'realization': out.append((b, a, 'REALIZES', 'REALIZED_BY'))
                 elif k == 'assignment': out.append((a, b, 'ASSIGNED_FROM', 'ASSIGNED_TO'))
                 elif k == 'triggering' and ev(a) != ev(b): out.append((b, a, 'TRIGGERS', 'TRIGGERED_BY') if ev(a) else (a, b, 'TRIGGERED_BY', 'TRIGGERS'))
