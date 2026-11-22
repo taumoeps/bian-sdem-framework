@@ -371,6 +371,22 @@
         }
       ],
       "summary": "The full trace (every record's chain through part-of, realization, assignment, triggering, a path's nodes and a security record's subject), impact by the shortest path, the Data Architecture (domains, ownership, read and write, lineage) — metamodel 0.19.0."
+    },
+    {
+      "version": "0.21.1",
+      "date": "2026-11-22",
+      "kind": "patch",
+      "metamodel": "0.19.0",
+      "migration": null,
+      "breaking": [],
+      "deprecations": [],
+      "actions": [
+        {
+          "when": "you publish to DESNRE",
+          "do": "install sdem-desnre 0.11.0 — a design in 0.20's form is published in its own form (its own layers and files), and the site lights the chains SDEM computes"
+        }
+      ],
+      "summary": "A design in its own form, end to end (MIP-04): the Data layer laid out by domain; each Architecture viewpoint plate names its layer by id — with sdem-desnre 0.11.0 a design in 0.20's form is published and shown as it is, with no 0.19-shaped copy."
     }
   ]
 }
