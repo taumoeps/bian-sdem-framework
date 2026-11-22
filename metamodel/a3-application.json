@@ -289,8 +289,8 @@
   ],
   "trace": {
     "information": [
-      "data.DataEntity",
-      "data.DataAttribute"
+      "A3.DataEntity",
+      "A3.DataAttribute"
     ],
     "note": "MID-08 (docs/design/metamodel-integrity-design.md): how the full trace walks this layer's own links, declared here — an extension's pack declares its own the same way (trace_rules, information_types)"
   }

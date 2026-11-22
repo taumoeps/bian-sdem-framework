@@ -2,13 +2,16 @@
 
 > Entries before 0.7.0 describe the project under its former name, **SDMM (BIAN Service Domain Mapping Model)**, and its former terms; they are kept as written.
 
-## 0.21.1 — the design in its own form, and the metamodel integrity design met (2026-11-22)
+## 0.21.2 — the metamodel integrity design, met (2026-11-22)
 
 - **An extension may require another** (MID-10). Anything an extension adds — a type, a link type, an attribute, a rule — may say `"requires": "ext:<name>"` (or a list); it is kept where that extension is on and left out where it is not, and said in the profile's `left_out` — never an error. Until now only "requires BIAN" was understood.
 - **Each layer's figures from SDEM** (MID-02): `sdem trace GAPS --json` gives `by_layer` — records, links inside the layer, records linked to another layer, records that reach every other layer — so a view shows SDEM's figures instead of counting its own.
 - **The trace names no extension** (MID-08). How the full trace walks a layer's own links (FT-07 a control record's business objects, FT-13 a domain's asset type and functional pattern) and which types hold information (FT-11) are declared in the metamodel files (`trace`), not written into the trace; an extension's pack declares its own the same way (`trace_rules`, `information_types`). Every answer is unchanged (BX-31).
 - **The metamodel integrity design records its conformance** (§6): which rules are met and what is missing for the rest.
 - **`sdem trace GAPS --graph G`: every record accounted for** (MIP-05, MID-05). Each record either reaches the design's other layers through the full trace, or is listed — a *design gap* (the design states no link onward from what it reaches: a person decides) or a *rule gap* (it has links the trace does not walk: SDEM is fixed). The examples have no rule gap, tested. On the Payment example: 152 of 255 records reach every other layer; 103 design gaps; 0 rule gaps.
+
+## 0.21.1 — the design in its own form (2026-11-22)
+
 - **A design in its own form, end to end** (MIP-04, MID-06): the Data layer laid out by domain (`sdem layout --layer <Data>`); each Architecture viewpoint plate names its layer by stable id. With `sdem-desnre` 0.11.0 a design in 0.20's form is published as it is — its own layers and files, its 3D model built from them — and the DESNRE site reads it so; no 0.19-shaped copy.
 
 ## 0.21.0 — the full trace, the Data Architecture and the stable core (2026-11-22)

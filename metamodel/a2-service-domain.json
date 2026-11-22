@@ -425,8 +425,8 @@
       {
         "id": "FT-07",
         "kind": "association",
-        "source_type": "bian.ControlRecord",
-        "target_type": "bian.BusinessObject",
+        "source_type": "A2.ControlRecord",
+        "target_type": "A2.BusinessObject",
         "whole": "source",
         "up": "PART_OF",
         "down": "HAS_PART",
@@ -435,8 +435,8 @@
       {
         "id": "FT-13",
         "kind": "association",
-        "source_type": "bian.ServiceDomain",
-        "target_type": "bian.AssetType",
+        "source_type": "A2.ServiceDomain",
+        "target_type": "A2.AssetType",
         "whole": "source",
         "up": "CLASSIFIES",
         "down": "CLASSIFIED_AS",
@@ -445,8 +445,8 @@
       {
         "id": "FT-13",
         "kind": "association",
-        "source_type": "bian.ServiceDomain",
-        "target_type": "bian.FunctionalPattern",
+        "source_type": "A2.ServiceDomain",
+        "target_type": "A2.FunctionalPattern",
         "whole": "source",
         "up": "CLASSIFIES",
         "down": "CLASSIFIED_AS",
@@ -454,9 +454,9 @@
       }
     ],
     "information": [
-      "bian.ControlRecord",
-      "bian.BusinessObject",
-      "bian.BusinessObjectAttribute"
+      "A2.ControlRecord",
+      "A2.BusinessObject",
+      "A2.BusinessObjectAttribute"
     ],
     "note": "MID-08 (docs/design/metamodel-integrity-design.md): how the full trace walks this layer's own links, declared here — an extension's pack declares its own the same way (trace_rules, information_types)"
   }

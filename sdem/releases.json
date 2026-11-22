@@ -386,7 +386,23 @@
           "do": "install sdem-desnre 0.11.0 — a design in 0.20's form is published in its own form (its own layers and files), and the site lights the chains SDEM computes"
         }
       ],
-      "summary": "A design in its own form, end to end (MIP-04): the Data layer laid out by domain; each Architecture viewpoint plate names its layer by id — with sdem-desnre 0.11.0 a design in 0.20's form is published and shown as it is, with no 0.19-shaped copy. And the metamodel integrity design met (MID-02, MID-05, MID-08, MID-10): `sdem trace GAPS` accounts for every record (design gaps and rule gaps) and gives each layer's figures; an extension may require another; the trace names no extension — its rules are declared by the metamodel's layers and by a pack."
+      "summary": "A design in its own form, end to end (MIP-04): the Data layer laid out by domain; each Architecture viewpoint plate names its layer by id — with sdem-desnre 0.11.0 a design in 0.20's form is published and shown as it is, with no 0.19-shaped copy."
+    },
+    {
+      "version": "0.21.2",
+      "date": "2026-11-22",
+      "kind": "patch",
+      "metamodel": "0.19.0",
+      "migration": null,
+      "breaking": [],
+      "deprecations": [],
+      "actions": [
+        {
+          "when": "you publish to DESNRE",
+          "do": "install sdem-desnre 0.11.1 and sdem-security 0.4.1 — the Health tab shows SDEM's per-layer figures and the Security view SDEM's inherited protection"
+        }
+      ],
+      "summary": "The metamodel integrity design met (MID-02, MID-05, MID-08, MID-10): `sdem trace GAPS` accounts for every record (design gaps and rule gaps) and gives each layer's figures; an extension may require another; the trace names no extension — its rules are declared by the metamodel's layers and by a pack."
     }
   ]
 }
