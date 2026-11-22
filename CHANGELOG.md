@@ -2,6 +2,12 @@
 
 > Entries before 0.7.0 describe the project under its former name, **SDMM (BIAN Service Domain Mapping Model)**, and its former terms; they are kept as written.
 
+## 0.21.13 — an extension's own links, ArchiMate's kind (2026-11-23)
+
+- **An extension's own link inside its layer is drawn as the ArchiMate kind it maps to** (MID-07): a pack declares such a link in `link_kinds` with `maps_to`; SDEM read only its links between layers, so `sdem model integrity --graph` gave the security extension's *mitigates* (a control mitigates a threat) the kind "mitigates", which is no ArchiMate relationship. It is now *association*, as the pack says.
+- **The model's figures compute the BIAN layer's code** instead of writing it in (DL-07, ST-01), as SDEM's identity tests require.
+- **`sdem model integrity --check` checks MID-07 over every link in the graph**, inside a layer too — it reported MID-07 met while *mitigates* had no ArchiMate kind; with 0.21.12's code it now says *not met: links with no kind: mitigates*. Tested on the Payment example.
+
 ## 0.21.12 — a retired record apart in the document (2026-11-22)
 
 - **`sdem document` describes a retired record apart, as history**: the sections, the summary's counts and the gaps are of the design's live records; each retired record — and the connections it had — is in a closing section *Retired — no longer part of the design*; a live record's connection to a retired one says so. Like `sdem trace GAPS`, the completeness count and `sdem model integrity`, a retired record has left the design. A layer with nothing retired reads exactly as before (BX-31, tested). DESNRE's Raw Document and each layer's document follow.

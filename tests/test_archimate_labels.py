@@ -76,3 +76,24 @@ class PacksSayTheirKinds(unittest.TestCase):   # MID-07 for an extension's own l
             'link_types': [{'source_type': 'XX.X.Thing', 'relationship': 'TOUCHES', 'target_type': 'A3.DataEntity', 'required_evidence': ['memo']}]}))
         issues = P.check(P.resolve(t / 'p.json'), MM)
         self.assertTrue(any('no ArchiMate relationship' in i for i in issues), issues)
+
+
+class PackLinkKindsInsideALayer(unittest.TestCase):   # MID-07, 0.21.13: an extension's own link inside its layer is drawn as the ArchiMate kind it maps to
+    def test_a_link_kind_of_a_pack_says_its_archimate_kind(self):
+        from sdem import profile as P
+        try:
+            P.ACTIVE = {'link_kinds': [{'kind': 'mitigates', 'source_type': 'X.S.Control', 'target_type': 'X.S.Threat', 'maps_to': 'association'}]}
+            self.assertEqual(notation.for_relationship('mitigates'), 'association')
+        finally:
+            P.deactivate()
+
+    def test_every_link_in_the_payment_example_graph_is_an_archimate_kind(self):
+        from sdem import model_health as H, profile as P
+        ws = ROOT / 'examples' / '0.20' / 'payment-initiation-v4' / 'sdem'
+        try:
+            P.activate_from(ws)
+            g = H.integrity_graph(ws)
+        finally:
+            P.deactivate()
+        bad = sorted({(x.get('kind') or x.get('relationship'), x.get('archimate')) for x in g['links'] if x.get('archimate') not in ARCHIMATE_KINDS})
+        self.assertEqual(bad, [])

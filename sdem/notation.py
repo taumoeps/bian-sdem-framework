@@ -46,7 +46,9 @@ def for_relationship(name):
     d = load(); own = d['within_layer'].get(name) or d['cross_layer'].get(name)
     if own: return own
     from . import profile as _p   # MID-07: an extension's link type says its ArchiMate kind in its pack ("archimate")
-    return next((x['archimate'] for x in ((_p.ACTIVE or {}).get('link_types') or []) if x.get('relationship') == name and x.get('archimate')), None)
+    act = _p.ACTIVE or {}
+    lt = next((x['archimate'] for x in (act.get('link_types') or []) if x.get('relationship') == name and x.get('archimate')), None)
+    return lt or next((x['maps_to'] for x in (act.get('link_kinds') or []) if x.get('kind') == name and x.get('maps_to')), None)   # its own link inside its layer: "maps_to"
 
 
 def check(mm, registry=None):

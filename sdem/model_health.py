@@ -8,7 +8,7 @@ use, and whether the core changed only as the stability policy allows.
 
 Read-only except `freeze`. Everything here reads SDEM's own metamodel (never a workspace's profile, unless asked for usage).
 """
-from .identity import load as _jload, type_id, T  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
+from .identity import load as _jload, type_id, T, layer as _L  # DL-11: a design's files read through one boundary (docs/design/sdem-data-layer-spec.md)
 import argparse, collections, json, sys
 from pathlib import Path
 
@@ -324,7 +324,7 @@ def integrity(workspace):
         a2 = next((g for g in graphs if g['extension'] == 'bian'), None)
         exts.append({'name': 'bian', 'built_in': True, 'pattern': 'H1', 'placement': 'a layer in the stack', 'layer': a2 and a2['code'],
                      'types': a2['types'] if a2 else 0, 'rules_inside': sum(1 for c in mm.relationships.get('constraints', []) if a2 and c.get('level') == a2['code']),
-                     'trace_rules': sum(1 for r in mm.trace['rules'] if str(r.get('source_type', '')).startswith(('bian.', 'A2.'))), 'why_on': parts.why()})
+                     'trace_rules': sum(1 for r in mm.trace['rules'] if str(r.get('source_type', '')).startswith(('bian.', _L('bian') + '.'))), 'why_on': parts.why()})
     for a, pk in packs:
         lay = [x for x in pk.get('layers') or []]
         h2 = [t for t in pk.get('types') or [] if t.get('extends')]
@@ -354,7 +354,7 @@ def integrity(workspace):
     return {'format': 'sdem-integrity/1', 'design': ws.resolve().name,
             'core': {'metamodel': mm.version, 'stability': stable, 'frozen_at': froz.get('frozen_at'), 'frozen_by': froz.get('frozen_by'),
                      'frozen': {k: len(froz.get(k) or {}) for k in ('entity_types', 'link_types', 'within_layer_rules', 'attributes')},
-                     'layers': core_layers, 'trace_rules': len([r for r in mm.trace['rules'] if not str(r.get('source_type', '')).startswith(('bian.', 'A2.'))])},
+                     'layers': core_layers, 'trace_rules': len([r for r in mm.trace['rules'] if not str(r.get('source_type', '')).startswith(('bian.', _L('bian') + '.'))])},
             'extensions': exts,
             'federated': {'links': dict(collections.Counter(m.get('status') for m in maps)), 'link_types_in_use': len(by_rel),
                           'by_relationship': [{'relationship': r, 'archimate': notation.for_relationship(r), 'approved': n} for r, n in by_rel.most_common()],
@@ -440,6 +440,8 @@ def integrity_check(workspace):
     no_el = [t for t in mm.entities if t.count('.') >= 1 and not mm.entities[t].get('abstract') and not (notation.for_type(mm, t) or {}).get('element')]
     no_rel = [x['relationship'] for x in d['federated']['by_relationship'] if not x['archimate']]
     no_pack = [f"{x.get('source_type')} {x.get('relationship')} {x.get('target_type')}" for x in ((_p.ACTIVE or {}).get('link_types') or []) if not x.get('archimate')]
+    AK = {'composition', 'aggregation', 'assignment', 'realization', 'serving', 'access', 'influence', 'triggering', 'flow', 'specialization', 'association'}   # ArchiMate 3.2 §5
+    no_rel += sorted({str(x.get('kind') or x.get('relationship')) for x in integrity_graph(ws)['links'] if x.get('archimate') not in AK} - set(no_rel))   # 0.21.13: every link in the graph, inside a layer too
     rule('MID-07', 'Every link and type labelled by its standard', not (no_el or no_rel or no_pack),
          'every type an ArchiMate element and every link an ArchiMate relationship' if not (no_el or no_rel or no_pack) else
          '; '.join(filter(None, [no_el and f"types with no element: {', '.join(no_el[:5])}", no_rel and f"links with no kind: {', '.join(no_rel)}", no_pack and f"pack link types with no kind: {', '.join(no_pack[:5])}"])))
