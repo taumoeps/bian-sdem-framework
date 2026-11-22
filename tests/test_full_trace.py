@@ -128,7 +128,7 @@ class FullTrace(unittest.TestCase):
         g = json.loads(sdem('model', 'integrity', '--workspace', v4, '--graph', '--json'))
         d = json.loads(sdem('model', 'integrity', '--workspace', v4, '--json'))
         self.assertEqual(g['counts']['records'], sum(x['records'] for x in d['graphs']))                                   # every record of every graph, retired ones left out
-        self.assertEqual(g['counts']['between'], d['federated']['links'].get('approved', 0) - 2)                          # the two links to the retired notification service are not drawn
+        self.assertEqual(g['counts']['between'], d['federated']['links'].get('approved', 0))                              # the figures and the graph agree: a retired record's links are in neither
         self.assertTrue(all(0 <= x['at'][0] <= 1 and 0 <= x['at'][1] <= 1 for x in g['records']))                         # placed on its graph's plate
         self.assertTrue(all(x['archimate'] for x in g['links']))                                                          # every link an ArchiMate relationship
 

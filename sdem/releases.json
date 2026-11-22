@@ -525,6 +525,22 @@
         }
       ],
       "summary": "The metamodel drawn with the links from a kind to its own kind — every link in the design is one the Metamodel view shows as allowed."
+    },
+    {
+      "version": "0.21.10",
+      "date": "2026-11-22",
+      "kind": "patch",
+      "metamodel": "0.19.0",
+      "migration": null,
+      "breaking": [],
+      "deprecations": [],
+      "actions": [
+        {
+          "when": "you publish to DESNRE",
+          "do": "install sdem-desnre 0.11.9 — the Knowledge Graph tab's tables drawn from sdem model integrity --graph"
+        }
+      ],
+      "summary": "sdem model integrity's figures leave a retired record's links out, as its graph does — the two agree."
     }
   ]
 }

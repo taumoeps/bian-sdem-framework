@@ -310,7 +310,7 @@ def integrity(workspace):
         except (OSError, ValueError): d = {}
         recs = [i for i in d.get('instances') or [] if isinstance(i, dict)]
         live = [i for i in recs if i.get('lifecycle_status') != 'retired']
-        for i in recs: code_of[i.get('id')] = l['code']
+        for i in live: code_of[i.get('id')] = l['code']   # a retired record has left the design — and its links with it
         g = {'code': l['code'], 'name': l.get('name'), 'file': l['file'], 'graph': 'extension' if origin(l) else 'layer', 'extension': origin(l),
              'position': 'across' if l.get('across') else 'stack', 'records': len(live), 'retired': len(recs) - len(live), 'links_inside': len(d.get('relationships') or []),
              'by_type': dict(collections.Counter(str(i.get('type', '')).split('.')[-1] for i in live).most_common()),
@@ -338,6 +338,7 @@ def integrity(workspace):
                      'requires': sorted({r for k in ('types', 'link_types') for x in pk.get(k) or [] for r in ([x['requires']] if isinstance(x.get('requires'), str) else x.get('requires') or [])})})
     try: maps = json.loads((ws / 'mappings.json').read_text(encoding='utf-8')).get('mappings') or []
     except (OSError, ValueError): maps = []
+    maps = [m for m in maps if (m.get('source') or {}).get('id') in code_of and (m.get('target') or {}).get('id') in code_of]   # links between the design's live records only
     ok = [m for m in maps if m.get('status') == 'approved']
     by_rel = collections.Counter(m['relationship'] for m in ok)
     pairs = {}   # the links between each two graphs — what a view draws as the federated graph's joins

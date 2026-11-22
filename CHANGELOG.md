@@ -2,6 +2,10 @@
 
 > Entries before 0.7.0 describe the project under its former name, **SDMM (BIAN Service Domain Mapping Model)**, and its former terms; they are kept as written.
 
+## 0.21.10 — the figures and the graph agree (2026-11-22)
+
+- **`sdem model integrity` leaves a retired record's links out of its figures**, as `--graph` already did: the federated graph's counts, link types and pairs are of the design's live records only (the Payment example: 114 approved links between graphs, where 0.21.9 said 116 — two went to the retired notification service). Tested: the figures and the graph agree. DESNRE's Knowledge Graph tab draws its tables from `--graph` (sdem-desnre 0.11.9).
+
 ## 0.21.9 — every link the design has, allowed and drawn (2026-11-22)
 
 - **`sdem model integrity --metamodel` includes the links from a kind to its own kind** (a process flows to the next, a capability holds sub-capabilities, a domain holds a subject area) — 0.21.8 left them out, so 20 of the Payment example's 525 links had no allowed link drawn in the Metamodel view. Now every link in the design is one the Metamodel view shows as allowed (tested): 178 inside a layer, 89 between layers. DESNRE says a kind's links to its own kind on its shape (sdem-desnre 0.11.8).
