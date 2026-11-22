@@ -2,7 +2,7 @@
 
 > Entries before 0.7.0 describe the project under its former name, **SDMM (BIAN Service Domain Mapping Model)**, and its former terms; they are kept as written.
 
-## Unreleased
+## 0.21.4 — the design in the metamodel integrity model (2026-11-22)
 
 - **`sdem model integrity --workspace DIR`: the design in the metamodel integrity reference model** (MID-01…MID-10) — the Metamodel Core (its version and whether it is as frozen), each Metamodel Extension merged into it (its pattern H1 / H2 / V1, what it adds, its link types by ArchiMate kind), the Federated Knowledge Graph (the approved links between layers, each with its ArchiMate relationship) and each layer's and extension's own graph (records, links inside, kinds). Read-only; DESNRE draws its Health, Metamodel and Knowledge Graph views from it (sdem-desnre ships it as `integrity`).
 - **The Payment example, completed to every layer** — `examples/0.20/payment-initiation-v4`: v3's design with its data architecture, security layer, three BIAN-aligned tables, its applications aligned and the notification service retired — 327 of 327 records reach every other layer, 148 of 148 connected (tested). v3 stays as the 0.19 example's migration twin.

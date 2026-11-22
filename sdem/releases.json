@@ -425,6 +425,22 @@
         }
       ],
       "summary": "The metamodel integrity design met and checked on the Payment example: extensions by pattern (H1, H2, V1, two vertical extensions linked, FT-14), every type and link labelled by its ArchiMate kind — an extension's too (MID-07), a channel traced through the services it exposes (FT-15), sdem trace GAPS counting a record through what it is part of, a retired record no longer asked for facts or counted."
+    },
+    {
+      "version": "0.21.4",
+      "date": "2026-11-22",
+      "kind": "patch",
+      "metamodel": "0.19.0",
+      "migration": null,
+      "breaking": [],
+      "deprecations": [],
+      "actions": [
+        {
+          "when": "you publish to DESNRE",
+          "do": "install sdem-desnre 0.11.3 — the Health, Metamodel and Knowledge Graph views draw SDEM's own answer (sdem model integrity)"
+        }
+      ],
+      "summary": "The design in the metamodel integrity model: sdem model integrity (the Metamodel Core and whether it is as frozen, each extension merged into it by its pattern, the federated graph's links by ArchiMate kind, each layer's and extension's graph); the Payment example completed to every layer (examples/0.20/payment-initiation-v4); a retired record outside every design rule."
     }
   ]
 }
