@@ -535,32 +535,48 @@ def design_gaps(fg, statuses=('approved',)):
     where = {i: lvl for lvl, g in fg.levels.items() for i in g.by_id}
     linked = {x for g in fg.levels.values() for r in g.relationships for x in (r['source'], r['target'])}
     linked |= {x for e in fg.edges(statuses) for x in (e['source']['id'], e['target']['id'])}
-    gaps, complete = [], 0
-    for rid in sorted(where):
-        lvl = where[rid]
-        reach = set()
+    reach = {}
+    for rid in where:
+        got = set()
         for d in ('down', 'up'):
             q = [fg.trace(rid, d, statuses, True)]
             while q:
                 n = q.pop()
                 for c in n.get('children') or []:
-                    if c['node']['id'] in where: reach.add(where[c['node']['id']])
+                    if c['node']['id'] in where: got.add(where[c['node']['id']])
                     q.append(c['node'])
+        reach[rid] = got
+    def wholes(rid):   # FT-02: what a record is part of, all the way up — it reaches what they reach (MID-05: "directly or indirectly")
+        out, todo = [], [rid]
+        while todo:
+            x = todo.pop()
+            for w, p, *_ in fg.structure(x):
+                if p == x and w in where and w not in out and w != rid: out.append(w); todo.append(w)
+        return out
+    gaps, complete, within = [], 0, {}
+    for rid in sorted(where):
+        lvl, up = where[rid], wholes(rid)
+        got = reach[rid].union(*(reach[w] for w in up)) if up else reach[rid]
         want = [x for x in design if x != lvl]
-        missing = [x for x in want if x not in reach]
+        missing = [x for x in want if x not in got]
         if not missing: complete += 1; continue
+        held = next((w for w in reversed(up) if where[w] == lvl and any(x not in reach[w] for x in want)), None) if up else None   # its topmost whole that is a gap
+        if held and where[held] == lvl: within.setdefault(held, []).append(rid); continue   # its whole is the gap — listed once, there
         inst = fg.instance(rid) or {}
-        none = not (reach & set(design))
-        kind = 'rule' if none and rid in linked else 'design'
+        none = not (reach[rid] & set(design))
+        kind = 'rule' if none and rid in linked and not up else 'design'
         why = ('it has links the trace does not walk, and reaches no other layer' if kind == 'rule' else
-               'the design links it to nothing' if none else f"nothing the design states links it on to {', '.join(missing)}")
+               'the design links it to nothing' if none and not up else f"nothing the design states links it on to {', '.join(missing)}")
         gaps.append({'id': rid, 'name': inst.get('name'), 'type': inst.get('type'), 'layer': lvl, 'kind': kind, 'missing': missing, 'reason': why})
+    for g in gaps:
+        if g['id'] in within: g['parts'] = sorted(within[g['id']])   # the records inside it that share its gap
     cross = {x for e in fg.edges(statuses) for x in (e['source']['id'], e['target']['id'])}
     gap_ids = {g['id'] for g in gaps}
+    held = {x for v in within.values() for x in v}
     by_layer = {lvl: {'records': sum(1 for i in where if where[i] == lvl), 'relationships': len(g.relationships),   # MID-02: a view's per-layer figures, from here
-                      'linked': sum(1 for i in where if where[i] == lvl and i in cross), 'complete': sum(1 for i in where if where[i] == lvl and i not in gap_ids)}
+                      'linked': sum(1 for i in where if where[i] == lvl and i in cross), 'complete': sum(1 for i in where if where[i] == lvl and i not in gap_ids and i not in held)}
                 for lvl, g in fg.levels.items()}
-    return {'format': 'sdem-gaps/1', 'records': len(where), 'complete': complete, 'design_gaps': sum(g['kind'] == 'design' for g in gaps),
+    return {'format': 'sdem-gaps/1', 'records': len(where), 'complete': complete, 'within_a_gap': len(held), 'design_gaps': sum(g['kind'] == 'design' for g in gaps),
             'rule_gaps': sum(g['kind'] == 'rule' for g in gaps), 'by_layer': by_layer, 'gaps': gaps}
 
 
@@ -940,8 +956,9 @@ def main(argv=None):
     if args.cmd == 'trace' and args.entity.upper() == 'GAPS' and fg.instance(args.entity) is None:   # MIP-05: every record accounted for
         g = design_gaps(fg, statuses)
         if args.json: print(json.dumps(g, indent=2)); return EXIT_OK
-        print(f"{g['records']} record(s): {g['complete']} reach every other layer; {g['design_gaps']} design gap(s) — a person decides; {g['rule_gaps']} rule gap(s) — SDEM is fixed")
-        for x in g['gaps']: print(f"  {x['kind']:6} {x['layer']:3} {x['id']}  {x.get('name') or ''} — {x['reason']}")
+        print(f"{g['records']} record(s): {g['complete']} reach every other layer, directly or through what they are part of; {g['design_gaps']} design gap(s) — a person decides"
+              f" ({g['within_a_gap']} more record(s) inside them); {g['rule_gaps']} rule gap(s) — SDEM is fixed")
+        for x in g['gaps']: print(f"  {x['kind']:6} {x['layer']:3} {x['id']}  {x.get('name') or ''} — {x['reason']}" + (f" (and {len(x['parts'])} of its parts)" if x.get('parts') else ''))
         return EXIT_OK
     if args.cmd == 'trace' and args.entity.upper() == 'ALL' and fg.instance(args.entity) is None:   # MIP-03: every record's chain, for a view to light
         print(json.dumps(all_chains(fg, statuses, not getattr(args, 'direct_only', False)), separators=(',', ':') if args.json else None, indent=None if args.json else 1)); return EXIT_OK
