@@ -131,7 +131,7 @@ when it adds a layer, its own knowledge graph, joined to the others by the regis
 | An extension requiring another | MID-10 | `tests/test_metamodel_extensions.py` (`ExtensionRequiresAnother`) |
 | ArchiMate labels | MID-07 | `tests/test_archimate_labels.py`: every type has a source and an ArchiMate element (own or inherited), every link inside and between layers is an ArchiMate kind, every trace rule is SDEM's (FT-…) with its reason; SDEM's own notation check passes. (An Open Exchange Format export, MIP-08, would be a further check — not needed for the rule) |
 
-## 6. Conformance (2026-11-22, SDEM 0.21.11)
+## 6. Conformance (2026-11-22, SDEM 0.21.12)
 
 *Checked on the Payment example, not only SDEM's own: 327 of 327 records reach every other layer (0 design gaps, 0 rule gaps — MID-05), every link type in it has its ArchiMate kind (MID-07). A metamodel change that leaves the core as frozen (a declared trace rule, a notation entry) ships as an SDEM release with the metamodel version unchanged — MS-04/05, MIP-D2; `sdem model stability`: "the core is as frozen" at 0.19.0.*
 

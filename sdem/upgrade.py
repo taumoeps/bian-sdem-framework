@@ -146,7 +146,7 @@ def upgrade_check(workspaces, repo='.', from_version=None):
 def main(argv=None):
     ap = argparse.ArgumentParser(prog='sdem upgrade', formatter_class=argparse.RawDescriptionHelpFormatter,
                                  description='Before you switch SDEM versions: run the NEW version, installed side by side, against your workspaces. Read-only.',
-                                 epilog='Example:\n  python -m venv .sdem-next && .sdem-next/bin/pip install "sdem @ git+https://github.com/taumoeps/bian-sdem-framework@v0.21.11"\n'
+                                 epilog='Example:\n  python -m venv .sdem-next && .sdem-next/bin/pip install "sdem @ git+https://github.com/taumoeps/bian-sdem-framework@v0.21.12"\n'
                                         '  .sdem-next/bin/sdem upgrade check --root workspaces')
     sub = ap.add_subparsers(dest='cmd', required=True)
     c = sub.add_parser('check', help='what upgrading to this version means for your workspaces: migrations, profile, deprecations, agent files, actions — writes nothing')

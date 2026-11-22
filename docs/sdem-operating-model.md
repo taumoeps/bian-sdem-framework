@@ -1,6 +1,6 @@
 # SDEM operating model — running SDEM for real
 
-> **Status: current (v0.21.11)**. How an organisation runs SDEM on real architecture data: where things live, who does what, how changes, upgrades and metamodel changes flow, support, and what has to be true before starting. The pilot that tests it: [`sdem-pilot-plan.md`](sdem-pilot-plan.md).
+> **Status: current (v0.21.12)**. How an organisation runs SDEM on real architecture data: where things live, who does what, how changes, upgrades and metamodel changes flow, support, and what has to be true before starting. The pilot that tests it: [`sdem-pilot-plan.md`](sdem-pilot-plan.md).
 
 ## 1. Where things live
 

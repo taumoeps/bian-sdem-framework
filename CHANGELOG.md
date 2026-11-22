@@ -2,6 +2,10 @@
 
 > Entries before 0.7.0 describe the project under its former name, **SDMM (BIAN Service Domain Mapping Model)**, and its former terms; they are kept as written.
 
+## 0.21.12 — a retired record apart in the document (2026-11-22)
+
+- **`sdem document` describes a retired record apart, as history**: the sections, the summary's counts and the gaps are of the design's live records; each retired record — and the connections it had — is in a closing section *Retired — no longer part of the design*; a live record's connection to a retired one says so. Like `sdem trace GAPS`, the completeness count and `sdem model integrity`, a retired record has left the design. A layer with nothing retired reads exactly as before (BX-31, tested). DESNRE's Raw Document and each layer's document follow.
+
 ## 0.21.11 — each graph's details (2026-11-22)
 
 - **`sdem model integrity --graph` gives the graph store's details** (`store`): SDEM's own build of the design — each graph's file with its nodes and edges and fingerprint, the file it was built from (its model id and version, its fingerprint), and the build's number, time, result and findings; the federated graph's too, built from the registry and the graphs. Retired records stay in the store as history; the details say how many. DESNRE's Knowledge Graph tab shows each graph's details in its section, always visible.

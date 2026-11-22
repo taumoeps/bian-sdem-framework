@@ -94,7 +94,9 @@ def document(ws, layer):
     h = hashlib.sha256()
     for p in [files[l] for l in sorted(data)] + [x for x in (reg_path, req_path) if x.exists()]: h.update(p.read_bytes())
     names = {r['id']: r.get('name') or r['id'] for d in data.values() for r in d.get('instances', [])}
-    recs = data[layer].get('instances', []); rels = data[layer].get('relationships', [])
+    allrecs = data[layer].get('instances', []); rels = data[layer].get('relationships', [])
+    retired_ids = {r['id'] for d in data.values() for r in d.get('instances', []) if r.get('lifecycle_status') == 'retired'}
+    recs = [r for r in allrecs if r['id'] not in retired_ids]   # a retired record has left the design: described apart, as history
     mm = Metamodel.load()
     order = [t for t, e in mm.entities.items() if e.get('level') == layer]
     by_type = {}
@@ -115,11 +117,11 @@ def document(ws, layer):
             s, t = m['source']['id'], m['target']['id']
             if rid not in (s, t): continue
             other = t if s == rid else s
-            out.append({'relationship': m['relationship'], 'direction': 'out' if s == rid else 'in', 'id': other, 'name': names.get(other, other),
+            out.append({'relationship': m['relationship'], 'direction': 'out' if s == rid else 'in', 'id': other, 'name': names.get(other, other) + (' — retired' if other in retired_ids and rid not in retired_ids else ''),
                         'mapping_id': m.get('mapping_id'), 'status': m.get('status'), 'evidence': m.get('evidence', [])})
         return out
 
-    byid = {r['id']: r for r in recs}
+    byid = {r['id']: r for r in allrecs}
     def fields(rid):   # TL-02 (metamodel 0.15.0): a business object's or data entity's fields, as records — type, key, required, what it refers to
         out = []
         for x in rels:
@@ -160,10 +162,12 @@ def document(ws, layer):
                                'condition': q.get('condition'), 'evidence': q.get('evidence', [])})
             if q.get('status') != 'confirmed': gaps['requirements_not_confirmed'].append(q['id'])
     counts = {s['title']: len(s['records']) for s in sections}
+    retired = [{'id': r['id'], 'name': r.get('name') or r['id'], 'type': r['type'], 'kind': _label(r['type']), 'version': r.get('version'), 'description': r.get('description', ''),
+                'provenance': provenance(r), 'connections': connections(r['id'])} for r in allrecs if r['id'] in retired_ids]
     return {'layer': layer, 'title': LAYER_TITLES.get(layer) or _layer_title(layer), 'workspace': Path(ws).resolve().name, 'fingerprint': h.hexdigest()[:12],
-            'summary': {'records': len(recs), 'by_type': counts, 'unconfirmed': len(gaps['unconfirmed']),
+            'summary': {'records': len(recs), **({'retired': len(retired)} if retired else {}), 'by_type': counts, 'unconfirmed': len(gaps['unconfirmed']),
                         'with_approved_connection': len(recs) - len(gaps['no_connection'])},
-            'sections': sections, 'requirements': layer_reqs, 'gaps': gaps}
+            'sections': sections, 'requirements': layer_reqs, 'gaps': gaps, **({'retired': retired} if retired else {})}   # said only when there is one: earlier answers unchanged (BX-31)
 
 
 def _cond(c):
@@ -178,7 +182,7 @@ def markdown(doc):
          'nothing added, nothing decided. Gaps are listed at the end.', '']
     s = doc['summary']
     L += ['## Summary', '', f"{s['records']} records; {s['with_approved_connection']} with an approved connection to another layer; "
-          f"{s['unconfirmed']} inferred and not yet confirmed.", '']
+          f"{s['unconfirmed']} inferred and not yet confirmed." + (f" {s['retired']} retired — no longer part of the design, listed at the end." if s.get('retired') else ''), '']
     L += [f"- {t}: {n}" for t, n in s['by_type'].items()] + ['']
     for n, sec in enumerate(doc['sections'], 1):
         L += [f"## {n}. {sec['title']}", '']
@@ -217,6 +221,16 @@ def markdown(doc):
             ('Placeholder or empty values', '; '.join(f"{x['id']} ({', '.join(x['fields'])})" for x in g['placeholders'])),
             ('Requirements not confirmed', ', '.join(g['requirements_not_confirmed']))]
     L += [f"- **{k}:** {v}" for k, v in rows if v] or ['- none']
+    if doc.get('retired'):   # history: what left the design, and the links it had
+        L += ['', f"## {len(doc['sections']) + 3}. Retired — no longer part of the design", '', 'Kept as history: these records were retired by a recorded change; they are in no section, count or gap above.', '']
+        for r in doc['retired']:
+            L += [f"### {r['name']} ({r['id']}) — {r['kind']}", '']
+            if r['description']: L += [r['description'], '']
+            L += [f"- **Status:** version {r['version']}, retired" if r['version'] else '- **Status:** retired', f"- **Source:** {r['provenance']}"]
+            for c in r['connections']:
+                arrow = f"{c['relationship']} → {c['name']} ({c['id']})" if c['direction'] == 'out' else f"{c['name']} ({c['id']}) {c['relationship']} → this"
+                L.append(f"- **Connection it had ({c['status']}):** {arrow} — {c['mapping_id']}")
+            L.append('')
     return '\n'.join(L) + '\n'
 
 
