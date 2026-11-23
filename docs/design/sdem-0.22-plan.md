@@ -1,12 +1,12 @@
 # SDEM 0.22 — BIAN out of the core, and a new name (plan)
 
-> **Status: proposed (2026-11-23) — for the owner's approval.** The owner, 2026-11-23: *"I want BIAN separate and moved to the extensions library so it only has the base; rename this project as SDEM — Solution Domain Enterprise Model; update documentation to use extensions for expansion; documentation on BIAN moved out into the BIAN extension"*, and the decisions R-D1…R-D4 below. Backup branches `backup/before-bian-split-2026-11-23` in all three repositories. Builds on the [0.20 plan](sdem-0.20-plan.md) (BIAN an extension), [BIAN in its own package](sdem-bian-package-spec.md) (BP-…), the [extension contract](sdem-extensions-spec.md) (EXT-…), [metamodel extensions](sdem-metamodel-extensions-spec.md) (MX-…) and [metamodel stability](sdem-metamodel-stability.md) (MS-…).
+> **Status: approved (2026-11-23) — the owner: "approve" (R-D5…R-D10 as recommended).** The owner, 2026-11-23: *"I want BIAN separate and moved to the extensions library so it only has the base; rename this project as SDEM — Solution Domain Enterprise Model; update documentation to use extensions for expansion; documentation on BIAN moved out into the BIAN extension"*, and the decisions R-D1…R-D4 below. Backup branches `backup/before-bian-split-2026-11-23` in all three repositories. Builds on the [0.20 plan](sdem-0.20-plan.md) (BIAN an extension), [BIAN in its own package](sdem-bian-package-spec.md) (BP-…), the [extension contract](sdem-extensions-spec.md) (EXT-…), [metamodel extensions](sdem-metamodel-extensions-spec.md) (MX-…) and [metamodel stability](sdem-metamodel-stability.md) (MS-…).
 
 ## 1. Where 0.22 ends
 
 | | 0.21 (today) | **0.22** |
 |---|---|---|
-| Name | Service Domain Enterprise Metamodel | **Solution Domain Enterprise Model** (still SDEM; the command and package stay `sdem`) |
+| Name | Solution Domain Enterprise Model | **Solution Domain Enterprise Model** (still SDEM; the command and package stay `sdem`) |
 | Repository | `taumoeps/bian-sdem-framework` | **`taumoeps/sdem`** (GitHub redirects the old address) |
 | `pip install sdem` gives | the core **and** BIAN: its layer, 15 types, link types and rules, inference, `sdem bian`, the 258-domain catalogue, BIAN patterns, banking examples | **the core only**: Business, Data, Application, Technology — industry-neutral |
 | BIAN | built in, with `sdem-bian` (1.0.0.dev1) as an optional copy of its data | **only** in the extension `sdem-bian` 1.0.0, in `sdem-extensions/metamodel/bian` — its data, its code, its examples and its documentation |
@@ -25,7 +25,7 @@
 
 This reverses **BP-D3** (the built-in BIAN as a fallback for all of 0.20).
 
-## 3. Decisions for the owner
+## 3. Decisions approved (the owner, 2026-11-23: "approve" — each as recommended)
 
 | Id | Question | Recommendation |
 |---|---|---|

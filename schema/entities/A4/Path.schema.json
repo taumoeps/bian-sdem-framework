@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/taumoeps/bian-sdem-framework/schema/entities/A4/Path.schema.json",
+  "$id": "https://github.com/taumoeps/sdem/schema/entities/A4/Path.schema.json",
   "title": "A4.Path",
   "description": "A route between nodes",
   "type": "object",
@@ -19,7 +19,7 @@
       "x-sdem-source": {
         "standard": "SDEM architecture dataset schema",
         "locator": "schema/level-model.schema.json › instance.id; identity rules in docs/knowledge-graph-spec.md §4",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "x-sdem-reasoning": "Every relationship points at it; it must be unique in its level and never reused (knowledge-graph spec KG-I-01).",
       "x-sdem-confidence": "high"
@@ -33,7 +33,7 @@
       "x-sdem-source": {
         "standard": "SDEM architecture dataset schema",
         "locator": "schema/level-model.schema.json › instance.type",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "x-sdem-reasoning": "Ties the instance to the Architecture Metamodel; must be concrete and of the architecture dataset's level.",
       "x-sdem-confidence": "high"
@@ -45,7 +45,7 @@
       "x-sdem-source": {
         "standard": "SDEM architecture dataset schema",
         "locator": "schema/level-model.schema.json › instance.version",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "x-sdem-reasoning": "Relationship ends pin it, so an approved relationship refers to a known state.",
       "x-sdem-confidence": "high"
@@ -57,7 +57,7 @@
       "x-sdem-source": {
         "standard": "SDEM architecture dataset schema",
         "locator": "schema/level-model.schema.json › instance.name; identity rules in docs/knowledge-graph-spec.md §4",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "x-sdem-reasoning": "Shown in traces; a rename changes the name, never the id.",
       "x-sdem-confidence": "high"
@@ -73,7 +73,7 @@
       "x-sdem-source": {
         "standard": "SDEM architecture dataset schema",
         "locator": "schema/level-model.schema.json › instance.lifecycle_status",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "x-sdem-reasoning": "Lets retired things stay referable and planned (design) things be marked as such in traces.",
       "x-sdem-confidence": "high"
@@ -96,7 +96,7 @@
       "x-sdem-source": {
         "standard": "SDEM architecture dataset schema",
         "locator": "schema/level-model.schema.json › instance.description",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "x-sdem-reasoning": "Read by the step-5 text rule for capabilities and domains.",
       "x-sdem-confidence": "high"
@@ -107,7 +107,7 @@
       "x-sdem-source": {
         "standard": "SDEM architecture dataset schema",
         "locator": "schema/level-model.schema.json › instance.definition_uri",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "x-sdem-reasoning": "Points to the institution's or the standard's definition.",
       "x-sdem-confidence": "high"
@@ -309,7 +309,7 @@
           "x-sdem-source": {
             "standard": "SDEM-defined",
             "locator": "SDEM decision DA2-05 (owner, 2026-10-30)",
-            "uri": "https://github.com/taumoeps/bian-sdem-framework"
+            "uri": "https://github.com/taumoeps/sdem"
           },
           "x-sdem-reasoning": "AID writes the records a workspace is missing into its real layer files, so an architect works in one set of files. A record SDEM inferred must never be mistaken for one a person wrote or confirmed: the mark carries the source, reasoning and confidence, and stays — with who confirmed it — once a person agrees.",
           "x-sdem-confidence": "low"
@@ -323,7 +323,7 @@
           "x-sdem-source": {
             "standard": "SDEM-defined",
             "locator": "SDEM decision D4 (owner, 2026-11-09)",
-            "uri": "https://github.com/taumoeps/bian-sdem-framework"
+            "uri": "https://github.com/taumoeps/sdem"
           },
           "x-sdem-reasoning": "A record's source_id says where the record came from; a design often gives one fact in another section, or a second document gives it. Recording the source per attribute lets a reviewer check each value against its evidence, in the same dataset — no second store — and with the same `kind:ref` convention as source_id and the registry's evidence.",
           "x-sdem-confidence": "low"
@@ -337,7 +337,7 @@
           "x-sdem-source": {
             "standard": "SDEM-defined (no open standard)",
             "locator": "docs/design/sdem-network-zones-design.md (M2, M2b)",
-            "uri": "https://github.com/taumoeps/bian-sdem-framework"
+            "uri": "https://github.com/taumoeps/sdem"
           },
           "x-sdem-reasoning": "Answers: Which shapes are reached from the internet, and are they all in a DMZ?",
           "x-sdem-confidence": "low"
@@ -351,7 +351,7 @@
           "x-sdem-source": {
             "standard": "SDEM-defined (no open standard)",
             "locator": "docs/design/sdem-hosting-inference-design.md (§3, H6)",
-            "uri": "https://github.com/taumoeps/bian-sdem-framework"
+            "uri": "https://github.com/taumoeps/sdem"
           },
           "x-sdem-reasoning": "Answers: Where is it physically? Explicit evidence that a shape is on premises; beats name matching.",
           "x-sdem-confidence": "low"
@@ -365,7 +365,7 @@
           "x-sdem-source": {
             "standard": "SDEM-defined (no open standard)",
             "locator": "docs/design/sdem-hosting-inference-design.md (§3, H6)",
-            "uri": "https://github.com/taumoeps/bian-sdem-framework"
+            "uri": "https://github.com/taumoeps/sdem"
           },
           "x-sdem-reasoning": "Answers: Which provider is it on? Explicit evidence that a shape is in the cloud.",
           "x-sdem-confidence": "low"
@@ -379,7 +379,7 @@
           "x-sdem-source": {
             "standard": "SDEM-defined (no open standard)",
             "locator": "docs/design/sdem-hosting-inference-design.md (§3, H6)",
-            "uri": "https://github.com/taumoeps/bian-sdem-framework"
+            "uri": "https://github.com/taumoeps/sdem"
           },
           "x-sdem-reasoning": "Answers: Which region is it in? Explicit evidence that a shape is in the cloud.",
           "x-sdem-confidence": "low"
@@ -469,7 +469,7 @@
           "x-sdem-source": {
             "standard": "SDEM",
             "locator": "SDEM join key for rule S38; validated in use case C3 — docs/relationship-rules-spec.md",
-            "uri": "https://github.com/taumoeps/bian-sdem-framework"
+            "uri": "https://github.com/taumoeps/sdem"
           },
           "x-sdem-reasoning": "No standard field; SDEM's key for S38.",
           "x-sdem-confidence": "medium"
@@ -497,7 +497,7 @@
           "x-sdem-source": {
             "standard": "SDEM-defined",
             "locator": "SDEM decision DA4-16 (A4 data-model review, 2026-10-25)",
-            "uri": "https://github.com/taumoeps/bian-sdem-framework"
+            "uri": "https://github.com/taumoeps/sdem"
           },
           "x-sdem-reasoning": "Answers: Which connections carry unencrypted traffic? A standard security question; no open standard defines the field.",
           "x-sdem-confidence": "low"

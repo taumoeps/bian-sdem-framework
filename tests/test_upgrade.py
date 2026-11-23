@@ -65,7 +65,7 @@ class UpgradeCheckTests(unittest.TestCase):
         """A repository as an architect has it on SDEM 0.14.0: pinned, two workspaces on metamodel 0.7.0, a team change to AGENTS.md."""
         self.tmp = Path(tempfile.mkdtemp()); self.repo = r = self.tmp / 'repo'; r.mkdir()
         sdem('agents', 'install', '--to', r, cwd=self.tmp)
-        (r / 'requirements.txt').write_text('sdem @ git+https://github.com/taumoeps/bian-sdem-framework@v0.14.0\n')
+        (r / 'requirements.txt').write_text('sdem @ git+https://github.com/taumoeps/sdem@v0.14.0\n')
         for w in ('payments', 'cards'): sdem('new', '--workspace', r / 'workspaces' / w, '--person', 'steven', '--example', 'payment-initiation', cwd=self.tmp)
         for f in (r / 'workspaces').glob('*/*.json'):
             d = json.loads(f.read_text())

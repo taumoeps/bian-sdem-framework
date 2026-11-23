@@ -6,7 +6,7 @@
 
 ```
 SDEM (the product)                               your workspace repository (private — never shared)
-github.com/…/bian-sdem-framework                 ├── requirements.txt    pins "sdem @ …@v0.17.0"
+github.com/…/sdem                 ├── requirements.txt    pins "sdem @ …@v0.17.0"
   tagged releases                ── pip ──▶       ├── sdem-profile.json   your types, rules, layers, names, requires_sdem
                                                  ├── standards/, patterns/  your standards and reference architectures (PR-13, PR-17)
   (downloaded; nothing uploaded)                 ├── governance.json, .github/, AGENTS.md (your agents, CI)

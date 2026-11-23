@@ -9,8 +9,9 @@ import re
 
 # (pattern, replacement) — regular expressions, applied in order
 TERMS = [
-    (r'\bBIAN Service Domain Mapping Model\b', 'Service Domain Enterprise Metamodel'),
-    (r'\bService Domain Mapping Model\b', 'Service Domain Enterprise Metamodel'),
+    (r'\bService Domain Enterprise Metamodel\b', 'Solution Domain Enterprise Model'),   # 0.22: the project's name (R-D1)
+    (r'\bBIAN Service Domain Mapping Model\b', 'Solution Domain Enterprise Model'),
+    (r'\bService Domain Mapping Model\b', 'Solution Domain Enterprise Model'),
     (r'\bSDMM\b', 'SDEM'),
     # the nine relationship types: "registry" → relationship type catalogue
     (r'\bnine registry relationships\b', 'nine catalogued relationship types'),

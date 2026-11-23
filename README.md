@@ -1,10 +1,10 @@
-# SDEM — Service Domain Enterprise Metamodel
+# SDEM — Solution Domain Enterprise Model
 
 **Design solution architecture as version-controlled data — business, BIAN service domains, data, applications and technology in one checked model — and trace any requirement down to the server that runs it, or any server up to the requirements that depend on it.**
 
-[![CI](https://github.com/taumoeps/bian-sdem-framework/actions/workflows/validate.yml/badge.svg?branch=main)](https://github.com/taumoeps/bian-sdem-framework/actions/workflows/validate.yml)
-[![Release](https://img.shields.io/github/v/release/taumoeps/bian-sdem-framework?label=release)](https://github.com/taumoeps/bian-sdem-framework/releases/latest)
-[![Licence](https://img.shields.io/github/license/taumoeps/bian-sdem-framework)](LICENSE)
+[![CI](https://github.com/taumoeps/sdem/actions/workflows/validate.yml/badge.svg?branch=main)](https://github.com/taumoeps/sdem/actions/workflows/validate.yml)
+[![Release](https://img.shields.io/github/v/release/taumoeps/sdem?label=release)](https://github.com/taumoeps/sdem/releases/latest)
+[![Licence](https://img.shields.io/github/license/taumoeps/sdem)](LICENSE)
 [![Python](https://img.shields.io/badge/python-3.10%2B-blue)](pyproject.toml)
 [![Dependencies](https://img.shields.io/badge/dependencies-none-brightgreen)](pyproject.toml)
 
@@ -33,7 +33,7 @@
 ```bash
 mkdir my-sdem && cd my-sdem
 python3 -m venv .venv && source .venv/bin/activate          # Windows PowerShell: .venv\Scripts\Activate.ps1
-python -m pip install "sdem @ git+https://github.com/taumoeps/bian-sdem-framework@v0.21.14"
+python -m pip install "sdem @ git+https://github.com/taumoeps/sdem@v0.21.14"
 sdem --version
 ```
 

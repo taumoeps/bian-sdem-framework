@@ -66,7 +66,7 @@ flowchart BT
         G5["<b>A5 knowledge graph</b><br/>records + links inside A5"]
         F["<b>Federated knowledge graph</b><br/>the approved connections<br/>that join the layers"]
     end
-    MM["📘 <b>Service Domain Enterprise Metamodel</b><br/>kinds of record: core 35 · BIAN extension 15<br/>links inside a layer: 164 rules · between layers: 36 link types"]
+    MM["📘 <b>Solution Domain Enterprise Model</b><br/>kinds of record: core 35 · BIAN extension 15<br/>links inside a layer: 164 rules · between layers: 36 link types"]
     E1 --> G1
     E2 --> G2
     E3 --> G3
@@ -112,7 +112,7 @@ flowchart BT
         G5["<b>A5 knowledge graph</b><br/>records + links inside A5"]
         F["<b>Federated knowledge graph</b><br/>the approved connections<br/>that join the layers"]
     end
-    MM["📘 <b>Service Domain Enterprise Metamodel</b><br/>kinds of record: core 35 · BIAN extension 15<br/>links inside a layer: 164 rules · between layers: 36 link types"]
+    MM["📘 <b>Solution Domain Enterprise Model</b><br/>kinds of record: core 35 · BIAN extension 15<br/>links inside a layer: 164 rules · between layers: 36 link types"]
     CLI["⚙️ <b>sdem CLI</b> — the package you install<br/>includes the metamodel and the BIAN catalogue<br/>① design · ② validate · ③ connect · ④ build · ⑤ analyse · ⑥ govern"]
     E1 --> G1
     E2 --> G2
@@ -169,7 +169,7 @@ flowchart BT
         G5["<b>A5 knowledge graph</b><br/>records + links inside A5"]
         F["<b>Federated knowledge graph</b><br/>the approved connections<br/>that join the layers"]
     end
-    MM["📘 <b>Service Domain Enterprise Metamodel</b><br/>kinds of record: core 35 · BIAN extension 15<br/>links inside a layer: 164 rules · between layers: 36 link types"]
+    MM["📘 <b>Solution Domain Enterprise Model</b><br/>kinds of record: core 35 · BIAN extension 15<br/>links inside a layer: 164 rules · between layers: 36 link types"]
     CLI["⚙️ <b>sdem CLI</b> — the package you install<br/>includes the metamodel and the BIAN catalogue<br/>① design · ② validate · ③ connect · ④ build · ⑤ analyse · ⑥ govern"]
     subgraph AG["🤖 AI agents — optional, they use only the CLI"]
         O["🧭 <b>Coordinator</b><br/>plans · changes no layer"]

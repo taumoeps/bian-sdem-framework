@@ -13,4 +13,4 @@ workspaces/
 
 Start a workspace by onboarding designs (`sdem transform` → `sdem load --workspace workspaces/<domain>`), or by copying your datasets in with an empty registry. CI checks every folder here that has a `mappings.json`.
 
-The same list, with what writes each file and what may be edited by hand: SDEM's [architecture — inside a workspace](https://github.com/taumoeps/bian-sdem-framework/blob/main/docs/sdem-architecture.md#inside-a-workspace).
+The same list, with what writes each file and what may be edited by hand: SDEM's [architecture — inside a workspace](https://github.com/taumoeps/sdem/blob/main/docs/sdem-architecture.md#inside-a-workspace).

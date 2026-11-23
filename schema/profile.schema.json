@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/taumoeps/bian-sdem-framework/schema/profile.schema.json",
+  "$id": "https://github.com/taumoeps/sdem/schema/profile.schema.json",
   "title": "SDEM organisation profile (sdem-profile.json)",
   "description": "An organisation's own design specification on top of SDEM's metamodel (docs/design/sdem-profile-spec.md): types extending SDEM's, attributes, rules, within-layer link kinds and names. A profile adds; it never removes or redefines SDEM's own types, link types or rules.",
   "type": "object",

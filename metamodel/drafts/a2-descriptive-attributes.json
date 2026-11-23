@@ -20,7 +20,7 @@
       "question": "Which BIAN Service Domains are we adopting, and how far?",
       "source": "SDEM-defined",
       "term": "—",
-      "uri": "https://github.com/taumoeps/bian-sdem-framework",
+      "uri": "https://github.com/taumoeps/sdem",
       "reasoning": "Realisation links show whether an application implements a Service Domain today, not the intended adoption. No standard defines the values. Approved: the only record of intended (not current) adoption.",
       "confidence": "low",
       "status": "approved"
@@ -40,7 +40,7 @@
       "question": "Which Service Domains are most critical for resilience and impact?",
       "source": "SDEM-defined",
       "term": "—",
-      "uri": "https://github.com/taumoeps/bian-sdem-framework",
+      "uri": "https://github.com/taumoeps/sdem",
       "reasoning": "Same values as process criticality so impact queries can rank both levels the same way. No open standard defines criticality values.",
       "confidence": "low",
       "status": "dropped"

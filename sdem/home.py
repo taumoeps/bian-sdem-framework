@@ -383,7 +383,7 @@ main.wide{max-width:none;padding:12px 16px}
 @media (max-width:900px){.split>.side.fit{flex:1 1 100%;position:static;max-height:none}}
 @media print{header nav,.tool,#theme{display:none}section{display:block!important}section+section{page-break-before:always}.scroll,.pic,.side{max-height:none;overflow:visible}}
 </style></head><body>
-<header><div class="top"><div><h1>SDEM — Service Domain Enterprise Metamodel</h1><div class="muted" id="sub"></div></div>
+<header><div class="top"><div><h1>SDEM — Solution Domain Enterprise Model</h1><div class="muted" id="sub"></div></div>
 <div class="tool"><button id="theme" aria-label="Toggle light or dark">◐ theme</button><button onclick="window.print()">print</button></div></div><nav role="tablist" id="tabs"></nav></header>
 <main id="main"></main>
 <script>

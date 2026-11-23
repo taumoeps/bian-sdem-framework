@@ -30,12 +30,12 @@ To start a workspace: onboard designs into a new folder (`sdem load … --worksp
 The workspace repository installs one **released** version of SDEM, named in `requirements.txt`:
 
 ```
-sdem @ git+https://github.com/taumoeps/bian-sdem-framework@v0.21.14
+sdem @ git+https://github.com/taumoeps/sdem@v0.21.14
 ```
 
 Never point it at `main`. If your network cannot reach GitHub, mirror the SDEM repository internally and point the line at the mirror.
 
-**Stricter pinning.** A Git tag can, in principle, be moved; a commit cannot. If your security policy asks for it, pin the release's commit instead of its tag — `sdem @ git+https://github.com/taumoeps/bian-sdem-framework@<commit hash of the release>` (find it with `git rev-parse v0.18.0^{commit}` in a clone) — or install from your internal mirror. Security fixes are made in new releases only ([SECURITY.md](../SECURITY.md#supported-versions)), so a pinned workspace gets them by upgrading. Changing the version: [Administration — upgrading](sdem-administration.md#upgrading-sdem).
+**Stricter pinning.** A Git tag can, in principle, be moved; a commit cannot. If your security policy asks for it, pin the release's commit instead of its tag — `sdem @ git+https://github.com/taumoeps/sdem@<commit hash of the release>` (find it with `git rev-parse v0.18.0^{commit}` in a clone) — or install from your internal mirror. Security fixes are made in new releases only ([SECURITY.md](../SECURITY.md#supported-versions)), so a pinned workspace gets them by upgrading. Changing the version: [Administration — upgrading](sdem-administration.md#upgrading-sdem).
 
 ## Onboarding — reading your designs
 

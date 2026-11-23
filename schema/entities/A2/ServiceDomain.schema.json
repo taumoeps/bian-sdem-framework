@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/taumoeps/bian-sdem-framework/schema/entities/A2/ServiceDomain.schema.json",
+  "$id": "https://github.com/taumoeps/sdem/schema/entities/A2/ServiceDomain.schema.json",
   "title": "A2.ServiceDomain",
   "description": "A discrete functional scope of the bank and its responsibilities",
   "type": "object",
@@ -20,7 +20,7 @@
       "x-sdem-source": {
         "standard": "SDEM architecture dataset schema",
         "locator": "schema/level-model.schema.json › instance.id; identity rules in docs/knowledge-graph-spec.md §4",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "x-sdem-reasoning": "Every relationship points at it; it must be unique in its level and never reused (knowledge-graph spec KG-I-01).",
       "x-sdem-confidence": "high"
@@ -34,7 +34,7 @@
       "x-sdem-source": {
         "standard": "SDEM architecture dataset schema",
         "locator": "schema/level-model.schema.json › instance.type",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "x-sdem-reasoning": "Ties the instance to the Architecture Metamodel; must be concrete and of the architecture dataset's level.",
       "x-sdem-confidence": "high"
@@ -46,7 +46,7 @@
       "x-sdem-source": {
         "standard": "SDEM architecture dataset schema",
         "locator": "schema/level-model.schema.json › instance.version",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "x-sdem-reasoning": "Relationship ends pin it, so an approved relationship refers to a known state.",
       "x-sdem-confidence": "high"
@@ -58,7 +58,7 @@
       "x-sdem-source": {
         "standard": "SDEM architecture dataset schema",
         "locator": "schema/level-model.schema.json › instance.name; identity rules in docs/knowledge-graph-spec.md §4",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "x-sdem-reasoning": "Shown in traces; a rename changes the name, never the id.",
       "x-sdem-confidence": "high"
@@ -74,7 +74,7 @@
       "x-sdem-source": {
         "standard": "SDEM architecture dataset schema",
         "locator": "schema/level-model.schema.json › instance.lifecycle_status",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "x-sdem-reasoning": "Lets retired things stay referable and planned (design) things be marked as such in traces.",
       "x-sdem-confidence": "high"
@@ -97,7 +97,7 @@
       "x-sdem-source": {
         "standard": "SDEM architecture dataset schema",
         "locator": "schema/level-model.schema.json › instance.description",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "x-sdem-reasoning": "Read by the step-5 text rule for capabilities and domains.",
       "x-sdem-confidence": "high"
@@ -108,7 +108,7 @@
       "x-sdem-source": {
         "standard": "SDEM architecture dataset schema",
         "locator": "schema/level-model.schema.json › instance.definition_uri",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "x-sdem-reasoning": "Points to the institution's or the standard's definition.",
       "x-sdem-confidence": "high"
@@ -330,7 +330,7 @@
           "x-sdem-source": {
             "standard": "SDEM-defined",
             "locator": "SDEM decision DA2-05 (owner, 2026-10-30)",
-            "uri": "https://github.com/taumoeps/bian-sdem-framework"
+            "uri": "https://github.com/taumoeps/sdem"
           },
           "x-sdem-reasoning": "AID writes the records a workspace is missing into its real layer files, so an architect works in one set of files. A record SDEM inferred must never be mistaken for one a person wrote or confirmed: the mark carries the source, reasoning and confidence, and stays — with who confirmed it — once a person agrees.",
           "x-sdem-confidence": "low"
@@ -344,7 +344,7 @@
           "x-sdem-source": {
             "standard": "SDEM-defined",
             "locator": "SDEM decision D4 (owner, 2026-11-09)",
-            "uri": "https://github.com/taumoeps/bian-sdem-framework"
+            "uri": "https://github.com/taumoeps/sdem"
           },
           "x-sdem-reasoning": "A record's source_id says where the record came from; a design often gives one fact in another section, or a second document gives it. Recording the source per attribute lets a reviewer check each value against its evidence, in the same dataset — no second store — and with the same `kind:ref` convention as source_id and the registry's evidence.",
           "x-sdem-confidence": "low"
@@ -398,7 +398,7 @@
           "x-sdem-source": {
             "standard": "SDEM-defined",
             "locator": "SDEM decision DA2-01 (A2 data-model review, 2026-10-24)",
-            "uri": "https://github.com/taumoeps/bian-sdem-framework"
+            "uri": "https://github.com/taumoeps/sdem"
           },
           "x-sdem-reasoning": "Answers: Which BIAN Service Domains are we adopting, and how far? Realisation links show whether an application implements a Service Domain today, not the intended adoption. No standard defines the values. Approved: the only record of intended (not current) adoption.",
           "x-sdem-confidence": "low"
@@ -418,7 +418,7 @@
           "x-sdem-source": {
             "standard": "SDEM-defined",
             "locator": "SDEM decision DA2-02 (owner, 2026-10-30)",
-            "uri": "https://github.com/taumoeps/bian-sdem-framework"
+            "uri": "https://github.com/taumoeps/sdem"
           },
           "x-sdem-reasoning": "BIAN's public Semantic API files do not state a service domain's asset type and functional pattern. SDEM derives them from the control record's name (BIAN Semantic API Practitioner Guide v8.1 §3.2.1, Figure 9) where that works, takes them from a person otherwise, and records which — so a value nobody has confirmed is never mistaken for a confirmed one, and a domain whose values are unknown can still be used.",
           "x-sdem-confidence": "low"
@@ -432,7 +432,7 @@
           "x-sdem-source": {
             "standard": "SDEM-defined",
             "locator": "SDEM decision DA2-03 (owner, 2026-10-30)",
-            "uri": "https://github.com/taumoeps/bian-sdem-framework"
+            "uri": "https://github.com/taumoeps/sdem"
           },
           "x-sdem-reasoning": "An inferred value must stay traceable: from a record in a workspace to the inference entry with its sources, reasoning, confidence, status and history — so an architect can check it, challenge it or change it later (bian/inferences-<release>.json).",
           "x-sdem-confidence": "low"

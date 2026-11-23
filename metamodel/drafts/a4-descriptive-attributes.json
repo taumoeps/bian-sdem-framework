@@ -21,7 +21,7 @@
       "question": "Which deployments are production, and which are not?",
       "source": "SDEM-defined",
       "term": "—",
-      "uri": "https://github.com/taumoeps/bian-sdem-framework",
+      "uri": "https://github.com/taumoeps/sdem",
       "reasoning": "The first filter on any deployment question. No open standard defines environment kinds.",
       "confidence": "low",
       "status": "approved"
@@ -128,7 +128,7 @@
       "question": "Which hardware is out of support, or soon will be?",
       "source": "SDEM-defined",
       "term": "—",
-      "uri": "https://github.com/taumoeps/bian-sdem-framework",
+      "uri": "https://github.com/taumoeps/sdem",
       "reasoning": "The technical-debt question; the date comes from the supplier, the field is SDEM's.",
       "confidence": "low",
       "status": "approved"
@@ -188,7 +188,7 @@
       "question": "Which platform software is out of support, or soon will be?",
       "source": "SDEM-defined",
       "term": "—",
-      "uri": "https://github.com/taumoeps/bian-sdem-framework",
+      "uri": "https://github.com/taumoeps/sdem",
       "reasoning": "Same as for devices.",
       "confidence": "low",
       "status": "approved"
@@ -263,7 +263,7 @@
       "question": "Which connections carry unencrypted traffic?",
       "source": "SDEM-defined",
       "term": "—",
-      "uri": "https://github.com/taumoeps/bian-sdem-framework",
+      "uri": "https://github.com/taumoeps/sdem",
       "reasoning": "A standard security question; no open standard defines the field.",
       "confidence": "low",
       "status": "approved"

@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/taumoeps/bian-sdem-framework/schema/requirements.schema.json",
+  "$id": "https://github.com/taumoeps/sdem/schema/requirements.schema.json",
   "title": "SDEM requirements registry (requirements.json)",
   "description": "A workspace's governed requirements and constraints, and the measurements that evaluate them (docs/design/sdem-requirements-risk-spec.md, RR-D01…D06). A requirement has a subject — the record it is about — and may be allocated to records that contribute to it; it is evaluated only on its subject.",
   "type": "object",

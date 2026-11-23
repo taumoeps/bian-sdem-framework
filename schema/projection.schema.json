@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/taumoeps/bian-sdem-framework/schema/projection.schema.json",
+  "$id": "https://github.com/taumoeps/sdem/schema/projection.schema.json",
   "title": "SDEM projection package (Architecture Inference Design)",
   "description": "A projected design made by AID (docs/aid-spec.md AID-O01…O05): metadata, one projected dataset per projected layer, and the projected links. Never real architecture data (CTL-16); every element carries its provenance and is at most medium confidence (CTL-17).",
   "type": "object",

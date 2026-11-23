@@ -23,7 +23,7 @@ Every organisation describes its architecture in four separate places, usually k
 
 The hard questions cross all four: *Which applications support this capability? What breaks if we move this cluster? What would a new business design need underneath?* Nobody can answer them if the four architectures are not **linked**.
 
-**SDEM — the Service Domain Enterprise Metamodel — links them**, with BIAN in the middle as the common language:
+**SDEM — the Solution Domain Enterprise Model — links them**, with BIAN in the middle as the common language:
 
 ```
  A1 Business ──uses / supported by──► A2 BIAN service domains ──realised / implemented by──► A3 Applications ──deployed on / as──► A4 Technology
@@ -71,10 +71,10 @@ Then:
 
 1. **Get the SDEM project** (the tool and the made-up examples — public):
    ```bash
-   git clone https://github.com/taumoeps/bian-sdem-framework.git && cd bian-sdem-framework
+   git clone https://github.com/taumoeps/sdem.git && cd sdem
    ```
    Your organisation's **real** data is in its private workspace repository, set up from [`templates/workspace-repo`](../templates/workspace-repo/README.md) — its README installs SDEM the same way, pinned to a release.
-2. **Open it in VS Code:** *File → Open Folder…* → choose the `bian-sdem-framework` folder. When VS Code offers to install the **recommended extensions** (Python, GitHub Copilot Chat, Markdown Preview Mermaid Support), accept.
+2. **Open it in VS Code:** *File → Open Folder…* → choose the `sdem` folder. When VS Code offers to install the **recommended extensions** (Python, GitHub Copilot Chat, Markdown Preview Mermaid Support), accept.
 3. **Open the terminal pane:** *View → Terminal* (shortcut **Ctrl+`**).
 4. **Find your Python 3.10 or later.** `python3 --version` — if it says 3.10 or later, use `python3` below. If it says 3.9, or `python3.13` gives *command not found* after you installed it, it is in Homebrew's folder:
    ```bash
@@ -917,7 +917,7 @@ sdem view --graph workspaces/payments-phaseb/graph && sdem dashboard --workspace
 **Not every upgrade needs a migration.** A patch release (e.g. 0.16.0 → 0.16.1) never changes the metamodel; a minor one may — and says so. To find out for your workspaces, before switching, run the new version side by side (read-only):
 
 ```bash
-python3 -m venv .sdem-next && .sdem-next/bin/pip install "sdem @ git+https://github.com/taumoeps/bian-sdem-framework@v<new>"
+python3 -m venv .sdem-next && .sdem-next/bin/pip install "sdem @ git+https://github.com/taumoeps/sdem@v<new>"
 .sdem-next/bin/sdem upgrade check                     # per workspace: ready, migrate or blocked — and the steps
 .sdem-next/bin/sdem releases --since <the version you use>
 ```

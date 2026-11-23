@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/taumoeps/bian-sdem-framework/schema/entities/A3/DataEntity.schema.json",
+  "$id": "https://github.com/taumoeps/sdem/schema/entities/A3/DataEntity.schema.json",
   "title": "A3.DataEntity",
   "description": "A logical data entity held by an application",
   "type": "object",
@@ -20,7 +20,7 @@
       "x-sdem-source": {
         "standard": "SDEM architecture dataset schema",
         "locator": "schema/level-model.schema.json › instance.id; identity rules in docs/knowledge-graph-spec.md §4",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "x-sdem-reasoning": "Every relationship points at it; it must be unique in its level and never reused (knowledge-graph spec KG-I-01).",
       "x-sdem-confidence": "high"
@@ -34,7 +34,7 @@
       "x-sdem-source": {
         "standard": "SDEM architecture dataset schema",
         "locator": "schema/level-model.schema.json › instance.type",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "x-sdem-reasoning": "Ties the instance to the Architecture Metamodel; must be concrete and of the architecture dataset's level.",
       "x-sdem-confidence": "high"
@@ -46,7 +46,7 @@
       "x-sdem-source": {
         "standard": "SDEM architecture dataset schema",
         "locator": "schema/level-model.schema.json › instance.version",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "x-sdem-reasoning": "Relationship ends pin it, so an approved relationship refers to a known state.",
       "x-sdem-confidence": "high"
@@ -58,7 +58,7 @@
       "x-sdem-source": {
         "standard": "SDEM architecture dataset schema",
         "locator": "schema/level-model.schema.json › instance.name; identity rules in docs/knowledge-graph-spec.md §4",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "x-sdem-reasoning": "Shown in traces; a rename changes the name, never the id.",
       "x-sdem-confidence": "high"
@@ -74,7 +74,7 @@
       "x-sdem-source": {
         "standard": "SDEM architecture dataset schema",
         "locator": "schema/level-model.schema.json › instance.lifecycle_status",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "x-sdem-reasoning": "Lets retired things stay referable and planned (design) things be marked as such in traces.",
       "x-sdem-confidence": "high"
@@ -97,7 +97,7 @@
       "x-sdem-source": {
         "standard": "SDEM architecture dataset schema",
         "locator": "schema/level-model.schema.json › instance.description",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "x-sdem-reasoning": "Read by the step-5 text rule for capabilities and domains.",
       "x-sdem-confidence": "high"
@@ -108,7 +108,7 @@
       "x-sdem-source": {
         "standard": "SDEM architecture dataset schema",
         "locator": "schema/level-model.schema.json › instance.definition_uri",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "x-sdem-reasoning": "Points to the institution's or the standard's definition.",
       "x-sdem-confidence": "high"
@@ -313,7 +313,7 @@
           "x-sdem-source": {
             "standard": "SDEM-defined",
             "locator": "SDEM decision DA2-05 (owner, 2026-10-30)",
-            "uri": "https://github.com/taumoeps/bian-sdem-framework"
+            "uri": "https://github.com/taumoeps/sdem"
           },
           "x-sdem-reasoning": "AID writes the records a workspace is missing into its real layer files, so an architect works in one set of files. A record SDEM inferred must never be mistaken for one a person wrote or confirmed: the mark carries the source, reasoning and confidence, and stays — with who confirmed it — once a person agrees.",
           "x-sdem-confidence": "low"
@@ -327,7 +327,7 @@
           "x-sdem-source": {
             "standard": "SDEM-defined",
             "locator": "SDEM decision D4 (owner, 2026-11-09)",
-            "uri": "https://github.com/taumoeps/bian-sdem-framework"
+            "uri": "https://github.com/taumoeps/sdem"
           },
           "x-sdem-reasoning": "A record's source_id says where the record came from; a design often gives one fact in another section, or a second document gives it. Recording the source per attribute lets a reviewer check each value against its evidence, in the same dataset — no second store — and with the same `kind:ref` convention as source_id and the registry's evidence.",
           "x-sdem-confidence": "low"
@@ -344,7 +344,7 @@
           "x-sdem-source": {
             "standard": "SDEM",
             "locator": "SDEM field for rules S20, S30, S31 (attribute match to BIAN objects); validated in use cases M1, H1, H2, C2 — docs/relationship-rules-spec.md",
-            "uri": "https://github.com/taumoeps/bian-sdem-framework"
+            "uri": "https://github.com/taumoeps/sdem"
           },
           "x-sdem-reasoning": "ArchiMate's data object has no attributes; SDEM records columns so tables can be matched to BIAN control records and business objects. Built on a standard concept; the field list is SDEM's.",
           "x-sdem-confidence": "medium"
@@ -379,7 +379,7 @@
           "x-sdem-source": {
             "standard": "institution data (SDEM convention)",
             "locator": "SDEM alias convention; use case H2 run 2 finding 3 — docs/use-case-testing.md",
-            "uri": "https://github.com/taumoeps/bian-sdem-framework"
+            "uri": "https://github.com/taumoeps/sdem"
           },
           "x-sdem-reasoning": "Overrides the aliases inherited from the interfaces of components that access the entity.",
           "x-sdem-confidence": "medium"
@@ -421,7 +421,7 @@
           "x-sdem-source": {
             "standard": "SDEM-defined",
             "locator": "SDEM decision DA3-15 (A3 data-model review, 2026-10-25)",
-            "uri": "https://github.com/taumoeps/bian-sdem-framework"
+            "uri": "https://github.com/taumoeps/sdem"
           },
           "x-sdem-reasoning": "Answers: Where is the golden source of this data? A core data-architecture question; open standards do not define the field.",
           "x-sdem-confidence": "low"
@@ -435,7 +435,7 @@
           "x-sdem-source": {
             "standard": "SDEM-defined",
             "locator": "SDEM decision DA3-16 (A3 data-model review, 2026-10-25)",
-            "uri": "https://github.com/taumoeps/bian-sdem-framework"
+            "uri": "https://github.com/taumoeps/sdem"
           },
           "x-sdem-reasoning": "Answers: How long must we keep this data? Driven by law and policy that vary by bank and country; SDEM records the period only.",
           "x-sdem-confidence": "low"
@@ -453,7 +453,7 @@
           "x-sdem-source": {
             "standard": "SDEM-defined",
             "locator": "docs/design/sdem-data-architecture-spec.md (DAR-02)",
-            "uri": "https://github.com/taumoeps/bian-sdem-framework"
+            "uri": "https://github.com/taumoeps/sdem"
           },
           "x-sdem-reasoning": "DAR-02: who decides about this data — an attribute naming an A1 record, so nothing new to approve; a domain's owner is read by its entities that name none.",
           "x-sdem-confidence": "low"
@@ -471,7 +471,7 @@
           "x-sdem-source": {
             "standard": "SDEM-defined",
             "locator": "docs/design/sdem-data-architecture-spec.md (DAR-02)",
-            "uri": "https://github.com/taumoeps/bian-sdem-framework"
+            "uri": "https://github.com/taumoeps/sdem"
           },
           "x-sdem-reasoning": "DAR-02: who keeps the data correct — beside the owner.",
           "x-sdem-confidence": "low"

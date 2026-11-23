@@ -1,6 +1,6 @@
 # Architecture workspaces — private
 
-This repository holds **our real architecture data**, checked and built with a pinned release of [SDEM](https://github.com/taumoeps/bian-sdem-framework). It is **private**: SDEM itself is public and holds only made-up data; our data lives here and nowhere else.
+This repository holds **our real architecture data**, checked and built with a pinned release of [SDEM](https://github.com/taumoeps/sdem). It is **private**: SDEM itself is public and holds only made-up data; our data lives here and nowhere else.
 
 ```mermaid
 flowchart LR
@@ -15,7 +15,7 @@ flowchart LR
 1. **Create a private repository** in your organisation and copy this folder's contents into it (including the hidden `.github/`, `.gitignore` and `.vscode/`).
 2. **Pin SDEM**: `requirements.txt` names the release tag. Keep it on a released tag, never `main`. If your network cannot reach GitHub, mirror the SDEM repository internally and point the line at the mirror.
 3. **Name real reviewers** in `.github/CODEOWNERS` — people or teams, never a bot or an agent account.
-4. **Protect `main`** — after the checks have run once (open a first pull request): require a pull request; **1 approval** and **review from Code Owners**; dismiss stale approvals; require the status check **`check`** (shown as *Workspace checks / check* — not `validate`, which is SDEM's own); block force pushes and deletion; include administrators. Step by step, and how to test it: SDEM's [repository protection guide](https://github.com/taumoeps/bian-sdem-framework/blob/main/docs/sdem-repository-protection.md) §1–§4.
+4. **Protect `main`** — after the checks have run once (open a first pull request): require a pull request; **1 approval** and **review from Code Owners**; dismiss stale approvals; require the status check **`check`** (shown as *Workspace checks / check* — not `validate`, which is SDEM's own); block force pushes and deletion; include administrators. Step by step, and how to test it: SDEM's [repository protection guide](https://github.com/taumoeps/sdem/blob/main/docs/sdem-repository-protection.md) §1–§4.
 5. **Dashboards** — local HTML files for now; later, authenticated internal hosting only (see *Dashboards* below).
 6. **Copilot (optional)** — only if your organisation allows it; SDEM works without it. After step 2, in this repository: `sdem copilot install` — it writes SDEM's Copilot instructions, agents, prompts and skills into `.github/`, matching the SDEM version you pinned. Commit them.
 7. **Your BIAN catalogue — optional, later.** Every workspace chooses its service domains from a catalogue — the base BIAN that ships with SDEM, unless your in-house SDEM lead keeps **one shared catalogue** for the organisation (`sdem aid` and `sdem bian add` then choose from it):
@@ -23,7 +23,7 @@ flowchart LR
    sdem bian import --base --all -o bian/a2-service-domain.json     # or --only "<service domain>" … — see bian/README.md
    ```
    Confirm the report, commit `bian/`. To narrow one workspace instead: `sdem bian select --workspace workspaces/<domain> --only … --person <you>`. Choosing service domains, your own BIAN instead of the base, and keeping every workspace up to date (`sdem bian update`): [`bian/README.md`](bian/README.md).
-8. **Policies to confirm** before real designs come in: legal and IP clearance, Copilot (allowed or not), and reading text in pictures (OCR — allowed or `--ocr off`). The checklist: SDEM's [adoption checklist](https://github.com/taumoeps/bian-sdem-framework/blob/main/docs/sdem-adoption-checklist.md).
+8. **Policies to confirm** before real designs come in: legal and IP clearance, Copilot (allowed or not), and reading text in pictures (OCR — allowed or `--ocr off`). The checklist: SDEM's [adoption checklist](https://github.com/taumoeps/sdem/blob/main/docs/sdem-adoption-checklist.md).
 
 ## Every architect (once)
 
@@ -50,7 +50,7 @@ sdem connect <BIAN service domain> REALIZED_BY <application> --workspace workspa
     --reviewer <you> --evidence application_architecture_document:<doc> --rationale "<why>"     # a connection SDEM cannot see from the design
 git add workspaces/<domain> && git commit -m "Onboard <design> (LOAD-001)" && git push -u origin HEAD
 ```
-Open a pull request; CI runs the **Workspace checks**; a code owner reviews and merges. **Approvals become final when the pull request is merged.** Your BIAN layer is `bian/a2-service-domain.json` (set-up step 7; [what it is](https://github.com/taumoeps/bian-sdem-framework/blob/main/docs/sdem-onboarding-workflow.md#your-bian-a2-layer)). To practise first, the made-up sample export is in a clone of SDEM: `examples/designs/confluence-folder-export`. The full walk-through: SDEM's [onboarding workflow](https://github.com/taumoeps/bian-sdem-framework/blob/main/docs/sdem-onboarding-workflow.md) and [user guide](https://github.com/taumoeps/bian-sdem-framework/blob/main/docs/sdem-workbench-user-guide.md).
+Open a pull request; CI runs the **Workspace checks**; a code owner reviews and merges. **Approvals become final when the pull request is merged.** Your BIAN layer is `bian/a2-service-domain.json` (set-up step 7; [what it is](https://github.com/taumoeps/sdem/blob/main/docs/sdem-onboarding-workflow.md#your-bian-a2-layer)). To practise first, the made-up sample export is in a clone of SDEM: `examples/designs/confluence-folder-export`. The full walk-through: SDEM's [onboarding workflow](https://github.com/taumoeps/sdem/blob/main/docs/sdem-onboarding-workflow.md) and [user guide](https://github.com/taumoeps/sdem/blob/main/docs/sdem-workbench-user-guide.md).
 
 ## Adding a domain
 
@@ -80,7 +80,7 @@ They show real architecture. Publish them **only** behind your organisation's si
 0. **Before you switch**, with the new release installed side by side: `python -m venv .sdem-next && .sdem-next/bin/pip install "sdem @ git+…@v<new>"`, then `.sdem-next/bin/sdem upgrade check` — what it means for this repository (migrations, the profile, deprecations, agent files, the actions each release asks for); nothing is written. Never edit SDEM itself: customise in this repository.
 1. On a branch, change the tag in `requirements.txt` to the new release; read its CHANGELOG (or `sdem releases --since <the version you use>`).
 2. `pip install -r requirements.txt`, then `bash ci/check-workspaces.sh`.
-3. If SDEM says a workspace's `metamodel_version` does not match, the metamodel changed: `sdem migrate --workspace workspaces/<name> --person <you> --dry-run`, then without `--dry-run`. See SDEM's [metamodel versioning](https://github.com/taumoeps/bian-sdem-framework/blob/main/docs/design/sdem-metamodel-versioning.md).
+3. If SDEM says a workspace's `metamodel_version` does not match, the metamodel changed: `sdem migrate --workspace workspaces/<name> --person <you> --dry-run`, then without `--dry-run`. See SDEM's [metamodel versioning](https://github.com/taumoeps/sdem/blob/main/docs/design/sdem-metamodel-versioning.md).
 4. If you use Copilot: `sdem copilot install` — it updates the Copilot files to the new SDEM version and keeps any your team has changed (it lists them).
 5. Pull request; CI green; merge.
 

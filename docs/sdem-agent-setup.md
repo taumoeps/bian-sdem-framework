@@ -133,11 +133,11 @@ python3 -m venv .venv
 source .venv/bin/activate              # Windows PowerShell: .venv\Scripts\Activate.ps1
 ```
 
-**2. SDEM** — pin a release (the tags are on the [releases page](https://github.com/taumoeps/bian-sdem-framework/releases); never `main`):
+**2. SDEM** — pin a release (the tags are on the [releases page](https://github.com/taumoeps/sdem/releases); never `main`):
 
 ```bash
 pip install -r requirements.txt        # in a workspace repository (the pin is in the file)
-pip install "sdem @ git+https://github.com/taumoeps/bian-sdem-framework@vX.Y.Z"   # anywhere else (vX.Y.Z: the release tag you chose)
+pip install "sdem @ git+https://github.com/taumoeps/sdem@vX.Y.Z"   # anywhere else (vX.Y.Z: the release tag you chose)
 sdem --version
 sdem commands --json                   # what an agent can run
 ```

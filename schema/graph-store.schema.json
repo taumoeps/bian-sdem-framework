@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/taumoeps/bian-sdem-framework/schema/graph-store.schema.json",
+  "$id": "https://github.com/taumoeps/sdem/schema/graph-store.schema.json",
   "title": "SDEM graph store file (SDEM profile of JSON Graph Format v2)",
   "description": "One file of a local JSON graph store (docs/graph-store-spec.md). A valid file is also a valid JGF v2 document (single graph, edge variant); this profile only constrains what SDEM puts in metadata. Uses only keywords SDEM's built-in validator checks.",
   "type": "object",

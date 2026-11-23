@@ -1,6 +1,6 @@
 # SDEM — instructions for GitHub Copilot
 
-Architects here use **SDEM, the Service Domain Enterprise Metamodel**: it links an organisation's four architectures — A1 Business, A2 BIAN service domains, A3 Application, A4 Technology — under a metamodel, and keeps them as a knowledge graph. They run it from the VS Code terminal with the `sdem` command; you **support** them. Start with `docs/sdem-workbench-user-guide.md`.
+Architects here use **SDEM, the Solution Domain Enterprise Model**: it links an organisation's four architectures — A1 Business, A2 BIAN service domains, A3 Application, A4 Technology — under a metamodel, and keeps them as a knowledge graph. They run it from the VS Code terminal with the `sdem` command; you **support** them. Start with `docs/sdem-workbench-user-guide.md`.
 
 **Which repository this is.** In an **workspace repository** (the usual case), the architecture data is in `workspaces/<domain>/` — real, private data: never paste it outside the organisation's approved Copilot — and SDEM is installed (`sdem --version`). In the **SDEM project** itself, the data is the made-up examples in `examples/`.
 

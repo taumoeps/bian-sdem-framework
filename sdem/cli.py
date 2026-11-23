@@ -510,7 +510,7 @@ def _main(argv=None):
               '\n\nEvery subcommand takes --help with a worked example. Exit codes: 0 OK, 1 issues found, 2 usage or input error, 3 internal error.'
               '\nAG = agent platform (docs/sdem-agent-setup.md). The sdem-* commands (sdem-graph, sdem-infer, sdem-aid, …) remain as aliases.')
     ap = argparse.ArgumentParser(prog='sdem', usage='sdem <command> [options]', epilog=epilog, formatter_class=argparse.RawDescriptionHelpFormatter,
-                                 description="SDEM — Service Domain Enterprise Metamodel. SDEM's command line: run it in VS Code's terminal pane; "
+                                 description="SDEM — Solution Domain Enterprise Model. SDEM's command line: run it in VS Code's terminal pane; "
                                              'ask Copilot Chat to explain any output.')
     ap.add_argument('command', nargs='?', choices=list(JOURNEYS), metavar='command', help='one of the commands below')
     if not argv or argv[0] in ('-h', '--help'):

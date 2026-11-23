@@ -2,7 +2,7 @@
 
 **Status:** proposed UX design, implementation not yet performed  
 **Reference:** `sdem-workbench-v2-mockup.html`  
-**Target baseline:** [`taumoeps/bian-sdem-framework` tag `v0.18.0`](https://github.com/taumoeps/bian-sdem-framework/tree/v0.18.0)  
+**Target baseline:** [`taumoeps/bian-sdem-framework` tag `v0.18.0`](https://github.com/taumoeps/sdem/tree/v0.18.0)  
 **Scope:** user-friendliness and read-only presentation; **no change** to SDEM's metamodel semantics, CLI, data persistence, rules engine, approval boundaries or agent architecture.
 
 ## 1. Problem and intended experience

@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "sdem"
 version = "0.21.14"
-description = "Service Domain Enterprise Metamodel (SDEM): model-driven enterprise architecture metamodel, relationship registry and architecture knowledge graphs"
+description = "Solution Domain Enterprise Model (SDEM): model-driven enterprise architecture metamodel, relationship registry and architecture knowledge graphs"
 readme = "README.md"
 requires-python = ">=3.10"
 license = {text = "Apache-2.0"}
@@ -28,10 +28,10 @@ classifiers = [
 ]
 
 [project.urls]
-Repository = "https://github.com/taumoeps/bian-sdem-framework"
-Documentation = "https://github.com/taumoeps/bian-sdem-framework/blob/main/docs/README.md"
-Changelog = "https://github.com/taumoeps/bian-sdem-framework/blob/main/CHANGELOG.md"
-Issues = "https://github.com/taumoeps/bian-sdem-framework/issues"
+Repository = "https://github.com/taumoeps/sdem"
+Documentation = "https://github.com/taumoeps/sdem/blob/main/docs/README.md"
+Changelog = "https://github.com/taumoeps/sdem/blob/main/CHANGELOG.md"
+Issues = "https://github.com/taumoeps/sdem/issues"
 
 [project.scripts]
 sdem = "sdem.cli:main"

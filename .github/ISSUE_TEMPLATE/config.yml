@@ -1,8 +1,8 @@
 blank_issues_enabled: true
 contact_links:
   - name: Report a security problem privately
-    url: https://github.com/taumoeps/bian-sdem-framework/security/advisories/new
+    url: https://github.com/taumoeps/sdem/security/advisories/new
     about: Never in a public issue — see SECURITY.md
   - name: Documentation
-    url: https://github.com/taumoeps/bian-sdem-framework/blob/main/docs/README.md
+    url: https://github.com/taumoeps/sdem/blob/main/docs/README.md
     about: How SDEM works, the quick start, the CLI reference

@@ -117,7 +117,7 @@
       "question": "Which applications do we keep, invest in, replace or retire?",
       "source": "SDEM-defined",
       "term": "—",
-      "uri": "https://github.com/taumoeps/bian-sdem-framework",
+      "uri": "https://github.com/taumoeps/sdem",
       "reasoning": "The application-rationalisation question. Published classifications are proprietary, so SDEM defines its own plain values.",
       "confidence": "low",
       "status": "approved"
@@ -254,7 +254,7 @@
       "question": "Where is the golden source of this data?",
       "source": "SDEM-defined",
       "term": "—",
-      "uri": "https://github.com/taumoeps/bian-sdem-framework",
+      "uri": "https://github.com/taumoeps/sdem",
       "reasoning": "A core data-architecture question; open standards do not define the field.",
       "confidence": "low",
       "status": "approved"
@@ -269,7 +269,7 @@
       "question": "How long must we keep this data?",
       "source": "SDEM-defined",
       "term": "—",
-      "uri": "https://github.com/taumoeps/bian-sdem-framework",
+      "uri": "https://github.com/taumoeps/sdem",
       "reasoning": "Driven by law and policy that vary by bank and country; SDEM records the period only.",
       "confidence": "low",
       "status": "approved"

@@ -28,7 +28,7 @@
       "reference": {
         "standard": "SDEM architecture dataset schema",
         "locator": "schema/level-model.schema.json › instance.id; identity rules in docs/knowledge-graph-spec.md §4",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "confidence_basis": "SDEM data-contract field, defined authoritatively by SDEM"
     },
@@ -43,7 +43,7 @@
       "reference": {
         "standard": "SDEM architecture dataset schema",
         "locator": "schema/level-model.schema.json › instance.type",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "confidence_basis": "SDEM data-contract field, defined authoritatively by SDEM"
     },
@@ -58,7 +58,7 @@
       "reference": {
         "standard": "SDEM architecture dataset schema",
         "locator": "schema/level-model.schema.json › instance.version",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "confidence_basis": "SDEM data-contract field, defined authoritatively by SDEM"
     },
@@ -73,7 +73,7 @@
       "reference": {
         "standard": "SDEM architecture dataset schema",
         "locator": "schema/level-model.schema.json › instance.name; identity rules in docs/knowledge-graph-spec.md §4",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "confidence_basis": "SDEM data-contract field, defined authoritatively by SDEM"
     },
@@ -88,7 +88,7 @@
       "reference": {
         "standard": "SDEM architecture dataset schema",
         "locator": "schema/level-model.schema.json › instance.lifecycle_status",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "confidence_basis": "SDEM data-contract field, defined authoritatively by SDEM",
       "values": [
@@ -124,7 +124,7 @@
       "reference": {
         "standard": "SDEM architecture dataset schema",
         "locator": "schema/level-model.schema.json › instance.description",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "confidence_basis": "SDEM data-contract field, defined authoritatively by SDEM"
     },
@@ -139,7 +139,7 @@
       "reference": {
         "standard": "SDEM architecture dataset schema",
         "locator": "schema/level-model.schema.json › instance.definition_uri",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "confidence_basis": "SDEM data-contract field, defined authoritatively by SDEM"
     },
@@ -154,7 +154,7 @@
       "reference": {
         "standard": "SDEM architecture dataset schema",
         "locator": "schema/level-model.schema.json › instance.attributes",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "confidence_basis": "SDEM data-contract field, defined authoritatively by SDEM"
     }
@@ -247,7 +247,7 @@
       "reference": {
         "standard": "SDEM",
         "locator": "SDEM rule S09 (business service ↔ operation by inputs and outputs); validated in use case C1 — docs/relationship-rules-spec.md",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "verification": "SDEM design; exercised by the use-case runs",
       "reasoning": "ArchiMate defines no attributes for a business service. SDEM adds inputs and outputs so a business service can be matched to BIAN operation inputs and outputs (S09). No standard defines them.",
@@ -274,7 +274,7 @@
       "reference": {
         "standard": "SDEM",
         "locator": "SDEM rule S09; validated in use case C1 — docs/relationship-rules-spec.md",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "verification": "SDEM design; exercised by the use-case runs",
       "reasoning": "As for inputs.",
@@ -301,7 +301,7 @@
       "reference": {
         "standard": "SDEM",
         "locator": "SDEM rule S12 (object alignment by attribute match); validated in use cases E2, C1 — docs/relationship-rules-spec.md",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "verification": "SDEM design; exercised by the use-case runs",
       "reasoning": "ArchiMate's business object has no attributes. SDEM records the bank's glossary attributes so the object can be aligned to a BIAN business object by attribute match (S12). Built on a standard concept; the field list is SDEM's.",
@@ -322,7 +322,7 @@
       "reference": {
         "standard": "institution data (SDEM convention)",
         "locator": "SDEM alias convention (export-conventions.json); introduced after use case C1, finding 1 — docs/use-case-testing.md",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "verification": "values supplied by the institution; convention is SDEM design",
       "reasoning": "The bank's decoded names, supplied as data so matching never guesses (the H2 finding).",
@@ -437,7 +437,7 @@
       "reference": {
         "standard": "institution data (SDEM convention)",
         "locator": "SDEM alias convention (export-conventions.json); token boundary gate, use case H1 finding 1 — docs/use-case-testing.md",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "verification": "values supplied by the institution; convention is SDEM design",
       "reasoning": "The institution's decoded names for the asset, supplied as data; the token gate reads them (H1, H2 findings).",
@@ -479,7 +479,7 @@
       "reference": {
         "standard": "SDEM",
         "locator": "SDEM convention for rule S21; BIAN Control Record Model describes a lifecycle but lists no states — docs/relationship-rules-spec.md",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "verification": "SDEM design; exercised by the use-case runs",
       "reasoning": "BIAN describes a control record as tracking an asset through its lifecycle but publishes no state list; SDEM records one so functions can be related to the states they act on.",
@@ -604,7 +604,7 @@
       "reference": {
         "standard": "institution data (SDEM convention)",
         "locator": "SDEM alias convention; use case H2 finding 4 — docs/use-case-testing.md",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "verification": "values supplied by the institution; convention is SDEM design",
       "reasoning": "Decoded names supplied as data (H2 finding).",
@@ -772,7 +772,7 @@
       "reference": {
         "standard": "SDEM",
         "locator": "SDEM join key for DEPLOYED_AS (rule S32) to the SDEM Deployment entity — docs/architecture-entity-design.md",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "verification": "SDEM design; exercised by the use-case runs",
       "reasoning": "The join key for DEPLOYED_AS, pointing at SDEM's Deployment entity.",
@@ -822,7 +822,7 @@
       "reference": {
         "standard": "SDEM",
         "locator": "SDEM join key for rule S37; zone-wins precedence from use case C3 finding 3 — docs/use-case-testing.md",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "verification": "SDEM design; exercised by the use-case runs",
       "reasoning": "Deprecated in metamodel 0.10.0: a component's zone is the zone of the platform it is deployed on (network zones, Z3) — one source of truth. `sdem check` names each use (LC-13) for the person to place the platform in its zone; the migration never guesses.",
@@ -871,7 +871,7 @@
       "reference": {
         "standard": "SDEM",
         "locator": "duplicates the A3 access relationship (RA3-16)",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "verification": "SDEM design; exercised by the use-case runs",
       "reasoning": "Duplicates the within-level access relationship already in the architecture dataset; the last example using it was migrated to the relationship on 2026-10-25. Deprecated: use the relationship.",
@@ -946,7 +946,7 @@
       "reference": {
         "standard": "institution data (SDEM convention)",
         "locator": "SDEM alias convention; use case H2 finding 4 (recall 0.78 → 1.00 in run 2) — docs/use-case-testing.md",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "verification": "values supplied by the institution; convention is SDEM design",
       "reasoning": "Decoded product names supplied as data; raised H2 recall from 0.78 to 1.00.",
@@ -967,7 +967,7 @@
       "reference": {
         "standard": "SDEM",
         "locator": "SDEM join key for rules S18, S21; validated in use case C2 — docs/relationship-rules-spec.md",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "verification": "SDEM design; exercised by the use-case runs",
       "reasoning": "No standard field; lets functions be related to BIAN operations through the APIs they serve.",
@@ -1017,7 +1017,7 @@
       "reference": {
         "standard": "SDEM",
         "locator": "SDEM field for rules S20, S30, S31 (attribute match to BIAN objects); validated in use cases M1, H1, H2, C2 — docs/relationship-rules-spec.md",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "verification": "SDEM design; exercised by the use-case runs",
       "reasoning": "ArchiMate's data object has no attributes; SDEM records columns so tables can be matched to BIAN control records and business objects. Built on a standard concept; the field list is SDEM's.",
@@ -1064,7 +1064,7 @@
       "reference": {
         "standard": "institution data (SDEM convention)",
         "locator": "SDEM alias convention; use case H2 run 2 finding 3 — docs/use-case-testing.md",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "verification": "values supplied by the institution; convention is SDEM design",
       "reasoning": "Overrides the aliases inherited from the interfaces of components that access the entity.",
@@ -1085,7 +1085,7 @@
       "reference": {
         "standard": "SDEM",
         "locator": "SDEM join key for rule S51; corresponds to an AsyncAPI channel (not adopted) — docs/relationship-rules-spec.md",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "verification": "SDEM design; exercised by the use-case runs",
       "reasoning": "No adopted standard yet; corresponds to an AsyncAPI channel and to ArchiMate flow to a technology service.",
@@ -1135,7 +1135,7 @@
       "reference": {
         "standard": "SDEM",
         "locator": "SDEM Deployment entity (ArchiMate artifact assigned to node, ch. 10) — docs/architecture-entity-design.md",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "verification": "SDEM design; exercised by the use-case runs",
       "reasoning": "SDEM's Deployment makes ArchiMate's \"artifact assigned to node\" a record; these three fields name its parts.",
@@ -1160,7 +1160,7 @@
       "reference": {
         "standard": "SDEM",
         "locator": "SDEM Deployment entity — docs/architecture-entity-design.md",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "verification": "SDEM design; exercised by the use-case runs",
       "reasoning": "As above.",
@@ -1185,7 +1185,7 @@
       "reference": {
         "standard": "SDEM",
         "locator": "SDEM Deployment entity — docs/architecture-entity-design.md",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "verification": "SDEM design; exercised by the use-case runs",
       "reasoning": "As above.",
@@ -1388,7 +1388,7 @@
       "reference": {
         "standard": "SDEM",
         "locator": "SDEM join key for rule S38; validated in use case C3 — docs/relationship-rules-spec.md",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "verification": "SDEM design; exercised by the use-case runs",
       "reasoning": "No standard field; SDEM's key for S38.",
@@ -1438,7 +1438,7 @@
       "reference": {
         "standard": "SDEM",
         "locator": "SDEM join key for rule S43 (platform-side view of exposed_through); validated in use case C3 — docs/relationship-rules-spec.md",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "verification": "SDEM design; exercised by the use-case runs",
       "reasoning": "Platform-side view of ApplicationInterface.exposed_through.",
@@ -1516,7 +1516,7 @@
       "reference": {
         "standard": "SDEM-defined (no open standard)",
         "locator": "SDEM decision DA1-13 (A1 data-model review, 2026-10-24)",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "verification": "SDEM design; approved in the A1 data-model review 2026-10-24",
       "reasoning": "Answers: Which capabilities matter most to strategy? Common capability heat-map dimension; no open standard defines it or its values.",
@@ -1550,7 +1550,7 @@
       "reference": {
         "standard": "SDEM-defined (no open standard)",
         "locator": "SDEM decision DA1-14 (A1 data-model review, 2026-10-24)",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "verification": "SDEM design; approved in the A1 data-model review 2026-10-24",
       "reasoning": "Answers: Where do we need to invest? Current maturity on a 1–5 scale. Maturity scales (e.g. CMMI) are proprietary; SDEM defines only the range.",
@@ -1579,7 +1579,7 @@
       "reference": {
         "standard": "SDEM-defined (no open standard)",
         "locator": "SDEM decision DA1-15 (A1 data-model review, 2026-10-24)",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "verification": "SDEM design; approved in the A1 data-model review 2026-10-24",
       "reasoning": "Answers: Where do we need to invest? Target maturity, same scale; the gap to current drives investment questions.",
@@ -1662,7 +1662,7 @@
       "reference": {
         "standard": "SDEM-defined (no open standard)",
         "locator": "SDEM decision DA1-18 (A1 data-model review, 2026-10-24)",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "verification": "SDEM design; approved in the A1 data-model review 2026-10-24",
       "reasoning": "Answers: When does a stage start? Condition for entering the stage. Widely used in value-stream mapping, but the source that defines it (BIZBOK) is membership-only.",
@@ -1689,7 +1689,7 @@
       "reference": {
         "standard": "SDEM-defined (no open standard)",
         "locator": "SDEM decision DA1-19 (A1 data-model review, 2026-10-24)",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "verification": "SDEM design; approved in the A1 data-model review 2026-10-24",
       "reasoning": "Answers: When is a stage done? Condition for leaving the stage; as above.",
@@ -1831,7 +1831,7 @@
       "reference": {
         "standard": "SDEM-defined (no open standard)",
         "locator": "SDEM decision DA1-24 (A1 data-model review, 2026-10-24)",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "verification": "SDEM design; approved in the A1 data-model review 2026-10-24",
       "reasoning": "Answers: Which critical processes depend on this platform or application? The single most useful field for impact analysis. No open standard defines it; business-continuity standards (ISO 22301) are paid.",
@@ -1864,7 +1864,7 @@
       "reference": {
         "standard": "SDEM-defined (no open standard)",
         "locator": "SDEM decision DA1-25 (A1 data-model review, 2026-10-24)",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "verification": "SDEM design; approved in the A1 data-model review 2026-10-24",
       "reasoning": "Answers: How often does it run? What is the blast radius of an outage? How often the process runs; informs outage impact.",
@@ -1899,7 +1899,7 @@
       "reference": {
         "standard": "SDEM-defined (no open standard)",
         "locator": "SDEM decision DA1-26 (A1 data-model review, 2026-10-24)",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "verification": "SDEM design; approved in the A1 data-model review 2026-10-24",
       "reasoning": "Answers: Where is manual effort? What is a candidate for automation? Degree of automation; no standard scale.",
@@ -1992,7 +1992,7 @@
       "reference": {
         "standard": "SDEM-defined (no open standard)",
         "locator": "SDEM decision DA1-29 (A1 data-model review, 2026-10-24)",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "verification": "SDEM design; approved in the A1 data-model review 2026-10-24",
       "reasoning": "Answers: Which customer-facing services depend on this? Whether customers use the service directly; key for customer-impact questions.",
@@ -2019,7 +2019,7 @@
       "reference": {
         "standard": "SDEM-defined (no open standard)",
         "locator": "SDEM decision DA1-30 (A1 data-model review, 2026-10-24)",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "verification": "SDEM design; approved in the A1 data-model review 2026-10-24",
       "reasoning": "Answers: Through which channels is it offered? Delivery channels. ArchiMate models channels as business interfaces; the value list is SDEM's.",
@@ -2052,7 +2052,7 @@
       "reference": {
         "standard": "SDEM-defined (no open standard)",
         "locator": "SDEM decision DA1-31 (A1 data-model review, 2026-10-24)",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "verification": "SDEM design; approved in the A1 data-model review 2026-10-24",
       "reasoning": "Answers: What has the bank committed to? The service-level target (e.g. \"same-day\"). Service-management standards that define this (ITIL) are paid.",
@@ -2112,7 +2112,7 @@
       "reference": {
         "standard": "SDEM-defined (no open standard)",
         "locator": "SDEM decision DA1-33 (A1 data-model review, 2026-10-24)",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "verification": "SDEM design; approved in the A1 data-model review 2026-10-24",
       "reasoning": "Answers: Which external parties (customers, partners, regulators) are involved? Whether the actor is outside the bank. ORG does not distinguish internal from external.",
@@ -2399,7 +2399,7 @@
       "reference": {
         "standard": "SDEM-defined (no open standard)",
         "locator": "SDEM decision DA1-43 (A1 data-model review, 2026-10-24)",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "verification": "SDEM design; approved in the A1 data-model review 2026-10-24",
       "reasoning": "Answers: What must be met first? MoSCoW priority, a common convention with no open standard definition.",
@@ -2433,7 +2433,7 @@
       "reference": {
         "standard": "SDEM-defined",
         "locator": "SDEM decision DA2-01 (A2 data-model review, 2026-10-24)",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "verification": "SDEM design; approved in the data-model review 2026-10-24",
       "reasoning": "Answers: Which BIAN Service Domains are we adopting, and how far? Realisation links show whether an application implements a Service Domain today, not the intended adoption. No standard defines the values. Approved: the only record of intended (not current) adoption.",
@@ -2467,7 +2467,7 @@
       "reference": {
         "standard": "SDEM-defined",
         "locator": "SDEM decision DA2-02 (owner, 2026-10-30)",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "verification": "SDEM design; approved by the owner 2026-10-30",
       "reasoning": "BIAN's public Semantic API files do not state a service domain's asset type and functional pattern. SDEM derives them from the control record's name (BIAN Semantic API Practitioner Guide v8.1 §3.2.1, Figure 9) where that works, takes them from a person otherwise, and records which — so a value nobody has confirmed is never mistaken for a confirmed one, and a domain whose values are unknown can still be used.",
@@ -2508,7 +2508,7 @@
       "reference": {
         "standard": "SDEM-defined",
         "locator": "SDEM decision DA2-03 (owner, 2026-10-30)",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "verification": "SDEM design; approved by the owner 2026-10-30",
       "reasoning": "An inferred value must stay traceable: from a record in a workspace to the inference entry with its sources, reasoning, confidence, status and history — so an architect can check it, challenge it or change it later (bian/inferences-<release>.json).",
@@ -3066,7 +3066,7 @@
       "reference": {
         "standard": "SDEM-defined",
         "locator": "SDEM decision DA3-07 (A3 data-model review, 2026-10-25)",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "verification": "SDEM design; approved in the data-model review 2026-10-25",
       "reasoning": "Answers: Which applications do we keep, invest in, replace or retire? The application-rationalisation question. Published classifications are proprietary, so SDEM defines its own plain values.",
@@ -3307,7 +3307,7 @@
       "reference": {
         "standard": "SDEM-defined",
         "locator": "SDEM decision DA3-15 (A3 data-model review, 2026-10-25)",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "verification": "SDEM design; approved in the data-model review 2026-10-25",
       "reasoning": "Answers: Where is the golden source of this data? A core data-architecture question; open standards do not define the field.",
@@ -3334,7 +3334,7 @@
       "reference": {
         "standard": "SDEM-defined",
         "locator": "SDEM decision DA3-16 (A3 data-model review, 2026-10-25)",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "verification": "SDEM design; approved in the data-model review 2026-10-25",
       "reasoning": "Answers: How long must we keep this data? Driven by law and policy that vary by bank and country; SDEM records the period only.",
@@ -3448,7 +3448,7 @@
       "reference": {
         "standard": "SDEM-defined (no open standard)",
         "locator": "docs/design/sdem-edge-exposure-design.md (X2)",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "verification": "SDEM design; the owner's decisions X1–X6, 2026-11-14 (docs/design/sdem-edge-exposure-design.md)",
       "reasoning": "Answers: Which APIs are reached from the internet, and through what? The same word as on A4 shapes (AT-A4-36).",
@@ -3470,7 +3470,7 @@
       "reference": {
         "standard": "SDEM-defined",
         "locator": "SDEM decision DA4-01 (A4 data-model review, 2026-10-25)",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "verification": "SDEM design; approved in the data-model review 2026-10-25",
       "reasoning": "Answers: Which deployments are production, and which are not? The first filter on any deployment question. No open standard defines environment kinds.",
@@ -3659,7 +3659,7 @@
       "reference": {
         "standard": "SDEM-defined",
         "locator": "SDEM decision DA4-07 (A4 data-model review, 2026-10-25)",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "verification": "SDEM design; approved in the data-model review 2026-10-25",
       "reasoning": "Answers: Which hardware is out of support, or soon will be? The technical-debt question; the date comes from the supplier, the field is SDEM's.",
@@ -3767,7 +3767,7 @@
       "reference": {
         "standard": "SDEM-defined",
         "locator": "SDEM decision DA4-11 (A4 data-model review, 2026-10-25)",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "verification": "SDEM design; approved in the data-model review 2026-10-25",
       "reasoning": "Answers: Which platform software is out of support, or soon will be? Same as for devices.",
@@ -3904,7 +3904,7 @@
       "reference": {
         "standard": "SDEM-defined",
         "locator": "SDEM decision DA4-16 (A4 data-model review, 2026-10-25)",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "verification": "SDEM design; approved in the data-model review 2026-10-25",
       "reasoning": "Answers: Which connections carry unencrypted traffic? A standard security question; no open standard defines the field.",
@@ -4025,7 +4025,7 @@
       "reference": {
         "standard": "SDEM-defined (no open standard)",
         "locator": "docs/design/sdem-network-zones-design.md (M2, M2b)",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "verification": "SDEM design; the owner's decision, 2026-11-14 (network zones, Z1–Z6)",
       "confidence": "low",
@@ -4055,7 +4055,7 @@
       "reference": {
         "standard": "SDEM-defined (no open standard)",
         "locator": "docs/design/sdem-network-zones-design.md (M2, M2b)",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "verification": "SDEM design; the owner's decision, 2026-11-14 (network zones, Z1–Z6)",
       "confidence": "low",
@@ -4077,7 +4077,7 @@
       "reference": {
         "standard": "SDEM-defined (no open standard)",
         "locator": "docs/design/sdem-network-zones-design.md (M2, M2b)",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "verification": "SDEM design; the owner's decision, 2026-11-14 (network zones, Z1–Z6)",
       "confidence": "low",
@@ -4098,7 +4098,7 @@
       "reference": {
         "standard": "SDEM-defined (no open standard)",
         "locator": "docs/design/sdem-hosting-inference-design.md (§3, H6)",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "verification": "SDEM design; the owner's decisions H1–H8, 2026-11-14 (hosting)",
       "confidence": "low",
@@ -4120,7 +4120,7 @@
       "reference": {
         "standard": "SDEM-defined (no open standard)",
         "locator": "docs/design/sdem-hosting-inference-design.md (§3, H6)",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "verification": "SDEM design; the owner's decisions H1–H8, 2026-11-14 (hosting)",
       "confidence": "low",
@@ -4142,7 +4142,7 @@
       "reference": {
         "standard": "SDEM-defined (no open standard)",
         "locator": "docs/design/sdem-hosting-inference-design.md (§3, H6)",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "verification": "SDEM design; the owner's decisions H1–H8, 2026-11-14 (hosting)",
       "confidence": "low",
@@ -4971,7 +4971,7 @@
       "reference": {
         "standard": "SDEM-defined",
         "locator": "docs/design/sdem-data-architecture-spec.md (DAR-01)",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "verification": "SDEM design; approved by the owner 2026-11-22",
       "reasoning": "DAR-01: says which level of the data landscape a grouping is; nesting carries the structure.",
@@ -4999,7 +4999,7 @@
       "reference": {
         "standard": "SDEM-defined",
         "locator": "docs/design/sdem-data-architecture-spec.md (DAR-02)",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "verification": "SDEM design; approved by the owner 2026-11-22",
       "reasoning": "DAR-02: who decides about this data — an attribute naming an A1 record, so nothing new to approve; a domain's owner is read by its entities that name none.",
@@ -5026,7 +5026,7 @@
       "reference": {
         "standard": "SDEM-defined",
         "locator": "docs/design/sdem-data-architecture-spec.md (DAR-02)",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "verification": "SDEM design; approved by the owner 2026-11-22",
       "reasoning": "DAR-02: who keeps the data correct — beside the owner.",
@@ -5053,7 +5053,7 @@
       "reference": {
         "standard": "SDEM-defined",
         "locator": "docs/design/sdem-data-architecture-spec.md (DAR-02)",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "verification": "SDEM design; approved by the owner 2026-11-22",
       "reasoning": "DAR-02: who decides about this data — an attribute naming an A1 record, so nothing new to approve; a domain's owner is read by its entities that name none.",
@@ -5080,7 +5080,7 @@
       "reference": {
         "standard": "SDEM-defined",
         "locator": "docs/design/sdem-data-architecture-spec.md (DAR-02)",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "verification": "SDEM design; approved by the owner 2026-11-22",
       "reasoning": "DAR-02: who keeps the data correct — beside the owner.",
@@ -5426,7 +5426,7 @@
       "reference": {
         "standard": "SDEM-defined",
         "locator": "SDEM decision DA2-05 (owner, 2026-10-30)",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "verification": "SDEM design; approved by the owner 2026-10-30",
       "reasoning": "AID writes the records a workspace is missing into its real layer files, so an architect works in one set of files. A record SDEM inferred must never be mistaken for one a person wrote or confirmed: the mark carries the source, reasoning and confidence, and stays — with who confirmed it — once a person agrees.",
@@ -5453,7 +5453,7 @@
       "reference": {
         "standard": "SDEM-defined",
         "locator": "SDEM decision D4 (owner, 2026-11-09)",
-        "uri": "https://github.com/taumoeps/bian-sdem-framework"
+        "uri": "https://github.com/taumoeps/sdem"
       },
       "verification": "SDEM design; approved by the owner 2026-11-09",
       "reasoning": "A record's source_id says where the record came from; a design often gives one fact in another section, or a second document gives it. Recording the source per attribute lets a reviewer check each value against its evidence, in the same dataset — no second store — and with the same `kind:ref` convention as source_id and the registry's evidence.",

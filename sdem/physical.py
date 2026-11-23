@@ -18,7 +18,7 @@ from .metamodel import Metamodel, MM_DIR, ROOT
 
 OUT = ROOT / 'schema' / 'entities'
 DOC = ROOT / 'docs' / 'reference' / 'physical-data-model.md'
-REPO = 'https://github.com/taumoeps/bian-sdem-framework'
+REPO = 'https://github.com/taumoeps/sdem'
 DATE_PATTERN = r'^\d{4}-\d{2}-\d{2}$'
 
 

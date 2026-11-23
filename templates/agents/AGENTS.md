@@ -1,6 +1,6 @@
 # SDEM — instructions for AI agents
 
-This repository holds architecture kept with **SDEM, the Service Domain Enterprise Metamodel**: an organisation's four architectures — A1 Business, A2 BIAN service domains, A3 Application, A4 Technology — linked under a metamodel. You work through the `sdem` command line; SDEM itself contains no AI, so the same command always gives the same answer. These instructions are the same for every agent (Codex, Claude Code, Gemini CLI, GitHub Copilot); they were installed by `sdem agents install` and match the installed SDEM version (`sdem --version`).
+This repository holds architecture kept with **SDEM, the Solution Domain Enterprise Model**: an organisation's four architectures — A1 Business, A2 BIAN service domains, A3 Application, A4 Technology — linked under a metamodel. You work through the `sdem` command line; SDEM itself contains no AI, so the same command always gives the same answer. These instructions are the same for every agent (Codex, Claude Code, Gemini CLI, GitHub Copilot); they were installed by `sdem agents install` and match the installed SDEM version (`sdem --version`).
 
 ## How to run SDEM
 

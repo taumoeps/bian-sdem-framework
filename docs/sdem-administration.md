@@ -8,7 +8,7 @@
 |---|---|
 | An architect's machine | Python 3.10 or later (3.13 recommended: `brew install python@3.13` on a Mac — Macs come with 3.9, which is too old); then in the workspace repository `python3.13 -m venv .venv` (or `/opt/homebrew/bin/python3.13 -m venv .venv` if not found), `source .venv/bin/activate`, `pip install -r requirements.txt`; check with `sdem --version` |
 | CI | the workspace template's workflow installs the pinned release on every run — nothing to do |
-| Trying SDEM, no workspace repository yet | `python -m pip install "sdem @ git+https://github.com/taumoeps/bian-sdem-framework@<release tag>"` in a fresh `.venv` — no clone; `sdem new --workspace workspaces/payments-example --person your.name --example payment-initiation` for synthetic data |
+| Trying SDEM, no workspace repository yet | `python -m pip install "sdem @ git+https://github.com/taumoeps/sdem@<release tag>"` in a fresh `.venv` — no clone; `sdem new --workspace workspaces/payments-example --person your.name --example payment-initiation` for synthetic data |
 | Developing SDEM | clone the repository; `python -m pip install -e .` (editable — not for using SDEM); or `python3 -m sdem …` from the checkout without installing |
 
 **Two different pins.** The SDEM repository itself is described by `pyproject.toml` (its version, its packaged data). A **workspace repository** pins the SDEM release it uses in its own `requirements.txt` (`sdem @ git+…@vX.Y.Z`) — upgrading SDEM there means changing that one line.
@@ -20,7 +20,7 @@ Every architect runs the same release: the one pinned in the workspace repositor
 **Never edit SDEM itself** — your customisations live in your workspace repository (profiles, governance, agents' files), so an update replaces SDEM and leaves them alone. Before you switch, find out what the new version means for you — read-only, with the new version installed side by side:
 
 ```bash
-python -m venv .sdem-next && .sdem-next/bin/pip install "sdem @ git+https://github.com/taumoeps/bian-sdem-framework@v<new>"
+python -m venv .sdem-next && .sdem-next/bin/pip install "sdem @ git+https://github.com/taumoeps/sdem@v<new>"
 .sdem-next/bin/sdem upgrade check          # migrations, your profile, deprecations, agent files, the actions each release asks for — nothing written
 .sdem-next/bin/sdem releases --since <the version you use>
 ```
