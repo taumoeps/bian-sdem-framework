@@ -66,3 +66,14 @@ This reverses **BP-D3** (the built-in BIAN as a fallback for all of 0.20).
 ## 7. Size
 
 Larger than any 0.20 step: about 280 code locations, 12 examples and the tests that use them, about 25 documents mainly about BIAN, two repositories and DESNRE. Steps 1 and 2 are independent of each other; 3 needs 2; 4 needs 3; 5–7 follow 4.
+
+## 8. As built
+
+| Step | Done | Notes |
+|---|---|---|
+| **1** ✅ 2026-11-23 | The repository is `taumoeps/sdem`, the old address redirects; the name in every current document, the CLI and the generated documents; history records and the owner's pinned spec unchanged | SDEM CI 25 of 25 green; the extensions' CI green |
+| **2** ✅ 2026-11-24 | [MX-45…MX-52](sdem-metamodel-extensions-spec.md#16-extensions-that-infer): `sdem aid` and `sdem link` run each included extension that declares `"infers"`, and check, mark and write what it gives as their own (`sdem/ext_infer.py`) | proved with a made-up extension (`tests/test_extension_inference.py`): its records in its own layer, its proposals, its mistakes refused and said, an extension not included never asked, confirm and reject as SDEM's own, no SDEM code naming it |
+
+**A correction to §3 (R-D5).** The plan said EXT-02 lets an extension use SDEM *only* through its commands and files. EXT-02 was amended in 0.20 (ST-21, approved): an extension may also use SDEM's published Python interface `sdem.api`, as `sdem-bian` already does. R-D5 stands as approved — SDEM *runs* an extension and never imports its code; inside its own program an extension may use `sdem.api`.
+
+**Found and fixed in step 2:** `sdem aid confirm|reject` failed on any 0.20 design with approved data-access links (the Payment example): it checked against the registry as stored, not as AID's 0.19 view reads it (approved ACCESSED_BY as links inside the layer, DL-12) — it now checks as `sdem aid` itself does.

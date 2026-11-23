@@ -93,6 +93,7 @@ def main(argv=None):
     parser.add_argument('-o', '--out', metavar='DIR', help='also write candidates, the inference log and any target-design architecture datasets here')
     parser.add_argument('--threshold', type=float, default=0.2, help='baseline only')
     parser.add_argument('--json', action='store_true', help='with --out (sdem link): the proposals, weakest first, as JSON — without --out the output is JSON already')
+    parser.add_argument('--ext-workspace', metavar='DIR', help=argparse.SUPPRESS)   # MX-51: the workspace, for its extensions' proposals (set by sdem link --workspace)
     args = parser.parse_args(argv)
     from sdem.store import GraphReader, StoreError
     try:
@@ -103,6 +104,17 @@ def main(argv=None):
     result = engine.infer(reader, {'id': 'RUN'})
     if result.get('left_out_rejected'):   # RJ-03: said, not silently dropped
         print(f"{len(result['left_out_rejected'])} link(s) a person rejected were not proposed again (RJ-03): " + '; '.join(f'{a} {r} {b}' for a, r, b in result['left_out_rejected'][:5]), file=sys.stderr)
+    if args.ext_workspace:   # MX-51: what the workspace's extensions propose, checked as SDEM's own and listed with them
+        import datetime
+        from sdem.ext_infer import for_link
+        props, report = for_link(args.ext_workspace, datetime.datetime.now(datetime.timezone.utc).replace(microsecond=0).isoformat())
+        have = {(p['source']['id'], p['relationship'], p['target']['id']) for p in result['proposals']}
+        n = len(result['proposals'])
+        for p in props:
+            if (p['source']['id'], p['relationship'], p['target']['id']) in have: continue
+            n += 1; result['proposals'].append({'mapping_id': f'RUN-X{n:03d}', **p})
+        for e in report:
+            print(f"extension {e['extension']} {e.get('version') or ''}: {e['proposals']} proposal(s)" + (f"; refused {len(e['refused'])}: " + '; '.join(f"{x['item']} — {x['why']}" for x in e['refused'][:3]) if e['refused'] else ''), file=sys.stderr)
     head = {'registry_version': load_registry()['$schema_version'], 'metamodel_version': reader.mm.version, 'engine': engine.name}
     print(json.dumps({**head, 'mappings': result['proposals']}, indent=2, ensure_ascii=False))
     if args.out:

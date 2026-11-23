@@ -175,7 +175,7 @@ def _expand(name, rest):
         try: _p.activate_from(d)   # PR-07: the workspace's organisation profile, if it has one
         except _p.ProfileError as e: raise UsageError(str(e))
         files = _estate_files(d, registry_only=(name == 'validate'), designs=name in ('check', 'build', 'trace', 'impact'))
-        out = files + out if name == 'link' else out + files   # link's parser wants paths before its options; trace/impact want the id first
+        out = files + out + ['--ext-workspace', d] if name == 'link' else out + files   # link's parser wants paths before its options; trace/impact want the id first; link asks the workspace's extensions too (MX-51)
     return out
 
 

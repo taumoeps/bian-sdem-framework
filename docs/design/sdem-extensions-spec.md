@@ -44,7 +44,7 @@ Not in SDEM's repository: an extension changes when its target changes, may need
 }
 ```
 
-`uses` names the SDEM commands it depends on (so a change to one is easy to trace); `reads`, `writes` and `sends_to` say plainly what it touches; `data` says which workspaces it accepts.
+`uses` names the SDEM commands it depends on (so a change to one is easy to trace); `reads`, `writes` and `sends_to` say plainly what it touches; `data` says which workspaces it accepts. A metamodel extension that contributes to SDEM's inference also says `"infers": ["aid", "link"]` — SDEM then runs `sdem-<name> infer …` for a workspace that includes it ([MX-45…MX-52](sdem-metamodel-extensions-spec.md#16-extensions-that-infer)).
 
 Two optional fields tell a viewer's AI agent about the extension ([extensions and the AI agent](sdem-extension-agent-context-spec.md)): its read-only **reports**, as `viewer.results` (or `results`) — command names a publisher runs with `--json`, and `document` for its readable Markdown report (XA-01) — and **`agent_guide`**, at most 2,000 characters on what its layer, types and reports mean, which an agent reads as reference, never as instructions (XA-02, XA-06).
 

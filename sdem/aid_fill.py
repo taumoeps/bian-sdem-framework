@@ -45,6 +45,32 @@ def is_inferred(rec, confirmed=None):
     return confirmed is None or (m.get('status') == 'confirmed') == confirmed
 
 
+def _ext_layers():
+    """MX-48: the layers the active profile's extensions add (code: file) — written by aid as SDEM's own are, never by name."""
+    from . import profile as _prof
+    return {l['code']: l['file'] for l in ((_prof.ACTIVE or {}).get('layers') or []) if l.get('code') and l.get('file') and l['code'] not in DATASETS}
+
+
+def _index_ids():
+    from . import identity
+    return identity._index()[0]
+
+
+def _file(lvl): return DATASETS.get(lvl) or _ext_layers().get(lvl)
+
+
+def _ext_docs(ws, now=None):
+    """The extension layers' documents — an empty one for a layer with no file yet, so an extension can infer its first records into it."""
+    from .metamodel import Metamodel
+    out = {}
+    for c, f in _ext_layers().items():
+        p = Path(ws) / f
+        out[c] = _j(p) if p.exists() else {'level': c, 'model_id': f"{re.sub(r'[^A-Z0-9]+', '-', Path(ws).name.upper()).strip('-') or 'WORKSPACE'}-{c}",
+                                           'model_version': (now or datetime.date.today().isoformat())[:10], 'metamodel_version': Metamodel.load().version,
+                                           'source_system': 'SDEM-AID', 'instances': [], 'relationships': []}
+    return out
+
+
 def _workspace(ws):
     ws = Path(ws)
     if not (ws / 'mappings.json').exists(): raise AidError(f'{ws}: no workspace here — start one with sdem new --workspace {ws} --person <you>')
@@ -76,7 +102,7 @@ def _split(ws, lvl, doc, run, proposals, by='sdem aid'):
     twice); a new one becomes a proposed ACCESSED_BY — a link between layers is a person's to approve."""
     from . import parts
     from .identity import type_id
-    if not parts.migrated() or lvl != _L('application'): return {ws / DATASETS[lvl]: doc}
+    if not parts.migrated() or lvl != _L('application'): return {ws / _file(lvl): doc}
     is_data = lambda t: (type_id(t) or '').startswith('data.')
     kinds = {i['id']: i for i in doc.get('instances', [])}
     data_ids = {k for k, i in kinds.items() if is_data(i.get('type'))}
@@ -352,10 +378,18 @@ def fill(workspace, person, dry_run=False, now=None, complete_draft=False):
                               'target': {'id': tgt, 'type': t_['type'], 'version': t_['version']}, 'status': 'proposed', 'confidence': 'low', 'evidence_class': 'structural',
                               'evidence': [f'engine_rationale:{run} {drule}'], 'rationale': f'Inferred by sdem aid ({drule}): {why}', 'baseline_id': run, 'created_by': 'sdem aid'})
             draft['defaults'] += 1; draft.setdefault('default_proposals', []).append(f'{src} {rel} {tgt}')
+    # MX-45…MX-50: what the workspace's extensions infer — asked by running them, checked and marked as SDEM's own, written only with everything else
+    from .ext_infer import contribute
+    for code, d in _ext_docs(ws, now).items(): after.setdefault(code, d)
+    known = {i['id']: i for d in after.values() for i in d.get('instances', [])}
+    eadded, eprops, ext_report = contribute('aid', ws, after, known, run=run, person=person.strip(), now=now,
+                                            rejected=rejected | {r['id'] for r in _rejected(ws)['rejected']}, approved=approved)
+    for pr in eprops: proposals.append({'mapping_id': f'{run}-P{len(proposals) + 1:03d}', **pr})
+    for lvl, ids_ in eadded.items(): added.setdefault(lvl, []).extend(ids_)
     BAND = {'low': 0.4, 'medium': 0.6, 'high': 0.8}   # the registry holds confidence as a number, as the engine writes it (found building Payment Initiation v2)
     for pr in proposals:
         if isinstance(pr.get('confidence'), str): pr['confidence'] = BAND.get(pr['confidence'], 0.4)
-    errors = estate_errors({DATASETS[l]: d for l, d in after.items()}, registry)
+    errors = estate_errors({_file(l): d for l, d in after.items()}, registry)
     if errors: raise AidError('the workspace would not pass its checks with the inferred records — nothing written:\n  ' + '\n  '.join(errors[:10]))
     from . import parts as _parts
     if _parts.migrated():   # DL-12: reported by layer id, Data's records apart from Application's — numbered as the workspace reads them, outside the view
@@ -363,16 +397,16 @@ def fill(workspace, person, dry_run=False, now=None, complete_draft=False):
         typ = {i['id']: i.get('type') for d in after.values() for i in d.get('instances', [])}
         by_id = {}
         for lvl, ids_ in added.items():
-            for x in ids_: by_id.setdefault('data' if (_tid(typ.get(x)) or '').startswith('data.') else _lid(lvl), []).append(x)
-        added_report = {f'@layer:{k}': v for k, v in by_id.items()}
+            for x in ids_: by_id.setdefault('data' if (_tid(typ.get(x)) or '').startswith('data.') else (_lid(lvl) or lvl), []).append(x)   # an extension's layer: by its code (MX-48)
+        added_report = {(f'@layer:{k}' if k in _index_ids() else k): v for k, v in by_id.items()}
     else: added_report = added
     record = {'id': run, 'at': now, 'requested_by': person.strip(), 'added': added_report, 'proposals': f'{FOLDER}/{run}-proposals.json',
               'proposed_connections': len(proposals), 'projection_ends': pkg['projection'].get('projection_ends', []),
               'zone_placements': placements - connections, 'zones_unresolved': zone_unresolved, 'a4_connections': connections, 'a4_unresolved': conn_unresolved,
-              'exposure_unresolved': exposure_unresolved, 'tables_not_inferred': not_stored, 'draft': draft,
+              'exposure_unresolved': exposure_unresolved, 'tables_not_inferred': not_stored, 'draft': draft, **({'extensions': ext_report} if ext_report else {}),
               'skipped_rejected': sorted(rejected & {_rid(i['id']) for l in pkg['layers'].values() for i in l['instances']})}
     if dry_run:   # AF: a dry run says what it would write (AGENTS.md) — nothing is written
-        record['would_write'] = sorted([(ws / DATASETS[lvl]).as_posix() for lvl in added] + ([(runs / f'{run}-proposals.json').as_posix(), (runs / f'{run}.json').as_posix()] if (added or proposals) else []))
+        record['would_write'] = sorted([(ws / _file(lvl)).as_posix() for lvl in added] + ([(runs / f'{run}-proposals.json').as_posix(), (runs / f'{run}.json').as_posix()] if (added or proposals) else []))
     if not dry_run and (added or proposals or placements):
         from .files import Batch
         b = Batch()
@@ -388,7 +422,8 @@ def decide(workspace, ids, person, action, reason='', all_=False, now=None):
     """Confirm or reject inferred records (AID-W05, W06). Returns the ids changed."""
     _person(person)
     if action == 'reject' and not (reason or '').strip(): raise AidError('--reason is required to reject — it is kept, so the record is not inferred again')
-    ws, docs, _ = _workspace(workspace)
+    ws, docs, view_registry = _workspace(workspace)
+    docs.update(_ext_docs(ws))   # MX-49: what an extension inferred into its own layer is confirmed or rejected the same way
     now = now or datetime.datetime.now(datetime.timezone.utc).replace(microsecond=0).isoformat()   # UTC with its offset, like change sets
     inferred = {i['id']: (lvl, i) for lvl, d in docs.items() for i in d['instances'] if is_inferred(i, confirmed=False if all_ else None)}
     marked = lambda r: isinstance(r.get('inferred'), dict) and (not all_ or r['inferred'].get('status') != 'confirmed')
@@ -447,7 +482,7 @@ def decide(workspace, ids, person, action, reason='', all_=False, now=None):
             if len(d['instances']) != before: changed.add(lvl)
         rej['rejected'] += [{'id': i, 'by': person.strip(), 'at': now, 'reason': reason.strip()} for i in chosen]
     from .connect import estate_errors
-    errors = estate_errors({DATASETS[l]: d for l, d in docs.items()}, _j(ws / 'mappings.json'))
+    errors = estate_errors({_file(l): d for l, d in docs.items()}, view_registry)   # 0.22: the registry as AID's 0.19 view reads it — approved ACCESSED_BY are access links inside it (DL-12), as fill checks
     if errors: raise AidError(f'the workspace would not pass its checks after this {action} — nothing written:\n  ' + '\n  '.join(errors[:8])
                               + ('\n  (an approved connection may still point to it: supersede it first)' if action == 'reject' else ''))
     from .files import Batch

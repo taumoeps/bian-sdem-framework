@@ -1723,7 +1723,7 @@ sdem layout --layer A2 --workspace examples/payment-initiation
 run the inference engine: propose links between the architectures, and show them weakest first for review (--no-review: just write them)
 
 ```
-sdem link [<paths>] [--graph GRAPH] [-o O] [--threshold THRESHOLD] [--baseline]
+sdem link [<paths>] [--graph GRAPH] [-o O] [--threshold THRESHOLD] [--ext-workspace EXT_WORKSPACE] [--baseline]
 ```
 
 *JSON: native · dry run: sandbox*
@@ -1735,6 +1735,7 @@ sdem link [<paths>] [--graph GRAPH] [-o O] [--threshold THRESHOLD] [--baseline]
 | `-o`, `--out` |  | also write candidates, the inference log and any target-design architecture datasets here |
 | `--threshold` |  | baseline only |
 | `--json` |  | with --out (sdem link): the proposals, weakest first, as JSON — without --out the output is JSON already |
+| `--ext-workspace` |  | ==SUPPRESS== |
 | `--baseline` |  | the name-overlap baseline engine instead of the rules engine |
 | `--workspace` |  | the workspace folder, in place of the list of files (its layer datasets and mappings.json) |
 

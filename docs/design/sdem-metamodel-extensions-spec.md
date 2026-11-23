@@ -176,3 +176,20 @@ Security was the first vertical extension; its two audits (sdem-extensions `meta
 | MX-D15 | A bridge may ship AID inference rules for its own link types; every inference stays a proposal (MX-40a) | **yes** |
 | MX-D16 | Without a bridge, an agent's or a tool's reasoning across extensions is inference only, said to be one; SDEM's documents stay one per layer and per extension (MX-40b) | **yes** |
 
+
+## 16. Extensions that infer
+
+> **Status: approved (2026-11-23) — SDEM 0.22, step 2 of the [0.22 plan](sdem-0.22-plan.md): the owner approved its R-D5: an extension contributes inference as a program SDEM runs; SDEM never imports an extension's code.** Built and tested (`sdem/ext_infer.py`, `tests/test_extension_inference.py`). It is the general way BIAN's inference leaves SDEM in step 3; it supersedes ST-20's "registering an inference step" through `sdem.api` (never built), and it makes MX-40a's "a bridge may ship AID inference rules" concrete.
+
+EXT-02 as amended by ST-21 lets an extension use SDEM through its commands or through `sdem.api`. These rules are the other direction — SDEM using an extension's inference — and keep it one way only: SDEM **runs** the extension's program and reads its answer; it never imports the extension's code.
+
+| Id | Rule |
+|---|---|
+| **MX-45** | **An extension that infers says so in its manifest**: `"infers": ["aid", "link"]` — the steps it contributes to. |
+| **MX-46** | **Only where the workspace includes it** (MX-10): SDEM asks an installed extension only when the workspace's profile includes it (`ext:<name>`). Installed elsewhere, or switched off, it is never run. |
+| **MX-47** | **Asked by running it**: `sdem-<name> infer --workspace DIR --step aid\|link --json`. It reads the workspace's documented files (or SDEM through `sdem.api`, ST-21) and answers one JSON document, format `sdem-inference/1`: `records` (each with its `layer`, the `record`, its `rule`, `reasoning`, `confidence`, `evidence_class`, `source`, `from`), `links` inside a layer (`layer`, `source`, `kind`, `target`, `rule` …), and `proposals` of links between layers (`source`, `relationship`, `target`, `rule`, `rationale`, `confidence`). |
+| **MX-48** | **Checked and marked as SDEM's own.** A record's type must be one the metamodel or the profile knows, in a layer the workspace has — SDEM's own layers or the extension's (an extension layer with no file yet gets one); a proposal's link type one the metamodel or the profile declares, both its ends records of the workspace. What is kept is marked: a record or link `inferred` by `<name> <version>` with the run, the rule and the reasoning; a proposal `created_by` it, `status: proposed`. Nothing already present, approved or rejected by a person is added again. Everything is written only if the whole workspace still passes its checks, exactly as `sdem aid`'s own inference. |
+| **MX-49** | **A person decides it like SDEM's own**: `sdem aid confirm\|reject` acts on an extension's inferred records — in its own layer too — and a rejected one is never inferred again; its proposals are approved with `sdem approve`, with the evidence its link type requires. |
+| **MX-50** | **Never fatal, always said.** An extension that fails, times out (300 s), or answers in another format is reported in the run record (`extensions`: each extension, what it gave, what was refused and why) and `sdem aid` goes on. Each refused item is listed with its reason. |
+| **MX-51** | **`sdem link` asks too** (`--step link`): only proposals are taken there — records and links inside a layer are `sdem aid`'s — and they are listed with the rules engine's, in the same proposals file, for review. |
+| **MX-52** | **No SDEM code names an extension** (as MX-08): a test with a made-up extension proves the contract without SDEM knowing it. |

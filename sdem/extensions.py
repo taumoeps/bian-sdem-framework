@@ -81,6 +81,12 @@ def run(name, argv):
         return 130
 
 
+def infer(program, workspace, step, timeout):
+    """MX-47: ask an installed extension for its inference — `sdem-<name> infer --workspace DIR --step aid|link --json`. Only for one the
+    workspace's profile includes and whose manifest says it infers (sdem.ext_infer.askable, MX-45, MX-46); the one other place SDEM runs an extension."""
+    return subprocess.run([program, 'infer', '--workspace', str(workspace), '--step', step, '--json'], capture_output=True, text=True, timeout=timeout)
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(prog='sdem extensions', description='The installed SDEM extensions — run one as sdem <name> … (EXT-15)')
     ap.add_argument('--json', action='store_true', help='as data: {"count", "items", "built_in"}')
