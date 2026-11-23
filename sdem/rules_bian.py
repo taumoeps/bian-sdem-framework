@@ -1,7 +1,9 @@
 """BIAN's link rules for the rules engine (`sdem link`) — the 0.22 plan, step 3b: split out of sdem/rules_engine.py unchanged, so they can
 move to the sdem-bian extension (R-D5, MX-45…MX-52). Steps 2, 4 and 5, the target design, BIAN's part of step 3 (S17…S29) and its
 row of step 1 (S06), with the helpers only they use; the engine and the core's rules stay in rules_engine.CoreRun."""
-from .rules_engine import BAND, HTTP, METHODS, _L, _T, _list, norm, re, stems, tokens, weakest  # noqa: F401 — the engine's own helpers
+import re
+from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id
+from .rules_engine import BAND, HTTP, METHODS, _list, norm, stems, tokens, weakest  # noqa: F401 — the engine's own helpers (sdem.api in sdem-bian)
 
 
 class BianSteps:

@@ -32,6 +32,8 @@ def askable(step):
     """MX-45, MX-46: the installed extensions active in the workspace's profile whose manifest says they infer for this step — [(name, program, manifest)]."""
     from . import profile as _prof
     active = {str(a.get('extension') or '').strip() for a in ((_prof.ACTIVE or {}).get('aspects') or [])}
+    from . import parts   # a built-in extension switched on (0.20's default for BIAN, BX-11) is included though no profile names it
+    if parts.bian_on(): active.add(parts.EXT_BIAN.split(':', 1)[1])
     out = []
     for x in _ext.installed():
         m = x['manifest']; inf = m.get('infers') or []
@@ -120,7 +122,13 @@ def contribute(step, workspace, docs, known, *, run, person, now, rejected=(), a
                 continue
             docs[lvl].setdefault('relationships', []).append({'source': s, 'kind': k, 'target': t, 'inferred': mark(x)})
             added.setdefault(lvl, []); entry['links'] += 1
+        if proposals_only:   # MX-53: a target design the extension drafts (no application layer yet) — its records may be a proposal's end
+            for d in (ans.get('design') or []):
+                for r in (d.get('instances') or []) if isinstance(d, dict) else []:
+                    if isinstance(r, dict) and r.get('id') and r['id'] not in known: known[r['id']] = r
         for x in ans.get('proposals') or []:
+            full = x.get('record') if isinstance(x, dict) and isinstance(x.get('record'), dict) else None   # MX-53: a proposal as its engine recorded it, kept whole
+            if full: x = {**full, 'source': (full.get('source') or {}).get('id'), 'target': (full.get('target') or {}).get('id')}
             s, r_, t = (x or {}).get('source'), (x or {}).get('relationship'), (x or {}).get('target')
             if r_ not in rels:
                 entry['refused'].append({'item': f'{s} {r_} {t}', 'why': f'{r_!r} is not a link type between layers the metamodel or the profile declares'}); continue
@@ -130,12 +138,18 @@ def contribute(step, workspace, docs, known, *, run, person, now, rejected=(), a
                 continue
             seen.add((s, r_, t))
             ref = lambda i: {'id': i, 'type': known[i]['type'], 'version': known[i].get('version', '1'), **({'canonical_id': known[i]['canonical_id']} if known[i].get('canonical_id') else {})}
+            if full:   # kept as recorded — only who made it is SDEM's to say (R-D11)
+                proposals.append({**json.loads(json.dumps(full)), 'status': 'proposed', 'created_by': who}); entry['proposals'] += 1; continue
             conf = x.get('confidence'); conf = BAND.get(conf, conf if isinstance(conf, (int, float)) else 0.4)
             proposals.append({'source': ref(s), 'relationship': r_, 'target': ref(t), 'status': 'proposed', 'confidence': conf,
                               'evidence_class': str(x.get('evidence_class') or 'rule'), 'evidence': [f"engine_rationale:{run} {name}:{x.get('rule') or ''}".strip()],
                               'rationale': f"Inferred by {who} ({x.get('rule') or 'its rule'}): {x.get('rationale') or x.get('reasoning') or ''}".rstrip(': '),
                               'baseline_id': run, 'created_by': who})
             entry['proposals'] += 1
+        if proposals_only:   # MX-53: what its rules reported but did not propose, and a target design — sdem link writes them with its own
+            ok = lambda c: isinstance(c, dict) and (c.get('source') or {}).get('id') in known and (c.get('target') or {}).get('id') in known
+            entry['_candidates'] = [{**c, 'created_by': who} for c in (ans.get('candidates') or []) if ok(c)]
+            entry['_design'] = [d for d in (ans.get('design') or []) if isinstance(d, dict) and d.get('level')]
     return added, proposals, report
 
 
@@ -156,3 +170,11 @@ def for_link(workspace, now):
     rejected = {r.get('id') for r in (load(rej).get('rejected') or [])} if rej.exists() else set()
     _, props, report = contribute('link', workspace, {}, known, run='RUN', person='sdem link', now=now, rejected=rejected, approved=approved)
     return props, report
+
+
+def provides_builtin(step):
+    """0.22 step 3b: does an installed extension provide the inference of a built-in extension that is on (BIAN)? Then SDEM's own copy of
+    its steps does not run — the extension's answer stands in for it (MX-53)."""
+    from . import parts
+    on = parts.EXT_BIAN.split(':', 1)[1] if parts.bian_on() else None
+    return bool(on) and any(n == on for n, _, _ in askable(step))

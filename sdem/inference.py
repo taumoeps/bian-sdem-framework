@@ -85,6 +85,11 @@ def _rules_engine():
 ENGINES = {'baseline': NameOverlapBaseline, 'rules': _rules_engine}
 
 
+def RE_CORE():
+    from sdem.rules_engine import RulesEngine
+    return RulesEngine(core_only=True)
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(prog='sdem link', description='Run an inference engine over a graph store (or architecture datasets) and emit a document of proposed relationships.')
     parser.add_argument('engine', choices=sorted(ENGINES))
@@ -100,7 +105,11 @@ def main(argv=None):
         reader = GraphReader.from_store(args.graph) if args.graph else GraphReader.from_exports(args.paths)
     except (OSError, ValueError, StoreError) as exc:
         print(f'ERROR: {exc}', file=sys.stderr); return 2
-    engine = ENGINES[args.engine](args.threshold) if args.engine == 'baseline' else ENGINES[args.engine]()
+    core_only = False
+    if args.ext_workspace and args.engine == 'rules':   # MX-53: an installed extension provides a built-in one's steps (BIAN) — the engine runs the core's
+        from sdem.ext_infer import provides_builtin
+        core_only = provides_builtin('link')
+    engine = ENGINES[args.engine](args.threshold) if args.engine == 'baseline' else (RE_CORE() if core_only else ENGINES[args.engine]())
     result = engine.infer(reader, {'id': 'RUN'})
     if result.get('left_out_rejected'):   # RJ-03: said, not silently dropped
         print(f"{len(result['left_out_rejected'])} link(s) a person rejected were not proposed again (RJ-03): " + '; '.join(f'{a} {r} {b}' for a, r, b in result['left_out_rejected'][:5]), file=sys.stderr)
@@ -112,7 +121,12 @@ def main(argv=None):
         n = len(result['proposals'])
         for p in props:
             if (p['source']['id'], p['relationship'], p['target']['id']) in have: continue
-            n += 1; result['proposals'].append({'mapping_id': f'RUN-X{n:03d}', **p})
+            n += 1; result['proposals'].append({**p, 'mapping_id': f'RUN-X{n:03d}'})
+        c = len(result.get('candidates', []))
+        for e in report:
+            for x in e.pop('_candidates', []): c += 1; result.setdefault('candidates', []).append({**x, 'mapping_id': f'C-RUN-X{c:03d}'} if 'mapping_id' in x else x)
+            if e.get('_design'): result['design'] = list(result.get('design') or []) + e.pop('_design')
+            e.pop('_design', None)
         for e in report:
             print(f"extension {e['extension']} {e.get('version') or ''}: {e['proposals']} proposal(s)" + (f"; refused {len(e['refused'])}: " + '; '.join(f"{x['item']} — {x['why']}" for x in e['refused'][:3]) if e['refused'] else ''), file=sys.stderr)
     head = {'registry_version': load_registry()['$schema_version'], 'metamodel_version': reader.mm.version, 'engine': engine.name}

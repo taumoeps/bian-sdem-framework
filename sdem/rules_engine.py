@@ -514,5 +514,8 @@ ENGINE_NAME = 'sdem-rules/0.10'
 class RulesEngine:
     name = ENGINE_NAME
 
+    def __init__(self, core_only=False):
+        self.core_only = core_only   # 0.22 step 3b: BIAN's steps run in sdem-bian (MX-51) — this run is the core's rules only
+
     def infer(self, reader, case=None):
-        return Run(reader, (case or {}).get('id', 'RUN')).run((case or {}).get('options'))
+        return (CoreRun if self.core_only else Run)(reader, (case or {}).get('id', 'RUN')).run((case or {}).get('options'))
