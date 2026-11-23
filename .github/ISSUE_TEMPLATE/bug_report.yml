@@ -1,0 +1,27 @@
+name: Bug report
+description: SDEM did something wrong — a command, a check, a trace or a document
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Made-up data only** — this repository is public. Never paste real architecture, names or identifiers.
+        A security problem? Report it privately instead (Security → Report a vulnerability).
+  - type: input
+    id: version
+    attributes: {label: SDEM version, description: "the output of `sdem --version`", placeholder: sdem 0.21.14}
+    validations: {required: true}
+  - type: textarea
+    id: command
+    attributes: {label: The command you ran, render: shell}
+    validations: {required: true}
+  - type: textarea
+    id: what
+    attributes: {label: What happened, and what you expected, description: "SDEM's output (with `--json` if you can), and what you expected instead"}
+    validations: {required: true}
+  - type: textarea
+    id: reproduce
+    attributes: {label: How to reproduce it, description: "the smallest made-up workspace or example that shows it — e.g. an example under examples/"}
+  - type: input
+    id: platform
+    attributes: {label: Python and operating system, placeholder: "Python 3.12, macOS 15"}

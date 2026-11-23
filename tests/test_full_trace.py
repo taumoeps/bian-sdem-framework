@@ -161,3 +161,17 @@ class FullTrace(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+class IntegrityReadsTheInstalledFreeze(unittest.TestCase):   # 0.21.14: an installed SDEM read the freeze from a checkout's folder and said 0
+    def test_the_core_figures_come_from_the_metamodel_sdem_is_using(self):
+        import json as J, shutil, tempfile
+        from sdem import model_health as H
+        t = Path(tempfile.mkdtemp()); self.addCleanup(shutil.rmtree, t, True)
+        rec = J.loads(H.STABILITY.read_text(encoding='utf-8')); rec['frozen_at'] = '2000-01-01'; rec['frozen_by'] = 'the test'
+        (t / 'stability.json').write_text(J.dumps(rec), encoding='utf-8')
+        old = H.STABILITY; H.STABILITY = t / 'stability.json'
+        try: core = H.integrity(ROOT / 'examples' / '0.20' / 'payment-initiation-v4' / 'sdem')['core']
+        finally: H.STABILITY = old
+        self.assertEqual((core['frozen_at'], core['frozen_by']), ('2000-01-01', 'the test'))
+        self.assertEqual(core['frozen']['link_types'], len(rec['link_types']))

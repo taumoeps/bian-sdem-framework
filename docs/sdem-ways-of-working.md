@@ -1,6 +1,6 @@
 # Ways of working with SDEM — CLI, AI agent, documents
 
-> **Status: current (v0.21.13).** What is available today, and what is planned but not built. SDEM is ready to evaluate on synthetic data; real designs follow a pilot ([what that needs](../README.md#using-sdem-on-real-designs)).
+> **Status: current (v0.21.14).** What is available today, and what is planned but not built. SDEM is ready to evaluate on synthetic data; real designs follow a pilot ([what that needs](../README.md#using-sdem-on-real-designs)).
 
 SDEM's metamodel, CLI and workspace are the same however you work. The workspace is the source of truth; every cross-layer connection needs a person's approval.
 
@@ -39,7 +39,7 @@ Later changes work the same way: ask in plain words, the agent drafts the change
 3. The agent fills in the template and cites the command each fact came from.
 4. You review the document.
 
-Reading documents and filling in templates is done by the agent, not by SDEM; how well it works depends on the agent and how it is configured. SDEM's checks apply to whatever the agent proposes; the agent's instructions and SDEM's controls are listed in the README ([AI agents](../README.md#3--ai-agents--optional-architecture-assistants)).
+Reading documents and filling in templates is done by the agent, not by SDEM; how well it works depends on the agent and how it is configured. SDEM's checks apply to whatever the agent proposes; the agent's instructions and SDEM's controls are listed in the README ([AI agents](sdem-how-it-works.md#3--ai-agents--optional-architecture-assistants)).
 
 ## 3. Planned — not yet built
 

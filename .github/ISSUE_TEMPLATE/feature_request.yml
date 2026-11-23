@@ -1,0 +1,19 @@
+name: Feature or change request
+description: a new command, a change to a rule, a new kind of record or link
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Changes to **record types or link semantics** need the owner's approval (the metamodel changes only with it) — describe the need first.
+        **Made-up data only** in examples.
+  - type: textarea
+    id: need
+    attributes: {label: What you need to do, description: the architect's task SDEM does not support well today}
+    validations: {required: true}
+  - type: textarea
+    id: proposal
+    attributes: {label: What you propose, description: "for a metamodel change: the source and target types, the link, cardinality, and the standard it rests on (ArchiMate, BIAN, TOGAF) or that it is SDEM's own"}
+  - type: input
+    id: rules
+    attributes: {label: Rule ids it touches, description: "e.g. CTL-…, AF-…, AID-…, MID-… (docs/design/)"}

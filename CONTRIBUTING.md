@@ -5,13 +5,13 @@ Please open an issue first for changes to entity types or link semantics. A pull
 ## Set up
 
 - Python **3.10 or later** (CI tests 3.10–3.13). No other dependencies.
-- `pip install -e .` installs the `sdem` command; without installing, `python -m sdem …` does the same.
+- `pip install -e .` (or `make setup`) installs the `sdem` command; without installing, `python -m sdem …` does the same. `make help` lists the common tasks; `.devcontainer/` opens a ready environment in VS Code or GitHub Codespaces.
 - Open the project in VS Code; run SDEM in the terminal pane ([user guide](docs/sdem-workbench-user-guide.md)).
 
 ## Before every pull request
 
 ```bash
-python -m unittest discover -s tests          # the test suite (under 10 seconds)
+python -m unittest discover -s tests          # the test suite (several minutes) — or: make test
 python -m sdem model check                     # every generated document and schema is current
 python -m sdem model accept                    # the rules engine passes its acceptance cases (8 of 8)
 python scripts/engine_perf.py 30 30            # the rules engine on 2,040 records within 30 s

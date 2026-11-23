@@ -1,6 +1,6 @@
 # From a design to a trace — how SDEM links and traces
 
-> **Status: current (v0.21.13)** — for architects: the question every architect asks first — *how does SDEM know that a business requirement depends on a server?* — answered step by step: how a design gets into SDEM, where every link comes from, what `sdem trace` does with them, and what comes from ArchiMate, TOGAF, BIAN and SDEM itself. Everything in the examples is made up.
+> **Status: current (v0.21.14)** — for architects: the question every architect asks first — *how does SDEM know that a business requirement depends on a server?* — answered step by step: how a design gets into SDEM, where every link comes from, what `sdem trace` does with them, and what comes from ArchiMate, TOGAF, BIAN and SDEM itself. Everything in the examples is made up.
 
 ## 1. The short answer
 
@@ -110,7 +110,7 @@ Why the links between layers are SDEM's own: of 69 pairings of one layer's recor
 
 Since SDEM 0.20, BIAN is an extension, not part of the core. Without it a design has the core's four layers — **A1 Business, A2 Data, A3 Application, A4 Technology** — and everything above holds: links inside each layer are ArchiMate relationships, approved links join the layers directly (*process served by application service*, *business object mapped to data entity*, *application deployed on node*), and SDEM's trace rules walk them, less BIAN's own (FT-07, FT-13). AID's step from a business process to an application rests on BIAN's pattern, so without BIAN, AID leaves that gap open and lists it.
 
-**A known limit in 0.21.13:** for a design without BIAN, `sdem trace GAPS` still expects the BIAN layer and labels the layers by BIAN's numbering, so it counts no record as reaching every layer. The trace itself — which records and links are followed — is right; the gap figure is not. It is to be fixed in the next release.
+**A known limit in 0.21.14:** for a design without BIAN, `sdem trace GAPS` still expects the BIAN layer and labels the layers by BIAN's numbering, so it counts no record as reaching every layer. The trace itself — which records and links are followed — is right; the gap figure is not. It is to be fixed in the next release.
 
 ## 8. The commands, in order
 

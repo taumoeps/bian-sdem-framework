@@ -289,7 +289,7 @@ def integrity(workspace):
     _p.activate_from(ws)
     mm = Metamodel.load()
     rows = layers()
-    froz = json.loads((Path(__file__).resolve().parents[1] / 'metamodel' / 'stability.json').read_text(encoding='utf-8')) if (Path(__file__).resolve().parents[1] / 'metamodel' / 'stability.json').exists() else {}
+    froz = _j(STABILITY) if STABILITY.exists() else {}   # 0.21.14: the installed package's own copy (sdem/data/metamodel), not a checkout's
     try: st = stability(); stable = 'as frozen' if not st['issues'] and not st['needs_freeze'] else ('changed as the policy allows' if not st['issues'] else 'changed — ' + '; '.join(st['issues']))
     except Exception: stable = None
     packs = []

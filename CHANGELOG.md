@@ -2,6 +2,12 @@
 
 > Entries before 0.7.0 describe the project under its former name, **SDMM (BIAN Service Domain Mapping Model)**, and its former terms; they are kept as written.
 
+## 0.21.14 — the freeze when installed; a README for developers (2026-11-23)
+
+- **`sdem model integrity` reports the metamodel's freeze when SDEM is installed**: it read the freeze record from a checkout's `metamodel/` folder, so an installed SDEM said the core held 0 kinds of record, 0 link types, 0 rules and 0 attributes, with no freeze date — as DESNRE's Health tab showed for the Payment example after 0.21.13. It now reads the copy SDEM is using; a test fails on the old code.
+- **The README is a quick start for SDEM 0.21**: what SDEM is in one sentence, badges, a screenshot, five features, prerequisites, install, the example in one command and a first design in six steps — each run as written on 0.21.14, with the layer files 0.20 writes (`business.json`, `bian.json`, `data.json` …; it still showed 0.19's `a1-business.json`). Its longer sections moved to **[How SDEM works](docs/sdem-how-it-works.md)**, corrected to the 0.20 layers (BIAN an extension, Data a layer of its own).
+- **For developers**: `examples/README.md` (where to start, and which examples are in 0.20's form), a `Makefile` (`make test`, `check`, `integrity`, `example` …), a dev container, issue and pull-request templates, and the package's keywords, classifiers and links. CONTRIBUTING no longer says the test suite takes under ten seconds.
+
 ## 0.21.13 — an extension's own links, ArchiMate's kind (2026-11-23)
 
 - **An extension's own link inside its layer is drawn as the ArchiMate kind it maps to** (MID-07): a pack declares such a link in `link_kinds` with `maps_to`; SDEM read only its links between layers, so `sdem model integrity --graph` gave the security extension's *mitigates* (a control mitigates a threat) the kind "mitigates", which is no ArchiMate relationship. It is now *association*, as the pack says.

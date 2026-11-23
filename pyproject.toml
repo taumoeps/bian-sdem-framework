@@ -4,15 +4,34 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "sdem"
-version = "0.21.13"
+version = "0.21.14"
 description = "Service Domain Enterprise Metamodel (SDEM): model-driven enterprise architecture metamodel, relationship registry and architecture knowledge graphs"
 readme = "README.md"
 requires-python = ">=3.10"
 license = {text = "Apache-2.0"}
 dependencies = []
+keywords = ["enterprise-architecture", "solution-architecture", "bian", "archimate", "togaf", "architecture-as-code", "knowledge-graph", "metamodel", "traceability", "impact-analysis"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Financial and Insurance Industry",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development :: Documentation",
+    "Topic :: Office/Business :: Financial",
+]
 
 [project.urls]
 Repository = "https://github.com/taumoeps/bian-sdem-framework"
+Documentation = "https://github.com/taumoeps/bian-sdem-framework/blob/main/docs/README.md"
+Changelog = "https://github.com/taumoeps/bian-sdem-framework/blob/main/CHANGELOG.md"
+Issues = "https://github.com/taumoeps/bian-sdem-framework/issues"
 
 [project.scripts]
 sdem = "sdem.cli:main"

@@ -1,6 +1,6 @@
 # SDEM documentation
 
-> **Status: current (v0.21.13)** — start here. Everything on this page is written for people who will use or run SDEM; nothing assumes you know it already.
+> **Status: current (v0.21.14)** — start here. Everything on this page is written for people who will use or run SDEM; nothing assumes you know it already.
 
 ## New to SDEM? Read these, in order
 
@@ -33,6 +33,7 @@ flowchart LR
 
 | Read | For |
 |---|---|
+| [**How SDEM works**](sdem-how-it-works.md) | the metamodel, the three components (data architecture, CLI, optional AI agents), the BIAN catalogue, the local workbench, and how SDEM compares with other architecture tools — moved here from the README |
 | [**From a design to a trace**](sdem-from-design-to-trace.md) | the question architects ask first — how SDEM knows a business requirement depends on a server: how a design gets in, where every link comes from, how `sdem trace` walks them, what comes from ArchiMate, TOGAF, BIAN and SDEM — with a worked example |
 | [The metamodel in plain words](sdem-metamodel-guide.md) | the kinds of thing, the eleven connections between layers, how sure SDEM is, what it refuses |
 | [The 3D view](sdem-3d-view.md) | what the 3D view changed in the metamodel, checks and data, and how a workspace gets onto the DESNRE site's 3D layers |
