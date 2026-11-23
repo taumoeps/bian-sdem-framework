@@ -1,0 +1,378 @@
+{
+ "exit": 0,
+ "proposals": [
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.8,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S32 step1 data join; a4 DEP-EDGE.component_id = APP-EDGE; a3 APP-EDGE.deployed_as lists DEP-EDGE"
+   ],
+   "evidence_class": "attribute_join",
+   "mapping_id": "P-RUN-001",
+   "rationale": "data join; a4 DEP-EDGE.component_id = APP-EDGE; a3 APP-EDGE.deployed_as lists DEP-EDGE",
+   "relationship": "DEPLOYED_AS",
+   "source": {
+    "id": "APP-EDGE",
+    "type": "A4.ApplicationComponent",
+    "version": "1"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "DEP-EDGE",
+    "type": "A5.Deployment",
+    "version": "1"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.8,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S32 step1 data join; a4 DEP-IDENT.component_id = APP-IDENT; a3 APP-IDENT.deployed_as lists DEP-IDENT"
+   ],
+   "evidence_class": "attribute_join",
+   "mapping_id": "P-RUN-002",
+   "rationale": "data join; a4 DEP-IDENT.component_id = APP-IDENT; a3 APP-IDENT.deployed_as lists DEP-IDENT",
+   "relationship": "DEPLOYED_AS",
+   "source": {
+    "id": "APP-IDENT",
+    "type": "A4.ApplicationComponent",
+    "version": "1"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "DEP-IDENT",
+    "type": "A5.Deployment",
+    "version": "1"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.8,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S32 step1 data join; a4 DEP-CONSENT.component_id = APP-CONSENT; a3 APP-CONSENT.deployed_as lists DEP-CONSENT"
+   ],
+   "evidence_class": "attribute_join",
+   "mapping_id": "P-RUN-003",
+   "rationale": "data join; a4 DEP-CONSENT.component_id = APP-CONSENT; a3 APP-CONSENT.deployed_as lists DEP-CONSENT",
+   "relationship": "DEPLOYED_AS",
+   "source": {
+    "id": "APP-CONSENT",
+    "type": "A4.ApplicationComponent",
+    "version": "1"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "DEP-CONSENT",
+    "type": "A5.Deployment",
+    "version": "1"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.8,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S32 step1 data join; a4 DEP-PAYHUB.component_id = APP-PAYHUB; a3 APP-PAYHUB.deployed_as lists DEP-PAYHUB"
+   ],
+   "evidence_class": "attribute_join",
+   "mapping_id": "P-RUN-004",
+   "rationale": "data join; a4 DEP-PAYHUB.component_id = APP-PAYHUB; a3 APP-PAYHUB.deployed_as lists DEP-PAYHUB",
+   "relationship": "DEPLOYED_AS",
+   "source": {
+    "id": "APP-PAYHUB",
+    "type": "A4.ApplicationComponent",
+    "version": "1"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "DEP-PAYHUB",
+    "type": "A5.Deployment",
+    "version": "1"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.8,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S32 step1 data join; a4 DEP-RISK.component_id = APP-RISK; a3 APP-RISK.deployed_as lists DEP-RISK"
+   ],
+   "evidence_class": "attribute_join",
+   "mapping_id": "P-RUN-005",
+   "rationale": "data join; a4 DEP-RISK.component_id = APP-RISK; a3 APP-RISK.deployed_as lists DEP-RISK",
+   "relationship": "DEPLOYED_AS",
+   "source": {
+    "id": "APP-RISK",
+    "type": "A4.ApplicationComponent",
+    "version": "1"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "DEP-RISK",
+    "type": "A5.Deployment",
+    "version": "1"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.8,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S32 step1 data join; a4 DEP-LEDGER.component_id = APP-LEDGER; a3 APP-LEDGER.deployed_as lists DEP-LEDGER"
+   ],
+   "evidence_class": "attribute_join",
+   "mapping_id": "P-RUN-006",
+   "rationale": "data join; a4 DEP-LEDGER.component_id = APP-LEDGER; a3 APP-LEDGER.deployed_as lists DEP-LEDGER",
+   "relationship": "DEPLOYED_AS",
+   "source": {
+    "id": "APP-LEDGER",
+    "type": "A4.ApplicationComponent",
+    "version": "1"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "DEP-LEDGER",
+    "type": "A5.Deployment",
+    "version": "1"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.8,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S32 step1 data join; a4 DEP-OUT.component_id = APP-OUTBOUND; a3 APP-OUTBOUND.deployed_as lists DEP-OUT"
+   ],
+   "evidence_class": "attribute_join",
+   "mapping_id": "P-RUN-007",
+   "rationale": "data join; a4 DEP-OUT.component_id = APP-OUTBOUND; a3 APP-OUTBOUND.deployed_as lists DEP-OUT",
+   "relationship": "DEPLOYED_AS",
+   "source": {
+    "id": "APP-OUTBOUND",
+    "type": "A4.ApplicationComponent",
+    "version": "1"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "DEP-OUT",
+    "type": "A5.Deployment",
+    "version": "1"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.8,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S32 step1 data join; a4 DEP-NOTIFY.component_id = APP-NOTIFY; a3 APP-NOTIFY.deployed_as lists DEP-NOTIFY"
+   ],
+   "evidence_class": "attribute_join",
+   "mapping_id": "P-RUN-008",
+   "rationale": "data join; a4 DEP-NOTIFY.component_id = APP-NOTIFY; a3 APP-NOTIFY.deployed_as lists DEP-NOTIFY",
+   "relationship": "DEPLOYED_AS",
+   "source": {
+    "id": "APP-NOTIFY",
+    "type": "A4.ApplicationComponent",
+    "version": "1"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "DEP-NOTIFY",
+    "type": "A5.Deployment",
+    "version": "1"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.8,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S34 step1 data join, logged under S34 because the target is A5.Node; a4 deployment DEP-EDGE (component APP-EDGE) names platform NODE-EDGE"
+   ],
+   "evidence_class": "attribute_join",
+   "mapping_id": "P-RUN-009",
+   "rationale": "data join, logged under S34 because the target is A5.Node; a4 deployment DEP-EDGE (component APP-EDGE) names platform NODE-EDGE",
+   "relationship": "DEPLOYED_ON",
+   "source": {
+    "id": "APP-EDGE",
+    "type": "A4.ApplicationComponent",
+    "version": "1"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "NODE-EDGE",
+    "type": "A5.Node",
+    "version": "1"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.8,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S34 step1 data join, logged under S34 because the target is A5.Node; a4 deployment DEP-IDENT (component APP-IDENT) names platform NODE-SEC"
+   ],
+   "evidence_class": "attribute_join",
+   "mapping_id": "P-RUN-010",
+   "rationale": "data join, logged under S34 because the target is A5.Node; a4 deployment DEP-IDENT (component APP-IDENT) names platform NODE-SEC",
+   "relationship": "DEPLOYED_ON",
+   "source": {
+    "id": "APP-IDENT",
+    "type": "A4.ApplicationComponent",
+    "version": "1"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "NODE-SEC",
+    "type": "A5.Node",
+    "version": "1"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.8,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S34 step1 data join, logged under S34 because the target is A5.Node; a4 deployment DEP-LEDGER (component APP-LEDGER) names platform NODE-INT"
+   ],
+   "evidence_class": "attribute_join",
+   "mapping_id": "P-RUN-011",
+   "rationale": "data join, logged under S34 because the target is A5.Node; a4 deployment DEP-LEDGER (component APP-LEDGER) names platform NODE-INT",
+   "relationship": "DEPLOYED_ON",
+   "source": {
+    "id": "APP-LEDGER",
+    "type": "A4.ApplicationComponent",
+    "version": "1"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "NODE-INT",
+    "type": "A5.Node",
+    "version": "1"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.8,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S34 step1 data join, logged under S34 because the target is A5.Node; a4 deployment DEP-OUT (component APP-OUTBOUND) names platform NODE-INT"
+   ],
+   "evidence_class": "attribute_join",
+   "mapping_id": "P-RUN-012",
+   "rationale": "data join, logged under S34 because the target is A5.Node; a4 deployment DEP-OUT (component APP-OUTBOUND) names platform NODE-INT",
+   "relationship": "DEPLOYED_ON",
+   "source": {
+    "id": "APP-OUTBOUND",
+    "type": "A4.ApplicationComponent",
+    "version": "1"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "NODE-INT",
+    "type": "A5.Node",
+    "version": "1"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.4,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S17 step4 fallback B: asset-type tokens ['payment'] in API paths / entity names"
+   ],
+   "evidence_class": "name_token",
+   "mapping_id": "P-RUN-013",
+   "rationale": "fallback B: asset-type tokens ['payment'] in API paths / entity names",
+   "relationship": "REALIZED_BY",
+   "source": {
+    "canonical_id": "BIAN-PAYMENT-ORDER-INITIATION",
+    "id": "SD-PAYMENT-ORDER-INITIATION",
+    "type": "A2.ServiceDomain",
+    "version": "14.0.0"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "APP-EDGE",
+    "type": "A4.ApplicationComponent",
+    "version": "1"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.6,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S04 step3 invokes SO-PARTY-AUTHENTICATION-EVALUATE (PROC-AUTH.invokes)"
+   ],
+   "evidence_class": "attribute_join",
+   "mapping_id": "P-RUN-014",
+   "rationale": "invokes SO-PARTY-AUTHENTICATION-EVALUATE (PROC-AUTH.invokes)",
+   "relationship": "USES_DOMAIN",
+   "source": {
+    "id": "PROC-AUTH",
+    "type": "A1.BusinessProcess",
+    "version": "1"
+   },
+   "status": "proposed",
+   "target": {
+    "canonical_id": "BIAN-PARTY-AUTHENTICATION",
+    "id": "SD-PARTY-AUTHENTICATION",
+    "type": "A2.ServiceDomain",
+    "version": "14.0.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.6,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S04 step3 invokes SO-PAYMENT-ORDER-INITIATION-INITIATE (PROC-SUBMIT.invokes)"
+   ],
+   "evidence_class": "attribute_join",
+   "mapping_id": "P-RUN-015",
+   "rationale": "invokes SO-PAYMENT-ORDER-INITIATION-INITIATE (PROC-SUBMIT.invokes)",
+   "relationship": "USES_DOMAIN",
+   "source": {
+    "id": "PROC-SUBMIT",
+    "type": "A1.BusinessProcess",
+    "version": "1"
+   },
+   "status": "proposed",
+   "target": {
+    "canonical_id": "BIAN-PAYMENT-ORDER-INITIATION",
+    "id": "SD-PAYMENT-ORDER-INITIATION",
+    "type": "A2.ServiceDomain",
+    "version": "14.0.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.6,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S04 step3 invokes SO-PAYMENT-ORDER-INITIATION-RETRIEVE (PROC-STATUS.invokes)"
+   ],
+   "evidence_class": "attribute_join",
+   "mapping_id": "P-RUN-016",
+   "rationale": "invokes SO-PAYMENT-ORDER-INITIATION-RETRIEVE (PROC-STATUS.invokes)",
+   "relationship": "USES_DOMAIN",
+   "source": {
+    "id": "PROC-STATUS",
+    "type": "A1.BusinessProcess",
+    "version": "1"
+   },
+   "status": "proposed",
+   "target": {
+    "canonical_id": "BIAN-PAYMENT-ORDER-INITIATION",
+    "id": "SD-PAYMENT-ORDER-INITIATION",
+    "type": "A2.ServiceDomain",
+    "version": "14.0.0"
+   }
+  }
+ ],
+ "stderr_tail": ""
+}

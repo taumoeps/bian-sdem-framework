@@ -51,7 +51,7 @@ class EngineMetamodelTests(unittest.TestCase):
             if a['plan_id'] in RULES: self.assertEqual(a['step_assigned'], RULES[a['plan_id']]['fill_step'], a['plan_id'])
 
     def test_every_applicable_rule_is_implemented(self):
-        src = (ROOT / 'sdem' / 'rules_engine.py').read_text(encoding='utf-8')
+        src = ''.join((ROOT / 'sdem' / f).read_text(encoding='utf-8') for f in ('rules_engine.py', 'rules_bian.py'))   # 0.22 step 3b: BIAN's rules in their own module
         named = set(re.findall(r"'([SB]\d\d)'", src))
         applicable = {k for k, r in RULES.items() if r.get('fill_step') not in (0, None) and r['rule_decision'] not in NOT_APPLIED}
         self.assertFalse(applicable - named, f'rules the metamodel says the engine applies, but the engine never names: {sorted(applicable - named)}')

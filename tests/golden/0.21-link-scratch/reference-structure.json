@@ -1,0 +1,75 @@
+{
+ "exit": 0,
+ "proposals": [
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.8,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S32 step1 data join; a4 RS-Deployment-1.component_id = RS-ApplicationComponent-1"
+   ],
+   "evidence_class": "attribute_join",
+   "mapping_id": "P-RUN-001",
+   "rationale": "data join; a4 RS-Deployment-1.component_id = RS-ApplicationComponent-1",
+   "relationship": "DEPLOYED_AS",
+   "source": {
+    "id": "RS-ApplicationComponent-1",
+    "type": "A4.ApplicationComponent",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "RS-Deployment-1",
+    "type": "A5.Deployment",
+    "version": "1.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.8,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S32 step1 data join; a4 RS-Deployment-2.component_id = RS-ApplicationComponent-2"
+   ],
+   "evidence_class": "attribute_join",
+   "mapping_id": "P-RUN-002",
+   "rationale": "data join; a4 RS-Deployment-2.component_id = RS-ApplicationComponent-2",
+   "relationship": "DEPLOYED_AS",
+   "source": {
+    "id": "RS-ApplicationComponent-2",
+    "type": "A4.ApplicationComponent",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "RS-Deployment-2",
+    "type": "A5.Deployment",
+    "version": "1.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.4,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S17 step4 fallback B: asset-type tokens ['struct'] in API paths / entity names"
+   ],
+   "evidence_class": "name_token",
+   "mapping_id": "P-RUN-003",
+   "rationale": "fallback B: asset-type tokens ['struct'] in API paths / entity names",
+   "relationship": "REALIZED_BY",
+   "source": {
+    "id": "RS-ServiceDomain-1",
+    "type": "A2.ServiceDomain",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "RS-ApplicationComponent-1",
+    "type": "A4.ApplicationComponent",
+    "version": "1.0"
+   }
+  }
+ ],
+ "stderr_tail": ""
+}

@@ -1,0 +1,452 @@
+{
+ "exit": 0,
+ "proposals": [
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.6,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S12 step4 5/7 BOM attributes covered by the glossary (71%)"
+   ],
+   "evidence_class": "structural",
+   "mapping_id": "P-RUN-001",
+   "rationale": "5/7 BOM attributes covered by the glossary (71%)",
+   "relationship": "ALIGNED_TO",
+   "source": {
+    "id": "BO-LOAN-APP",
+    "type": "A1.BusinessObject",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "canonical_id": "BIAN-BO-LOAN-APPLICATION",
+    "id": "BBO-LOAN-APP",
+    "type": "A2.BusinessObject",
+    "version": "1.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.6,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S12 step4 3/6 BOM attributes covered by the glossary (50%)"
+   ],
+   "evidence_class": "structural",
+   "mapping_id": "P-RUN-002",
+   "rationale": "3/6 BOM attributes covered by the glossary (50%)",
+   "relationship": "ALIGNED_TO",
+   "source": {
+    "id": "BO-CREDIT-DEC",
+    "type": "A1.BusinessObject",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "canonical_id": "BIAN-BO-CREDIT-ASSESSMENT",
+    "id": "BBO-CREDIT-ASSESS",
+    "type": "A2.BusinessObject",
+    "version": "1.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.6,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S04 step3 invokes SO-LO-01 (PRC-APPLY.invokes); SO-LO-02 (PRC-APPLY.invokes)"
+   ],
+   "evidence_class": "attribute_join",
+   "mapping_id": "P-RUN-003",
+   "rationale": "invokes SO-LO-01 (PRC-APPLY.invokes); SO-LO-02 (PRC-APPLY.invokes)",
+   "relationship": "USES_DOMAIN",
+   "source": {
+    "id": "PRC-APPLY",
+    "type": "A1.BusinessProcess",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "canonical_id": "BIAN-CONSUMER-LOAN-ORIGINATION",
+    "id": "SD-LO",
+    "type": "A2.ServiceDomain",
+    "version": "1.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.6,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S04 step3 invokes SO-CA-01 (PRC-ASSESS.invokes); SO-CA-02 (PRC-ASSESS.invokes)"
+   ],
+   "evidence_class": "attribute_join",
+   "mapping_id": "P-RUN-004",
+   "rationale": "invokes SO-CA-01 (PRC-ASSESS.invokes); SO-CA-02 (PRC-ASSESS.invokes)",
+   "relationship": "USES_DOMAIN",
+   "source": {
+    "id": "PRC-ASSESS",
+    "type": "A1.BusinessProcess",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "canonical_id": "BIAN-CREDIT-ASSESSMENT",
+    "id": "SD-CA",
+    "type": "A2.ServiceDomain",
+    "version": "1.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.6,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S04 step3 invokes SO-LO-04 (PRC-OFFER.invokes); SO-LO-05 (PRC-OFFER.invokes)"
+   ],
+   "evidence_class": "attribute_join",
+   "mapping_id": "P-RUN-005",
+   "rationale": "invokes SO-LO-04 (PRC-OFFER.invokes); SO-LO-05 (PRC-OFFER.invokes)",
+   "relationship": "USES_DOMAIN",
+   "source": {
+    "id": "PRC-OFFER",
+    "type": "A1.BusinessProcess",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "canonical_id": "BIAN-CONSUMER-LOAN-ORIGINATION",
+    "id": "SD-LO",
+    "type": "A2.ServiceDomain",
+    "version": "1.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.6,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S01 step3 all 2 processes of the capability use the domain"
+   ],
+   "evidence_class": "attribute_join",
+   "mapping_id": "P-RUN-006",
+   "rationale": "all 2 processes of the capability use the domain",
+   "relationship": "SUPPORTED_BY",
+   "source": {
+    "id": "CAP-LEND",
+    "type": "A1.BusinessCapability",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "canonical_id": "BIAN-CONSUMER-LOAN-ORIGINATION",
+    "id": "SD-LO",
+    "type": "A2.ServiceDomain",
+    "version": "1.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.6,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S01 step3 all 1 processes of the capability use the domain"
+   ],
+   "evidence_class": "attribute_join",
+   "mapping_id": "P-RUN-007",
+   "rationale": "all 1 processes of the capability use the domain",
+   "relationship": "SUPPORTED_BY",
+   "source": {
+    "id": "CAP-CREDIT",
+    "type": "A1.BusinessCapability",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "canonical_id": "BIAN-CREDIT-ASSESSMENT",
+    "id": "SD-CA",
+    "type": "A2.ServiceDomain",
+    "version": "1.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.4,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:DESIGN stepdesign TARGET DESIGN, not a mapping: one component per Service Domain (BIAN container pattern)"
+   ],
+   "evidence_class": "pattern",
+   "mapping_id": "P-RUN-008",
+   "rationale": "TARGET DESIGN, not a mapping: one component per Service Domain (BIAN container pattern)",
+   "relationship": "REALIZED_BY",
+   "source": {
+    "canonical_id": "BIAN-CONSUMER-LOAN-ORIGINATION",
+    "id": "SD-LO",
+    "type": "A2.ServiceDomain",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "DSN-APP-SD-LO",
+    "type": "A4.ApplicationComponent",
+    "version": "1.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.4,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S24 stepdesign TARGET DESIGN, not a mapping: the API derived from the operation by the REST mapping \u2014 create-instance term \u21d4 POST on the collection; payload = input \u222a output"
+   ],
+   "evidence_class": "pattern",
+   "mapping_id": "P-RUN-009",
+   "rationale": "TARGET DESIGN, not a mapping: the API derived from the operation by the REST mapping \u2014 create-instance term \u21d4 POST on the collection; payload = input \u222a output",
+   "relationship": "IMPLEMENTED_BY",
+   "source": {
+    "id": "SO-LO-01",
+    "type": "A2.ServiceOperation",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "DSN-API-SO-LO-01",
+    "type": "A4.APIOperation",
+    "version": "1.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.4,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S24 stepdesign TARGET DESIGN, not a mapping: the API derived from the operation by the REST mapping \u2014 Update \u21d4 PATCH on the instance; payload = input \u222a output"
+   ],
+   "evidence_class": "pattern",
+   "mapping_id": "P-RUN-010",
+   "rationale": "TARGET DESIGN, not a mapping: the API derived from the operation by the REST mapping \u2014 Update \u21d4 PATCH on the instance; payload = input \u222a output",
+   "relationship": "IMPLEMENTED_BY",
+   "source": {
+    "id": "SO-LO-02",
+    "type": "A2.ServiceOperation",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "DSN-API-SO-LO-02",
+    "type": "A4.APIOperation",
+    "version": "1.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.4,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S24 stepdesign TARGET DESIGN, not a mapping: the API derived from the operation by the REST mapping \u2014 Retrieve \u21d4 GET (SAPG \u00a73.5, verified); payload = input \u222a output"
+   ],
+   "evidence_class": "pattern",
+   "mapping_id": "P-RUN-011",
+   "rationale": "TARGET DESIGN, not a mapping: the API derived from the operation by the REST mapping \u2014 Retrieve \u21d4 GET (SAPG \u00a73.5, verified); payload = input \u222a output",
+   "relationship": "IMPLEMENTED_BY",
+   "source": {
+    "id": "SO-LO-03",
+    "type": "A2.ServiceOperation",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "DSN-API-SO-LO-03",
+    "type": "A4.APIOperation",
+    "version": "1.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.4,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S24 stepdesign TARGET DESIGN, not a mapping: the API derived from the operation by the REST mapping \u2014 Execute \u21d4 POST on the qualifier sub-resource; payload = input \u222a output"
+   ],
+   "evidence_class": "pattern",
+   "mapping_id": "P-RUN-012",
+   "rationale": "TARGET DESIGN, not a mapping: the API derived from the operation by the REST mapping \u2014 Execute \u21d4 POST on the qualifier sub-resource; payload = input \u222a output",
+   "relationship": "IMPLEMENTED_BY",
+   "source": {
+    "id": "SO-LO-04",
+    "type": "A2.ServiceOperation",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "DSN-API-SO-LO-04",
+    "type": "A4.APIOperation",
+    "version": "1.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.4,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S24 stepdesign TARGET DESIGN, not a mapping: the API derived from the operation by the REST mapping \u2014 Execute \u21d4 POST on the qualifier sub-resource; payload = input \u222a output"
+   ],
+   "evidence_class": "pattern",
+   "mapping_id": "P-RUN-013",
+   "rationale": "TARGET DESIGN, not a mapping: the API derived from the operation by the REST mapping \u2014 Execute \u21d4 POST on the qualifier sub-resource; payload = input \u222a output",
+   "relationship": "IMPLEMENTED_BY",
+   "source": {
+    "id": "SO-LO-05",
+    "type": "A2.ServiceOperation",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "DSN-API-SO-LO-05",
+    "type": "A4.APIOperation",
+    "version": "1.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.4,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S24 stepdesign TARGET DESIGN, not a mapping: the API derived from the operation by the REST mapping \u2014 Control \u21d4 PUT on the instance's control action; payload = input \u222a output"
+   ],
+   "evidence_class": "pattern",
+   "mapping_id": "P-RUN-014",
+   "rationale": "TARGET DESIGN, not a mapping: the API derived from the operation by the REST mapping \u2014 Control \u21d4 PUT on the instance's control action; payload = input \u222a output",
+   "relationship": "IMPLEMENTED_BY",
+   "source": {
+    "id": "SO-LO-06",
+    "type": "A2.ServiceOperation",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "DSN-API-SO-LO-06",
+    "type": "A4.APIOperation",
+    "version": "1.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.4,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S32 stepdesign TARGET DESIGN, not a mapping: one deployment per component (BIAN container pattern); no platform, environment or data entity is invented"
+   ],
+   "evidence_class": "pattern",
+   "mapping_id": "P-RUN-015",
+   "rationale": "TARGET DESIGN, not a mapping: one deployment per component (BIAN container pattern); no platform, environment or data entity is invented",
+   "relationship": "DEPLOYED_AS",
+   "source": {
+    "id": "DSN-APP-SD-LO",
+    "type": "A4.ApplicationComponent",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "DSN-DEP-SD-LO",
+    "type": "A5.Deployment",
+    "version": "1.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.4,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:DESIGN stepdesign TARGET DESIGN, not a mapping: one component per Service Domain (BIAN container pattern)"
+   ],
+   "evidence_class": "pattern",
+   "mapping_id": "P-RUN-016",
+   "rationale": "TARGET DESIGN, not a mapping: one component per Service Domain (BIAN container pattern)",
+   "relationship": "REALIZED_BY",
+   "source": {
+    "canonical_id": "BIAN-CREDIT-ASSESSMENT",
+    "id": "SD-CA",
+    "type": "A2.ServiceDomain",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "DSN-APP-SD-CA",
+    "type": "A4.ApplicationComponent",
+    "version": "1.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.4,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S24 stepdesign TARGET DESIGN, not a mapping: the API derived from the operation by the REST mapping \u2014 create-instance term \u21d4 POST on the collection; payload = input \u222a output"
+   ],
+   "evidence_class": "pattern",
+   "mapping_id": "P-RUN-017",
+   "rationale": "TARGET DESIGN, not a mapping: the API derived from the operation by the REST mapping \u2014 create-instance term \u21d4 POST on the collection; payload = input \u222a output",
+   "relationship": "IMPLEMENTED_BY",
+   "source": {
+    "id": "SO-CA-01",
+    "type": "A2.ServiceOperation",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "DSN-API-SO-CA-01",
+    "type": "A4.APIOperation",
+    "version": "1.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.4,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S24 stepdesign TARGET DESIGN, not a mapping: the API derived from the operation by the REST mapping \u2014 Retrieve \u21d4 GET (SAPG \u00a73.5, verified); payload = input \u222a output"
+   ],
+   "evidence_class": "pattern",
+   "mapping_id": "P-RUN-018",
+   "rationale": "TARGET DESIGN, not a mapping: the API derived from the operation by the REST mapping \u2014 Retrieve \u21d4 GET (SAPG \u00a73.5, verified); payload = input \u222a output",
+   "relationship": "IMPLEMENTED_BY",
+   "source": {
+    "id": "SO-CA-02",
+    "type": "A2.ServiceOperation",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "DSN-API-SO-CA-02",
+    "type": "A4.APIOperation",
+    "version": "1.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.4,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S32 stepdesign TARGET DESIGN, not a mapping: one deployment per component (BIAN container pattern); no platform, environment or data entity is invented"
+   ],
+   "evidence_class": "pattern",
+   "mapping_id": "P-RUN-019",
+   "rationale": "TARGET DESIGN, not a mapping: one deployment per component (BIAN container pattern); no platform, environment or data entity is invented",
+   "relationship": "DEPLOYED_AS",
+   "source": {
+    "id": "DSN-APP-SD-CA",
+    "type": "A4.ApplicationComponent",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "DSN-DEP-SD-CA",
+    "type": "A5.Deployment",
+    "version": "1.0"
+   }
+  }
+ ],
+ "stderr_tail": ""
+}

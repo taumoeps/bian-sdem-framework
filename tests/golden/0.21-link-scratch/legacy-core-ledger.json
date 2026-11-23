@@ -1,0 +1,662 @@
+{
+ "exit": 0,
+ "proposals": [
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.8,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S32 step1 data join; a4 DEP-LM-PROD.component_id = APP-LEDGER; a3 APP-LEDGER.deployed_as lists DEP-LM-PROD"
+   ],
+   "evidence_class": "attribute_join",
+   "mapping_id": "P-RUN-001",
+   "rationale": "data join; a4 DEP-LM-PROD.component_id = APP-LEDGER; a3 APP-LEDGER.deployed_as lists DEP-LM-PROD",
+   "relationship": "DEPLOYED_AS",
+   "source": {
+    "id": "APP-LEDGER",
+    "type": "A4.ApplicationComponent",
+    "version": "12.4"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "DEP-LM-PROD",
+    "type": "A5.Deployment",
+    "version": "1.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.8,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S34 step1 data join, logged under S34 because the target is A5.Node; a3 APP-LEDGER.deployed_on lists INF-MF-LPAR-PROD; a4 INF-MF-LPAR-PROD.hosts lists APP-LEDGER; a4 deployment DEP-LM-PROD (component APP-LEDGER) names platform INF-MF-LPAR-PROD"
+   ],
+   "evidence_class": "attribute_join",
+   "mapping_id": "P-RUN-002",
+   "rationale": "data join, logged under S34 because the target is A5.Node; a3 APP-LEDGER.deployed_on lists INF-MF-LPAR-PROD; a4 INF-MF-LPAR-PROD.hosts lists APP-LEDGER; a4 deployment DEP-LM-PROD (component APP-LEDGER) names platform INF-MF-LPAR-PROD",
+   "relationship": "DEPLOYED_ON",
+   "source": {
+    "id": "APP-LEDGER",
+    "type": "A4.ApplicationComponent",
+    "version": "12.4"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "INF-MF-LPAR-PROD",
+    "type": "A5.Node",
+    "version": "2.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.8,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S24 step2 decision 1: Initiate \u2194 POST; no qualifier, none in path; payload 6 matched (100%): ['accountreference', 'accountstatu', 'currency', 'customerreference', 'opendate', 'overdraftlimit']"
+   ],
+   "evidence_class": "structural",
+   "mapping_id": "P-RUN-003",
+   "rationale": "decision 1: Initiate \u2194 POST; no qualifier, none in path; payload 6 matched (100%): ['accountreference', 'accountstatu', 'currency', 'customerreference', 'opendate', 'overdraftlimit']",
+   "relationship": "IMPLEMENTED_BY",
+   "source": {
+    "id": "SO-CA-01",
+    "type": "A2.ServiceOperation",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "OP-OpenAccount",
+    "type": "A4.APIOperation",
+    "version": "12.4"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.8,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S24 step2 decision 1: Execute on POST to a sub-resource named for the qualifier; qualifier in path; payload 3 matched (100%): ['accountreference', 'accountstatu', 'closedate']"
+   ],
+   "evidence_class": "structural",
+   "mapping_id": "P-RUN-004",
+   "rationale": "decision 1: Execute on POST to a sub-resource named for the qualifier; qualifier in path; payload 3 matched (100%): ['accountreference', 'accountstatu', 'closedate']",
+   "relationship": "IMPLEMENTED_BY",
+   "source": {
+    "id": "SO-CA-05",
+    "type": "A2.ServiceOperation",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "OP-CloseAccount",
+    "type": "A4.APIOperation",
+    "version": "12.4"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.8,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S24 step2 decision 1: Execute on POST to a sub-resource named for the qualifier; qualifier in path; payload 2 matched (100%): ['balanceafter', 'postingreference']"
+   ],
+   "evidence_class": "structural",
+   "mapping_id": "P-RUN-005",
+   "rationale": "decision 1: Execute on POST to a sub-resource named for the qualifier; qualifier in path; payload 2 matched (100%): ['balanceafter', 'postingreference']",
+   "relationship": "IMPLEMENTED_BY",
+   "source": {
+    "id": "SO-PK-03",
+    "type": "A2.ServiceOperation",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "OP-ReverseEntry",
+    "type": "A4.APIOperation",
+    "version": "12.4"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.8,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S24 step2 decision 1: Initiate \u2194 POST; no qualifier, none in path; payload 6 matched (100%): ['amount', 'creditoraccountreference', 'currency', 'debtoraccountreference', 'executionstatu', 'paymentreference']"
+   ],
+   "evidence_class": "structural",
+   "mapping_id": "P-RUN-006",
+   "rationale": "decision 1: Initiate \u2194 POST; no qualifier, none in path; payload 6 matched (100%): ['amount', 'creditoraccountreference', 'currency', 'debtoraccountreference', 'executionstatu', 'paymentreference']",
+   "relationship": "IMPLEMENTED_BY",
+   "source": {
+    "id": "SO-PE-01",
+    "type": "A2.ServiceOperation",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "OP-SubmitPayment",
+    "type": "A4.APIOperation",
+    "version": "12.4"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.6,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S24 step2 decision 2: Retrieve on POST; no qualifier, none in path; payload 6 matched (100%): ['accountreference', 'accountstatu', 'balance', 'currency', 'customerreference', 'overdraftlimit'] \u2014 method mismatch, proposed one band lower"
+   ],
+   "evidence_class": "structural",
+   "mapping_id": "P-RUN-007",
+   "rationale": "decision 2: Retrieve on POST; no qualifier, none in path; payload 6 matched (100%): ['accountreference', 'accountstatu', 'balance', 'currency', 'customerreference', 'overdraftlimit'] \u2014 method mismatch, proposed one band lower",
+   "relationship": "IMPLEMENTED_BY",
+   "source": {
+    "id": "SO-CA-02",
+    "type": "A2.ServiceOperation",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "OP-GetAccount",
+    "type": "A4.APIOperation",
+    "version": "12.4"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.6,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S24 step2 decision 2: Update on POST; qualifier in path; payload 7 matched (100%): ['accountreference', 'amount', 'balanceafter', 'currency', 'postingdate', 'postingreference', 'postingtype'] \u2014 method mismatch, proposed one band lower"
+   ],
+   "evidence_class": "structural",
+   "mapping_id": "P-RUN-008",
+   "rationale": "decision 2: Update on POST; qualifier in path; payload 7 matched (100%): ['accountreference', 'amount', 'balanceafter', 'currency', 'postingdate', 'postingreference', 'postingtype'] \u2014 method mismatch, proposed one band lower",
+   "relationship": "IMPLEMENTED_BY",
+   "source": {
+    "id": "SO-PK-01",
+    "type": "A2.ServiceOperation",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "OP-PostEntry",
+    "type": "A4.APIOperation",
+    "version": "12.4"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.6,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S24 step2 decision 2: Retrieve on POST; no qualifier, none in path; payload 4 matched (100%): ['accountreference', 'balanceafter', 'currency', 'positionreference'] \u2014 method mismatch, proposed one band lower"
+   ],
+   "evidence_class": "structural",
+   "mapping_id": "P-RUN-009",
+   "rationale": "decision 2: Retrieve on POST; no qualifier, none in path; payload 4 matched (100%): ['accountreference', 'balanceafter', 'currency', 'positionreference'] \u2014 method mismatch, proposed one band lower",
+   "relationship": "IMPLEMENTED_BY",
+   "source": {
+    "id": "SO-PK-02",
+    "type": "A2.ServiceOperation",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "OP-GetBalance",
+    "type": "A4.APIOperation",
+    "version": "12.4"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.6,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S24 step2 decision 2: Retrieve on POST; no qualifier, none in path; payload 4 matched (100%): ['executiondate', 'executionstatu', 'paymentreference', 'schemereference'] \u2014 method mismatch, proposed one band lower"
+   ],
+   "evidence_class": "structural",
+   "mapping_id": "P-RUN-010",
+   "rationale": "decision 2: Retrieve on POST; no qualifier, none in path; payload 4 matched (100%): ['executiondate', 'executionstatu', 'paymentreference', 'schemereference'] \u2014 method mismatch, proposed one band lower",
+   "relationship": "IMPLEMENTED_BY",
+   "source": {
+    "id": "SO-PE-02",
+    "type": "A2.ServiceOperation",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "OP-PaymentStatus",
+    "type": "A4.APIOperation",
+    "version": "12.4"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.6,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S24 step2 decision 2: Retrieve on POST; no qualifier, none in path; payload 5 matched (100%): ['address', 'kycstatu', 'partyname', 'partyreference', 'partytype'] \u2014 method mismatch, proposed one band lower"
+   ],
+   "evidence_class": "structural",
+   "mapping_id": "P-RUN-011",
+   "rationale": "decision 2: Retrieve on POST; no qualifier, none in path; payload 5 matched (100%): ['address', 'kycstatu', 'partyname', 'partyreference', 'partytype'] \u2014 method mismatch, proposed one band lower",
+   "relationship": "IMPLEMENTED_BY",
+   "source": {
+    "id": "SO-PRD-02",
+    "type": "A2.ServiceOperation",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "OP-GetCustomer",
+    "type": "A4.APIOperation",
+    "version": "12.4"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.6,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S24 step2 decision 2: Update on POST; no qualifier, none in path; payload 3 matched (100%): ['address', 'contactdetail', 'partyreference'] \u2014 method mismatch, proposed one band lower"
+   ],
+   "evidence_class": "structural",
+   "mapping_id": "P-RUN-012",
+   "rationale": "decision 2: Update on POST; no qualifier, none in path; payload 3 matched (100%): ['address', 'contactdetail', 'partyreference'] \u2014 method mismatch, proposed one band lower",
+   "relationship": "IMPLEMENTED_BY",
+   "source": {
+    "id": "SO-PRD-03",
+    "type": "A2.ServiceOperation",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "OP-UpdateCustomer",
+    "type": "A4.APIOperation",
+    "version": "12.4"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.8,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S24 step2 decision 1: Register \u2194 POST; no qualifier, none in path; payload 4 matched (100%): ['address', 'partyname', 'partyreference', 'partytype']"
+   ],
+   "evidence_class": "structural",
+   "mapping_id": "P-RUN-013",
+   "rationale": "decision 1: Register \u2194 POST; no qualifier, none in path; payload 4 matched (100%): ['address', 'partyname', 'partyreference', 'partytype']",
+   "relationship": "IMPLEMENTED_BY",
+   "source": {
+    "id": "SO-PRD-01",
+    "type": "A2.ServiceOperation",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "OP-CreateCustomer",
+    "type": "A4.APIOperation",
+    "version": "12.4"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.6,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S24 step2 decision 2: Update on POST; no qualifier, none in path; payload 3 matched (100%): ['accountreference', 'accountstatu', 'overdraftlimit'] \u2014 method mismatch, proposed one band lower"
+   ],
+   "evidence_class": "structural",
+   "mapping_id": "P-RUN-014",
+   "rationale": "decision 2: Update on POST; no qualifier, none in path; payload 3 matched (100%): ['accountreference', 'accountstatu', 'overdraftlimit'] \u2014 method mismatch, proposed one band lower",
+   "relationship": "IMPLEMENTED_BY",
+   "source": {
+    "id": "SO-CA-04",
+    "type": "A2.ServiceOperation",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "OP-AmendOverdraft",
+    "type": "A4.APIOperation",
+    "version": "12.4"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.6,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S24 step2 decision 2: Control on POST; no qualifier, none in path; payload 2 matched (100%): ['executionstatu', 'paymentreference'] \u2014 method mismatch, proposed one band lower"
+   ],
+   "evidence_class": "structural",
+   "mapping_id": "P-RUN-015",
+   "rationale": "decision 2: Control on POST; no qualifier, none in path; payload 2 matched (100%): ['executionstatu', 'paymentreference'] \u2014 method mismatch, proposed one band lower",
+   "relationship": "IMPLEMENTED_BY",
+   "source": {
+    "id": "SO-PE-03",
+    "type": "A2.ServiceOperation",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "OP-CancelPayment",
+    "type": "A4.APIOperation",
+    "version": "12.4"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.6,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S24 step2 decision 2: Control on POST; no qualifier, none in path; payload 2 matched (100%): ['accountreference', 'accountstatu'] \u2014 method mismatch, proposed one band lower"
+   ],
+   "evidence_class": "structural",
+   "mapping_id": "P-RUN-016",
+   "rationale": "decision 2: Control on POST; no qualifier, none in path; payload 2 matched (100%): ['accountreference', 'accountstatu'] \u2014 method mismatch, proposed one band lower",
+   "relationship": "IMPLEMENTED_BY",
+   "source": {
+    "id": "SO-CA-03",
+    "type": "A2.ServiceOperation",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "OP-BlockAccount",
+    "type": "A4.APIOperation",
+    "version": "12.4"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.8,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S30 step4 8/8 BOM attributes matched (100%): ['accountreference', 'accountstatu', 'balance', 'closedate', 'currency', 'customerreference', 'opendate', 'overdraftlimit']"
+   ],
+   "evidence_class": "structural",
+   "mapping_id": "P-RUN-017",
+   "rationale": "8/8 BOM attributes matched (100%): ['accountreference', 'accountstatu', 'balance', 'closedate', 'currency', 'customerreference', 'opendate', 'overdraftlimit']",
+   "relationship": "MAPPED_TO",
+   "source": {
+    "canonical_id": "BIAN-BO-CURRENT-ACCOUNT",
+    "id": "BBO-ACCOUNT",
+    "type": "A2.BusinessObject",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "ENT-ACCOUNT",
+    "type": "A3.DataEntity",
+    "version": "12.4"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.8,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S30 step4 7/7 BOM attributes matched (100%): ['accountreference', 'amount', 'balanceafter', 'currency', 'postingdate', 'postingreference', 'postingtype']"
+   ],
+   "evidence_class": "structural",
+   "mapping_id": "P-RUN-018",
+   "rationale": "7/7 BOM attributes matched (100%): ['accountreference', 'amount', 'balanceafter', 'currency', 'postingdate', 'postingreference', 'postingtype']",
+   "relationship": "MAPPED_TO",
+   "source": {
+    "canonical_id": "BIAN-BO-POSTING",
+    "id": "BBO-POSTING",
+    "type": "A2.BusinessObject",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "ENT-POSTING",
+    "type": "A3.DataEntity",
+    "version": "12.4"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.8,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S30 step4 8/8 BOM attributes matched (100%): ['amount', 'creditoraccountreference', 'currency', 'debtoraccountreference', 'executiondate', 'executionstatu', 'paymentreference', 'schemereference']"
+   ],
+   "evidence_class": "structural",
+   "mapping_id": "P-RUN-019",
+   "rationale": "8/8 BOM attributes matched (100%): ['amount', 'creditoraccountreference', 'currency', 'debtoraccountreference', 'executiondate', 'executionstatu', 'paymentreference', 'schemereference']",
+   "relationship": "MAPPED_TO",
+   "source": {
+    "canonical_id": "BIAN-BO-PAYMENT-TXN",
+    "id": "BBO-PAYMENT-TXN",
+    "type": "A2.BusinessObject",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "ENT-PAYMENT",
+    "type": "A3.DataEntity",
+    "version": "12.4"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.8,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S30 step4 6/6 BOM attributes matched (100%): ['address', 'contactdetail', 'kycstatu', 'partyname', 'partyreference', 'partytype']"
+   ],
+   "evidence_class": "structural",
+   "mapping_id": "P-RUN-020",
+   "rationale": "6/6 BOM attributes matched (100%): ['address', 'contactdetail', 'kycstatu', 'partyname', 'partyreference', 'partytype']",
+   "relationship": "MAPPED_TO",
+   "source": {
+    "canonical_id": "BIAN-BO-PARTY",
+    "id": "BBO-PARTY",
+    "type": "A2.BusinessObject",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "ENT-PARTY",
+    "type": "A3.DataEntity",
+    "version": "12.4"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.8,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S17 step3 implements SO-CA-01 via OP-OpenAccount (P-RUN-003); SO-CA-05 via OP-CloseAccount (P-RUN-004); SO-CA-02 via OP-GetAccount (P-RUN-007); SO-CA-04 via OP-AmendOverdraft (P-RUN-014); SO-CA-03 via OP-BlockAccount (P-RUN-016)"
+   ],
+   "evidence_class": "structural",
+   "mapping_id": "P-RUN-021",
+   "rationale": "implements SO-CA-01 via OP-OpenAccount (P-RUN-003); SO-CA-05 via OP-CloseAccount (P-RUN-004); SO-CA-02 via OP-GetAccount (P-RUN-007); SO-CA-04 via OP-AmendOverdraft (P-RUN-014); SO-CA-03 via OP-BlockAccount (P-RUN-016)",
+   "relationship": "REALIZED_BY",
+   "source": {
+    "canonical_id": "BIAN-CURRENT-ACCOUNT",
+    "id": "SD-CA",
+    "type": "A2.ServiceDomain",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "LM-ACCT",
+    "type": "A4.ApplicationComponent",
+    "version": "12.4"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.8,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S17 step3 implements SO-PK-03 via OP-ReverseEntry (P-RUN-005); SO-PK-01 via OP-PostEntry (P-RUN-008); SO-PK-02 via OP-GetBalance (P-RUN-009)"
+   ],
+   "evidence_class": "structural",
+   "mapping_id": "P-RUN-022",
+   "rationale": "implements SO-PK-03 via OP-ReverseEntry (P-RUN-005); SO-PK-01 via OP-PostEntry (P-RUN-008); SO-PK-02 via OP-GetBalance (P-RUN-009)",
+   "relationship": "REALIZED_BY",
+   "source": {
+    "canonical_id": "BIAN-POSITION-KEEPING",
+    "id": "SD-PK",
+    "type": "A2.ServiceDomain",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "LM-POST",
+    "type": "A4.ApplicationComponent",
+    "version": "12.4"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.8,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S17 step3 implements SO-PE-01 via OP-SubmitPayment (P-RUN-006); SO-PE-02 via OP-PaymentStatus (P-RUN-010); SO-PE-03 via OP-CancelPayment (P-RUN-015)"
+   ],
+   "evidence_class": "structural",
+   "mapping_id": "P-RUN-023",
+   "rationale": "implements SO-PE-01 via OP-SubmitPayment (P-RUN-006); SO-PE-02 via OP-PaymentStatus (P-RUN-010); SO-PE-03 via OP-CancelPayment (P-RUN-015)",
+   "relationship": "REALIZED_BY",
+   "source": {
+    "canonical_id": "BIAN-PAYMENT-EXECUTION",
+    "id": "SD-PE",
+    "type": "A2.ServiceDomain",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "LM-PAY",
+    "type": "A4.ApplicationComponent",
+    "version": "12.4"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.8,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S17 step3 implements SO-PRD-02 via OP-GetCustomer (P-RUN-011); SO-PRD-03 via OP-UpdateCustomer (P-RUN-012); SO-PRD-01 via OP-CreateCustomer (P-RUN-013)"
+   ],
+   "evidence_class": "structural",
+   "mapping_id": "P-RUN-024",
+   "rationale": "implements SO-PRD-02 via OP-GetCustomer (P-RUN-011); SO-PRD-03 via OP-UpdateCustomer (P-RUN-012); SO-PRD-01 via OP-CreateCustomer (P-RUN-013)",
+   "relationship": "REALIZED_BY",
+   "source": {
+    "canonical_id": "BIAN-PARTY-REFERENCE",
+    "id": "SD-PRD",
+    "type": "A2.ServiceDomain",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "LM-PARTY",
+    "type": "A4.ApplicationComponent",
+    "version": "12.4"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.4,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S01 step5 shares ['block', 'clos', 'current', 'maintain', 'open', 'term', 'their'] with SD-CA; runner-up shares 1"
+   ],
+   "evidence_class": "text",
+   "mapping_id": "P-RUN-025",
+   "rationale": "shares ['block', 'clos', 'current', 'maintain', 'open', 'term', 'their'] with SD-CA; runner-up shares 1",
+   "relationship": "SUPPORTED_BY",
+   "source": {
+    "id": "CAP-ACCT-SVC",
+    "type": "A1.BusinessCapability",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "canonical_id": "BIAN-CURRENT-ACCOUNT",
+    "id": "SD-CA",
+    "type": "A2.ServiceDomain",
+    "version": "1.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.4,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S01 step5 shares ['balanc', 'financi', 'maintain', 'move', 'posit'] with SD-PK; runner-up shares 1"
+   ],
+   "evidence_class": "text",
+   "mapping_id": "P-RUN-026",
+   "rationale": "shares ['balanc', 'financi', 'maintain', 'move', 'posit'] with SD-PK; runner-up shares 1",
+   "relationship": "SUPPORTED_BY",
+   "source": {
+    "id": "CAP-POSITION",
+    "type": "A1.BusinessCapability",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "canonical_id": "BIAN-POSITION-KEEPING",
+    "id": "SD-PK",
+    "type": "A2.ServiceDomain",
+    "version": "1.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.4,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S01 step5 shares ['authorised', 'execut', 'payment', 'schem', 'through'] with SD-PE; runner-up shares 1"
+   ],
+   "evidence_class": "text",
+   "mapping_id": "P-RUN-027",
+   "rationale": "shares ['authorised', 'execut', 'payment', 'schem', 'through'] with SD-PE; runner-up shares 1",
+   "relationship": "SUPPORTED_BY",
+   "source": {
+    "id": "CAP-PAY-EXEC",
+    "type": "A1.BusinessCapability",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "canonical_id": "BIAN-PAYMENT-EXECUTION",
+    "id": "SD-PE",
+    "type": "A2.ServiceDomain",
+    "version": "1.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.4,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S01 step5 shares ['counterparty', 'referenc'] with SD-PRD; runner-up shares 0"
+   ],
+   "evidence_class": "text",
+   "mapping_id": "P-RUN-028",
+   "rationale": "shares ['counterparty', 'referenc'] with SD-PRD; runner-up shares 0",
+   "relationship": "SUPPORTED_BY",
+   "source": {
+    "id": "CAP-PARTY-DATA",
+    "type": "A1.BusinessCapability",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "canonical_id": "BIAN-PARTY-REFERENCE",
+    "id": "SD-PRD",
+    "type": "A2.ServiceDomain",
+    "version": "1.0"
+   }
+  }
+ ],
+ "stderr_tail": ""
+}

@@ -1,0 +1,926 @@
+{
+ "exit": 0,
+ "proposals": [
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.8,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S32 step1 data join; a4 DEP-AURORA-PROD.component_id = APP-AURORA; a3 APP-AURORA.deployed_as lists DEP-AURORA-PROD"
+   ],
+   "evidence_class": "attribute_join",
+   "mapping_id": "P-RUN-001",
+   "rationale": "data join; a4 DEP-AURORA-PROD.component_id = APP-AURORA; a3 APP-AURORA.deployed_as lists DEP-AURORA-PROD",
+   "relationship": "DEPLOYED_AS",
+   "source": {
+    "id": "APP-AURORA",
+    "type": "A4.ApplicationComponent",
+    "version": "4.2"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "DEP-AURORA-PROD",
+    "type": "A5.Deployment",
+    "version": "1.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.8,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S32 step1 data join; a4 DEP-AURORA-UAT.component_id = APP-AURORA; a3 APP-AURORA.deployed_as lists DEP-AURORA-UAT"
+   ],
+   "evidence_class": "attribute_join",
+   "mapping_id": "P-RUN-002",
+   "rationale": "data join; a4 DEP-AURORA-UAT.component_id = APP-AURORA; a3 APP-AURORA.deployed_as lists DEP-AURORA-UAT",
+   "relationship": "DEPLOYED_AS",
+   "source": {
+    "id": "APP-AURORA",
+    "type": "A4.ApplicationComponent",
+    "version": "4.2"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "DEP-AURORA-UAT",
+    "type": "A5.Deployment",
+    "version": "1.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.8,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S32 step1 data join; a4 DEP-LEDGERLINE-PROD.component_id = APP-LEDGERLINE"
+   ],
+   "evidence_class": "attribute_join",
+   "mapping_id": "P-RUN-003",
+   "rationale": "data join; a4 DEP-LEDGERLINE-PROD.component_id = APP-LEDGERLINE",
+   "relationship": "DEPLOYED_AS",
+   "source": {
+    "id": "APP-LEDGERLINE",
+    "type": "A4.ApplicationComponent",
+    "version": "11.0"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "DEP-LEDGERLINE-PROD",
+    "type": "A5.Deployment",
+    "version": "1.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.8,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S32 step1 data join; a4 DEP-LEDGERLINE-UAT.component_id = APP-LEDGERLINE"
+   ],
+   "evidence_class": "attribute_join",
+   "mapping_id": "P-RUN-004",
+   "rationale": "data join; a4 DEP-LEDGERLINE-UAT.component_id = APP-LEDGERLINE",
+   "relationship": "DEPLOYED_AS",
+   "source": {
+    "id": "APP-LEDGERLINE",
+    "type": "A4.ApplicationComponent",
+    "version": "11.0"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "DEP-LEDGERLINE-UAT",
+    "type": "A5.Deployment",
+    "version": "1.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.8,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S32 step1 data join; a4 DEP-CONFIRMHUB-PROD.component_id = APP-CONFIRMHUB"
+   ],
+   "evidence_class": "attribute_join",
+   "mapping_id": "P-RUN-005",
+   "rationale": "data join; a4 DEP-CONFIRMHUB-PROD.component_id = APP-CONFIRMHUB",
+   "relationship": "DEPLOYED_AS",
+   "source": {
+    "id": "APP-CONFIRMHUB",
+    "type": "A4.ApplicationComponent",
+    "version": "8.4"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "DEP-CONFIRMHUB-PROD",
+    "type": "A5.Deployment",
+    "version": "1.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.8,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S32 step1 data join; a4 DEP-FXSM-PROD.component_id = APP-FXSM"
+   ],
+   "evidence_class": "attribute_join",
+   "mapping_id": "P-RUN-006",
+   "rationale": "data join; a4 DEP-FXSM-PROD.component_id = APP-FXSM",
+   "relationship": "DEPLOYED_AS",
+   "source": {
+    "id": "APP-FXSM",
+    "type": "A4.ApplicationComponent",
+    "version": "5.7"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "DEP-FXSM-PROD",
+    "type": "A5.Deployment",
+    "version": "1.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.8,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S32 step1 data join; a4 DEP-CRDS-PROD.component_id = APP-CRDS"
+   ],
+   "evidence_class": "attribute_join",
+   "mapping_id": "P-RUN-007",
+   "rationale": "data join; a4 DEP-CRDS-PROD.component_id = APP-CRDS",
+   "relationship": "DEPLOYED_AS",
+   "source": {
+    "id": "APP-CRDS",
+    "type": "A4.ApplicationComponent",
+    "version": "3.1"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "DEP-CRDS-PROD",
+    "type": "A5.Deployment",
+    "version": "1.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.8,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S32 step1 data join; a4 DEP-RATEGW-PROD.component_id = APP-RATEGW"
+   ],
+   "evidence_class": "attribute_join",
+   "mapping_id": "P-RUN-008",
+   "rationale": "data join; a4 DEP-RATEGW-PROD.component_id = APP-RATEGW",
+   "relationship": "DEPLOYED_AS",
+   "source": {
+    "id": "APP-RATEGW",
+    "type": "A4.ApplicationComponent",
+    "version": "2.9"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "DEP-RATEGW-PROD",
+    "type": "A5.Deployment",
+    "version": "1.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.8,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S33 step1 data join (S36 subsumed in S33); a4 SYS-K8S-MKT-PROD.hosts lists APP-AURORA; a4 deployment DEP-AURORA-PROD (component APP-AURORA) names platform SYS-K8S-MKT-PROD"
+   ],
+   "evidence_class": "attribute_join",
+   "mapping_id": "P-RUN-009",
+   "rationale": "data join (S36 subsumed in S33); a4 SYS-K8S-MKT-PROD.hosts lists APP-AURORA; a4 deployment DEP-AURORA-PROD (component APP-AURORA) names platform SYS-K8S-MKT-PROD",
+   "relationship": "DEPLOYED_ON",
+   "source": {
+    "id": "APP-AURORA",
+    "type": "A4.ApplicationComponent",
+    "version": "4.2"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "SYS-K8S-MKT-PROD",
+    "type": "A5.SystemSoftware",
+    "version": "1.30"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.8,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S33 step1 data join (S36 subsumed in S33); a4 deployment DEP-AURORA-UAT (component APP-AURORA) names platform SYS-K8S-MKT-UAT"
+   ],
+   "evidence_class": "attribute_join",
+   "mapping_id": "P-RUN-010",
+   "rationale": "data join (S36 subsumed in S33); a4 deployment DEP-AURORA-UAT (component APP-AURORA) names platform SYS-K8S-MKT-UAT",
+   "relationship": "DEPLOYED_ON",
+   "source": {
+    "id": "APP-AURORA",
+    "type": "A4.ApplicationComponent",
+    "version": "4.2"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "SYS-K8S-MKT-UAT",
+    "type": "A5.SystemSoftware",
+    "version": "1.30"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.8,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S33 step1 data join (S36 subsumed in S33); a4 SYS-K8S-MKT-PROD.hosts lists APP-LEDGERLINE; a4 deployment DEP-LEDGERLINE-PROD (component APP-LEDGERLINE) names platform SYS-K8S-MKT-PROD"
+   ],
+   "evidence_class": "attribute_join",
+   "mapping_id": "P-RUN-011",
+   "rationale": "data join (S36 subsumed in S33); a4 SYS-K8S-MKT-PROD.hosts lists APP-LEDGERLINE; a4 deployment DEP-LEDGERLINE-PROD (component APP-LEDGERLINE) names platform SYS-K8S-MKT-PROD",
+   "relationship": "DEPLOYED_ON",
+   "source": {
+    "id": "APP-LEDGERLINE",
+    "type": "A4.ApplicationComponent",
+    "version": "11.0"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "SYS-K8S-MKT-PROD",
+    "type": "A5.SystemSoftware",
+    "version": "1.30"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.8,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S33 step1 data join (S36 subsumed in S33); a4 deployment DEP-LEDGERLINE-UAT (component APP-LEDGERLINE) names platform SYS-K8S-MKT-UAT"
+   ],
+   "evidence_class": "attribute_join",
+   "mapping_id": "P-RUN-012",
+   "rationale": "data join (S36 subsumed in S33); a4 deployment DEP-LEDGERLINE-UAT (component APP-LEDGERLINE) names platform SYS-K8S-MKT-UAT",
+   "relationship": "DEPLOYED_ON",
+   "source": {
+    "id": "APP-LEDGERLINE",
+    "type": "A4.ApplicationComponent",
+    "version": "11.0"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "SYS-K8S-MKT-UAT",
+    "type": "A5.SystemSoftware",
+    "version": "1.30"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.8,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S34 step1 data join, logged under S34 because the target is A5.Node; a4 NODE-CONF-01.hosts lists APP-CONFIRMHUB; a4 deployment DEP-CONFIRMHUB-PROD (component APP-CONFIRMHUB) names platform NODE-CONF-01"
+   ],
+   "evidence_class": "attribute_join",
+   "mapping_id": "P-RUN-013",
+   "rationale": "data join, logged under S34 because the target is A5.Node; a4 NODE-CONF-01.hosts lists APP-CONFIRMHUB; a4 deployment DEP-CONFIRMHUB-PROD (component APP-CONFIRMHUB) names platform NODE-CONF-01",
+   "relationship": "DEPLOYED_ON",
+   "source": {
+    "id": "APP-CONFIRMHUB",
+    "type": "A4.ApplicationComponent",
+    "version": "8.4"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "NODE-CONF-01",
+    "type": "A5.Node",
+    "version": "1.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.8,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S34 step1 data join, logged under S34 because the target is A5.Node; a4 deployment DEP-FXSM-PROD (component APP-FXSM) names platform NODE-FXSM-01"
+   ],
+   "evidence_class": "attribute_join",
+   "mapping_id": "P-RUN-014",
+   "rationale": "data join, logged under S34 because the target is A5.Node; a4 deployment DEP-FXSM-PROD (component APP-FXSM) names platform NODE-FXSM-01",
+   "relationship": "DEPLOYED_ON",
+   "source": {
+    "id": "APP-FXSM",
+    "type": "A4.ApplicationComponent",
+    "version": "5.7"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "NODE-FXSM-01",
+    "type": "A5.Node",
+    "version": "1.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.8,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S33 step1 data join (S36 subsumed in S33); a4 SYS-K8S-MKT-PROD.hosts lists APP-CRDS; a4 deployment DEP-CRDS-PROD (component APP-CRDS) names platform SYS-K8S-MKT-PROD"
+   ],
+   "evidence_class": "attribute_join",
+   "mapping_id": "P-RUN-015",
+   "rationale": "data join (S36 subsumed in S33); a4 SYS-K8S-MKT-PROD.hosts lists APP-CRDS; a4 deployment DEP-CRDS-PROD (component APP-CRDS) names platform SYS-K8S-MKT-PROD",
+   "relationship": "DEPLOYED_ON",
+   "source": {
+    "id": "APP-CRDS",
+    "type": "A4.ApplicationComponent",
+    "version": "3.1"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "SYS-K8S-MKT-PROD",
+    "type": "A5.SystemSoftware",
+    "version": "1.30"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.8,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S34 step1 data join, logged under S34 because the target is A5.Node; a4 NODE-RATEGW-01.hosts lists APP-RATEGW; a4 deployment DEP-RATEGW-PROD (component APP-RATEGW) names platform NODE-RATEGW-01"
+   ],
+   "evidence_class": "attribute_join",
+   "mapping_id": "P-RUN-016",
+   "rationale": "data join, logged under S34 because the target is A5.Node; a4 NODE-RATEGW-01.hosts lists APP-RATEGW; a4 deployment DEP-RATEGW-PROD (component APP-RATEGW) names platform NODE-RATEGW-01",
+   "relationship": "DEPLOYED_ON",
+   "source": {
+    "id": "APP-RATEGW",
+    "type": "A4.ApplicationComponent",
+    "version": "2.9"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "NODE-RATEGW-01",
+    "type": "A5.Node",
+    "version": "1.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.4,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S17 step4 fallback B: asset-type tokens ['desk'] in API paths / entity names"
+   ],
+   "evidence_class": "name_token",
+   "mapping_id": "P-RUN-017",
+   "rationale": "fallback B: asset-type tokens ['desk'] in API paths / entity names",
+   "relationship": "REALIZED_BY",
+   "source": {
+    "canonical_id": "BIAN-DEALER-DESK",
+    "id": "SD-DEALER-DESK",
+    "type": "A2.ServiceDomain",
+    "version": "14.0.0"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "APP-LEDGERLINE",
+    "type": "A4.ApplicationComponent",
+    "version": "11.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.4,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S17 step4 fallback B: asset-type tokens ['currency'] in API paths / entity names"
+   ],
+   "evidence_class": "name_token",
+   "mapping_id": "P-RUN-018",
+   "rationale": "fallback B: asset-type tokens ['currency'] in API paths / entity names",
+   "relationship": "REALIZED_BY",
+   "source": {
+    "canonical_id": "BIAN-CURRENCY-EXCHANGE",
+    "id": "SD-CURRENCY-EXCHANGE",
+    "type": "A2.ServiceDomain",
+    "version": "14.0.0"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "APP-RATEGW",
+    "type": "A4.ApplicationComponent",
+    "version": "2.9"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.4,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S17 step4 fallback B: asset-type tokens ['trad'] in API paths / entity names"
+   ],
+   "evidence_class": "name_token",
+   "mapping_id": "P-RUN-019",
+   "rationale": "fallback B: asset-type tokens ['trad'] in API paths / entity names",
+   "relationship": "REALIZED_BY",
+   "source": {
+    "canonical_id": "BIAN-TRADE-CONFIRMATION-MATCHING",
+    "id": "SD-TRADE-CONFIRMATION-MATCHING",
+    "type": "A2.ServiceDomain",
+    "version": "14.0.0"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "APP-LEDGERLINE",
+    "type": "A4.ApplicationComponent",
+    "version": "11.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.4,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S17 step4 fallback B: asset-type tokens ['match'] in API paths / entity names"
+   ],
+   "evidence_class": "name_token",
+   "mapping_id": "P-RUN-020",
+   "rationale": "fallback B: asset-type tokens ['match'] in API paths / entity names",
+   "relationship": "REALIZED_BY",
+   "source": {
+    "canonical_id": "BIAN-TRADE-CONFIRMATION-MATCHING",
+    "id": "SD-TRADE-CONFIRMATION-MATCHING",
+    "type": "A2.ServiceDomain",
+    "version": "14.0.0"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "APP-CONFIRMHUB",
+    "type": "A4.ApplicationComponent",
+    "version": "8.4"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.4,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S17 step4 fallback B: asset-type tokens ['settle'] in API paths / entity names"
+   ],
+   "evidence_class": "name_token",
+   "mapping_id": "P-RUN-021",
+   "rationale": "fallback B: asset-type tokens ['settle'] in API paths / entity names",
+   "relationship": "REALIZED_BY",
+   "source": {
+    "canonical_id": "BIAN-TRADE-SETTLEMENT",
+    "id": "SD-TRADE-SETTLEMENT",
+    "type": "A2.ServiceDomain",
+    "version": "14.0.0"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "APP-FXSM",
+    "type": "A4.ApplicationComponent",
+    "version": "5.7"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.4,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S17 step4 fallback B: asset-type tokens ['posit'] in API paths / entity names"
+   ],
+   "evidence_class": "name_token",
+   "mapping_id": "P-RUN-022",
+   "rationale": "fallback B: asset-type tokens ['posit'] in API paths / entity names",
+   "relationship": "REALIZED_BY",
+   "source": {
+    "canonical_id": "BIAN-TRADER-POSITION-OPERATIONS",
+    "id": "SD-TRADER-POSITION-OPERATIONS",
+    "type": "A2.ServiceDomain",
+    "version": "14.0.0"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "APP-LEDGERLINE",
+    "type": "A4.ApplicationComponent",
+    "version": "11.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.4,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S17 step4 fallback B: asset-type tokens ['counterparty'] in API paths / entity names"
+   ],
+   "evidence_class": "name_token",
+   "mapping_id": "P-RUN-023",
+   "rationale": "fallback B: asset-type tokens ['counterparty'] in API paths / entity names",
+   "relationship": "REALIZED_BY",
+   "source": {
+    "canonical_id": "BIAN-COUNTERPARTY-ADMINISTRATION",
+    "id": "SD-COUNTERPARTY-ADMINISTRATION",
+    "type": "A2.ServiceDomain",
+    "version": "14.0.0"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "APP-CRDS",
+    "type": "A4.ApplicationComponent",
+    "version": "3.1"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.6,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S04 step3 invokes SO-CURRENCY-EXCHANGE-INITIATE-QUOTE (PRC-FX-01.invokes); SO-CURRENCY-EXCHANGE-INITIATE-FX-TRANSACTION-CAPTURE (PRC-FX-01.invokes)"
+   ],
+   "evidence_class": "attribute_join",
+   "mapping_id": "P-RUN-024",
+   "rationale": "invokes SO-CURRENCY-EXCHANGE-INITIATE-QUOTE (PRC-FX-01.invokes); SO-CURRENCY-EXCHANGE-INITIATE-FX-TRANSACTION-CAPTURE (PRC-FX-01.invokes)",
+   "relationship": "USES_DOMAIN",
+   "source": {
+    "id": "PRC-FX-01",
+    "type": "A1.BusinessProcess",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "canonical_id": "BIAN-CURRENCY-EXCHANGE",
+    "id": "SD-CURRENCY-EXCHANGE",
+    "type": "A2.ServiceDomain",
+    "version": "14.0.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.6,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S04 step3 invokes SO-COUNTERPARTY-ADMINISTRATION-RETRIEVE-COUNTERPARTY-PERMITTED-TRANSACTION (ACT-FX-01a.invokes)"
+   ],
+   "evidence_class": "attribute_join",
+   "mapping_id": "P-RUN-025",
+   "rationale": "invokes SO-COUNTERPARTY-ADMINISTRATION-RETRIEVE-COUNTERPARTY-PERMITTED-TRANSACTION (ACT-FX-01a.invokes)",
+   "relationship": "USES_DOMAIN",
+   "source": {
+    "id": "PRC-FX-01",
+    "type": "A1.BusinessProcess",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "canonical_id": "BIAN-COUNTERPARTY-ADMINISTRATION",
+    "id": "SD-COUNTERPARTY-ADMINISTRATION",
+    "type": "A2.ServiceDomain",
+    "version": "14.0.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.6,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S04 step3 invokes SO-DEALER-DESK-RETRIEVE-DEALER-DESK-CONSOLIDATED-POSITION-TRACKING (ACT-FX-02a.invokes)"
+   ],
+   "evidence_class": "attribute_join",
+   "mapping_id": "P-RUN-026",
+   "rationale": "invokes SO-DEALER-DESK-RETRIEVE-DEALER-DESK-CONSOLIDATED-POSITION-TRACKING (ACT-FX-02a.invokes)",
+   "relationship": "USES_DOMAIN",
+   "source": {
+    "id": "PRC-FX-02",
+    "type": "A1.BusinessProcess",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "canonical_id": "BIAN-DEALER-DESK",
+    "id": "SD-DEALER-DESK",
+    "type": "A2.ServiceDomain",
+    "version": "14.0.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.6,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S04 step3 invokes SO-TRADER-POSITION-OPERATIONS-INITIATE-TRADE-CAPTUREAND-REPORTING (ACT-FX-02c.invokes)"
+   ],
+   "evidence_class": "attribute_join",
+   "mapping_id": "P-RUN-027",
+   "rationale": "invokes SO-TRADER-POSITION-OPERATIONS-INITIATE-TRADE-CAPTUREAND-REPORTING (ACT-FX-02c.invokes)",
+   "relationship": "USES_DOMAIN",
+   "source": {
+    "id": "PRC-FX-02",
+    "type": "A1.BusinessProcess",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "canonical_id": "BIAN-TRADER-POSITION-OPERATIONS",
+    "id": "SD-TRADER-POSITION-OPERATIONS",
+    "type": "A2.ServiceDomain",
+    "version": "14.0.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.6,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S04 step3 invokes SO-TRADE-CONFIRMATION-MATCHING-INITIATE-TRANSACTION-CONFIRMATION-AFFIRMATION (ACT-FX-03a.invokes); SO-TRADE-CONFIRMATION-MATCHING-EXECUTE-TRANSACTION-CONFIRMATION-AFFIRMATION (ACT-FX-03b.invokes); SO-TRADE-CONFIRMATION-MATCHING-INITIATE-UNMATCHED-MARKET-TRADE-ESCALATION (ACT-FX-03c.invokes)"
+   ],
+   "evidence_class": "attribute_join",
+   "mapping_id": "P-RUN-028",
+   "rationale": "invokes SO-TRADE-CONFIRMATION-MATCHING-INITIATE-TRANSACTION-CONFIRMATION-AFFIRMATION (ACT-FX-03a.invokes); SO-TRADE-CONFIRMATION-MATCHING-EXECUTE-TRANSACTION-CONFIRMATION-AFFIRMATION (ACT-FX-03b.invokes); SO-TRADE-CONFIRMATION-MATCHING-INITIATE-UNMATCHED-MARKET-TRADE-ESCALATION (ACT-FX-03c.invokes)",
+   "relationship": "USES_DOMAIN",
+   "source": {
+    "id": "PRC-FX-03",
+    "type": "A1.BusinessProcess",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "canonical_id": "BIAN-TRADE-CONFIRMATION-MATCHING",
+    "id": "SD-TRADE-CONFIRMATION-MATCHING",
+    "type": "A2.ServiceDomain",
+    "version": "14.0.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.6,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S04 step3 invokes SO-TRADE-SETTLEMENT-INITIATE (S06 C-RUN-028); SO-TRADE-SETTLEMENT-INITIATE-MARKET-TRADE-SETTLEMENT-CONFIRMATION (S06 C-RUN-029); SO-TRADE-SETTLEMENT-INITIATE-MARKET-TRADE-CASH-SETTLEMENT (S06 C-RUN-030); SO-TRADE-SETTLEMENT-INITIATE-MARKET-TRADE-SECURITIES-SETTLEMENT (S06 C-RUN-031); SO-TRADE-SETTLEMENT-EXECUTE-MARKET-TRADE-CASH-SETTLEMENT (ACT-FX-04b.invokes)"
+   ],
+   "evidence_class": "attribute_join",
+   "mapping_id": "P-RUN-029",
+   "rationale": "invokes SO-TRADE-SETTLEMENT-INITIATE (S06 C-RUN-028); SO-TRADE-SETTLEMENT-INITIATE-MARKET-TRADE-SETTLEMENT-CONFIRMATION (S06 C-RUN-029); SO-TRADE-SETTLEMENT-INITIATE-MARKET-TRADE-CASH-SETTLEMENT (S06 C-RUN-030); SO-TRADE-SETTLEMENT-INITIATE-MARKET-TRADE-SECURITIES-SETTLEMENT (S06 C-RUN-031); SO-TRADE-SETTLEMENT-EXECUTE-MARKET-TRADE-CASH-SETTLEMENT (ACT-FX-04b.invokes)",
+   "relationship": "USES_DOMAIN",
+   "source": {
+    "id": "PRC-FX-04",
+    "type": "A1.BusinessProcess",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "canonical_id": "BIAN-TRADE-SETTLEMENT",
+    "id": "SD-TRADE-SETTLEMENT",
+    "type": "A2.ServiceDomain",
+    "version": "14.0.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.6,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S01 step3 all 1 processes of the capability use the domain"
+   ],
+   "evidence_class": "attribute_join",
+   "mapping_id": "P-RUN-030",
+   "rationale": "all 1 processes of the capability use the domain",
+   "relationship": "SUPPORTED_BY",
+   "source": {
+    "id": "CAP-FX-100",
+    "type": "A1.BusinessCapability",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "canonical_id": "BIAN-CURRENCY-EXCHANGE",
+    "id": "SD-CURRENCY-EXCHANGE",
+    "type": "A2.ServiceDomain",
+    "version": "14.0.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.6,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S01 step3 all 1 processes of the capability use the domain"
+   ],
+   "evidence_class": "attribute_join",
+   "mapping_id": "P-RUN-031",
+   "rationale": "all 1 processes of the capability use the domain",
+   "relationship": "SUPPORTED_BY",
+   "source": {
+    "id": "CAP-FX-100",
+    "type": "A1.BusinessCapability",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "canonical_id": "BIAN-COUNTERPARTY-ADMINISTRATION",
+    "id": "SD-COUNTERPARTY-ADMINISTRATION",
+    "type": "A2.ServiceDomain",
+    "version": "14.0.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.6,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S01 step3 all 1 processes of the capability use the domain"
+   ],
+   "evidence_class": "attribute_join",
+   "mapping_id": "P-RUN-032",
+   "rationale": "all 1 processes of the capability use the domain",
+   "relationship": "SUPPORTED_BY",
+   "source": {
+    "id": "CAP-FX-200",
+    "type": "A1.BusinessCapability",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "canonical_id": "BIAN-CURRENCY-EXCHANGE",
+    "id": "SD-CURRENCY-EXCHANGE",
+    "type": "A2.ServiceDomain",
+    "version": "14.0.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.6,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S01 step3 all 1 processes of the capability use the domain"
+   ],
+   "evidence_class": "attribute_join",
+   "mapping_id": "P-RUN-033",
+   "rationale": "all 1 processes of the capability use the domain",
+   "relationship": "SUPPORTED_BY",
+   "source": {
+    "id": "CAP-FX-200",
+    "type": "A1.BusinessCapability",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "canonical_id": "BIAN-COUNTERPARTY-ADMINISTRATION",
+    "id": "SD-COUNTERPARTY-ADMINISTRATION",
+    "type": "A2.ServiceDomain",
+    "version": "14.0.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.6,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S01 step3 all 1 processes of the capability use the domain"
+   ],
+   "evidence_class": "attribute_join",
+   "mapping_id": "P-RUN-034",
+   "rationale": "all 1 processes of the capability use the domain",
+   "relationship": "SUPPORTED_BY",
+   "source": {
+    "id": "CAP-FX-300",
+    "type": "A1.BusinessCapability",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "canonical_id": "BIAN-DEALER-DESK",
+    "id": "SD-DEALER-DESK",
+    "type": "A2.ServiceDomain",
+    "version": "14.0.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.6,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S01 step3 all 1 processes of the capability use the domain"
+   ],
+   "evidence_class": "attribute_join",
+   "mapping_id": "P-RUN-035",
+   "rationale": "all 1 processes of the capability use the domain",
+   "relationship": "SUPPORTED_BY",
+   "source": {
+    "id": "CAP-FX-300",
+    "type": "A1.BusinessCapability",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "canonical_id": "BIAN-TRADER-POSITION-OPERATIONS",
+    "id": "SD-TRADER-POSITION-OPERATIONS",
+    "type": "A2.ServiceDomain",
+    "version": "14.0.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.6,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S01 step3 all 1 processes of the capability use the domain"
+   ],
+   "evidence_class": "attribute_join",
+   "mapping_id": "P-RUN-036",
+   "rationale": "all 1 processes of the capability use the domain",
+   "relationship": "SUPPORTED_BY",
+   "source": {
+    "id": "CAP-FX-400",
+    "type": "A1.BusinessCapability",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "canonical_id": "BIAN-TRADE-CONFIRMATION-MATCHING",
+    "id": "SD-TRADE-CONFIRMATION-MATCHING",
+    "type": "A2.ServiceDomain",
+    "version": "14.0.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.6,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S01 step3 all 1 processes of the capability use the domain"
+   ],
+   "evidence_class": "attribute_join",
+   "mapping_id": "P-RUN-037",
+   "rationale": "all 1 processes of the capability use the domain",
+   "relationship": "SUPPORTED_BY",
+   "source": {
+    "id": "CAP-FX-500",
+    "type": "A1.BusinessCapability",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "canonical_id": "BIAN-TRADE-SETTLEMENT",
+    "id": "SD-TRADE-SETTLEMENT",
+    "type": "A2.ServiceDomain",
+    "version": "14.0.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.4,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S01 step5 shares ['its', 'settle', 'trad'] with SD-TRADE-SETTLEMENT; runner-up shares 2"
+   ],
+   "evidence_class": "text",
+   "mapping_id": "P-RUN-038",
+   "rationale": "shares ['its', 'settle', 'trad'] with SD-TRADE-SETTLEMENT; runner-up shares 2",
+   "relationship": "SUPPORTED_BY",
+   "source": {
+    "id": "CAP-FX-600",
+    "type": "A1.BusinessCapability",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "canonical_id": "BIAN-TRADE-SETTLEMENT",
+    "id": "SD-TRADE-SETTLEMENT",
+    "type": "A2.ServiceDomain",
+    "version": "14.0.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.4,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S01 step5 shares ['feed', 'market'] with SD-MARKET-DATA-SWITCH-OPERATION; runner-up shares 1"
+   ],
+   "evidence_class": "text",
+   "mapping_id": "P-RUN-039",
+   "rationale": "shares ['feed', 'market'] with SD-MARKET-DATA-SWITCH-OPERATION; runner-up shares 1",
+   "relationship": "SUPPORTED_BY",
+   "source": {
+    "id": "CAP-FX-700",
+    "type": "A1.BusinessCapability",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "canonical_id": "BIAN-MARKET-DATA-SWITCH-OPERATION",
+    "id": "SD-MARKET-DATA-SWITCH-OPERATION",
+    "type": "A2.ServiceDomain",
+    "version": "14.0.0"
+   }
+  }
+ ],
+ "stderr_tail": ""
+}

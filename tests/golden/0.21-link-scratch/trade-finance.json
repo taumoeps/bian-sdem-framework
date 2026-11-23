@@ -1,0 +1,569 @@
+{
+ "exit": 0,
+ "proposals": [
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.8,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S32 step1 data join; a4 DEP-LC-PROD.component_id = APP-LC; a3 APP-LC.deployed_as lists DEP-LC-PROD"
+   ],
+   "evidence_class": "attribute_join",
+   "mapping_id": "P-RUN-001",
+   "rationale": "data join; a4 DEP-LC-PROD.component_id = APP-LC; a3 APP-LC.deployed_as lists DEP-LC-PROD",
+   "relationship": "DEPLOYED_AS",
+   "source": {
+    "id": "APP-LC",
+    "type": "A4.ApplicationComponent",
+    "version": "3.0"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "DEP-LC-PROD",
+    "type": "A5.Deployment",
+    "version": "1.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.8,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S32 step1 data join; a4 DEP-DOC-PROD.component_id = APP-DOC; a3 APP-DOC.deployed_as lists DEP-DOC-PROD"
+   ],
+   "evidence_class": "attribute_join",
+   "mapping_id": "P-RUN-002",
+   "rationale": "data join; a4 DEP-DOC-PROD.component_id = APP-DOC; a3 APP-DOC.deployed_as lists DEP-DOC-PROD",
+   "relationship": "DEPLOYED_AS",
+   "source": {
+    "id": "APP-DOC",
+    "type": "A4.ApplicationComponent",
+    "version": "3.0"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "DEP-DOC-PROD",
+    "type": "A5.Deployment",
+    "version": "1.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.8,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S34 step1 data join, logged under S34 because the target is A5.Node; a3 APP-LC.deployed_on lists NODE-TF-PROD; a4 NODE-TF-PROD.hosts lists APP-LC; a4 deployment DEP-LC-PROD (component APP-LC) names platform NODE-TF-PROD"
+   ],
+   "evidence_class": "attribute_join",
+   "mapping_id": "P-RUN-003",
+   "rationale": "data join, logged under S34 because the target is A5.Node; a3 APP-LC.deployed_on lists NODE-TF-PROD; a4 NODE-TF-PROD.hosts lists APP-LC; a4 deployment DEP-LC-PROD (component APP-LC) names platform NODE-TF-PROD",
+   "relationship": "DEPLOYED_ON",
+   "source": {
+    "id": "APP-LC",
+    "type": "A4.ApplicationComponent",
+    "version": "3.0"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "NODE-TF-PROD",
+    "type": "A5.Node",
+    "version": "1.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.8,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S33 step1 data join (S36 subsumed in S33); a3 APP-LC.deployed_on lists SYS-RUNTIME-TF; a4 SYS-RUNTIME-TF.hosts lists APP-LC"
+   ],
+   "evidence_class": "attribute_join",
+   "mapping_id": "P-RUN-004",
+   "rationale": "data join (S36 subsumed in S33); a3 APP-LC.deployed_on lists SYS-RUNTIME-TF; a4 SYS-RUNTIME-TF.hosts lists APP-LC",
+   "relationship": "DEPLOYED_ON",
+   "source": {
+    "id": "APP-LC",
+    "type": "A4.ApplicationComponent",
+    "version": "3.0"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "SYS-RUNTIME-TF",
+    "type": "A5.SystemSoftware",
+    "version": "1.30"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.8,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S34 step1 data join, logged under S34 because the target is A5.Node; a3 APP-DOC.deployed_on lists NODE-TF-PROD; a4 NODE-TF-PROD.hosts lists APP-DOC; a4 deployment DEP-DOC-PROD (component APP-DOC) names platform NODE-TF-PROD"
+   ],
+   "evidence_class": "attribute_join",
+   "mapping_id": "P-RUN-005",
+   "rationale": "data join, logged under S34 because the target is A5.Node; a3 APP-DOC.deployed_on lists NODE-TF-PROD; a4 NODE-TF-PROD.hosts lists APP-DOC; a4 deployment DEP-DOC-PROD (component APP-DOC) names platform NODE-TF-PROD",
+   "relationship": "DEPLOYED_ON",
+   "source": {
+    "id": "APP-DOC",
+    "type": "A4.ApplicationComponent",
+    "version": "3.0"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "NODE-TF-PROD",
+    "type": "A5.Node",
+    "version": "1.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.8,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S33 step1 data join (S36 subsumed in S33); a3 APP-DOC.deployed_on lists SYS-RUNTIME-TF; a4 SYS-RUNTIME-TF.hosts lists APP-DOC"
+   ],
+   "evidence_class": "attribute_join",
+   "mapping_id": "P-RUN-006",
+   "rationale": "data join (S36 subsumed in S33); a3 APP-DOC.deployed_on lists SYS-RUNTIME-TF; a4 SYS-RUNTIME-TF.hosts lists APP-DOC",
+   "relationship": "DEPLOYED_ON",
+   "source": {
+    "id": "APP-DOC",
+    "type": "A4.ApplicationComponent",
+    "version": "3.0"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "SYS-RUNTIME-TF",
+    "type": "A5.SystemSoftware",
+    "version": "1.30"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.8,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S35 step1 data join, logged under S35 because the target is A5.Device; a3 APP-DOC.deployed_on lists DEV-SCAN-01; a4 DEV-SCAN-01.hosts lists APP-DOC"
+   ],
+   "evidence_class": "attribute_join",
+   "mapping_id": "P-RUN-007",
+   "rationale": "data join, logged under S35 because the target is A5.Device; a3 APP-DOC.deployed_on lists DEV-SCAN-01; a4 DEV-SCAN-01.hosts lists APP-DOC",
+   "relationship": "DEPLOYED_ON",
+   "source": {
+    "id": "APP-DOC",
+    "type": "A4.ApplicationComponent",
+    "version": "3.0"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "DEV-SCAN-01",
+    "type": "A5.Device",
+    "version": "1.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.8,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S24 step2 decision 1: Initiate \u2194 POST; no qualifier, none in path; payload 7 matched (100%): ['applicantreference', 'applicationstatu', 'beneficiaryreference', 'creditamount', 'currency', 'expirydate', 'letterofcreditreference']"
+   ],
+   "evidence_class": "structural",
+   "mapping_id": "P-RUN-008",
+   "rationale": "decision 1: Initiate \u2194 POST; no qualifier, none in path; payload 7 matched (100%): ['applicantreference', 'applicationstatu', 'beneficiaryreference', 'creditamount', 'currency', 'expirydate', 'letterofcreditreference']",
+   "relationship": "IMPLEMENTED_BY",
+   "source": {
+    "id": "SO-LC-01",
+    "type": "A2.ServiceOperation",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "API-LC-01",
+    "type": "A4.APIOperation",
+    "version": "3.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.8,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S24 step2 decision 1: Update \u2194 PATCH; qualifier in path; payload 5 matched (100%): ['amendmentreference', 'applicationstatu', 'creditamount', 'expirydate', 'letterofcreditreference']"
+   ],
+   "evidence_class": "structural",
+   "mapping_id": "P-RUN-009",
+   "rationale": "decision 1: Update \u2194 PATCH; qualifier in path; payload 5 matched (100%): ['amendmentreference', 'applicationstatu', 'creditamount', 'expirydate', 'letterofcreditreference']",
+   "relationship": "IMPLEMENTED_BY",
+   "source": {
+    "id": "SO-LC-02",
+    "type": "A2.ServiceOperation",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "API-LC-02",
+    "type": "A4.APIOperation",
+    "version": "3.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.8,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S24 step2 decision 1: Execute \u2194 PUT; qualifier in path; payload 3 matched (100%): ['applicationstatu', 'issuancereference', 'letterofcreditreference']"
+   ],
+   "evidence_class": "structural",
+   "mapping_id": "P-RUN-010",
+   "rationale": "decision 1: Execute \u2194 PUT; qualifier in path; payload 3 matched (100%): ['applicationstatu', 'issuancereference', 'letterofcreditreference']",
+   "relationship": "IMPLEMENTED_BY",
+   "source": {
+    "id": "SO-LC-03",
+    "type": "A2.ServiceOperation",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "API-LC-03",
+    "type": "A4.APIOperation",
+    "version": "3.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.8,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S24 step2 decision 1: Retrieve \u2194 GET; no qualifier, none in path; payload 6 matched (100%): ['applicationstatu', 'creditamount', 'currency', 'expirydate', 'issuancereference', 'letterofcreditreference']"
+   ],
+   "evidence_class": "structural",
+   "mapping_id": "P-RUN-011",
+   "rationale": "decision 1: Retrieve \u2194 GET; no qualifier, none in path; payload 6 matched (100%): ['applicationstatu', 'creditamount', 'currency', 'expirydate', 'issuancereference', 'letterofcreditreference']",
+   "relationship": "IMPLEMENTED_BY",
+   "source": {
+    "id": "SO-LC-04",
+    "type": "A2.ServiceOperation",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "API-LC-04",
+    "type": "A4.APIOperation",
+    "version": "3.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.8,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S24 step2 decision 1: Evaluate \u2194 POST; no qualifier, none in path; payload 4 matched (100%): ['complianceoutcome', 'discrepancy', 'documentsetreference', 'letterofcreditreference']"
+   ],
+   "evidence_class": "structural",
+   "mapping_id": "P-RUN-012",
+   "rationale": "decision 1: Evaluate \u2194 POST; no qualifier, none in path; payload 4 matched (100%): ['complianceoutcome', 'discrepancy', 'documentsetreference', 'letterofcreditreference']",
+   "relationship": "IMPLEMENTED_BY",
+   "source": {
+    "id": "SO-DC-01",
+    "type": "A2.ServiceOperation",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "API-DC-01",
+    "type": "A4.APIOperation",
+    "version": "3.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.8,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S24 step2 decision 1: Retrieve \u2194 GET; no qualifier, none in path; payload 4 matched (100%): ['checkedat', 'complianceoutcome', 'discrepancy', 'documentsetreference']"
+   ],
+   "evidence_class": "structural",
+   "mapping_id": "P-RUN-013",
+   "rationale": "decision 1: Retrieve \u2194 GET; no qualifier, none in path; payload 4 matched (100%): ['checkedat', 'complianceoutcome', 'discrepancy', 'documentsetreference']",
+   "relationship": "IMPLEMENTED_BY",
+   "source": {
+    "id": "SO-DC-02",
+    "type": "A2.ServiceOperation",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "API-DC-02",
+    "type": "A4.APIOperation",
+    "version": "3.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.8,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S30 step4 8/8 BOM attributes matched (100%): ['applicantreference', 'applicationstatu', 'beneficiaryreference', 'creditamount', 'currency', 'expirydate', 'issuancereference', 'letterofcreditreference']"
+   ],
+   "evidence_class": "structural",
+   "mapping_id": "P-RUN-014",
+   "rationale": "8/8 BOM attributes matched (100%): ['applicantreference', 'applicationstatu', 'beneficiaryreference', 'creditamount', 'currency', 'expirydate', 'issuancereference', 'letterofcreditreference']",
+   "relationship": "MAPPED_TO",
+   "source": {
+    "canonical_id": "BIAN-BO-LETTER-OF-CREDIT",
+    "id": "BBO-LC",
+    "type": "A2.BusinessObject",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "ENT-LC",
+    "type": "A3.DataEntity",
+    "version": "3.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.8,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S30 step4 5/5 BOM attributes matched (100%): ['checkedat', 'complianceoutcome', 'discrepancy', 'documentsetreference', 'letterofcreditreference']"
+   ],
+   "evidence_class": "structural",
+   "mapping_id": "P-RUN-015",
+   "rationale": "5/5 BOM attributes matched (100%): ['checkedat', 'complianceoutcome', 'discrepancy', 'documentsetreference', 'letterofcreditreference']",
+   "relationship": "MAPPED_TO",
+   "source": {
+    "canonical_id": "BIAN-BO-DOCUMENT-SET",
+    "id": "BBO-DOCSET",
+    "type": "A2.BusinessObject",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "ENT-DOCSET",
+    "type": "A3.DataEntity",
+    "version": "3.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.6,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S12 step4 8/8 BOM attributes covered by the glossary (100%)"
+   ],
+   "evidence_class": "structural",
+   "mapping_id": "P-RUN-016",
+   "rationale": "8/8 BOM attributes covered by the glossary (100%)",
+   "relationship": "ALIGNED_TO",
+   "source": {
+    "id": "BO-LC",
+    "type": "A1.BusinessObject",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "canonical_id": "BIAN-BO-LETTER-OF-CREDIT",
+    "id": "BBO-LC",
+    "type": "A2.BusinessObject",
+    "version": "1.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.6,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S12 step4 4/5 BOM attributes covered by the glossary (80%)"
+   ],
+   "evidence_class": "structural",
+   "mapping_id": "P-RUN-017",
+   "rationale": "4/5 BOM attributes covered by the glossary (80%)",
+   "relationship": "ALIGNED_TO",
+   "source": {
+    "id": "BO-DOCSET",
+    "type": "A1.BusinessObject",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "canonical_id": "BIAN-BO-DOCUMENT-SET",
+    "id": "BBO-DOCSET",
+    "type": "A2.BusinessObject",
+    "version": "1.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.6,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S02 step4 3/3 scenario operations covered in order by stage verbs (100%): [('SO-LC-01', 'VSS-T1'), ('SO-DC-01', 'VSS-T2'), ('SO-LC-03', 'VSS-T3')]"
+   ],
+   "evidence_class": "name_token",
+   "mapping_id": "P-RUN-018",
+   "rationale": "3/3 scenario operations covered in order by stage verbs (100%): [('SO-LC-01', 'VSS-T1'), ('SO-DC-01', 'VSS-T2'), ('SO-LC-03', 'VSS-T3')]",
+   "relationship": "ALIGNED_TO",
+   "source": {
+    "id": "VS-LC",
+    "type": "A1.ValueStream",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "canonical_id": "BIAN-SCENARIO-LC-ISSUANCE",
+    "id": "BS-LC",
+    "type": "A2.BusinessScenario",
+    "version": "1.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.8,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S17 step3 implements SO-LC-01 via API-LC-01 (P-RUN-008); SO-LC-02 via API-LC-02 (P-RUN-009); SO-LC-03 via API-LC-03 (P-RUN-010); SO-LC-04 via API-LC-04 (P-RUN-011)"
+   ],
+   "evidence_class": "structural",
+   "mapping_id": "P-RUN-019",
+   "rationale": "implements SO-LC-01 via API-LC-01 (P-RUN-008); SO-LC-02 via API-LC-02 (P-RUN-009); SO-LC-03 via API-LC-03 (P-RUN-010); SO-LC-04 via API-LC-04 (P-RUN-011)",
+   "relationship": "REALIZED_BY",
+   "source": {
+    "canonical_id": "BIAN-LETTER-OF-CREDIT",
+    "id": "SD-LC",
+    "type": "A2.ServiceDomain",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "APP-LC",
+    "type": "A4.ApplicationComponent",
+    "version": "3.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.8,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S17 step3 implements SO-DC-01 via API-DC-01 (P-RUN-012); SO-DC-02 via API-DC-02 (P-RUN-013)"
+   ],
+   "evidence_class": "structural",
+   "mapping_id": "P-RUN-020",
+   "rationale": "implements SO-DC-01 via API-DC-01 (P-RUN-012); SO-DC-02 via API-DC-02 (P-RUN-013)",
+   "relationship": "REALIZED_BY",
+   "source": {
+    "canonical_id": "BIAN-DOCUMENT-CHECKING",
+    "id": "SD-DC",
+    "type": "A2.ServiceDomain",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "APP-DOC",
+    "type": "A4.ApplicationComponent",
+    "version": "3.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.6,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S04 step3 invokes SO-LC-01 (PRC-LC-APPLY.invokes); SO-LC-02 (PRC-LC-APPLY.invokes)"
+   ],
+   "evidence_class": "attribute_join",
+   "mapping_id": "P-RUN-021",
+   "rationale": "invokes SO-LC-01 (PRC-LC-APPLY.invokes); SO-LC-02 (PRC-LC-APPLY.invokes)",
+   "relationship": "USES_DOMAIN",
+   "source": {
+    "id": "PRC-LC-APPLY",
+    "type": "A1.BusinessProcess",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "canonical_id": "BIAN-LETTER-OF-CREDIT",
+    "id": "SD-LC",
+    "type": "A2.ServiceDomain",
+    "version": "1.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.6,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S04 step3 invokes SO-DC-01 (PRC-LC-ISSUE.invokes)"
+   ],
+   "evidence_class": "attribute_join",
+   "mapping_id": "P-RUN-022",
+   "rationale": "invokes SO-DC-01 (PRC-LC-ISSUE.invokes)",
+   "relationship": "USES_DOMAIN",
+   "source": {
+    "id": "PRC-LC-ISSUE",
+    "type": "A1.BusinessProcess",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "canonical_id": "BIAN-DOCUMENT-CHECKING",
+    "id": "SD-DC",
+    "type": "A2.ServiceDomain",
+    "version": "1.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.6,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S04 step3 invokes SO-LC-03 (PRC-LC-ISSUE.invokes)"
+   ],
+   "evidence_class": "attribute_join",
+   "mapping_id": "P-RUN-023",
+   "rationale": "invokes SO-LC-03 (PRC-LC-ISSUE.invokes)",
+   "relationship": "USES_DOMAIN",
+   "source": {
+    "id": "PRC-LC-ISSUE",
+    "type": "A1.BusinessProcess",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "canonical_id": "BIAN-LETTER-OF-CREDIT",
+    "id": "SD-LC",
+    "type": "A2.ServiceDomain",
+    "version": "1.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.6,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S01 step3 all 2 processes of the capability use the domain"
+   ],
+   "evidence_class": "attribute_join",
+   "mapping_id": "P-RUN-024",
+   "rationale": "all 2 processes of the capability use the domain",
+   "relationship": "SUPPORTED_BY",
+   "source": {
+    "id": "CAP-TF",
+    "type": "A1.BusinessCapability",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "canonical_id": "BIAN-LETTER-OF-CREDIT",
+    "id": "SD-LC",
+    "type": "A2.ServiceDomain",
+    "version": "1.0"
+   }
+  }
+ ],
+ "stderr_tail": ""
+}

@@ -1,0 +1,499 @@
+{
+ "exit": 0,
+ "proposals": [
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.8,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S32 step1 data join; a4 DEP-PAYHUB-PROD.component_id = APP-PAY-HUB; a3 APP-PAY-HUB.deployed_as lists DEP-PAYHUB-PROD"
+   ],
+   "evidence_class": "attribute_join",
+   "mapping_id": "P-RUN-001",
+   "rationale": "data join; a4 DEP-PAYHUB-PROD.component_id = APP-PAY-HUB; a3 APP-PAY-HUB.deployed_as lists DEP-PAYHUB-PROD",
+   "relationship": "DEPLOYED_AS",
+   "source": {
+    "id": "APP-PAY-HUB",
+    "type": "A4.ApplicationComponent",
+    "version": "7.1"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "DEP-PAYHUB-PROD",
+    "type": "A5.Deployment",
+    "version": "1.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.8,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S32 step1 data join; a4 DEP-PAYHUB-UAT.component_id = APP-PAY-HUB; a3 APP-PAY-HUB.deployed_as lists DEP-PAYHUB-UAT"
+   ],
+   "evidence_class": "attribute_join",
+   "mapping_id": "P-RUN-002",
+   "rationale": "data join; a4 DEP-PAYHUB-UAT.component_id = APP-PAY-HUB; a3 APP-PAY-HUB.deployed_as lists DEP-PAYHUB-UAT",
+   "relationship": "DEPLOYED_AS",
+   "source": {
+    "id": "APP-PAY-HUB",
+    "type": "A4.ApplicationComponent",
+    "version": "7.1"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "DEP-PAYHUB-UAT",
+    "type": "A5.Deployment",
+    "version": "1.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.8,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S32 step1 data join; a4 DEP-PAYEXEC-PROD.component_id = CMP-PAY-EXEC; a3 CMP-PAY-EXEC.deployed_as lists DEP-PAYEXEC-PROD"
+   ],
+   "evidence_class": "attribute_join",
+   "mapping_id": "P-RUN-003",
+   "rationale": "data join; a4 DEP-PAYEXEC-PROD.component_id = CMP-PAY-EXEC; a3 CMP-PAY-EXEC.deployed_as lists DEP-PAYEXEC-PROD",
+   "relationship": "DEPLOYED_AS",
+   "source": {
+    "id": "CMP-PAY-EXEC",
+    "type": "A4.ApplicationComponent",
+    "version": "3.4"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "DEP-PAYEXEC-PROD",
+    "type": "A5.Deployment",
+    "version": "1.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.8,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S33 step1 data join (S36 subsumed in S33); a3 APP-PAY-HUB.deployed_on lists INF-K8S-PAY-PROD; a4 INF-K8S-PAY-PROD.hosts lists APP-PAY-HUB; a4 deployment DEP-PAYHUB-PROD (component APP-PAY-HUB) names platform INF-K8S-PAY-PROD"
+   ],
+   "evidence_class": "attribute_join",
+   "mapping_id": "P-RUN-004",
+   "rationale": "data join (S36 subsumed in S33); a3 APP-PAY-HUB.deployed_on lists INF-K8S-PAY-PROD; a4 INF-K8S-PAY-PROD.hosts lists APP-PAY-HUB; a4 deployment DEP-PAYHUB-PROD (component APP-PAY-HUB) names platform INF-K8S-PAY-PROD",
+   "relationship": "DEPLOYED_ON",
+   "source": {
+    "id": "APP-PAY-HUB",
+    "type": "A4.ApplicationComponent",
+    "version": "7.1"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "INF-K8S-PAY-PROD",
+    "type": "A5.SystemSoftware",
+    "version": "1.29"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.8,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S33 step1 data join (S36 subsumed in S33); a3 APP-PAY-HUB.deployed_on lists INF-K8S-PAY-UAT; a4 INF-K8S-PAY-UAT.hosts lists APP-PAY-HUB; a4 deployment DEP-PAYHUB-UAT (component APP-PAY-HUB) names platform INF-K8S-PAY-UAT"
+   ],
+   "evidence_class": "attribute_join",
+   "mapping_id": "P-RUN-005",
+   "rationale": "data join (S36 subsumed in S33); a3 APP-PAY-HUB.deployed_on lists INF-K8S-PAY-UAT; a4 INF-K8S-PAY-UAT.hosts lists APP-PAY-HUB; a4 deployment DEP-PAYHUB-UAT (component APP-PAY-HUB) names platform INF-K8S-PAY-UAT",
+   "relationship": "DEPLOYED_ON",
+   "source": {
+    "id": "APP-PAY-HUB",
+    "type": "A4.ApplicationComponent",
+    "version": "7.1"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "INF-K8S-PAY-UAT",
+    "type": "A5.SystemSoftware",
+    "version": "1.29"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.8,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S33 step1 data join (S36 subsumed in S33); a3 CMP-PAY-EXEC.deployed_on lists INF-K8S-PAY-PROD; a4 INF-K8S-PAY-PROD.hosts lists CMP-PAY-EXEC; a4 deployment DEP-PAYEXEC-PROD (component CMP-PAY-EXEC) names platform INF-K8S-PAY-PROD"
+   ],
+   "evidence_class": "attribute_join",
+   "mapping_id": "P-RUN-006",
+   "rationale": "data join (S36 subsumed in S33); a3 CMP-PAY-EXEC.deployed_on lists INF-K8S-PAY-PROD; a4 INF-K8S-PAY-PROD.hosts lists CMP-PAY-EXEC; a4 deployment DEP-PAYEXEC-PROD (component CMP-PAY-EXEC) names platform INF-K8S-PAY-PROD",
+   "relationship": "DEPLOYED_ON",
+   "source": {
+    "id": "CMP-PAY-EXEC",
+    "type": "A4.ApplicationComponent",
+    "version": "3.4"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "INF-K8S-PAY-PROD",
+    "type": "A5.SystemSoftware",
+    "version": "1.29"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.8,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S24 step2 decision 1: Initiate \u2194 POST; no qualifier, none in path; payload 8 matched (100%): ['amount', 'creditoraccountreference', 'currency', 'debtoraccountreference', 'paymentinstructionreference', 'paymentstatu', 'remittanceinformation', 'valuedate']"
+   ],
+   "evidence_class": "structural",
+   "mapping_id": "P-RUN-007",
+   "rationale": "decision 1: Initiate \u2194 POST; no qualifier, none in path; payload 8 matched (100%): ['amount', 'creditoraccountreference', 'currency', 'debtoraccountreference', 'paymentinstructionreference', 'paymentstatu', 'remittanceinformation', 'valuedate']",
+   "relationship": "IMPLEMENTED_BY",
+   "source": {
+    "id": "SO-PI-01",
+    "type": "A2.ServiceOperation",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "API-PI-01",
+    "type": "A4.APIOperation",
+    "version": "2.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.8,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S24 step2 decision 1: Evaluate \u2194 POST; qualifier in path; payload 3 matched (100%): ['authorisationstatu', 'paymentinstructionreference', 'paymentstatu']"
+   ],
+   "evidence_class": "structural",
+   "mapping_id": "P-RUN-008",
+   "rationale": "decision 1: Evaluate \u2194 POST; qualifier in path; payload 3 matched (100%): ['authorisationstatu', 'paymentinstructionreference', 'paymentstatu']",
+   "relationship": "IMPLEMENTED_BY",
+   "source": {
+    "id": "SO-PI-02",
+    "type": "A2.ServiceOperation",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "API-PI-02",
+    "type": "A4.APIOperation",
+    "version": "2.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.8,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S24 step2 decision 1: Execute \u2194 PUT; qualifier in path; payload 3 matched (100%): ['executionreference', 'paymentinstructionreference', 'paymentstatu']"
+   ],
+   "evidence_class": "structural",
+   "mapping_id": "P-RUN-009",
+   "rationale": "decision 1: Execute \u2194 PUT; qualifier in path; payload 3 matched (100%): ['executionreference', 'paymentinstructionreference', 'paymentstatu']",
+   "relationship": "IMPLEMENTED_BY",
+   "source": {
+    "id": "SO-PI-03",
+    "type": "A2.ServiceOperation",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "API-PI-03",
+    "type": "A4.APIOperation",
+    "version": "2.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.8,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S24 step2 decision 1: Update \u2194 PATCH; no qualifier, none in path; payload 5 matched (100%): ['amount', 'creditoraccountreference', 'paymentinstructionreference', 'paymentstatu', 'valuedate']"
+   ],
+   "evidence_class": "structural",
+   "mapping_id": "P-RUN-010",
+   "rationale": "decision 1: Update \u2194 PATCH; no qualifier, none in path; payload 5 matched (100%): ['amount', 'creditoraccountreference', 'paymentinstructionreference', 'paymentstatu', 'valuedate']",
+   "relationship": "IMPLEMENTED_BY",
+   "source": {
+    "id": "SO-PI-05",
+    "type": "A2.ServiceOperation",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "API-PI-05",
+    "type": "A4.APIOperation",
+    "version": "2.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.6,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S24 step2 decision 2: Retrieve on POST; no qualifier, none in path; payload 4 matched (100%): ['authorisationstatu', 'executionreference', 'paymentinstructionreference', 'paymentstatu'] \u2014 method mismatch, proposed one band lower"
+   ],
+   "evidence_class": "structural",
+   "mapping_id": "P-RUN-011",
+   "rationale": "decision 2: Retrieve on POST; no qualifier, none in path; payload 4 matched (100%): ['authorisationstatu', 'executionreference', 'paymentinstructionreference', 'paymentstatu'] \u2014 method mismatch, proposed one band lower",
+   "relationship": "IMPLEMENTED_BY",
+   "source": {
+    "id": "SO-PI-04",
+    "type": "A2.ServiceOperation",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "API-PI-04",
+    "type": "A4.APIOperation",
+    "version": "2.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.8,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S30 step4 8/8 BOM attributes matched (100%): ['amount', 'creditoraccountreference', 'currency', 'debtoraccountreference', 'paymentinstructionreference', 'paymentstatu', 'remittanceinformation', 'valuedate']"
+   ],
+   "evidence_class": "structural",
+   "mapping_id": "P-RUN-012",
+   "rationale": "8/8 BOM attributes matched (100%): ['amount', 'creditoraccountreference', 'currency', 'debtoraccountreference', 'paymentinstructionreference', 'paymentstatu', 'remittanceinformation', 'valuedate']",
+   "relationship": "MAPPED_TO",
+   "source": {
+    "canonical_id": "BIAN-BO-PAYMENT-INSTRUCTION",
+    "id": "BBO-PAY-INSTR",
+    "type": "A2.BusinessObject",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "ENT-PAY-INSTR",
+    "type": "A3.DataEntity",
+    "version": "7.1"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.8,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S30 step4 1/1 BOM attributes matched (100%): ['compliancechecktype']"
+   ],
+   "evidence_class": "structural",
+   "mapping_id": "P-RUN-013",
+   "rationale": "1/1 BOM attributes matched (100%): ['compliancechecktype']",
+   "relationship": "MAPPED_TO",
+   "source": {
+    "canonical_id": "BIAN-BO-COMPLIANCE-CHECK",
+    "id": "BBO-COMPLIANCE-CHECK",
+    "type": "A2.BusinessObject",
+    "version": "14.0.0"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "AID-ENT-COMPLIANCE-CHECK",
+    "type": "A3.DataEntity",
+    "version": "1"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.8,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S30 step4 14/14 BOM attributes matched (100%): ['assessmentdatetime', 'assessmentdescription', 'assessmentexpirydate', 'assessmentidentification', 'assessmentmethod', 'assessmentmodel', 'assessmentrepresentingdocument', 'assessmentrequiredadjustment', 'assessmentrequirement', 'assessmentresult', 'assessmentschedule', 'assessmentstatu', 'assessmentsupportingdocument', 'assessmenttype']"
+   ],
+   "evidence_class": "structural",
+   "mapping_id": "P-RUN-014",
+   "rationale": "14/14 BOM attributes matched (100%): ['assessmentdatetime', 'assessmentdescription', 'assessmentexpirydate', 'assessmentidentification', 'assessmentmethod', 'assessmentmodel', 'assessmentrepresentingdocument', 'assessmentrequiredadjustment', 'assessmentrequirement', 'assessmentresult', 'assessmentschedule', 'assessmentstatu', 'assessmentsupportingdocument', 'assessmenttype']",
+   "relationship": "MAPPED_TO",
+   "source": {
+    "canonical_id": "BIAN-BO-FUNDING-CHECK",
+    "id": "BBO-FUNDING-CHECK",
+    "type": "A2.BusinessObject",
+    "version": "14.0.0"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "AID-ENT-FUNDING-CHECK",
+    "type": "A3.DataEntity",
+    "version": "1"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.8,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S30 step4 2/2 BOM attributes matched (100%): ['payeeidentifier', 'paymentinstructioninvolvementtype']"
+   ],
+   "evidence_class": "structural",
+   "mapping_id": "P-RUN-015",
+   "rationale": "2/2 BOM attributes matched (100%): ['payeeidentifier', 'paymentinstructioninvolvementtype']",
+   "relationship": "MAPPED_TO",
+   "source": {
+    "canonical_id": "BIAN-BO-PAYEE",
+    "id": "BBO-PAYEE",
+    "type": "A2.BusinessObject",
+    "version": "14.0.0"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "AID-ENT-PAYEE",
+    "type": "A3.DataEntity",
+    "version": "1"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.6,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S12 step4 4/8 BOM attributes covered by the glossary (50%)"
+   ],
+   "evidence_class": "structural",
+   "mapping_id": "P-RUN-016",
+   "rationale": "4/8 BOM attributes covered by the glossary (50%)",
+   "relationship": "ALIGNED_TO",
+   "source": {
+    "id": "BO-PAY-INSTR",
+    "type": "A1.BusinessObject",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "canonical_id": "BIAN-BO-PAYMENT-INSTRUCTION",
+    "id": "BBO-PAY-INSTR",
+    "type": "A2.BusinessObject",
+    "version": "1.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.6,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S02 step4 4/4 scenario operations covered in order by stage verbs (100%): [('SO-PI-01', 'VSS-P1'), ('SO-PI-02', 'VSS-P2'), ('SO-PI-03', 'VSS-P3'), ('SO-PI-04', 'VSS-P4')]"
+   ],
+   "evidence_class": "name_token",
+   "mapping_id": "P-RUN-017",
+   "rationale": "4/4 scenario operations covered in order by stage verbs (100%): [('SO-PI-01', 'VSS-P1'), ('SO-PI-02', 'VSS-P2'), ('SO-PI-03', 'VSS-P3'), ('SO-PI-04', 'VSS-P4')]",
+   "relationship": "ALIGNED_TO",
+   "source": {
+    "id": "VS-MAKE-PAYMENT",
+    "type": "A1.ValueStream",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "canonical_id": "BIAN-SCENARIO-CREDIT-TRANSFER",
+    "id": "BS-CREDIT-TRANSFER",
+    "type": "A2.BusinessScenario",
+    "version": "1.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.8,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S17 step3 implements SO-PI-01 via API-PI-01 (P-RUN-007); SO-PI-02 via API-PI-02 (P-RUN-008); SO-PI-03 via API-PI-03 (P-RUN-009); SO-PI-05 via API-PI-05 (P-RUN-010); SO-PI-04 via API-PI-04 (P-RUN-011)"
+   ],
+   "evidence_class": "structural",
+   "mapping_id": "P-RUN-018",
+   "rationale": "implements SO-PI-01 via API-PI-01 (P-RUN-007); SO-PI-02 via API-PI-02 (P-RUN-008); SO-PI-03 via API-PI-03 (P-RUN-009); SO-PI-05 via API-PI-05 (P-RUN-010); SO-PI-04 via API-PI-04 (P-RUN-011)",
+   "relationship": "REALIZED_BY",
+   "source": {
+    "canonical_id": "BIAN-PAYMENT-INITIATION",
+    "id": "SD-PI",
+    "type": "A2.ServiceDomain",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "APP-PAY-HUB",
+    "type": "A4.ApplicationComponent",
+    "version": "7.1"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.6,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S04 step3 invokes SO-PI-01 (PRC-PAY-01.invokes); SO-PI-02 (PRC-PAY-01.invokes)"
+   ],
+   "evidence_class": "attribute_join",
+   "mapping_id": "P-RUN-019",
+   "rationale": "invokes SO-PI-01 (PRC-PAY-01.invokes); SO-PI-02 (PRC-PAY-01.invokes)",
+   "relationship": "USES_DOMAIN",
+   "source": {
+    "id": "PRC-PAY-01",
+    "type": "A1.BusinessProcess",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "canonical_id": "BIAN-PAYMENT-INITIATION",
+    "id": "SD-PI",
+    "type": "A2.ServiceDomain",
+    "version": "1.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.6,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S04 step3 invokes SO-PI-03 (PRC-PAY-02.invokes); SO-PI-04 (PRC-PAY-02.invokes)"
+   ],
+   "evidence_class": "attribute_join",
+   "mapping_id": "P-RUN-020",
+   "rationale": "invokes SO-PI-03 (PRC-PAY-02.invokes); SO-PI-04 (PRC-PAY-02.invokes)",
+   "relationship": "USES_DOMAIN",
+   "source": {
+    "id": "PRC-PAY-02",
+    "type": "A1.BusinessProcess",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "canonical_id": "BIAN-PAYMENT-INITIATION",
+    "id": "SD-PI",
+    "type": "A2.ServiceDomain",
+    "version": "1.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.6,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S01 step3 all 2 processes of the capability use the domain"
+   ],
+   "evidence_class": "attribute_join",
+   "mapping_id": "P-RUN-021",
+   "rationale": "all 2 processes of the capability use the domain",
+   "relationship": "SUPPORTED_BY",
+   "source": {
+    "id": "CAP-PAY-010",
+    "type": "A1.BusinessCapability",
+    "version": "1.0"
+   },
+   "status": "proposed",
+   "target": {
+    "canonical_id": "BIAN-PAYMENT-INITIATION",
+    "id": "SD-PI",
+    "type": "A2.ServiceDomain",
+    "version": "1.0"
+   }
+  }
+ ],
+ "stderr_tail": ""
+}

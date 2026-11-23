@@ -1,0 +1,52 @@
+{
+ "exit": 0,
+ "proposals": [
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.8,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S32 step1 data join; a4 DEP-CIRC-PROD.component_id = APP-CIRC; a3 APP-CIRC.deployed_as lists DEP-CIRC-PROD"
+   ],
+   "evidence_class": "attribute_join",
+   "mapping_id": "P-RUN-001",
+   "rationale": "data join; a4 DEP-CIRC-PROD.component_id = APP-CIRC; a3 APP-CIRC.deployed_as lists DEP-CIRC-PROD",
+   "relationship": "DEPLOYED_AS",
+   "source": {
+    "id": "APP-CIRC",
+    "type": "A4.ApplicationComponent",
+    "version": "3.1"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "DEP-CIRC-PROD",
+    "type": "A5.Deployment",
+    "version": "1.0"
+   }
+  },
+  {
+   "baseline_id": "ENGINE-RUN-RUN",
+   "confidence": 0.8,
+   "created_by": "sdem-rules/0.10",
+   "evidence": [
+    "engine_rationale:S33 step1 data join (S36 subsumed in S33); a3 APP-CIRC.deployed_on lists SYS-CIRC-RUNTIME; a4 SYS-CIRC-RUNTIME.hosts lists APP-CIRC; a4 deployment DEP-CIRC-PROD (component APP-CIRC) names platform SYS-CIRC-RUNTIME"
+   ],
+   "evidence_class": "attribute_join",
+   "mapping_id": "P-RUN-002",
+   "rationale": "data join (S36 subsumed in S33); a3 APP-CIRC.deployed_on lists SYS-CIRC-RUNTIME; a4 SYS-CIRC-RUNTIME.hosts lists APP-CIRC; a4 deployment DEP-CIRC-PROD (component APP-CIRC) names platform SYS-CIRC-RUNTIME",
+   "relationship": "DEPLOYED_ON",
+   "source": {
+    "id": "APP-CIRC",
+    "type": "A4.ApplicationComponent",
+    "version": "3.1"
+   },
+   "status": "proposed",
+   "target": {
+    "id": "SYS-CIRC-RUNTIME",
+    "type": "A5.SystemSoftware",
+    "version": "1.0"
+   }
+  }
+ ],
+ "stderr_tail": ""
+}
