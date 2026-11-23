@@ -1,0 +1,26 @@
+{
+ "command": [
+  "comply",
+  "--workspace",
+  "<tmp>/pi",
+  "--json"
+ ],
+ "exit": 0,
+ "output": {
+  "as_of": "<volatile>",
+  "bindings": [],
+  "blocking": 0,
+  "findings": [],
+  "groups": [],
+  "profile": null,
+  "profile_active": false,
+  "summary": {
+   "compliant": 0,
+   "exception_approved": 0,
+   "non_compliant": 0,
+   "not_applicable": 0,
+   "unresolved": 0
+  },
+  "workspace": "<tmp>/pi"
+ }
+}

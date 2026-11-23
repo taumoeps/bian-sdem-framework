@@ -1,0 +1,1101 @@
+{
+ "command": [
+  "document",
+  "--workspace",
+  "<tmp>/pi",
+  "--layer",
+  "A5",
+  "--json"
+ ],
+ "exit": 0,
+ "output": {
+  "fingerprint": "<volatile>",
+  "gaps": {
+   "no_connection": [
+    "ENV-PAY-PROD",
+    "ENV-PAY-UAT",
+    "INF-CORE-LEDGER-HOST",
+    "INF-PG-PAY-PROD",
+    "TS-MQ",
+    "TS-SECRETS",
+    "NET-PAY-PRIVATE",
+    "ZONE-PAY-CLOUD",
+    "ZONE-PAY-INTERNAL",
+    "ZONE-PAY-DMZ",
+    "ZONE-PAY-PRIVATE",
+    "ZONE-PAY-ONPREM",
+    "ZONE-PAY-ONPREM-INTERNAL"
+   ],
+   "placeholders": [],
+   "requirements_not_confirmed": [
+    "REQ-CAP-01"
+   ],
+   "unconfirmed": []
+  },
+  "layer": "A5",
+  "requirements": [
+   {
+    "category": "availability",
+    "condition": {
+     "metric": "availability_pct",
+     "operator": ">=",
+     "period": "month",
+     "unit": "%",
+     "value": 99.95
+    },
+    "evidence": [
+     "service_level_agreement:SLA-PAY-001#s2"
+    ],
+    "id": "REQ-AV-01",
+    "name": "Payment capture availability",
+    "statement": "Customers can submit and have validated a payment instruction 99.95% of each month.",
+    "status": "confirmed",
+    "subject": "PRC-PAY-01",
+    "subject_name": "Capture and validate payment instruction"
+   },
+   {
+    "category": "availability",
+    "condition": {
+     "metric": "availability_pct",
+     "operator": ">=",
+     "period": "month",
+     "unit": "%",
+     "value": 99.95
+    },
+    "evidence": [
+     "technology_standard:TS-PLATFORM-AVAIL#2"
+    ],
+    "id": "REQ-AV-02",
+    "name": "Production platform availability",
+    "statement": "The production platform the payment services run on is available 99.95% of each month — its share of REQ-AV-01.",
+    "status": "confirmed",
+    "subject": "INF-K8S-PAY-PROD",
+    "subject_name": "Managed Kubernetes — payments (production)"
+   },
+   {
+    "category": "data_residency",
+    "condition": {
+     "metric": "region",
+     "operator": "in",
+     "value": [
+      "XA"
+     ]
+    },
+    "evidence": [
+     "policy:DATA-RESIDENCY-POL#4"
+    ],
+    "id": "REQ-RES-01",
+    "name": "Payment data stays in Region A",
+    "statement": "Payment instructions and their records are processed and stored in Region A only.",
+    "status": "confirmed",
+    "subject": "PRC-PAY-02",
+    "subject_name": "Execute and confirm payment"
+   },
+   {
+    "category": "data_residency",
+    "condition": {
+     "metric": "region",
+     "operator": "in",
+     "value": [
+      "XA"
+     ]
+    },
+    "evidence": [
+     "technology_standard:TS-HOSTING-REGION#1"
+    ],
+    "id": "REQ-RES-02",
+    "name": "Payment processing platform in Region A",
+    "statement": "The platform that processes payments runs in Region A — its share of REQ-RES-01.",
+    "status": "confirmed",
+    "subject": "INF-K8S-PAY-PROD",
+    "subject_name": "Managed Kubernetes — payments (production)"
+   },
+   {
+    "category": "real_time",
+    "condition": {
+     "metric": "event_streaming",
+     "operator": "==",
+     "value": true
+    },
+    "evidence": [
+     "architecture_decision:ADR-PAY-014"
+    ],
+    "id": "REQ-RT-02",
+    "name": "Event streaming on the payment platform",
+    "statement": "The platform offers the managed event streaming the execution gateway uses for real-time execution — its share of REQ-RT-01.",
+    "status": "confirmed",
+    "subject": "INF-K8S-PAY-PROD",
+    "subject_name": "Managed Kubernetes — payments (production)"
+   },
+   {
+    "category": "recovery",
+    "condition": {
+     "metric": "second_region_replica",
+     "operator": "==",
+     "value": true
+    },
+    "evidence": [
+     "technology_standard:TS-DR#2"
+    ],
+    "id": "REQ-RC-02",
+    "name": "Second-region replica",
+    "statement": "The production platform keeps a replica in a second region, so REQ-RC-01 can be met after a site failure.",
+    "status": "confirmed",
+    "subject": "INF-K8S-PAY-PROD",
+    "subject_name": "Managed Kubernetes — payments (production)"
+   },
+   {
+    "category": "capacity",
+    "condition": {
+     "metric": "peak_factor",
+     "operator": ">=",
+     "value": 3
+    },
+    "evidence": [
+     "workshop:CAP-2026-10"
+    ],
+    "id": "REQ-CAP-01",
+    "name": "Peak-day capacity",
+    "statement": "The platform handles three times the average daily payment volume.",
+    "status": "proposed",
+    "subject": "INF-K8S-PAY-PROD",
+    "subject_name": "Managed Kubernetes — payments (production)"
+   }
+  ],
+  "sections": [
+   {
+    "definition": "An application as deployed into a specific environment",
+    "records": [
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "component_id": "Payments Hub (APP-PAY-HUB)",
+       "environment_id": "Production (ENV-PAY-PROD)",
+       "platform_id": "Managed Kubernetes — payments (production) (INF-K8S-PAY-PROD)"
+      },
+      "connections": [
+       {
+        "direction": "in",
+        "evidence": [
+         "deployment_design:DD-PAY-2026#prod"
+        ],
+        "id": "APP-PAY-HUB",
+        "mapping_id": "PAY-109",
+        "name": "Payments Hub",
+        "relationship": "DEPLOYED_AS",
+        "status": "approved"
+       }
+      ],
+      "description": "Hub 7.1 on the production cluster.",
+      "fields": [],
+      "id": "DEP-PAYHUB-PROD",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "ENV-PAY-PROD",
+        "kind": "aggregation",
+        "name": "Production",
+        "source_id": null
+       },
+       {
+        "id": "INF-K8S-PAY-PROD",
+        "kind": "assignment",
+        "name": "Managed Kubernetes — payments (production)",
+        "source_id": null
+       },
+       {
+        "id": "INF-APIGW-PAY",
+        "kind": "association",
+        "name": "Managed API gateway — payments",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "ART-PAYHUB-IMG",
+        "kind": "aggregation",
+        "name": "payments-hub:7.1",
+        "source_id": null
+       }
+      ],
+      "name": "Payments Hub — production",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A5.Deployment",
+      "version": "1.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "component_id": "Payments Hub (APP-PAY-HUB)",
+       "environment_id": "UAT (ENV-PAY-UAT)",
+       "platform_id": "Managed Kubernetes — payments (UAT) (INF-K8S-PAY-UAT)"
+      },
+      "connections": [
+       {
+        "direction": "in",
+        "evidence": [
+         "deployment_design:DD-PAY-2026#uat"
+        ],
+        "id": "APP-PAY-HUB",
+        "mapping_id": "PAY-110",
+        "name": "Payments Hub",
+        "relationship": "DEPLOYED_AS",
+        "status": "approved"
+       }
+      ],
+      "description": "Hub 7.1 on the UAT cluster.",
+      "fields": [],
+      "id": "DEP-PAYHUB-UAT",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "ENV-PAY-UAT",
+        "kind": "aggregation",
+        "name": "UAT",
+        "source_id": null
+       },
+       {
+        "id": "INF-K8S-PAY-UAT",
+        "kind": "assignment",
+        "name": "Managed Kubernetes — payments (UAT)",
+        "source_id": null
+       }
+      ],
+      "links_out": [],
+      "name": "Payments Hub — UAT",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A5.Deployment",
+      "version": "1.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "component_id": "Execution Gateway (CMP-PAY-EXEC)",
+       "environment_id": "Production (ENV-PAY-PROD)",
+       "platform_id": "Managed Kubernetes — payments (production) (INF-K8S-PAY-PROD)"
+      },
+      "connections": [
+       {
+        "direction": "in",
+        "evidence": [
+         "deployment_design:DD-PAY-2026#prod"
+        ],
+        "id": "CMP-PAY-EXEC",
+        "mapping_id": "PAY-112",
+        "name": "Execution Gateway",
+        "relationship": "DEPLOYED_AS",
+        "status": "approved"
+       }
+      ],
+      "description": "Gateway 3.4 on the production cluster.",
+      "fields": [],
+      "id": "DEP-PAYEXEC-PROD",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "ENV-PAY-PROD",
+        "kind": "aggregation",
+        "name": "Production",
+        "source_id": null
+       },
+       {
+        "id": "INF-K8S-PAY-PROD",
+        "kind": "assignment",
+        "name": "Managed Kubernetes — payments (production)",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "INF-CORE-LEDGER-HOST",
+        "kind": "association",
+        "name": "Core banking ledger host",
+        "source_id": null
+       }
+      ],
+      "name": "Execution Gateway — production",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A5.Deployment",
+      "version": "1.0"
+     }
+    ],
+    "title": "Deployments",
+    "type": "A5.Deployment"
+   },
+   {
+    "definition": "A governed runtime boundary such as production or test",
+    "records": [
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "cloud_deployment_model": "public",
+       "country": "XA",
+       "environment_kind": "production"
+      },
+      "connections": [],
+      "description": "Production runtime environment.",
+      "fields": [],
+      "id": "ENV-PAY-PROD",
+      "lifecycle_status": "active",
+      "links_in": [],
+      "links_out": [
+       {
+        "id": "DEP-PAYHUB-PROD",
+        "kind": "aggregation",
+        "name": "Payments Hub — production",
+        "source_id": null
+       },
+       {
+        "id": "DEP-PAYEXEC-PROD",
+        "kind": "aggregation",
+        "name": "Execution Gateway — production",
+        "source_id": null
+       },
+       {
+        "id": "INF-PG-PAY-PROD",
+        "kind": "aggregation",
+        "name": "Managed PostgreSQL — payments",
+        "source_id": null
+       }
+      ],
+      "name": "Production",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A5.DeploymentEnvironment",
+      "version": "1.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "cloud_deployment_model": "public",
+       "country": "XA",
+       "environment_kind": "test"
+      },
+      "connections": [],
+      "description": "User-acceptance environment.",
+      "fields": [],
+      "id": "ENV-PAY-UAT",
+      "lifecycle_status": "active",
+      "links_in": [],
+      "links_out": [
+       {
+        "id": "DEP-PAYHUB-UAT",
+        "kind": "aggregation",
+        "name": "Payments Hub — UAT",
+        "source_id": null
+       },
+       {
+        "id": "INF-K8S-PAY-UAT",
+        "kind": "aggregation",
+        "name": "Managed Kubernetes — payments (UAT)",
+        "source_id": null
+       }
+      ],
+      "name": "UAT",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A5.DeploymentEnvironment",
+      "version": "1.0"
+     }
+    ],
+    "title": "Deployment environments",
+    "type": "A5.DeploymentEnvironment"
+   },
+   {
+    "definition": "A computational host, physical or virtual",
+    "records": [
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "site": "DC-1 (made up)"
+      },
+      "connections": [],
+      "description": "The on-premises host of the core banking ledger the Execution Gateway posts payments to (made up).",
+      "fields": [],
+      "id": "INF-CORE-LEDGER-HOST",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "ZONE-PAY-ONPREM-INTERNAL",
+        "kind": "aggregation",
+        "name": "Internal network — on premises (core banking)",
+        "source_id": null
+       },
+       {
+        "id": "DEP-PAYEXEC-PROD",
+        "kind": "association",
+        "name": "Execution Gateway — production",
+        "source_id": null
+       }
+      ],
+      "links_out": [],
+      "name": "Core banking ledger host",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A5.Node",
+      "version": "1.0"
+     }
+    ],
+    "title": "Nodes",
+    "type": "A5.Node"
+   },
+   {
+    "definition": "Platform or runtime software",
+    "records": [
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "end_of_support": "2027-06-30",
+       "hosts": [
+        "Payments Hub (APP-PAY-HUB)",
+        "Execution Gateway (CMP-PAY-EXEC)"
+       ],
+       "license": "Apache-2.0",
+       "product_version": "1.30",
+       "region": "region-a"
+      },
+      "connections": [
+       {
+        "direction": "in",
+        "evidence": [
+         "deployment_design:DD-PAY-2026#prod"
+        ],
+        "id": "APP-PAY-HUB",
+        "mapping_id": "PAY-108",
+        "name": "Payments Hub",
+        "relationship": "DEPLOYED_ON",
+        "status": "approved"
+       },
+       {
+        "direction": "in",
+        "evidence": [
+         "deployment_design:DD-PAY-2026#prod"
+        ],
+        "id": "CMP-PAY-EXEC",
+        "mapping_id": "PAY-111",
+        "name": "Execution Gateway",
+        "relationship": "DEPLOYED_ON",
+        "status": "approved"
+       }
+      ],
+      "description": "Production container platform for the payments estate.",
+      "fields": [],
+      "id": "INF-K8S-PAY-PROD",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "TS-MQ",
+        "kind": "serving",
+        "name": "Messaging service",
+        "source_id": null
+       },
+       {
+        "id": "TS-SECRETS",
+        "kind": "serving",
+        "name": "Secrets management",
+        "source_id": null
+       },
+       {
+        "id": "ZONE-PAY-PRIVATE",
+        "kind": "aggregation",
+        "name": "Payments private network zone",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "ART-PAYHUB-IMG",
+        "kind": "assignment",
+        "name": "payments-hub:7.1",
+        "source_id": null
+       },
+       {
+        "id": "DEP-PAYHUB-PROD",
+        "kind": "assignment",
+        "name": "Payments Hub — production",
+        "source_id": null
+       },
+       {
+        "id": "DEP-PAYEXEC-PROD",
+        "kind": "assignment",
+        "name": "Execution Gateway — production",
+        "source_id": null
+       },
+       {
+        "id": "NET-PAY-PRIVATE",
+        "kind": "association",
+        "name": "Payments private network",
+        "source_id": null
+       },
+       {
+        "id": "INF-PG-PAY-PROD",
+        "kind": "association",
+        "name": "Managed PostgreSQL — payments",
+        "source_id": null
+       }
+      ],
+      "name": "Managed Kubernetes — payments (production)",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A5.SystemSoftware",
+      "version": "1.29"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "hosts": [
+        "Payments Hub (APP-PAY-HUB)"
+       ],
+       "region": "region-a"
+      },
+      "connections": [
+       {
+        "direction": "in",
+        "evidence": [
+         "deployment_design:DD-PAY-2026#uat"
+        ],
+        "id": "APP-PAY-HUB",
+        "mapping_id": "PAY-113",
+        "name": "Payments Hub",
+        "relationship": "DEPLOYED_ON",
+        "status": "approved"
+       }
+      ],
+      "description": "UAT container platform.",
+      "fields": [],
+      "id": "INF-K8S-PAY-UAT",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "ENV-PAY-UAT",
+        "kind": "aggregation",
+        "name": "UAT",
+        "source_id": null
+       },
+       {
+        "id": "TS-SECRETS",
+        "kind": "serving",
+        "name": "Secrets management",
+        "source_id": null
+       },
+       {
+        "id": "ZONE-PAY-PRIVATE",
+        "kind": "aggregation",
+        "name": "Payments private network zone",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "DEP-PAYHUB-UAT",
+        "kind": "assignment",
+        "name": "Payments Hub — UAT",
+        "source_id": null
+       },
+       {
+        "id": "NET-PAY-PRIVATE",
+        "kind": "association",
+        "name": "Payments private network",
+        "source_id": null
+       }
+      ],
+      "name": "Managed Kubernetes — payments (UAT)",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A5.SystemSoftware",
+      "version": "1.29"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "license": "PostgreSQL",
+       "product_version": "16.4",
+       "region": "region-a"
+      },
+      "connections": [],
+      "description": "Production relational store for the hub.",
+      "fields": [],
+      "id": "INF-PG-PAY-PROD",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "ENV-PAY-PROD",
+        "kind": "aggregation",
+        "name": "Production",
+        "source_id": null
+       },
+       {
+        "id": "ZONE-PAY-PRIVATE",
+        "kind": "aggregation",
+        "name": "Payments private network zone",
+        "source_id": null
+       },
+       {
+        "id": "INF-K8S-PAY-PROD",
+        "kind": "association",
+        "name": "Managed Kubernetes — payments (production)",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "NET-PAY-PRIVATE",
+        "kind": "association",
+        "name": "Payments private network",
+        "source_id": null
+       }
+      ],
+      "name": "Managed PostgreSQL — payments",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A5.SystemSoftware",
+      "version": "16"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "internet_facing": true,
+       "region": "region-a"
+      },
+      "connections": [
+       {
+        "direction": "in",
+        "evidence": [
+         "network_design:ND-PAY-2026#edge"
+        ],
+        "id": "IFC-PAY-API",
+        "mapping_id": "PAY-114",
+        "name": "Payments API v2",
+        "relationship": "EXPOSED_THROUGH",
+        "status": "approved"
+       }
+      ],
+      "description": "The payments API's entry point from the internet (made up).",
+      "fields": [],
+      "id": "INF-APIGW-PAY",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "ZONE-PAY-DMZ",
+        "kind": "aggregation",
+        "name": "Security zone (DMZ) — payments",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "DEP-PAYHUB-PROD",
+        "kind": "association",
+        "name": "Payments Hub — production",
+        "source_id": null
+       }
+      ],
+      "name": "Managed API gateway — payments",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A5.SystemSoftware",
+      "version": "2.4"
+     }
+    ],
+    "title": "System softwares",
+    "type": "A5.SystemSoftware"
+   },
+   {
+    "definition": "Technical behaviour delivered to consumers",
+    "records": [
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "cloud_service_model": "PaaS"
+      },
+      "connections": [],
+      "description": "Managed message broker used for status events.",
+      "fields": [],
+      "id": "TS-MQ",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "ZONE-PAY-INTERNAL",
+        "kind": "aggregation",
+        "name": "Internal network — payments",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "INF-K8S-PAY-PROD",
+        "kind": "serving",
+        "name": "Managed Kubernetes — payments (production)",
+        "source_id": null
+       }
+      ],
+      "name": "Messaging service",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A5.TechnologyService",
+      "version": "1.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "cloud_service_model": "PaaS"
+      },
+      "connections": [],
+      "description": "Platform secrets service.",
+      "fields": [],
+      "id": "TS-SECRETS",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "ZONE-PAY-INTERNAL",
+        "kind": "aggregation",
+        "name": "Internal network — payments",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "INF-K8S-PAY-PROD",
+        "kind": "serving",
+        "name": "Managed Kubernetes — payments (production)",
+        "source_id": null
+       },
+       {
+        "id": "INF-K8S-PAY-UAT",
+        "kind": "serving",
+        "name": "Managed Kubernetes — payments (UAT)",
+        "source_id": null
+       }
+      ],
+      "name": "Secrets management",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A5.TechnologyService",
+      "version": "1.0"
+     }
+    ],
+    "title": "Technology services",
+    "type": "A5.TechnologyService"
+   },
+   {
+    "definition": "Communication infrastructure",
+    "records": [
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "address_range": [
+        "10.20.0.0/16"
+       ]
+      },
+      "connections": [],
+      "description": "Private network segment for payment services.",
+      "fields": [],
+      "id": "NET-PAY-PRIVATE",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "INF-K8S-PAY-PROD",
+        "kind": "association",
+        "name": "Managed Kubernetes — payments (production)",
+        "source_id": null
+       },
+       {
+        "id": "INF-K8S-PAY-UAT",
+        "kind": "association",
+        "name": "Managed Kubernetes — payments (UAT)",
+        "source_id": null
+       },
+       {
+        "id": "INF-PG-PAY-PROD",
+        "kind": "association",
+        "name": "Managed PostgreSQL — payments",
+        "source_id": null
+       }
+      ],
+      "links_out": [],
+      "name": "Payments private network",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A5.CommunicationNetwork",
+      "version": "1.0"
+     }
+    ],
+    "title": "Communication networks",
+    "type": "A5.CommunicationNetwork"
+   },
+   {
+    "definition": "A network zone a shape is deployed in: on premises or cloud (level 0), the internal network or a DMZ inside one (level 1), or a private network inside that (level 2) — a grouping of the shapes deployed there, not a network itself",
+    "records": [
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "zone_kind": "cloud",
+       "zone_level": 0
+      },
+      "connections": [],
+      "description": "The payments solution's cloud deployment (made up), in region A.",
+      "fields": [],
+      "id": "ZONE-PAY-CLOUD",
+      "lifecycle_status": "active",
+      "links_in": [],
+      "links_out": [
+       {
+        "id": "ZONE-PAY-INTERNAL",
+        "kind": "composition",
+        "name": "Internal network — payments",
+        "source_id": null
+       },
+       {
+        "id": "ZONE-PAY-DMZ",
+        "kind": "composition",
+        "name": "Security zone (DMZ) — payments",
+        "source_id": null
+       }
+      ],
+      "name": "Cloud — payments",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A5.NetworkZone",
+      "version": "1.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "zone_kind": "internal",
+       "zone_level": 1
+      },
+      "connections": [],
+      "description": "The internal network inside the cloud deployment; nothing in it is reached from the internet.",
+      "fields": [],
+      "id": "ZONE-PAY-INTERNAL",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "ZONE-PAY-CLOUD",
+        "kind": "composition",
+        "name": "Cloud — payments",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "ZONE-PAY-PRIVATE",
+        "kind": "composition",
+        "name": "Payments private network zone",
+        "source_id": null
+       },
+       {
+        "id": "TS-MQ",
+        "kind": "aggregation",
+        "name": "Messaging service",
+        "source_id": null
+       },
+       {
+        "id": "TS-SECRETS",
+        "kind": "aggregation",
+        "name": "Secrets management",
+        "source_id": null
+       }
+      ],
+      "name": "Internal network — payments",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A5.NetworkZone",
+      "version": "1.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "zone_kind": "dmz",
+       "zone_level": 1
+      },
+      "connections": [],
+      "description": "The internet-facing zone; firewalls form its boundary.",
+      "fields": [],
+      "id": "ZONE-PAY-DMZ",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "ZONE-PAY-CLOUD",
+        "kind": "composition",
+        "name": "Cloud — payments",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "INF-APIGW-PAY",
+        "kind": "aggregation",
+        "name": "Managed API gateway — payments",
+        "source_id": null
+       }
+      ],
+      "name": "Security zone (DMZ) — payments",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A5.NetworkZone",
+      "version": "1.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "zone_kind": "private",
+       "zone_level": 2
+      },
+      "connections": [],
+      "description": "The private zone inside the internal network where the payment platforms run (made up).",
+      "fields": [],
+      "id": "ZONE-PAY-PRIVATE",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "ZONE-PAY-INTERNAL",
+        "kind": "composition",
+        "name": "Internal network — payments",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "INF-K8S-PAY-PROD",
+        "kind": "aggregation",
+        "name": "Managed Kubernetes — payments (production)",
+        "source_id": null
+       },
+       {
+        "id": "INF-K8S-PAY-UAT",
+        "kind": "aggregation",
+        "name": "Managed Kubernetes — payments (UAT)",
+        "source_id": null
+       },
+       {
+        "id": "INF-PG-PAY-PROD",
+        "kind": "aggregation",
+        "name": "Managed PostgreSQL — payments",
+        "source_id": null
+       }
+      ],
+      "name": "Payments private network zone",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A5.NetworkZone",
+      "version": "1.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "zone_kind": "on_premises",
+       "zone_level": 0
+      },
+      "connections": [],
+      "description": "The bank's own data centre (made up), where the core banking ledger runs.",
+      "fields": [],
+      "id": "ZONE-PAY-ONPREM",
+      "lifecycle_status": "active",
+      "links_in": [],
+      "links_out": [
+       {
+        "id": "ZONE-PAY-ONPREM-INTERNAL",
+        "kind": "composition",
+        "name": "Internal network — on premises (core banking)",
+        "source_id": null
+       }
+      ],
+      "name": "On premises — core banking",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A5.NetworkZone",
+      "version": "1.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "zone_kind": "internal",
+       "zone_level": 1
+      },
+      "connections": [],
+      "description": "The internal network of the on-premises data centre.",
+      "fields": [],
+      "id": "ZONE-PAY-ONPREM-INTERNAL",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "ZONE-PAY-ONPREM",
+        "kind": "composition",
+        "name": "On premises — core banking",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "INF-CORE-LEDGER-HOST",
+        "kind": "aggregation",
+        "name": "Core banking ledger host",
+        "source_id": null
+       }
+      ],
+      "name": "Internal network — on premises (core banking)",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A5.NetworkZone",
+      "version": "1.0"
+     }
+    ],
+    "title": "Network zones",
+    "type": "A5.NetworkZone"
+   },
+   {
+    "definition": "A deployable technology-level artefact",
+    "records": [
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "artifact_kind": "container image",
+       "digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+       "purl": "pkg:docker/example/payments-hub@7.1"
+      },
+      "connections": [
+       {
+        "direction": "in",
+        "evidence": [
+         "build_pipeline:CI-PAY-HUB#7.1"
+        ],
+        "id": "APP-PAY-HUB",
+        "mapping_id": "PAY-115",
+        "name": "Payments Hub",
+        "relationship": "BUILT_AS",
+        "status": "approved"
+       }
+      ],
+      "description": "Container image of the hub.",
+      "fields": [],
+      "id": "ART-PAYHUB-IMG",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "INF-K8S-PAY-PROD",
+        "kind": "assignment",
+        "name": "Managed Kubernetes — payments (production)",
+        "source_id": null
+       },
+       {
+        "id": "DEP-PAYHUB-PROD",
+        "kind": "aggregation",
+        "name": "Payments Hub — production",
+        "source_id": null
+       }
+      ],
+      "links_out": [],
+      "name": "payments-hub:7.1",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A5.Artifact",
+      "version": "7.1"
+     }
+    ],
+    "title": "Artifacts",
+    "type": "A5.Artifact"
+   }
+  ],
+  "summary": {
+   "by_type": {
+    "Artifacts": 1,
+    "Communication networks": 1,
+    "Deployment environments": 2,
+    "Deployments": 3,
+    "Network zones": 6,
+    "Nodes": 1,
+    "System softwares": 4,
+    "Technology services": 2
+   },
+   "records": 20,
+   "unconfirmed": 0,
+   "with_approved_connection": 7
+  },
+  "title": "A5 Technology Architecture",
+  "workspace": "pi"
+ }
+}

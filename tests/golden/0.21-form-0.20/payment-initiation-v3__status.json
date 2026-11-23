@@ -1,0 +1,195 @@
+{
+ "command": [
+  "status",
+  "--workspace",
+  "<tmp>/v3",
+  "--json"
+ ],
+ "exit": 0,
+ "output": {
+  "blocking": [],
+  "completeness": {
+   "by_rule": [],
+   "draft_connected": 125,
+   "gaps": 0,
+   "inferred_to_confirm": 0,
+   "placed_by_default": 0,
+   "proposed_to_approve": 0,
+   "records_checked": 125,
+   "records_connected": 125,
+   "standard": "SDEM-COMPLETE",
+   "under_exception": 0
+  },
+  "connections": {
+   "by_status": {
+    "approved": 42,
+    "rejected": 2
+   },
+   "links": 44
+  },
+  "counts": {
+   "blocking": 0,
+   "unresolved": 0,
+   "warnings": 16
+  },
+  "layers": [
+   {
+    "level": "A1",
+    "records": 48,
+    "relationships": 72,
+    "title": "A1 Business"
+   },
+   {
+    "level": "A2",
+    "records": 70,
+    "relationships": 120,
+    "title": "A2 Service domain (BIAN)"
+   },
+   {
+    "level": "A3",
+    "records": 34,
+    "relationships": 31,
+    "title": "A3 Data"
+   },
+   {
+    "level": "A4",
+    "records": 15,
+    "relationships": 14,
+    "title": "A4 Application"
+   },
+   {
+    "level": "A5",
+    "records": 28,
+    "relationships": 42,
+    "title": "A5 Technology"
+   }
+  ],
+  "missing_layers": [],
+  "name": "v3",
+  "next": [
+   {
+    "command": "sdem document --workspace <tmp>/v3 --layer all",
+    "person_decides": false,
+    "who": "you, or an agent",
+    "why": "nothing blocks the design or waits on a person: write it up, or look at it all: sdem workbench --workspace <tmp>/v3"
+   },
+   {
+    "command": "sdem bian objects suggest --workspace <tmp>/v3",
+    "person_decides": false,
+    "who": "you, or an agent",
+    "why": "which BIAN business object each data entity may be — a person brings one in (--object) and states the link (sdem connect … MAPPED_TO …)"
+   }
+  ],
+  "patterns": [
+   {
+    "anchor": "SD-PAYMENT-ORDER-INITIATION",
+    "draft_in_place": 9,
+    "in_place": 9,
+    "open": [],
+    "parts": 9,
+    "pattern": "PAT-BIAN-TRANSACT",
+    "title": "BIAN Transact — a transaction",
+    "under_exception": 0
+   },
+   {
+    "anchor": "SD-PAYMENT-ORDER-INITIATION",
+    "draft_in_place": 14,
+    "in_place": 14,
+    "open": [],
+    "parts": 14,
+    "pattern": "PAT-PAYMENT-INITIATION",
+    "title": "Payment initiation",
+    "under_exception": 0
+   }
+  ],
+  "patterns_available": [],
+  "sources": {
+   "links_without_source": 120,
+   "records_without_source": 5
+  },
+  "state": "clear",
+  "unresolved": [],
+  "warnings": [
+   {
+    "kind": "value_unknown",
+    "record": "API-DEBTOR-READ",
+    "text": "A4 API-DEBTOR-READ path: absent (planned)"
+   },
+   {
+    "kind": "value_unknown",
+    "record": "API-DEBTOR-READ",
+    "text": "A4 API-DEBTOR-READ payload_fields: absent (planned)"
+   },
+   {
+    "kind": "value_unknown",
+    "record": "DEP-CONSENT",
+    "text": "A5 DEP-CONSENT platform_id: absent (planned)"
+   },
+   {
+    "kind": "value_unknown",
+    "record": "DEP-PAYHUB",
+    "text": "A5 DEP-PAYHUB platform_id: absent (planned)"
+   },
+   {
+    "kind": "value_unknown",
+    "record": "DEP-RISK",
+    "text": "A5 DEP-RISK platform_id: absent (planned)"
+   },
+   {
+    "kind": "value_unknown",
+    "record": "DEP-NOTIFY",
+    "text": "A5 DEP-NOTIFY platform_id: absent (planned)"
+   },
+   {
+    "kind": "advice",
+    "layer": "A2",
+    "text": "A2: instance SD-PARTY-AUTHENTICATION: 0 composition links with A2.BusinessDomain, RA2-02 expects at least 1 (LC-10m)"
+   },
+   {
+    "kind": "advice",
+    "layer": "A2",
+    "text": "A2: instance SD-PAYMENT-ORDER-INITIATION: 0 composition links with A2.BusinessDomain, RA2-02 expects at least 1 (LC-10m)"
+   },
+   {
+    "kind": "advice",
+    "layer": "A2",
+    "text": "A2: instance SD-FRAUD-EVALUATION: 0 composition links with A2.BusinessDomain, RA2-02 expects at least 1 (LC-10m)"
+   },
+   {
+    "kind": "advice",
+    "layer": "A4",
+    "text": "A4: instance API-DEBTOR-READ: planned instance — required attribute 'path' not yet known (LC-04)"
+   },
+   {
+    "kind": "advice",
+    "layer": "A4",
+    "text": "A4: instance API-DEBTOR-READ: planned instance — required attribute 'payload_fields' not yet known (LC-04)"
+   },
+   {
+    "kind": "advice",
+    "layer": "A5",
+    "text": "A5: instance DEP-CONSENT: planned instance — required attribute 'platform_id' not yet known (LC-04)"
+   },
+   {
+    "kind": "advice",
+    "layer": "A5",
+    "text": "A5: instance DEP-PAYHUB: planned instance — required attribute 'platform_id' not yet known (LC-04)"
+   },
+   {
+    "kind": "advice",
+    "layer": "A5",
+    "text": "A5: instance DEP-RISK: planned instance — required attribute 'platform_id' not yet known (LC-04)"
+   },
+   {
+    "kind": "advice",
+    "layer": "A5",
+    "text": "A5: instance DEP-NOTIFY: planned instance — required attribute 'platform_id' not yet known (LC-04)"
+   },
+   {
+    "kind": "bian_objects_missing",
+    "text": "BIAN: 3 service domain(s) but no BIAN business object — the design's BIAN → Data connections are empty (BO-06)"
+   }
+  ],
+  "workspace": "<tmp>/v3"
+ }
+}

@@ -1,0 +1,132 @@
+{
+ "command": [
+  "build",
+  "--workspace",
+  "<tmp>/v3",
+  "--out",
+  "<tmp>/payment-initiation-v3-graph",
+  "--json"
+ ],
+ "exit": 0,
+ "output": {
+  "at": "<volatile>",
+  "build": 1,
+  "errors": [],
+  "graph": "<tmp>/payment-initiation-v3-graph",
+  "inputs": [
+   {
+    "kind": "export",
+    "level": "A1",
+    "model_id": "SDEM-A1",
+    "model_version": "2026-11-18",
+    "path": "<tmp>/v3/a1-business.json",
+    "sha256": "56741908c861ec08f6d365cf777bf7da2f45cd0d491f2cb4828baa19fa8620fa"
+   },
+   {
+    "kind": "export",
+    "level": "A2",
+    "model_id": "SDEM-A2",
+    "model_version": "2026-11-18",
+    "path": "<tmp>/v3/a2-service-domain.json",
+    "sha256": "02b47066bb3a99aae511454a58c001cdb284e69c3da0ad5507ab283f48df54ff"
+   },
+   {
+    "kind": "export",
+    "level": "A3",
+    "model_id": "SDEM-A3-data",
+    "model_version": "2026-11-18",
+    "path": "<tmp>/v3/data.json",
+    "sha256": "7d5f01c755dc11c08d065b1243c79d06ce2bc319e32008b1ecbd9dd41e9eae71"
+   },
+   {
+    "kind": "export",
+    "level": "A4",
+    "model_id": "SDEM-A3",
+    "model_version": "2026-11-18",
+    "path": "<tmp>/v3/a3-application.json",
+    "sha256": "1de5fb712c7c2ec3ef887328b6e402b02a005fb6b36eb8920404de893abe2e78"
+   },
+   {
+    "kind": "export",
+    "level": "A5",
+    "model_id": "SDEM-A4",
+    "model_version": "2026-11-18",
+    "path": "<tmp>/v3/a4-technology.json",
+    "sha256": "685794070022945520196467cc3cd4374a8f48d966db78b650f25059311cba74"
+   },
+   {
+    "kind": "registry",
+    "path": "<tmp>/v3/mappings.json",
+    "registry_version": "0.4.0",
+    "sha256": "47386a239e48e75824e1cd2fda86f0fadb8bd5ad97c605fc3bae57df4272ea72"
+   }
+  ],
+  "metamodel_version": "0.19.0",
+  "next": "sdem trace <id> --graph <tmp>/payment-initiation-v3-graph",
+  "outputs": [
+   {
+    "edges": 14,
+    "file": "application.graph.json",
+    "nodes": 15,
+    "sha256": "55f9cf941a33873094aa2e00621a126ffef7e452d9f7bd3bfb3260f92ae016a0"
+   },
+   {
+    "edges": 120,
+    "file": "bian.graph.json",
+    "nodes": 70,
+    "sha256": "9a506ccb300fcf0d554cbf463a52731f59fe8f7d8b56f7cdaf6feec6424d1f6a"
+   },
+   {
+    "edges": 72,
+    "file": "business.graph.json",
+    "nodes": 48,
+    "sha256": "729d030363198122d0394ed20e798996b77f60a15b3a48962fc689577c7f7dea"
+   },
+   {
+    "edges": 31,
+    "file": "data.graph.json",
+    "nodes": 34,
+    "sha256": "4d69f6970736b99f1b5dba14fd1d1500551cd2fd1f9274f8f3e86f8f0201aefa"
+   },
+   {
+    "edges": 42,
+    "file": "federated.graph.json",
+    "nodes": 43,
+    "sha256": "01422d0e61e1382ad6e2fd610628e59e3ac017cff9ecc759e2134b416ad150ef"
+   },
+   {
+    "edges": 42,
+    "file": "technology.graph.json",
+    "nodes": 28,
+    "sha256": "99e2c4d59434e1c082f392f0d1b57428853220c322c48c27380592f3f5dc90ab"
+   }
+  ],
+  "profile": {
+   "chain": [
+    "sdem"
+   ],
+   "name": "sdem",
+   "sha256": "3b354e0b6d08af7e9ba830795673e1d324fbeec7f44b8bcf966e22f5f80f1447",
+   "version": 1
+  },
+  "result": "accepted",
+  "stack": [
+   "business",
+   "bian",
+   "data",
+   "application",
+   "technology"
+  ],
+  "warnings": [
+   "level A2 (SDEM-A2): instance SD-PARTY-AUTHENTICATION: 0 composition links with A2.BusinessDomain, RA2-02 expects at least 1 (LC-10m)",
+   "level A2 (SDEM-A2): instance SD-PAYMENT-ORDER-INITIATION: 0 composition links with A2.BusinessDomain, RA2-02 expects at least 1 (LC-10m)",
+   "level A2 (SDEM-A2): instance SD-FRAUD-EVALUATION: 0 composition links with A2.BusinessDomain, RA2-02 expects at least 1 (LC-10m)",
+   "level A4 (SDEM-A3): instance API-DEBTOR-READ: planned instance — required attribute 'path' not yet known (LC-04)",
+   "level A4 (SDEM-A3): instance API-DEBTOR-READ: planned instance — required attribute 'payload_fields' not yet known (LC-04)",
+   "level A5 (SDEM-A4): instance DEP-CONSENT: planned instance — required attribute 'platform_id' not yet known (LC-04)",
+   "level A5 (SDEM-A4): instance DEP-PAYHUB: planned instance — required attribute 'platform_id' not yet known (LC-04)",
+   "level A5 (SDEM-A4): instance DEP-RISK: planned instance — required attribute 'platform_id' not yet known (LC-04)",
+   "level A5 (SDEM-A4): instance DEP-NOTIFY: planned instance — required attribute 'platform_id' not yet known (LC-04)"
+  ]
+ }
+}

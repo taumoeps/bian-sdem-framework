@@ -35,6 +35,7 @@ This reverses **BP-D3** (the built-in BIAN as a fallback for all of 0.20).
 | **R-D8** | **SDEM's documents about BIAN** — design specs (`sdem-bian-*`, the BIAN inference reference, the A2 data-model draft, mapping-logic planning…), evidence that tested BIAN inference | **Move to `sdem-extensions/metamodel/bian/docs/`**, history kept: SDEM's copies become one-line pointers where other documents link to them. Records of past decisions (`docs/history/`, CHANGELOG entries) stay as written |
 | **R-D9** | **DESNRE** — publishing and its in-browser SDEM bundle run SDEM on banking designs | The publisher installs `sdem-bian`; the site's bundle (`scripts/build-sdem-bundle.py`) includes it, so the agent and the workbench read the Payment example as today |
 | **R-D10** | **`sdem-security`'s links into BIAN** (6 link types marked `requires: bian`, BX-50) | Unchanged — already left out, and said, when BIAN is not installed (MID-10) |
+| **R-D11** | **Step 3's proof (P1) when BIAN infers as an extension** (the owner, 2026-11-24: "a") | **Identical except provenance**: every record, link, proposal, confidence, reasoning and gap byte-identical to 0.21.14's once the fields that name the inferer — `inferred.by`, `inferred.step`, a proposal's `created_by`, its evidence prefix and its number — are mapped by one published table (as the 0.20 plan's P2). Strictly byte-identical would make the extension claim SDEM inferred what BIAN did (MX-48) |
 
 ## 4. The steps — each proved before the next
 

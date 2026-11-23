@@ -1,0 +1,1091 @@
+{
+ "command": [
+  "types",
+  "A2",
+  "--json"
+ ],
+ "exit": 0,
+ "output": {
+  "layer": "A2",
+  "types": [
+   {
+    "abstract": false,
+    "archimate": {
+     "element": "Business Object",
+     "from": "SDEM",
+     "layer": "business",
+     "why": "BIAN: the kind of asset a service domain controls"
+    },
+    "attributes": [
+     {
+      "description": "tokens the workspace uses for the asset",
+      "name": "aliases",
+      "required": false,
+      "type": "list<string>"
+     }
+    ],
+    "definition": "The class of asset a Service Domain manages through its lifecycle",
+    "extends": [],
+    "identifier": [
+     "name"
+    ],
+    "layer": "A2",
+    "link_types_to_other_layers": [],
+    "links_in": [
+     {
+      "from": "A2.ServiceDomain",
+      "kind": "association",
+      "rule": "RA2-07"
+     }
+    ],
+    "links_out": [],
+    "organisation_rules": [],
+    "record_fields": {
+     "lifecycle_status": [
+      "planned",
+      "active",
+      "deprecated",
+      "retired"
+     ],
+     "optional": [
+      "description",
+      "attributes"
+     ],
+     "required": [
+      "id",
+      "type",
+      "version",
+      "name",
+      "lifecycle_status"
+     ]
+    },
+    "source": "BIAN Service Landscape · Asset Type",
+    "type": "A2.AssetType"
+   },
+   {
+    "abstract": false,
+    "archimate": {
+     "element": "Business Function",
+     "from": "SDEM",
+     "layer": "business",
+     "why": "BIAN: a refinement of a service domain's behaviour"
+    },
+    "attributes": [
+     {
+      "description": "tokens the workspace's API paths use for the qualifier",
+      "name": "aliases",
+      "required": false,
+      "type": "list<string>"
+     }
+    ],
+    "definition": "A refinement of a Service Domain's generic behaviour",
+    "extends": [],
+    "identifier": [
+     "name"
+    ],
+    "layer": "A2",
+    "link_types_to_other_layers": [],
+    "links_in": [
+     {
+      "from": "A2.ControlRecord",
+      "kind": "composition",
+      "rule": "RA2-11"
+     },
+     {
+      "from": "A2.ServiceOperation",
+      "kind": "association",
+      "rule": "RA2-08"
+     }
+    ],
+    "links_out": [],
+    "organisation_rules": [],
+    "record_fields": {
+     "lifecycle_status": [
+      "planned",
+      "active",
+      "deprecated",
+      "retired"
+     ],
+     "optional": [
+      "description",
+      "attributes"
+     ],
+     "required": [
+      "id",
+      "type",
+      "version",
+      "name",
+      "lifecycle_status"
+     ]
+    },
+    "source": "BIAN Service Landscape · Behavior Qualifier",
+    "type": "A2.BehaviorQualifier"
+   },
+   {
+    "abstract": false,
+    "archimate": {
+     "element": "Grouping",
+     "from": "SDEM",
+     "layer": "other",
+     "why": "BIAN: a group of business domains — no behaviour of its own"
+    },
+    "attributes": [],
+    "definition": "Top-level grouping of the Service Landscape",
+    "extends": [],
+    "identifier": [
+     "name"
+    ],
+    "layer": "A2",
+    "link_types_to_other_layers": [],
+    "links_in": [],
+    "links_out": [
+     {
+      "kind": "composition",
+      "rule": "RA2-01",
+      "to": "A2.BusinessDomain"
+     }
+    ],
+    "organisation_rules": [],
+    "record_fields": {
+     "lifecycle_status": [
+      "planned",
+      "active",
+      "deprecated",
+      "retired"
+     ],
+     "optional": [
+      "description",
+      "attributes"
+     ],
+     "required": [
+      "id",
+      "type",
+      "version",
+      "name",
+      "lifecycle_status"
+     ]
+    },
+    "source": "BIAN Service Landscape · Business Area",
+    "type": "A2.BusinessArea"
+   },
+   {
+    "abstract": false,
+    "archimate": {
+     "element": "Grouping",
+     "from": "SDEM",
+     "layer": "other",
+     "why": "BIAN: a group of service domains"
+    },
+    "attributes": [],
+    "definition": "Coarse functional grouping within a Business Area",
+    "extends": [],
+    "identifier": [
+     "name"
+    ],
+    "layer": "A2",
+    "link_types_to_other_layers": [],
+    "links_in": [
+     {
+      "from": "A2.BusinessArea",
+      "kind": "composition",
+      "rule": "RA2-01"
+     }
+    ],
+    "links_out": [
+     {
+      "kind": "composition",
+      "rule": "RA2-02",
+      "to": "A2.ServiceDomain"
+     }
+    ],
+    "organisation_rules": [],
+    "record_fields": {
+     "lifecycle_status": [
+      "planned",
+      "active",
+      "deprecated",
+      "retired"
+     ],
+     "optional": [
+      "description",
+      "attributes"
+     ],
+     "required": [
+      "id",
+      "type",
+      "version",
+      "name",
+      "lifecycle_status"
+     ]
+    },
+    "source": "BIAN Service Landscape · Business Domain",
+    "type": "A2.BusinessDomain"
+   },
+   {
+    "abstract": false,
+    "archimate": {
+     "element": "Business Object",
+     "from": "SDEM",
+     "layer": "business"
+    },
+    "attributes": [
+     {
+      "description": "the canonical object's attribute names",
+      "name": "attributes",
+      "required": true,
+      "type": "list<string>"
+     },
+     {
+      "description": "link to the agreed glossary definition",
+      "name": "glossary_uri",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "the matching ISO 20022 business component",
+      "name": "iso20022_ref",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "whether it holds information about an identifiable person",
+      "name": "personal_information",
+      "required": false,
+      "type": "boolean"
+     }
+    ],
+    "definition": "A canonical business information concept",
+    "extends": [],
+    "identifier": [
+     "canonical_id"
+    ],
+    "layer": "A2",
+    "link_types_to_other_layers": [
+     {
+      "direction": "in",
+      "evidence_needed": [
+       "business_glossary",
+       "object_alignment_review"
+      ],
+      "other_end": "A1.BusinessObject",
+      "relationship": "ALIGNED_TO"
+     },
+     {
+      "direction": "out",
+      "evidence_needed": [
+       "data_model"
+      ],
+      "other_end": "A3.DataEntity",
+      "relationship": "MAPPED_TO"
+     }
+    ],
+    "links_in": [
+     {
+      "from": "A2.BOMModel",
+      "kind": "aggregation",
+      "rule": "RA2-17"
+     },
+     {
+      "from": "A2.BusinessObject",
+      "kind": "aggregation",
+      "rule": "RA2-19"
+     },
+     {
+      "from": "A2.BusinessObject",
+      "kind": "association",
+      "rule": "RA2-21"
+     },
+     {
+      "from": "A2.BusinessObject",
+      "kind": "composition",
+      "rule": "RA2-18"
+     },
+     {
+      "from": "A2.BusinessObject",
+      "kind": "specialization",
+      "rule": "RA2-20"
+     },
+     {
+      "from": "A2.BusinessObjectAttribute",
+      "kind": "association",
+      "rule": "RA2-22"
+     },
+     {
+      "from": "A2.ControlRecord",
+      "kind": "association",
+      "rule": "RA2-12"
+     },
+     {
+      "from": "A2.ServiceOperation",
+      "kind": "access",
+      "rule": "RA2-23"
+     }
+    ],
+    "links_out": [
+     {
+      "kind": "aggregation",
+      "rule": "RA2-19",
+      "to": "A2.BusinessObject"
+     },
+     {
+      "kind": "association",
+      "rule": "RA2-21",
+      "to": "A2.BusinessObject"
+     },
+     {
+      "kind": "composition",
+      "rule": "RA2-18",
+      "to": "A2.BusinessObject"
+     },
+     {
+      "kind": "composition",
+      "rule": "RA2-10",
+      "to": "A2.BusinessObjectAttribute"
+     },
+     {
+      "kind": "specialization",
+      "rule": "RA2-20",
+      "to": "A2.BusinessObject"
+     }
+    ],
+    "organisation_rules": [],
+    "record_fields": {
+     "lifecycle_status": [
+      "planned",
+      "active",
+      "deprecated",
+      "retired"
+     ],
+     "optional": [
+      "description",
+      "attributes"
+     ],
+     "required": [
+      "id",
+      "type",
+      "version",
+      "name",
+      "lifecycle_status"
+     ]
+    },
+    "source": "BIAN Service Landscape · Business Object",
+    "type": "A2.BusinessObject"
+   },
+   {
+    "abstract": false,
+    "archimate": {
+     "element": "Business Object",
+     "from": "SDEM",
+     "layer": "business",
+     "why": "a field of a business object — drawn inside it"
+    },
+    "attributes": [
+     {
+      "allowed_values": [
+       "string",
+       "text",
+       "integer",
+       "decimal",
+       "amount",
+       "currency_code",
+       "date",
+       "datetime",
+       "boolean",
+       "identifier",
+       "enum",
+       "reference"
+      ],
+      "description": "the attribute's data type in the Business Object Model",
+      "name": "data_type",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "the matching ISO 20022 business element",
+      "name": "iso20022_ref",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "whether the attribute is personal information",
+      "name": "personal_information",
+      "required": false,
+      "type": "boolean"
+     },
+     {
+      "description": "whether every business object of this kind has a value for this attribute",
+      "name": "required",
+      "required": false,
+      "type": "boolean"
+     },
+     {
+      "description": "the values the attribute may take, when it is an enumeration",
+      "name": "allowed_values",
+      "required": false,
+      "type": "list<string>"
+     },
+     {
+      "description": "whether the attribute identifies the business object",
+      "name": "identifier",
+      "required": false,
+      "type": "boolean"
+     },
+     {
+      "allowed_values": [
+       "1",
+       "0..1",
+       "0..n",
+       "1..n"
+      ],
+      "description": "how many values one business object holds for the attribute",
+      "name": "multiplicity",
+      "required": false,
+      "type": "string"
+     }
+    ],
+    "definition": "A property of a Business Object",
+    "extends": [],
+    "identifier": [
+     "owning business object",
+     "name"
+    ],
+    "layer": "A2",
+    "link_types_to_other_layers": [
+     {
+      "direction": "out",
+      "evidence_needed": [
+       "data_model"
+      ],
+      "other_end": "A3.DataAttribute",
+      "relationship": "FIELD_MAPPED_TO"
+     }
+    ],
+    "links_in": [
+     {
+      "from": "A2.BusinessObject",
+      "kind": "composition",
+      "rule": "RA2-10"
+     }
+    ],
+    "links_out": [
+     {
+      "kind": "association",
+      "rule": "RA2-22",
+      "to": "A2.BusinessObject"
+     }
+    ],
+    "organisation_rules": [],
+    "record_fields": {
+     "lifecycle_status": [
+      "planned",
+      "active",
+      "deprecated",
+      "retired"
+     ],
+     "optional": [
+      "description",
+      "attributes"
+     ],
+     "required": [
+      "id",
+      "type",
+      "version",
+      "name",
+      "lifecycle_status"
+     ]
+    },
+    "source": "BIAN Service Landscape · Business Object attribute",
+    "type": "A2.BusinessObjectAttribute"
+   },
+   {
+    "abstract": false,
+    "archimate": {
+     "element": "Business Interaction",
+     "from": "SDEM",
+     "layer": "business",
+     "why": "BIAN: service domains working together on one business event"
+    },
+    "attributes": [
+     {
+      "description": "ordered ids of the operations the scenario sequences",
+      "name": "operation_sequence",
+      "refers_to": [
+       "A2.ServiceOperation"
+      ],
+      "required": true,
+      "type": "list<string>"
+     },
+     {
+      "description": "the business event that starts the scenario",
+      "name": "trigger_event",
+      "required": false,
+      "type": "string"
+     }
+    ],
+    "definition": "An illustrative, non-prescriptive collaboration of Service Domain operations",
+    "extends": [],
+    "identifier": [
+     "canonical_id"
+    ],
+    "layer": "A2",
+    "link_types_to_other_layers": [
+     {
+      "direction": "in",
+      "evidence_needed": [
+       "process_model",
+       "scenario_suitability_review"
+      ],
+      "other_end": "A1.ValueStream",
+      "relationship": "ALIGNED_TO"
+     },
+     {
+      "direction": "in",
+      "evidence_needed": [
+       "process_model",
+       "scenario_suitability_review"
+      ],
+      "other_end": "A1.ValueStreamStage",
+      "relationship": "ALIGNED_TO"
+     }
+    ],
+    "links_in": [],
+    "links_out": [
+     {
+      "kind": "aggregation",
+      "rule": "RA2-09",
+      "to": "A2.ServiceOperation"
+     }
+    ],
+    "organisation_rules": [],
+    "record_fields": {
+     "lifecycle_status": [
+      "planned",
+      "active",
+      "deprecated",
+      "retired"
+     ],
+     "optional": [
+      "description",
+      "attributes"
+     ],
+     "required": [
+      "id",
+      "type",
+      "version",
+      "name",
+      "lifecycle_status"
+     ]
+    },
+    "source": "BIAN Service Landscape · Business Scenario",
+    "type": "A2.BusinessScenario"
+   },
+   {
+    "abstract": false,
+    "archimate": {
+     "element": "Business Object",
+     "from": "SDEM",
+     "layer": "business",
+     "why": "BIAN: the record a service domain keeps of what it controls — passive information"
+    },
+    "attributes": [
+     {
+      "description": "the control record's attribute names",
+      "name": "attributes",
+      "required": true,
+      "type": "list<string>"
+     },
+     {
+      "description": "ordered lifecycle states",
+      "name": "lifecycle_states",
+      "required": false,
+      "type": "list<string>"
+     }
+    ],
+    "definition": "Lifecycle and control information for a Service Domain's activity",
+    "extends": [],
+    "identifier": [
+     "owning service domain"
+    ],
+    "layer": "A2",
+    "link_types_to_other_layers": [],
+    "links_in": [
+     {
+      "from": "A2.ServiceDomain",
+      "kind": "aggregation",
+      "rule": "RA2-05"
+     },
+     {
+      "from": "A2.ServiceOperation",
+      "kind": "access",
+      "rule": "RA2-13"
+     }
+    ],
+    "links_out": [
+     {
+      "kind": "association",
+      "rule": "RA2-12",
+      "to": "A2.BusinessObject"
+     },
+     {
+      "kind": "composition",
+      "rule": "RA2-11",
+      "to": "A2.BehaviorQualifier"
+     }
+    ],
+    "organisation_rules": [],
+    "record_fields": {
+     "lifecycle_status": [
+      "planned",
+      "active",
+      "deprecated",
+      "retired"
+     ],
+     "optional": [
+      "description",
+      "attributes"
+     ],
+     "required": [
+      "id",
+      "type",
+      "version",
+      "name",
+      "lifecycle_status"
+     ]
+    },
+    "source": "BIAN Service Landscape · Control Record",
+    "type": "A2.ControlRecord"
+   },
+   {
+    "abstract": false,
+    "archimate": {
+     "element": "Business Function",
+     "from": "SDEM",
+     "layer": "business",
+     "why": "BIAN: the pattern of behaviour a service domain follows"
+    },
+    "attributes": [
+     {
+      "description": "the kind of control record the pattern manages (the pattern as a noun)",
+      "name": "generic_artefact",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "the kind of behaviour qualifier used to break the pattern down",
+      "name": "behavior_qualifier_type",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "allowed_values": [
+       "document",
+       "collection",
+       "controller"
+      ],
+      "description": "the REST resource archetype the pattern's control record maps to",
+      "name": "rest_archetype",
+      "required": false,
+      "type": "string"
+     }
+    ],
+    "definition": "The generic behaviour pattern a Service Domain applies",
+    "extends": [],
+    "identifier": [
+     "name"
+    ],
+    "layer": "A2",
+    "link_types_to_other_layers": [],
+    "links_in": [
+     {
+      "from": "A2.ServiceDomain",
+      "kind": "association",
+      "rule": "RA2-06"
+     }
+    ],
+    "links_out": [],
+    "organisation_rules": [],
+    "record_fields": {
+     "lifecycle_status": [
+      "planned",
+      "active",
+      "deprecated",
+      "retired"
+     ],
+     "optional": [
+      "description",
+      "attributes"
+     ],
+     "required": [
+      "id",
+      "type",
+      "version",
+      "name",
+      "lifecycle_status"
+     ]
+    },
+    "source": "BIAN Service Landscape · Functional Pattern",
+    "type": "A2.FunctionalPattern"
+   },
+   {
+    "abstract": false,
+    "archimate": {
+     "element": "Business Function",
+     "from": "SDEM",
+     "layer": "business",
+     "why": "BIAN: a discrete, non-overlapping business capability partition — behaviour grouped by function, so a Business Function"
+    },
+    "attributes": [
+     {
+      "description": "id of the domain's asset type",
+      "name": "asset_type",
+      "refers_to": [
+       "A2.AssetType"
+      ],
+      "required": true,
+      "type": "string"
+     },
+     {
+      "description": "id of the domain's functional pattern",
+      "name": "functional_pattern",
+      "refers_to": [
+       "A2.FunctionalPattern"
+      ],
+      "required": true,
+      "type": "string"
+     },
+     {
+      "allowed_values": [
+       "adopted",
+       "partly adopted",
+       "planned",
+       "not adopted"
+      ],
+      "description": "how far the bank intends to adopt the Service Domain",
+      "name": "adoption_status",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "allowed_values": [
+       "derived",
+       "given",
+       "inferred",
+       "unknown"
+      ],
+      "description": "how the domain's asset type and functional pattern were set: derived (from the control record's name — to confirm), given (by a person), inferred (from SDEM's inference record — see inference_ref), unknown (not known yet; the two may be absent)",
+      "name": "classification",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "the entry in SDEM's inference record (e.g. BI-INF-063) the asset type and functional pattern come from — set when classification is inferred",
+      "name": "inference_ref",
+      "required": false,
+      "type": "string"
+     }
+    ],
+    "definition": "A discrete functional scope of the bank and its responsibilities",
+    "extends": [],
+    "identifier": [
+     "canonical_id"
+    ],
+    "layer": "A2",
+    "link_types_to_other_layers": [
+     {
+      "direction": "in",
+      "evidence_needed": [
+       "business_architecture_document",
+       "domain_scope_assessment"
+      ],
+      "other_end": "A1.BusinessCapability",
+      "relationship": "SUPPORTED_BY"
+     },
+     {
+      "direction": "in",
+      "evidence_needed": [
+       "process_model"
+      ],
+      "other_end": "A1.BusinessProcess",
+      "relationship": "USES_DOMAIN"
+     },
+     {
+      "direction": "out",
+      "evidence_needed": [
+       "application_architecture_document"
+      ],
+      "other_end": "A4.ApplicationComponent",
+      "relationship": "REALIZED_BY"
+     }
+    ],
+    "links_in": [
+     {
+      "from": "A2.BusinessDomain",
+      "kind": "composition",
+      "rule": "RA2-02"
+     },
+     {
+      "from": "A2.SemanticAPI",
+      "kind": "realization",
+      "rule": "RA2-16"
+     },
+     {
+      "from": "A2.ServiceDomain",
+      "kind": "flow",
+      "rule": "RA2-14"
+     },
+     {
+      "from": "A2.Wireframe",
+      "kind": "association",
+      "rule": "RA2-15"
+     }
+    ],
+    "links_out": [
+     {
+      "kind": "aggregation",
+      "rule": "RA2-05",
+      "to": "A2.ControlRecord"
+     },
+     {
+      "kind": "association",
+      "rule": "RA2-07",
+      "to": "A2.AssetType"
+     },
+     {
+      "kind": "association",
+      "rule": "RA2-06",
+      "to": "A2.FunctionalPattern"
+     },
+     {
+      "kind": "composition",
+      "rule": "RA2-03",
+      "to": "A2.ServiceGroup"
+     },
+     {
+      "kind": "flow",
+      "rule": "RA2-14",
+      "to": "A2.ServiceDomain"
+     }
+    ],
+    "organisation_rules": [],
+    "record_fields": {
+     "lifecycle_status": [
+      "planned",
+      "active",
+      "deprecated",
+      "retired"
+     ],
+     "optional": [
+      "description",
+      "attributes"
+     ],
+     "required": [
+      "id",
+      "type",
+      "version",
+      "name",
+      "lifecycle_status"
+     ]
+    },
+    "source": "BIAN Service Landscape · Service Domain",
+    "type": "A2.ServiceDomain"
+   },
+   {
+    "abstract": false,
+    "archimate": {
+     "element": "Business Service",
+     "from": "SDEM",
+     "layer": "business",
+     "why": "BIAN: a group of a service domain's operations offered to others"
+    },
+    "attributes": [],
+    "definition": "A grouping of a Service Domain's operations",
+    "extends": [],
+    "identifier": [
+     "name"
+    ],
+    "layer": "A2",
+    "link_types_to_other_layers": [],
+    "links_in": [
+     {
+      "from": "A2.ServiceDomain",
+      "kind": "composition",
+      "rule": "RA2-03"
+     }
+    ],
+    "links_out": [
+     {
+      "kind": "composition",
+      "rule": "RA2-04",
+      "to": "A2.ServiceOperation"
+     }
+    ],
+    "organisation_rules": [],
+    "record_fields": {
+     "lifecycle_status": [
+      "planned",
+      "active",
+      "deprecated",
+      "retired"
+     ],
+     "optional": [
+      "description",
+      "attributes"
+     ],
+     "required": [
+      "id",
+      "type",
+      "version",
+      "name",
+      "lifecycle_status"
+     ]
+    },
+    "source": "BIAN Service Landscape · Service Group",
+    "type": "A2.ServiceGroup"
+   },
+   {
+    "abstract": false,
+    "archimate": {
+     "element": "Business Service",
+     "from": "SDEM",
+     "layer": "business",
+     "why": "BIAN: one offered operation of a service domain"
+    },
+    "attributes": [
+     {
+      "allowed_values": [
+       "Activate",
+       "Configure",
+       "Feedback",
+       "Create",
+       "Initiate",
+       "Register",
+       "Evaluate",
+       "Provide",
+       "Update",
+       "Control",
+       "Exchange",
+       "Capture",
+       "Execute",
+       "Request",
+       "Grant",
+       "Retrieve",
+       "Notify"
+      ],
+      "description": "one of BIAN's 17 action terms",
+      "name": "action_term",
+      "required": true,
+      "type": "string"
+     },
+     {
+      "description": "qualifier name, or null",
+      "name": "behavior_qualifier",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "control-record attributes the operation takes",
+      "name": "input_attributes",
+      "required": true,
+      "type": "list<string>"
+     },
+     {
+      "description": "control-record attributes the operation returns",
+      "name": "output_attributes",
+      "required": true,
+      "type": "list<string>"
+     },
+     {
+      "allowed_values": [
+       "GET",
+       "PUT",
+       "POST",
+       "PATCH",
+       "DELETE"
+      ],
+      "description": "the HTTP method of the operation, where it is not derivable or the bank overrides BIAN",
+      "name": "http_method",
+      "required": false,
+      "type": "string"
+     }
+    ],
+    "definition": "An operation a Service Domain exposes",
+    "extends": [],
+    "identifier": [
+     "owning service domain",
+     "action_term",
+     "behavior_qualifier"
+    ],
+    "layer": "A2",
+    "link_types_to_other_layers": [
+     {
+      "direction": "out",
+      "evidence_needed": [
+       "api_contract"
+      ],
+      "other_end": "A4.APIOperation",
+      "relationship": "IMPLEMENTED_BY"
+     },
+     {
+      "direction": "out",
+      "evidence_needed": [
+       "event_design"
+      ],
+      "other_end": "A4.Event",
+      "relationship": "IMPLEMENTED_BY"
+     }
+    ],
+    "links_in": [
+     {
+      "from": "A2.BusinessScenario",
+      "kind": "aggregation",
+      "rule": "RA2-09"
+     },
+     {
+      "from": "A2.ServiceGroup",
+      "kind": "composition",
+      "rule": "RA2-04"
+     }
+    ],
+    "links_out": [
+     {
+      "kind": "access",
+      "rule": "RA2-23",
+      "to": "A2.BusinessObject"
+     },
+     {
+      "kind": "access",
+      "rule": "RA2-13",
+      "to": "A2.ControlRecord"
+     },
+     {
+      "kind": "association",
+      "rule": "RA2-08",
+      "to": "A2.BehaviorQualifier"
+     }
+    ],
+    "organisation_rules": [],
+    "record_fields": {
+     "lifecycle_status": [
+      "planned",
+      "active",
+      "deprecated",
+      "retired"
+     ],
+     "optional": [
+      "description",
+      "attributes"
+     ],
+     "required": [
+      "id",
+      "type",
+      "version",
+      "name",
+      "lifecycle_status"
+     ]
+    },
+    "source": "BIAN Service Landscape · Service Operation",
+    "type": "A2.ServiceOperation"
+   }
+  ]
+ }
+}

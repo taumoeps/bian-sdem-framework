@@ -1,0 +1,35 @@
+{
+ "command": [
+  "check",
+  "--workspace",
+  "<tmp>/pi",
+  "--json"
+ ],
+ "exit": 0,
+ "output": {
+  "ok": true,
+  "report": {
+   "level A1 (synthetic-bank-payments-a1)": [],
+   "level A2 (synthetic-bank-payments-a2)": [],
+   "level A3 (synthetic-bank-payments-a3-data)": [],
+   "level A4 (synthetic-bank-payments-a3)": [],
+   "level A5 (synthetic-bank-payments-a4)": [],
+   "mappings #1": [],
+   "requirements (10 requirement(s))": []
+  },
+  "unrecorded_edits": [],
+  "warnings": {
+   "level A1 (synthetic-bank-payments-a1)": [
+    "instance PRC-PAY-01: attribute 'triggered_by' refers to 'customer submits a payment', which is not a A1.BusinessEvent in this architecture dataset (LC-07)",
+    "instance PRC-PAY-02: attribute 'triggered_by' refers to 'instruction authorised', which is not a A1.BusinessEvent in this architecture dataset (LC-07)"
+   ],
+   "level A2 (synthetic-bank-payments-a2)": [
+    "instance BBO-PAY-INSTR: its field names and its field records disagree — no record for creditor_account_reference, currency, debtor_account_reference, payment_instruction_reference, payment_status, remittance_information, value_date (LC-24)",
+    "instance BBO-PARTY: its field names and its field records disagree — no record for party_name, party_reference, party_type — not in its list: party reference (LC-24)"
+   ],
+   "level A4 (synthetic-bank-payments-a3)": [
+    "instance EVT-PAY-STATUS: attribute 'event_source' refers to '/payments-hub', which is not a A4.ApplicationComponent in this architecture dataset (LC-07)"
+   ]
+  }
+ }
+}

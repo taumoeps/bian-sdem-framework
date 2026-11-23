@@ -1,0 +1,1932 @@
+{
+ "command": [
+  "types",
+  "A5",
+  "--json"
+ ],
+ "exit": 0,
+ "output": {
+  "layer": "A5",
+  "types": [
+   {
+    "abstract": false,
+    "archimate": {
+     "element": "Artifact",
+     "from": "SDEM",
+     "layer": "technology"
+    },
+    "attributes": [
+     {
+      "description": "whether it is reached from the internet (a web server, an API gateway) — it belongs in a DMZ (LC-18)",
+      "name": "internet_facing",
+      "required": false,
+      "type": "boolean"
+     },
+     {
+      "description": "the data centre or site the organisation runs it in — it is on premises (HS-01)",
+      "name": "site",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "the cloud provider it runs on, by name — it is in the cloud (HS-06)",
+      "name": "cloud_provider",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "the cloud region it runs in (e.g. region-a) — it is in the cloud (HS-06)",
+      "name": "region",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "the location record where the shape is — a site, a region or a cloud region",
+      "name": "location",
+      "refers_to": [
+       "A5.Location"
+      ],
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "id of the A4 component it is a build of",
+      "name": "of_component",
+      "refers_to": [
+       "A4.ApplicationComponent"
+      ],
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "the content digest that identifies the exact build (e.g. sha256:…)",
+      "name": "digest",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "the package URL (pkg:type/namespace/name@version)",
+      "name": "purl",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "allowed_values": [
+       "container image",
+       "package",
+       "binary",
+       "script",
+       "configuration"
+      ],
+      "description": "what kind of artefact it is",
+      "name": "artifact_kind",
+      "required": false,
+      "type": "string"
+     }
+    ],
+    "definition": "A deployable technology-level artefact",
+    "extends": [
+     "A5.InfrastructureComponent"
+    ],
+    "identifier": [
+     "name"
+    ],
+    "layer": "A5",
+    "link_types_to_other_layers": [
+     {
+      "direction": "in",
+      "evidence_needed": [
+       "build_pipeline"
+      ],
+      "other_end": "A4.ApplicationComponent",
+      "relationship": "BUILT_AS"
+     },
+     {
+      "direction": "in",
+      "evidence_needed": [
+       "deployment_design"
+      ],
+      "other_end": "A3.DataEntity",
+      "relationship": "STORED_IN"
+     }
+    ],
+    "links_in": [
+     {
+      "from": "A5.Artifact",
+      "kind": "aggregation",
+      "rule": "RA4-29"
+     },
+     {
+      "from": "A5.Artifact",
+      "kind": "composition",
+      "rule": "RA4-28"
+     },
+     {
+      "from": "A5.Deployment",
+      "kind": "aggregation",
+      "rule": "RA4-35"
+     },
+     {
+      "from": "A5.Device",
+      "kind": "assignment",
+      "rule": "RA4-12"
+     },
+     {
+      "from": "A5.NetworkZone",
+      "kind": "aggregation",
+      "rule": "RA4-38"
+     },
+     {
+      "from": "A5.Node",
+      "kind": "assignment",
+      "rule": "RA4-07"
+     },
+     {
+      "from": "A5.SystemSoftware",
+      "kind": "assignment",
+      "rule": "RA4-17"
+     }
+    ],
+    "links_out": [
+     {
+      "kind": "aggregation",
+      "rule": "RA4-29",
+      "to": "A5.Artifact"
+     },
+     {
+      "kind": "association",
+      "rule": "RA4-37",
+      "to": "A5.CommunicationNetwork"
+     },
+     {
+      "kind": "composition",
+      "rule": "RA4-28",
+      "to": "A5.Artifact"
+     }
+    ],
+    "organisation_rules": [],
+    "record_fields": {
+     "lifecycle_status": [
+      "planned",
+      "active",
+      "deprecated",
+      "retired"
+     ],
+     "optional": [
+      "description",
+      "attributes"
+     ],
+     "required": [
+      "id",
+      "type",
+      "version",
+      "name",
+      "lifecycle_status"
+     ]
+    },
+    "source": "ArchiMate 3.2 · Artifact",
+    "type": "A5.Artifact"
+   },
+   {
+    "abstract": false,
+    "archimate": {
+     "element": "Communication Network",
+     "from": "SDEM",
+     "layer": "technology"
+    },
+    "attributes": [
+     {
+      "description": "whether it is reached from the internet (a web server, an API gateway) — it belongs in a DMZ (LC-18)",
+      "name": "internet_facing",
+      "required": false,
+      "type": "boolean"
+     },
+     {
+      "description": "the data centre or site the organisation runs it in — it is on premises (HS-01)",
+      "name": "site",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "the cloud provider it runs on, by name — it is in the cloud (HS-06)",
+      "name": "cloud_provider",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "the cloud region it runs in (e.g. region-a) — it is in the cloud (HS-06)",
+      "name": "region",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "the location record where the shape is — a site, a region or a cloud region",
+      "name": "location",
+      "refers_to": [
+       "A5.Location"
+      ],
+      "required": false,
+      "type": "string"
+     },
+     {
+      "deprecated": true,
+      "description": "ids of nodes and devices on the network",
+      "instead": "duplicates the A5 network link (RA4-37)",
+      "name": "connects",
+      "refers_to": [
+       "A5.Node",
+       "A5.Device"
+      ],
+      "required": false,
+      "type": "list<string>"
+     },
+     {
+      "description": "the network's address ranges in CIDR notation (e.g. 10.20.0.0/16)",
+      "name": "address_range",
+      "required": false,
+      "type": "list<string>"
+     }
+    ],
+    "definition": "Communication infrastructure",
+    "extends": [
+     "A5.InfrastructureComponent"
+    ],
+    "identifier": [
+     "name"
+    ],
+    "layer": "A5",
+    "link_types_to_other_layers": [],
+    "links_in": [
+     {
+      "from": "A5.CommunicationNetwork",
+      "kind": "composition",
+      "rule": "RA4-27"
+     },
+     {
+      "from": "A5.InfrastructureComponent",
+      "kind": "association",
+      "rule": "RA4-37"
+     },
+     {
+      "from": "A5.NetworkZone",
+      "kind": "aggregation",
+      "rule": "RA4-38"
+     }
+    ],
+    "links_out": [
+     {
+      "kind": "association",
+      "rule": "RA4-37",
+      "to": "A5.CommunicationNetwork"
+     },
+     {
+      "kind": "composition",
+      "rule": "RA4-27",
+      "to": "A5.CommunicationNetwork"
+     },
+     {
+      "kind": "realization",
+      "rule": "RA4-26",
+      "to": "A5.Path"
+     }
+    ],
+    "organisation_rules": [],
+    "record_fields": {
+     "lifecycle_status": [
+      "planned",
+      "active",
+      "deprecated",
+      "retired"
+     ],
+     "optional": [
+      "description",
+      "attributes"
+     ],
+     "required": [
+      "id",
+      "type",
+      "version",
+      "name",
+      "lifecycle_status"
+     ]
+    },
+    "source": "ArchiMate 3.2 · Communication Network",
+    "type": "A5.CommunicationNetwork"
+   },
+   {
+    "abstract": false,
+    "archimate": {
+     "element": "Artifact",
+     "from": "SDEM",
+     "layer": "technology",
+     "why": "a component deployed on a node — drawn as the deployed artifact"
+    },
+    "attributes": [
+     {
+      "description": "whether it is reached from the internet (a web server, an API gateway) — it belongs in a DMZ (LC-18)",
+      "name": "internet_facing",
+      "required": false,
+      "type": "boolean"
+     },
+     {
+      "description": "the data centre or site the organisation runs it in — it is on premises (HS-01)",
+      "name": "site",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "the cloud provider it runs on, by name — it is in the cloud (HS-06)",
+      "name": "cloud_provider",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "the cloud region it runs in (e.g. region-a) — it is in the cloud (HS-06)",
+      "name": "region",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "the location record where the shape is — a site, a region or a cloud region",
+      "name": "location",
+      "refers_to": [
+       "A5.Location"
+      ],
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "id of the A4 component deployed",
+      "name": "component_id",
+      "refers_to": [
+       "A4.ApplicationComponent"
+      ],
+      "required": true,
+      "type": "string"
+     },
+     {
+      "description": "id of the environment",
+      "name": "environment_id",
+      "refers_to": [
+       "A5.DeploymentEnvironment"
+      ],
+      "required": true,
+      "type": "string"
+     },
+     {
+      "description": "id of the A5 platform it runs on",
+      "name": "platform_id",
+      "refers_to": [
+       "A5.InfrastructureComponent"
+      ],
+      "required": true,
+      "type": "string"
+     }
+    ],
+    "definition": "An application as deployed into a specific environment",
+    "extends": [
+     "A5.InfrastructureComponent"
+    ],
+    "identifier": [
+     "component_id",
+     "environment_id",
+     "platform_id"
+    ],
+    "layer": "A5",
+    "link_types_to_other_layers": [
+     {
+      "direction": "in",
+      "evidence_needed": [
+       "deployment_design"
+      ],
+      "other_end": "A4.ApplicationComponent",
+      "relationship": "DEPLOYED_AS"
+     }
+    ],
+    "links_in": [
+     {
+      "from": "A5.DeploymentEnvironment",
+      "kind": "aggregation",
+      "rule": "RA4-31"
+     },
+     {
+      "from": "A5.Device",
+      "kind": "assignment",
+      "rule": "RA4-16"
+     },
+     {
+      "from": "A5.NetworkZone",
+      "kind": "aggregation",
+      "rule": "RA4-38"
+     },
+     {
+      "from": "A5.Node",
+      "kind": "assignment",
+      "rule": "RA4-11"
+     },
+     {
+      "from": "A5.SystemSoftware",
+      "kind": "assignment",
+      "rule": "RA4-21"
+     }
+    ],
+    "links_out": [
+     {
+      "kind": "aggregation",
+      "rule": "RA4-35",
+      "to": "A5.Artifact"
+     },
+     {
+      "kind": "association",
+      "rule": "RA4-37",
+      "to": "A5.CommunicationNetwork"
+     }
+    ],
+    "organisation_rules": [],
+    "record_fields": {
+     "lifecycle_status": [
+      "planned",
+      "active",
+      "deprecated",
+      "retired"
+     ],
+     "optional": [
+      "description",
+      "attributes"
+     ],
+     "required": [
+      "id",
+      "type",
+      "version",
+      "name",
+      "lifecycle_status"
+     ]
+    },
+    "source": "SDEM · Deployment",
+    "type": "A5.Deployment"
+   },
+   {
+    "abstract": false,
+    "archimate": {
+     "element": "Grouping",
+     "from": "SDEM",
+     "layer": "other",
+     "why": "an environment (production, test) groups what is deployed in it"
+    },
+    "attributes": [
+     {
+      "description": "whether it is reached from the internet (a web server, an API gateway) — it belongs in a DMZ (LC-18)",
+      "name": "internet_facing",
+      "required": false,
+      "type": "boolean"
+     },
+     {
+      "description": "the data centre or site the organisation runs it in — it is on premises (HS-01)",
+      "name": "site",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "the cloud provider it runs on, by name — it is in the cloud (HS-06)",
+      "name": "cloud_provider",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "the cloud region it runs in (e.g. region-a) — it is in the cloud (HS-06)",
+      "name": "region",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "the location record where the shape is — a site, a region or a cloud region",
+      "name": "location",
+      "refers_to": [
+       "A5.Location"
+      ],
+      "required": false,
+      "type": "string"
+     },
+     {
+      "allowed_values": [
+       "production",
+       "pre-production",
+       "test",
+       "development",
+       "disaster recovery"
+      ],
+      "description": "what the environment is for",
+      "name": "environment_kind",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "the country where the environment runs, as an ISO 3166-1 alpha-2 code",
+      "name": "country",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "allowed_values": [
+       "private",
+       "community",
+       "public",
+       "hybrid"
+      ],
+      "description": "the cloud deployment model of the environment",
+      "name": "cloud_deployment_model",
+      "required": false,
+      "type": "string"
+     }
+    ],
+    "definition": "A governed runtime boundary such as production or test",
+    "extends": [
+     "A5.InfrastructureComponent"
+    ],
+    "identifier": [
+     "name"
+    ],
+    "layer": "A5",
+    "link_types_to_other_layers": [],
+    "links_in": [
+     {
+      "from": "A5.NetworkZone",
+      "kind": "aggregation",
+      "rule": "RA4-38"
+     }
+    ],
+    "links_out": [
+     {
+      "kind": "aggregation",
+      "rule": "RA4-31",
+      "to": "A5.Deployment"
+     },
+     {
+      "kind": "aggregation",
+      "rule": "RA4-33",
+      "to": "A5.Device"
+     },
+     {
+      "kind": "aggregation",
+      "rule": "RA4-32",
+      "to": "A5.Node"
+     },
+     {
+      "kind": "aggregation",
+      "rule": "RA4-34",
+      "to": "A5.SystemSoftware"
+     },
+     {
+      "kind": "association",
+      "rule": "RA4-37",
+      "to": "A5.CommunicationNetwork"
+     }
+    ],
+    "organisation_rules": [],
+    "record_fields": {
+     "lifecycle_status": [
+      "planned",
+      "active",
+      "deprecated",
+      "retired"
+     ],
+     "optional": [
+      "description",
+      "attributes"
+     ],
+     "required": [
+      "id",
+      "type",
+      "version",
+      "name",
+      "lifecycle_status"
+     ]
+    },
+    "source": "SDEM · Deployment Environment",
+    "type": "A5.DeploymentEnvironment"
+   },
+   {
+    "abstract": false,
+    "archimate": {
+     "element": "Device",
+     "from": "SDEM",
+     "layer": "technology"
+    },
+    "attributes": [
+     {
+      "description": "whether it is reached from the internet (a web server, an API gateway) — it belongs in a DMZ (LC-18)",
+      "name": "internet_facing",
+      "required": false,
+      "type": "boolean"
+     },
+     {
+      "description": "the data centre or site the organisation runs it in — it is on premises (HS-01)",
+      "name": "site",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "the cloud provider it runs on, by name — it is in the cloud (HS-06)",
+      "name": "cloud_provider",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "the cloud region it runs in (e.g. region-a) — it is in the cloud (HS-06)",
+      "name": "region",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "the location record where the shape is — a site, a region or a cloud region",
+      "name": "location",
+      "refers_to": [
+       "A5.Location"
+      ],
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "ids of A4 components it hosts",
+      "name": "hosts",
+      "refers_to": [
+       "A4.ApplicationComponent"
+      ],
+      "required": false,
+      "type": "list<string>"
+     },
+     {
+      "description": "the device's CPE 2.3 name, for vulnerability matching",
+      "name": "cpe",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "the date the supplier stops supporting it",
+      "name": "end_of_support",
+      "required": false,
+      "type": "date"
+     }
+    ],
+    "definition": "Physical computing hardware",
+    "extends": [
+     "A5.InfrastructureComponent"
+    ],
+    "identifier": [
+     "name"
+    ],
+    "layer": "A5",
+    "link_types_to_other_layers": [
+     {
+      "direction": "in",
+      "evidence_needed": [
+       "deployment_design"
+      ],
+      "other_end": "A4.ApplicationComponent",
+      "relationship": "DEPLOYED_ON"
+     },
+     {
+      "direction": "in",
+      "evidence_needed": [
+       "network_design"
+      ],
+      "other_end": "A4.ApplicationInterface",
+      "relationship": "EXPOSED_THROUGH"
+     }
+    ],
+    "links_in": [
+     {
+      "from": "A5.DeploymentEnvironment",
+      "kind": "aggregation",
+      "rule": "RA4-33"
+     },
+     {
+      "from": "A5.Device",
+      "kind": "aggregation",
+      "rule": "RA4-30"
+     },
+     {
+      "from": "A5.Device",
+      "kind": "composition",
+      "rule": "RA4-36"
+     },
+     {
+      "from": "A5.Location",
+      "kind": "aggregation",
+      "rule": "RA4-44"
+     },
+     {
+      "from": "A5.NetworkZone",
+      "kind": "aggregation",
+      "rule": "RA4-38"
+     },
+     {
+      "from": "A5.Node",
+      "kind": "aggregation",
+      "rule": "RA4-03"
+     },
+     {
+      "from": "A5.Path",
+      "kind": "association",
+      "rule": "RA4-41"
+     },
+     {
+      "from": "A5.TechnologyService",
+      "kind": "serving",
+      "rule": "RA4-15"
+     }
+    ],
+    "links_out": [
+     {
+      "kind": "aggregation",
+      "rule": "RA4-30",
+      "to": "A5.Device"
+     },
+     {
+      "kind": "assignment",
+      "rule": "RA4-12",
+      "to": "A5.Artifact"
+     },
+     {
+      "kind": "assignment",
+      "rule": "RA4-16",
+      "to": "A5.Deployment"
+     },
+     {
+      "kind": "assignment",
+      "rule": "RA4-05",
+      "to": "A5.SystemSoftware"
+     },
+     {
+      "kind": "association",
+      "rule": "RA4-37",
+      "to": "A5.CommunicationNetwork"
+     },
+     {
+      "kind": "composition",
+      "rule": "RA4-36",
+      "to": "A5.Device"
+     },
+     {
+      "kind": "composition",
+      "rule": "RA4-14",
+      "to": "A5.TechnologyInterface"
+     },
+     {
+      "kind": "realization",
+      "rule": "RA4-13",
+      "to": "A5.TechnologyService"
+     }
+    ],
+    "organisation_rules": [],
+    "record_fields": {
+     "lifecycle_status": [
+      "planned",
+      "active",
+      "deprecated",
+      "retired"
+     ],
+     "optional": [
+      "description",
+      "attributes"
+     ],
+     "required": [
+      "id",
+      "type",
+      "version",
+      "name",
+      "lifecycle_status"
+     ]
+    },
+    "source": "ArchiMate 3.2 · Device",
+    "type": "A5.Device"
+   },
+   {
+    "abstract": true,
+    "archimate": {
+     "element": "Node",
+     "from": "SDEM",
+     "layer": "technology",
+     "why": "the abstract parent of SDEM's technology types — its subtypes name their own element"
+    },
+    "attributes": [
+     {
+      "description": "whether it is reached from the internet (a web server, an API gateway) — it belongs in a DMZ (LC-18)",
+      "name": "internet_facing",
+      "required": false,
+      "type": "boolean"
+     },
+     {
+      "description": "the data centre or site the organisation runs it in — it is on premises (HS-01)",
+      "name": "site",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "the cloud provider it runs on, by name — it is in the cloud (HS-06)",
+      "name": "cloud_provider",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "the cloud region it runs in (e.g. region-a) — it is in the cloud (HS-06)",
+      "name": "region",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "the location record where the shape is — a site, a region or a cloud region",
+      "name": "location",
+      "refers_to": [
+       "A5.Location"
+      ],
+      "required": false,
+      "type": "string"
+     }
+    ],
+    "definition": "Abstract supertype of every Technology Architecture entity; retained for compatibility with earlier mapping documents",
+    "extends": [],
+    "identifier": [],
+    "layer": "A5",
+    "link_types_to_other_layers": [],
+    "links_in": [
+     {
+      "from": "A5.NetworkZone",
+      "kind": "aggregation",
+      "rule": "RA4-38"
+     }
+    ],
+    "links_out": [
+     {
+      "kind": "association",
+      "rule": "RA4-37",
+      "to": "A5.CommunicationNetwork"
+     }
+    ],
+    "organisation_rules": [],
+    "record_fields": {
+     "lifecycle_status": [
+      "planned",
+      "active",
+      "deprecated",
+      "retired"
+     ],
+     "optional": [
+      "description",
+      "attributes"
+     ],
+     "required": [
+      "id",
+      "type",
+      "version",
+      "name",
+      "lifecycle_status"
+     ]
+    },
+    "source": "SDEM · Infrastructure Component",
+    "type": "A5.InfrastructureComponent"
+   },
+   {
+    "abstract": false,
+    "archimate": {
+     "element": "Location",
+     "from": "SDEM",
+     "layer": "other"
+    },
+    "attributes": [
+     {
+      "allowed_values": [
+       "country",
+       "region",
+       "site",
+       "cloud_region"
+      ],
+      "description": "what kind of place it is",
+      "name": "location_kind",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "the country it is in, as an ISO 3166-1 alpha-2 code",
+      "name": "country",
+      "required": false,
+      "type": "string"
+     }
+    ],
+    "definition": "A place where things are — a country, a region, a site or a cloud region",
+    "extends": [],
+    "identifier": [
+     "name"
+    ],
+    "layer": "A5",
+    "link_types_to_other_layers": [],
+    "links_in": [
+     {
+      "from": "A5.Location",
+      "kind": "composition",
+      "rule": "RA4-42"
+     }
+    ],
+    "links_out": [
+     {
+      "kind": "aggregation",
+      "rule": "RA4-44",
+      "to": "A5.Device"
+     },
+     {
+      "kind": "aggregation",
+      "rule": "RA4-43",
+      "to": "A5.Node"
+     },
+     {
+      "kind": "aggregation",
+      "rule": "RA4-45",
+      "to": "A5.SystemSoftware"
+     },
+     {
+      "kind": "composition",
+      "rule": "RA4-42",
+      "to": "A5.Location"
+     }
+    ],
+    "organisation_rules": [],
+    "record_fields": {
+     "lifecycle_status": [
+      "planned",
+      "active",
+      "deprecated",
+      "retired"
+     ],
+     "optional": [
+      "description",
+      "attributes"
+     ],
+     "required": [
+      "id",
+      "type",
+      "version",
+      "name",
+      "lifecycle_status"
+     ]
+    },
+    "source": "ArchiMate 3.2 · Location",
+    "type": "A5.Location"
+   },
+   {
+    "abstract": false,
+    "archimate": {
+     "element": "Grouping",
+     "from": "SDEM",
+     "layer": "other",
+     "why": "a trust zone groups the nodes in it"
+    },
+    "attributes": [
+     {
+      "description": "0 = on premises or cloud; 1 = internal or DMZ inside one; 2 = a private network inside a level-1 zone",
+      "name": "zone_level",
+      "required": true,
+      "type": "integer"
+     },
+     {
+      "allowed_values": [
+       "on_premises",
+       "cloud",
+       "internal",
+       "dmz",
+       "private"
+      ],
+      "description": "on_premises or cloud (level 0); internal or dmz (level 1); private (level 2)",
+      "name": "zone_kind",
+      "required": true,
+      "type": "string"
+     }
+    ],
+    "definition": "A network zone a shape is deployed in: on premises or cloud (level 0), the internal network or a DMZ inside one (level 1), or a private network inside that (level 2) — a grouping of the shapes deployed there, not a network itself",
+    "extends": [],
+    "identifier": [
+     "name"
+    ],
+    "layer": "A5",
+    "link_types_to_other_layers": [],
+    "links_in": [
+     {
+      "from": "A5.NetworkZone",
+      "kind": "composition",
+      "rule": "RA4-39"
+     }
+    ],
+    "links_out": [
+     {
+      "kind": "aggregation",
+      "rule": "RA4-38",
+      "to": "A5.InfrastructureComponent"
+     },
+     {
+      "kind": "composition",
+      "rule": "RA4-39",
+      "to": "A5.NetworkZone"
+     }
+    ],
+    "organisation_rules": [],
+    "record_fields": {
+     "lifecycle_status": [
+      "planned",
+      "active",
+      "deprecated",
+      "retired"
+     ],
+     "optional": [
+      "description",
+      "attributes"
+     ],
+     "required": [
+      "id",
+      "type",
+      "version",
+      "name",
+      "lifecycle_status"
+     ]
+    },
+    "source": "ArchiMate 3.2 · Grouping",
+    "type": "A5.NetworkZone"
+   },
+   {
+    "abstract": false,
+    "archimate": {
+     "element": "Node",
+     "from": "SDEM",
+     "layer": "technology"
+    },
+    "attributes": [
+     {
+      "description": "whether it is reached from the internet (a web server, an API gateway) — it belongs in a DMZ (LC-18)",
+      "name": "internet_facing",
+      "required": false,
+      "type": "boolean"
+     },
+     {
+      "description": "the data centre or site the organisation runs it in — it is on premises (HS-01)",
+      "name": "site",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "the cloud provider it runs on, by name — it is in the cloud (HS-06)",
+      "name": "cloud_provider",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "the cloud region it runs in (e.g. region-a) — it is in the cloud (HS-06)",
+      "name": "region",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "the location record where the shape is — a site, a region or a cloud region",
+      "name": "location",
+      "refers_to": [
+       "A5.Location"
+      ],
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "ids of A4 components it hosts",
+      "name": "hosts",
+      "refers_to": [
+       "A4.ApplicationComponent"
+      ],
+      "required": false,
+      "type": "list<string>"
+     },
+     {
+      "allowed_values": [
+       "physical",
+       "virtual machine",
+       "container"
+      ],
+      "description": "whether the node is physical, a virtual machine or a container",
+      "name": "virtualisation",
+      "required": false,
+      "type": "string"
+     }
+    ],
+    "definition": "A computational host, physical or virtual",
+    "extends": [
+     "A5.InfrastructureComponent"
+    ],
+    "identifier": [
+     "name"
+    ],
+    "layer": "A5",
+    "link_types_to_other_layers": [
+     {
+      "direction": "in",
+      "evidence_needed": [
+       "deployment_design"
+      ],
+      "other_end": "A4.ApplicationComponent",
+      "relationship": "DEPLOYED_ON"
+     },
+     {
+      "direction": "in",
+      "evidence_needed": [
+       "network_design"
+      ],
+      "other_end": "A4.ApplicationInterface",
+      "relationship": "EXPOSED_THROUGH"
+     }
+    ],
+    "links_in": [
+     {
+      "from": "A5.DeploymentEnvironment",
+      "kind": "aggregation",
+      "rule": "RA4-32"
+     },
+     {
+      "from": "A5.Location",
+      "kind": "aggregation",
+      "rule": "RA4-43"
+     },
+     {
+      "from": "A5.NetworkZone",
+      "kind": "aggregation",
+      "rule": "RA4-38"
+     },
+     {
+      "from": "A5.Node",
+      "kind": "aggregation",
+      "rule": "RA4-02"
+     },
+     {
+      "from": "A5.Node",
+      "kind": "composition",
+      "rule": "RA4-01"
+     },
+     {
+      "from": "A5.Node",
+      "kind": "flow",
+      "rule": "RA4-24"
+     },
+     {
+      "from": "A5.Node",
+      "kind": "triggering",
+      "rule": "RA4-25"
+     },
+     {
+      "from": "A5.Path",
+      "kind": "association",
+      "rule": "RA4-40"
+     },
+     {
+      "from": "A5.TechnologyService",
+      "kind": "serving",
+      "rule": "RA4-10"
+     }
+    ],
+    "links_out": [
+     {
+      "kind": "aggregation",
+      "rule": "RA4-03",
+      "to": "A5.Device"
+     },
+     {
+      "kind": "aggregation",
+      "rule": "RA4-02",
+      "to": "A5.Node"
+     },
+     {
+      "kind": "assignment",
+      "rule": "RA4-07",
+      "to": "A5.Artifact"
+     },
+     {
+      "kind": "assignment",
+      "rule": "RA4-11",
+      "to": "A5.Deployment"
+     },
+     {
+      "kind": "assignment",
+      "rule": "RA4-04",
+      "to": "A5.SystemSoftware"
+     },
+     {
+      "kind": "association",
+      "rule": "RA4-37",
+      "to": "A5.CommunicationNetwork"
+     },
+     {
+      "kind": "composition",
+      "rule": "RA4-01",
+      "to": "A5.Node"
+     },
+     {
+      "kind": "composition",
+      "rule": "RA4-09",
+      "to": "A5.TechnologyInterface"
+     },
+     {
+      "kind": "flow",
+      "rule": "RA4-24",
+      "to": "A5.Node"
+     },
+     {
+      "kind": "realization",
+      "rule": "RA4-08",
+      "to": "A5.TechnologyService"
+     },
+     {
+      "kind": "triggering",
+      "rule": "RA4-25",
+      "to": "A5.Node"
+     }
+    ],
+    "organisation_rules": [],
+    "record_fields": {
+     "lifecycle_status": [
+      "planned",
+      "active",
+      "deprecated",
+      "retired"
+     ],
+     "optional": [
+      "description",
+      "attributes"
+     ],
+     "required": [
+      "id",
+      "type",
+      "version",
+      "name",
+      "lifecycle_status"
+     ]
+    },
+    "source": "ArchiMate 3.2 · Node",
+    "type": "A5.Node"
+   },
+   {
+    "abstract": false,
+    "archimate": {
+     "element": "Path",
+     "from": "SDEM",
+     "layer": "technology"
+    },
+    "attributes": [
+     {
+      "description": "whether it is reached from the internet (a web server, an API gateway) — it belongs in a DMZ (LC-18)",
+      "name": "internet_facing",
+      "required": false,
+      "type": "boolean"
+     },
+     {
+      "description": "the data centre or site the organisation runs it in — it is on premises (HS-01)",
+      "name": "site",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "the cloud provider it runs on, by name — it is in the cloud (HS-06)",
+      "name": "cloud_provider",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "the cloud region it runs in (e.g. region-a) — it is in the cloud (HS-06)",
+      "name": "region",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "the location record where the shape is — a site, a region or a cloud region",
+      "name": "location",
+      "refers_to": [
+       "A5.Location"
+      ],
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "id of one end",
+      "name": "from",
+      "refers_to": [
+       "A5.Node",
+       "A5.Device"
+      ],
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "id of the other end",
+      "name": "to",
+      "refers_to": [
+       "A5.Node",
+       "A5.Device"
+      ],
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "id of the network realizing the path",
+      "name": "network",
+      "refers_to": [
+       "A5.CommunicationNetwork"
+      ],
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "ids of A4 components whose traffic uses the path",
+      "name": "carries",
+      "refers_to": [
+       "A4.ApplicationComponent"
+      ],
+      "required": false,
+      "type": "list<string>"
+     },
+     {
+      "description": "the service name of the protocol on the path (IANA)",
+      "name": "protocol",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "whether traffic on the path is encrypted in transit",
+      "name": "encrypted",
+      "required": false,
+      "type": "boolean"
+     },
+     {
+      "description": "the data entities whose records travel over the path",
+      "name": "carries_data",
+      "refers_to": [
+       "A3.DataEntity"
+      ],
+      "required": false,
+      "type": "list<string>"
+     }
+    ],
+    "definition": "A route between nodes",
+    "extends": [
+     "A5.InfrastructureComponent"
+    ],
+    "identifier": [
+     "name"
+    ],
+    "layer": "A5",
+    "link_types_to_other_layers": [],
+    "links_in": [
+     {
+      "from": "A5.CommunicationNetwork",
+      "kind": "realization",
+      "rule": "RA4-26"
+     },
+     {
+      "from": "A5.NetworkZone",
+      "kind": "aggregation",
+      "rule": "RA4-38"
+     }
+    ],
+    "links_out": [
+     {
+      "kind": "association",
+      "rule": "RA4-37",
+      "to": "A5.CommunicationNetwork"
+     },
+     {
+      "kind": "association",
+      "rule": "RA4-41",
+      "to": "A5.Device"
+     },
+     {
+      "kind": "association",
+      "rule": "RA4-40",
+      "to": "A5.Node"
+     }
+    ],
+    "organisation_rules": [],
+    "record_fields": {
+     "lifecycle_status": [
+      "planned",
+      "active",
+      "deprecated",
+      "retired"
+     ],
+     "optional": [
+      "description",
+      "attributes"
+     ],
+     "required": [
+      "id",
+      "type",
+      "version",
+      "name",
+      "lifecycle_status"
+     ]
+    },
+    "source": "ArchiMate 3.2 · Path",
+    "type": "A5.Path"
+   },
+   {
+    "abstract": false,
+    "archimate": {
+     "element": "System Software",
+     "from": "SDEM",
+     "layer": "technology"
+    },
+    "attributes": [
+     {
+      "description": "whether it is reached from the internet (a web server, an API gateway) — it belongs in a DMZ (LC-18)",
+      "name": "internet_facing",
+      "required": false,
+      "type": "boolean"
+     },
+     {
+      "description": "the data centre or site the organisation runs it in — it is on premises (HS-01)",
+      "name": "site",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "the cloud provider it runs on, by name — it is in the cloud (HS-06)",
+      "name": "cloud_provider",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "the cloud region it runs in (e.g. region-a) — it is in the cloud (HS-06)",
+      "name": "region",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "the location record where the shape is — a site, a region or a cloud region",
+      "name": "location",
+      "refers_to": [
+       "A5.Location"
+      ],
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "ids of A4 components it hosts",
+      "name": "hosts",
+      "refers_to": [
+       "A4.ApplicationComponent"
+      ],
+      "required": false,
+      "type": "list<string>"
+     },
+     {
+      "description": "the software's CPE 2.3 name, for vulnerability matching",
+      "name": "cpe",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "the release of the product in use",
+      "name": "product_version",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "the licence, as an SPDX identifier",
+      "name": "license",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "the date the supplier stops supporting it",
+      "name": "end_of_support",
+      "required": false,
+      "type": "date"
+     }
+    ],
+    "definition": "Platform or runtime software",
+    "extends": [
+     "A5.InfrastructureComponent"
+    ],
+    "identifier": [
+     "name"
+    ],
+    "layer": "A5",
+    "link_types_to_other_layers": [
+     {
+      "direction": "in",
+      "evidence_needed": [
+       "deployment_design"
+      ],
+      "other_end": "A4.ApplicationComponent",
+      "relationship": "DEPLOYED_ON"
+     },
+     {
+      "direction": "in",
+      "evidence_needed": [
+       "network_design"
+      ],
+      "other_end": "A4.ApplicationInterface",
+      "relationship": "EXPOSED_THROUGH"
+     },
+     {
+      "direction": "in",
+      "evidence_needed": [
+       "deployment_design"
+      ],
+      "other_end": "A3.DataEntity",
+      "relationship": "STORED_IN"
+     }
+    ],
+    "links_in": [
+     {
+      "from": "A5.DeploymentEnvironment",
+      "kind": "aggregation",
+      "rule": "RA4-34"
+     },
+     {
+      "from": "A5.Device",
+      "kind": "assignment",
+      "rule": "RA4-05"
+     },
+     {
+      "from": "A5.Location",
+      "kind": "aggregation",
+      "rule": "RA4-45"
+     },
+     {
+      "from": "A5.NetworkZone",
+      "kind": "aggregation",
+      "rule": "RA4-38"
+     },
+     {
+      "from": "A5.Node",
+      "kind": "assignment",
+      "rule": "RA4-04"
+     },
+     {
+      "from": "A5.SystemSoftware",
+      "kind": "assignment",
+      "rule": "RA4-06"
+     },
+     {
+      "from": "A5.TechnologyService",
+      "kind": "serving",
+      "rule": "RA4-20"
+     }
+    ],
+    "links_out": [
+     {
+      "kind": "assignment",
+      "rule": "RA4-17",
+      "to": "A5.Artifact"
+     },
+     {
+      "kind": "assignment",
+      "rule": "RA4-21",
+      "to": "A5.Deployment"
+     },
+     {
+      "kind": "assignment",
+      "rule": "RA4-06",
+      "to": "A5.SystemSoftware"
+     },
+     {
+      "kind": "association",
+      "rule": "RA4-37",
+      "to": "A5.CommunicationNetwork"
+     },
+     {
+      "kind": "composition",
+      "rule": "RA4-19",
+      "to": "A5.TechnologyInterface"
+     },
+     {
+      "kind": "realization",
+      "rule": "RA4-18",
+      "to": "A5.TechnologyService"
+     }
+    ],
+    "organisation_rules": [],
+    "record_fields": {
+     "lifecycle_status": [
+      "planned",
+      "active",
+      "deprecated",
+      "retired"
+     ],
+     "optional": [
+      "description",
+      "attributes"
+     ],
+     "required": [
+      "id",
+      "type",
+      "version",
+      "name",
+      "lifecycle_status"
+     ]
+    },
+    "source": "ArchiMate 3.2 · System Software",
+    "type": "A5.SystemSoftware"
+   },
+   {
+    "abstract": false,
+    "archimate": {
+     "element": "Technology Interface",
+     "from": "SDEM",
+     "layer": "technology"
+    },
+    "attributes": [
+     {
+      "description": "whether it is reached from the internet (a web server, an API gateway) — it belongs in a DMZ (LC-18)",
+      "name": "internet_facing",
+      "required": false,
+      "type": "boolean"
+     },
+     {
+      "description": "the data centre or site the organisation runs it in — it is on premises (HS-01)",
+      "name": "site",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "the cloud provider it runs on, by name — it is in the cloud (HS-06)",
+      "name": "cloud_provider",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "the cloud region it runs in (e.g. region-a) — it is in the cloud (HS-06)",
+      "name": "region",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "the location record where the shape is — a site, a region or a cloud region",
+      "name": "location",
+      "refers_to": [
+       "A5.Location"
+      ],
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "id of its technology service",
+      "name": "of_service",
+      "refers_to": [
+       "A5.TechnologyService"
+      ],
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "ids of A4 interfaces reachable through it",
+      "name": "exposes",
+      "refers_to": [
+       "A4.ApplicationInterface"
+      ],
+      "required": false,
+      "type": "list<string>"
+     },
+     {
+      "description": "the service name of the protocol, from the IANA registry (e.g. https)",
+      "name": "protocol",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "the port the interface listens on",
+      "name": "port",
+      "required": false,
+      "type": "integer"
+     }
+    ],
+    "definition": "An access point for a technology service",
+    "extends": [
+     "A5.InfrastructureComponent"
+    ],
+    "identifier": [
+     "name"
+    ],
+    "layer": "A5",
+    "link_types_to_other_layers": [],
+    "links_in": [
+     {
+      "from": "A5.Device",
+      "kind": "composition",
+      "rule": "RA4-14"
+     },
+     {
+      "from": "A5.NetworkZone",
+      "kind": "aggregation",
+      "rule": "RA4-38"
+     },
+     {
+      "from": "A5.Node",
+      "kind": "composition",
+      "rule": "RA4-09"
+     },
+     {
+      "from": "A5.SystemSoftware",
+      "kind": "composition",
+      "rule": "RA4-19"
+     }
+    ],
+    "links_out": [
+     {
+      "kind": "assignment",
+      "rule": "RA4-22",
+      "to": "A5.TechnologyService"
+     },
+     {
+      "kind": "association",
+      "rule": "RA4-37",
+      "to": "A5.CommunicationNetwork"
+     }
+    ],
+    "organisation_rules": [],
+    "record_fields": {
+     "lifecycle_status": [
+      "planned",
+      "active",
+      "deprecated",
+      "retired"
+     ],
+     "optional": [
+      "description",
+      "attributes"
+     ],
+     "required": [
+      "id",
+      "type",
+      "version",
+      "name",
+      "lifecycle_status"
+     ]
+    },
+    "source": "ArchiMate 3.2 · Technology Interface",
+    "type": "A5.TechnologyInterface"
+   },
+   {
+    "abstract": false,
+    "archimate": {
+     "element": "Technology Service",
+     "from": "SDEM",
+     "layer": "technology"
+    },
+    "attributes": [
+     {
+      "description": "whether it is reached from the internet (a web server, an API gateway) — it belongs in a DMZ (LC-18)",
+      "name": "internet_facing",
+      "required": false,
+      "type": "boolean"
+     },
+     {
+      "description": "the data centre or site the organisation runs it in — it is on premises (HS-01)",
+      "name": "site",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "the cloud provider it runs on, by name — it is in the cloud (HS-06)",
+      "name": "cloud_provider",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "the cloud region it runs in (e.g. region-a) — it is in the cloud (HS-06)",
+      "name": "region",
+      "required": false,
+      "type": "string"
+     },
+     {
+      "description": "the location record where the shape is — a site, a region or a cloud region",
+      "name": "location",
+      "refers_to": [
+       "A5.Location"
+      ],
+      "required": false,
+      "type": "string"
+     },
+     {
+      "allowed_values": [
+       "IaaS",
+       "PaaS",
+       "SaaS"
+      ],
+      "description": "the cloud service model the service is delivered as",
+      "name": "cloud_service_model",
+      "required": false,
+      "type": "string"
+     }
+    ],
+    "definition": "Technical behaviour delivered to consumers",
+    "extends": [
+     "A5.InfrastructureComponent"
+    ],
+    "identifier": [
+     "name"
+    ],
+    "layer": "A5",
+    "link_types_to_other_layers": [
+     {
+      "direction": "in",
+      "evidence_needed": [
+       "deployment_design"
+      ],
+      "other_end": "A4.ApplicationComponent",
+      "relationship": "SERVED_BY"
+     },
+     {
+      "direction": "in",
+      "evidence_needed": [
+       "deployment_design"
+      ],
+      "other_end": "A4.ApplicationFunction",
+      "relationship": "SERVED_BY"
+     }
+    ],
+    "links_in": [
+     {
+      "from": "A5.Device",
+      "kind": "realization",
+      "rule": "RA4-13"
+     },
+     {
+      "from": "A5.NetworkZone",
+      "kind": "aggregation",
+      "rule": "RA4-38"
+     },
+     {
+      "from": "A5.Node",
+      "kind": "realization",
+      "rule": "RA4-08"
+     },
+     {
+      "from": "A5.SystemSoftware",
+      "kind": "realization",
+      "rule": "RA4-18"
+     },
+     {
+      "from": "A5.TechnologyInterface",
+      "kind": "assignment",
+      "rule": "RA4-22"
+     },
+     {
+      "from": "A5.TechnologyService",
+      "kind": "composition",
+      "rule": "RA4-23"
+     }
+    ],
+    "links_out": [
+     {
+      "kind": "association",
+      "rule": "RA4-37",
+      "to": "A5.CommunicationNetwork"
+     },
+     {
+      "kind": "composition",
+      "rule": "RA4-23",
+      "to": "A5.TechnologyService"
+     },
+     {
+      "kind": "serving",
+      "rule": "RA4-15",
+      "to": "A5.Device"
+     },
+     {
+      "kind": "serving",
+      "rule": "RA4-10",
+      "to": "A5.Node"
+     },
+     {
+      "kind": "serving",
+      "rule": "RA4-20",
+      "to": "A5.SystemSoftware"
+     }
+    ],
+    "organisation_rules": [],
+    "record_fields": {
+     "lifecycle_status": [
+      "planned",
+      "active",
+      "deprecated",
+      "retired"
+     ],
+     "optional": [
+      "description",
+      "attributes"
+     ],
+     "required": [
+      "id",
+      "type",
+      "version",
+      "name",
+      "lifecycle_status"
+     ]
+    },
+    "source": "ArchiMate 3.2 · Technology Service",
+    "type": "A5.TechnologyService"
+   }
+  ]
+ }
+}

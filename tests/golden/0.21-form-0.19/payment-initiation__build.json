@@ -1,0 +1,102 @@
+{
+ "command": [
+  "build",
+  "--workspace",
+  "<tmp>/pi",
+  "--out",
+  "<tmp>/payment-initiation-graph",
+  "--json"
+ ],
+ "exit": 0,
+ "output": {
+  "at": "<volatile>",
+  "build": 1,
+  "errors": [],
+  "graph": "<tmp>/payment-initiation-graph",
+  "inputs": [
+   {
+    "kind": "export",
+    "level": "A1",
+    "model_id": "synthetic-bank-payments-a1",
+    "model_version": "2026.10",
+    "path": "<tmp>/pi/a1-business.json",
+    "sha256": "e4f1267f50539707e7942f56905a5fda5d14e42ac5586700a46ed8fd4a3c9a6f"
+   },
+   {
+    "kind": "export",
+    "level": "A2",
+    "model_id": "synthetic-bank-payments-a2",
+    "model_version": "2026.10",
+    "path": "<tmp>/pi/a2-service-domain.json",
+    "sha256": "3f43fd02c05c88a4f94ff6531313800d476fcd979770d1d5e718c528aed92200"
+   },
+   {
+    "kind": "export",
+    "level": "A3",
+    "model_id": "synthetic-bank-payments-a3",
+    "model_version": "2026.10",
+    "path": "<tmp>/pi/a3-application.json",
+    "sha256": "327e1c726626075d5e84643a81ebf6acd3c04f9590af159128d3674f69ab1192"
+   },
+   {
+    "kind": "export",
+    "level": "A4",
+    "model_id": "synthetic-bank-payments-a4",
+    "model_version": "2026.10",
+    "path": "<tmp>/pi/a4-technology.json",
+    "sha256": "47d3d5bf33c03c6cc85b1d11057a5d06912cafdc6608bef1e9b04cd568048832"
+   },
+   {
+    "kind": "registry",
+    "path": "<tmp>/pi/mappings.json",
+    "registry_version": "0.4.0",
+    "sha256": "ab0cf1a07f77d838b025c8d36ab66d147ace82792f168ad7157eb2d84623c26a"
+   }
+  ],
+  "metamodel_version": "0.19.0",
+  "next": "sdem trace <id> --graph <tmp>/payment-initiation-graph",
+  "outputs": [
+   {
+    "edges": 16,
+    "file": "a1-business.graph.json",
+    "nodes": 16,
+    "sha256": "e16dd8bc0318636655718bfba0b799011c9310b8df9a12529a2e6474846ed920"
+   },
+   {
+    "edges": 68,
+    "file": "a2-service-domain.graph.json",
+    "nodes": 48,
+    "sha256": "393b3f845b80dfd4501fdf7253a748708c21236fa445cae74638bdf9025758d7"
+   },
+   {
+    "edges": 19,
+    "file": "a3-application.graph.json",
+    "nodes": 16,
+    "sha256": "3d6ff7de5456387b54913b79a4de1429f6a23e2db1e1e61fe0380461482da2d3"
+   },
+   {
+    "edges": 30,
+    "file": "a4-technology.graph.json",
+    "nodes": 20,
+    "sha256": "3caeec8f4c7ab07b00f891fa010673040f821b77662c6e65449684efc060492d"
+   },
+   {
+    "edges": 20,
+    "file": "federated.graph.json",
+    "nodes": 29,
+    "sha256": "13c649da4445b375b912a59814aaf9df8d7c31038439ed4d8e3bf490ce61f088"
+   }
+  ],
+  "result": "accepted",
+  "warnings": [
+   "level A1 (synthetic-bank-payments-a1): instance PRC-PAY-01: attribute 'triggered_by' refers to 'customer submits a payment', which is not a A1.BusinessEvent in this architecture dataset (LC-07)",
+   "level A1 (synthetic-bank-payments-a1): instance PRC-PAY-02: attribute 'triggered_by' refers to 'instruction authorised', which is not a A1.BusinessEvent in this architecture dataset (LC-07)",
+   "level A3 (synthetic-bank-payments-a3): instance EVT-PAY-STATUS: attribute 'event_source' refers to '/payments-hub', which is not a A3.ApplicationComponent in this architecture dataset (LC-07)",
+   "level A3 (synthetic-bank-payments-a3): instance ENT-PAY-INSTR: is thin — its 11 field(s) are names only; give each as a record (DataAttribute, composed of ENT-PAY-INSTR) — sdem bian import --objects or sdem aid fills them (LC-23)",
+   "level A3 (synthetic-bank-payments-a3): instance ENT-PAY-EVENT: is thin — its 4 field(s) are names only; give each as a record (DataAttribute, composed of ENT-PAY-EVENT) — sdem bian import --objects or sdem aid fills them (LC-23)",
+   "level A3 (synthetic-bank-payments-a3): instance ENT-ACCOUNT-CACHE: is thin — its 5 field(s) are names only; give each as a record (DataAttribute, composed of ENT-ACCOUNT-CACHE) — sdem bian import --objects or sdem aid fills them (LC-23)",
+   "level A2 (synthetic-bank-payments-a2): instance BBO-PAY-INSTR: its field names and its field records disagree — no record for creditor_account_reference, currency, debtor_account_reference, payment_instruction_reference, payment_status, remittance_information, value_date (LC-24)",
+   "level A2 (synthetic-bank-payments-a2): instance BBO-PARTY: its field names and its field records disagree — no record for party_name, party_reference, party_type — not in its list: party reference (LC-24)"
+  ]
+ }
+}

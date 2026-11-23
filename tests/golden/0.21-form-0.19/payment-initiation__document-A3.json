@@ -1,0 +1,971 @@
+{
+ "command": [
+  "document",
+  "--workspace",
+  "<tmp>/pi",
+  "--layer",
+  "A3",
+  "--json"
+ ],
+ "exit": 0,
+ "output": {
+  "fingerprint": "<volatile>",
+  "gaps": {
+   "no_connection": [
+    "CMP-PAY-CAPTURE",
+    "CMP-PAY-VALIDATE",
+    "SVC-PAY-INIT",
+    "API-PI-06",
+    "ENT-PAY-EVENT",
+    "ENT-ACCOUNT-CACHE",
+    "EVT-PAY-STATUS"
+   ],
+   "placeholders": [],
+   "requirements_not_confirmed": [],
+   "unconfirmed": []
+  },
+  "layer": "A3",
+  "requirements": [
+   {
+    "category": "availability",
+    "condition": {
+     "metric": "availability_pct",
+     "operator": ">=",
+     "period": "month",
+     "unit": "%",
+     "value": 99.95
+    },
+    "evidence": [
+     "service_level_agreement:SLA-PAY-001#s2"
+    ],
+    "id": "REQ-AV-01",
+    "name": "Payment capture availability",
+    "statement": "Customers can submit and have validated a payment instruction 99.95% of each month.",
+    "status": "confirmed",
+    "subject": "PRC-PAY-01",
+    "subject_name": "Capture and validate payment instruction"
+   },
+   {
+    "category": "performance",
+    "condition": {
+     "metric": "p95_latency",
+     "operator": "<=",
+     "unit": "ms",
+     "value": 300
+    },
+    "evidence": [
+     "non_functional_requirements:NFR-PAYHUB-007"
+    ],
+    "id": "REQ-PF-01",
+    "name": "Payment initiation response time",
+    "statement": "The Payments Hub answers a payment initiation request within 300 ms at the 95th percentile.",
+    "status": "confirmed",
+    "subject": "APP-PAY-HUB",
+    "subject_name": "Payments Hub"
+   },
+   {
+    "category": "real_time",
+    "condition": {
+     "metric": "execution_time",
+     "operator": "<=",
+     "unit": "s",
+     "value": 2
+    },
+    "evidence": [
+     "service_level_agreement:SLA-PAY-001#s4"
+    ],
+    "id": "REQ-RT-01",
+    "name": "Real-time payment execution",
+    "statement": "Payment execution completes within 2 s of an authorised instruction.",
+    "status": "confirmed",
+    "subject": "SD-PE",
+    "subject_name": "Payment Execution (synthetic selection)"
+   },
+   {
+    "category": "recovery",
+    "condition": {
+     "metric": "recovery_time",
+     "operator": "<=",
+     "value": "2h"
+    },
+    "evidence": [
+     "business_continuity_plan:BCP-PAY#3.1"
+    ],
+    "id": "REQ-RC-01",
+    "name": "Payments Hub recovery time",
+    "statement": "The Payments Hub is back in service within 2 hours of a site failure (RTO).",
+    "status": "confirmed",
+    "subject": "APP-PAY-HUB",
+    "subject_name": "Payments Hub"
+   }
+  ],
+  "sections": [
+   {
+    "definition": "A modular, deployable part of an application",
+    "records": [
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "deployed_as": [
+        "Payments Hub — production (DEP-PAYHUB-PROD)",
+        "Payments Hub — UAT (DEP-PAYHUB-UAT)"
+       ],
+       "deployed_on": [
+        "Managed Kubernetes — payments (production) (INF-K8S-PAY-PROD)",
+        "Managed Kubernetes — payments (UAT) (INF-K8S-PAY-UAT)"
+       ],
+       "disposition": "enhance",
+       "hosting_model": "PaaS",
+       "license": "LicenseRef-proprietary",
+       "owner": "Payments Operations Officer (ROLE-PAY-OFFICER)",
+       "recovery_point_objective": "5m",
+       "recovery_time_objective": "2h",
+       "release_version": "7.1.0",
+       "vendor": "in-house"
+      },
+      "connections": [
+       {
+        "direction": "in",
+        "evidence": [
+         "application_architecture_document:AA-PAYHUB-HLD#s3"
+        ],
+        "id": "SD-PI",
+        "mapping_id": "PAY-106",
+        "name": "Payment Initiation (synthetic selection)",
+        "relationship": "REALIZED_BY",
+        "status": "approved"
+       },
+       {
+        "direction": "out",
+        "evidence": [
+         "deployment_design:DD-PAY-2026#prod"
+        ],
+        "id": "INF-K8S-PAY-PROD",
+        "mapping_id": "PAY-108",
+        "name": "Managed Kubernetes — payments (production)",
+        "relationship": "DEPLOYED_ON",
+        "status": "approved"
+       },
+       {
+        "direction": "out",
+        "evidence": [
+         "deployment_design:DD-PAY-2026#prod"
+        ],
+        "id": "DEP-PAYHUB-PROD",
+        "mapping_id": "PAY-109",
+        "name": "Payments Hub — production",
+        "relationship": "DEPLOYED_AS",
+        "status": "approved"
+       },
+       {
+        "direction": "out",
+        "evidence": [
+         "deployment_design:DD-PAY-2026#uat"
+        ],
+        "id": "DEP-PAYHUB-UAT",
+        "mapping_id": "PAY-110",
+        "name": "Payments Hub — UAT",
+        "relationship": "DEPLOYED_AS",
+        "status": "approved"
+       },
+       {
+        "direction": "out",
+        "evidence": [
+         "deployment_design:DD-PAY-2026#uat"
+        ],
+        "id": "INF-K8S-PAY-UAT",
+        "mapping_id": "PAY-113",
+        "name": "Managed Kubernetes — payments (UAT)",
+        "relationship": "DEPLOYED_ON",
+        "status": "approved"
+       },
+       {
+        "direction": "out",
+        "evidence": [
+         "build_pipeline:CI-PAY-HUB#7.1"
+        ],
+        "id": "ART-PAYHUB-IMG",
+        "mapping_id": "PAY-115",
+        "name": "payments-hub:7.1",
+        "relationship": "BUILT_AS",
+        "status": "approved"
+       }
+      ],
+      "description": "The bank's payment initiation platform: captures instructions from channels, validates and authorises them, and hands them to execution.",
+      "fields": [],
+      "id": "APP-PAY-HUB",
+      "lifecycle_status": "active",
+      "links_in": [],
+      "links_out": [
+       {
+        "id": "CMP-PAY-CAPTURE",
+        "kind": "composition",
+        "name": "Instruction Capture",
+        "source_id": null
+       },
+       {
+        "id": "CMP-PAY-VALIDATE",
+        "kind": "composition",
+        "name": "Instruction Validation",
+        "source_id": null
+       },
+       {
+        "id": "CMP-PAY-EXEC",
+        "kind": "composition",
+        "name": "Execution Gateway",
+        "source_id": null
+       },
+       {
+        "id": "SVC-PAY-INIT",
+        "kind": "realization",
+        "name": "Payment Initiation Service",
+        "source_id": null
+       },
+       {
+        "id": "EVT-PAY-STATUS",
+        "kind": "triggering",
+        "name": "PaymentStatusChanged",
+        "source_id": null
+       },
+       {
+        "id": "IFC-PAY-API",
+        "kind": "composition",
+        "name": "Payments API v2",
+        "source_id": null
+       }
+      ],
+      "name": "Payments Hub",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A3.ApplicationComponent",
+      "version": "7.1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {},
+      "connections": [],
+      "description": "Receives payment instructions from channels and creates the instruction record.",
+      "fields": [],
+      "id": "CMP-PAY-CAPTURE",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "APP-PAY-HUB",
+        "kind": "composition",
+        "name": "Payments Hub",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "ENT-PAY-INSTR",
+        "kind": "access",
+        "name": "payment_instruction",
+        "source_id": null
+       }
+      ],
+      "name": "Instruction Capture",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A3.ApplicationComponent",
+      "version": "7.1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {},
+      "connections": [],
+      "description": "Checks instructions against limits, mandates and sanctions lists; records authorisation.",
+      "fields": [],
+      "id": "CMP-PAY-VALIDATE",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "APP-PAY-HUB",
+        "kind": "composition",
+        "name": "Payments Hub",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "ENT-PAY-INSTR",
+        "kind": "access",
+        "name": "payment_instruction",
+        "source_id": null
+       },
+       {
+        "id": "ENT-ACCOUNT-CACHE",
+        "kind": "access",
+        "name": "account_cache",
+        "source_id": null
+       }
+      ],
+      "name": "Instruction Validation",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A3.ApplicationComponent",
+      "version": "7.1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "deployed_as": [
+        "Execution Gateway — production (DEP-PAYEXEC-PROD)"
+       ],
+       "deployed_on": [
+        "Managed Kubernetes — payments (production) (INF-K8S-PAY-PROD)"
+       ]
+      },
+      "connections": [
+       {
+        "direction": "out",
+        "evidence": [
+         "deployment_design:DD-PAY-2026#prod"
+        ],
+        "id": "INF-K8S-PAY-PROD",
+        "mapping_id": "PAY-111",
+        "name": "Managed Kubernetes — payments (production)",
+        "relationship": "DEPLOYED_ON",
+        "status": "approved"
+       },
+       {
+        "direction": "out",
+        "evidence": [
+         "deployment_design:DD-PAY-2026#prod"
+        ],
+        "id": "DEP-PAYEXEC-PROD",
+        "mapping_id": "PAY-112",
+        "name": "Execution Gateway — production",
+        "relationship": "DEPLOYED_AS",
+        "status": "approved"
+       }
+      ],
+      "description": "Hands authorised instructions to scheme execution and tracks execution references.",
+      "fields": [],
+      "id": "CMP-PAY-EXEC",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "APP-PAY-HUB",
+        "kind": "composition",
+        "name": "Payments Hub",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "ENT-PAY-INSTR",
+        "kind": "access",
+        "name": "payment_instruction",
+        "source_id": null
+       }
+      ],
+      "name": "Execution Gateway",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A3.ApplicationComponent",
+      "version": "3.4"
+     }
+    ],
+    "title": "Application components",
+    "type": "A3.ApplicationComponent"
+   },
+   {
+    "definition": "Externally exposed application behaviour",
+    "records": [
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "consumes": [
+        "Secrets management (TS-SECRETS)",
+        "Messaging service (TS-MQ)"
+       ]
+      },
+      "connections": [],
+      "description": "The externally exposed payment-initiation behaviour of the hub.",
+      "fields": [],
+      "id": "SVC-PAY-INIT",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "APP-PAY-HUB",
+        "kind": "realization",
+        "name": "Payments Hub",
+        "source_id": null
+       },
+       {
+        "id": "IFC-PAY-API",
+        "kind": "assignment",
+        "name": "Payments API v2",
+        "source_id": null
+       }
+      ],
+      "links_out": [],
+      "name": "Payment Initiation Service",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A3.ApplicationService",
+      "version": "2.0"
+     }
+    ],
+    "title": "Application services",
+    "type": "A3.ApplicationService"
+   },
+   {
+    "definition": "An access point to an application service",
+    "records": [
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "contract_format": "OpenAPI 3.1",
+       "internet_facing": true,
+       "protocol": "https",
+       "security_scheme": "oauth2"
+      },
+      "connections": [
+       {
+        "direction": "out",
+        "evidence": [
+         "network_design:ND-PAY-2026#edge"
+        ],
+        "id": "INF-APIGW-PAY",
+        "mapping_id": "PAY-114",
+        "name": "Managed API gateway — payments",
+        "relationship": "EXPOSED_THROUGH",
+        "status": "approved"
+       }
+      ],
+      "description": "REST interface for payment instructions.",
+      "fields": [],
+      "id": "IFC-PAY-API",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "APP-PAY-HUB",
+        "kind": "composition",
+        "name": "Payments Hub",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "SVC-PAY-INIT",
+        "kind": "assignment",
+        "name": "Payment Initiation Service",
+        "source_id": null
+       },
+       {
+        "id": "API-PI-01",
+        "kind": "composition",
+        "name": "Create payment instruction",
+        "source_id": null
+       },
+       {
+        "id": "API-PI-02",
+        "kind": "composition",
+        "name": "Validate payment instruction",
+        "source_id": null
+       },
+       {
+        "id": "API-PI-03",
+        "kind": "composition",
+        "name": "Execute payment instruction",
+        "source_id": null
+       },
+       {
+        "id": "API-PI-04",
+        "kind": "composition",
+        "name": "Get payment instruction",
+        "source_id": null
+       },
+       {
+        "id": "API-PI-05",
+        "kind": "composition",
+        "name": "Amend payment instruction",
+        "source_id": null
+       },
+       {
+        "id": "API-PI-06",
+        "kind": "composition",
+        "name": "List payment instruction events",
+        "source_id": null
+       }
+      ],
+      "name": "Payments API v2",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A3.ApplicationInterface",
+      "version": "2.0"
+     }
+    ],
+    "title": "Application interfaces",
+    "type": "A3.ApplicationInterface"
+   },
+   {
+    "definition": "A callable operation of an API contract",
+    "records": [
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "deprecated": false,
+       "method": "POST",
+       "operation_id": "createPaymentInstruction",
+       "path": "/payment-instructions",
+       "payload_fields": [
+        "debtor_account_reference",
+        "creditor_account_reference",
+        "amount",
+        "currency",
+        "value_date",
+        "remittance_information",
+        "payment_instruction_reference",
+        "payment_status"
+       ]
+      },
+      "connections": [
+       {
+        "direction": "in",
+        "evidence": [
+         "api_contract:payments-api-v2.yaml#/paths/~1payment-instructions/post"
+        ],
+        "id": "SO-PI-01",
+        "mapping_id": "PAY-101",
+        "name": "Initiate Payment Instruction",
+        "relationship": "IMPLEMENTED_BY",
+        "status": "approved"
+       }
+      ],
+      "description": "Creates a payment instruction from the customer's details.",
+      "fields": [],
+      "id": "API-PI-01",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "IFC-PAY-API",
+        "kind": "composition",
+        "name": "Payments API v2",
+        "source_id": null
+       }
+      ],
+      "links_out": [],
+      "name": "Create payment instruction",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A3.APIOperation",
+      "version": "2.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "method": "POST",
+       "path": "/payment-instructions/{id}/validation",
+       "payload_fields": [
+        "payment_instruction_reference",
+        "authorisation_status",
+        "payment_status",
+        "validation_result"
+       ]
+      },
+      "connections": [
+       {
+        "direction": "in",
+        "evidence": [
+         "api_contract:payments-api-v2.yaml#/paths/~1payment-instructions~1{id}~1validation/post"
+        ],
+        "id": "SO-PI-02",
+        "mapping_id": "PAY-102",
+        "name": "Evaluate Payment Instruction Validation",
+        "relationship": "IMPLEMENTED_BY",
+        "status": "approved"
+       }
+      ],
+      "description": "Runs validation and records the authorisation outcome.",
+      "fields": [],
+      "id": "API-PI-02",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "IFC-PAY-API",
+        "kind": "composition",
+        "name": "Payments API v2",
+        "source_id": null
+       }
+      ],
+      "links_out": [],
+      "name": "Validate payment instruction",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A3.APIOperation",
+      "version": "2.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "method": "PUT",
+       "path": "/payment-instructions/{id}/execution",
+       "payload_fields": [
+        "payment_instruction_reference",
+        "execution_reference",
+        "payment_status"
+       ]
+      },
+      "connections": [
+       {
+        "direction": "in",
+        "evidence": [
+         "api_contract:payments-api-v2.yaml#/paths/~1payment-instructions~1{id}~1execution/put"
+        ],
+        "id": "SO-PI-03",
+        "mapping_id": "PAY-103",
+        "name": "Execute Payment Instruction Execution",
+        "relationship": "IMPLEMENTED_BY",
+        "status": "approved"
+       }
+      ],
+      "description": "Hands the instruction to execution.",
+      "fields": [],
+      "id": "API-PI-03",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "IFC-PAY-API",
+        "kind": "composition",
+        "name": "Payments API v2",
+        "source_id": null
+       }
+      ],
+      "links_out": [],
+      "name": "Execute payment instruction",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A3.APIOperation",
+      "version": "2.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "deprecated": false,
+       "method": "POST",
+       "operation_id": "getPaymentInstruction",
+       "path": "/payment-instructions/{id}",
+       "payload_fields": [
+        "payment_instruction_reference",
+        "payment_status",
+        "execution_reference",
+        "authorisation_status"
+       ]
+      },
+      "connections": [
+       {
+        "direction": "in",
+        "evidence": [
+         "api_contract:payments-api-v2.yaml#/paths/~1payment-instructions~1{id}/post",
+         "application_architecture_document:ADR-PAY-017"
+        ],
+        "id": "SO-PI-04",
+        "mapping_id": "PAY-104",
+        "name": "Retrieve Payment Instruction",
+        "relationship": "IMPLEMENTED_BY",
+        "status": "approved"
+       }
+      ],
+      "description": "Returns the instruction and its status. NOTE: implemented as POST for legacy channel reasons.",
+      "fields": [],
+      "id": "API-PI-04",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "IFC-PAY-API",
+        "kind": "composition",
+        "name": "Payments API v2",
+        "source_id": null
+       }
+      ],
+      "links_out": [],
+      "name": "Get payment instruction",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A3.APIOperation",
+      "version": "2.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "method": "PATCH",
+       "path": "/payment-instructions/{id}",
+       "payload_fields": [
+        "payment_instruction_reference",
+        "amount",
+        "value_date",
+        "creditor_account_reference",
+        "payment_status"
+       ]
+      },
+      "connections": [
+       {
+        "direction": "in",
+        "evidence": [
+         "api_contract:payments-api-v2.yaml#/paths/~1payment-instructions~1{id}/patch"
+        ],
+        "id": "SO-PI-05",
+        "mapping_id": "PAY-105",
+        "name": "Update Payment Instruction",
+        "relationship": "IMPLEMENTED_BY",
+        "status": "approved"
+       }
+      ],
+      "description": "Amends amount, date or creditor before execution.",
+      "fields": [],
+      "id": "API-PI-05",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "IFC-PAY-API",
+        "kind": "composition",
+        "name": "Payments API v2",
+        "source_id": null
+       }
+      ],
+      "links_out": [],
+      "name": "Amend payment instruction",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A3.APIOperation",
+      "version": "2.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "method": "GET",
+       "path": "/payment-instructions/{id}/events",
+       "payload_fields": [
+        "event_id",
+        "payment_instruction_reference",
+        "event_type",
+        "occurred_at"
+       ]
+      },
+      "connections": [],
+      "description": "Returns the event history of an instruction.",
+      "fields": [],
+      "id": "API-PI-06",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "IFC-PAY-API",
+        "kind": "composition",
+        "name": "Payments API v2",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "ENT-PAY-EVENT",
+        "kind": "access",
+        "name": "payment_event",
+        "source_id": null
+       }
+      ],
+      "name": "List payment instruction events",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A3.APIOperation",
+      "version": "2.0"
+     }
+    ],
+    "title": "API operations",
+    "type": "A3.APIOperation"
+   },
+   {
+    "definition": "A logical data entity held by an application",
+    "records": [
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "attributes": [
+        "payment_instruction_reference",
+        "debtor_account_reference",
+        "creditor_account_reference",
+        "amount",
+        "currency",
+        "value_date",
+        "payment_status",
+        "authorisation_status",
+        "execution_reference",
+        "remittance_information",
+        "channel_id"
+       ],
+       "glossary_uri": "https://example.org/glossary/payment-instruction",
+       "personal_information": true,
+       "retention_period": "7y",
+       "stored_in": [
+        "Managed PostgreSQL — payments (INF-PG-PAY-PROD)"
+       ],
+       "system_of_record": true
+      },
+      "connections": [
+       {
+        "direction": "in",
+        "evidence": [
+         "data_model:DM-PAYHUB-7.1#payment_instruction"
+        ],
+        "id": "BBO-PAY-INSTR",
+        "mapping_id": "PAY-107",
+        "name": "Payment Instruction",
+        "relationship": "MAPPED_TO",
+        "status": "approved"
+       }
+      ],
+      "description": "Hub table holding one row per instruction.",
+      "fields": [],
+      "id": "ENT-PAY-INSTR",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "CMP-PAY-CAPTURE",
+        "kind": "access",
+        "name": "Instruction Capture",
+        "source_id": null
+       },
+       {
+        "id": "CMP-PAY-VALIDATE",
+        "kind": "access",
+        "name": "Instruction Validation",
+        "source_id": null
+       },
+       {
+        "id": "CMP-PAY-EXEC",
+        "kind": "access",
+        "name": "Execution Gateway",
+        "source_id": null
+       }
+      ],
+      "links_out": [],
+      "name": "payment_instruction",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A3.DataEntity",
+      "version": "7.1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "attributes": [
+        "event_id",
+        "payment_instruction_reference",
+        "event_type",
+        "occurred_at"
+       ],
+       "stored_in": [
+        "Managed PostgreSQL — payments (INF-PG-PAY-PROD)"
+       ]
+      },
+      "connections": [],
+      "description": "Append-only event history per instruction.",
+      "fields": [],
+      "id": "ENT-PAY-EVENT",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "EVT-PAY-STATUS",
+        "kind": "access",
+        "name": "PaymentStatusChanged",
+        "source_id": null
+       },
+       {
+        "id": "API-PI-06",
+        "kind": "access",
+        "name": "List payment instruction events",
+        "source_id": null
+       }
+      ],
+      "links_out": [],
+      "name": "payment_event",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A3.DataEntity",
+      "version": "7.1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "attributes": [
+        "account_reference",
+        "iban",
+        "currency",
+        "holder_reference",
+        "cached_at"
+       ],
+       "personal_information": true,
+       "stored_in": [
+        "Managed PostgreSQL — payments (INF-PG-PAY-PROD)"
+       ],
+       "system_of_record": false
+      },
+      "connections": [],
+      "description": "Cached account details for validation.",
+      "fields": [],
+      "id": "ENT-ACCOUNT-CACHE",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "CMP-PAY-VALIDATE",
+        "kind": "access",
+        "name": "Instruction Validation",
+        "source_id": null
+       }
+      ],
+      "links_out": [],
+      "name": "account_cache",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A3.DataEntity",
+      "version": "7.1"
+     }
+    ],
+    "title": "Data entities",
+    "type": "A3.DataEntity"
+   },
+   {
+    "definition": "An event an application produces or consumes",
+    "records": [
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "event_source": "/payments-hub",
+       "event_type": "payment.status.changed",
+       "schema_uri": "https://example.org/schemas/payment-status-changed.json"
+      },
+      "connections": [],
+      "description": "Published when an instruction changes state.",
+      "fields": [],
+      "id": "EVT-PAY-STATUS",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "APP-PAY-HUB",
+        "kind": "triggering",
+        "name": "Payments Hub",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "ENT-PAY-EVENT",
+        "kind": "access",
+        "name": "payment_event",
+        "source_id": null
+       }
+      ],
+      "name": "PaymentStatusChanged",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A3.Event",
+      "version": "2.0"
+     }
+    ],
+    "title": "Events",
+    "type": "A3.Event"
+   }
+  ],
+  "summary": {
+   "by_type": {
+    "API operations": 6,
+    "Application components": 4,
+    "Application interfaces": 1,
+    "Application services": 1,
+    "Data entities": 3,
+    "Events": 1
+   },
+   "records": 16,
+   "unconfirmed": 0,
+   "with_approved_connection": 9
+  },
+  "title": "A3 Application Architecture",
+  "workspace": "pi"
+ }
+}

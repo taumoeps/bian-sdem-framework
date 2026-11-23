@@ -1,0 +1,2038 @@
+{
+ "command": [
+  "document",
+  "--workspace",
+  "<tmp>/v3",
+  "--layer",
+  "A1",
+  "--json"
+ ],
+ "exit": 0,
+ "output": {
+  "fingerprint": "<volatile>",
+  "gaps": {
+   "no_connection": [
+    "CAP-CONSENT",
+    "CAP-RISK",
+    "VS-MERCHANT",
+    "ST-CONSENT",
+    "ST-SUBMIT",
+    "ST-STATUS",
+    "PROC-CONSENT",
+    "PROC-VALIDATE",
+    "PROC-DEBIT",
+    "PROC-HANDOFF",
+    "SVC-INIT",
+    "SVC-AUTH",
+    "ACTOR-CUSTOMER",
+    "ACTOR-MERCHANT",
+    "ACTOR-TPP",
+    "ROLE-BANK",
+    "R-01",
+    "R-02",
+    "R-03",
+    "R-04",
+    "R-05",
+    "R-06",
+    "R-07",
+    "R-08",
+    "R-09",
+    "R-10",
+    "R-11",
+    "R-12",
+    "R-13",
+    "R-14",
+    "R-15",
+    "R-16",
+    "R-17",
+    "R-18",
+    "R-19",
+    "R-20",
+    "R-21",
+    "R-22",
+    "R-23",
+    "R-24",
+    "PROD-ACCOUNT",
+    "IF-WEB"
+   ],
+   "placeholders": [],
+   "requirements_not_confirmed": [],
+   "unconfirmed": []
+  },
+  "layer": "A1",
+  "requirements": [],
+  "sections": [
+   {
+    "definition": "A business ability independent of how it is implemented",
+    "records": [
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "level": 1
+      },
+      "connections": [
+       {
+        "direction": "out",
+        "evidence": [
+         "business_architecture_document:design.md#4",
+         "domain_scope_assessment:design.md#4",
+         "bian_alignment_guidance:design.md#4",
+         "author:design section 4"
+        ],
+        "id": "SD-PAYMENT-ORDER-INITIATION",
+        "mapping_id": "MAP-004",
+        "name": "Payment Order Initiation",
+        "relationship": "SUPPORTED_BY",
+        "status": "approved"
+       }
+      ],
+      "description": "",
+      "fields": [],
+      "id": "CAP-PAY",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "PROC-SUBMIT",
+        "kind": "realization",
+        "name": "Receive the payment",
+        "source_id": "document:design.md#3"
+       },
+       {
+        "id": "PROC-VALIDATE",
+        "kind": "realization",
+        "name": "Validate data and account",
+        "source_id": "document:design.md#3"
+       },
+       {
+        "id": "PROC-DEBIT",
+        "kind": "realization",
+        "name": "Post one debit",
+        "source_id": "document:design.md#3"
+       },
+       {
+        "id": "PROC-HANDOFF",
+        "kind": "realization",
+        "name": "Hand off for execution",
+        "source_id": "document:design.md#3"
+       },
+       {
+        "id": "PROC-STATUS",
+        "kind": "realization",
+        "name": "Respond to status enquiries",
+        "source_id": "document:design.md#3"
+       }
+      ],
+      "links_out": [
+       {
+        "id": "CAP-CONSENT",
+        "kind": "aggregation",
+        "name": "Customer payment consent",
+        "source_id": "document:design.md#3"
+       },
+       {
+        "id": "CAP-RISK",
+        "kind": "aggregation",
+        "name": "Payment risk control",
+        "source_id": "document:design.md#3"
+       }
+      ],
+      "name": "Domestic payment initiation",
+      "provenance": "from the design document design.md#3",
+      "type": "A1.BusinessCapability",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "level": 2
+      },
+      "connections": [],
+      "description": "",
+      "fields": [],
+      "id": "CAP-CONSENT",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "CAP-PAY",
+        "kind": "aggregation",
+        "name": "Domestic payment initiation",
+        "source_id": "document:design.md#3"
+       },
+       {
+        "id": "PROC-CONSENT",
+        "kind": "realization",
+        "name": "Capture consent",
+        "source_id": "document:design.md#3"
+       },
+       {
+        "id": "PROC-AUTH",
+        "kind": "realization",
+        "name": "Authenticate and authorise",
+        "source_id": "document:design.md#3"
+       }
+      ],
+      "links_out": [],
+      "name": "Customer payment consent",
+      "provenance": "from the design document design.md#3",
+      "type": "A1.BusinessCapability",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "level": 2
+      },
+      "connections": [
+       {
+        "direction": "out",
+        "evidence": [
+         "engine_rationale:S01 step3 all 1 processes of the capability use the domain"
+        ],
+        "id": "SD-FRAUD-EVALUATION",
+        "mapping_id": "MAP-034",
+        "name": "Fraud Evaluation",
+        "relationship": "SUPPORTED_BY",
+        "status": "rejected"
+       }
+      ],
+      "description": "",
+      "fields": [],
+      "id": "CAP-RISK",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "CAP-PAY",
+        "kind": "aggregation",
+        "name": "Domestic payment initiation",
+        "source_id": "document:design.md#3"
+       },
+       {
+        "id": "PROC-RISK",
+        "kind": "realization",
+        "name": "Screen fraud",
+        "source_id": "document:design.md#3"
+       }
+      ],
+      "links_out": [
+       {
+        "id": "R-20",
+        "kind": "realization",
+        "name": "Deployments have explicit segment boundaries, private persistence routes and…",
+        "source_id": "ai-decision"
+       }
+      ],
+      "name": "Payment risk control",
+      "provenance": "from the design document design.md#3",
+      "type": "A1.BusinessCapability",
+      "version": "1"
+     }
+    ],
+    "title": "Business capabilities",
+    "type": "A1.BusinessCapability"
+   },
+   {
+    "definition": "The stages by which stakeholders receive value",
+    "records": [
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "stages": [
+        "Consent (ST-CONSENT)",
+        "Payment submission (ST-SUBMIT)",
+        "Status enquiry (ST-STATUS)"
+       ]
+      },
+      "connections": [],
+      "description": "",
+      "fields": [],
+      "id": "VS-MERCHANT",
+      "lifecycle_status": "planned",
+      "links_in": [],
+      "links_out": [
+       {
+        "id": "ST-CONSENT",
+        "kind": "composition",
+        "name": "Consent",
+        "source_id": "document:design.md#3"
+       },
+       {
+        "id": "ST-SUBMIT",
+        "kind": "composition",
+        "name": "Payment submission",
+        "source_id": "document:design.md#3"
+       },
+       {
+        "id": "ST-STATUS",
+        "kind": "composition",
+        "name": "Status enquiry",
+        "source_id": "document:design.md#3"
+       }
+      ],
+      "name": "Merchant payment",
+      "provenance": "from the design document design.md#3",
+      "type": "A1.ValueStream",
+      "version": "1"
+     }
+    ],
+    "title": "Value streams",
+    "type": "A1.ValueStream"
+   },
+   {
+    "definition": "One named segment of a value stream",
+    "records": [
+     {
+      "attribute_sources": {},
+      "attributes": {},
+      "connections": [],
+      "description": "",
+      "fields": [],
+      "id": "ST-CONSENT",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "VS-MERCHANT",
+        "kind": "composition",
+        "name": "Merchant payment",
+        "source_id": "document:design.md#3"
+       },
+       {
+        "id": "PROC-CONSENT",
+        "kind": "realization",
+        "name": "Capture consent",
+        "source_id": "document:design.md#3"
+       },
+       {
+        "id": "PROC-AUTH",
+        "kind": "realization",
+        "name": "Authenticate and authorise",
+        "source_id": "document:design.md#3"
+       }
+      ],
+      "links_out": [
+       {
+        "id": "ST-SUBMIT",
+        "kind": "flow",
+        "name": "Payment submission",
+        "source_id": "document:design.md#3"
+       }
+      ],
+      "name": "Consent",
+      "provenance": "from the design document design.md#3",
+      "type": "A1.ValueStreamStage",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {},
+      "connections": [],
+      "description": "",
+      "fields": [],
+      "id": "ST-SUBMIT",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "VS-MERCHANT",
+        "kind": "composition",
+        "name": "Merchant payment",
+        "source_id": "document:design.md#3"
+       },
+       {
+        "id": "ST-CONSENT",
+        "kind": "flow",
+        "name": "Consent",
+        "source_id": "document:design.md#3"
+       },
+       {
+        "id": "PROC-SUBMIT",
+        "kind": "realization",
+        "name": "Receive the payment",
+        "source_id": "document:design.md#3"
+       },
+       {
+        "id": "PROC-VALIDATE",
+        "kind": "realization",
+        "name": "Validate data and account",
+        "source_id": "document:design.md#3"
+       },
+       {
+        "id": "PROC-RISK",
+        "kind": "realization",
+        "name": "Screen fraud",
+        "source_id": "document:design.md#3"
+       },
+       {
+        "id": "PROC-DEBIT",
+        "kind": "realization",
+        "name": "Post one debit",
+        "source_id": "document:design.md#3"
+       },
+       {
+        "id": "PROC-HANDOFF",
+        "kind": "realization",
+        "name": "Hand off for execution",
+        "source_id": "document:design.md#3"
+       }
+      ],
+      "links_out": [
+       {
+        "id": "ST-STATUS",
+        "kind": "flow",
+        "name": "Status enquiry",
+        "source_id": "document:design.md#3"
+       }
+      ],
+      "name": "Payment submission",
+      "provenance": "from the design document design.md#3",
+      "type": "A1.ValueStreamStage",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {},
+      "connections": [],
+      "description": "",
+      "fields": [],
+      "id": "ST-STATUS",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "VS-MERCHANT",
+        "kind": "composition",
+        "name": "Merchant payment",
+        "source_id": "document:design.md#3"
+       },
+       {
+        "id": "ST-SUBMIT",
+        "kind": "flow",
+        "name": "Payment submission",
+        "source_id": "document:design.md#3"
+       },
+       {
+        "id": "PROC-STATUS",
+        "kind": "realization",
+        "name": "Respond to status enquiries",
+        "source_id": "document:design.md#3"
+       }
+      ],
+      "links_out": [],
+      "name": "Status enquiry",
+      "provenance": "from the design document design.md#3",
+      "type": "A1.ValueStreamStage",
+      "version": "1"
+     }
+    ],
+    "title": "Value stream stages",
+    "type": "A1.ValueStreamStage"
+   },
+   {
+    "definition": "Coordinated business behaviour",
+    "records": [
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "automation_level": "automated"
+      },
+      "connections": [],
+      "description": "",
+      "fields": [],
+      "id": "PROC-CONSENT",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "ROLE-BANK",
+        "kind": "assignment",
+        "name": "Bank — account servicing role",
+        "source_id": "document:design.md#3"
+       }
+      ],
+      "links_out": [
+       {
+        "id": "PROC-AUTH",
+        "kind": "flow",
+        "name": "Authenticate and authorise",
+        "source_id": "document:design.md#3"
+       },
+       {
+        "id": "ST-CONSENT",
+        "kind": "realization",
+        "name": "Consent",
+        "source_id": "document:design.md#3"
+       },
+       {
+        "id": "CAP-CONSENT",
+        "kind": "realization",
+        "name": "Customer payment consent",
+        "source_id": "document:design.md#3"
+       },
+       {
+        "id": "SVC-INIT",
+        "kind": "realization",
+        "name": "Business initiation service",
+        "source_id": "document:design.md#3"
+       },
+       {
+        "id": "R-01",
+        "kind": "realization",
+        "name": "The accredited third party can create a one-off domestic payment consent and…",
+        "source_id": "document:design.md#2"
+       }
+      ],
+      "name": "Capture consent",
+      "provenance": "from the design document design.md#3",
+      "type": "A1.BusinessProcess",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "automation_level": "automated",
+       "invokes": [
+        "Party Authentication: Evaluate (SO-PARTY-AUTHENTICATION-EVALUATE)"
+       ]
+      },
+      "connections": [
+       {
+        "direction": "out",
+        "evidence": [
+         "process_model:design.md#4",
+         "bian_alignment_guidance:design.md#4",
+         "author:design section 4"
+        ],
+        "id": "SD-PARTY-AUTHENTICATION",
+        "mapping_id": "MAP-003",
+        "name": "Party Authentication",
+        "relationship": "USES_DOMAIN",
+        "status": "approved"
+       }
+      ],
+      "description": "",
+      "fields": [],
+      "id": "PROC-AUTH",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "ROLE-BANK",
+        "kind": "assignment",
+        "name": "Bank — account servicing role",
+        "source_id": "document:design.md#3"
+       },
+       {
+        "id": "PROC-CONSENT",
+        "kind": "flow",
+        "name": "Capture consent",
+        "source_id": "document:design.md#3"
+       }
+      ],
+      "links_out": [
+       {
+        "id": "PROC-SUBMIT",
+        "kind": "flow",
+        "name": "Receive the payment",
+        "source_id": "document:design.md#3"
+       },
+       {
+        "id": "ST-CONSENT",
+        "kind": "realization",
+        "name": "Consent",
+        "source_id": "document:design.md#3"
+       },
+       {
+        "id": "CAP-CONSENT",
+        "kind": "realization",
+        "name": "Customer payment consent",
+        "source_id": "document:design.md#3"
+       },
+       {
+        "id": "SVC-AUTH",
+        "kind": "realization",
+        "name": "Consent authorisation service",
+        "source_id": "document:design.md#3"
+       },
+       {
+        "id": "R-02",
+        "kind": "realization",
+        "name": "The bank uses the redirect authorisation flow to authenticate the customer…",
+        "source_id": "document:design.md#2"
+       },
+       {
+        "id": "R-12",
+        "kind": "realization",
+        "name": "Customer decline, failed authentication or expired consent do not debit…",
+        "source_id": "document:design.md#2"
+       },
+       {
+        "id": "R-21",
+        "kind": "realization",
+        "name": "A regulated deployment must support hybrid redirect and decoupled (CIBA)…",
+        "source_id": "document:design.md#2"
+       },
+       {
+        "id": "R-16",
+        "kind": "realization",
+        "name": "Personal and account information is protected and access to consent and…",
+        "source_id": "ai-decision"
+       }
+      ],
+      "name": "Authenticate and authorise",
+      "provenance": "from the design document design.md#3,document:design.md#4",
+      "type": "A1.BusinessProcess",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "automation_level": "automated",
+       "invokes": [
+        "Payment Order Initiation: Initiate (SO-PAYMENT-ORDER-INITIATION-INITIATE)"
+       ]
+      },
+      "connections": [
+       {
+        "direction": "out",
+        "evidence": [
+         "process_model:design.md#4",
+         "bian_alignment_guidance:design.md#4",
+         "author:design section 4"
+        ],
+        "id": "SD-PAYMENT-ORDER-INITIATION",
+        "mapping_id": "MAP-001",
+        "name": "Payment Order Initiation",
+        "relationship": "USES_DOMAIN",
+        "status": "approved"
+       }
+      ],
+      "description": "",
+      "fields": [],
+      "id": "PROC-SUBMIT",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "ROLE-BANK",
+        "kind": "assignment",
+        "name": "Bank — account servicing role",
+        "source_id": "document:design.md#3"
+       },
+       {
+        "id": "PROC-AUTH",
+        "kind": "flow",
+        "name": "Authenticate and authorise",
+        "source_id": "document:design.md#3"
+       }
+      ],
+      "links_out": [
+       {
+        "id": "PROC-VALIDATE",
+        "kind": "flow",
+        "name": "Validate data and account",
+        "source_id": "document:design.md#3"
+       },
+       {
+        "id": "ST-SUBMIT",
+        "kind": "realization",
+        "name": "Payment submission",
+        "source_id": "document:design.md#3"
+       },
+       {
+        "id": "CAP-PAY",
+        "kind": "realization",
+        "name": "Domestic payment initiation",
+        "source_id": "document:design.md#3"
+       },
+       {
+        "id": "SVC-INIT",
+        "kind": "realization",
+        "name": "Business initiation service",
+        "source_id": "document:design.md#3"
+       },
+       {
+        "id": "R-03",
+        "kind": "realization",
+        "name": "Unauthorised domestic consent is time-limited to 24 hours; expired consent…",
+        "source_id": "document:design.md#2"
+       },
+       {
+        "id": "R-04",
+        "kind": "realization",
+        "name": "Only an authorised domestic consent may be used to submit one domestic payment.",
+        "source_id": "document:design.md#2"
+       },
+       {
+        "id": "R-05",
+        "kind": "realization",
+        "name": "The same payment request will not create a second debit under supported…",
+        "source_id": "document:design.md#2"
+       },
+       {
+        "id": "R-23",
+        "kind": "realization",
+        "name": "An unauthorised domestic payment consent is valid for 24 hours, and status…",
+        "source_id": "document:design.md#2"
+       }
+      ],
+      "name": "Receive the payment",
+      "provenance": "from the design document design.md#3,document:design.md#4",
+      "type": "A1.BusinessProcess",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "automation_level": "automated"
+      },
+      "connections": [],
+      "description": "",
+      "fields": [],
+      "id": "PROC-VALIDATE",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "ROLE-BANK",
+        "kind": "assignment",
+        "name": "Bank — account servicing role",
+        "source_id": "document:design.md#3"
+       },
+       {
+        "id": "PROC-SUBMIT",
+        "kind": "flow",
+        "name": "Receive the payment",
+        "source_id": "document:design.md#3"
+       }
+      ],
+      "links_out": [
+       {
+        "id": "PROC-RISK",
+        "kind": "flow",
+        "name": "Screen fraud",
+        "source_id": "document:design.md#3"
+       },
+       {
+        "id": "ST-SUBMIT",
+        "kind": "realization",
+        "name": "Payment submission",
+        "source_id": "document:design.md#3"
+       },
+       {
+        "id": "CAP-PAY",
+        "kind": "realization",
+        "name": "Domestic payment initiation",
+        "source_id": "document:design.md#3"
+       },
+       {
+        "id": "R-06",
+        "kind": "realization",
+        "name": "Payment data use NZD and valid domestic account identification; invalid data…",
+        "source_id": "document:design.md#2"
+       },
+       {
+        "id": "R-07",
+        "kind": "realization",
+        "name": "The bank checks debtor account eligibility and available funds before posting.",
+        "source_id": "document:design.md#2"
+       }
+      ],
+      "name": "Validate data and account",
+      "provenance": "from the design document design.md#3",
+      "type": "A1.BusinessProcess",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "automation_level": "automated"
+      },
+      "connections": [
+       {
+        "direction": "out",
+        "evidence": [
+         "process_model:design.md#ai-decision",
+         "bian_alignment_guidance:design.md#ai-decision",
+         "author:design section ai-decision"
+        ],
+        "id": "SD-FRAUD-EVALUATION",
+        "mapping_id": "MAP-031",
+        "name": "Fraud Evaluation",
+        "relationship": "USES_DOMAIN",
+        "status": "approved"
+       }
+      ],
+      "description": "",
+      "fields": [],
+      "id": "PROC-RISK",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "ROLE-BANK",
+        "kind": "assignment",
+        "name": "Bank — account servicing role",
+        "source_id": "document:design.md#3"
+       },
+       {
+        "id": "PROC-VALIDATE",
+        "kind": "flow",
+        "name": "Validate data and account",
+        "source_id": "document:design.md#3"
+       }
+      ],
+      "links_out": [
+       {
+        "id": "PROC-DEBIT",
+        "kind": "flow",
+        "name": "Post one debit",
+        "source_id": "document:design.md#3"
+       },
+       {
+        "id": "ST-SUBMIT",
+        "kind": "realization",
+        "name": "Payment submission",
+        "source_id": "document:design.md#3"
+       },
+       {
+        "id": "CAP-RISK",
+        "kind": "realization",
+        "name": "Payment risk control",
+        "source_id": "document:design.md#3"
+       },
+       {
+        "id": "R-08",
+        "kind": "realization",
+        "name": "The bank applies a risk screening decision before debit and execution handoff.",
+        "source_id": "document:design.md#2"
+       },
+       {
+        "id": "R-17",
+        "kind": "realization",
+        "name": "Payment and consent decisions are correlated and auditable.",
+        "source_id": "ai-decision"
+       }
+      ],
+      "name": "Screen fraud",
+      "provenance": "from the design document design.md#3",
+      "type": "A1.BusinessProcess",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "automation_level": "automated"
+      },
+      "connections": [],
+      "description": "",
+      "fields": [],
+      "id": "PROC-DEBIT",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "ROLE-BANK",
+        "kind": "assignment",
+        "name": "Bank — account servicing role",
+        "source_id": "document:design.md#3"
+       },
+       {
+        "id": "PROC-RISK",
+        "kind": "flow",
+        "name": "Screen fraud",
+        "source_id": "document:design.md#3"
+       }
+      ],
+      "links_out": [
+       {
+        "id": "PROC-HANDOFF",
+        "kind": "flow",
+        "name": "Hand off for execution",
+        "source_id": "document:design.md#3"
+       },
+       {
+        "id": "ST-SUBMIT",
+        "kind": "realization",
+        "name": "Payment submission",
+        "source_id": "document:design.md#3"
+       },
+       {
+        "id": "CAP-PAY",
+        "kind": "realization",
+        "name": "Domestic payment initiation",
+        "source_id": "document:design.md#3"
+       },
+       {
+        "id": "R-09",
+        "kind": "realization",
+        "name": "The bank commits exactly one ledger debit per successfully accepted payment.",
+        "source_id": "document:design.md#2"
+       }
+      ],
+      "name": "Post one debit",
+      "provenance": "from the design document design.md#3",
+      "type": "A1.BusinessProcess",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "automation_level": "automated"
+      },
+      "connections": [],
+      "description": "",
+      "fields": [],
+      "id": "PROC-HANDOFF",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "ROLE-BANK",
+        "kind": "assignment",
+        "name": "Bank — account servicing role",
+        "source_id": "document:design.md#3"
+       },
+       {
+        "id": "PROC-DEBIT",
+        "kind": "flow",
+        "name": "Post one debit",
+        "source_id": "document:design.md#3"
+       }
+      ],
+      "links_out": [
+       {
+        "id": "ST-SUBMIT",
+        "kind": "realization",
+        "name": "Payment submission",
+        "source_id": "document:design.md#3"
+       },
+       {
+        "id": "CAP-PAY",
+        "kind": "realization",
+        "name": "Domestic payment initiation",
+        "source_id": "document:design.md#3"
+       },
+       {
+        "id": "PROC-STATUS",
+        "kind": "flow",
+        "name": "Respond to status enquiries",
+        "source_id": "document:design.md#3"
+       },
+       {
+        "id": "R-10",
+        "kind": "realization",
+        "name": "After the initial checks, the bank hands the accepted instruction to its…",
+        "source_id": "document:design.md#2"
+       }
+      ],
+      "name": "Hand off for execution",
+      "provenance": "from the design document design.md#3",
+      "type": "A1.BusinessProcess",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "automation_level": "automated",
+       "invokes": [
+        "Payment Order Initiation: Retrieve (SO-PAYMENT-ORDER-INITIATION-RETRIEVE)"
+       ]
+      },
+      "connections": [
+       {
+        "direction": "out",
+        "evidence": [
+         "process_model:design.md#4",
+         "bian_alignment_guidance:design.md#4",
+         "author:design section 4"
+        ],
+        "id": "SD-PAYMENT-ORDER-INITIATION",
+        "mapping_id": "MAP-002",
+        "name": "Payment Order Initiation",
+        "relationship": "USES_DOMAIN",
+        "status": "approved"
+       }
+      ],
+      "description": "",
+      "fields": [],
+      "id": "PROC-STATUS",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "ROLE-BANK",
+        "kind": "assignment",
+        "name": "Bank — account servicing role",
+        "source_id": "document:design.md#3"
+       },
+       {
+        "id": "PROC-HANDOFF",
+        "kind": "flow",
+        "name": "Hand off for execution",
+        "source_id": "document:design.md#3"
+       }
+      ],
+      "links_out": [
+       {
+        "id": "ST-STATUS",
+        "kind": "realization",
+        "name": "Status enquiry",
+        "source_id": "document:design.md#3"
+       },
+       {
+        "id": "CAP-PAY",
+        "kind": "realization",
+        "name": "Domestic payment initiation",
+        "source_id": "document:design.md#3"
+       },
+       {
+        "id": "SVC-INIT",
+        "kind": "realization",
+        "name": "Business initiation service",
+        "source_id": "document:design.md#3"
+       },
+       {
+        "id": "R-11",
+        "kind": "realization",
+        "name": "The third party can retrieve the bank payment resource and its reported status.",
+        "source_id": "document:design.md#2"
+       },
+       {
+        "id": "R-19",
+        "kind": "realization",
+        "name": "A payment accepted for execution is not represented as completed at another…",
+        "source_id": "document:design.md#2"
+       },
+       {
+        "id": "R-14",
+        "kind": "realization",
+        "name": "Read p95 response latency at most 500 ms at 200 requests per second…",
+        "source_id": "ai-decision"
+       },
+       {
+        "id": "R-24",
+        "kind": "realization",
+        "name": "A payment debtor-account read is only returned where DebtorAccountRelease is…",
+        "source_id": "ai-decision"
+       }
+      ],
+      "name": "Respond to status enquiries",
+      "provenance": "from the design document design.md#3,document:design.md#4",
+      "type": "A1.BusinessProcess",
+      "version": "1"
+     }
+    ],
+    "title": "Business processes",
+    "type": "A1.BusinessProcess"
+   },
+   {
+    "definition": "Business behaviour exposed to consumers",
+    "records": [
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "channels": [
+        "Provider API channel (IF-TPP)"
+       ],
+       "consumers": [
+        "Accredited third-party provider (ACTOR-TPP)"
+       ]
+      },
+      "connections": [],
+      "description": "",
+      "fields": [],
+      "id": "SVC-INIT",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "PROC-CONSENT",
+        "kind": "realization",
+        "name": "Capture consent",
+        "source_id": "document:design.md#3"
+       },
+       {
+        "id": "PROC-SUBMIT",
+        "kind": "realization",
+        "name": "Receive the payment",
+        "source_id": "document:design.md#3"
+       },
+       {
+        "id": "PROC-STATUS",
+        "kind": "realization",
+        "name": "Respond to status enquiries",
+        "source_id": "document:design.md#3"
+       },
+       {
+        "id": "PROD-ACCOUNT",
+        "kind": "aggregation",
+        "name": "Retail account",
+        "source_id": "ai-decision"
+       }
+      ],
+      "links_out": [
+       {
+        "id": "ACTOR-TPP",
+        "kind": "serving",
+        "name": "Accredited third-party provider",
+        "source_id": "document:design.md#1"
+       },
+       {
+        "id": "R-13",
+        "kind": "realization",
+        "name": "Payment API is available at least 99.95% monthly (fictional target).",
+        "source_id": "ai-decision"
+       },
+       {
+        "id": "R-15",
+        "kind": "realization",
+        "name": "Payments platform recovery time at most 30 minutes and recovery point at…",
+        "source_id": "ai-decision"
+       },
+       {
+        "id": "R-18",
+        "kind": "realization",
+        "name": "The bank uses version 2.3.3 consistently for consent and payment API resources.",
+        "source_id": "ai-decision"
+       },
+       {
+        "id": "R-22",
+        "kind": "realization",
+        "name": "API request throttling (429) and participant identification follow the…",
+        "source_id": "ai-decision"
+       },
+       {
+        "id": "ACTOR-MERCHANT",
+        "kind": "serving",
+        "name": "Merchant",
+        "source_id": "ai-decision"
+       }
+      ],
+      "name": "Business initiation service",
+      "provenance": "from the design document design.md#3",
+      "type": "A1.BusinessService",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "channels": [
+        "Redirected authorisation web channel (IF-WEB)"
+       ],
+       "consumers": [
+        "Retail customer (ACTOR-CUSTOMER)"
+       ]
+      },
+      "connections": [],
+      "description": "",
+      "fields": [],
+      "id": "SVC-AUTH",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "PROC-AUTH",
+        "kind": "realization",
+        "name": "Authenticate and authorise",
+        "source_id": "document:design.md#3"
+       }
+      ],
+      "links_out": [
+       {
+        "id": "ACTOR-CUSTOMER",
+        "kind": "serving",
+        "name": "Retail customer",
+        "source_id": "document:design.md#1"
+       }
+      ],
+      "name": "Consent authorisation service",
+      "provenance": "from the design document design.md#3",
+      "type": "A1.BusinessService",
+      "version": "1"
+     }
+    ],
+    "title": "Business services",
+    "type": "A1.BusinessService"
+   },
+   {
+    "definition": "An individual or organisation capable of business behaviour",
+    "records": [
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "actor_kind": "person",
+       "external": true
+      },
+      "connections": [],
+      "description": "",
+      "fields": [],
+      "id": "ACTOR-CUSTOMER",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "IF-WEB",
+        "kind": "serving",
+        "name": "Redirected authorisation web channel",
+        "source_id": "document:design.md#3"
+       },
+       {
+        "id": "SVC-AUTH",
+        "kind": "serving",
+        "name": "Consent authorisation service",
+        "source_id": "document:design.md#1"
+       }
+      ],
+      "links_out": [],
+      "name": "Retail customer",
+      "provenance": "from the design document design.md#1,document:design.md#3",
+      "type": "A1.BusinessActor",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "actor_kind": "formal organisation",
+       "external": true
+      },
+      "connections": [],
+      "description": "",
+      "fields": [],
+      "id": "ACTOR-MERCHANT",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "SVC-INIT",
+        "kind": "serving",
+        "name": "Business initiation service",
+        "source_id": "ai-decision"
+       }
+      ],
+      "links_out": [],
+      "name": "Merchant",
+      "provenance": "from the design document design.md#1,document:design.md#3",
+      "type": "A1.BusinessActor",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "actor_kind": "formal organisation",
+       "external": true
+      },
+      "connections": [],
+      "description": "",
+      "fields": [],
+      "id": "ACTOR-TPP",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "IF-TPP",
+        "kind": "serving",
+        "name": "Provider API channel",
+        "source_id": "document:design.md#3"
+       },
+       {
+        "id": "SVC-INIT",
+        "kind": "serving",
+        "name": "Business initiation service",
+        "source_id": "document:design.md#1"
+       }
+      ],
+      "links_out": [],
+      "name": "Accredited third-party provider",
+      "provenance": "from the design document design.md#1,document:design.md#3",
+      "type": "A1.BusinessActor",
+      "version": "1"
+     }
+    ],
+    "title": "Business actors",
+    "type": "A1.BusinessActor"
+   },
+   {
+    "definition": "Responsibility for a class of business behaviour",
+    "records": [
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "role_kind": "role"
+      },
+      "connections": [],
+      "description": "",
+      "fields": [],
+      "id": "ROLE-BANK",
+      "lifecycle_status": "planned",
+      "links_in": [],
+      "links_out": [
+       {
+        "id": "PROC-CONSENT",
+        "kind": "assignment",
+        "name": "Capture consent",
+        "source_id": "document:design.md#3"
+       },
+       {
+        "id": "PROC-AUTH",
+        "kind": "assignment",
+        "name": "Authenticate and authorise",
+        "source_id": "document:design.md#3"
+       },
+       {
+        "id": "PROC-SUBMIT",
+        "kind": "assignment",
+        "name": "Receive the payment",
+        "source_id": "document:design.md#3"
+       },
+       {
+        "id": "PROC-VALIDATE",
+        "kind": "assignment",
+        "name": "Validate data and account",
+        "source_id": "document:design.md#3"
+       },
+       {
+        "id": "PROC-RISK",
+        "kind": "assignment",
+        "name": "Screen fraud",
+        "source_id": "document:design.md#3"
+       },
+       {
+        "id": "PROC-DEBIT",
+        "kind": "assignment",
+        "name": "Post one debit",
+        "source_id": "document:design.md#3"
+       },
+       {
+        "id": "PROC-HANDOFF",
+        "kind": "assignment",
+        "name": "Hand off for execution",
+        "source_id": "document:design.md#3"
+       },
+       {
+        "id": "PROC-STATUS",
+        "kind": "assignment",
+        "name": "Respond to status enquiries",
+        "source_id": "document:design.md#3"
+       }
+      ],
+      "name": "Bank — account servicing role",
+      "provenance": "from the design document design.md#1,document:design.md#3",
+      "type": "A1.BusinessRole",
+      "version": "1"
+     }
+    ],
+    "title": "Business roles",
+    "type": "A1.BusinessRole"
+   },
+   {
+    "definition": "An expressed architectural requirement",
+    "records": [
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "priority": "must",
+       "requirement_kind": "requirement"
+      },
+      "connections": [],
+      "description": "The accredited third party can create a one-off domestic payment consent and receive a bank-generated identifier. (basis S in the design document)",
+      "fields": [],
+      "id": "R-01",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "PROC-CONSENT",
+        "kind": "realization",
+        "name": "Capture consent",
+        "source_id": "document:design.md#2"
+       }
+      ],
+      "links_out": [],
+      "name": "The accredited third party can create a one-off domestic payment consent and…",
+      "provenance": "from the design document design.md#2",
+      "type": "A1.BusinessRequirement",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "priority": "must",
+       "requirement_kind": "requirement"
+      },
+      "connections": [],
+      "description": "The bank uses the redirect authorisation flow to authenticate the customer and accept or reject the complete consent. (basis S in the design document)",
+      "fields": [],
+      "id": "R-02",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "PROC-AUTH",
+        "kind": "realization",
+        "name": "Authenticate and authorise",
+        "source_id": "document:design.md#2"
+       }
+      ],
+      "links_out": [],
+      "name": "The bank uses the redirect authorisation flow to authenticate the customer…",
+      "provenance": "from the design document design.md#2",
+      "type": "A1.BusinessRequirement",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "priority": "must",
+       "requirement_kind": "requirement"
+      },
+      "connections": [],
+      "description": "Unauthorised domestic consent is time-limited to 24 hours; expired consent cannot be used to initiate payment. (basis S in the design document)",
+      "fields": [],
+      "id": "R-03",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "PROC-SUBMIT",
+        "kind": "realization",
+        "name": "Receive the payment",
+        "source_id": "document:design.md#2"
+       }
+      ],
+      "links_out": [],
+      "name": "Unauthorised domestic consent is time-limited to 24 hours; expired consent…",
+      "provenance": "from the design document design.md#2",
+      "type": "A1.BusinessRequirement",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "priority": "must",
+       "requirement_kind": "requirement"
+      },
+      "connections": [],
+      "description": "Only an authorised domestic consent may be used to submit one domestic payment. (basis S in the design document)",
+      "fields": [],
+      "id": "R-04",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "PROC-SUBMIT",
+        "kind": "realization",
+        "name": "Receive the payment",
+        "source_id": "document:design.md#2"
+       }
+      ],
+      "links_out": [],
+      "name": "Only an authorised domestic consent may be used to submit one domestic payment.",
+      "provenance": "from the design document design.md#2",
+      "type": "A1.BusinessRequirement",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "priority": "must",
+       "requirement_kind": "requirement"
+      },
+      "connections": [],
+      "description": "The same payment request will not create a second debit under supported idempotent replay. (basis D in the design document)",
+      "fields": [],
+      "id": "R-05",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "PROC-SUBMIT",
+        "kind": "realization",
+        "name": "Receive the payment",
+        "source_id": "document:design.md#2"
+       }
+      ],
+      "links_out": [],
+      "name": "The same payment request will not create a second debit under supported…",
+      "provenance": "from the design document design.md#2",
+      "type": "A1.BusinessRequirement",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "priority": "must",
+       "requirement_kind": "requirement"
+      },
+      "connections": [],
+      "description": "Payment data use NZD and valid domestic account identification; invalid data are rejected. (basis S in the design document)",
+      "fields": [],
+      "id": "R-06",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "PROC-VALIDATE",
+        "kind": "realization",
+        "name": "Validate data and account",
+        "source_id": "document:design.md#2"
+       }
+      ],
+      "links_out": [],
+      "name": "Payment data use NZD and valid domestic account identification; invalid data…",
+      "provenance": "from the design document design.md#2",
+      "type": "A1.BusinessRequirement",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "priority": "must",
+       "requirement_kind": "requirement"
+      },
+      "connections": [],
+      "description": "The bank checks debtor account eligibility and available funds before posting. (basis D in the design document)",
+      "fields": [],
+      "id": "R-07",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "PROC-VALIDATE",
+        "kind": "realization",
+        "name": "Validate data and account",
+        "source_id": "document:design.md#2"
+       }
+      ],
+      "links_out": [],
+      "name": "The bank checks debtor account eligibility and available funds before posting.",
+      "provenance": "from the design document design.md#2",
+      "type": "A1.BusinessRequirement",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "priority": "must",
+       "requirement_kind": "requirement"
+      },
+      "connections": [],
+      "description": "The bank applies a risk screening decision before debit and execution handoff. (basis D in the design document)",
+      "fields": [],
+      "id": "R-08",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "PROC-RISK",
+        "kind": "realization",
+        "name": "Screen fraud",
+        "source_id": "document:design.md#2"
+       }
+      ],
+      "links_out": [],
+      "name": "The bank applies a risk screening decision before debit and execution handoff.",
+      "provenance": "from the design document design.md#2",
+      "type": "A1.BusinessRequirement",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "priority": "must",
+       "requirement_kind": "requirement"
+      },
+      "connections": [],
+      "description": "The bank commits exactly one ledger debit per successfully accepted payment. (basis D in the design document)",
+      "fields": [],
+      "id": "R-09",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "PROC-DEBIT",
+        "kind": "realization",
+        "name": "Post one debit",
+        "source_id": "document:design.md#2"
+       }
+      ],
+      "links_out": [],
+      "name": "The bank commits exactly one ledger debit per successfully accepted payment.",
+      "provenance": "from the design document design.md#2",
+      "type": "A1.BusinessRequirement",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "priority": "must",
+       "requirement_kind": "requirement"
+      },
+      "connections": [],
+      "description": "After the initial checks, the bank hands the accepted instruction to its execution boundary. (basis D in the design document)",
+      "fields": [],
+      "id": "R-10",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "PROC-HANDOFF",
+        "kind": "realization",
+        "name": "Hand off for execution",
+        "source_id": "document:design.md#2"
+       }
+      ],
+      "links_out": [],
+      "name": "After the initial checks, the bank hands the accepted instruction to its…",
+      "provenance": "from the design document design.md#2",
+      "type": "A1.BusinessRequirement",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "priority": "must",
+       "requirement_kind": "requirement"
+      },
+      "connections": [],
+      "description": "The third party can retrieve the bank payment resource and its reported status. (basis S in the design document)",
+      "fields": [],
+      "id": "R-11",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "PROC-STATUS",
+        "kind": "realization",
+        "name": "Respond to status enquiries",
+        "source_id": "document:design.md#2"
+       }
+      ],
+      "links_out": [],
+      "name": "The third party can retrieve the bank payment resource and its reported status.",
+      "provenance": "from the design document design.md#2",
+      "type": "A1.BusinessRequirement",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "priority": "must",
+       "requirement_kind": "requirement"
+      },
+      "connections": [],
+      "description": "Customer decline, failed authentication or expired consent do not debit accounts. (basis D in the design document)",
+      "fields": [],
+      "id": "R-12",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "PROC-AUTH",
+        "kind": "realization",
+        "name": "Authenticate and authorise",
+        "source_id": "document:design.md#2"
+       }
+      ],
+      "links_out": [],
+      "name": "Customer decline, failed authentication or expired consent do not debit…",
+      "provenance": "from the design document design.md#2",
+      "type": "A1.BusinessRequirement",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "priority": "must",
+       "requirement_kind": "requirement"
+      },
+      "connections": [],
+      "description": "Payment API is available at least 99.95% monthly (fictional target). (basis D in the design document)",
+      "fields": [],
+      "id": "R-13",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "SVC-INIT",
+        "kind": "realization",
+        "name": "Business initiation service",
+        "source_id": "ai-decision"
+       }
+      ],
+      "links_out": [],
+      "name": "Payment API is available at least 99.95% monthly (fictional target).",
+      "provenance": "from the design document design.md#2",
+      "type": "A1.BusinessRequirement",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "priority": "must",
+       "requirement_kind": "requirement"
+      },
+      "connections": [],
+      "description": "Read p95 response latency at most 500 ms at 200 requests per second (fictional target). (basis D in the design document)",
+      "fields": [],
+      "id": "R-14",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "PROC-STATUS",
+        "kind": "realization",
+        "name": "Respond to status enquiries",
+        "source_id": "ai-decision"
+       }
+      ],
+      "links_out": [],
+      "name": "Read p95 response latency at most 500 ms at 200 requests per second…",
+      "provenance": "from the design document design.md#2",
+      "type": "A1.BusinessRequirement",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "priority": "must",
+       "requirement_kind": "requirement"
+      },
+      "connections": [],
+      "description": "Payments platform recovery time at most 30 minutes and recovery point at most 5 minutes (fictional target). (basis D in the design document)",
+      "fields": [],
+      "id": "R-15",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "SVC-INIT",
+        "kind": "realization",
+        "name": "Business initiation service",
+        "source_id": "ai-decision"
+       }
+      ],
+      "links_out": [],
+      "name": "Payments platform recovery time at most 30 minutes and recovery point at…",
+      "provenance": "from the design document design.md#2",
+      "type": "A1.BusinessRequirement",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "priority": "must",
+       "requirement_kind": "requirement"
+      },
+      "connections": [],
+      "description": "Personal and account information is protected and access to consent and payment resources is scoped. (basis D in the design document)",
+      "fields": [],
+      "id": "R-16",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "PROC-AUTH",
+        "kind": "realization",
+        "name": "Authenticate and authorise",
+        "source_id": "ai-decision"
+       }
+      ],
+      "links_out": [],
+      "name": "Personal and account information is protected and access to consent and…",
+      "provenance": "from the design document design.md#2",
+      "type": "A1.BusinessRequirement",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "priority": "must",
+       "requirement_kind": "requirement"
+      },
+      "connections": [],
+      "description": "Payment and consent decisions are correlated and auditable. (basis D in the design document)",
+      "fields": [],
+      "id": "R-17",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "PROC-RISK",
+        "kind": "realization",
+        "name": "Screen fraud",
+        "source_id": "ai-decision"
+       }
+      ],
+      "links_out": [],
+      "name": "Payment and consent decisions are correlated and auditable.",
+      "provenance": "from the design document design.md#2",
+      "type": "A1.BusinessRequirement",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "priority": "must",
+       "requirement_kind": "requirement"
+      },
+      "connections": [],
+      "description": "The bank uses version 2.3.3 consistently for consent and payment API resources. (basis S in the design document)",
+      "fields": [],
+      "id": "R-18",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "SVC-INIT",
+        "kind": "realization",
+        "name": "Business initiation service",
+        "source_id": "ai-decision"
+       }
+      ],
+      "links_out": [],
+      "name": "The bank uses version 2.3.3 consistently for consent and payment API resources.",
+      "provenance": "from the design document design.md#2",
+      "type": "A1.BusinessRequirement",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "priority": "must",
+       "requirement_kind": "requirement"
+      },
+      "connections": [],
+      "description": "A payment accepted for execution is not represented as completed at another bank. (basis S in the design document)",
+      "fields": [],
+      "id": "R-19",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "PROC-STATUS",
+        "kind": "realization",
+        "name": "Respond to status enquiries",
+        "source_id": "document:design.md#2"
+       }
+      ],
+      "links_out": [],
+      "name": "A payment accepted for execution is not represented as completed at another…",
+      "provenance": "from the design document design.md#2",
+      "type": "A1.BusinessRequirement",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "priority": "must",
+       "requirement_kind": "requirement"
+      },
+      "connections": [],
+      "description": "Deployments have explicit segment boundaries, private persistence routes and managed secrets. (basis D in the design document)",
+      "fields": [],
+      "id": "R-20",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "CAP-RISK",
+        "kind": "realization",
+        "name": "Payment risk control",
+        "source_id": "ai-decision"
+       }
+      ],
+      "links_out": [],
+      "name": "Deployments have explicit segment boundaries, private persistence routes and…",
+      "provenance": "from the design document design.md#2",
+      "type": "A1.BusinessRequirement",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "priority": "must",
+       "requirement_kind": "requirement"
+      },
+      "connections": [],
+      "description": "A regulated deployment must support hybrid redirect and decoupled (CIBA) authorisation; only redirect is designed in S1, so the full regulated implementation remains outside S1. (basis S in the design document)",
+      "fields": [],
+      "id": "R-21",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "PROC-AUTH",
+        "kind": "realization",
+        "name": "Authenticate and authorise",
+        "source_id": "document:design.md#2"
+       }
+      ],
+      "links_out": [],
+      "name": "A regulated deployment must support hybrid redirect and decoupled (CIBA)…",
+      "provenance": "from the design document design.md#2",
+      "type": "A1.BusinessRequirement",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "priority": "must",
+       "requirement_kind": "requirement"
+      },
+      "connections": [],
+      "description": "API request throttling (429) and participant identification follow the MBIE-modified v2.3.3 requirements, not the superseded onboarding and register clauses. (basis S in the design document)",
+      "fields": [],
+      "id": "R-22",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "SVC-INIT",
+        "kind": "realization",
+        "name": "Business initiation service",
+        "source_id": "ai-decision"
+       }
+      ],
+      "links_out": [],
+      "name": "API request throttling (429) and participant identification follow the…",
+      "provenance": "from the design document design.md#2",
+      "type": "A1.BusinessRequirement",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "priority": "must",
+       "requirement_kind": "requirement"
+      },
+      "connections": [],
+      "description": "An unauthorised domestic payment consent is valid for 24 hours, and status and expiry are checked before submission. (basis S in the design document)",
+      "fields": [],
+      "id": "R-23",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "PROC-SUBMIT",
+        "kind": "realization",
+        "name": "Receive the payment",
+        "source_id": "document:design.md#2"
+       }
+      ],
+      "links_out": [],
+      "name": "An unauthorised domestic payment consent is valid for 24 hours, and status…",
+      "provenance": "from the design document design.md#2",
+      "type": "A1.BusinessRequirement",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "priority": "must",
+       "requirement_kind": "requirement"
+      },
+      "connections": [],
+      "description": "A payment debtor-account read is only returned where DebtorAccountRelease is true. (basis S in the design document)",
+      "fields": [],
+      "id": "R-24",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "PROC-STATUS",
+        "kind": "realization",
+        "name": "Respond to status enquiries",
+        "source_id": "ai-decision"
+       }
+      ],
+      "links_out": [],
+      "name": "A payment debtor-account read is only returned where DebtorAccountRelease is…",
+      "provenance": "from the design document design.md#2",
+      "type": "A1.BusinessRequirement",
+      "version": "1"
+     }
+    ],
+    "title": "Business requirements",
+    "type": "A1.BusinessRequirement"
+   },
+   {
+    "definition": "A coherent offering to customers — an account, a card, a payment service — and the services and information it brings together",
+    "records": [
+     {
+      "attribute_sources": {},
+      "attributes": {},
+      "connections": [],
+      "description": "The invented retail account product the bank offers.",
+      "fields": [],
+      "id": "PROD-ACCOUNT",
+      "lifecycle_status": "planned",
+      "links_in": [],
+      "links_out": [
+       {
+        "id": "SVC-INIT",
+        "kind": "aggregation",
+        "name": "Business initiation service",
+        "source_id": "ai-decision"
+       }
+      ],
+      "name": "Retail account",
+      "provenance": "from the design document design.md#3",
+      "type": "A1.Product",
+      "version": "1"
+     }
+    ],
+    "title": "Products",
+    "type": "A1.Product"
+   },
+   {
+    "definition": "A channel through which the business offers its services — a branch, a mobile app, an open-banking API, a file",
+    "records": [
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "channel_kind": "api",
+       "customer_facing": false
+      },
+      "connections": [
+       {
+        "direction": "out",
+        "evidence": [
+         "application_architecture_document:design.md#5",
+         "author:design section 5"
+        ],
+        "id": "IFC-PAYMENT-INITIATION",
+        "mapping_id": "MAP-009",
+        "name": "Payment Initiation API v2.3.3",
+        "relationship": "REALIZED_BY",
+        "status": "approved"
+       }
+      ],
+      "description": "",
+      "fields": [],
+      "id": "IF-TPP",
+      "lifecycle_status": "planned",
+      "links_in": [],
+      "links_out": [
+       {
+        "id": "ACTOR-TPP",
+        "kind": "serving",
+        "name": "Accredited third-party provider",
+        "source_id": "document:design.md#3"
+       }
+      ],
+      "name": "Provider API channel",
+      "provenance": "from the design document design.md#3",
+      "type": "A1.BusinessInterface",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "channel_kind": "web",
+       "customer_facing": true
+      },
+      "connections": [],
+      "description": "",
+      "fields": [],
+      "id": "IF-WEB",
+      "lifecycle_status": "planned",
+      "links_in": [],
+      "links_out": [
+       {
+        "id": "ACTOR-CUSTOMER",
+        "kind": "serving",
+        "name": "Retail customer",
+        "source_id": "document:design.md#3"
+       }
+      ],
+      "name": "Redirected authorisation web channel",
+      "provenance": "from the design document design.md#3",
+      "type": "A1.BusinessInterface",
+      "version": "1"
+     }
+    ],
+    "title": "Business interfaces",
+    "type": "A1.BusinessInterface"
+   }
+  ],
+  "summary": {
+   "by_type": {
+    "Business actors": 3,
+    "Business capabilities": 3,
+    "Business interfaces": 2,
+    "Business processes": 8,
+    "Business requirements": 24,
+    "Business roles": 1,
+    "Business services": 2,
+    "Products": 1,
+    "Value stream stages": 3,
+    "Value streams": 1
+   },
+   "records": 48,
+   "unconfirmed": 0,
+   "with_approved_connection": 6
+  },
+  "title": "A1 Business Architecture",
+  "workspace": "v3"
+ }
+}

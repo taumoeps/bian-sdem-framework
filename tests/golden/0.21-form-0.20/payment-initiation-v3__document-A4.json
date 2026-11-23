@@ -1,0 +1,1422 @@
+{
+ "command": [
+  "document",
+  "--workspace",
+  "<tmp>/v3",
+  "--layer",
+  "A5",
+  "--json"
+ ],
+ "exit": 0,
+ "output": {
+  "fingerprint": "<volatile>",
+  "gaps": {
+   "no_connection": [
+    "ENV-PROD",
+    "NODE-DATA",
+    "SYS-MQ",
+    "SYS-KMS",
+    "ZONE-EDGE",
+    "ZONE-APP",
+    "ZONE-DATA",
+    "ZONE-SEC",
+    "ZONE-INTEG",
+    "PATH-EDGE",
+    "PATH-DATA",
+    "PATH-KEY",
+    "PATH-HANDOFF",
+    "LOC-NZ"
+   ],
+   "placeholders": [],
+   "requirements_not_confirmed": [],
+   "unconfirmed": []
+  },
+  "layer": "A5",
+  "requirements": [],
+  "sections": [
+   {
+    "definition": "An application as deployed into a specific environment",
+    "records": [
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "component_id": "API ingress (APP-EDGE)",
+       "environment_id": "Production (ENV-PROD)",
+       "location": "NZ production location (LOC-NZ)",
+       "platform_id": "Redundant API ingress (NODE-EDGE)"
+      },
+      "connections": [
+       {
+        "direction": "in",
+        "evidence": [
+         "deployment_design:design.md#6",
+         "author:design section 6"
+        ],
+        "id": "APP-EDGE",
+        "mapping_id": "MAP-011",
+        "name": "API ingress",
+        "relationship": "DEPLOYED_AS",
+        "status": "approved"
+       }
+      ],
+      "description": "",
+      "fields": [],
+      "id": "DEP-EDGE",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "ENV-PROD",
+        "kind": "aggregation",
+        "name": "Production",
+        "source_id": "document:design.md#6"
+       },
+       {
+        "id": "NODE-EDGE",
+        "kind": "assignment",
+        "name": "Redundant API ingress",
+        "source_id": "document:design.md#6"
+       }
+      ],
+      "links_out": [],
+      "name": "APP-EDGE — production",
+      "provenance": "from the design document design.md#6",
+      "type": "A5.Deployment",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "component_id": "Identity (APP-IDENT)",
+       "environment_id": "Production (ENV-PROD)",
+       "location": "NZ production location (LOC-NZ)",
+       "platform_id": "Identity and secrets (NODE-SEC)"
+      },
+      "connections": [
+       {
+        "direction": "in",
+        "evidence": [
+         "deployment_design:design.md#6",
+         "author:design section 6"
+        ],
+        "id": "APP-IDENT",
+        "mapping_id": "MAP-012",
+        "name": "Identity",
+        "relationship": "DEPLOYED_AS",
+        "status": "approved"
+       }
+      ],
+      "description": "",
+      "fields": [],
+      "id": "DEP-IDENT",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "ENV-PROD",
+        "kind": "aggregation",
+        "name": "Production",
+        "source_id": "document:design.md#6"
+       },
+       {
+        "id": "NODE-SEC",
+        "kind": "assignment",
+        "name": "Identity and secrets",
+        "source_id": "document:design.md#6"
+       }
+      ],
+      "links_out": [],
+      "name": "APP-IDENT — production",
+      "provenance": "from the design document design.md#6",
+      "type": "A5.Deployment",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "component_id": "Consent processing (APP-CONSENT)",
+       "environment_id": "Production (ENV-PROD)",
+       "location": "NZ production location (LOC-NZ)"
+      },
+      "connections": [
+       {
+        "direction": "in",
+        "evidence": [
+         "deployment_design:design.md#6",
+         "author:design section 6"
+        ],
+        "id": "APP-CONSENT",
+        "mapping_id": "MAP-013",
+        "name": "Consent processing",
+        "relationship": "DEPLOYED_AS",
+        "status": "approved"
+       }
+      ],
+      "description": "",
+      "fields": [],
+      "id": "DEP-CONSENT",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "ENV-PROD",
+        "kind": "aggregation",
+        "name": "Production",
+        "source_id": "document:design.md#6"
+       },
+       {
+        "id": "NODE-APP",
+        "kind": "assignment",
+        "name": "Three-node application compute",
+        "source_id": "document:design.md#6"
+       }
+      ],
+      "links_out": [],
+      "name": "APP-CONSENT — production",
+      "provenance": "from the design document design.md#6",
+      "type": "A5.Deployment",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "component_id": "Payments hub (APP-PAYHUB)",
+       "environment_id": "Production (ENV-PROD)",
+       "location": "NZ production location (LOC-NZ)"
+      },
+      "connections": [
+       {
+        "direction": "in",
+        "evidence": [
+         "deployment_design:design.md#6",
+         "author:design section 6"
+        ],
+        "id": "APP-PAYHUB",
+        "mapping_id": "MAP-014",
+        "name": "Payments hub",
+        "relationship": "DEPLOYED_AS",
+        "status": "approved"
+       }
+      ],
+      "description": "",
+      "fields": [],
+      "id": "DEP-PAYHUB",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "ENV-PROD",
+        "kind": "aggregation",
+        "name": "Production",
+        "source_id": "document:design.md#6"
+       },
+       {
+        "id": "NODE-APP",
+        "kind": "assignment",
+        "name": "Three-node application compute",
+        "source_id": "document:design.md#6"
+       }
+      ],
+      "links_out": [],
+      "name": "APP-PAYHUB — production",
+      "provenance": "from the design document design.md#6",
+      "type": "A5.Deployment",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "component_id": "Fraud service (APP-RISK)",
+       "environment_id": "Production (ENV-PROD)",
+       "location": "NZ production location (LOC-NZ)"
+      },
+      "connections": [
+       {
+        "direction": "in",
+        "evidence": [
+         "deployment_design:design.md#6",
+         "author:design section 6"
+        ],
+        "id": "APP-RISK",
+        "mapping_id": "MAP-015",
+        "name": "Fraud service",
+        "relationship": "DEPLOYED_AS",
+        "status": "approved"
+       }
+      ],
+      "description": "",
+      "fields": [],
+      "id": "DEP-RISK",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "ENV-PROD",
+        "kind": "aggregation",
+        "name": "Production",
+        "source_id": "document:design.md#6"
+       },
+       {
+        "id": "NODE-APP",
+        "kind": "assignment",
+        "name": "Three-node application compute",
+        "source_id": "document:design.md#6"
+       }
+      ],
+      "links_out": [],
+      "name": "APP-RISK — production",
+      "provenance": "from the design document design.md#6",
+      "type": "A5.Deployment",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "component_id": "Account ledger (APP-LEDGER)",
+       "environment_id": "Production (ENV-PROD)",
+       "location": "NZ production location (LOC-NZ)",
+       "platform_id": "Ledger and execution integration (NODE-INT)"
+      },
+      "connections": [
+       {
+        "direction": "in",
+        "evidence": [
+         "deployment_design:design.md#6",
+         "author:design section 6"
+        ],
+        "id": "APP-LEDGER",
+        "mapping_id": "MAP-016",
+        "name": "Account ledger",
+        "relationship": "DEPLOYED_AS",
+        "status": "approved"
+       }
+      ],
+      "description": "",
+      "fields": [],
+      "id": "DEP-LEDGER",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "ENV-PROD",
+        "kind": "aggregation",
+        "name": "Production",
+        "source_id": "document:design.md#6"
+       },
+       {
+        "id": "NODE-INT",
+        "kind": "assignment",
+        "name": "Ledger and execution integration",
+        "source_id": "document:design.md#6"
+       }
+      ],
+      "links_out": [],
+      "name": "APP-LEDGER — production",
+      "provenance": "from the design document design.md#6",
+      "type": "A5.Deployment",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "component_id": "Notification service (APP-NOTIFY)",
+       "environment_id": "Production (ENV-PROD)",
+       "location": "NZ production location (LOC-NZ)"
+      },
+      "connections": [
+       {
+        "direction": "in",
+        "evidence": [
+         "deployment_design:design.md#6",
+         "author:design section 6"
+        ],
+        "id": "APP-NOTIFY",
+        "mapping_id": "MAP-017",
+        "name": "Notification service",
+        "relationship": "DEPLOYED_AS",
+        "status": "approved"
+       }
+      ],
+      "description": "",
+      "fields": [],
+      "id": "DEP-NOTIFY",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "ENV-PROD",
+        "kind": "aggregation",
+        "name": "Production",
+        "source_id": "document:design.md#6"
+       },
+       {
+        "id": "NODE-APP",
+        "kind": "assignment",
+        "name": "Three-node application compute",
+        "source_id": "document:design.md#6"
+       }
+      ],
+      "links_out": [],
+      "name": "APP-NOTIFY — production",
+      "provenance": "from the design document design.md#6",
+      "type": "A5.Deployment",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "component_id": "Outbound connector (APP-OUTBOUND)",
+       "environment_id": "Production (ENV-PROD)",
+       "location": "NZ production location (LOC-NZ)",
+       "platform_id": "Ledger and execution integration (NODE-INT)"
+      },
+      "connections": [
+       {
+        "direction": "in",
+        "evidence": [
+         "deployment_design:design.md#6",
+         "author:design section 6"
+        ],
+        "id": "APP-OUTBOUND",
+        "mapping_id": "MAP-018",
+        "name": "Outbound connector",
+        "relationship": "DEPLOYED_AS",
+        "status": "approved"
+       }
+      ],
+      "description": "",
+      "fields": [],
+      "id": "DEP-OUT",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "ENV-PROD",
+        "kind": "aggregation",
+        "name": "Production",
+        "source_id": "document:design.md#6"
+       },
+       {
+        "id": "NODE-INT",
+        "kind": "assignment",
+        "name": "Ledger and execution integration",
+        "source_id": "document:design.md#6"
+       }
+      ],
+      "links_out": [],
+      "name": "APP-OUTBOUND — production",
+      "provenance": "from the design document design.md#6",
+      "type": "A5.Deployment",
+      "version": "1"
+     }
+    ],
+    "title": "Deployments",
+    "type": "A5.Deployment"
+   },
+   {
+    "definition": "A governed runtime boundary such as production or test",
+    "records": [
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "environment_kind": "production",
+       "location": "NZ production location (LOC-NZ)"
+      },
+      "connections": [],
+      "description": "",
+      "fields": [],
+      "id": "ENV-PROD",
+      "lifecycle_status": "planned",
+      "links_in": [],
+      "links_out": [
+       {
+        "id": "NODE-EDGE",
+        "kind": "aggregation",
+        "name": "Redundant API ingress",
+        "source_id": "document:design.md#6"
+       },
+       {
+        "id": "NODE-APP",
+        "kind": "aggregation",
+        "name": "Three-node application compute",
+        "source_id": "document:design.md#6"
+       },
+       {
+        "id": "NODE-DATA",
+        "kind": "aggregation",
+        "name": "Database nodes",
+        "source_id": "document:design.md#6"
+       },
+       {
+        "id": "NODE-SEC",
+        "kind": "aggregation",
+        "name": "Identity and secrets",
+        "source_id": "document:design.md#6"
+       },
+       {
+        "id": "NODE-INT",
+        "kind": "aggregation",
+        "name": "Ledger and execution integration",
+        "source_id": "document:design.md#6"
+       },
+       {
+        "id": "DEP-EDGE",
+        "kind": "aggregation",
+        "name": "APP-EDGE — production",
+        "source_id": "document:design.md#6"
+       },
+       {
+        "id": "DEP-IDENT",
+        "kind": "aggregation",
+        "name": "APP-IDENT — production",
+        "source_id": "document:design.md#6"
+       },
+       {
+        "id": "DEP-CONSENT",
+        "kind": "aggregation",
+        "name": "APP-CONSENT — production",
+        "source_id": "document:design.md#6"
+       },
+       {
+        "id": "DEP-PAYHUB",
+        "kind": "aggregation",
+        "name": "APP-PAYHUB — production",
+        "source_id": "document:design.md#6"
+       },
+       {
+        "id": "DEP-RISK",
+        "kind": "aggregation",
+        "name": "APP-RISK — production",
+        "source_id": "document:design.md#6"
+       },
+       {
+        "id": "DEP-LEDGER",
+        "kind": "aggregation",
+        "name": "APP-LEDGER — production",
+        "source_id": "document:design.md#6"
+       },
+       {
+        "id": "DEP-NOTIFY",
+        "kind": "aggregation",
+        "name": "APP-NOTIFY — production",
+        "source_id": "document:design.md#6"
+       },
+       {
+        "id": "DEP-OUT",
+        "kind": "aggregation",
+        "name": "APP-OUTBOUND — production",
+        "source_id": "document:design.md#6"
+       }
+      ],
+      "name": "Production",
+      "provenance": "from the design document design.md#6",
+      "type": "A5.DeploymentEnvironment",
+      "version": "1"
+     }
+    ],
+    "title": "Deployment environments",
+    "type": "A5.DeploymentEnvironment"
+   },
+   {
+    "definition": "A computational host, physical or virtual",
+    "records": [
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "internet_facing": true,
+       "location": "NZ production location (LOC-NZ)"
+      },
+      "connections": [
+       {
+        "direction": "in",
+        "evidence": [
+         "network_design:design.md#6",
+         "author:design section 6"
+        ],
+        "id": "IFC-PAYMENT-INITIATION",
+        "mapping_id": "MAP-010",
+        "name": "Payment Initiation API v2.3.3",
+        "relationship": "EXPOSED_THROUGH",
+        "status": "approved"
+       },
+       {
+        "direction": "in",
+        "evidence": [
+         "deployment_design:design.md#6",
+         "author:design section 6"
+        ],
+        "id": "APP-EDGE",
+        "mapping_id": "MAP-019",
+        "name": "API ingress",
+        "relationship": "DEPLOYED_ON",
+        "status": "approved"
+       }
+      ],
+      "description": "",
+      "fields": [],
+      "id": "NODE-EDGE",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "ZONE-EDGE",
+        "kind": "aggregation",
+        "name": "Edge zone",
+        "source_id": "document:design.md#6"
+       },
+       {
+        "id": "LOC-NZ",
+        "kind": "aggregation",
+        "name": "NZ production location",
+        "source_id": "document:design.md#6"
+       },
+       {
+        "id": "ENV-PROD",
+        "kind": "aggregation",
+        "name": "Production",
+        "source_id": "document:design.md#6"
+       },
+       {
+        "id": "PATH-EDGE",
+        "kind": "association",
+        "name": "External boundary path",
+        "source_id": "document:design.md#6"
+       }
+      ],
+      "links_out": [
+       {
+        "id": "DEP-EDGE",
+        "kind": "assignment",
+        "name": "APP-EDGE — production",
+        "source_id": "document:design.md#6"
+       }
+      ],
+      "name": "Redundant API ingress",
+      "provenance": "from the design document design.md#6",
+      "type": "A5.Node",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "location": "NZ production location (LOC-NZ)"
+      },
+      "connections": [
+       {
+        "direction": "in",
+        "evidence": [
+         "deployment_design:design.md#6",
+         "author:design section 6"
+        ],
+        "id": "APP-CONSENT",
+        "mapping_id": "MAP-021",
+        "name": "Consent processing",
+        "relationship": "DEPLOYED_ON",
+        "status": "approved"
+       },
+       {
+        "direction": "in",
+        "evidence": [
+         "deployment_design:design.md#6",
+         "author:design section 6"
+        ],
+        "id": "APP-PAYHUB",
+        "mapping_id": "MAP-022",
+        "name": "Payments hub",
+        "relationship": "DEPLOYED_ON",
+        "status": "approved"
+       },
+       {
+        "direction": "in",
+        "evidence": [
+         "deployment_design:design.md#6",
+         "author:design section 6"
+        ],
+        "id": "APP-RISK",
+        "mapping_id": "MAP-023",
+        "name": "Fraud service",
+        "relationship": "DEPLOYED_ON",
+        "status": "approved"
+       },
+       {
+        "direction": "in",
+        "evidence": [
+         "deployment_design:design.md#6",
+         "author:design section 6"
+        ],
+        "id": "APP-NOTIFY",
+        "mapping_id": "MAP-024",
+        "name": "Notification service",
+        "relationship": "DEPLOYED_ON",
+        "status": "approved"
+       }
+      ],
+      "description": "",
+      "fields": [],
+      "id": "NODE-APP",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "ZONE-APP",
+        "kind": "aggregation",
+        "name": "Application zone",
+        "source_id": "document:design.md#6"
+       },
+       {
+        "id": "LOC-NZ",
+        "kind": "aggregation",
+        "name": "NZ production location",
+        "source_id": "document:design.md#6"
+       },
+       {
+        "id": "ENV-PROD",
+        "kind": "aggregation",
+        "name": "Production",
+        "source_id": "document:design.md#6"
+       },
+       {
+        "id": "PATH-DATA",
+        "kind": "association",
+        "name": "Application to database path",
+        "source_id": "document:design.md#6"
+       },
+       {
+        "id": "PATH-KEY",
+        "kind": "association",
+        "name": "Secret retrieval path",
+        "source_id": "document:design.md#6"
+       },
+       {
+        "id": "PATH-HANDOFF",
+        "kind": "association",
+        "name": "Payment handoff path",
+        "source_id": "document:design.md#6"
+       }
+      ],
+      "links_out": [
+       {
+        "id": "DEP-CONSENT",
+        "kind": "assignment",
+        "name": "APP-CONSENT — production",
+        "source_id": "document:design.md#6"
+       },
+       {
+        "id": "DEP-PAYHUB",
+        "kind": "assignment",
+        "name": "APP-PAYHUB — production",
+        "source_id": "document:design.md#6"
+       },
+       {
+        "id": "DEP-RISK",
+        "kind": "assignment",
+        "name": "APP-RISK — production",
+        "source_id": "document:design.md#6"
+       },
+       {
+        "id": "DEP-NOTIFY",
+        "kind": "assignment",
+        "name": "APP-NOTIFY — production",
+        "source_id": "document:design.md#6"
+       },
+       {
+        "id": "SYS-MQ",
+        "kind": "assignment",
+        "name": "Durable events",
+        "source_id": "ai-decision"
+       }
+      ],
+      "name": "Three-node application compute",
+      "provenance": "from the design document design.md#6",
+      "type": "A5.Node",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "location": "NZ production location (LOC-NZ)"
+      },
+      "connections": [],
+      "description": "",
+      "fields": [],
+      "id": "NODE-DATA",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "ZONE-DATA",
+        "kind": "aggregation",
+        "name": "Data zone",
+        "source_id": "document:design.md#6"
+       },
+       {
+        "id": "LOC-NZ",
+        "kind": "aggregation",
+        "name": "NZ production location",
+        "source_id": "document:design.md#6"
+       },
+       {
+        "id": "ENV-PROD",
+        "kind": "aggregation",
+        "name": "Production",
+        "source_id": "document:design.md#6"
+       },
+       {
+        "id": "PATH-DATA",
+        "kind": "association",
+        "name": "Application to database path",
+        "source_id": "document:design.md#6"
+       }
+      ],
+      "links_out": [
+       {
+        "id": "SYS-DB",
+        "kind": "assignment",
+        "name": "Managed database",
+        "source_id": "document:design.md#6"
+       }
+      ],
+      "name": "Database nodes",
+      "provenance": "from the design document design.md#6",
+      "type": "A5.Node",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "location": "NZ production location (LOC-NZ)"
+      },
+      "connections": [
+       {
+        "direction": "in",
+        "evidence": [
+         "deployment_design:design.md#6",
+         "author:design section 6"
+        ],
+        "id": "APP-IDENT",
+        "mapping_id": "MAP-020",
+        "name": "Identity",
+        "relationship": "DEPLOYED_ON",
+        "status": "approved"
+       }
+      ],
+      "description": "",
+      "fields": [],
+      "id": "NODE-SEC",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "ZONE-SEC",
+        "kind": "aggregation",
+        "name": "Security zone",
+        "source_id": "document:design.md#6"
+       },
+       {
+        "id": "LOC-NZ",
+        "kind": "aggregation",
+        "name": "NZ production location",
+        "source_id": "document:design.md#6"
+       },
+       {
+        "id": "ENV-PROD",
+        "kind": "aggregation",
+        "name": "Production",
+        "source_id": "document:design.md#6"
+       },
+       {
+        "id": "PATH-KEY",
+        "kind": "association",
+        "name": "Secret retrieval path",
+        "source_id": "document:design.md#6"
+       }
+      ],
+      "links_out": [
+       {
+        "id": "SYS-KMS",
+        "kind": "assignment",
+        "name": "Managed key custody",
+        "source_id": "document:design.md#6"
+       },
+       {
+        "id": "DEP-IDENT",
+        "kind": "assignment",
+        "name": "APP-IDENT — production",
+        "source_id": "document:design.md#6"
+       },
+       {
+        "id": "SYS-OBS",
+        "kind": "assignment",
+        "name": "Audit and metrics",
+        "source_id": "ai-decision"
+       }
+      ],
+      "name": "Identity and secrets",
+      "provenance": "from the design document design.md#6",
+      "type": "A5.Node",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "location": "NZ production location (LOC-NZ)"
+      },
+      "connections": [
+       {
+        "direction": "in",
+        "evidence": [
+         "deployment_design:design.md#6",
+         "author:design section 6"
+        ],
+        "id": "APP-LEDGER",
+        "mapping_id": "MAP-025",
+        "name": "Account ledger",
+        "relationship": "DEPLOYED_ON",
+        "status": "approved"
+       },
+       {
+        "direction": "in",
+        "evidence": [
+         "deployment_design:design.md#6",
+         "author:design section 6"
+        ],
+        "id": "APP-OUTBOUND",
+        "mapping_id": "MAP-026",
+        "name": "Outbound connector",
+        "relationship": "DEPLOYED_ON",
+        "status": "approved"
+       }
+      ],
+      "description": "",
+      "fields": [],
+      "id": "NODE-INT",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "ZONE-INTEG",
+        "kind": "aggregation",
+        "name": "Integration zone",
+        "source_id": "document:design.md#6"
+       },
+       {
+        "id": "LOC-NZ",
+        "kind": "aggregation",
+        "name": "NZ production location",
+        "source_id": "document:design.md#6"
+       },
+       {
+        "id": "ENV-PROD",
+        "kind": "aggregation",
+        "name": "Production",
+        "source_id": "document:design.md#6"
+       },
+       {
+        "id": "PATH-HANDOFF",
+        "kind": "association",
+        "name": "Payment handoff path",
+        "source_id": "document:design.md#6"
+       }
+      ],
+      "links_out": [
+       {
+        "id": "DEP-LEDGER",
+        "kind": "assignment",
+        "name": "APP-LEDGER — production",
+        "source_id": "document:design.md#6"
+       },
+       {
+        "id": "DEP-OUT",
+        "kind": "assignment",
+        "name": "APP-OUTBOUND — production",
+        "source_id": "document:design.md#6"
+       }
+      ],
+      "name": "Ledger and execution integration",
+      "provenance": "from the design document design.md#6",
+      "type": "A5.Node",
+      "version": "1"
+     }
+    ],
+    "title": "Nodes",
+    "type": "A5.Node"
+   },
+   {
+    "definition": "Platform or runtime software",
+    "records": [
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "location": "NZ production location (LOC-NZ)"
+      },
+      "connections": [
+       {
+        "direction": "in",
+        "evidence": [
+         "deployment_design:design.md#6",
+         "author:design section 6"
+        ],
+        "id": "DATA-CONSENT",
+        "mapping_id": "MAP-027",
+        "name": "ConsentLedger",
+        "relationship": "STORED_IN",
+        "status": "approved"
+       },
+       {
+        "direction": "in",
+        "evidence": [
+         "deployment_design:design.md#6",
+         "author:design section 6"
+        ],
+        "id": "DATA-PAYMENT",
+        "mapping_id": "MAP-028",
+        "name": "PaymentLedger",
+        "relationship": "STORED_IN",
+        "status": "approved"
+       },
+       {
+        "direction": "in",
+        "evidence": [
+         "deployment_design:design.md#6",
+         "author:design section 6"
+        ],
+        "id": "DATA-IDEMP",
+        "mapping_id": "MAP-029",
+        "name": "IdempotencyRegistry",
+        "relationship": "STORED_IN",
+        "status": "approved"
+       }
+      ],
+      "description": "A fictional PostgreSQL-compatible managed database with a synchronous local standby and a tested recovery procedure.",
+      "fields": [],
+      "id": "SYS-DB",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "NODE-DATA",
+        "kind": "assignment",
+        "name": "Database nodes",
+        "source_id": "document:design.md#6"
+       }
+      ],
+      "links_out": [],
+      "name": "Managed database",
+      "provenance": "from the design document design.md#6",
+      "type": "A5.SystemSoftware",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "location": "NZ production location (LOC-NZ)"
+      },
+      "connections": [],
+      "description": "",
+      "fields": [],
+      "id": "SYS-MQ",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "NODE-APP",
+        "kind": "assignment",
+        "name": "Three-node application compute",
+        "source_id": "ai-decision"
+       }
+      ],
+      "links_out": [],
+      "name": "Durable events",
+      "provenance": "from the design document design.md#6",
+      "type": "A5.SystemSoftware",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "conforms_to": [
+        "PAT-PAYMENT-INITIATION#key-store"
+       ],
+       "location": "NZ production location (LOC-NZ)"
+      },
+      "connections": [],
+      "description": "",
+      "fields": [],
+      "id": "SYS-KMS",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "NODE-SEC",
+        "kind": "assignment",
+        "name": "Identity and secrets",
+        "source_id": "document:design.md#6"
+       }
+      ],
+      "links_out": [],
+      "name": "Managed key custody",
+      "provenance": "from the design document design.md#6",
+      "type": "A5.SystemSoftware",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "location": "NZ production location (LOC-NZ)"
+      },
+      "connections": [
+       {
+        "direction": "in",
+        "evidence": [
+         "deployment_design:design.md#ai-decision",
+         "author:design section ai-decision"
+        ],
+        "id": "DATA-AUDIT",
+        "mapping_id": "MAP-030",
+        "name": "SecurityEventLog",
+        "relationship": "STORED_IN",
+        "status": "approved"
+       }
+      ],
+      "description": "",
+      "fields": [],
+      "id": "SYS-OBS",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "NODE-SEC",
+        "kind": "assignment",
+        "name": "Identity and secrets",
+        "source_id": "ai-decision"
+       }
+      ],
+      "links_out": [],
+      "name": "Audit and metrics",
+      "provenance": "from the design document design.md#6",
+      "type": "A5.SystemSoftware",
+      "version": "1"
+     }
+    ],
+    "title": "System softwares",
+    "type": "A5.SystemSoftware"
+   },
+   {
+    "definition": "A network zone a shape is deployed in: on premises or cloud (level 0), the internal network or a DMZ inside one (level 1), or a private network inside that (level 2) — a grouping of the shapes deployed there, not a network itself",
+    "records": [
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "zone_kind": "dmz",
+       "zone_level": 1
+      },
+      "connections": [],
+      "description": "",
+      "fields": [],
+      "id": "ZONE-EDGE",
+      "lifecycle_status": "planned",
+      "links_in": [],
+      "links_out": [
+       {
+        "id": "NODE-EDGE",
+        "kind": "aggregation",
+        "name": "Redundant API ingress",
+        "source_id": "document:design.md#6"
+       }
+      ],
+      "name": "Edge zone",
+      "provenance": "from the design document design.md#6",
+      "type": "A5.NetworkZone",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "zone_kind": "internal",
+       "zone_level": 1
+      },
+      "connections": [],
+      "description": "",
+      "fields": [],
+      "id": "ZONE-APP",
+      "lifecycle_status": "planned",
+      "links_in": [],
+      "links_out": [
+       {
+        "id": "NODE-APP",
+        "kind": "aggregation",
+        "name": "Three-node application compute",
+        "source_id": "document:design.md#6"
+       }
+      ],
+      "name": "Application zone",
+      "provenance": "from the design document design.md#6",
+      "type": "A5.NetworkZone",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "zone_kind": "private",
+       "zone_level": 2
+      },
+      "connections": [],
+      "description": "",
+      "fields": [],
+      "id": "ZONE-DATA",
+      "lifecycle_status": "planned",
+      "links_in": [],
+      "links_out": [
+       {
+        "id": "NODE-DATA",
+        "kind": "aggregation",
+        "name": "Database nodes",
+        "source_id": "document:design.md#6"
+       }
+      ],
+      "name": "Data zone",
+      "provenance": "from the design document design.md#6",
+      "type": "A5.NetworkZone",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "zone_kind": "private",
+       "zone_level": 2
+      },
+      "connections": [],
+      "description": "",
+      "fields": [],
+      "id": "ZONE-SEC",
+      "lifecycle_status": "planned",
+      "links_in": [],
+      "links_out": [
+       {
+        "id": "NODE-SEC",
+        "kind": "aggregation",
+        "name": "Identity and secrets",
+        "source_id": "document:design.md#6"
+       }
+      ],
+      "name": "Security zone",
+      "provenance": "from the design document design.md#6",
+      "type": "A5.NetworkZone",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "zone_kind": "internal",
+       "zone_level": 1
+      },
+      "connections": [],
+      "description": "",
+      "fields": [],
+      "id": "ZONE-INTEG",
+      "lifecycle_status": "planned",
+      "links_in": [],
+      "links_out": [
+       {
+        "id": "NODE-INT",
+        "kind": "aggregation",
+        "name": "Ledger and execution integration",
+        "source_id": "document:design.md#6"
+       }
+      ],
+      "name": "Integration zone",
+      "provenance": "from the design document design.md#6",
+      "type": "A5.NetworkZone",
+      "version": "1"
+     }
+    ],
+    "title": "Network zones",
+    "type": "A5.NetworkZone"
+   },
+   {
+    "definition": "A route between nodes",
+    "records": [
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "encrypted": true,
+       "location": "NZ production location (LOC-NZ)",
+       "protocol": "https",
+       "to": "Redundant API ingress (NODE-EDGE)"
+      },
+      "connections": [],
+      "description": "HTTPS/TLS across the external boundary.",
+      "fields": [],
+      "id": "PATH-EDGE",
+      "lifecycle_status": "planned",
+      "links_in": [],
+      "links_out": [
+       {
+        "id": "NODE-EDGE",
+        "kind": "association",
+        "name": "Redundant API ingress",
+        "source_id": "document:design.md#6"
+       }
+      ],
+      "name": "External boundary path",
+      "provenance": "from the design document design.md#6",
+      "type": "A5.Path",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "from": "Three-node application compute (NODE-APP)",
+       "location": "NZ production location (LOC-NZ)",
+       "to": "Database nodes (NODE-DATA)"
+      },
+      "connections": [],
+      "description": "Application-to-SQL traffic.",
+      "fields": [],
+      "id": "PATH-DATA",
+      "lifecycle_status": "planned",
+      "links_in": [],
+      "links_out": [
+       {
+        "id": "NODE-APP",
+        "kind": "association",
+        "name": "Three-node application compute",
+        "source_id": "document:design.md#6"
+       },
+       {
+        "id": "NODE-DATA",
+        "kind": "association",
+        "name": "Database nodes",
+        "source_id": "document:design.md#6"
+       }
+      ],
+      "name": "Application to database path",
+      "provenance": "from the design document design.md#6",
+      "type": "A5.Path",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "location": "NZ production location (LOC-NZ)",
+       "to": "Identity and secrets (NODE-SEC)"
+      },
+      "connections": [],
+      "description": "",
+      "fields": [],
+      "id": "PATH-KEY",
+      "lifecycle_status": "planned",
+      "links_in": [],
+      "links_out": [
+       {
+        "id": "NODE-APP",
+        "kind": "association",
+        "name": "Three-node application compute",
+        "source_id": "document:design.md#6"
+       },
+       {
+        "id": "NODE-SEC",
+        "kind": "association",
+        "name": "Identity and secrets",
+        "source_id": "document:design.md#6"
+       }
+      ],
+      "name": "Secret retrieval path",
+      "provenance": "from the design document design.md#6",
+      "type": "A5.Path",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "encrypted": true,
+       "location": "NZ production location (LOC-NZ)",
+       "protocol": "tls"
+      },
+      "connections": [],
+      "description": "Mutually authenticated TLS for the payment handoff.",
+      "fields": [],
+      "id": "PATH-HANDOFF",
+      "lifecycle_status": "planned",
+      "links_in": [],
+      "links_out": [
+       {
+        "id": "NODE-APP",
+        "kind": "association",
+        "name": "Three-node application compute",
+        "source_id": "document:design.md#6"
+       },
+       {
+        "id": "NODE-INT",
+        "kind": "association",
+        "name": "Ledger and execution integration",
+        "source_id": "document:design.md#6"
+       }
+      ],
+      "name": "Payment handoff path",
+      "provenance": "from the design document design.md#6",
+      "type": "A5.Path",
+      "version": "1"
+     }
+    ],
+    "title": "Paths",
+    "type": "A5.Path"
+   },
+   {
+    "definition": "A place where things are — a country, a region, a site or a cloud region",
+    "records": [
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "country": "NZ",
+       "location_kind": "site"
+      },
+      "connections": [],
+      "description": "A fictional New Zealand production location.",
+      "fields": [],
+      "id": "LOC-NZ",
+      "lifecycle_status": "planned",
+      "links_in": [],
+      "links_out": [
+       {
+        "id": "NODE-EDGE",
+        "kind": "aggregation",
+        "name": "Redundant API ingress",
+        "source_id": "document:design.md#6"
+       },
+       {
+        "id": "NODE-APP",
+        "kind": "aggregation",
+        "name": "Three-node application compute",
+        "source_id": "document:design.md#6"
+       },
+       {
+        "id": "NODE-DATA",
+        "kind": "aggregation",
+        "name": "Database nodes",
+        "source_id": "document:design.md#6"
+       },
+       {
+        "id": "NODE-SEC",
+        "kind": "aggregation",
+        "name": "Identity and secrets",
+        "source_id": "document:design.md#6"
+       },
+       {
+        "id": "NODE-INT",
+        "kind": "aggregation",
+        "name": "Ledger and execution integration",
+        "source_id": "document:design.md#6"
+       }
+      ],
+      "name": "NZ production location",
+      "provenance": "from the design document design.md#6",
+      "type": "A5.Location",
+      "version": "1"
+     }
+    ],
+    "title": "Locations",
+    "type": "A5.Location"
+   }
+  ],
+  "summary": {
+   "by_type": {
+    "Deployment environments": 1,
+    "Deployments": 8,
+    "Locations": 1,
+    "Network zones": 5,
+    "Nodes": 5,
+    "Paths": 4,
+    "System softwares": 4
+   },
+   "records": 28,
+   "unconfirmed": 0,
+   "with_approved_connection": 14
+  },
+  "title": "A5 Technology Architecture",
+  "workspace": "v3"
+ }
+}

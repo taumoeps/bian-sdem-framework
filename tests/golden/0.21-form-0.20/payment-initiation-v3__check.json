@@ -1,0 +1,40 @@
+{
+ "command": [
+  "check",
+  "--workspace",
+  "<tmp>/v3",
+  "--json"
+ ],
+ "exit": 0,
+ "output": {
+  "ok": true,
+  "report": {
+   "level A1 (SDEM-A1)": [],
+   "level A2 (SDEM-A2)": [],
+   "level A3 (SDEM-A3-data)": [],
+   "level A4 (SDEM-A3)": [],
+   "level A5 (SDEM-A4)": [],
+   "mappings #1": [],
+   "organisation patterns (structures)": [],
+   "profile rules across layers": []
+  },
+  "unrecorded_edits": [],
+  "warnings": {
+   "level A2 (SDEM-A2)": [
+    "instance SD-PARTY-AUTHENTICATION: 0 composition links with A2.BusinessDomain, RA2-02 expects at least 1 (LC-10m)",
+    "instance SD-PAYMENT-ORDER-INITIATION: 0 composition links with A2.BusinessDomain, RA2-02 expects at least 1 (LC-10m)",
+    "instance SD-FRAUD-EVALUATION: 0 composition links with A2.BusinessDomain, RA2-02 expects at least 1 (LC-10m)"
+   ],
+   "level A4 (SDEM-A3)": [
+    "instance API-DEBTOR-READ: planned instance — required attribute 'path' not yet known (LC-04)",
+    "instance API-DEBTOR-READ: planned instance — required attribute 'payload_fields' not yet known (LC-04)"
+   ],
+   "level A5 (SDEM-A4)": [
+    "instance DEP-CONSENT: planned instance — required attribute 'platform_id' not yet known (LC-04)",
+    "instance DEP-PAYHUB: planned instance — required attribute 'platform_id' not yet known (LC-04)",
+    "instance DEP-RISK: planned instance — required attribute 'platform_id' not yet known (LC-04)",
+    "instance DEP-NOTIFY: planned instance — required attribute 'platform_id' not yet known (LC-04)"
+   ]
+  }
+ }
+}

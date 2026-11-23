@@ -1,0 +1,120 @@
+{
+ "command": [
+  "build",
+  "--workspace",
+  "<tmp>/pi",
+  "--out",
+  "<tmp>/payment-initiation-graph",
+  "--json"
+ ],
+ "exit": 0,
+ "output": {
+  "at": "<volatile>",
+  "build": 1,
+  "errors": [],
+  "graph": "<tmp>/payment-initiation-graph",
+  "inputs": [
+   {
+    "kind": "export",
+    "level": "A1",
+    "model_id": "synthetic-bank-payments-a1",
+    "model_version": "2026.10",
+    "path": "<tmp>/pi/a1-business.json",
+    "sha256": "d48feff74d45d1f46a016ed3364bc9c53a313c13e3a1ef6f95e28dd570ac1389"
+   },
+   {
+    "kind": "export",
+    "level": "A2",
+    "model_id": "synthetic-bank-payments-a2",
+    "model_version": "2026.10",
+    "path": "<tmp>/pi/a2-service-domain.json",
+    "sha256": "7e31956f11dbbe9fab4db86c1622a6a3aaf68cd268a7b9625d85cfbba3d06709"
+   },
+   {
+    "kind": "export",
+    "level": "A3",
+    "model_id": "synthetic-bank-payments-a3-data",
+    "model_version": "2026.10",
+    "path": "<tmp>/pi/data.json",
+    "sha256": "73507f5670b57b186a2510656493db15dfda93275d204e42d933cff8cdb9afda"
+   },
+   {
+    "kind": "export",
+    "level": "A4",
+    "model_id": "synthetic-bank-payments-a3",
+    "model_version": "2026.10",
+    "path": "<tmp>/pi/a3-application.json",
+    "sha256": "2dd04545c790ccfdae1b9b7b1e6b4bccce0d9754edc9c5ab92adb4171c30a203"
+   },
+   {
+    "kind": "export",
+    "level": "A5",
+    "model_id": "synthetic-bank-payments-a4",
+    "model_version": "2026.10",
+    "path": "<tmp>/pi/a4-technology.json",
+    "sha256": "4e18c1c519b342c1364114908ca742c2344389dced8c94e933fc3d88d0e04914"
+   },
+   {
+    "kind": "registry",
+    "path": "<tmp>/pi/mappings.json",
+    "registry_version": "0.4.0",
+    "sha256": "a598a319e258cb0128c31593328783f78ee72049b95fa72bc32390e1f30e31b0"
+   }
+  ],
+  "metamodel_version": "0.19.0",
+  "next": "sdem trace <id> --graph <tmp>/payment-initiation-graph",
+  "outputs": [
+   {
+    "edges": 13,
+    "file": "application.graph.json",
+    "nodes": 13,
+    "sha256": "86bfe0131bf36597629341d74631c74ec785b0aa6e2ae3a86a63d833fc4f37e5"
+   },
+   {
+    "edges": 68,
+    "file": "bian.graph.json",
+    "nodes": 48,
+    "sha256": "1f2bfdc57503b42529cf29f78c06351319c4a353e38eb5eed994c4a01252d5b8"
+   },
+   {
+    "edges": 16,
+    "file": "business.graph.json",
+    "nodes": 16,
+    "sha256": "77cdd9f153883b772506eec5e4428c4ca3be7808c7c183e7268e64d3e75566f3"
+   },
+   {
+    "edges": 0,
+    "file": "data.graph.json",
+    "nodes": 3,
+    "sha256": "36e0c633380169208934850bfb1fa2bd013819b21ee0b4122fa054b75e35e593"
+   },
+   {
+    "edges": 26,
+    "file": "federated.graph.json",
+    "nodes": 35,
+    "sha256": "61f69d3100547f66650021c3d7a881029d515ce11729285205e64e827df96b2d"
+   },
+   {
+    "edges": 30,
+    "file": "technology.graph.json",
+    "nodes": 20,
+    "sha256": "a2d19dda643e3816cbba80136980cc488c031714f834b32d73133014e98359a3"
+   }
+  ],
+  "result": "accepted",
+  "stack": [
+   "business",
+   "bian",
+   "data",
+   "application",
+   "technology"
+  ],
+  "warnings": [
+   "level A1 (synthetic-bank-payments-a1): instance PRC-PAY-01: attribute 'triggered_by' refers to 'customer submits a payment', which is not a A1.BusinessEvent in this architecture dataset (LC-07)",
+   "level A1 (synthetic-bank-payments-a1): instance PRC-PAY-02: attribute 'triggered_by' refers to 'instruction authorised', which is not a A1.BusinessEvent in this architecture dataset (LC-07)",
+   "level A4 (synthetic-bank-payments-a3): instance EVT-PAY-STATUS: attribute 'event_source' refers to '/payments-hub', which is not a A4.ApplicationComponent in this architecture dataset (LC-07)",
+   "level A2 (synthetic-bank-payments-a2): instance BBO-PAY-INSTR: its field names and its field records disagree — no record for creditor_account_reference, currency, debtor_account_reference, payment_instruction_reference, payment_status, remittance_information, value_date (LC-24)",
+   "level A2 (synthetic-bank-payments-a2): instance BBO-PARTY: its field names and its field records disagree — no record for party_name, party_reference, party_type — not in its list: party reference (LC-24)"
+  ]
+ }
+}

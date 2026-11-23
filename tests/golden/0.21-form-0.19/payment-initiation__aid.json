@@ -1,0 +1,53 @@
+{
+ "command": [
+  "aid",
+  "--workspace",
+  "<tmp>/pi",
+  "--person",
+  "golden.check",
+  "--dry-run",
+  "--json"
+ ],
+ "exit": 0,
+ "output": {
+  "a4_connections": 0,
+  "a4_unresolved": [],
+  "added": {
+   "A3": [
+    "AID-ENT-PARTY",
+    "AID-ENTF-PARTY-PARTY-REFERENCE"
+   ]
+  },
+  "at": "<volatile>",
+  "draft": {
+   "defaults": 0,
+   "domains_added": [],
+   "left_open": [],
+   "links": [],
+   "links_inferred": 0,
+   "parts_added": [],
+   "parts_to_name": [],
+   "patterns_consulted": []
+  },
+  "dry_run": true,
+  "exposure_unresolved": [],
+  "id": "AID-001",
+  "projection_ends": [
+   "not added — SD-PI (Payment Initiation): only business names or descriptions point to it (the business layer points to it — S07 — S06 ACT-PAY-01a → SO-PI-01, in SD-PI; S07 — S06 ACT-PAY-01b → SO-PI-02, in SD-PI; S07 — S06 ACT-PAY-02a → SO-PI-03, in SD-PI; S07 — S06 ACT-PAY-02b → SO-PI-04, in SD-PI; evidence: name_token). If it belongs to this design, name its operations in a process's invokes, or add it: sdem bian add --workspace <ws> \"Payment Initiation\" --person <you>",
+   "not added — SD-ACCOUNT-RECONCILIATION (Account Reconciliation): only application names or descriptions point to it (the application layer points to it — S17 — fallback B: asset-type tokens ['account'] in API paths / entity names; evidence: name_token). If it belongs to this design, name its operations in a process's invokes, or add it: sdem bian add --workspace <ws> \"Account Reconciliation\" --person <you>",
+   "not added — SD-CUSTOMER-EVENT-HISTORY (Customer Event History): only application names or descriptions point to it (the application layer points to it — S17 — fallback B: asset-type tokens ['event'] in API paths / entity names; evidence: name_token). If it belongs to this design, name its operations in a process's invokes, or add it: sdem bian add --workspace <ws> \"Customer Event History\" --person <you>"
+  ],
+  "proposals": "aid/AID-001-proposals.json",
+  "proposed_connections": 10,
+  "requested_by": "golden.check",
+  "skipped_rejected": [],
+  "tables_not_inferred": [],
+  "would_write": [
+   "<tmp>/pi/a3-application.json",
+   "<tmp>/pi/aid/AID-001-proposals.json",
+   "<tmp>/pi/aid/AID-001.json"
+  ],
+  "zone_placements": 0,
+  "zones_unresolved": []
+ }
+}

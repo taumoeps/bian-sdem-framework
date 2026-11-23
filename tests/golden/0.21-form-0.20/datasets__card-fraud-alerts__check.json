@@ -1,0 +1,29 @@
+{
+ "command": [
+  "check",
+  "<root>/examples/card-fraud-alerts/a1-business.json",
+  "<root>/examples/card-fraud-alerts/a2-service-domain.json",
+  "<root>/examples/card-fraud-alerts/a3-application.json",
+  "<root>/examples/card-fraud-alerts/a4-technology.json",
+  "<root>/examples/card-fraud-alerts/mappings.json",
+  "--json"
+ ],
+ "exit": 0,
+ "output": {
+  "ok": true,
+  "report": {
+   "level A1 (synthetic-bank-a1)": [],
+   "level A2 (synthetic-bank-a2)": [],
+   "level A3 (synthetic-bank-a3)": [],
+   "level A4 (synthetic-bank-a4)": [],
+   "mappings #1": []
+  },
+  "unrecorded_edits": [],
+  "warnings": {
+   "level A2 (synthetic-bank-a2)": [
+    "instance BD-FRAUD: 0 composition links with A2.BusinessArea, RA2-01 expects at least 1 (LC-10m)",
+    "instance SO-044-07: 0 access links with A2.ControlRecord, RA2-13 expects at least 1 (LC-10m)"
+   ]
+  }
+ }
+}

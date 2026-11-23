@@ -1,0 +1,1028 @@
+{
+ "command": [
+  "document",
+  "--workspace",
+  "<tmp>/v3",
+  "--layer",
+  "A4",
+  "--json"
+ ],
+ "exit": 0,
+ "output": {
+  "fingerprint": "<volatile>",
+  "gaps": {
+   "no_connection": [
+    "EVT-HANDOFF"
+   ],
+   "placeholders": [],
+   "requirements_not_confirmed": [],
+   "unconfirmed": []
+  },
+  "layer": "A4",
+  "requirements": [],
+  "sections": [
+   {
+    "definition": "A modular, deployable part of an application",
+    "records": [
+     {
+      "attribute_sources": {
+       "deployed_as": "document:design.md#6"
+      },
+      "attributes": {
+       "deployed_as": [
+        "APP-EDGE — production (DEP-EDGE)"
+       ]
+      },
+      "connections": [
+       {
+        "direction": "out",
+        "evidence": [
+         "deployment_design:design.md#6",
+         "author:design section 6"
+        ],
+        "id": "DEP-EDGE",
+        "mapping_id": "MAP-011",
+        "name": "APP-EDGE — production",
+        "relationship": "DEPLOYED_AS",
+        "status": "approved"
+       },
+       {
+        "direction": "out",
+        "evidence": [
+         "deployment_design:design.md#6",
+         "author:design section 6"
+        ],
+        "id": "NODE-EDGE",
+        "mapping_id": "MAP-019",
+        "name": "Redundant API ingress",
+        "relationship": "DEPLOYED_ON",
+        "status": "approved"
+       },
+       {
+        "direction": "in",
+        "evidence": [
+         "engine_rationale:S17 step3 implements SO-PAYMENT-ORDER-INITIATION-INITIATE via API-PAYMENT-CREATE (approved); SO-PAYMENT-ORDER-INITIATION-RETRIEVE via API-PAYMENT-READ (approved)"
+        ],
+        "id": "SD-PAYMENT-ORDER-INITIATION",
+        "mapping_id": "MAP-033",
+        "name": "Payment Order Initiation",
+        "relationship": "REALIZED_BY",
+        "status": "rejected"
+       },
+       {
+        "direction": "in",
+        "evidence": [
+         "application_architecture_document:sdem-migrate-0.20#within-layer-access"
+        ],
+        "id": "DATA-AUDIT",
+        "mapping_id": "MIG-020-043",
+        "name": "SecurityEventLog",
+        "relationship": "ACCESSED_BY",
+        "status": "approved"
+       }
+      ],
+      "description": "Terminates the accredited provider API channel and produces correlated security events.",
+      "fields": [],
+      "id": "APP-EDGE",
+      "lifecycle_status": "planned",
+      "links_in": [],
+      "links_out": [
+       {
+        "id": "IFC-PAYMENT-INITIATION",
+        "kind": "composition",
+        "name": "Payment Initiation API v2.3.3",
+        "source_id": "document:design.md#5"
+       },
+       {
+        "id": "APP-PAYHUB",
+        "kind": "flow",
+        "name": "Payments hub",
+        "source_id": "document:design.md#5"
+       },
+       {
+        "id": "APP-CONSENT",
+        "kind": "flow",
+        "name": "Consent processing",
+        "source_id": "document:design.md#5"
+       }
+      ],
+      "name": "API ingress",
+      "provenance": "from the design document design.md#5,document:design.md#6",
+      "type": "A4.ApplicationComponent",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {
+       "deployed_as": "document:design.md#6"
+      },
+      "attributes": {
+       "deployed_as": [
+        "APP-IDENT — production (DEP-IDENT)"
+       ]
+      },
+      "connections": [
+       {
+        "direction": "in",
+        "evidence": [
+         "application_architecture_document:design.md#5",
+         "bian_alignment_guidance:design.md#5",
+         "author:design section 5"
+        ],
+        "id": "SD-PARTY-AUTHENTICATION",
+        "mapping_id": "MAP-006",
+        "name": "Party Authentication",
+        "relationship": "REALIZED_BY",
+        "status": "approved"
+       },
+       {
+        "direction": "out",
+        "evidence": [
+         "deployment_design:design.md#6",
+         "author:design section 6"
+        ],
+        "id": "DEP-IDENT",
+        "mapping_id": "MAP-012",
+        "name": "APP-IDENT — production",
+        "relationship": "DEPLOYED_AS",
+        "status": "approved"
+       },
+       {
+        "direction": "out",
+        "evidence": [
+         "deployment_design:design.md#6",
+         "author:design section 6"
+        ],
+        "id": "NODE-SEC",
+        "mapping_id": "MAP-020",
+        "name": "Identity and secrets",
+        "relationship": "DEPLOYED_ON",
+        "status": "approved"
+       }
+      ],
+      "description": "Handles customer authentication.",
+      "fields": [],
+      "id": "APP-IDENT",
+      "lifecycle_status": "planned",
+      "links_in": [],
+      "links_out": [
+       {
+        "id": "APP-CONSENT",
+        "kind": "flow",
+        "name": "Consent processing",
+        "source_id": "document:design.md#5"
+       }
+      ],
+      "name": "Identity",
+      "provenance": "from the design document design.md#5,document:design.md#6",
+      "type": "A4.ApplicationComponent",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {
+       "deployed_as": "document:design.md#6"
+      },
+      "attributes": {
+       "deployed_as": [
+        "APP-CONSENT — production (DEP-CONSENT)"
+       ]
+      },
+      "connections": [
+       {
+        "direction": "out",
+        "evidence": [
+         "deployment_design:design.md#6",
+         "author:design section 6"
+        ],
+        "id": "DEP-CONSENT",
+        "mapping_id": "MAP-013",
+        "name": "APP-CONSENT — production",
+        "relationship": "DEPLOYED_AS",
+        "status": "approved"
+       },
+       {
+        "direction": "out",
+        "evidence": [
+         "deployment_design:design.md#6",
+         "author:design section 6"
+        ],
+        "id": "NODE-APP",
+        "mapping_id": "MAP-021",
+        "name": "Three-node application compute",
+        "relationship": "DEPLOYED_ON",
+        "status": "approved"
+       },
+       {
+        "direction": "in",
+        "evidence": [
+         "application_architecture_document:sdem-migrate-0.20#within-layer-access"
+        ],
+        "id": "DATA-CONSENT",
+        "mapping_id": "MIG-020-039",
+        "name": "ConsentLedger",
+        "relationship": "ACCESSED_BY",
+        "status": "approved"
+       }
+      ],
+      "description": "Controls the consent lifecycle and its persistence.",
+      "fields": [],
+      "id": "APP-CONSENT",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "APP-EDGE",
+        "kind": "flow",
+        "name": "API ingress",
+        "source_id": "document:design.md#5"
+       },
+       {
+        "id": "APP-IDENT",
+        "kind": "flow",
+        "name": "Identity",
+        "source_id": "document:design.md#5"
+       }
+      ],
+      "links_out": [],
+      "name": "Consent processing",
+      "provenance": "from the design document design.md#5,document:design.md#6",
+      "type": "A4.ApplicationComponent",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {
+       "deployed_as": "document:design.md#6"
+      },
+      "attributes": {
+       "deployed_as": [
+        "APP-PAYHUB — production (DEP-PAYHUB)"
+       ]
+      },
+      "connections": [
+       {
+        "direction": "in",
+        "evidence": [
+         "application_architecture_document:design.md#5",
+         "bian_alignment_guidance:design.md#5",
+         "author:design section 5"
+        ],
+        "id": "SD-PAYMENT-ORDER-INITIATION",
+        "mapping_id": "MAP-005",
+        "name": "Payment Order Initiation",
+        "relationship": "REALIZED_BY",
+        "status": "approved"
+       },
+       {
+        "direction": "out",
+        "evidence": [
+         "deployment_design:design.md#6",
+         "author:design section 6"
+        ],
+        "id": "DEP-PAYHUB",
+        "mapping_id": "MAP-014",
+        "name": "APP-PAYHUB — production",
+        "relationship": "DEPLOYED_AS",
+        "status": "approved"
+       },
+       {
+        "direction": "out",
+        "evidence": [
+         "deployment_design:design.md#6",
+         "author:design section 6"
+        ],
+        "id": "NODE-APP",
+        "mapping_id": "MAP-022",
+        "name": "Three-node application compute",
+        "relationship": "DEPLOYED_ON",
+        "status": "approved"
+       },
+       {
+        "direction": "in",
+        "evidence": [
+         "application_architecture_document:sdem-migrate-0.20#within-layer-access"
+        ],
+        "id": "DATA-CONSENT",
+        "mapping_id": "MIG-020-040",
+        "name": "ConsentLedger",
+        "relationship": "ACCESSED_BY",
+        "status": "approved"
+       },
+       {
+        "direction": "in",
+        "evidence": [
+         "application_architecture_document:sdem-migrate-0.20#within-layer-access"
+        ],
+        "id": "DATA-PAYMENT",
+        "mapping_id": "MIG-020-041",
+        "name": "PaymentLedger",
+        "relationship": "ACCESSED_BY",
+        "status": "approved"
+       },
+       {
+        "direction": "in",
+        "evidence": [
+         "application_architecture_document:sdem-migrate-0.20#within-layer-access"
+        ],
+        "id": "DATA-IDEMP",
+        "mapping_id": "MIG-020-042",
+        "name": "IdempotencyRegistry",
+        "relationship": "ACCESSED_BY",
+        "status": "approved"
+       }
+      ],
+      "description": "Validates and orchestrates initiation, idempotency, risk, status and retries.",
+      "fields": [],
+      "id": "APP-PAYHUB",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "APP-EDGE",
+        "kind": "flow",
+        "name": "API ingress",
+        "source_id": "document:design.md#5"
+       }
+      ],
+      "links_out": [
+       {
+        "id": "APP-RISK",
+        "kind": "flow",
+        "name": "Fraud service",
+        "source_id": "document:design.md#5"
+       },
+       {
+        "id": "APP-LEDGER",
+        "kind": "flow",
+        "name": "Account ledger",
+        "source_id": "document:design.md#5"
+       },
+       {
+        "id": "APP-OUTBOUND",
+        "kind": "flow",
+        "name": "Outbound connector",
+        "source_id": "document:design.md#5"
+       },
+       {
+        "id": "APP-NOTIFY",
+        "kind": "flow",
+        "name": "Notification service",
+        "source_id": "document:design.md#5"
+       },
+       {
+        "id": "EVT-HANDOFF",
+        "kind": "triggering",
+        "name": "Durable handoff event",
+        "source_id": "document:design.md#5"
+       }
+      ],
+      "name": "Payments hub",
+      "provenance": "from the design document design.md#5,document:design.md#6",
+      "type": "A4.ApplicationComponent",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {
+       "deployed_as": "document:design.md#6"
+      },
+      "attributes": {
+       "deployed_as": [
+        "APP-RISK — production (DEP-RISK)"
+       ]
+      },
+      "connections": [
+       {
+        "direction": "out",
+        "evidence": [
+         "deployment_design:design.md#6",
+         "author:design section 6"
+        ],
+        "id": "DEP-RISK",
+        "mapping_id": "MAP-015",
+        "name": "APP-RISK — production",
+        "relationship": "DEPLOYED_AS",
+        "status": "approved"
+       },
+       {
+        "direction": "out",
+        "evidence": [
+         "deployment_design:design.md#6",
+         "author:design section 6"
+        ],
+        "id": "NODE-APP",
+        "mapping_id": "MAP-023",
+        "name": "Three-node application compute",
+        "relationship": "DEPLOYED_ON",
+        "status": "approved"
+       },
+       {
+        "direction": "in",
+        "evidence": [
+         "application_architecture_document:design.md#ai-decision",
+         "bian_alignment_guidance:design.md#ai-decision",
+         "author:design section ai-decision"
+        ],
+        "id": "SD-FRAUD-EVALUATION",
+        "mapping_id": "MAP-032",
+        "name": "Fraud Evaluation",
+        "relationship": "REALIZED_BY",
+        "status": "approved"
+       }
+      ],
+      "description": "Returns a risk decision.",
+      "fields": [],
+      "id": "APP-RISK",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "APP-PAYHUB",
+        "kind": "flow",
+        "name": "Payments hub",
+        "source_id": "document:design.md#5"
+       }
+      ],
+      "links_out": [],
+      "name": "Fraud service",
+      "provenance": "from the design document design.md#5,document:design.md#6",
+      "type": "A4.ApplicationComponent",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {
+       "deployed_as": "document:design.md#6"
+      },
+      "attributes": {
+       "deployed_as": [
+        "APP-LEDGER — production (DEP-LEDGER)"
+       ]
+      },
+      "connections": [
+       {
+        "direction": "out",
+        "evidence": [
+         "deployment_design:design.md#6",
+         "author:design section 6"
+        ],
+        "id": "DEP-LEDGER",
+        "mapping_id": "MAP-016",
+        "name": "APP-LEDGER — production",
+        "relationship": "DEPLOYED_AS",
+        "status": "approved"
+       },
+       {
+        "direction": "out",
+        "evidence": [
+         "deployment_design:design.md#6",
+         "author:design section 6"
+        ],
+        "id": "NODE-INT",
+        "mapping_id": "MAP-025",
+        "name": "Ledger and execution integration",
+        "relationship": "DEPLOYED_ON",
+        "status": "approved"
+       }
+      ],
+      "description": "Owns account eligibility and posting; rejects repeated posting ids.",
+      "fields": [],
+      "id": "APP-LEDGER",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "APP-PAYHUB",
+        "kind": "flow",
+        "name": "Payments hub",
+        "source_id": "document:design.md#5"
+       }
+      ],
+      "links_out": [],
+      "name": "Account ledger",
+      "provenance": "from the design document design.md#5,document:design.md#6",
+      "type": "A4.ApplicationComponent",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {
+       "deployed_as": "document:design.md#6"
+      },
+      "attributes": {
+       "deployed_as": [
+        "APP-OUTBOUND — production (DEP-OUT)"
+       ]
+      },
+      "connections": [
+       {
+        "direction": "out",
+        "evidence": [
+         "deployment_design:design.md#6",
+         "author:design section 6"
+        ],
+        "id": "DEP-OUT",
+        "mapping_id": "MAP-018",
+        "name": "APP-OUTBOUND — production",
+        "relationship": "DEPLOYED_AS",
+        "status": "approved"
+       },
+       {
+        "direction": "out",
+        "evidence": [
+         "deployment_design:design.md#6",
+         "author:design section 6"
+        ],
+        "id": "NODE-INT",
+        "mapping_id": "MAP-026",
+        "name": "Ledger and execution integration",
+        "relationship": "DEPLOYED_ON",
+        "status": "approved"
+       }
+      ],
+      "description": "Performs the accepted-instruction handoff.",
+      "fields": [],
+      "id": "APP-OUTBOUND",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "APP-PAYHUB",
+        "kind": "flow",
+        "name": "Payments hub",
+        "source_id": "document:design.md#5"
+       }
+      ],
+      "links_out": [],
+      "name": "Outbound connector",
+      "provenance": "from the design document design.md#5,document:design.md#6",
+      "type": "A4.ApplicationComponent",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {
+       "deployed_as": "document:design.md#6"
+      },
+      "attributes": {
+       "deployed_as": [
+        "APP-NOTIFY — production (DEP-NOTIFY)"
+       ]
+      },
+      "connections": [
+       {
+        "direction": "out",
+        "evidence": [
+         "deployment_design:design.md#6",
+         "author:design section 6"
+        ],
+        "id": "DEP-NOTIFY",
+        "mapping_id": "MAP-017",
+        "name": "APP-NOTIFY — production",
+        "relationship": "DEPLOYED_AS",
+        "status": "approved"
+       },
+       {
+        "direction": "out",
+        "evidence": [
+         "deployment_design:design.md#6",
+         "author:design section 6"
+        ],
+        "id": "NODE-APP",
+        "mapping_id": "MAP-024",
+        "name": "Three-node application compute",
+        "relationship": "DEPLOYED_ON",
+        "status": "approved"
+       }
+      ],
+      "description": "A non-critical downstream notification component.",
+      "fields": [],
+      "id": "APP-NOTIFY",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "APP-PAYHUB",
+        "kind": "flow",
+        "name": "Payments hub",
+        "source_id": "document:design.md#5"
+       }
+      ],
+      "links_out": [],
+      "name": "Notification service",
+      "provenance": "from the design document design.md#5,document:design.md#6",
+      "type": "A4.ApplicationComponent",
+      "version": "1"
+     }
+    ],
+    "title": "Application components",
+    "type": "A4.ApplicationComponent"
+   },
+   {
+    "definition": "An access point to an application service",
+    "records": [
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "field_aliases": {
+        "ConsentId": "consent_id",
+        "DomesticPaymentId": "payment_id",
+        "NZDomesticConsent1/EndToEndIdentification": "end_to_end_identification",
+        "NZDomesticConsent1/InstructedAmount/Amount": "amount",
+        "NZDomesticConsent1/InstructedAmount/Currency": "currency",
+        "NZDomesticConsent1/InstructionIdentification": "instruction_identification",
+        "Status": "status"
+       },
+       "internet_facing": true,
+       "protocol": "https",
+       "security_scheme": "oauth2"
+      },
+      "connections": [
+       {
+        "direction": "in",
+        "evidence": [
+         "application_architecture_document:design.md#5",
+         "author:design section 5"
+        ],
+        "id": "IF-TPP",
+        "mapping_id": "MAP-009",
+        "name": "Provider API channel",
+        "relationship": "REALIZED_BY",
+        "status": "approved"
+       },
+       {
+        "direction": "out",
+        "evidence": [
+         "network_design:design.md#6",
+         "author:design section 6"
+        ],
+        "id": "NODE-EDGE",
+        "mapping_id": "MAP-010",
+        "name": "Redundant API ingress",
+        "relationship": "EXPOSED_THROUGH",
+        "status": "approved"
+       }
+      ],
+      "description": "The provider-facing API: domestic payment consents and domestic payments, as the NZ Banking Data standard v2.3.3 defines them.",
+      "fields": [],
+      "id": "IFC-PAYMENT-INITIATION",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "APP-EDGE",
+        "kind": "composition",
+        "name": "API ingress",
+        "source_id": "document:design.md#5"
+       }
+      ],
+      "links_out": [
+       {
+        "id": "API-CONSENT-CREATE",
+        "kind": "composition",
+        "name": "Create domestic payment consent",
+        "source_id": "document:design.md#5"
+       },
+       {
+        "id": "API-CONSENT-READ",
+        "kind": "composition",
+        "name": "Read domestic payment consent",
+        "source_id": "document:design.md#5"
+       },
+       {
+        "id": "API-PAYMENT-CREATE",
+        "kind": "composition",
+        "name": "Create domestic payment",
+        "source_id": "document:design.md#5"
+       },
+       {
+        "id": "API-PAYMENT-READ",
+        "kind": "composition",
+        "name": "Read domestic payment",
+        "source_id": "document:design.md#5"
+       },
+       {
+        "id": "API-DEBTOR-READ",
+        "kind": "composition",
+        "name": "Read payment debtor account",
+        "source_id": "document:design.md#5"
+       }
+      ],
+      "name": "Payment Initiation API v2.3.3",
+      "provenance": "from the design document design.md#5,document:design.md#6",
+      "type": "A4.ApplicationInterface",
+      "version": "1"
+     }
+    ],
+    "title": "Application interfaces",
+    "type": "A4.ApplicationInterface"
+   },
+   {
+    "definition": "A callable operation of an API contract",
+    "records": [
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "method": "POST",
+       "path": "/domestic-payment-consents",
+       "payload_fields": [
+        "InstructionIdentification",
+        "EndToEndIdentification",
+        "InstructedAmount/Amount",
+        "InstructedAmount/Currency",
+        "CreditorAccount/SchemeName",
+        "CreditorAccount/Identification",
+        "CreditorAccount/Name",
+        "DebtorAccount/Identification",
+        "DebtorAccountRelease",
+        "RemittanceInformation/Reference",
+        "ConsentId",
+        "Status"
+       ],
+       "request_fields": [
+        "instruction_identification (F-CONSENT-INSTRUCTION-IDENTIFICATION)",
+        "end_to_end_identification (F-CONSENT-END-TO-END-IDENTIFICATION)",
+        "amount (F-CONSENT-AMOUNT)",
+        "currency (F-CONSENT-CURRENCY)"
+       ],
+       "response_fields": [
+        "consent_id (F-CONSENT-CONSENT-ID)",
+        "status (F-CONSENT-STATUS)"
+       ]
+      },
+      "connections": [
+       {
+        "direction": "in",
+        "evidence": [
+         "application_architecture_document:sdem-migrate-0.20#within-layer-access"
+        ],
+        "id": "DATA-CONSENT",
+        "mapping_id": "MIG-020-035",
+        "name": "ConsentLedger",
+        "relationship": "ACCESSED_BY",
+        "status": "approved"
+       }
+      ],
+      "description": "",
+      "fields": [],
+      "id": "API-CONSENT-CREATE",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "IFC-PAYMENT-INITIATION",
+        "kind": "composition",
+        "name": "Payment Initiation API v2.3.3",
+        "source_id": "document:design.md#5"
+       }
+      ],
+      "links_out": [],
+      "name": "Create domestic payment consent",
+      "provenance": "from the design document design.md#5",
+      "type": "A4.APIOperation",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "method": "GET",
+       "path": "/domestic-payment-consents/{ConsentId}",
+       "payload_fields": [
+        "ConsentId",
+        "Status"
+       ],
+       "request_fields": [
+        "consent_id (F-CONSENT-CONSENT-ID)"
+       ],
+       "response_fields": [
+        "consent_id (F-CONSENT-CONSENT-ID)",
+        "status (F-CONSENT-STATUS)"
+       ]
+      },
+      "connections": [
+       {
+        "direction": "in",
+        "evidence": [
+         "application_architecture_document:sdem-migrate-0.20#within-layer-access"
+        ],
+        "id": "DATA-CONSENT",
+        "mapping_id": "MIG-020-036",
+        "name": "ConsentLedger",
+        "relationship": "ACCESSED_BY",
+        "status": "approved"
+       }
+      ],
+      "description": "",
+      "fields": [],
+      "id": "API-CONSENT-READ",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "IFC-PAYMENT-INITIATION",
+        "kind": "composition",
+        "name": "Payment Initiation API v2.3.3",
+        "source_id": "document:design.md#5"
+       }
+      ],
+      "links_out": [],
+      "name": "Read domestic payment consent",
+      "provenance": "from the design document design.md#5",
+      "type": "A4.APIOperation",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "method": "POST",
+       "path": "/domestic-payments",
+       "payload_fields": [
+        "ConsentId",
+        "DomesticPaymentId",
+        "Status"
+       ],
+       "request_fields": [
+        "consent_id (F-PAYMENT-CONSENT-ID)"
+       ],
+       "response_fields": [
+        "payment_id (F-PAYMENT-PAYMENT-ID)",
+        "payment_status (F-PAYMENT-PAYMENT-STATUS)"
+       ]
+      },
+      "connections": [
+       {
+        "direction": "in",
+        "evidence": [
+         "api_contract:design.md#5",
+         "bian_alignment_guidance:design.md#5",
+         "author:design section 5"
+        ],
+        "id": "SO-PAYMENT-ORDER-INITIATION-INITIATE",
+        "mapping_id": "MAP-007",
+        "name": "Payment Order Initiation: Initiate",
+        "relationship": "IMPLEMENTED_BY",
+        "status": "approved"
+       },
+       {
+        "direction": "in",
+        "evidence": [
+         "application_architecture_document:sdem-migrate-0.20#within-layer-access"
+        ],
+        "id": "DATA-PAYMENT",
+        "mapping_id": "MIG-020-037",
+        "name": "PaymentLedger",
+        "relationship": "ACCESSED_BY",
+        "status": "approved"
+       }
+      ],
+      "description": "",
+      "fields": [],
+      "id": "API-PAYMENT-CREATE",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "IFC-PAYMENT-INITIATION",
+        "kind": "composition",
+        "name": "Payment Initiation API v2.3.3",
+        "source_id": "document:design.md#5"
+       }
+      ],
+      "links_out": [],
+      "name": "Create domestic payment",
+      "provenance": "from the design document design.md#5",
+      "type": "A4.APIOperation",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "method": "GET",
+       "path": "/domestic-payments/{DomesticPaymentId}",
+       "payload_fields": [
+        "DomesticPaymentId",
+        "Status"
+       ],
+       "request_fields": [
+        "payment_id (F-PAYMENT-PAYMENT-ID)"
+       ],
+       "response_fields": [
+        "payment_id (F-PAYMENT-PAYMENT-ID)",
+        "payment_status (F-PAYMENT-PAYMENT-STATUS)"
+       ]
+      },
+      "connections": [
+       {
+        "direction": "in",
+        "evidence": [
+         "api_contract:design.md#5",
+         "bian_alignment_guidance:design.md#5",
+         "author:design section 5"
+        ],
+        "id": "SO-PAYMENT-ORDER-INITIATION-RETRIEVE",
+        "mapping_id": "MAP-008",
+        "name": "Payment Order Initiation: Retrieve",
+        "relationship": "IMPLEMENTED_BY",
+        "status": "approved"
+       },
+       {
+        "direction": "in",
+        "evidence": [
+         "application_architecture_document:sdem-migrate-0.20#within-layer-access"
+        ],
+        "id": "DATA-PAYMENT",
+        "mapping_id": "MIG-020-038",
+        "name": "PaymentLedger",
+        "relationship": "ACCESSED_BY",
+        "status": "approved"
+       }
+      ],
+      "description": "",
+      "fields": [],
+      "id": "API-PAYMENT-READ",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "IFC-PAYMENT-INITIATION",
+        "kind": "composition",
+        "name": "Payment Initiation API v2.3.3",
+        "source_id": "document:design.md#5"
+       }
+      ],
+      "links_out": [],
+      "name": "Read domestic payment",
+      "provenance": "from the design document design.md#5",
+      "type": "A4.APIOperation",
+      "version": "1"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "method": "GET"
+      },
+      "connections": [
+       {
+        "direction": "in",
+        "evidence": [
+         "application_architecture_document:sdem-migrate-0.20#within-layer-access"
+        ],
+        "id": "DATA-CONSENT",
+        "mapping_id": "MIG-020-044",
+        "name": "ConsentLedger",
+        "relationship": "ACCESSED_BY",
+        "status": "approved"
+       }
+      ],
+      "description": "Returned only where DebtorAccountRelease is true (R-24). The document gives no path.",
+      "fields": [],
+      "id": "API-DEBTOR-READ",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "IFC-PAYMENT-INITIATION",
+        "kind": "composition",
+        "name": "Payment Initiation API v2.3.3",
+        "source_id": "document:design.md#5"
+       }
+      ],
+      "links_out": [],
+      "name": "Read payment debtor account",
+      "provenance": "from the design document design.md#5,document:design.md#2",
+      "type": "A4.APIOperation",
+      "version": "1"
+     }
+    ],
+    "title": "API operations",
+    "type": "A4.APIOperation"
+   },
+   {
+    "definition": "An event an application produces or consumes",
+    "records": [
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "event_source": "Payments hub (APP-PAYHUB)"
+      },
+      "connections": [],
+      "description": "Emitted by the hub when a payment is recorded as accepted for execution.",
+      "fields": [],
+      "id": "EVT-HANDOFF",
+      "lifecycle_status": "planned",
+      "links_in": [
+       {
+        "id": "APP-PAYHUB",
+        "kind": "triggering",
+        "name": "Payments hub",
+        "source_id": "document:design.md#5"
+       }
+      ],
+      "links_out": [],
+      "name": "Durable handoff event",
+      "provenance": "from the design document design.md#5",
+      "type": "A4.Event",
+      "version": "1"
+     }
+    ],
+    "title": "Events",
+    "type": "A4.Event"
+   }
+  ],
+  "summary": {
+   "by_type": {
+    "API operations": 5,
+    "Application components": 8,
+    "Application interfaces": 1,
+    "Events": 1
+   },
+   "records": 15,
+   "unconfirmed": 0,
+   "with_approved_connection": 14
+  },
+  "title": "A4 Application Architecture",
+  "workspace": "v3"
+ }
+}

@@ -1,0 +1,3950 @@
+{
+ "command": [
+  "document",
+  "--workspace",
+  "<tmp>/v3",
+  "--layer",
+  "A2",
+  "--json"
+ ],
+ "exit": 0,
+ "output": {
+  "fingerprint": "<volatile>",
+  "gaps": {
+   "no_connection": [
+    "FP-ASSESS",
+    "FP-TRANSACT",
+    "AT-PARTY-AUTHENTICATION",
+    "AT-PAYMENT-ORDER-INITIATION",
+    "AT-FRAUD-EVALUATION",
+    "CR-PARTY-AUTHENTICATION",
+    "CR-PAYMENT-ORDER-INITIATION",
+    "CR-FRAUD-EVALUATION",
+    "SG-PARTY-AUTHENTICATION-PARTY-AUTHENTICATION-ASSESSMENT",
+    "SG-PARTY-AUTHENTICATION-PASSWORD",
+    "SG-PARTY-AUTHENTICATION-QUESTION",
+    "SG-PARTY-AUTHENTICATION-DOCUMENT",
+    "SG-PARTY-AUTHENTICATION-DEVICE",
+    "SG-PARTY-AUTHENTICATION-BIOMETRIC",
+    "SG-PARTY-AUTHENTICATION-BEHAVIOR",
+    "SG-PAYMENT-ORDER-INITIATION-PAYMENT-ORDER-INITIATION-TRANSACTION",
+    "SG-PAYMENT-ORDER-INITIATION-COMPLIANCE",
+    "SG-PAYMENT-ORDER-INITIATION-CONFIRMATION",
+    "SG-PAYMENT-ORDER-INITIATION-ORDER-INITIATION",
+    "SG-FRAUD-EVALUATION-FRAUD-EVALUATION-ASSESSMENT",
+    "SG-FRAUD-EVALUATION-RULE-SETSAND-DECISION-TREES",
+    "SG-FRAUD-EVALUATION-MODELS",
+    "SO-PARTY-AUTHENTICATION-UPDATE",
+    "SO-PARTY-AUTHENTICATION-EVALUATE",
+    "SO-PARTY-AUTHENTICATION-EXCHANGE",
+    "SO-PARTY-AUTHENTICATION-EXECUTE",
+    "SO-PARTY-AUTHENTICATION-REQUEST",
+    "SO-PARTY-AUTHENTICATION-GRANT",
+    "SO-PARTY-AUTHENTICATION-RETRIEVE",
+    "SO-PARTY-AUTHENTICATION-EVALUATE-PASSWORD",
+    "SO-PARTY-AUTHENTICATION-RETRIEVE-PASSWORD",
+    "SO-PARTY-AUTHENTICATION-EVALUATE-QUESTION",
+    "SO-PARTY-AUTHENTICATION-RETRIEVE-QUESTION",
+    "SO-PARTY-AUTHENTICATION-RETRIEVE-DOCUMENT",
+    "SO-PARTY-AUTHENTICATION-EVALUATE-DOCUMENT",
+    "SO-PARTY-AUTHENTICATION-EVALUATE-DEVICE",
+    "SO-PARTY-AUTHENTICATION-EVALUATE-BIOMETRIC",
+    "SO-PARTY-AUTHENTICATION-RETRIEVE-DEVICE",
+    "SO-PARTY-AUTHENTICATION-RETRIEVE-BIOMETRIC",
+    "SO-PARTY-AUTHENTICATION-EVALUATE-BEHAVIOR",
+    "SO-PARTY-AUTHENTICATION-RETRIEVE-BEHAVIOR",
+    "SO-PAYMENT-ORDER-INITIATION-UPDATE",
+    "SO-PAYMENT-ORDER-INITIATION-RETRIEVE-COMPLIANCE",
+    "SO-PAYMENT-ORDER-INITIATION-RETRIEVE-CONFIRMATION",
+    "SO-PAYMENT-ORDER-INITIATION-EXCHANGE-ORDER-INITIATION",
+    "SO-PAYMENT-ORDER-INITIATION-RETRIEVE-ORDER-INITIATION",
+    "SO-FRAUD-EVALUATION-EVALUATE",
+    "SO-FRAUD-EVALUATION-EXCHANGE",
+    "SO-FRAUD-EVALUATION-EXECUTE",
+    "SO-FRAUD-EVALUATION-RETRIEVE-RULE-SETSAND-DECISION-TREES",
+    "SO-FRAUD-EVALUATION-GRANT",
+    "SO-FRAUD-EVALUATION-REQUEST",
+    "SO-FRAUD-EVALUATION-RETRIEVE",
+    "SO-FRAUD-EVALUATION-RETRIEVE-MODELS",
+    "BQ-PARTY-AUTHENTICATION-PASSWORD",
+    "BQ-PARTY-AUTHENTICATION-QUESTION",
+    "BQ-PARTY-AUTHENTICATION-DOCUMENT",
+    "BQ-PARTY-AUTHENTICATION-DEVICE",
+    "BQ-PARTY-AUTHENTICATION-BIOMETRIC",
+    "BQ-PARTY-AUTHENTICATION-BEHAVIOR",
+    "BQ-PAYMENT-ORDER-INITIATION-COMPLIANCE",
+    "BQ-PAYMENT-ORDER-INITIATION-CONFIRMATION",
+    "BQ-PAYMENT-ORDER-INITIATION-ORDER-INITIATION",
+    "BQ-FRAUD-EVALUATION-RULE-SETSAND-DECISION-TREES",
+    "BQ-FRAUD-EVALUATION-MODELS"
+   ],
+   "placeholders": [
+    {
+     "fields": [
+      "input_attributes"
+     ],
+     "id": "SO-PARTY-AUTHENTICATION-RETRIEVE"
+    },
+    {
+     "fields": [
+      "input_attributes"
+     ],
+     "id": "SO-PARTY-AUTHENTICATION-RETRIEVE-PASSWORD"
+    },
+    {
+     "fields": [
+      "input_attributes"
+     ],
+     "id": "SO-PARTY-AUTHENTICATION-RETRIEVE-QUESTION"
+    },
+    {
+     "fields": [
+      "input_attributes"
+     ],
+     "id": "SO-PARTY-AUTHENTICATION-RETRIEVE-DOCUMENT"
+    },
+    {
+     "fields": [
+      "input_attributes"
+     ],
+     "id": "SO-PARTY-AUTHENTICATION-RETRIEVE-DEVICE"
+    },
+    {
+     "fields": [
+      "input_attributes"
+     ],
+     "id": "SO-PARTY-AUTHENTICATION-RETRIEVE-BIOMETRIC"
+    },
+    {
+     "fields": [
+      "input_attributes"
+     ],
+     "id": "SO-PARTY-AUTHENTICATION-RETRIEVE-BEHAVIOR"
+    },
+    {
+     "fields": [
+      "input_attributes"
+     ],
+     "id": "SO-PAYMENT-ORDER-INITIATION-RETRIEVE"
+    },
+    {
+     "fields": [
+      "input_attributes"
+     ],
+     "id": "SO-PAYMENT-ORDER-INITIATION-RETRIEVE-COMPLIANCE"
+    },
+    {
+     "fields": [
+      "input_attributes"
+     ],
+     "id": "SO-PAYMENT-ORDER-INITIATION-RETRIEVE-CONFIRMATION"
+    },
+    {
+     "fields": [
+      "input_attributes"
+     ],
+     "id": "SO-PAYMENT-ORDER-INITIATION-RETRIEVE-ORDER-INITIATION"
+    },
+    {
+     "fields": [
+      "input_attributes"
+     ],
+     "id": "SO-FRAUD-EVALUATION-RETRIEVE-RULE-SETSAND-DECISION-TREES"
+    },
+    {
+     "fields": [
+      "input_attributes"
+     ],
+     "id": "SO-FRAUD-EVALUATION-RETRIEVE"
+    },
+    {
+     "fields": [
+      "input_attributes"
+     ],
+     "id": "SO-FRAUD-EVALUATION-RETRIEVE-MODELS"
+    }
+   ],
+   "requirements_not_confirmed": [],
+   "unconfirmed": []
+  },
+  "layer": "A2",
+  "requirements": [],
+  "sections": [
+   {
+    "definition": "A discrete functional scope of the bank and its responsibilities",
+    "records": [
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "asset_type": "Party Authentication (AT-PARTY-AUTHENTICATION)",
+       "classification": "derived",
+       "conforms_to": [
+        "BIAN 14.0.0"
+       ],
+       "functional_pattern": "Assess (FP-ASSESS)"
+      },
+      "connections": [
+       {
+        "direction": "in",
+        "evidence": [
+         "process_model:design.md#4",
+         "bian_alignment_guidance:design.md#4",
+         "author:design section 4"
+        ],
+        "id": "PROC-AUTH",
+        "mapping_id": "MAP-003",
+        "name": "Authenticate and authorise",
+        "relationship": "USES_DOMAIN",
+        "status": "approved"
+       },
+       {
+        "direction": "out",
+        "evidence": [
+         "application_architecture_document:design.md#5",
+         "bian_alignment_guidance:design.md#5",
+         "author:design section 5"
+        ],
+        "id": "APP-IDENT",
+        "mapping_id": "MAP-006",
+        "name": "Identity",
+        "relationship": "REALIZED_BY",
+        "status": "approved"
+       }
+      ],
+      "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+      "fields": [],
+      "id": "SD-PARTY-AUTHENTICATION",
+      "lifecycle_status": "active",
+      "links_in": [],
+      "links_out": [
+       {
+        "id": "AT-PARTY-AUTHENTICATION",
+        "kind": "association",
+        "name": "Party Authentication",
+        "source_id": null
+       },
+       {
+        "id": "FP-ASSESS",
+        "kind": "association",
+        "name": "Assess",
+        "source_id": null
+       },
+       {
+        "id": "CR-PARTY-AUTHENTICATION",
+        "kind": "aggregation",
+        "name": "Party Authentication Assessment",
+        "source_id": null
+       },
+       {
+        "id": "SG-PARTY-AUTHENTICATION-PARTY-AUTHENTICATION-ASSESSMENT",
+        "kind": "composition",
+        "name": "Party Authentication — Party Authentication Assessment",
+        "source_id": null
+       },
+       {
+        "id": "SG-PARTY-AUTHENTICATION-PASSWORD",
+        "kind": "composition",
+        "name": "Party Authentication — Password",
+        "source_id": null
+       },
+       {
+        "id": "SG-PARTY-AUTHENTICATION-QUESTION",
+        "kind": "composition",
+        "name": "Party Authentication — Question",
+        "source_id": null
+       },
+       {
+        "id": "SG-PARTY-AUTHENTICATION-DOCUMENT",
+        "kind": "composition",
+        "name": "Party Authentication — Document",
+        "source_id": null
+       },
+       {
+        "id": "SG-PARTY-AUTHENTICATION-DEVICE",
+        "kind": "composition",
+        "name": "Party Authentication — Device",
+        "source_id": null
+       },
+       {
+        "id": "SG-PARTY-AUTHENTICATION-BIOMETRIC",
+        "kind": "composition",
+        "name": "Party Authentication — Biometric",
+        "source_id": null
+       },
+       {
+        "id": "SG-PARTY-AUTHENTICATION-BEHAVIOR",
+        "kind": "composition",
+        "name": "Party Authentication — Behavior",
+        "source_id": null
+       }
+      ],
+      "name": "Party Authentication",
+      "provenance": "from the BIAN catalogue, release 14.0.0 (PartyAuthentication.yaml)",
+      "type": "A2.ServiceDomain",
+      "version": "14.0.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "asset_type": "Payment Order Initiation (AT-PAYMENT-ORDER-INITIATION)",
+       "classification": "derived",
+       "conforms_to": [
+        "BIAN 14.0.0"
+       ],
+       "functional_pattern": "Transact (FP-TRANSACT)"
+      },
+      "connections": [
+       {
+        "direction": "in",
+        "evidence": [
+         "process_model:design.md#4",
+         "bian_alignment_guidance:design.md#4",
+         "author:design section 4"
+        ],
+        "id": "PROC-SUBMIT",
+        "mapping_id": "MAP-001",
+        "name": "Receive the payment",
+        "relationship": "USES_DOMAIN",
+        "status": "approved"
+       },
+       {
+        "direction": "in",
+        "evidence": [
+         "process_model:design.md#4",
+         "bian_alignment_guidance:design.md#4",
+         "author:design section 4"
+        ],
+        "id": "PROC-STATUS",
+        "mapping_id": "MAP-002",
+        "name": "Respond to status enquiries",
+        "relationship": "USES_DOMAIN",
+        "status": "approved"
+       },
+       {
+        "direction": "in",
+        "evidence": [
+         "business_architecture_document:design.md#4",
+         "domain_scope_assessment:design.md#4",
+         "bian_alignment_guidance:design.md#4",
+         "author:design section 4"
+        ],
+        "id": "CAP-PAY",
+        "mapping_id": "MAP-004",
+        "name": "Domestic payment initiation",
+        "relationship": "SUPPORTED_BY",
+        "status": "approved"
+       },
+       {
+        "direction": "out",
+        "evidence": [
+         "application_architecture_document:design.md#5",
+         "bian_alignment_guidance:design.md#5",
+         "author:design section 5"
+        ],
+        "id": "APP-PAYHUB",
+        "mapping_id": "MAP-005",
+        "name": "Payments hub",
+        "relationship": "REALIZED_BY",
+        "status": "approved"
+       },
+       {
+        "direction": "out",
+        "evidence": [
+         "engine_rationale:S17 step3 implements SO-PAYMENT-ORDER-INITIATION-INITIATE via API-PAYMENT-CREATE (approved); SO-PAYMENT-ORDER-INITIATION-RETRIEVE via API-PAYMENT-READ (approved)"
+        ],
+        "id": "APP-EDGE",
+        "mapping_id": "MAP-033",
+        "name": "API ingress",
+        "relationship": "REALIZED_BY",
+        "status": "rejected"
+       }
+      ],
+      "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+      "fields": [],
+      "id": "SD-PAYMENT-ORDER-INITIATION",
+      "lifecycle_status": "active",
+      "links_in": [],
+      "links_out": [
+       {
+        "id": "AT-PAYMENT-ORDER-INITIATION",
+        "kind": "association",
+        "name": "Payment Order Initiation",
+        "source_id": null
+       },
+       {
+        "id": "FP-TRANSACT",
+        "kind": "association",
+        "name": "Transact",
+        "source_id": null
+       },
+       {
+        "id": "CR-PAYMENT-ORDER-INITIATION",
+        "kind": "aggregation",
+        "name": "Payment Order Initiation Transaction",
+        "source_id": null
+       },
+       {
+        "id": "SG-PAYMENT-ORDER-INITIATION-PAYMENT-ORDER-INITIATION-TRANSACTION",
+        "kind": "composition",
+        "name": "Payment Order Initiation — Payment Order Initiation Transaction",
+        "source_id": null
+       },
+       {
+        "id": "SG-PAYMENT-ORDER-INITIATION-COMPLIANCE",
+        "kind": "composition",
+        "name": "Payment Order Initiation — Compliance",
+        "source_id": null
+       },
+       {
+        "id": "SG-PAYMENT-ORDER-INITIATION-CONFIRMATION",
+        "kind": "composition",
+        "name": "Payment Order Initiation — Confirmation",
+        "source_id": null
+       },
+       {
+        "id": "SG-PAYMENT-ORDER-INITIATION-ORDER-INITIATION",
+        "kind": "composition",
+        "name": "Payment Order Initiation — Order Initiation",
+        "source_id": null
+       }
+      ],
+      "name": "Payment Order Initiation",
+      "provenance": "from the BIAN catalogue, release 14.0.0 (PaymentOrderInitiation.yaml)",
+      "type": "A2.ServiceDomain",
+      "version": "14.0.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "asset_type": "Fraud Evaluation (AT-FRAUD-EVALUATION)",
+       "classification": "derived",
+       "conforms_to": [
+        "BIAN 14.0.0"
+       ],
+       "functional_pattern": "Assess (FP-ASSESS)"
+      },
+      "connections": [
+       {
+        "direction": "in",
+        "evidence": [
+         "process_model:design.md#ai-decision",
+         "bian_alignment_guidance:design.md#ai-decision",
+         "author:design section ai-decision"
+        ],
+        "id": "PROC-RISK",
+        "mapping_id": "MAP-031",
+        "name": "Screen fraud",
+        "relationship": "USES_DOMAIN",
+        "status": "approved"
+       },
+       {
+        "direction": "out",
+        "evidence": [
+         "application_architecture_document:design.md#ai-decision",
+         "bian_alignment_guidance:design.md#ai-decision",
+         "author:design section ai-decision"
+        ],
+        "id": "APP-RISK",
+        "mapping_id": "MAP-032",
+        "name": "Fraud service",
+        "relationship": "REALIZED_BY",
+        "status": "approved"
+       },
+       {
+        "direction": "in",
+        "evidence": [
+         "engine_rationale:S01 step3 all 1 processes of the capability use the domain"
+        ],
+        "id": "CAP-RISK",
+        "mapping_id": "MAP-034",
+        "name": "Payment risk control",
+        "relationship": "SUPPORTED_BY",
+        "status": "rejected"
+       }
+      ],
+      "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+      "fields": [],
+      "id": "SD-FRAUD-EVALUATION",
+      "lifecycle_status": "active",
+      "links_in": [],
+      "links_out": [
+       {
+        "id": "AT-FRAUD-EVALUATION",
+        "kind": "association",
+        "name": "Fraud Evaluation",
+        "source_id": null
+       },
+       {
+        "id": "FP-ASSESS",
+        "kind": "association",
+        "name": "Assess",
+        "source_id": null
+       },
+       {
+        "id": "CR-FRAUD-EVALUATION",
+        "kind": "aggregation",
+        "name": "Fraud Evaluation Assessment",
+        "source_id": null
+       },
+       {
+        "id": "SG-FRAUD-EVALUATION-FRAUD-EVALUATION-ASSESSMENT",
+        "kind": "composition",
+        "name": "Fraud Evaluation — Fraud Evaluation Assessment",
+        "source_id": null
+       },
+       {
+        "id": "SG-FRAUD-EVALUATION-RULE-SETSAND-DECISION-TREES",
+        "kind": "composition",
+        "name": "Fraud Evaluation — Rule Setsand Decision Trees",
+        "source_id": null
+       },
+       {
+        "id": "SG-FRAUD-EVALUATION-MODELS",
+        "kind": "composition",
+        "name": "Fraud Evaluation — Models",
+        "source_id": null
+       }
+      ],
+      "name": "Fraud Evaluation",
+      "provenance": "from the BIAN catalogue, release 14.0.0 (FraudEvaluation.yaml)",
+      "type": "A2.ServiceDomain",
+      "version": "14.0.0"
+     }
+    ],
+    "title": "Service domains",
+    "type": "A2.ServiceDomain"
+   },
+   {
+    "definition": "The generic behaviour pattern a Service Domain applies",
+    "records": [
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "generic_artefact": "Assessment"
+      },
+      "connections": [],
+      "description": "A BIAN functional pattern (BIAN Semantic API Practitioner Guide v8.1 §3.2.1, Figure 9).",
+      "fields": [],
+      "id": "FP-ASSESS",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SD-PARTY-AUTHENTICATION",
+        "kind": "association",
+        "name": "Party Authentication",
+        "source_id": null
+       },
+       {
+        "id": "SD-FRAUD-EVALUATION",
+        "kind": "association",
+        "name": "Fraud Evaluation",
+        "source_id": null
+       }
+      ],
+      "links_out": [],
+      "name": "Assess",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A2.FunctionalPattern",
+      "version": "14.0.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "generic_artefact": "Transaction"
+      },
+      "connections": [],
+      "description": "A BIAN functional pattern (BIAN Semantic API Practitioner Guide v8.1 §3.2.1, Figure 9).",
+      "fields": [],
+      "id": "FP-TRANSACT",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SD-PAYMENT-ORDER-INITIATION",
+        "kind": "association",
+        "name": "Payment Order Initiation",
+        "source_id": null
+       }
+      ],
+      "links_out": [],
+      "name": "Transact",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A2.FunctionalPattern",
+      "version": "14.0.0"
+     }
+    ],
+    "title": "Functional patterns",
+    "type": "A2.FunctionalPattern"
+   },
+   {
+    "definition": "The class of asset a Service Domain manages through its lifecycle",
+    "records": [
+     {
+      "attribute_sources": {},
+      "attributes": {},
+      "connections": [],
+      "description": "Asset type of Party Authentication — derived (BIAN Semantic API Practitioner Guide v8.1 §3.2.1, Figure 9); confirm.",
+      "fields": [],
+      "id": "AT-PARTY-AUTHENTICATION",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SD-PARTY-AUTHENTICATION",
+        "kind": "association",
+        "name": "Party Authentication",
+        "source_id": null
+       }
+      ],
+      "links_out": [],
+      "name": "Party Authentication",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A2.AssetType",
+      "version": "14.0.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {},
+      "connections": [],
+      "description": "Asset type of Payment Order Initiation — derived (BIAN Semantic API Practitioner Guide v8.1 §3.2.1, Figure 9); confirm.",
+      "fields": [],
+      "id": "AT-PAYMENT-ORDER-INITIATION",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SD-PAYMENT-ORDER-INITIATION",
+        "kind": "association",
+        "name": "Payment Order Initiation",
+        "source_id": null
+       }
+      ],
+      "links_out": [],
+      "name": "Payment Order Initiation",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A2.AssetType",
+      "version": "14.0.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {},
+      "connections": [],
+      "description": "Asset type of Fraud Evaluation — derived (BIAN Semantic API Practitioner Guide v8.1 §3.2.1, Figure 9); confirm.",
+      "fields": [],
+      "id": "AT-FRAUD-EVALUATION",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SD-FRAUD-EVALUATION",
+        "kind": "association",
+        "name": "Fraud Evaluation",
+        "source_id": null
+       }
+      ],
+      "links_out": [],
+      "name": "Fraud Evaluation",
+      "provenance": "no source recorded (written by a person or an agent)",
+      "type": "A2.AssetType",
+      "version": "14.0.0"
+     }
+    ],
+    "title": "Asset types",
+    "type": "A2.AssetType"
+   },
+   {
+    "definition": "Lifecycle and control information for a Service Domain's activity",
+    "records": [
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "attributes": [
+        "CustomerReference",
+        "PartyReference",
+        "PartyAuthenticationAssessmentProfile",
+        "AuthenticationType",
+        "PartyAuthenticationConsolidationRecord",
+        "CustomerContactAuthenticationLevel",
+        "AuthorisationTokenReference",
+        "RefreshTokenReference"
+       ],
+       "conforms_to": [
+        "BIAN 14.0.0"
+       ]
+      },
+      "connections": [],
+      "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+      "fields": [],
+      "id": "CR-PARTY-AUTHENTICATION",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SD-PARTY-AUTHENTICATION",
+        "kind": "aggregation",
+        "name": "Party Authentication",
+        "source_id": null
+       },
+       {
+        "id": "SO-PARTY-AUTHENTICATION-UPDATE",
+        "kind": "access",
+        "name": "Party Authentication: Update",
+        "source_id": null
+       },
+       {
+        "id": "SO-PARTY-AUTHENTICATION-EVALUATE",
+        "kind": "access",
+        "name": "Party Authentication: Evaluate",
+        "source_id": null
+       },
+       {
+        "id": "SO-PARTY-AUTHENTICATION-EXCHANGE",
+        "kind": "access",
+        "name": "Party Authentication: Exchange",
+        "source_id": null
+       },
+       {
+        "id": "SO-PARTY-AUTHENTICATION-EXECUTE",
+        "kind": "access",
+        "name": "Party Authentication: Execute",
+        "source_id": null
+       },
+       {
+        "id": "SO-PARTY-AUTHENTICATION-REQUEST",
+        "kind": "access",
+        "name": "Party Authentication: Request",
+        "source_id": null
+       },
+       {
+        "id": "SO-PARTY-AUTHENTICATION-GRANT",
+        "kind": "access",
+        "name": "Party Authentication: Grant",
+        "source_id": null
+       },
+       {
+        "id": "SO-PARTY-AUTHENTICATION-RETRIEVE",
+        "kind": "access",
+        "name": "Party Authentication: Retrieve",
+        "source_id": null
+       },
+       {
+        "id": "SO-PARTY-AUTHENTICATION-EVALUATE-PASSWORD",
+        "kind": "access",
+        "name": "Party Authentication: Evaluate Password",
+        "source_id": null
+       },
+       {
+        "id": "SO-PARTY-AUTHENTICATION-RETRIEVE-PASSWORD",
+        "kind": "access",
+        "name": "Party Authentication: Retrieve Password",
+        "source_id": null
+       },
+       {
+        "id": "SO-PARTY-AUTHENTICATION-EVALUATE-QUESTION",
+        "kind": "access",
+        "name": "Party Authentication: Evaluate Question",
+        "source_id": null
+       },
+       {
+        "id": "SO-PARTY-AUTHENTICATION-RETRIEVE-QUESTION",
+        "kind": "access",
+        "name": "Party Authentication: Retrieve Question",
+        "source_id": null
+       },
+       {
+        "id": "SO-PARTY-AUTHENTICATION-RETRIEVE-DOCUMENT",
+        "kind": "access",
+        "name": "Party Authentication: Retrieve Document",
+        "source_id": null
+       },
+       {
+        "id": "SO-PARTY-AUTHENTICATION-EVALUATE-DOCUMENT",
+        "kind": "access",
+        "name": "Party Authentication: Evaluate Document",
+        "source_id": null
+       },
+       {
+        "id": "SO-PARTY-AUTHENTICATION-EVALUATE-DEVICE",
+        "kind": "access",
+        "name": "Party Authentication: Evaluate Device",
+        "source_id": null
+       },
+       {
+        "id": "SO-PARTY-AUTHENTICATION-EVALUATE-BIOMETRIC",
+        "kind": "access",
+        "name": "Party Authentication: Evaluate Biometric",
+        "source_id": null
+       },
+       {
+        "id": "SO-PARTY-AUTHENTICATION-RETRIEVE-DEVICE",
+        "kind": "access",
+        "name": "Party Authentication: Retrieve Device",
+        "source_id": null
+       },
+       {
+        "id": "SO-PARTY-AUTHENTICATION-RETRIEVE-BIOMETRIC",
+        "kind": "access",
+        "name": "Party Authentication: Retrieve Biometric",
+        "source_id": null
+       },
+       {
+        "id": "SO-PARTY-AUTHENTICATION-EVALUATE-BEHAVIOR",
+        "kind": "access",
+        "name": "Party Authentication: Evaluate Behavior",
+        "source_id": null
+       },
+       {
+        "id": "SO-PARTY-AUTHENTICATION-RETRIEVE-BEHAVIOR",
+        "kind": "access",
+        "name": "Party Authentication: Retrieve Behavior",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "BQ-PARTY-AUTHENTICATION-PASSWORD",
+        "kind": "composition",
+        "name": "Password (Party Authentication)",
+        "source_id": null
+       },
+       {
+        "id": "BQ-PARTY-AUTHENTICATION-QUESTION",
+        "kind": "composition",
+        "name": "Question (Party Authentication)",
+        "source_id": null
+       },
+       {
+        "id": "BQ-PARTY-AUTHENTICATION-DOCUMENT",
+        "kind": "composition",
+        "name": "Document (Party Authentication)",
+        "source_id": null
+       },
+       {
+        "id": "BQ-PARTY-AUTHENTICATION-DEVICE",
+        "kind": "composition",
+        "name": "Device (Party Authentication)",
+        "source_id": null
+       },
+       {
+        "id": "BQ-PARTY-AUTHENTICATION-BIOMETRIC",
+        "kind": "composition",
+        "name": "Biometric (Party Authentication)",
+        "source_id": null
+       },
+       {
+        "id": "BQ-PARTY-AUTHENTICATION-BEHAVIOR",
+        "kind": "composition",
+        "name": "Behavior (Party Authentication)",
+        "source_id": null
+       }
+      ],
+      "name": "Party Authentication Assessment",
+      "provenance": "from the BIAN catalogue, release 14.0.0 (PartyAuthentication.yaml)",
+      "type": "A2.ControlRecord",
+      "version": "14.0.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "attributes": [
+        "PaymentTransactionType",
+        "RecurringPaymentRecord",
+        "RecurringPaymentCustomerReference",
+        "RecurringPaymentReference",
+        "CustomerReference",
+        "PaymentTransaction",
+        "PayerReference",
+        "PayerBankReference",
+        "PayerProductInstanceReference",
+        "PayeeReference",
+        "PayeeBankReference",
+        "PayeeProductInstanceReference",
+        "Amount",
+        "Currency",
+        "DateType",
+        "Date",
+        "PaymentFeesCharges",
+        "PaymentMechanism",
+        "PaymentPurpose",
+        "DocumentDirectoryEntryInstanceReference",
+        "DocumentContent"
+       ],
+       "conforms_to": [
+        "BIAN 14.0.0"
+       ]
+      },
+      "connections": [],
+      "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+      "fields": [],
+      "id": "CR-PAYMENT-ORDER-INITIATION",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SD-PAYMENT-ORDER-INITIATION",
+        "kind": "aggregation",
+        "name": "Payment Order Initiation",
+        "source_id": null
+       },
+       {
+        "id": "SO-PAYMENT-ORDER-INITIATION-INITIATE",
+        "kind": "access",
+        "name": "Payment Order Initiation: Initiate",
+        "source_id": null
+       },
+       {
+        "id": "SO-PAYMENT-ORDER-INITIATION-UPDATE",
+        "kind": "access",
+        "name": "Payment Order Initiation: Update",
+        "source_id": null
+       },
+       {
+        "id": "SO-PAYMENT-ORDER-INITIATION-RETRIEVE",
+        "kind": "access",
+        "name": "Payment Order Initiation: Retrieve",
+        "source_id": null
+       },
+       {
+        "id": "SO-PAYMENT-ORDER-INITIATION-RETRIEVE-COMPLIANCE",
+        "kind": "access",
+        "name": "Payment Order Initiation: Retrieve Compliance",
+        "source_id": null
+       },
+       {
+        "id": "SO-PAYMENT-ORDER-INITIATION-RETRIEVE-CONFIRMATION",
+        "kind": "access",
+        "name": "Payment Order Initiation: Retrieve Confirmation",
+        "source_id": null
+       },
+       {
+        "id": "SO-PAYMENT-ORDER-INITIATION-EXCHANGE-ORDER-INITIATION",
+        "kind": "access",
+        "name": "Payment Order Initiation: Exchange Order Initiation",
+        "source_id": null
+       },
+       {
+        "id": "SO-PAYMENT-ORDER-INITIATION-RETRIEVE-ORDER-INITIATION",
+        "kind": "access",
+        "name": "Payment Order Initiation: Retrieve Order Initiation",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "BQ-PAYMENT-ORDER-INITIATION-COMPLIANCE",
+        "kind": "composition",
+        "name": "Compliance (Payment Order Initiation)",
+        "source_id": null
+       },
+       {
+        "id": "BQ-PAYMENT-ORDER-INITIATION-CONFIRMATION",
+        "kind": "composition",
+        "name": "Confirmation (Payment Order Initiation)",
+        "source_id": null
+       },
+       {
+        "id": "BQ-PAYMENT-ORDER-INITIATION-ORDER-INITIATION",
+        "kind": "composition",
+        "name": "Order Initiation (Payment Order Initiation)",
+        "source_id": null
+       }
+      ],
+      "name": "Payment Order Initiation Transaction",
+      "provenance": "from the BIAN catalogue, release 14.0.0 (PaymentOrderInitiation.yaml)",
+      "type": "A2.ControlRecord",
+      "version": "14.0.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "attributes": [
+        "ProductProductionSessionReference",
+        "FraudEvaluationTestProfile",
+        "FraudEvaluationEnsembleTechniqueType",
+        "FraudEvaluationEnsembleTechniqueDefinition",
+        "FraudEvaluationTransactionConsolidationRecord",
+        "FraudEvaluationProductionAnomalyRecord",
+        "FraudEvaluationProductionAnomalyProductionTransactionReference"
+       ],
+       "conforms_to": [
+        "BIAN 14.0.0"
+       ]
+      },
+      "connections": [],
+      "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+      "fields": [],
+      "id": "CR-FRAUD-EVALUATION",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SD-FRAUD-EVALUATION",
+        "kind": "aggregation",
+        "name": "Fraud Evaluation",
+        "source_id": null
+       },
+       {
+        "id": "SO-FRAUD-EVALUATION-EVALUATE",
+        "kind": "access",
+        "name": "Fraud Evaluation: Evaluate",
+        "source_id": null
+       },
+       {
+        "id": "SO-FRAUD-EVALUATION-EXCHANGE",
+        "kind": "access",
+        "name": "Fraud Evaluation: Exchange",
+        "source_id": null
+       },
+       {
+        "id": "SO-FRAUD-EVALUATION-EXECUTE",
+        "kind": "access",
+        "name": "Fraud Evaluation: Execute",
+        "source_id": null
+       },
+       {
+        "id": "SO-FRAUD-EVALUATION-RETRIEVE-RULE-SETSAND-DECISION-TREES",
+        "kind": "access",
+        "name": "Fraud Evaluation: Retrieve Rule Setsand Decision Trees",
+        "source_id": null
+       },
+       {
+        "id": "SO-FRAUD-EVALUATION-GRANT",
+        "kind": "access",
+        "name": "Fraud Evaluation: Grant",
+        "source_id": null
+       },
+       {
+        "id": "SO-FRAUD-EVALUATION-REQUEST",
+        "kind": "access",
+        "name": "Fraud Evaluation: Request",
+        "source_id": null
+       },
+       {
+        "id": "SO-FRAUD-EVALUATION-RETRIEVE",
+        "kind": "access",
+        "name": "Fraud Evaluation: Retrieve",
+        "source_id": null
+       },
+       {
+        "id": "SO-FRAUD-EVALUATION-RETRIEVE-MODELS",
+        "kind": "access",
+        "name": "Fraud Evaluation: Retrieve Models",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "BQ-FRAUD-EVALUATION-RULE-SETSAND-DECISION-TREES",
+        "kind": "composition",
+        "name": "Rule Setsand Decision Trees (Fraud Evaluation)",
+        "source_id": null
+       },
+       {
+        "id": "BQ-FRAUD-EVALUATION-MODELS",
+        "kind": "composition",
+        "name": "Models (Fraud Evaluation)",
+        "source_id": null
+       }
+      ],
+      "name": "Fraud Evaluation Assessment",
+      "provenance": "from the BIAN catalogue, release 14.0.0 (FraudEvaluation.yaml)",
+      "type": "A2.ControlRecord",
+      "version": "14.0.0"
+     }
+    ],
+    "title": "Control records",
+    "type": "A2.ControlRecord"
+   },
+   {
+    "definition": "A grouping of a Service Domain's operations",
+    "records": [
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "conforms_to": [
+        "BIAN 14.0.0"
+       ]
+      },
+      "connections": [],
+      "description": "The operations BIAN tags 'PartyAuthenticationAssessment' in Party Authentication.",
+      "fields": [],
+      "id": "SG-PARTY-AUTHENTICATION-PARTY-AUTHENTICATION-ASSESSMENT",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SD-PARTY-AUTHENTICATION",
+        "kind": "composition",
+        "name": "Party Authentication",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "SO-PARTY-AUTHENTICATION-UPDATE",
+        "kind": "composition",
+        "name": "Party Authentication: Update",
+        "source_id": null
+       },
+       {
+        "id": "SO-PARTY-AUTHENTICATION-EVALUATE",
+        "kind": "composition",
+        "name": "Party Authentication: Evaluate",
+        "source_id": null
+       },
+       {
+        "id": "SO-PARTY-AUTHENTICATION-EXCHANGE",
+        "kind": "composition",
+        "name": "Party Authentication: Exchange",
+        "source_id": null
+       },
+       {
+        "id": "SO-PARTY-AUTHENTICATION-EXECUTE",
+        "kind": "composition",
+        "name": "Party Authentication: Execute",
+        "source_id": null
+       },
+       {
+        "id": "SO-PARTY-AUTHENTICATION-REQUEST",
+        "kind": "composition",
+        "name": "Party Authentication: Request",
+        "source_id": null
+       },
+       {
+        "id": "SO-PARTY-AUTHENTICATION-GRANT",
+        "kind": "composition",
+        "name": "Party Authentication: Grant",
+        "source_id": null
+       },
+       {
+        "id": "SO-PARTY-AUTHENTICATION-RETRIEVE",
+        "kind": "composition",
+        "name": "Party Authentication: Retrieve",
+        "source_id": null
+       }
+      ],
+      "name": "Party Authentication — Party Authentication Assessment",
+      "provenance": "from the BIAN catalogue, release 14.0.0 (PartyAuthentication.yaml)",
+      "type": "A2.ServiceGroup",
+      "version": "14.0.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "conforms_to": [
+        "BIAN 14.0.0"
+       ]
+      },
+      "connections": [],
+      "description": "The operations BIAN tags 'Password' in Party Authentication.",
+      "fields": [],
+      "id": "SG-PARTY-AUTHENTICATION-PASSWORD",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SD-PARTY-AUTHENTICATION",
+        "kind": "composition",
+        "name": "Party Authentication",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "SO-PARTY-AUTHENTICATION-EVALUATE-PASSWORD",
+        "kind": "composition",
+        "name": "Party Authentication: Evaluate Password",
+        "source_id": null
+       },
+       {
+        "id": "SO-PARTY-AUTHENTICATION-RETRIEVE-PASSWORD",
+        "kind": "composition",
+        "name": "Party Authentication: Retrieve Password",
+        "source_id": null
+       }
+      ],
+      "name": "Party Authentication — Password",
+      "provenance": "from the BIAN catalogue, release 14.0.0 (PartyAuthentication.yaml)",
+      "type": "A2.ServiceGroup",
+      "version": "14.0.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "conforms_to": [
+        "BIAN 14.0.0"
+       ]
+      },
+      "connections": [],
+      "description": "The operations BIAN tags 'Question' in Party Authentication.",
+      "fields": [],
+      "id": "SG-PARTY-AUTHENTICATION-QUESTION",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SD-PARTY-AUTHENTICATION",
+        "kind": "composition",
+        "name": "Party Authentication",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "SO-PARTY-AUTHENTICATION-EVALUATE-QUESTION",
+        "kind": "composition",
+        "name": "Party Authentication: Evaluate Question",
+        "source_id": null
+       },
+       {
+        "id": "SO-PARTY-AUTHENTICATION-RETRIEVE-QUESTION",
+        "kind": "composition",
+        "name": "Party Authentication: Retrieve Question",
+        "source_id": null
+       }
+      ],
+      "name": "Party Authentication — Question",
+      "provenance": "from the BIAN catalogue, release 14.0.0 (PartyAuthentication.yaml)",
+      "type": "A2.ServiceGroup",
+      "version": "14.0.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "conforms_to": [
+        "BIAN 14.0.0"
+       ]
+      },
+      "connections": [],
+      "description": "The operations BIAN tags 'Document' in Party Authentication.",
+      "fields": [],
+      "id": "SG-PARTY-AUTHENTICATION-DOCUMENT",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SD-PARTY-AUTHENTICATION",
+        "kind": "composition",
+        "name": "Party Authentication",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "SO-PARTY-AUTHENTICATION-RETRIEVE-DOCUMENT",
+        "kind": "composition",
+        "name": "Party Authentication: Retrieve Document",
+        "source_id": null
+       },
+       {
+        "id": "SO-PARTY-AUTHENTICATION-EVALUATE-DOCUMENT",
+        "kind": "composition",
+        "name": "Party Authentication: Evaluate Document",
+        "source_id": null
+       }
+      ],
+      "name": "Party Authentication — Document",
+      "provenance": "from the BIAN catalogue, release 14.0.0 (PartyAuthentication.yaml)",
+      "type": "A2.ServiceGroup",
+      "version": "14.0.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "conforms_to": [
+        "BIAN 14.0.0"
+       ]
+      },
+      "connections": [],
+      "description": "The operations BIAN tags 'Device' in Party Authentication.",
+      "fields": [],
+      "id": "SG-PARTY-AUTHENTICATION-DEVICE",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SD-PARTY-AUTHENTICATION",
+        "kind": "composition",
+        "name": "Party Authentication",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "SO-PARTY-AUTHENTICATION-EVALUATE-DEVICE",
+        "kind": "composition",
+        "name": "Party Authentication: Evaluate Device",
+        "source_id": null
+       },
+       {
+        "id": "SO-PARTY-AUTHENTICATION-RETRIEVE-DEVICE",
+        "kind": "composition",
+        "name": "Party Authentication: Retrieve Device",
+        "source_id": null
+       }
+      ],
+      "name": "Party Authentication — Device",
+      "provenance": "from the BIAN catalogue, release 14.0.0 (PartyAuthentication.yaml)",
+      "type": "A2.ServiceGroup",
+      "version": "14.0.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "conforms_to": [
+        "BIAN 14.0.0"
+       ]
+      },
+      "connections": [],
+      "description": "The operations BIAN tags 'Biometric' in Party Authentication.",
+      "fields": [],
+      "id": "SG-PARTY-AUTHENTICATION-BIOMETRIC",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SD-PARTY-AUTHENTICATION",
+        "kind": "composition",
+        "name": "Party Authentication",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "SO-PARTY-AUTHENTICATION-EVALUATE-BIOMETRIC",
+        "kind": "composition",
+        "name": "Party Authentication: Evaluate Biometric",
+        "source_id": null
+       },
+       {
+        "id": "SO-PARTY-AUTHENTICATION-RETRIEVE-BIOMETRIC",
+        "kind": "composition",
+        "name": "Party Authentication: Retrieve Biometric",
+        "source_id": null
+       }
+      ],
+      "name": "Party Authentication — Biometric",
+      "provenance": "from the BIAN catalogue, release 14.0.0 (PartyAuthentication.yaml)",
+      "type": "A2.ServiceGroup",
+      "version": "14.0.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "conforms_to": [
+        "BIAN 14.0.0"
+       ]
+      },
+      "connections": [],
+      "description": "The operations BIAN tags 'Behavior' in Party Authentication.",
+      "fields": [],
+      "id": "SG-PARTY-AUTHENTICATION-BEHAVIOR",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SD-PARTY-AUTHENTICATION",
+        "kind": "composition",
+        "name": "Party Authentication",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "SO-PARTY-AUTHENTICATION-EVALUATE-BEHAVIOR",
+        "kind": "composition",
+        "name": "Party Authentication: Evaluate Behavior",
+        "source_id": null
+       },
+       {
+        "id": "SO-PARTY-AUTHENTICATION-RETRIEVE-BEHAVIOR",
+        "kind": "composition",
+        "name": "Party Authentication: Retrieve Behavior",
+        "source_id": null
+       }
+      ],
+      "name": "Party Authentication — Behavior",
+      "provenance": "from the BIAN catalogue, release 14.0.0 (PartyAuthentication.yaml)",
+      "type": "A2.ServiceGroup",
+      "version": "14.0.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "conforms_to": [
+        "BIAN 14.0.0"
+       ]
+      },
+      "connections": [],
+      "description": "The operations BIAN tags 'PaymentOrderInitiationTransaction' in Payment Order Initiation.",
+      "fields": [],
+      "id": "SG-PAYMENT-ORDER-INITIATION-PAYMENT-ORDER-INITIATION-TRANSACTION",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SD-PAYMENT-ORDER-INITIATION",
+        "kind": "composition",
+        "name": "Payment Order Initiation",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "SO-PAYMENT-ORDER-INITIATION-INITIATE",
+        "kind": "composition",
+        "name": "Payment Order Initiation: Initiate",
+        "source_id": null
+       },
+       {
+        "id": "SO-PAYMENT-ORDER-INITIATION-UPDATE",
+        "kind": "composition",
+        "name": "Payment Order Initiation: Update",
+        "source_id": null
+       },
+       {
+        "id": "SO-PAYMENT-ORDER-INITIATION-RETRIEVE",
+        "kind": "composition",
+        "name": "Payment Order Initiation: Retrieve",
+        "source_id": null
+       }
+      ],
+      "name": "Payment Order Initiation — Payment Order Initiation Transaction",
+      "provenance": "from the BIAN catalogue, release 14.0.0 (PaymentOrderInitiation.yaml)",
+      "type": "A2.ServiceGroup",
+      "version": "14.0.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "conforms_to": [
+        "BIAN 14.0.0"
+       ]
+      },
+      "connections": [],
+      "description": "The operations BIAN tags 'Compliance' in Payment Order Initiation.",
+      "fields": [],
+      "id": "SG-PAYMENT-ORDER-INITIATION-COMPLIANCE",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SD-PAYMENT-ORDER-INITIATION",
+        "kind": "composition",
+        "name": "Payment Order Initiation",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "SO-PAYMENT-ORDER-INITIATION-RETRIEVE-COMPLIANCE",
+        "kind": "composition",
+        "name": "Payment Order Initiation: Retrieve Compliance",
+        "source_id": null
+       }
+      ],
+      "name": "Payment Order Initiation — Compliance",
+      "provenance": "from the BIAN catalogue, release 14.0.0 (PaymentOrderInitiation.yaml)",
+      "type": "A2.ServiceGroup",
+      "version": "14.0.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "conforms_to": [
+        "BIAN 14.0.0"
+       ]
+      },
+      "connections": [],
+      "description": "The operations BIAN tags 'Confirmation' in Payment Order Initiation.",
+      "fields": [],
+      "id": "SG-PAYMENT-ORDER-INITIATION-CONFIRMATION",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SD-PAYMENT-ORDER-INITIATION",
+        "kind": "composition",
+        "name": "Payment Order Initiation",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "SO-PAYMENT-ORDER-INITIATION-RETRIEVE-CONFIRMATION",
+        "kind": "composition",
+        "name": "Payment Order Initiation: Retrieve Confirmation",
+        "source_id": null
+       }
+      ],
+      "name": "Payment Order Initiation — Confirmation",
+      "provenance": "from the BIAN catalogue, release 14.0.0 (PaymentOrderInitiation.yaml)",
+      "type": "A2.ServiceGroup",
+      "version": "14.0.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "conforms_to": [
+        "BIAN 14.0.0"
+       ]
+      },
+      "connections": [],
+      "description": "The operations BIAN tags 'OrderInitiation' in Payment Order Initiation.",
+      "fields": [],
+      "id": "SG-PAYMENT-ORDER-INITIATION-ORDER-INITIATION",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SD-PAYMENT-ORDER-INITIATION",
+        "kind": "composition",
+        "name": "Payment Order Initiation",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "SO-PAYMENT-ORDER-INITIATION-EXCHANGE-ORDER-INITIATION",
+        "kind": "composition",
+        "name": "Payment Order Initiation: Exchange Order Initiation",
+        "source_id": null
+       },
+       {
+        "id": "SO-PAYMENT-ORDER-INITIATION-RETRIEVE-ORDER-INITIATION",
+        "kind": "composition",
+        "name": "Payment Order Initiation: Retrieve Order Initiation",
+        "source_id": null
+       }
+      ],
+      "name": "Payment Order Initiation — Order Initiation",
+      "provenance": "from the BIAN catalogue, release 14.0.0 (PaymentOrderInitiation.yaml)",
+      "type": "A2.ServiceGroup",
+      "version": "14.0.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "conforms_to": [
+        "BIAN 14.0.0"
+       ]
+      },
+      "connections": [],
+      "description": "The operations BIAN tags 'FraudEvaluationAssessment' in Fraud Evaluation.",
+      "fields": [],
+      "id": "SG-FRAUD-EVALUATION-FRAUD-EVALUATION-ASSESSMENT",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SD-FRAUD-EVALUATION",
+        "kind": "composition",
+        "name": "Fraud Evaluation",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "SO-FRAUD-EVALUATION-EVALUATE",
+        "kind": "composition",
+        "name": "Fraud Evaluation: Evaluate",
+        "source_id": null
+       },
+       {
+        "id": "SO-FRAUD-EVALUATION-EXCHANGE",
+        "kind": "composition",
+        "name": "Fraud Evaluation: Exchange",
+        "source_id": null
+       },
+       {
+        "id": "SO-FRAUD-EVALUATION-EXECUTE",
+        "kind": "composition",
+        "name": "Fraud Evaluation: Execute",
+        "source_id": null
+       },
+       {
+        "id": "SO-FRAUD-EVALUATION-GRANT",
+        "kind": "composition",
+        "name": "Fraud Evaluation: Grant",
+        "source_id": null
+       },
+       {
+        "id": "SO-FRAUD-EVALUATION-REQUEST",
+        "kind": "composition",
+        "name": "Fraud Evaluation: Request",
+        "source_id": null
+       },
+       {
+        "id": "SO-FRAUD-EVALUATION-RETRIEVE",
+        "kind": "composition",
+        "name": "Fraud Evaluation: Retrieve",
+        "source_id": null
+       }
+      ],
+      "name": "Fraud Evaluation — Fraud Evaluation Assessment",
+      "provenance": "from the BIAN catalogue, release 14.0.0 (FraudEvaluation.yaml)",
+      "type": "A2.ServiceGroup",
+      "version": "14.0.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "conforms_to": [
+        "BIAN 14.0.0"
+       ]
+      },
+      "connections": [],
+      "description": "The operations BIAN tags 'RuleSetsandDecisionTrees' in Fraud Evaluation.",
+      "fields": [],
+      "id": "SG-FRAUD-EVALUATION-RULE-SETSAND-DECISION-TREES",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SD-FRAUD-EVALUATION",
+        "kind": "composition",
+        "name": "Fraud Evaluation",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "SO-FRAUD-EVALUATION-RETRIEVE-RULE-SETSAND-DECISION-TREES",
+        "kind": "composition",
+        "name": "Fraud Evaluation: Retrieve Rule Setsand Decision Trees",
+        "source_id": null
+       }
+      ],
+      "name": "Fraud Evaluation — Rule Setsand Decision Trees",
+      "provenance": "from the BIAN catalogue, release 14.0.0 (FraudEvaluation.yaml)",
+      "type": "A2.ServiceGroup",
+      "version": "14.0.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "conforms_to": [
+        "BIAN 14.0.0"
+       ]
+      },
+      "connections": [],
+      "description": "The operations BIAN tags 'Models' in Fraud Evaluation.",
+      "fields": [],
+      "id": "SG-FRAUD-EVALUATION-MODELS",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SD-FRAUD-EVALUATION",
+        "kind": "composition",
+        "name": "Fraud Evaluation",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "SO-FRAUD-EVALUATION-RETRIEVE-MODELS",
+        "kind": "composition",
+        "name": "Fraud Evaluation: Retrieve Models",
+        "source_id": null
+       }
+      ],
+      "name": "Fraud Evaluation — Models",
+      "provenance": "from the BIAN catalogue, release 14.0.0 (FraudEvaluation.yaml)",
+      "type": "A2.ServiceGroup",
+      "version": "14.0.0"
+     }
+    ],
+    "title": "Service groups",
+    "type": "A2.ServiceGroup"
+   },
+   {
+    "definition": "An operation a Service Domain exposes",
+    "records": [
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "action_term": "Update",
+       "conforms_to": [
+        "BIAN 14.0.0"
+       ],
+       "http_method": "PUT",
+       "input_attributes": [
+        "CustomerReference",
+        "PartyReference",
+        "PartyAuthenticationAssessmentProfile",
+        "AuthenticationType",
+        "PartyAuthenticationConsolidationRecord",
+        "CustomerContactAuthenticationLevel",
+        "AuthorisationTokenReference",
+        "RefreshTokenReference"
+       ],
+       "output_attributes": [
+        "CustomerReference",
+        "PartyReference",
+        "PartyAuthenticationAssessmentProfile",
+        "AuthenticationType",
+        "PartyAuthenticationConsolidationRecord",
+        "CustomerContactAuthenticationLevel",
+        "AuthorisationTokenReference",
+        "RefreshTokenReference"
+       ]
+      },
+      "connections": [],
+      "description": "PUT /PartyAuthentication/{partyauthenticationid}/Update in BIAN's Semantic API 14.0.0.",
+      "fields": [],
+      "id": "SO-PARTY-AUTHENTICATION-UPDATE",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SG-PARTY-AUTHENTICATION-PARTY-AUTHENTICATION-ASSESSMENT",
+        "kind": "composition",
+        "name": "Party Authentication — Party Authentication Assessment",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "CR-PARTY-AUTHENTICATION",
+        "kind": "access",
+        "name": "Party Authentication Assessment",
+        "source_id": null
+       }
+      ],
+      "name": "Party Authentication: Update",
+      "provenance": "from the BIAN catalogue, release 14.0.0 (PartyAuthentication.yaml)",
+      "type": "A2.ServiceOperation",
+      "version": "14.0.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "action_term": "Evaluate",
+       "conforms_to": [
+        "BIAN 14.0.0"
+       ],
+       "http_method": "POST",
+       "input_attributes": [
+        "CustomerReference",
+        "PartyReference",
+        "PartyAuthenticationAssessmentProfile",
+        "AuthenticationType",
+        "PartyAuthenticationConsolidationRecord",
+        "CustomerContactAuthenticationLevel",
+        "AuthorisationTokenReference",
+        "RefreshTokenReference"
+       ],
+       "output_attributes": [
+        "CustomerReference",
+        "PartyReference",
+        "PartyAuthenticationAssessmentProfile",
+        "AuthenticationType",
+        "PartyAuthenticationConsolidationRecord",
+        "CustomerContactAuthenticationLevel",
+        "AuthorisationTokenReference",
+        "RefreshTokenReference"
+       ]
+      },
+      "connections": [],
+      "description": "POST /PartyAuthentication/Evaluate in BIAN's Semantic API 14.0.0.",
+      "fields": [],
+      "id": "SO-PARTY-AUTHENTICATION-EVALUATE",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SG-PARTY-AUTHENTICATION-PARTY-AUTHENTICATION-ASSESSMENT",
+        "kind": "composition",
+        "name": "Party Authentication — Party Authentication Assessment",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "CR-PARTY-AUTHENTICATION",
+        "kind": "access",
+        "name": "Party Authentication Assessment",
+        "source_id": null
+       }
+      ],
+      "name": "Party Authentication: Evaluate",
+      "provenance": "from the BIAN catalogue, release 14.0.0 (PartyAuthentication.yaml)",
+      "type": "A2.ServiceOperation",
+      "version": "14.0.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "action_term": "Exchange",
+       "conforms_to": [
+        "BIAN 14.0.0"
+       ],
+       "http_method": "PUT",
+       "input_attributes": [
+        "CustomerReference",
+        "PartyReference",
+        "PartyAuthenticationAssessmentProfile",
+        "AuthenticationType",
+        "PartyAuthenticationConsolidationRecord",
+        "CustomerContactAuthenticationLevel",
+        "AuthorisationTokenReference",
+        "RefreshTokenReference"
+       ],
+       "output_attributes": [
+        "CustomerReference",
+        "PartyReference",
+        "PartyAuthenticationAssessmentProfile",
+        "AuthenticationType",
+        "PartyAuthenticationConsolidationRecord",
+        "CustomerContactAuthenticationLevel",
+        "AuthorisationTokenReference",
+        "RefreshTokenReference"
+       ]
+      },
+      "connections": [],
+      "description": "PUT /PartyAuthentication/{partyauthenticationid}/Exchange in BIAN's Semantic API 14.0.0.",
+      "fields": [],
+      "id": "SO-PARTY-AUTHENTICATION-EXCHANGE",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SG-PARTY-AUTHENTICATION-PARTY-AUTHENTICATION-ASSESSMENT",
+        "kind": "composition",
+        "name": "Party Authentication — Party Authentication Assessment",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "CR-PARTY-AUTHENTICATION",
+        "kind": "access",
+        "name": "Party Authentication Assessment",
+        "source_id": null
+       }
+      ],
+      "name": "Party Authentication: Exchange",
+      "provenance": "from the BIAN catalogue, release 14.0.0 (PartyAuthentication.yaml)",
+      "type": "A2.ServiceOperation",
+      "version": "14.0.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "action_term": "Execute",
+       "conforms_to": [
+        "BIAN 14.0.0"
+       ],
+       "http_method": "PUT",
+       "input_attributes": [
+        "CustomerReference",
+        "PartyReference",
+        "PartyAuthenticationAssessmentProfile",
+        "AuthenticationType",
+        "PartyAuthenticationConsolidationRecord",
+        "CustomerContactAuthenticationLevel",
+        "AuthorisationTokenReference",
+        "RefreshTokenReference"
+       ],
+       "output_attributes": [
+        "CustomerReference",
+        "PartyReference",
+        "PartyAuthenticationAssessmentProfile",
+        "AuthenticationType",
+        "PartyAuthenticationConsolidationRecord",
+        "CustomerContactAuthenticationLevel",
+        "AuthorisationTokenReference",
+        "RefreshTokenReference"
+       ]
+      },
+      "connections": [],
+      "description": "PUT /PartyAuthentication/{partyauthenticationid}/Execute in BIAN's Semantic API 14.0.0.",
+      "fields": [],
+      "id": "SO-PARTY-AUTHENTICATION-EXECUTE",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SG-PARTY-AUTHENTICATION-PARTY-AUTHENTICATION-ASSESSMENT",
+        "kind": "composition",
+        "name": "Party Authentication — Party Authentication Assessment",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "CR-PARTY-AUTHENTICATION",
+        "kind": "access",
+        "name": "Party Authentication Assessment",
+        "source_id": null
+       }
+      ],
+      "name": "Party Authentication: Execute",
+      "provenance": "from the BIAN catalogue, release 14.0.0 (PartyAuthentication.yaml)",
+      "type": "A2.ServiceOperation",
+      "version": "14.0.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "action_term": "Request",
+       "conforms_to": [
+        "BIAN 14.0.0"
+       ],
+       "http_method": "PUT",
+       "input_attributes": [
+        "CustomerReference",
+        "PartyReference",
+        "PartyAuthenticationAssessmentProfile",
+        "AuthenticationType",
+        "PartyAuthenticationConsolidationRecord",
+        "CustomerContactAuthenticationLevel",
+        "AuthorisationTokenReference",
+        "RefreshTokenReference"
+       ],
+       "output_attributes": [
+        "CustomerReference",
+        "PartyReference",
+        "PartyAuthenticationAssessmentProfile",
+        "AuthenticationType",
+        "PartyAuthenticationConsolidationRecord",
+        "CustomerContactAuthenticationLevel",
+        "AuthorisationTokenReference",
+        "RefreshTokenReference"
+       ]
+      },
+      "connections": [],
+      "description": "PUT /PartyAuthentication/{partyauthenticationid}/Request in BIAN's Semantic API 14.0.0.",
+      "fields": [],
+      "id": "SO-PARTY-AUTHENTICATION-REQUEST",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SG-PARTY-AUTHENTICATION-PARTY-AUTHENTICATION-ASSESSMENT",
+        "kind": "composition",
+        "name": "Party Authentication — Party Authentication Assessment",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "CR-PARTY-AUTHENTICATION",
+        "kind": "access",
+        "name": "Party Authentication Assessment",
+        "source_id": null
+       }
+      ],
+      "name": "Party Authentication: Request",
+      "provenance": "from the BIAN catalogue, release 14.0.0 (PartyAuthentication.yaml)",
+      "type": "A2.ServiceOperation",
+      "version": "14.0.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "action_term": "Grant",
+       "conforms_to": [
+        "BIAN 14.0.0"
+       ],
+       "http_method": "PUT",
+       "input_attributes": [
+        "CustomerReference",
+        "PartyReference",
+        "PartyAuthenticationAssessmentProfile",
+        "AuthenticationType",
+        "PartyAuthenticationConsolidationRecord",
+        "CustomerContactAuthenticationLevel",
+        "AuthorisationTokenReference",
+        "RefreshTokenReference"
+       ],
+       "output_attributes": [
+        "CustomerReference",
+        "PartyReference",
+        "PartyAuthenticationAssessmentProfile",
+        "AuthenticationType",
+        "PartyAuthenticationConsolidationRecord",
+        "CustomerContactAuthenticationLevel",
+        "AuthorisationTokenReference",
+        "RefreshTokenReference"
+       ]
+      },
+      "connections": [],
+      "description": "PUT /PartyAuthentication/{partyauthenticationid}/Grant in BIAN's Semantic API 14.0.0.",
+      "fields": [],
+      "id": "SO-PARTY-AUTHENTICATION-GRANT",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SG-PARTY-AUTHENTICATION-PARTY-AUTHENTICATION-ASSESSMENT",
+        "kind": "composition",
+        "name": "Party Authentication — Party Authentication Assessment",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "CR-PARTY-AUTHENTICATION",
+        "kind": "access",
+        "name": "Party Authentication Assessment",
+        "source_id": null
+       }
+      ],
+      "name": "Party Authentication: Grant",
+      "provenance": "from the BIAN catalogue, release 14.0.0 (PartyAuthentication.yaml)",
+      "type": "A2.ServiceOperation",
+      "version": "14.0.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "action_term": "Retrieve",
+       "conforms_to": [
+        "BIAN 14.0.0"
+       ],
+       "http_method": "GET",
+       "output_attributes": [
+        "CustomerReference",
+        "PartyReference",
+        "PartyAuthenticationAssessmentProfile",
+        "AuthenticationType",
+        "PartyAuthenticationConsolidationRecord",
+        "CustomerContactAuthenticationLevel",
+        "AuthorisationTokenReference",
+        "RefreshTokenReference"
+       ]
+      },
+      "connections": [],
+      "description": "GET /PartyAuthentication/{partyauthenticationid}/Retrieve in BIAN's Semantic API 14.0.0.",
+      "fields": [],
+      "id": "SO-PARTY-AUTHENTICATION-RETRIEVE",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SG-PARTY-AUTHENTICATION-PARTY-AUTHENTICATION-ASSESSMENT",
+        "kind": "composition",
+        "name": "Party Authentication — Party Authentication Assessment",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "CR-PARTY-AUTHENTICATION",
+        "kind": "access",
+        "name": "Party Authentication Assessment",
+        "source_id": null
+       }
+      ],
+      "name": "Party Authentication: Retrieve",
+      "provenance": "from the BIAN catalogue, release 14.0.0 (PartyAuthentication.yaml)",
+      "type": "A2.ServiceOperation",
+      "version": "14.0.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "action_term": "Evaluate",
+       "behavior_qualifier": "Password (Party Authentication) (BQ-PARTY-AUTHENTICATION-PASSWORD)",
+       "conforms_to": [
+        "BIAN 14.0.0"
+       ],
+       "http_method": "POST",
+       "input_attributes": [
+        "PasswordValidityPeriod",
+        "PasswordFormat",
+        "PasswordValue"
+       ],
+       "output_attributes": [
+        "PasswordValidityPeriod",
+        "PasswordFormat",
+        "PasswordValue"
+       ]
+      },
+      "connections": [],
+      "description": "POST /PartyAuthentication/{partyauthenticationid}/Password/Evaluate in BIAN's Semantic API 14.0.0.",
+      "fields": [],
+      "id": "SO-PARTY-AUTHENTICATION-EVALUATE-PASSWORD",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SG-PARTY-AUTHENTICATION-PASSWORD",
+        "kind": "composition",
+        "name": "Party Authentication — Password",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "CR-PARTY-AUTHENTICATION",
+        "kind": "access",
+        "name": "Party Authentication Assessment",
+        "source_id": null
+       },
+       {
+        "id": "BQ-PARTY-AUTHENTICATION-PASSWORD",
+        "kind": "association",
+        "name": "Password (Party Authentication)",
+        "source_id": null
+       }
+      ],
+      "name": "Party Authentication: Evaluate Password",
+      "provenance": "from the BIAN catalogue, release 14.0.0 (PartyAuthentication.yaml)",
+      "type": "A2.ServiceOperation",
+      "version": "14.0.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "action_term": "Retrieve",
+       "behavior_qualifier": "Password (Party Authentication) (BQ-PARTY-AUTHENTICATION-PASSWORD)",
+       "conforms_to": [
+        "BIAN 14.0.0"
+       ],
+       "http_method": "GET",
+       "output_attributes": [
+        "PasswordValidityPeriod",
+        "PasswordFormat",
+        "PasswordValue"
+       ]
+      },
+      "connections": [],
+      "description": "GET /PartyAuthentication/{partyauthenticationid}/Password/{passwordid}/Retrieve in BIAN's Semantic API 14.0.0.",
+      "fields": [],
+      "id": "SO-PARTY-AUTHENTICATION-RETRIEVE-PASSWORD",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SG-PARTY-AUTHENTICATION-PASSWORD",
+        "kind": "composition",
+        "name": "Party Authentication — Password",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "CR-PARTY-AUTHENTICATION",
+        "kind": "access",
+        "name": "Party Authentication Assessment",
+        "source_id": null
+       },
+       {
+        "id": "BQ-PARTY-AUTHENTICATION-PASSWORD",
+        "kind": "association",
+        "name": "Password (Party Authentication)",
+        "source_id": null
+       }
+      ],
+      "name": "Party Authentication: Retrieve Password",
+      "provenance": "from the BIAN catalogue, release 14.0.0 (PartyAuthentication.yaml)",
+      "type": "A2.ServiceOperation",
+      "version": "14.0.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "action_term": "Evaluate",
+       "behavior_qualifier": "Question (Party Authentication) (BQ-PARTY-AUTHENTICATION-QUESTION)",
+       "conforms_to": [
+        "BIAN 14.0.0"
+       ],
+       "http_method": "POST",
+       "input_attributes": [
+        "AuthenticationSecretQuestionReference",
+        "AuthenticationSecretQuestionTemplate",
+        "AuthenticationSecretQuestionValue",
+        "SecretQuestionTestResult"
+       ],
+       "output_attributes": [
+        "AuthenticationSecretQuestionReference",
+        "AuthenticationSecretQuestionTemplate",
+        "AuthenticationSecretQuestionValue",
+        "SecretQuestionTestResult"
+       ]
+      },
+      "connections": [],
+      "description": "POST /PartyAuthentication/{partyauthenticationid}/Question/Evaluate in BIAN's Semantic API 14.0.0.",
+      "fields": [],
+      "id": "SO-PARTY-AUTHENTICATION-EVALUATE-QUESTION",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SG-PARTY-AUTHENTICATION-QUESTION",
+        "kind": "composition",
+        "name": "Party Authentication — Question",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "CR-PARTY-AUTHENTICATION",
+        "kind": "access",
+        "name": "Party Authentication Assessment",
+        "source_id": null
+       },
+       {
+        "id": "BQ-PARTY-AUTHENTICATION-QUESTION",
+        "kind": "association",
+        "name": "Question (Party Authentication)",
+        "source_id": null
+       }
+      ],
+      "name": "Party Authentication: Evaluate Question",
+      "provenance": "from the BIAN catalogue, release 14.0.0 (PartyAuthentication.yaml)",
+      "type": "A2.ServiceOperation",
+      "version": "14.0.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "action_term": "Retrieve",
+       "behavior_qualifier": "Question (Party Authentication) (BQ-PARTY-AUTHENTICATION-QUESTION)",
+       "conforms_to": [
+        "BIAN 14.0.0"
+       ],
+       "http_method": "GET",
+       "output_attributes": [
+        "AuthenticationSecretQuestionReference",
+        "AuthenticationSecretQuestionTemplate",
+        "AuthenticationSecretQuestionValue",
+        "SecretQuestionTestResult"
+       ]
+      },
+      "connections": [],
+      "description": "GET /PartyAuthentication/{partyauthenticationid}/Question/{questionid}/Retrieve in BIAN's Semantic API 14.0.0.",
+      "fields": [],
+      "id": "SO-PARTY-AUTHENTICATION-RETRIEVE-QUESTION",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SG-PARTY-AUTHENTICATION-QUESTION",
+        "kind": "composition",
+        "name": "Party Authentication — Question",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "CR-PARTY-AUTHENTICATION",
+        "kind": "access",
+        "name": "Party Authentication Assessment",
+        "source_id": null
+       },
+       {
+        "id": "BQ-PARTY-AUTHENTICATION-QUESTION",
+        "kind": "association",
+        "name": "Question (Party Authentication)",
+        "source_id": null
+       }
+      ],
+      "name": "Party Authentication: Retrieve Question",
+      "provenance": "from the BIAN catalogue, release 14.0.0 (PartyAuthentication.yaml)",
+      "type": "A2.ServiceOperation",
+      "version": "14.0.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "action_term": "Retrieve",
+       "behavior_qualifier": "Document (Party Authentication) (BQ-PARTY-AUTHENTICATION-DOCUMENT)",
+       "conforms_to": [
+        "BIAN 14.0.0"
+       ],
+       "http_method": "GET",
+       "output_attributes": [
+        "DocumentIdentification",
+        "DocumentVersion",
+        "DocumentType",
+        "DocumentStatus",
+        "DocumentDateTime",
+        "DocumentName",
+        "DocumentDateTimeType",
+        "DocumentPurpose",
+        "DocumentFormat",
+        "DocumentSubject",
+        "DocumentDescription",
+        "DocumentValidityPeriod"
+       ]
+      },
+      "connections": [],
+      "description": "GET /PartyAuthentication/{partyauthenticationid}/Document/{documentid}/Retrieve in BIAN's Semantic API 14.0.0.",
+      "fields": [],
+      "id": "SO-PARTY-AUTHENTICATION-RETRIEVE-DOCUMENT",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SG-PARTY-AUTHENTICATION-DOCUMENT",
+        "kind": "composition",
+        "name": "Party Authentication — Document",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "CR-PARTY-AUTHENTICATION",
+        "kind": "access",
+        "name": "Party Authentication Assessment",
+        "source_id": null
+       },
+       {
+        "id": "BQ-PARTY-AUTHENTICATION-DOCUMENT",
+        "kind": "association",
+        "name": "Document (Party Authentication)",
+        "source_id": null
+       }
+      ],
+      "name": "Party Authentication: Retrieve Document",
+      "provenance": "from the BIAN catalogue, release 14.0.0 (PartyAuthentication.yaml)",
+      "type": "A2.ServiceOperation",
+      "version": "14.0.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "action_term": "Evaluate",
+       "behavior_qualifier": "Document (Party Authentication) (BQ-PARTY-AUTHENTICATION-DOCUMENT)",
+       "conforms_to": [
+        "BIAN 14.0.0"
+       ],
+       "http_method": "POST",
+       "input_attributes": [
+        "DocumentIdentification",
+        "DocumentVersion",
+        "DocumentType",
+        "DocumentStatus",
+        "DocumentDateTime",
+        "DocumentName",
+        "DocumentDateTimeType",
+        "DocumentPurpose",
+        "DocumentFormat",
+        "DocumentSubject",
+        "DocumentDescription",
+        "DocumentValidityPeriod"
+       ],
+       "output_attributes": [
+        "DocumentIdentification",
+        "DocumentVersion",
+        "DocumentType",
+        "DocumentStatus",
+        "DocumentDateTime",
+        "DocumentName",
+        "DocumentDateTimeType",
+        "DocumentPurpose",
+        "DocumentFormat",
+        "DocumentSubject",
+        "DocumentDescription",
+        "DocumentValidityPeriod"
+       ]
+      },
+      "connections": [],
+      "description": "POST /PartyAuthentication/{partyauthenticationid}/Document/Evaluate in BIAN's Semantic API 14.0.0.",
+      "fields": [],
+      "id": "SO-PARTY-AUTHENTICATION-EVALUATE-DOCUMENT",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SG-PARTY-AUTHENTICATION-DOCUMENT",
+        "kind": "composition",
+        "name": "Party Authentication — Document",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "CR-PARTY-AUTHENTICATION",
+        "kind": "access",
+        "name": "Party Authentication Assessment",
+        "source_id": null
+       },
+       {
+        "id": "BQ-PARTY-AUTHENTICATION-DOCUMENT",
+        "kind": "association",
+        "name": "Document (Party Authentication)",
+        "source_id": null
+       }
+      ],
+      "name": "Party Authentication: Evaluate Document",
+      "provenance": "from the BIAN catalogue, release 14.0.0 (PartyAuthentication.yaml)",
+      "type": "A2.ServiceOperation",
+      "version": "14.0.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "action_term": "Evaluate",
+       "behavior_qualifier": "Device (Party Authentication) (BQ-PARTY-AUTHENTICATION-DEVICE)",
+       "conforms_to": [
+        "BIAN 14.0.0"
+       ],
+       "http_method": "POST",
+       "input_attributes": [
+        "DeviceIdentification",
+        "DeviceType",
+        "DeviceProperty",
+        "DeviceElement",
+        "DeviceStatus",
+        "DeviceVersion",
+        "DeviceDateTime",
+        "DeviceDescription",
+        "DeviceName",
+        "DeviceLanguage",
+        "DevicePhoneNumber",
+        "DeviceLocationReference",
+        "DeviceManufacturer",
+        "DeviceCountryReference",
+        "DeviceAddressReference",
+        "DeviceOperatingSystem"
+       ],
+       "output_attributes": [
+        "DeviceIdentification",
+        "DeviceType",
+        "DeviceProperty",
+        "DeviceElement",
+        "DeviceStatus",
+        "DeviceVersion",
+        "DeviceDateTime",
+        "DeviceDescription",
+        "DeviceName",
+        "DeviceLanguage",
+        "DevicePhoneNumber",
+        "DeviceLocationReference",
+        "DeviceManufacturer",
+        "DeviceCountryReference",
+        "DeviceAddressReference",
+        "DeviceOperatingSystem"
+       ]
+      },
+      "connections": [],
+      "description": "POST /PartyAuthentication/{partyauthenticationid}/Device/Evaluate in BIAN's Semantic API 14.0.0.",
+      "fields": [],
+      "id": "SO-PARTY-AUTHENTICATION-EVALUATE-DEVICE",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SG-PARTY-AUTHENTICATION-DEVICE",
+        "kind": "composition",
+        "name": "Party Authentication — Device",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "CR-PARTY-AUTHENTICATION",
+        "kind": "access",
+        "name": "Party Authentication Assessment",
+        "source_id": null
+       },
+       {
+        "id": "BQ-PARTY-AUTHENTICATION-DEVICE",
+        "kind": "association",
+        "name": "Device (Party Authentication)",
+        "source_id": null
+       }
+      ],
+      "name": "Party Authentication: Evaluate Device",
+      "provenance": "from the BIAN catalogue, release 14.0.0 (PartyAuthentication.yaml)",
+      "type": "A2.ServiceOperation",
+      "version": "14.0.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "action_term": "Evaluate",
+       "behavior_qualifier": "Biometric (Party Authentication) (BQ-PARTY-AUTHENTICATION-BIOMETRIC)",
+       "conforms_to": [
+        "BIAN 14.0.0"
+       ],
+       "http_method": "POST",
+       "input_attributes": [
+        "AuthenticationBiometricType",
+        "AuthenticationBiometricRecord",
+        "RegisteredBiometricInstanceReference",
+        "BiometricTestResult"
+       ],
+       "output_attributes": [
+        "AuthenticationBiometricType",
+        "AuthenticationBiometricRecord",
+        "RegisteredBiometricInstanceReference",
+        "BiometricTestResult"
+       ]
+      },
+      "connections": [],
+      "description": "POST /PartyAuthentication/{partyauthenticationid}/Biometric/Evaluate in BIAN's Semantic API 14.0.0.",
+      "fields": [],
+      "id": "SO-PARTY-AUTHENTICATION-EVALUATE-BIOMETRIC",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SG-PARTY-AUTHENTICATION-BIOMETRIC",
+        "kind": "composition",
+        "name": "Party Authentication — Biometric",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "CR-PARTY-AUTHENTICATION",
+        "kind": "access",
+        "name": "Party Authentication Assessment",
+        "source_id": null
+       },
+       {
+        "id": "BQ-PARTY-AUTHENTICATION-BIOMETRIC",
+        "kind": "association",
+        "name": "Biometric (Party Authentication)",
+        "source_id": null
+       }
+      ],
+      "name": "Party Authentication: Evaluate Biometric",
+      "provenance": "from the BIAN catalogue, release 14.0.0 (PartyAuthentication.yaml)",
+      "type": "A2.ServiceOperation",
+      "version": "14.0.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "action_term": "Retrieve",
+       "behavior_qualifier": "Device (Party Authentication) (BQ-PARTY-AUTHENTICATION-DEVICE)",
+       "conforms_to": [
+        "BIAN 14.0.0"
+       ],
+       "http_method": "GET",
+       "output_attributes": [
+        "DeviceIdentification",
+        "DeviceType",
+        "DeviceProperty",
+        "DeviceElement",
+        "DeviceStatus",
+        "DeviceVersion",
+        "DeviceDateTime",
+        "DeviceDescription",
+        "DeviceName",
+        "DeviceLanguage",
+        "DevicePhoneNumber",
+        "DeviceLocationReference",
+        "DeviceManufacturer",
+        "DeviceCountryReference",
+        "DeviceAddressReference",
+        "DeviceOperatingSystem"
+       ]
+      },
+      "connections": [],
+      "description": "GET /PartyAuthentication/{partyauthenticationid}/Device/{deviceid}/Retrieve in BIAN's Semantic API 14.0.0.",
+      "fields": [],
+      "id": "SO-PARTY-AUTHENTICATION-RETRIEVE-DEVICE",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SG-PARTY-AUTHENTICATION-DEVICE",
+        "kind": "composition",
+        "name": "Party Authentication — Device",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "CR-PARTY-AUTHENTICATION",
+        "kind": "access",
+        "name": "Party Authentication Assessment",
+        "source_id": null
+       },
+       {
+        "id": "BQ-PARTY-AUTHENTICATION-DEVICE",
+        "kind": "association",
+        "name": "Device (Party Authentication)",
+        "source_id": null
+       }
+      ],
+      "name": "Party Authentication: Retrieve Device",
+      "provenance": "from the BIAN catalogue, release 14.0.0 (PartyAuthentication.yaml)",
+      "type": "A2.ServiceOperation",
+      "version": "14.0.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "action_term": "Retrieve",
+       "behavior_qualifier": "Biometric (Party Authentication) (BQ-PARTY-AUTHENTICATION-BIOMETRIC)",
+       "conforms_to": [
+        "BIAN 14.0.0"
+       ],
+       "http_method": "GET",
+       "output_attributes": [
+        "AuthenticationBiometricType",
+        "AuthenticationBiometricRecord",
+        "RegisteredBiometricInstanceReference",
+        "BiometricTestResult"
+       ]
+      },
+      "connections": [],
+      "description": "GET /PartyAuthentication/{partyauthenticationid}/Biometric/{biometricid}/Retrieve in BIAN's Semantic API 14.0.0.",
+      "fields": [],
+      "id": "SO-PARTY-AUTHENTICATION-RETRIEVE-BIOMETRIC",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SG-PARTY-AUTHENTICATION-BIOMETRIC",
+        "kind": "composition",
+        "name": "Party Authentication — Biometric",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "CR-PARTY-AUTHENTICATION",
+        "kind": "access",
+        "name": "Party Authentication Assessment",
+        "source_id": null
+       },
+       {
+        "id": "BQ-PARTY-AUTHENTICATION-BIOMETRIC",
+        "kind": "association",
+        "name": "Biometric (Party Authentication)",
+        "source_id": null
+       }
+      ],
+      "name": "Party Authentication: Retrieve Biometric",
+      "provenance": "from the BIAN catalogue, release 14.0.0 (PartyAuthentication.yaml)",
+      "type": "A2.ServiceOperation",
+      "version": "14.0.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "action_term": "Evaluate",
+       "behavior_qualifier": "Behavior (Party Authentication) (BQ-PARTY-AUTHENTICATION-BEHAVIOR)",
+       "conforms_to": [
+        "BIAN 14.0.0"
+       ],
+       "http_method": "POST",
+       "input_attributes": [
+        "AuthenticationBehaviorType",
+        "AuthenticationBehaviorRecord",
+        "RegisteredBehaviorInstanceReference",
+        "BehaviorTestResult"
+       ],
+       "output_attributes": [
+        "AuthenticationBehaviorType",
+        "AuthenticationBehaviorRecord",
+        "RegisteredBehaviorInstanceReference",
+        "BehaviorTestResult"
+       ]
+      },
+      "connections": [],
+      "description": "POST /PartyAuthentication/{partyauthenticationid}/Behavior/Evaluate in BIAN's Semantic API 14.0.0.",
+      "fields": [],
+      "id": "SO-PARTY-AUTHENTICATION-EVALUATE-BEHAVIOR",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SG-PARTY-AUTHENTICATION-BEHAVIOR",
+        "kind": "composition",
+        "name": "Party Authentication — Behavior",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "CR-PARTY-AUTHENTICATION",
+        "kind": "access",
+        "name": "Party Authentication Assessment",
+        "source_id": null
+       },
+       {
+        "id": "BQ-PARTY-AUTHENTICATION-BEHAVIOR",
+        "kind": "association",
+        "name": "Behavior (Party Authentication)",
+        "source_id": null
+       }
+      ],
+      "name": "Party Authentication: Evaluate Behavior",
+      "provenance": "from the BIAN catalogue, release 14.0.0 (PartyAuthentication.yaml)",
+      "type": "A2.ServiceOperation",
+      "version": "14.0.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "action_term": "Retrieve",
+       "behavior_qualifier": "Behavior (Party Authentication) (BQ-PARTY-AUTHENTICATION-BEHAVIOR)",
+       "conforms_to": [
+        "BIAN 14.0.0"
+       ],
+       "http_method": "GET",
+       "output_attributes": [
+        "AuthenticationBehaviorType",
+        "AuthenticationBehaviorRecord",
+        "RegisteredBehaviorInstanceReference",
+        "BehaviorTestResult"
+       ]
+      },
+      "connections": [],
+      "description": "GET /PartyAuthentication/{partyauthenticationid}/Behavior/{behaviorid}/Retrieve in BIAN's Semantic API 14.0.0.",
+      "fields": [],
+      "id": "SO-PARTY-AUTHENTICATION-RETRIEVE-BEHAVIOR",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SG-PARTY-AUTHENTICATION-BEHAVIOR",
+        "kind": "composition",
+        "name": "Party Authentication — Behavior",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "CR-PARTY-AUTHENTICATION",
+        "kind": "access",
+        "name": "Party Authentication Assessment",
+        "source_id": null
+       },
+       {
+        "id": "BQ-PARTY-AUTHENTICATION-BEHAVIOR",
+        "kind": "association",
+        "name": "Behavior (Party Authentication)",
+        "source_id": null
+       }
+      ],
+      "name": "Party Authentication: Retrieve Behavior",
+      "provenance": "from the BIAN catalogue, release 14.0.0 (PartyAuthentication.yaml)",
+      "type": "A2.ServiceOperation",
+      "version": "14.0.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "action_term": "Initiate",
+       "conforms_to": [
+        "BIAN 14.0.0"
+       ],
+       "http_method": "POST",
+       "input_attributes": [
+        "PaymentTransactionType",
+        "RecurringPaymentRecord",
+        "RecurringPaymentCustomerReference",
+        "RecurringPaymentReference",
+        "CustomerReference",
+        "PaymentTransaction",
+        "PayerReference",
+        "PayerBankReference",
+        "PayerProductInstanceReference",
+        "PayeeReference",
+        "PayeeBankReference",
+        "PayeeProductInstanceReference",
+        "Amount",
+        "Currency",
+        "DateType",
+        "Date",
+        "PaymentFeesCharges",
+        "PaymentMechanism",
+        "PaymentPurpose",
+        "DocumentDirectoryEntryInstanceReference",
+        "DocumentContent"
+       ],
+       "output_attributes": [
+        "PaymentTransactionType",
+        "RecurringPaymentRecord",
+        "RecurringPaymentCustomerReference",
+        "RecurringPaymentReference",
+        "CustomerReference",
+        "PaymentTransaction",
+        "PayerReference",
+        "PayerBankReference",
+        "PayerProductInstanceReference",
+        "PayeeReference",
+        "PayeeBankReference",
+        "PayeeProductInstanceReference",
+        "Amount",
+        "Currency",
+        "DateType",
+        "Date",
+        "PaymentFeesCharges",
+        "PaymentMechanism",
+        "PaymentPurpose",
+        "DocumentDirectoryEntryInstanceReference",
+        "DocumentContent"
+       ]
+      },
+      "connections": [
+       {
+        "direction": "out",
+        "evidence": [
+         "api_contract:design.md#5",
+         "bian_alignment_guidance:design.md#5",
+         "author:design section 5"
+        ],
+        "id": "API-PAYMENT-CREATE",
+        "mapping_id": "MAP-007",
+        "name": "Create domestic payment",
+        "relationship": "IMPLEMENTED_BY",
+        "status": "approved"
+       }
+      ],
+      "description": "POST /PaymentOrderInitiation/Initiate in BIAN's Semantic API 14.0.0.",
+      "fields": [],
+      "id": "SO-PAYMENT-ORDER-INITIATION-INITIATE",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SG-PAYMENT-ORDER-INITIATION-PAYMENT-ORDER-INITIATION-TRANSACTION",
+        "kind": "composition",
+        "name": "Payment Order Initiation — Payment Order Initiation Transaction",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "CR-PAYMENT-ORDER-INITIATION",
+        "kind": "access",
+        "name": "Payment Order Initiation Transaction",
+        "source_id": null
+       }
+      ],
+      "name": "Payment Order Initiation: Initiate",
+      "provenance": "from the BIAN catalogue, release 14.0.0 (PaymentOrderInitiation.yaml)",
+      "type": "A2.ServiceOperation",
+      "version": "14.0.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "action_term": "Update",
+       "conforms_to": [
+        "BIAN 14.0.0"
+       ],
+       "http_method": "PUT",
+       "input_attributes": [
+        "PaymentTransactionType",
+        "RecurringPaymentRecord",
+        "RecurringPaymentCustomerReference",
+        "RecurringPaymentReference",
+        "CustomerReference",
+        "PaymentTransaction",
+        "PayerReference",
+        "PayerBankReference",
+        "PayerProductInstanceReference",
+        "PayeeReference",
+        "PayeeBankReference",
+        "PayeeProductInstanceReference",
+        "Amount",
+        "Currency",
+        "DateType",
+        "Date",
+        "PaymentFeesCharges",
+        "PaymentMechanism",
+        "PaymentPurpose",
+        "DocumentDirectoryEntryInstanceReference",
+        "DocumentContent"
+       ],
+       "output_attributes": [
+        "PaymentTransactionType",
+        "RecurringPaymentRecord",
+        "RecurringPaymentCustomerReference",
+        "RecurringPaymentReference",
+        "CustomerReference",
+        "PaymentTransaction",
+        "PayerReference",
+        "PayerBankReference",
+        "PayerProductInstanceReference",
+        "PayeeReference",
+        "PayeeBankReference",
+        "PayeeProductInstanceReference",
+        "Amount",
+        "Currency",
+        "DateType",
+        "Date",
+        "PaymentFeesCharges",
+        "PaymentMechanism",
+        "PaymentPurpose",
+        "DocumentDirectoryEntryInstanceReference",
+        "DocumentContent"
+       ]
+      },
+      "connections": [],
+      "description": "PUT /PaymentOrderInitiation/{paymentorderinitiationid}/Update in BIAN's Semantic API 14.0.0.",
+      "fields": [],
+      "id": "SO-PAYMENT-ORDER-INITIATION-UPDATE",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SG-PAYMENT-ORDER-INITIATION-PAYMENT-ORDER-INITIATION-TRANSACTION",
+        "kind": "composition",
+        "name": "Payment Order Initiation — Payment Order Initiation Transaction",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "CR-PAYMENT-ORDER-INITIATION",
+        "kind": "access",
+        "name": "Payment Order Initiation Transaction",
+        "source_id": null
+       }
+      ],
+      "name": "Payment Order Initiation: Update",
+      "provenance": "from the BIAN catalogue, release 14.0.0 (PaymentOrderInitiation.yaml)",
+      "type": "A2.ServiceOperation",
+      "version": "14.0.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "action_term": "Retrieve",
+       "conforms_to": [
+        "BIAN 14.0.0"
+       ],
+       "http_method": "GET",
+       "output_attributes": [
+        "PaymentTransactionType",
+        "RecurringPaymentRecord",
+        "RecurringPaymentCustomerReference",
+        "RecurringPaymentReference",
+        "CustomerReference",
+        "PaymentTransaction",
+        "PayerReference",
+        "PayerBankReference",
+        "PayerProductInstanceReference",
+        "PayeeReference",
+        "PayeeBankReference",
+        "PayeeProductInstanceReference",
+        "Amount",
+        "Currency",
+        "DateType",
+        "Date",
+        "PaymentFeesCharges",
+        "PaymentMechanism",
+        "PaymentPurpose",
+        "DocumentDirectoryEntryInstanceReference",
+        "DocumentContent"
+       ]
+      },
+      "connections": [
+       {
+        "direction": "out",
+        "evidence": [
+         "api_contract:design.md#5",
+         "bian_alignment_guidance:design.md#5",
+         "author:design section 5"
+        ],
+        "id": "API-PAYMENT-READ",
+        "mapping_id": "MAP-008",
+        "name": "Read domestic payment",
+        "relationship": "IMPLEMENTED_BY",
+        "status": "approved"
+       }
+      ],
+      "description": "GET /PaymentOrderInitiation/{paymentorderinitiationid}/Retrieve in BIAN's Semantic API 14.0.0.",
+      "fields": [],
+      "id": "SO-PAYMENT-ORDER-INITIATION-RETRIEVE",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SG-PAYMENT-ORDER-INITIATION-PAYMENT-ORDER-INITIATION-TRANSACTION",
+        "kind": "composition",
+        "name": "Payment Order Initiation — Payment Order Initiation Transaction",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "CR-PAYMENT-ORDER-INITIATION",
+        "kind": "access",
+        "name": "Payment Order Initiation Transaction",
+        "source_id": null
+       }
+      ],
+      "name": "Payment Order Initiation: Retrieve",
+      "provenance": "from the BIAN catalogue, release 14.0.0 (PaymentOrderInitiation.yaml)",
+      "type": "A2.ServiceOperation",
+      "version": "14.0.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "action_term": "Retrieve",
+       "behavior_qualifier": "Compliance (Payment Order Initiation) (BQ-PAYMENT-ORDER-INITIATION-COMPLIANCE)",
+       "conforms_to": [
+        "BIAN 14.0.0"
+       ],
+       "http_method": "GET",
+       "output_attributes": [
+        "PaymentTransactionComplianceCheckType",
+        "PaymentTransactionComplianceCheckResult",
+        "PaymentTransactionComplianceTaskResult"
+       ]
+      },
+      "connections": [],
+      "description": "GET /PaymentOrderInitiation/{paymentorderinitiationid}/Compliance/{complianceid}/Retrieve in BIAN's Semantic API 14.0.0.",
+      "fields": [],
+      "id": "SO-PAYMENT-ORDER-INITIATION-RETRIEVE-COMPLIANCE",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SG-PAYMENT-ORDER-INITIATION-COMPLIANCE",
+        "kind": "composition",
+        "name": "Payment Order Initiation — Compliance",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "CR-PAYMENT-ORDER-INITIATION",
+        "kind": "access",
+        "name": "Payment Order Initiation Transaction",
+        "source_id": null
+       },
+       {
+        "id": "BQ-PAYMENT-ORDER-INITIATION-COMPLIANCE",
+        "kind": "association",
+        "name": "Compliance (Payment Order Initiation)",
+        "source_id": null
+       }
+      ],
+      "name": "Payment Order Initiation: Retrieve Compliance",
+      "provenance": "from the BIAN catalogue, release 14.0.0 (PaymentOrderInitiation.yaml)",
+      "type": "A2.ServiceOperation",
+      "version": "14.0.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "action_term": "Retrieve",
+       "behavior_qualifier": "Confirmation (Payment Order Initiation) (BQ-PAYMENT-ORDER-INITIATION-CONFIRMATION)",
+       "conforms_to": [
+        "BIAN 14.0.0"
+       ],
+       "http_method": "GET",
+       "output_attributes": [
+        "PaymentTransactionFundingCheckResult"
+       ]
+      },
+      "connections": [],
+      "description": "GET /PaymentOrderInitiation/{paymentorderinitiationid}/Confirmation/{confirmationid}/Retrieve in BIAN's Semantic API 14.0.0.",
+      "fields": [],
+      "id": "SO-PAYMENT-ORDER-INITIATION-RETRIEVE-CONFIRMATION",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SG-PAYMENT-ORDER-INITIATION-CONFIRMATION",
+        "kind": "composition",
+        "name": "Payment Order Initiation — Confirmation",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "CR-PAYMENT-ORDER-INITIATION",
+        "kind": "access",
+        "name": "Payment Order Initiation Transaction",
+        "source_id": null
+       },
+       {
+        "id": "BQ-PAYMENT-ORDER-INITIATION-CONFIRMATION",
+        "kind": "association",
+        "name": "Confirmation (Payment Order Initiation)",
+        "source_id": null
+       }
+      ],
+      "name": "Payment Order Initiation: Retrieve Confirmation",
+      "provenance": "from the BIAN catalogue, release 14.0.0 (PaymentOrderInitiation.yaml)",
+      "type": "A2.ServiceOperation",
+      "version": "14.0.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "action_term": "Exchange",
+       "behavior_qualifier": "Order Initiation (Payment Order Initiation) (BQ-PAYMENT-ORDER-INITIATION-ORDER-INITIATION)",
+       "conforms_to": [
+        "BIAN 14.0.0"
+       ],
+       "http_method": "PUT",
+       "input_attributes": [
+        "PaymentOrderProcedureInstanceReference",
+        "PaymentOrderProcedureInstanceStatus",
+        "OrderInitiationTaskResult"
+       ],
+       "output_attributes": [
+        "PaymentOrderProcedureInstanceReference",
+        "PaymentOrderProcedureInstanceStatus",
+        "OrderInitiationTaskResult"
+       ]
+      },
+      "connections": [],
+      "description": "PUT /PaymentOrderInitiation/{paymentorderinitiationid}/OrderInitiation/{orderinitiationid}/Exchange in BIAN's Semantic API 14.0.0.",
+      "fields": [],
+      "id": "SO-PAYMENT-ORDER-INITIATION-EXCHANGE-ORDER-INITIATION",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SG-PAYMENT-ORDER-INITIATION-ORDER-INITIATION",
+        "kind": "composition",
+        "name": "Payment Order Initiation — Order Initiation",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "CR-PAYMENT-ORDER-INITIATION",
+        "kind": "access",
+        "name": "Payment Order Initiation Transaction",
+        "source_id": null
+       },
+       {
+        "id": "BQ-PAYMENT-ORDER-INITIATION-ORDER-INITIATION",
+        "kind": "association",
+        "name": "Order Initiation (Payment Order Initiation)",
+        "source_id": null
+       }
+      ],
+      "name": "Payment Order Initiation: Exchange Order Initiation",
+      "provenance": "from the BIAN catalogue, release 14.0.0 (PaymentOrderInitiation.yaml)",
+      "type": "A2.ServiceOperation",
+      "version": "14.0.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "action_term": "Retrieve",
+       "behavior_qualifier": "Order Initiation (Payment Order Initiation) (BQ-PAYMENT-ORDER-INITIATION-ORDER-INITIATION)",
+       "conforms_to": [
+        "BIAN 14.0.0"
+       ],
+       "http_method": "GET",
+       "output_attributes": [
+        "PaymentOrderProcedureInstanceReference",
+        "PaymentOrderProcedureInstanceStatus",
+        "OrderInitiationTaskResult"
+       ]
+      },
+      "connections": [],
+      "description": "GET /PaymentOrderInitiation/{paymentorderinitiationid}/OrderInitiation/{orderinitiationid}/Retrieve in BIAN's Semantic API 14.0.0.",
+      "fields": [],
+      "id": "SO-PAYMENT-ORDER-INITIATION-RETRIEVE-ORDER-INITIATION",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SG-PAYMENT-ORDER-INITIATION-ORDER-INITIATION",
+        "kind": "composition",
+        "name": "Payment Order Initiation — Order Initiation",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "CR-PAYMENT-ORDER-INITIATION",
+        "kind": "access",
+        "name": "Payment Order Initiation Transaction",
+        "source_id": null
+       },
+       {
+        "id": "BQ-PAYMENT-ORDER-INITIATION-ORDER-INITIATION",
+        "kind": "association",
+        "name": "Order Initiation (Payment Order Initiation)",
+        "source_id": null
+       }
+      ],
+      "name": "Payment Order Initiation: Retrieve Order Initiation",
+      "provenance": "from the BIAN catalogue, release 14.0.0 (PaymentOrderInitiation.yaml)",
+      "type": "A2.ServiceOperation",
+      "version": "14.0.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "action_term": "Evaluate",
+       "conforms_to": [
+        "BIAN 14.0.0"
+       ],
+       "http_method": "POST",
+       "input_attributes": [
+        "ProductProductionSessionReference",
+        "FraudEvaluationTestProfile",
+        "FraudEvaluationEnsembleTechniqueType",
+        "FraudEvaluationEnsembleTechniqueDefinition",
+        "FraudEvaluationTransactionConsolidationRecord",
+        "FraudEvaluationProductionAnomalyRecord",
+        "FraudEvaluationProductionAnomalyProductionTransactionReference"
+       ],
+       "output_attributes": [
+        "ProductProductionSessionReference",
+        "FraudEvaluationTestProfile",
+        "FraudEvaluationEnsembleTechniqueType",
+        "FraudEvaluationEnsembleTechniqueDefinition",
+        "FraudEvaluationTransactionConsolidationRecord",
+        "FraudEvaluationProductionAnomalyRecord",
+        "FraudEvaluationProductionAnomalyProductionTransactionReference"
+       ]
+      },
+      "connections": [],
+      "description": "POST /FraudEvaluation/Evaluate in BIAN's Semantic API 14.0.0.",
+      "fields": [],
+      "id": "SO-FRAUD-EVALUATION-EVALUATE",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SG-FRAUD-EVALUATION-FRAUD-EVALUATION-ASSESSMENT",
+        "kind": "composition",
+        "name": "Fraud Evaluation — Fraud Evaluation Assessment",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "CR-FRAUD-EVALUATION",
+        "kind": "access",
+        "name": "Fraud Evaluation Assessment",
+        "source_id": null
+       }
+      ],
+      "name": "Fraud Evaluation: Evaluate",
+      "provenance": "from the BIAN catalogue, release 14.0.0 (FraudEvaluation.yaml)",
+      "type": "A2.ServiceOperation",
+      "version": "14.0.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "action_term": "Exchange",
+       "conforms_to": [
+        "BIAN 14.0.0"
+       ],
+       "http_method": "PUT",
+       "input_attributes": [
+        "ProductProductionSessionReference",
+        "FraudEvaluationTestProfile",
+        "FraudEvaluationEnsembleTechniqueType",
+        "FraudEvaluationEnsembleTechniqueDefinition",
+        "FraudEvaluationTransactionConsolidationRecord",
+        "FraudEvaluationProductionAnomalyRecord",
+        "FraudEvaluationProductionAnomalyProductionTransactionReference"
+       ],
+       "output_attributes": [
+        "ProductProductionSessionReference",
+        "FraudEvaluationTestProfile",
+        "FraudEvaluationEnsembleTechniqueType",
+        "FraudEvaluationEnsembleTechniqueDefinition",
+        "FraudEvaluationTransactionConsolidationRecord",
+        "FraudEvaluationProductionAnomalyRecord",
+        "FraudEvaluationProductionAnomalyProductionTransactionReference"
+       ]
+      },
+      "connections": [],
+      "description": "PUT /FraudEvaluation/{fraudevaluationid}/Exchange in BIAN's Semantic API 14.0.0.",
+      "fields": [],
+      "id": "SO-FRAUD-EVALUATION-EXCHANGE",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SG-FRAUD-EVALUATION-FRAUD-EVALUATION-ASSESSMENT",
+        "kind": "composition",
+        "name": "Fraud Evaluation — Fraud Evaluation Assessment",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "CR-FRAUD-EVALUATION",
+        "kind": "access",
+        "name": "Fraud Evaluation Assessment",
+        "source_id": null
+       }
+      ],
+      "name": "Fraud Evaluation: Exchange",
+      "provenance": "from the BIAN catalogue, release 14.0.0 (FraudEvaluation.yaml)",
+      "type": "A2.ServiceOperation",
+      "version": "14.0.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "action_term": "Execute",
+       "conforms_to": [
+        "BIAN 14.0.0"
+       ],
+       "http_method": "PUT",
+       "input_attributes": [
+        "ProductProductionSessionReference",
+        "FraudEvaluationTestProfile",
+        "FraudEvaluationEnsembleTechniqueType",
+        "FraudEvaluationEnsembleTechniqueDefinition",
+        "FraudEvaluationTransactionConsolidationRecord",
+        "FraudEvaluationProductionAnomalyRecord",
+        "FraudEvaluationProductionAnomalyProductionTransactionReference"
+       ],
+       "output_attributes": [
+        "ProductProductionSessionReference",
+        "FraudEvaluationTestProfile",
+        "FraudEvaluationEnsembleTechniqueType",
+        "FraudEvaluationEnsembleTechniqueDefinition",
+        "FraudEvaluationTransactionConsolidationRecord",
+        "FraudEvaluationProductionAnomalyRecord",
+        "FraudEvaluationProductionAnomalyProductionTransactionReference"
+       ]
+      },
+      "connections": [],
+      "description": "PUT /FraudEvaluation/{fraudevaluationid}/Execute in BIAN's Semantic API 14.0.0.",
+      "fields": [],
+      "id": "SO-FRAUD-EVALUATION-EXECUTE",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SG-FRAUD-EVALUATION-FRAUD-EVALUATION-ASSESSMENT",
+        "kind": "composition",
+        "name": "Fraud Evaluation — Fraud Evaluation Assessment",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "CR-FRAUD-EVALUATION",
+        "kind": "access",
+        "name": "Fraud Evaluation Assessment",
+        "source_id": null
+       }
+      ],
+      "name": "Fraud Evaluation: Execute",
+      "provenance": "from the BIAN catalogue, release 14.0.0 (FraudEvaluation.yaml)",
+      "type": "A2.ServiceOperation",
+      "version": "14.0.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "action_term": "Retrieve",
+       "behavior_qualifier": "Rule Setsand Decision Trees (Fraud Evaluation) (BQ-FRAUD-EVALUATION-RULE-SETSAND-DECISION-TREES)",
+       "conforms_to": [
+        "BIAN 14.0.0"
+       ],
+       "http_method": "GET",
+       "output_attributes": [
+        "RuleSetsAndDecisionTreesTestResult",
+        "RuleSetsAndDecisionTreesTestWorkProduct"
+       ]
+      },
+      "connections": [],
+      "description": "GET /FraudEvaluation/{fraudevaluationid}/RuleSetsandDecisionTrees/{rulesetsanddecisiontreesid}/Retrieve in BIAN's Semantic API 14.0.0.",
+      "fields": [],
+      "id": "SO-FRAUD-EVALUATION-RETRIEVE-RULE-SETSAND-DECISION-TREES",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SG-FRAUD-EVALUATION-RULE-SETSAND-DECISION-TREES",
+        "kind": "composition",
+        "name": "Fraud Evaluation — Rule Setsand Decision Trees",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "CR-FRAUD-EVALUATION",
+        "kind": "access",
+        "name": "Fraud Evaluation Assessment",
+        "source_id": null
+       },
+       {
+        "id": "BQ-FRAUD-EVALUATION-RULE-SETSAND-DECISION-TREES",
+        "kind": "association",
+        "name": "Rule Setsand Decision Trees (Fraud Evaluation)",
+        "source_id": null
+       }
+      ],
+      "name": "Fraud Evaluation: Retrieve Rule Setsand Decision Trees",
+      "provenance": "from the BIAN catalogue, release 14.0.0 (FraudEvaluation.yaml)",
+      "type": "A2.ServiceOperation",
+      "version": "14.0.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "action_term": "Grant",
+       "conforms_to": [
+        "BIAN 14.0.0"
+       ],
+       "http_method": "PUT",
+       "input_attributes": [
+        "ProductProductionSessionReference",
+        "FraudEvaluationTestProfile",
+        "FraudEvaluationEnsembleTechniqueType",
+        "FraudEvaluationEnsembleTechniqueDefinition",
+        "FraudEvaluationTransactionConsolidationRecord",
+        "FraudEvaluationProductionAnomalyRecord",
+        "FraudEvaluationProductionAnomalyProductionTransactionReference"
+       ],
+       "output_attributes": [
+        "ProductProductionSessionReference",
+        "FraudEvaluationTestProfile",
+        "FraudEvaluationEnsembleTechniqueType",
+        "FraudEvaluationEnsembleTechniqueDefinition",
+        "FraudEvaluationTransactionConsolidationRecord",
+        "FraudEvaluationProductionAnomalyRecord",
+        "FraudEvaluationProductionAnomalyProductionTransactionReference"
+       ]
+      },
+      "connections": [],
+      "description": "PUT /FraudEvaluation/{fraudevaluationid}/Grant in BIAN's Semantic API 14.0.0.",
+      "fields": [],
+      "id": "SO-FRAUD-EVALUATION-GRANT",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SG-FRAUD-EVALUATION-FRAUD-EVALUATION-ASSESSMENT",
+        "kind": "composition",
+        "name": "Fraud Evaluation — Fraud Evaluation Assessment",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "CR-FRAUD-EVALUATION",
+        "kind": "access",
+        "name": "Fraud Evaluation Assessment",
+        "source_id": null
+       }
+      ],
+      "name": "Fraud Evaluation: Grant",
+      "provenance": "from the BIAN catalogue, release 14.0.0 (FraudEvaluation.yaml)",
+      "type": "A2.ServiceOperation",
+      "version": "14.0.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "action_term": "Request",
+       "conforms_to": [
+        "BIAN 14.0.0"
+       ],
+       "http_method": "PUT",
+       "input_attributes": [
+        "ProductProductionSessionReference",
+        "FraudEvaluationTestProfile",
+        "FraudEvaluationEnsembleTechniqueType",
+        "FraudEvaluationEnsembleTechniqueDefinition",
+        "FraudEvaluationTransactionConsolidationRecord",
+        "FraudEvaluationProductionAnomalyRecord",
+        "FraudEvaluationProductionAnomalyProductionTransactionReference"
+       ],
+       "output_attributes": [
+        "ProductProductionSessionReference",
+        "FraudEvaluationTestProfile",
+        "FraudEvaluationEnsembleTechniqueType",
+        "FraudEvaluationEnsembleTechniqueDefinition",
+        "FraudEvaluationTransactionConsolidationRecord",
+        "FraudEvaluationProductionAnomalyRecord",
+        "FraudEvaluationProductionAnomalyProductionTransactionReference"
+       ]
+      },
+      "connections": [],
+      "description": "PUT /FraudEvaluation/{fraudevaluationid}/Request in BIAN's Semantic API 14.0.0.",
+      "fields": [],
+      "id": "SO-FRAUD-EVALUATION-REQUEST",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SG-FRAUD-EVALUATION-FRAUD-EVALUATION-ASSESSMENT",
+        "kind": "composition",
+        "name": "Fraud Evaluation — Fraud Evaluation Assessment",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "CR-FRAUD-EVALUATION",
+        "kind": "access",
+        "name": "Fraud Evaluation Assessment",
+        "source_id": null
+       }
+      ],
+      "name": "Fraud Evaluation: Request",
+      "provenance": "from the BIAN catalogue, release 14.0.0 (FraudEvaluation.yaml)",
+      "type": "A2.ServiceOperation",
+      "version": "14.0.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "action_term": "Retrieve",
+       "conforms_to": [
+        "BIAN 14.0.0"
+       ],
+       "http_method": "GET",
+       "output_attributes": [
+        "ProductProductionSessionReference",
+        "FraudEvaluationTestProfile",
+        "FraudEvaluationEnsembleTechniqueType",
+        "FraudEvaluationEnsembleTechniqueDefinition",
+        "FraudEvaluationTransactionConsolidationRecord",
+        "FraudEvaluationProductionAnomalyRecord",
+        "FraudEvaluationProductionAnomalyProductionTransactionReference"
+       ]
+      },
+      "connections": [],
+      "description": "GET /FraudEvaluation/{fraudevaluationid}/Retrieve in BIAN's Semantic API 14.0.0.",
+      "fields": [],
+      "id": "SO-FRAUD-EVALUATION-RETRIEVE",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SG-FRAUD-EVALUATION-FRAUD-EVALUATION-ASSESSMENT",
+        "kind": "composition",
+        "name": "Fraud Evaluation — Fraud Evaluation Assessment",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "CR-FRAUD-EVALUATION",
+        "kind": "access",
+        "name": "Fraud Evaluation Assessment",
+        "source_id": null
+       }
+      ],
+      "name": "Fraud Evaluation: Retrieve",
+      "provenance": "from the BIAN catalogue, release 14.0.0 (FraudEvaluation.yaml)",
+      "type": "A2.ServiceOperation",
+      "version": "14.0.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "action_term": "Retrieve",
+       "behavior_qualifier": "Models (Fraud Evaluation) (BQ-FRAUD-EVALUATION-MODELS)",
+       "conforms_to": [
+        "BIAN 14.0.0"
+       ],
+       "http_method": "GET",
+       "output_attributes": [
+        "ModelsTestResult",
+        "ModelsTestWorkProduct"
+       ]
+      },
+      "connections": [],
+      "description": "GET /FraudEvaluation/{fraudevaluationid}/Models/{modelsid}/Retrieve in BIAN's Semantic API 14.0.0.",
+      "fields": [],
+      "id": "SO-FRAUD-EVALUATION-RETRIEVE-MODELS",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "SG-FRAUD-EVALUATION-MODELS",
+        "kind": "composition",
+        "name": "Fraud Evaluation — Models",
+        "source_id": null
+       }
+      ],
+      "links_out": [
+       {
+        "id": "CR-FRAUD-EVALUATION",
+        "kind": "access",
+        "name": "Fraud Evaluation Assessment",
+        "source_id": null
+       },
+       {
+        "id": "BQ-FRAUD-EVALUATION-MODELS",
+        "kind": "association",
+        "name": "Models (Fraud Evaluation)",
+        "source_id": null
+       }
+      ],
+      "name": "Fraud Evaluation: Retrieve Models",
+      "provenance": "from the BIAN catalogue, release 14.0.0 (FraudEvaluation.yaml)",
+      "type": "A2.ServiceOperation",
+      "version": "14.0.0"
+     }
+    ],
+    "title": "Service operations",
+    "type": "A2.ServiceOperation"
+   },
+   {
+    "definition": "A refinement of a Service Domain's generic behaviour",
+    "records": [
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "conforms_to": [
+        "BIAN 14.0.0"
+       ]
+      },
+      "connections": [],
+      "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+      "fields": [],
+      "id": "BQ-PARTY-AUTHENTICATION-PASSWORD",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "CR-PARTY-AUTHENTICATION",
+        "kind": "composition",
+        "name": "Party Authentication Assessment",
+        "source_id": null
+       },
+       {
+        "id": "SO-PARTY-AUTHENTICATION-EVALUATE-PASSWORD",
+        "kind": "association",
+        "name": "Party Authentication: Evaluate Password",
+        "source_id": null
+       },
+       {
+        "id": "SO-PARTY-AUTHENTICATION-RETRIEVE-PASSWORD",
+        "kind": "association",
+        "name": "Party Authentication: Retrieve Password",
+        "source_id": null
+       }
+      ],
+      "links_out": [],
+      "name": "Password (Party Authentication)",
+      "provenance": "from the BIAN catalogue, release 14.0.0 (PartyAuthentication.yaml)",
+      "type": "A2.BehaviorQualifier",
+      "version": "14.0.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "conforms_to": [
+        "BIAN 14.0.0"
+       ]
+      },
+      "connections": [],
+      "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+      "fields": [],
+      "id": "BQ-PARTY-AUTHENTICATION-QUESTION",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "CR-PARTY-AUTHENTICATION",
+        "kind": "composition",
+        "name": "Party Authentication Assessment",
+        "source_id": null
+       },
+       {
+        "id": "SO-PARTY-AUTHENTICATION-EVALUATE-QUESTION",
+        "kind": "association",
+        "name": "Party Authentication: Evaluate Question",
+        "source_id": null
+       },
+       {
+        "id": "SO-PARTY-AUTHENTICATION-RETRIEVE-QUESTION",
+        "kind": "association",
+        "name": "Party Authentication: Retrieve Question",
+        "source_id": null
+       }
+      ],
+      "links_out": [],
+      "name": "Question (Party Authentication)",
+      "provenance": "from the BIAN catalogue, release 14.0.0 (PartyAuthentication.yaml)",
+      "type": "A2.BehaviorQualifier",
+      "version": "14.0.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "conforms_to": [
+        "BIAN 14.0.0"
+       ]
+      },
+      "connections": [],
+      "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+      "fields": [],
+      "id": "BQ-PARTY-AUTHENTICATION-DOCUMENT",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "CR-PARTY-AUTHENTICATION",
+        "kind": "composition",
+        "name": "Party Authentication Assessment",
+        "source_id": null
+       },
+       {
+        "id": "SO-PARTY-AUTHENTICATION-RETRIEVE-DOCUMENT",
+        "kind": "association",
+        "name": "Party Authentication: Retrieve Document",
+        "source_id": null
+       },
+       {
+        "id": "SO-PARTY-AUTHENTICATION-EVALUATE-DOCUMENT",
+        "kind": "association",
+        "name": "Party Authentication: Evaluate Document",
+        "source_id": null
+       }
+      ],
+      "links_out": [],
+      "name": "Document (Party Authentication)",
+      "provenance": "from the BIAN catalogue, release 14.0.0 (PartyAuthentication.yaml)",
+      "type": "A2.BehaviorQualifier",
+      "version": "14.0.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "conforms_to": [
+        "BIAN 14.0.0"
+       ]
+      },
+      "connections": [],
+      "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+      "fields": [],
+      "id": "BQ-PARTY-AUTHENTICATION-DEVICE",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "CR-PARTY-AUTHENTICATION",
+        "kind": "composition",
+        "name": "Party Authentication Assessment",
+        "source_id": null
+       },
+       {
+        "id": "SO-PARTY-AUTHENTICATION-EVALUATE-DEVICE",
+        "kind": "association",
+        "name": "Party Authentication: Evaluate Device",
+        "source_id": null
+       },
+       {
+        "id": "SO-PARTY-AUTHENTICATION-RETRIEVE-DEVICE",
+        "kind": "association",
+        "name": "Party Authentication: Retrieve Device",
+        "source_id": null
+       }
+      ],
+      "links_out": [],
+      "name": "Device (Party Authentication)",
+      "provenance": "from the BIAN catalogue, release 14.0.0 (PartyAuthentication.yaml)",
+      "type": "A2.BehaviorQualifier",
+      "version": "14.0.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "conforms_to": [
+        "BIAN 14.0.0"
+       ]
+      },
+      "connections": [],
+      "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+      "fields": [],
+      "id": "BQ-PARTY-AUTHENTICATION-BIOMETRIC",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "CR-PARTY-AUTHENTICATION",
+        "kind": "composition",
+        "name": "Party Authentication Assessment",
+        "source_id": null
+       },
+       {
+        "id": "SO-PARTY-AUTHENTICATION-EVALUATE-BIOMETRIC",
+        "kind": "association",
+        "name": "Party Authentication: Evaluate Biometric",
+        "source_id": null
+       },
+       {
+        "id": "SO-PARTY-AUTHENTICATION-RETRIEVE-BIOMETRIC",
+        "kind": "association",
+        "name": "Party Authentication: Retrieve Biometric",
+        "source_id": null
+       }
+      ],
+      "links_out": [],
+      "name": "Biometric (Party Authentication)",
+      "provenance": "from the BIAN catalogue, release 14.0.0 (PartyAuthentication.yaml)",
+      "type": "A2.BehaviorQualifier",
+      "version": "14.0.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "conforms_to": [
+        "BIAN 14.0.0"
+       ]
+      },
+      "connections": [],
+      "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+      "fields": [],
+      "id": "BQ-PARTY-AUTHENTICATION-BEHAVIOR",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "CR-PARTY-AUTHENTICATION",
+        "kind": "composition",
+        "name": "Party Authentication Assessment",
+        "source_id": null
+       },
+       {
+        "id": "SO-PARTY-AUTHENTICATION-EVALUATE-BEHAVIOR",
+        "kind": "association",
+        "name": "Party Authentication: Evaluate Behavior",
+        "source_id": null
+       },
+       {
+        "id": "SO-PARTY-AUTHENTICATION-RETRIEVE-BEHAVIOR",
+        "kind": "association",
+        "name": "Party Authentication: Retrieve Behavior",
+        "source_id": null
+       }
+      ],
+      "links_out": [],
+      "name": "Behavior (Party Authentication)",
+      "provenance": "from the BIAN catalogue, release 14.0.0 (PartyAuthentication.yaml)",
+      "type": "A2.BehaviorQualifier",
+      "version": "14.0.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "conforms_to": [
+        "BIAN 14.0.0"
+       ]
+      },
+      "connections": [],
+      "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+      "fields": [],
+      "id": "BQ-PAYMENT-ORDER-INITIATION-COMPLIANCE",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "CR-PAYMENT-ORDER-INITIATION",
+        "kind": "composition",
+        "name": "Payment Order Initiation Transaction",
+        "source_id": null
+       },
+       {
+        "id": "SO-PAYMENT-ORDER-INITIATION-RETRIEVE-COMPLIANCE",
+        "kind": "association",
+        "name": "Payment Order Initiation: Retrieve Compliance",
+        "source_id": null
+       }
+      ],
+      "links_out": [],
+      "name": "Compliance (Payment Order Initiation)",
+      "provenance": "from the BIAN catalogue, release 14.0.0 (PaymentOrderInitiation.yaml)",
+      "type": "A2.BehaviorQualifier",
+      "version": "14.0.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "conforms_to": [
+        "BIAN 14.0.0"
+       ]
+      },
+      "connections": [],
+      "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+      "fields": [],
+      "id": "BQ-PAYMENT-ORDER-INITIATION-CONFIRMATION",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "CR-PAYMENT-ORDER-INITIATION",
+        "kind": "composition",
+        "name": "Payment Order Initiation Transaction",
+        "source_id": null
+       },
+       {
+        "id": "SO-PAYMENT-ORDER-INITIATION-RETRIEVE-CONFIRMATION",
+        "kind": "association",
+        "name": "Payment Order Initiation: Retrieve Confirmation",
+        "source_id": null
+       }
+      ],
+      "links_out": [],
+      "name": "Confirmation (Payment Order Initiation)",
+      "provenance": "from the BIAN catalogue, release 14.0.0 (PaymentOrderInitiation.yaml)",
+      "type": "A2.BehaviorQualifier",
+      "version": "14.0.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "conforms_to": [
+        "BIAN 14.0.0"
+       ]
+      },
+      "connections": [],
+      "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+      "fields": [],
+      "id": "BQ-PAYMENT-ORDER-INITIATION-ORDER-INITIATION",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "CR-PAYMENT-ORDER-INITIATION",
+        "kind": "composition",
+        "name": "Payment Order Initiation Transaction",
+        "source_id": null
+       },
+       {
+        "id": "SO-PAYMENT-ORDER-INITIATION-EXCHANGE-ORDER-INITIATION",
+        "kind": "association",
+        "name": "Payment Order Initiation: Exchange Order Initiation",
+        "source_id": null
+       },
+       {
+        "id": "SO-PAYMENT-ORDER-INITIATION-RETRIEVE-ORDER-INITIATION",
+        "kind": "association",
+        "name": "Payment Order Initiation: Retrieve Order Initiation",
+        "source_id": null
+       }
+      ],
+      "links_out": [],
+      "name": "Order Initiation (Payment Order Initiation)",
+      "provenance": "from the BIAN catalogue, release 14.0.0 (PaymentOrderInitiation.yaml)",
+      "type": "A2.BehaviorQualifier",
+      "version": "14.0.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "conforms_to": [
+        "BIAN 14.0.0"
+       ]
+      },
+      "connections": [],
+      "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+      "fields": [],
+      "id": "BQ-FRAUD-EVALUATION-RULE-SETSAND-DECISION-TREES",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "CR-FRAUD-EVALUATION",
+        "kind": "composition",
+        "name": "Fraud Evaluation Assessment",
+        "source_id": null
+       },
+       {
+        "id": "SO-FRAUD-EVALUATION-RETRIEVE-RULE-SETSAND-DECISION-TREES",
+        "kind": "association",
+        "name": "Fraud Evaluation: Retrieve Rule Setsand Decision Trees",
+        "source_id": null
+       }
+      ],
+      "links_out": [],
+      "name": "Rule Setsand Decision Trees (Fraud Evaluation)",
+      "provenance": "from the BIAN catalogue, release 14.0.0 (FraudEvaluation.yaml)",
+      "type": "A2.BehaviorQualifier",
+      "version": "14.0.0"
+     },
+     {
+      "attribute_sources": {},
+      "attributes": {
+       "conforms_to": [
+        "BIAN 14.0.0"
+       ]
+      },
+      "connections": [],
+      "description": "From BIAN's Semantic API 14.0.0 — see BIAN for its definition.",
+      "fields": [],
+      "id": "BQ-FRAUD-EVALUATION-MODELS",
+      "lifecycle_status": "active",
+      "links_in": [
+       {
+        "id": "CR-FRAUD-EVALUATION",
+        "kind": "composition",
+        "name": "Fraud Evaluation Assessment",
+        "source_id": null
+       },
+       {
+        "id": "SO-FRAUD-EVALUATION-RETRIEVE-MODELS",
+        "kind": "association",
+        "name": "Fraud Evaluation: Retrieve Models",
+        "source_id": null
+       }
+      ],
+      "links_out": [],
+      "name": "Models (Fraud Evaluation)",
+      "provenance": "from the BIAN catalogue, release 14.0.0 (FraudEvaluation.yaml)",
+      "type": "A2.BehaviorQualifier",
+      "version": "14.0.0"
+     }
+    ],
+    "title": "Behavior qualifiers",
+    "type": "A2.BehaviorQualifier"
+   }
+  ],
+  "summary": {
+   "by_type": {
+    "Asset types": 3,
+    "Behavior qualifiers": 11,
+    "Control records": 3,
+    "Functional patterns": 2,
+    "Service domains": 3,
+    "Service groups": 14,
+    "Service operations": 34
+   },
+   "records": 70,
+   "unconfirmed": 0,
+   "with_approved_connection": 5
+  },
+  "title": "A2 BIAN Service Domain Architecture",
+  "workspace": "v3"
+ }
+}
