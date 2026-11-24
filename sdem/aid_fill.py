@@ -71,10 +71,56 @@ def _ext_docs(ws, now=None):
     return out
 
 
-def _bian():
-    """0.22 step 3c: BIAN's part of AID — SDEM's own copy (sdem/aid_bian.py) until it moves to the sdem-bian extension."""
+def _marker(template):   # a provenance mark from its template (MX-54) — the same function BIAN's part of AID uses
+    from .aid_bian import marker
+    return marker(template)
+
+
+class _Phases:
+    """0.22 step 3c (MX-54): BIAN's part of AID, reached at its phases with the state so far as JSON data and its answer read back —
+    from the sdem-bian extension when it provides it (never imported, R-D5), otherwise from SDEM's own copy (sdem/aid_bian.py) through the
+    same data, so both give the same answer."""
+    def __init__(self, ws, call, by=None):
+        self.ws, self.call, self.by = ws, call, by   # by: the extension that answered ('bian 1.2.0'), None for SDEM's own copy
+
+    def projection(self, ws, have, registry):
+        return self.call('projection', {'have': have, 'registry': registry})['package'], None   # the catalogue stays BIAN's (patterns reads it again)
+
+    def pattern_domains(self, after, catalogue, maps, mm, structs, dmark, rejected):
+        r = self.call('patterns', {'after': after, 'maps': maps, 'structures': structs, 'mark': dmark.template, 'rejected': sorted(rejected)})
+        return r['records'], r['links'], [tuple(u) for u in r['uses']], r['added']
+
+    def match_existing(self, after, maps, mm):
+        return [tuple(x) for x in self.call('existing', {'after': after, 'maps': maps})['links']]
+
+    def propose_information(self, bian_doc, a3doc, maps, mark, rejected, unconfirmed):
+        r = self.call('information', {'bian': bian_doc, 'a3': a3doc, 'maps': maps, 'mark': mark.template, 'rejected': sorted(rejected)})
+        return r['records'], r['relationships'], [tuple(x) for x in r['links']], r['not_stored']
+
+    def propose_access(self, after, maps, mm, mark):
+        return self.call('access', {'after': after, 'maps': maps, 'mark': mark.template})['relationships']
+
+    def direct(self, after, maps, mm):
+        r = self.call('direct', {'after': after, 'maps': maps})
+        return [tuple(x) for x in r['links']], [tuple(x) for x in r['fields']]
+
+
+def _bian(ws):
+    """BIAN's part of AID (0.22 step 3c, MX-54): sdem-bian's when it provides it, otherwise SDEM's own copy — both through the phases."""
+    import json as _json
+    from . import profile as _p, ext_infer
+    from .identity import to_wire, from_wire
+    _p.activate_from(ws)   # the workspace's profile: whether BIAN is on, who provides it, the patterns asked later
+    if ext_infer.provides_builtin('aid-phases'):
+        def ask(phase, state):
+            try:
+                return from_wire(ext_infer.ask_phase(phase, ws, to_wire(state)))
+            except ext_infer.PhaseError as e:
+                raise AidError(f'{e} — nothing written; uninstall or fix the extension and run again')
+        name, _, manifest = ext_infer.builtin_provider('aid-phases')
+        return _Phases(ws, ask, f"{name} {manifest.get('version', '')}".strip())
     from . import aid_bian
-    return aid_bian
+    return _Phases(ws, lambda phase, state: from_wire(_json.loads(_json.dumps(aid_bian.answer(phase, _json.loads(_json.dumps(to_wire(state))), ws)))))
 
 
 def _workspace(ws):
@@ -168,7 +214,7 @@ def fill(workspace, person, dry_run=False, now=None, complete_draft=False):
                                                           and not (isinstance(r.get('inferred'), dict) and r['inferred'].get('rule', '').startswith('AID-D') and r['inferred'].get('status') != 'confirmed')]}   # … nor from a link it inferred to complete the draft
     have = {lvl: e for lvl, d in docs.items() if lvl != _L('bian') for e in [evidence(d)] if e.get('instances')}
     if not have: raise AidError(f'{ws}: nothing to infer from yet — write what you have first: any of {", ".join(f for l, f in DATASETS.items() if l != _L("bian"))}')
-    B = _bian()   # 0.22 step 3c: BIAN's part of AID, at its four points (projection, patterns, information, direct)
+    B = _bian(ws)   # 0.22 step 3c (MX-54): BIAN's part of AID, at its phases (projection, patterns, information, direct)
     pkg, catalogue = B.projection(ws, have, registry)
     runs = ws / FOLDER
     n = 1 + max([int(m.group(1)) for p in (runs.glob('AID-*.json') if runs.exists() else []) for m in [re.match(r'AID-(\d+)\.json$', p.name)] if m] or [0])
@@ -218,8 +264,8 @@ def fill(workspace, person, dry_run=False, now=None, complete_draft=False):
         after[_L('technology')].setdefault('relationships', []).extend(clinks); placements += len(clinks); connections = len(clinks)
         if placements and _L('technology') not in added: added[_L('technology')] = []
     from . import profile as _prof   # the workspace's profile is active (catalogue() above): its standards and patterns are asked first
-    dmark = lambda rule, why, frm, **k: {'by': 'sdem aid', 'run': run, 'at': now, 'requested_by': person.strip(), 'step': 'draft', 'rule': rule,
-                                         'source': 'docs/design/sdem-completeness-design.md stage 4', 'reasoning': why, 'from': frm, **k}
+    dmark = _marker({'by': 'sdem aid', 'run': run, 'at': now, 'requested_by': person.strip(), 'step': 'draft', 'rule': '$rule',
+                     'source': 'docs/design/sdem-completeness-design.md stage 4', 'reasoning': '$why', 'from': '$from'})
     live_maps = [(m['source']['id'], m['relationship'], m['target']['id']) for m in registry.get('mappings', []) if m.get('status') == 'approved']
     domain_uses, domains_added, parts_added = [], [], []
     from .metamodel import Metamodel as _MMd
@@ -269,9 +315,9 @@ def fill(workspace, person, dry_run=False, now=None, complete_draft=False):
                           'baseline_id': run, 'created_by': 'sdem aid'})
     not_stored = []
     if after.get(_L('bian')):   # AID-I01…I04 (metamodel 0.15.0, IM-10): a data entity with its fields for each typed business object — inferred, proposed
-        mark = lambda rule, why, frm: {'by': 'sdem aid', 'run': run, 'at': now, 'requested_by': person.strip(), 'step': 'information', 'rule': rule,
-                                       'source': 'docs/design/sdem-full-design-metamodel-design.md IM-10', 'reasoning': why, 'confidence': 'low',
-                                       'evidence_class': 'attribute_join', 'from': frm}
+        mark = _marker({'by': 'sdem aid', 'run': run, 'at': now, 'requested_by': person.strip(), 'step': 'information', 'rule': '$rule',
+                        'source': 'docs/design/sdem-full-design-metamodel-design.md IM-10', 'reasoning': '$why', 'confidence': 'low',
+                        'evidence_class': 'attribute_join', 'from': '$from'})
         a3doc = after.setdefault(_L('application'), {'level': _L('application'), 'model_id': f'{stem}-A3', 'model_version': now[:10], 'metamodel_version': after[_L('bian')].get('metamodel_version'),
                                          'source_system': 'SDEM-AID', 'instances': [], 'relationships': []})
         from .metamodel import Metamodel as _MMk   # AID-K02 first: an object an existing table stores is not given a new one
@@ -409,6 +455,7 @@ def fill(workspace, person, dry_run=False, now=None, complete_draft=False):
               'proposed_connections': len(proposals), 'projection_ends': pkg['projection'].get('projection_ends', []),
               'zone_placements': placements - connections, 'zones_unresolved': zone_unresolved, 'a4_connections': connections, 'a4_unresolved': conn_unresolved,
               'exposure_unresolved': exposure_unresolved, 'tables_not_inferred': not_stored, 'draft': draft, **({'extensions': ext_report} if ext_report else {}),
+              **({'phases_by': B.by} if B.by else {}),   # MX-54: the extension that gave BIAN's part of this run
               'skipped_rejected': sorted(rejected & {_rid(i['id']) for l in pkg['layers'].values() for i in l['instances']})}
     if dry_run:   # AF: a dry run says what it would write (AGENTS.md) — nothing is written
         record['would_write'] = sorted([(ws / _file(lvl)).as_posix() for lvl in added] + ([(runs / f'{run}-proposals.json').as_posix(), (runs / f'{run}.json').as_posix()] if (added or proposals) else []))

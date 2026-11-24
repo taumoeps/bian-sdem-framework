@@ -189,7 +189,7 @@ def api_supported(spec):
     return satisfies(VERSION, spec)
 
 
-CODE_FILES = ('bian.py', 'inferences.py', 'rules_bian.py')   # 0.22 step 3b: BIAN's link rules too   # ST-22, ST-D7: the sdem bian commands; the engines' BIAN steps move in step 5
+CODE_FILES = ('bian.py', 'inferences.py', 'rules_bian.py', 'aid_bian.py')   # 0.22 step 3b: BIAN's link rules too   # ST-22, ST-D7: the sdem bian commands; the engines' BIAN steps move in step 5
 
 
 def package_code():

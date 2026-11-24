@@ -9,6 +9,8 @@ still change; 1.0 when SDEM 0.20 is released.
     the graph          LevelGraph, estate_index
     the rules engine   CoreRun, GraphReader, estate_files, store_names, read_names, and its helpers — an extension's own steps run with
                        the core's (0.22, MX-47)
+    AID                its projection package (FILES, CATALOGUE_RULE, LOW, MEDIUM, conf_of, is_weak, _reader), catalogue, applies, is_inferred —
+                       an extension's part of `sdem aid`, called at its phases (0.22, MX-54)
     reading            load, loads — a design's file, its names as a person reads them (ids or 0.19's in the file, DL-11)
     writing            Batch, write_json, write_text, relink, for_file — every write through SDEM's own writer (atomic, LF, UTF-8),
                        holding the names the file's workspace stores
@@ -35,6 +37,12 @@ _EXPORTS = {
     'store_names': ('identity', 'store_names'), 'read_names': ('identity', 'read_names'),
     'BAND': ('rules_engine', 'BAND'), 'HTTP': ('rules_engine', 'HTTP'), 'METHODS': ('rules_engine', 'METHODS'), '_list': ('rules_engine', '_list'),
     'norm': ('rules_engine', 'norm'), 'stems': ('rules_engine', 'stems'), 'tokens': ('rules_engine', 'tokens'), 'weakest': ('rules_engine', 'weakest'),
+    'RulesEngine': ('rules_engine', 'RulesEngine'), 'WEAK_CLASSES': ('rules_engine', 'WEAK_CLASSES'), '_rules': ('rules_engine', '_rules'),
+    'strongest': ('rules_engine', 'strongest'),
+    # 0.22 step 3c (MX-54): AID's projection package and what BIAN's part of AID reads — the workspace's catalogue, a pattern's conditions
+    'CATALOGUE_RULE': ('aid', 'CATALOGUE_RULE'), 'FILES': ('aid', 'FILES'), 'LOW': ('aid', 'LOW'), 'MEDIUM': ('aid', 'MEDIUM'), '_reader': ('aid', '_reader'),
+    'conf_of': ('aid', 'conf_of'), 'is_weak': ('aid', 'is_weak'), 'catalogue': ('new', 'catalogue'), 'applies': ('profile', 'applies'),
+    'is_inferred': ('aid_fill', 'is_inferred'), 'to_wire': ('identity', 'to_wire'), 'from_wire': ('identity', 'from_wire'),
 }
 _MODULES = {'profile', 'parts'}   # whole modules an extension may use: the profile (activate, include) and BIAN's on-or-off (parts)
 __all__ = sorted(_EXPORTS) + sorted(_MODULES) + ['VERSION', 'run']

@@ -81,10 +81,11 @@ def run(name, argv):
         return 130
 
 
-def infer(program, workspace, step, timeout):
+def infer(program, workspace, step, timeout, phase=None, state=None):
     """MX-47: ask an installed extension for its inference — `sdem-<name> infer --workspace DIR --step aid|link --json`. Only for one the
     workspace's profile includes and whose manifest says it infers (sdem.ext_infer.askable, MX-45, MX-46); the one other place SDEM runs an extension."""
-    return subprocess.run([program, 'infer', '--workspace', str(workspace), '--step', step, '--json'], capture_output=True, text=True, timeout=timeout,
+    extra = ['--phase', phase, '--state', str(state)] if phase else []   # MX-54: one phase of a built-in extension's part of sdem aid, its state in a file
+    return subprocess.run([program, 'infer', '--workspace', str(workspace), '--step', step, *extra, '--json'], capture_output=True, text=True, timeout=timeout,
                           encoding='utf-8', errors='replace', env={**os.environ, 'PYTHONIOENCODING': 'utf-8'})   # the answer is UTF-8 JSON on every platform (Windows' console is not)
 
 

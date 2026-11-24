@@ -6,24 +6,97 @@ sdem/aid_fill.py at the same points, in the same order, so they can move to the 
     information    AID-K02, I01…I04, I07: BIAN objects and the tables that store them
     direct         AID-L01…L05, I05, K01: links that go through BIAN's service domains, objects and fields
 """
-from .identity import layer as _L  # ST-01…ST-05: layers by id
-
-import datetime, hashlib, json, re  # noqa: F401
-from .identity import T as _T, live as _live  # noqa: F401 — ST-01…ST-05: types by id
-from .graph import FederatedGraph, LevelGraph  # noqa: F401
+import copy, datetime, hashlib, json, re  # noqa: F401
+from .identity import T as _T, layer as _L, live as _live  # ST-01…ST-05: layers and types by id
+from .graph import LevelGraph
 from .metamodel import Metamodel
-from .rules_engine import CoreRun, RulesEngine, WEAK_CLASSES, _list, _rules, stem, stems, strongest, tokens, weakest  # noqa: F401 — the engine's helpers
+from .rules_engine import CoreRun, RulesEngine, WEAK_CLASSES, _list, _rules, stems, strongest, tokens, weakest  # the engine and its helpers
 from .rules_bian import BianSteps
-from .store import GraphReader  # noqa: F401
-import copy  # noqa: F401
-from .identity import layer as _L2  # noqa: F401
-from .aid_complete import SMALL, _unconfirmed, words  # noqa: F401 — shared with AID's core (D06 …)
-from .aid_links import STOP, _idx, words as _lwords  # noqa: F401 — shared with AID's core (L06, I06 …)
-from .aid import CATALOGUE_RULE, FILES, LOW, MEDIUM, NAME_ONLY, _reader, _registry, conf_of, is_weak, weak  # noqa: F401 — AID's package helpers, SDEM's
+from .aid import CATALOGUE_RULE, FILES, LOW, MEDIUM, _reader, conf_of, is_weak  # AID's projection package: its files, confidence, evidence
+
+
+# AID's small helpers, BIAN's own copies (the core keeps its own in aid_complete.py and aid_links.py)
+SMALL = {'the', 'and', 'for', 'with', 'from', 'that', 'this', 'into', 'are'}
+
+
+def words(*texts):
+    """The words of a name or an id: lower case, three letters or more, a plural's s dropped."""
+    out = set()
+    for t in texts:
+        for w in re.split(r'[^a-z0-9]+', re.sub(r'([a-z0-9])([A-Z])', r'\1 \2', t or '').lower()):
+            if len(w) > 3 and w.endswith('s') and not w.endswith('ss'): w = w[:-1]
+            if len(w) >= 3 and w not in SMALL: out.add(w)
+    return out
+
+
+def _unconfirmed(rec):
+    m = (rec.get('attributes') or {}).get('inferred')
+    return isinstance(m, dict) and m.get('status') != 'confirmed'
+
+
+STOP = {'the', 'of', 'a', 'an', 'and', 'transaction', 'financial', 'money', 'transfer', 'payment', 'instruction', 'procedure', 'record'}
+
+
+def _lwords(name):
+    s = re.sub(r'(?<=[a-z0-9])(?=[A-Z])', ' ', str(name)).replace('_', ' ').replace('-', ' ').lower()
+    return [w for w in s.split() if w]
+
+
+def _idx(docs):
+    every = {i['id']: i for d in docs.values() for i in d.get('instances', [])}
+    rels = [(r['source'], r['kind'], r['target']) for d in docs.values() for r in d.get('relationships', [])]
+    return every, rels
+
+
 
 
 class Run(BianSteps, CoreRun):   # the engine with BIAN's steps: what the projection asks it (domain_of …)
     pass
+
+
+FORMAT = 'sdem-inference/1'
+PHASES = ('projection', 'patterns', 'existing', 'information', 'access', 'direct')   # in the order sdem aid reaches them (MX-54)
+
+
+def marker(template):
+    """A provenance mark from its template — the values '$rule', '$why', '$from' filled in, the rest as given, then any extra fields
+    (MX-54: SDEM sends the template, so what BIAN's records carry is exactly what SDEM's own run would have written)."""
+    def mark(rule, why, frm, **k):
+        v = {'$rule': rule, '$why': why, '$from': frm}
+        return {**{a: (v.get(b, b) if isinstance(b, str) else b) for a, b in template.items()}, **k}
+    mark.template = template
+    return mark
+
+
+def answer(phase, state, workspace):
+    """MX-54: one phase of BIAN's part of `sdem aid` — the state SDEM sends in, the phase's result out, both plain JSON data in ids (to_wire)."""
+    from .identity import to_wire, from_wire
+    return to_wire(_answer(phase, from_wire(state), workspace))
+
+
+def _answer(phase, state, workspace):
+    from .aid_fill import is_inferred
+    mm = Metamodel.load()
+    maps = [tuple(m) if isinstance(m, list) else m for m in state.get('maps') or []]
+    rejected = set(state.get('rejected') or [])
+    if phase == 'projection':
+        pkg, _ = projection(workspace, state['have'], state['registry'])
+        return {'package': pkg}
+    if phase == 'patterns':
+        from .new import catalogue as workspace_catalogue   # WS-01: the catalogue as the projection used it (nothing written in between)
+        recs, links, uses, added = pattern_domains(state['after'], workspace_catalogue(workspace), maps, mm, state['structures'], marker(state['mark']), rejected)
+        return {'records': recs, 'links': links, 'uses': [list(u) for u in uses], 'added': added}
+    if phase == 'existing':
+        return {'links': [list(x) for x in match_existing(state['after'], maps, mm)]}
+    if phase == 'information':
+        inst, rels, links, not_stored = propose_information(state['bian'], state['a3'], maps, marker(state['mark']), rejected, lambda r: is_inferred(r, confirmed=False))
+        return {'records': inst, 'relationships': rels, 'links': [list(x) for x in links], 'not_stored': not_stored}
+    if phase == 'access':
+        return {'relationships': propose_access(state['after'], maps, mm, marker(state['mark']))}
+    if phase == 'direct':
+        found, fields = direct(state['after'], maps, mm)
+        return {'links': [list(x) for x in found], 'fields': [list(x) for x in fields]}
+    raise ValueError(f'no phase {phase!r} — one of {", ".join(PHASES)}')
 
 
 CORE_DIRECT = {'AID-L06', 'AID-I06'}
@@ -31,7 +104,7 @@ CORE_DIRECT = {'AID-L06', 'AID-I06'}
 
 def projection(ws, have, registry):
     """(the projection package, the catalogue it used) — WS-01: the workspace's own BIAN layer plus the BIAN catalogue it uses."""
-    from .new import catalogue as workspace_catalogue
+    from .new import catalogue as workspace_catalogue   # WS-01
     catalogue = workspace_catalogue(ws)
     return project(have, catalogue, registry, either=True), catalogue   # AID-M02: for a person to review, keep what either side supports
 

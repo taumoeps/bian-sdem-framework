@@ -224,6 +224,22 @@ def _layer_keys(x):
     return x
 
 
+def to_wire(x):
+    """MX-54: data that crosses to an extension and back — every layer as its id ('@layer:<id>' for a dict keyed by layer), every type and
+    layer value as stored with ids (DL-11) — so neither side's numbering (0.19's view, a profile's own codes) matters. from_wire reads it back."""
+    def keys(v):
+        if isinstance(v, dict):
+            return {(f'@layer:{layer_id(k)}' if isinstance(k, str) and layer_id(k) and layer_id(k) != k else k): keys(w) for k, w in v.items()}
+        if isinstance(v, list): return [keys(w) for w in v]
+        return v
+    return store_names(keys(x), True)
+
+
+def from_wire(x):
+    """MX-54: to_wire's data in the numbering read now."""
+    return read_names(x)
+
+
 def store_names(doc, ids, keys=LAYER_KEYS):
     back = {v: k for k, v in _own_numbering().items()} if ids else {}   # DL-25: an own layer's file keeps its profile code
     return _walk(doc, lambda s: stored(s, ids), (lambda s: back[s] if isinstance(s, str) and s in back else stored_layer(s, ids)) if back else (lambda s: stored_layer(s, ids)), keys=keys)

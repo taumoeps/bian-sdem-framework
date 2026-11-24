@@ -172,6 +172,45 @@ def for_link(workspace, now):
     return props, report
 
 
+class PhaseError(Exception):
+    """MX-54: the extension that provides a built-in extension's part of sdem aid did not answer a phase — the run stops (its part cannot be skipped)."""
+
+
+def ask_phase(phase, workspace, state):
+    """MX-54: one phase of the built-in extension's part of `sdem aid` (BIAN's) from the extension that provides it — its result, or PhaseError.
+    The state goes in a file of its own, outside the workspace, removed after."""
+    import os, tempfile
+    from . import parts
+    on = parts.EXT_BIAN.split(':', 1)[1]
+    found = builtin_provider('aid-phases')
+    if not found: raise PhaseError(f'no installed extension provides {on}\'s part of sdem aid')
+    prog = found[1]
+    fd, path = tempfile.mkstemp(prefix='sdem-aid-', suffix='.json')
+    try:
+        with os.fdopen(fd, 'w', encoding='utf-8') as f: json.dump(state, f)
+        try:
+            r = _ext.infer(prog, workspace, 'aid', TIMEOUT, phase=phase, state=path)
+        except (subprocess.TimeoutExpired, OSError) as e:
+            raise PhaseError(f'{on}: phase {phase}: {e}')
+    finally:
+        os.unlink(path)
+    if r.returncode != 0: raise PhaseError(f'{on}: phase {phase}: exit {r.returncode}: ' + (r.stderr or r.stdout).strip()[-300:])
+    try:
+        d = json.loads(r.stdout)
+    except ValueError:
+        raise PhaseError(f'{on}: phase {phase}: its answer is not JSON')
+    if not isinstance(d, dict) or d.get('format') != FORMAT or d.get('phase') != phase or not isinstance(d.get('result'), dict):
+        raise PhaseError(f'{on}: phase {phase}: its answer is not {FORMAT} for this phase')
+    return d['result']
+
+
+def builtin_provider(step):
+    """The installed extension that provides the built-in extension that is on (BIAN) for this step — (name, program, manifest), or None."""
+    from . import parts
+    on = parts.EXT_BIAN.split(':', 1)[1] if parts.bian_on() else None
+    return next((x for x in askable(step) if x[0] == on), None) if on else None
+
+
 def provides_builtin(step):
     """0.22 step 3b: does an installed extension provide the inference of a built-in extension that is on (BIAN)? Then SDEM's own copy of
     its steps does not run — the extension's answer stands in for it (MX-53)."""
