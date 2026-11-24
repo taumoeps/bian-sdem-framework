@@ -76,7 +76,7 @@ One extension may be more than one kind; its manifest lists each.
 
 | ID | Rule |
 |---|---|
-| **EXT-15** | *Approved and built.* `sdem <name> …` runs an installed extension `sdem-<name>` (the way `git` finds its add-ons) with the rest of the line **untouched** — its own `--help`, `--dry-run` and `--json` — and its exit code is SDEM's. An extension is found beside SDEM (the same environment, so `pip install <its folder>` installs it) or on the PATH, and is run only if it answers `--manifest` with its manifest, so a stray `sdem-<name>` program is never run; SDEM's own commands and its own `sdem-*` programs always win. `sdem extensions` lists the installed ones. SDEM knows no extension by name. Every extension also still runs as its own command (`sdem-desnre …`). |
+| **EXT-15** | *Approved and built.* `sdem <name> …` runs an installed extension `sdem-<name>` (the way `git` finds its add-ons) with the rest of the line **untouched** — its own `--help`, `--dry-run` and `--json` — and its exit code is SDEM's. An extension is found beside SDEM (the same environment, so `pip install <its folder>` installs it) or on the PATH, and is run only if it answers `--manifest` with its manifest, so a stray `sdem-<name>` program is never run; SDEM's own commands and its own `sdem-*` programs always win. `sdem extensions` lists the installed ones. SDEM knows no extension by name. Every extension also still runs as its own command (`sdem-desnre …`). SDEM looks for `sdem-<name>` first in the folder its own Python runs from, then on the PATH — or, where `SDEM_EXTENSIONS_PATH` is set, in exactly those folders (an organisation pinning its extensions; a test with a made-up one). |
 
 ## 7. What SDEM keeps stable for extensions
 

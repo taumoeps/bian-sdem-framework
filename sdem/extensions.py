@@ -25,7 +25,9 @@ def _own():
 
 
 def _search_path():
-    """Where extensions are looked for: the folder SDEM's own Python runs from (a virtual environment's bin), then the PATH."""
+    """Where extensions are looked for: SDEM_EXTENSIONS_PATH when set (exactly those folders — an organisation pinning its extensions, a
+    test), otherwise the folder SDEM's own Python runs from (a virtual environment's bin), then the PATH."""
+    if os.environ.get('SDEM_EXTENSIONS_PATH') is not None: return os.environ['SDEM_EXTENSIONS_PATH']
     here = str(Path(sys.executable).parent)
     return os.pathsep.join([here, os.environ.get('PATH', '')])
 

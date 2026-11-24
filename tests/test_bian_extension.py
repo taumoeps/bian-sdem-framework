@@ -160,7 +160,7 @@ def fake_bian(folder, sdem_range='>=0.0', mark=None):
         (folder / 'sdem-bian.cmd').write_text(f'@"{sys.executable}" "%~dp0sdem-bian.py" %*\r\n')
     else:
         prog = folder / 'sdem-bian'; prog.write_text(f'#!{sys.executable}\n' + body); prog.chmod(0o755)
-    return {**ENV, 'PATH': str(folder) + os.pathsep + os.environ.get('PATH', '')}
+    return {**ENV, 'PATH': str(folder) + os.pathsep + os.environ.get('PATH', ''), 'SDEM_EXTENSIONS_PATH': str(folder)}   # only the stand-in, not an installed one
 
 
 class Package(unittest.TestCase):   # step 2: BIAN in its own package (docs/design/sdem-bian-package-spec.md, BP-01…BP-11)
