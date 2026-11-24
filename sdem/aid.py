@@ -33,21 +33,12 @@ SCHEMA = _DATA_ROOT / 'schema' / 'projection.schema.json'
 FILES = _live(lambda: {_L('business'): 'projected-a1-business.json', _L('bian'): 'projected-a2-service-domain.json', _L('data'): 'projected-a3-data.json', _L('application'): 'projected-a3-application.json', _L('technology'): 'projected-a4-technology.json'})
 CATALOGUE_RULE = 'BIAN catalogue reference'
 PROVENANCE = ('step', 'rule', 'source_reference', 'inferred_from', 'reasoning', 'confidence')
-# AID's own rule names → the metamodel rule whose published basis they rest on (relationship-rules.json `source_reference`)
-RULE_BASIS = _live(lambda: {'BIAN container pattern': 'S17', 'BIAN REST mapping': 'S24', f'named by {_L("technology")}': 'S32', 'domain name': 'S01'})
-# AID's own rules → the kind of evidence they rest on (AID-E01); an engine rule brings its proposal's own class
-RULE_CLASS = _live(lambda: {'BIAN container pattern': 'pattern', 'BIAN REST mapping': 'pattern', 'domain name': 'pattern', 'service group': 'pattern',
-              f'named by {_L("technology")}': 'attribute_join', f'S33 ({_L("technology")} hosts)': 'attribute_join', 'S32 (deployment component_id)': 'attribute_join', 'name': 'name_token'})
+def project(*a, **k):   # 0.22 step 3c: AID's projection is BIAN's (sdem/aid_bian.py) — here for those who call it from aid
+    from .aid_bian import project as _p
+    return _p(*a, **k)
 
 
-def basis(rule, step=None, catalogue=None):
-    """The source reference for a projection rule: the metamodel rule and its published basis."""
-    if rule == CATALOGUE_RULE: return f"BIAN reference catalogue `{(catalogue or {}).get('model_id', '?')}` — the element is copied, not invented"
-    if rule == 'name (id words)': return 'none published — SDEM fallback (AID-R02): words of an application id matched to domain names'
-    if rule == 'service group': return 'none published — SDEM pattern (AID-R03): one process candidate per BIAN service group; the grouping itself is BIAN\'s ([SL14])'
-    rid = 'S32' if (rule == 'BIAN container pattern' and step == 'F3') else RULE_BASIS.get(rule) or (re.match(r'(S\d\d|B\d\d)', rule or '') or [None])[0]
-    r = _rules().get(rid)
-    return f"{rid}: {r['source_reference']}" if r else f'{rule}: no metamodel entry'
+
 
 
 NAME_ONLY = re.compile(r'fallback|step5|verb and noun match|contains \[.*\], which begin words')
@@ -71,344 +62,47 @@ def conf_of(item):
     return min(item['confidence'], LOW) if is_weak(item) else item['confidence']
 
 
-def class_of(items):
-    """The evidence class of a choice made for several reasons: the strongest (AID-E01)."""
-    return strongest(*[x.get('evidence_class') for x in items])
 
 
-def why_text(items):
-    """Readable reasons from engine proposals and candidates: one line per rule, without step numbers or proposal ids."""
-    out = []
-    for x in items:
-        t = re.sub(r'^(S\d\d|B\d\d) step\d\s*', r'\1 — ', plain(x['evidence'][0].replace('engine_rationale:', '')))
-        t = re.sub(r'\s*(S\d\d) step\d\s*', r' · \1 — ', t)
-        if t not in out: out.append(t)
-    return '; '.join(out)
 
 
-def plain(text):
-    """Engine reasoning without run-local proposal ids."""
-    return re.sub(r'\s*\((?:P|C)-AID-\d+\)|(?:P|C)-AID-\d+:\s*', '', text or '').strip()
 
 
 def _registry(maps=()): return {'registry_version': load_registry()['$schema_version'], 'metamodel_version': Metamodel.load().version, 'mappings': list(maps)}
-def _sha(doc): return hashlib.sha256(json.dumps(doc, sort_keys=True).encode('utf-8')).hexdigest()
-def _ref(i): return {'id': i['id'], 'type': i['type'], 'version': i['version']}
-def _clean(name): return re.sub(r'\s*\(.*?\)\s*', ' ', name).strip()
 
 
-class Projection:
-    def __init__(self, have, catalogue, mm):
-        self.have, self.cat, self.mm = have, catalogue, mm
-        self.records = {lvl: {} for lvl in FILES}; self.rels = {lvl: [] for lvl in FILES}; self.links = {}; self.ends = []; self.steps = []
-        self.cat_by_id = {i['id']: i for i in catalogue['instances']} if catalogue else {}
-
-    @staticmethod
-    def _prov(prov, ev):
-        ev = ev or RULE_CLASS.get(prov['rule'])
-        if ev: prov['evidence_class'] = ev
-        return prov
-
-    def record(self, lvl, rec, step, rule, inferred_from, reasoning, conf, ev=None):
-        if rec['id'] in self.records[lvl]:
-            r = self.records[lvl][rec['id']]
-            if ev and 'evidence_class' in r['projection']: r['projection']['evidence_class'] = strongest(r['projection']['evidence_class'], ev)
-            return r
-        r = dict(rec); r['projection'] = self._prov({'step': step, 'rule': rule, 'source_reference': basis(rule, step, self.cat), 'inferred_from': inferred_from, 'reasoning': plain(reasoning), 'confidence': min(conf, MEDIUM)}, ev)
-        self.records[lvl][rec['id']] = r; return r
-
-    def link(self, rel, src, tgt, step, rule, inferred_from, reasoning, conf, ev=None):
-        k = (src['id'], rel, tgt['id'])
-        if k in self.links:
-            l = self.links[k]; l['projection']['confidence'] = max(l['projection']['confidence'], min(conf, MEDIUM))
-            if ev: l['projection']['evidence_class'] = strongest(l['projection'].get('evidence_class'), ev)
-            return l
-        l = {'mapping_id': f'PRJ-L-{len(self.links) + 1:03d}', 'source': _ref(src), 'relationship': rel, 'target': _ref(tgt), 'status': 'projected', 'confidence': min(conf, MEDIUM),
-             'rationale': f'PROJECTED DESIGN, not a mapping: {plain(reasoning)}', 'projection': self._prov({'step': step, 'rule': rule, 'source_reference': basis(rule, step, self.cat), 'inferred_from': inferred_from, 'reasoning': plain(reasoning), 'confidence': min(conf, MEDIUM)}, ev)}
-        self.links[k] = l; return l
-
-    # -- BIAN references: a selected domain brings its catalogue structure, never anything invented
-    def take_domain(self, dom_id, step, why, conf, evidence=None, ev=None):
-        cat = self.cat_by_id; rels = self.cat.get('relationships', [])
-        keep = [dom_id]; todo = [dom_id]
-        while todo:
-            x = todo.pop()
-            for r in rels:
-                if r['source'] == x and r['kind'] in ('composition', 'aggregation', 'association') and r['target'] not in keep and cat.get(r['target']) and cat[r['target']]['type'] != _T('bian.ServiceDomain'):
-                    keep.append(r['target']); todo.append(r['target'])
-        for x in keep:
-            self.record(_L('bian'), cat[x], step, CATALOGUE_RULE, (evidence or [dom_id]) if x == dom_id else [dom_id], why if x == dom_id else f'part of {dom_id} in the BIAN catalogue', conf, ev)   # a part rests on what its domain rests on
-        for r in rels:
-            if r['source'] in keep and r['target'] in keep and r not in self.rels[_L('bian')]: self.rels[_L('bian')].append(r)
-
-    def package(self, pid, created_at):
-        layers = {}
-        for lvl, recs in self.records.items():
-            if not recs: continue
-            layers[lvl] = {'level': lvl, 'model_id': f'{pid}-{lvl.lower()}-PROJECTION', 'model_version': 'projection', 'metamodel_version': self.mm.version,
-                           'source_system': 'AID-PROJECTION (sdem aid; not a real architecture dataset)', 'instances': list(recs.values()), 'relationships': self.rels[lvl]}
-        H = set(self.have)
-        mode = 'forward' if min(H) == _L('business') and not ({_L('business'), _L('application')} <= H and _L('bian') not in H) and max(H) <= _L('bian') else 'middle' if {_L('business'), _L('application')} <= H and _L('bian') not in H else 'reverse' if min(H) >= _L('application') else 'forward and reverse'
-        meta = {'projection_id': pid, 'mode': mode, 'created_by': 'sdem aid', 'created_at': created_at, 'metamodel_version': self.mm.version,
-                'have': sorted(self.have), 'catalogue': {'model_id': (self.cat or {}).get('model_id'), 'sha256': _sha(self.cat) if self.cat else None},
-                'inputs': {lvl: {'model_id': d.get('model_id'), 'sha256': _sha(d)} for lvl, d in sorted(self.have.items())},
-                'steps': self.steps, 'projection_ends': self.ends,
-                'summary': {lvl: {'records': len(d['instances']), 'by_confidence': {str(c): sum(1 for i in d['instances'] if i['projection']['confidence'] == c) for c in (MEDIUM, LOW)}} for lvl, d in layers.items()},
-                'links': len(self.links)}
-        return {'projection': meta, 'layers': layers, 'links': {'links': list(self.links.values())}}
 
 
 def _reader(levels, mm, registry=None):
     return GraphReader(FederatedGraph([LevelGraph(d, mm) for d in levels.values()], [registry or _registry()], mm), 'aid')
 
 
-def _engine(levels, mm, registry=None):
-    reader = _reader(levels, mm, registry); res = RulesEngine().infer(reader, {'id': 'AID'})
-    return res['proposals'], res['candidates'], reader
 
 
 # ------------------------------------------------------------------ steps
 
-def forward_a2(prj, a1, registry):
-    """F1 — choose the service domains A1 needs: the engine's rules on A1 + the BIAN catalogue."""
-    props, cands, reader = _engine({_L('business'): a1, _L('bian'): prj.cat}, prj.mm, registry)
-    doms = {}
-    for m in props:
-        if m['relationship'] in ('USES_DOMAIN', 'SUPPORTED_BY') and m['target']['id'] in prj.cat_by_id:
-            doms.setdefault(m['target']['id'], []).append(m)
-    for c in cands:
-        if c['relationship'] == 'S07' and c['target']['id'] in prj.cat_by_id: doms.setdefault(c['target']['id'], []).append(c)
-    for d, why in doms.items():
-        best = max(conf_of(x) for x in why)
-        prj.take_domain(d, 'F1', 'the business layer points to it — ' + why_text(why), best, sorted({x['source']['id'] for x in why}), class_of(why))
-    for m in props:
-        if m['target']['id'] in prj.records[_L('bian')] or m['target']['id'] in prj.cat_by_id and m['target']['id'] in doms:
-            src = next(i for i in a1['instances'] if i['id'] == m['source']['id']); tgt = prj.cat_by_id[m['target']['id']]
-            if m['target']['id'] not in prj.records[_L('bian')]: prj.take_domain(m['target']['id'], 'F1', m['rationale'], m['confidence'], ev=m.get('evidence_class'))
-            prj.link(m['relationship'], src, tgt, 'F1', m['evidence'][0].split(' ')[0].replace('engine_rationale:', ''), [m['source']['id']], m['rationale'] + (' — name-only evidence, capped low (AID-B6)' if conf_of(m) < m['confidence'] else ''), conf_of(m), m.get('evidence_class'))
-    prj.steps.append({'step': 'F1', 'domains': sorted(doms)})
-    if not doms: prj.ends.append(f'projection ends at {_L("business")}: no business record names a BIAN operation or matches a catalogue domain closely enough')
-    return sorted(doms)
 
 
-def forward_a3_a4(prj, domains, a2, project_a4=True):
-    """F2 + F3 — BIAN container pattern below the given or projected domains."""
-    run = Run(_reader({_L('bian'): a2}, prj.mm), 'AID'); comps = []
-    for dom_id in domains:
-        dom = next((i for i in a2['instances'] if i['id'] == dom_id), None)
-        if not dom: continue
-        ops = [o for o in run.of(_T('bian.ServiceOperation')) if (run.domain_of(o['id']) or {}).get('id') == dom_id]
-        if not ops: prj.ends.append(f'{dom_id}: no service operations in the {_L("bian")} data — no component projected'); continue
-        ev = weakest('pattern', (prj.records[_L('bian')].get(dom_id) or {}).get('projection', {}).get('evidence_class')) or 'pattern'   # no stronger than its domain (AID-E01)
-        at = run.get(run.attr(dom, 'asset_type'), _T('bian.AssetType')) if run.attr(dom, 'asset_type') else None
-        base = at['name'] if at else _clean(dom['name']); coll = run._collection(base)
-        comp = prj.record(_L('application'), {'id': f'PRJ-APP-{dom_id}', 'type': _T('application.ApplicationComponent'), 'version': '1.0', 'name': f'{base} service (projected)', 'lifecycle_status': 'planned',
-                                 'description': f"Projected: one deployable component for {_clean(dom['name'])} (BIAN container pattern)."}, 'F2', 'BIAN container pattern', [dom_id], 'one component per service domain', LOW, ev)
-        comps.append(comp); prj.link('REALIZED_BY', dom, comp, 'F2', 'BIAN container pattern', [dom_id], 'one component per service domain', LOW, ev)
-        for op in ops:
-            method, path, why = run._rest_form(op, coll)
-            if not method: prj.ends.append(f"{op['id']}: {why} — no API projected"); continue
-            api = prj.record(_L('application'), {'id': f"PRJ-API-{op['id']}", 'type': _T('application.APIOperation'), 'version': '1.0', 'name': f'{method} {path}', 'lifecycle_status': 'planned',
-                                    'attributes': {'method': method, 'path': path, 'payload_fields': sorted(set(_list(run.attr(op, 'input_attributes')) + _list(run.attr(op, 'output_attributes'))))}},
-                             'F2', 'BIAN REST mapping', [op['id']], why, LOW, ev)
-            prj.rels[_L('application')].append({'source': comp['id'], 'kind': 'composition', 'target': api['id']})
-            prj.link('IMPLEMENTED_BY', op, api, 'F2', 'BIAN REST mapping', [op['id']], why, LOW, ev)
-    if project_a4: forward_a4(prj, comps)
-    prj.steps.append({'step': 'F2', 'components': [c['id'] for c in comps]})
-    return comps
 
 
-def forward_a4(prj, comps):
-    for comp in comps:
-        dep = prj.record(_L('technology'), {'id': f"PRJ-DEP-{comp['id'].replace('PRJ-APP-', '')}", 'type': _T('technology.Deployment'), 'version': '1.0', 'name': f"{comp['name']} — deployment (projected)", 'lifecycle_status': 'planned',
-                                'attributes': {'component_id': comp['id']}}, 'F3', 'BIAN container pattern', [comp['id']], 'one deployment per component; no platform, environment or network is projected', LOW, comp['projection'].get('evidence_class'))
-        prj.link('DEPLOYED_AS', comp, dep, 'F3', 'BIAN container pattern', [comp['id']], 'one deployment per component', LOW, comp['projection'].get('evidence_class'))
-    prj.steps.append({'step': 'F3', 'deployments': len(comps)})
 
 
-def reverse_a3(prj, a4):
-    """R1 — the applications that A4 records name (hosts, deployments, artifacts)."""
-    named = {}
-    for i in a4['instances']:
-        at = i.get('attributes') or {}
-        for key in ('hosts', 'component_id', 'of_component'):
-            for x in _list(at.get(key)): named.setdefault(x, []).append((i, key))
-    stubs = []
-    for cid, via in sorted(named.items()):
-        # AID-R05: a deployment or artifact of one application is usually named after it ("Payments Hub — production")
-        names = [re.split(r'\s+[—–-]\s+|\s*\(|:', i['name'])[0].strip() for i, k in via if k in ('component_id', 'of_component') and i.get('name')]
-        name = max(set(names), key=names.count) if names else cid
-        st = prj.record(_L('application'), {'id': cid, 'type': _T('application.ApplicationComponent'), 'version': '1.0', 'name': name},
-                        'R1', f'named by {_L("technology")}', [f"{i['id']}.{k}" for i, k in via],
-                        f'an {_L("technology")} record names this application' + (f'; its name comes from {", ".join(sorted({i["id"] for i, k in via if k in ("component_id", "of_component")}))}' if names else f'; nothing else about it is known from {_L("technology")}'), MEDIUM)
-        stubs.append(st)
-        for i, key in via:
-            if key == 'hosts': prj.link('DEPLOYED_ON', st, i, 'R1', f'S33 ({_L("technology")} hosts)', [f"{i['id']}.hosts"], f"{i['id']} hosts {cid}", MEDIUM)
-            if key == 'component_id' and mm_is(prj, i['type'], _T('technology.Deployment')): prj.link('DEPLOYED_AS', st, i, 'R1', 'S32 (deployment component_id)', [f"{i['id']}.component_id"], f"{i['id']} deploys {cid}", MEDIUM)
-    prj.steps.append({'step': 'R1', 'applications': [s['id'] for s in stubs]})
-    if not stubs: prj.ends.append(f'projection ends at {_L("technology")}: no technology record names an application')
-    return stubs
 
 
-def mm_is(prj, t, a): return prj.mm.is_a(t, a)
 
 
-def reverse_a2(prj, a3, a4=None, registry=None):
-    """R2 — choose the service domains A3 realises: the engine's rules on A3 (+ A4) + the BIAN catalogue."""
-    levels = {_L('bian'): prj.cat, _L('application'): a3}
-    if a4: levels[_L('technology')] = a4
-    props, _, _ = _engine(levels, prj.mm, registry)
-    doms = {}
-    for m in props:
-        if m['relationship'] == 'REALIZED_BY' and m['source']['id'] in prj.cat_by_id: doms.setdefault(m['source']['id'], []).append(m)
-    for d, why in doms.items():
-        c = max(conf_of(x) for x in why)
-        prj.take_domain(d, 'R2', 'the application layer points to it — ' + why_text(why) + (' — name-only evidence, capped low (AID-B6)' if c < max(x['confidence'] for x in why) else ''), c, sorted({x['target']['id'] for x in why}), class_of(why))
-    a3_ids = {i['id']: i for i in a3['instances']}
-    for m in props:
-        s, t = m['source']['id'], m['target']['id']
-        if m['relationship'] in ('IMPLEMENTED_BY', 'REALIZED_BY', 'MAPPED_TO') and s in prj.cat_by_id and t in a3_ids:
-            if m['relationship'] == 'IMPLEMENTED_BY':
-                dom = Run(_reader({_L('bian'): prj.cat}, prj.mm), 'AID').domain_of(s)
-                if dom and dom['id'] not in prj.records[_L('bian')]: prj.take_domain(dom['id'], 'R2', f'its operation {s} is implemented by {t}', m['confidence'], ev=m.get('evidence_class'))
-            if m['relationship'] == 'MAPPED_TO' and s not in prj.records[_L('bian')]:
-                prj.record(_L('bian'), prj.cat_by_id[s], 'R2', CATALOGUE_RULE, [t], f'business object mapped from data entity {t}', m['confidence'], m.get('evidence_class'))
-            prj.link(m['relationship'], prj.cat_by_id[s], a3_ids[t], 'R2', m['evidence'][0].split(' ')[0].replace('engine_rationale:', ''), [t], m['rationale'] + (' — name-only evidence, capped low (AID-B6)' if conf_of(m) < m['confidence'] else ''), conf_of(m), m.get('evidence_class'))
-    stubs = [i for i in a3['instances'] if (prj.records[_L('application')].get(i['id']) or {}).get('projection', {}).get('step') == 'R1']
-    if stubs and not doms: name_fallback(prj, stubs)
-    chosen = sorted({i for i, r in prj.records[_L('bian')].items() if r['type'] == _T('bian.ServiceDomain')})
-    prj.steps.append({'step': 'R2', 'domains': chosen})
-    if not chosen: prj.ends.append(f'projection ends at {_L("application")}: the application data (names, APIs, data entities) does not match any domain in the BIAN catalogue')
-    return chosen
 
 
-GENERIC = {'app', 'application', 'service', 'services', 'system', 'platform', 'hub', 'gateway', 'engine', 'core', 'api', 'portal', 'cmp', 'svc', 'sys', 'gw', 'module', 'manager', 'management'}
 
 
-def subject_words(prj, d):
-    """The words of what a BIAN service domain is about: its asset type, or — when BIAN publishes none — its own name."""
-    at = prj.cat_by_id.get((d.get('attributes') or {}).get('asset_type')) or {}
-    return stems(tokens(at.get('name') or _clean(d['name']))) - stems(set(GENERIC))
 
 
-def name_fallback(prj, stubs):
-    """R2 for applications known only by a name (or id) from A4 (AID-R06): a domain is suggested only when the name covers what
-    the domain is about — its whole subject, or at least two of its words and two thirds of it — and only the best-covered
-    domains; one shared common word ('payment', 'order') is not enough. Otherwise AID stops here and says what it needs."""
-    doms = [i for i in prj.cat['instances'] if i['type'] == _T('bian.ServiceDomain')]
-    subj = {d['id']: subject_words(prj, d) for d in doms}
-    for st in stubs:
-        words = stems(tokens(st['name'] if st['name'] != st['id'] else ' '.join(re.split(r'[-_]', st['id'])))) - stems(set(GENERIC))
-        found = []
-        for d in doms:
-            sw = subj[d['id']]
-            if not sw: continue
-            shared = sw & words; cover = len(shared) / len(sw)
-            if cover == 1 or (len(shared) >= 2 and cover >= 2 / 3): found.append((cover, len(shared), d, sorted(shared)))
-        if not found:
-            prj.ends.append(f"{st['id']} {st['name']!r}: its name does not say which BIAN service domain it realises — describe its APIs or data "
-                            f"({_L('application')}), or connect it yourself (sdem connect <service domain> REALIZED_BY {st['id']} …)"); continue
-        best = max((c, n) for c, n, _, _ in found)
-        for c, n, d, shared in found:
-            if (c, n) != best: continue
-            why = f"its name {st['name']!r} covers {_clean(d['name'])}'s subject ({', '.join(shared)}) — name only"
-            prj.take_domain(d['id'], 'R2', why, LOW, [st['id']], 'name_token')
-            prj.link('REALIZED_BY', d, st, 'R2', 'name', [st['id']], why, LOW)
 
 
-def reverse_a1(prj, domains):
-    """R3 — per domain, one capability candidate (from its name) and one process candidate per BIAN service group
-    (the group's operations): the weakest step, as BIAN publishes no capability- or process-to-domain mapping."""
-    for d in domains:
-        dom = prj.cat_by_id.get(d) or prj.records[_L('bian')].get(d)
-        if not dom: continue
-        cap = prj.record(_L('business'), {'id': f'PRJ-CAP-{d}', 'type': _T('business.BusinessCapability'), 'version': '1.0', 'name': f"{_clean(dom['name'])} (capability candidate)", 'lifecycle_status': 'planned'},
-                         'R3', 'domain name', [d], f"a business capability is likely to be supported by {_clean(dom['name'])}; BIAN publishes no capability mapping, so this is a candidate only", LOW)
-        prj.link('SUPPORTED_BY', cap, dom, 'R3', 'domain name', [d], 'capability candidate', LOW)
-        rels = (prj.cat or {}).get('relationships', [])
-        groups = [prj.cat_by_id[r['target']] for r in rels if r['source'] == d and r['kind'] == 'composition' and (prj.cat_by_id.get(r['target']) or {}).get('type') == _T('bian.ServiceGroup')]
-        if not groups: prj.ends.append(f'{d}: no BIAN service groups in the catalogue — no process candidates'); continue
-        at = prj.cat_by_id.get((dom.get('attributes') or {}).get('asset_type')) or {}
-        used = {l['source']['id'] for l in prj.links.values() if l['relationship'] == 'IMPLEMENTED_BY'}   # operations the design's APIs implement
-        for g in groups:
-            ops = [prj.cat_by_id[r['target']] for r in rels if r['source'] == g['id'] and r['kind'] == 'composition' and (prj.cat_by_id.get(r['target']) or {}).get('type') == _T('bian.ServiceOperation')]
-            if not ops or not any(o['id'] in used for o in ops): continue   # AID-R07: only for service groups the design uses
-            why = f"BIAN groups the operations {', '.join(o['name'] for o in ops)} as “{g['name']}”; a business process typically covers one such group — a candidate only"
-            prc = prj.record(_L('business'), {'id': f"PRJ-PRC-{g['id']}", 'type': _T('business.BusinessProcess'), 'version': '1.0', 'name': f"{g['name']} — {at.get('name') or _clean(dom['name'])} (process candidate)",
-                                    'lifecycle_status': 'planned', 'attributes': {'invokes': [o['id'] for o in ops]}}, 'R3', 'service group', [g['id']] + [o['id'] for o in ops], why, LOW)
-            prj.link('USES_DOMAIN', prc, dom, 'R3', 'service group', [g['id']], 'process candidate', LOW)
-    prj.steps.append({'step': 'R3', 'capability_candidates': len(domains), 'process_candidates': sum(1 for x in prj.records[_L('business')] if x.startswith('PRJ-PRC-'))})
 
 
 # ------------------------------------------------------------------ orchestration
 
-def project(have, catalogue=None, registry=None, pid=None, created_at=None, either=False):
-    """have: {'A1': dataset, …} — one or more layers. Returns a projection package dict."""
-    mm = Metamodel.load(); prj = Projection(have, catalogue, mm); H = set(have)
-    if not H: raise ValueError('AID needs at least one architecture dataset (AID-I01)')
-    for name, d in list(have.items()) + ([('catalogue', catalogue)] if catalogue else []):
-        issues = LevelGraph(d, mm).validate()  # AID-I01: every input passes the dataset check (CTL-01…03, CTL-16)
-        if issues: raise ValueError(f"{name} ({d.get('model_id')}) fails the dataset check: {issues[0]}")
-    pid = pid or 'PRJ-' + '-'.join(sorted(H)); created_at = created_at or datetime.datetime.now(datetime.timezone.utc).replace(microsecond=0).isoformat()
-    if _L('bian') in H:
-        doms = [i['id'] for i in have[_L('bian')]['instances'] if i['type'] == _T('bian.ServiceDomain')]
-        if _L('application') not in H: forward_a3_a4(prj, doms, have[_L('bian')], project_a4=_L('technology') not in H)
-        if _L('business') not in H: reverse_a1(prj, doms)
-    elif not catalogue:
-        prj.ends.append(f'no {_L("bian")} layer and no BIAN catalogue: nothing can be projected through the BIAN layer')
-    elif _L('business') in H and _L('application') in H:  # middle gap — the domains both sides support
-        fwd = Projection(have, catalogue, mm); f = set(forward_a2(fwd, have[_L('business')], registry))
-        rev = Projection(have, catalogue, mm); r = set(reverse_a2(rev, have[_L('application')], have.get(_L('technology')), registry))
-        both = sorted(f & r)
-        for d in both:
-            fr, rr = fwd.records[_L('bian')][d]['projection'], rev.records[_L('bian')][d]['projection']
-            prj.take_domain(d, 'M', f"supported from both sides. Business side (F1): {fr['reasoning']}. Application side (R2): {rr['reasoning']}", MEDIUM, fr['inferred_from'] + rr['inferred_from'],
-                            strongest(fr.get('evidence_class'), rr.get('evidence_class')))
-        approved_links = [m for m in ((registry or {}).get('mappings', []) if isinstance(registry, dict) else (registry or [])) if m.get('status') == 'approved']
-        decided_f = {m['target']['id'] for m in approved_links if m.get('relationship') in ('USES_DOMAIN', 'SUPPORTED_BY')}   # domains the business side already uses, approved
-        decided_r = {m['source']['id'] for m in approved_links if m.get('relationship') == 'REALIZED_BY' and str(m['source'].get('type', '')).startswith((_L('bian') + '.'))}   # domains an application already realises, approved
-        if either:   # AID-M02: filling a workspace for a person to review — a domain one side supports is kept too, at that side's confidence
-            kept_r = set()
-            for side, d in [(fwd, d) for d in sorted(f - r)] + [(rev, d) for d in sorted(r - f)]:
-                x = side.records[_L('bian')][d]['projection']
-                other = (f | decided_f) if side is rev else (r | decided_r)   # AID-M03: "the other side already names its domains" — by a proposal now, or by a link a person approved earlier (F15)
-                weak_only = x['evidence_class'] in WEAK_CLASSES if x.get('evidence_class') else (side is rev and x['confidence'] <= LOW)
-                if other and weak_only:
-                    # AID-M03, by evidence class (AID-E02): the other side already names its domains; a domain only names or descriptions on
-                    # one side point to is a note, not a record
-                    by = 'application' if side is rev else 'business'
-                    prj.ends.append(f"not added — {d} ({_clean(prj.cat_by_id[d]['name'])}): only {by} names or descriptions point to it ({x['reasoning']}; evidence: {x.get('evidence_class', 'name only')}). "
-                                    f"If it belongs to this design, name its operations in a process's invokes, or add it: sdem bian add --workspace <ws> \"{_clean(prj.cat_by_id[d]['name'])}\" --person <you>")
-                    continue
-                if side is rev: kept_r.add(d)
-                prj.take_domain(d, 'M', f"supported from the {'business' if side is fwd else 'application'} side only: {x['reasoning']}", x['confidence'], x['inferred_from'], x.get('evidence_class'))
-            both = sorted(f | (r & f) | kept_r)
-        for side in (fwd, rev):
-            for k, l in side.links.items():
-                ends = {l['source']['id'], l['target']['id']}
-                if ends & set(both) or any(Run(_reader({_L('bian'): catalogue}, mm), 'AID').domain_of(e) and Run(_reader({_L('bian'): catalogue}, mm), 'AID').domain_of(e)['id'] in both for e in ends if e in prj.cat_by_id):
-                    src = {'id': l['source']['id'], 'type': l['source']['type'], 'version': l['source']['version']}; tgt = {'id': l['target']['id'], 'type': l['target']['type'], 'version': l['target']['version']}
-                    boost = 0 if is_weak(l) else 0.2   # agreement lifts a link — never one that rests on a name alone (AID-B6)
-                    prj.link(l['relationship'], src, tgt, 'M', l['projection']['rule'], l['projection']['inferred_from'], l['projection']['reasoning'], min(l['confidence'] + boost, MEDIUM), l['projection'].get('evidence_class'))
-        for x, rec in list(fwd.records[_L('bian')].items()) + list(rev.records[_L('bian')].items()):
-            if rec['type'] == _T('bian.BusinessObject') and x not in prj.records[_L('bian')]: prj.record(_L('bian'), prj.cat_by_id[x], 'M', CATALOGUE_RULE, rec['projection']['inferred_from'], rec['projection']['reasoning'], rec['projection']['confidence'], rec['projection'].get('evidence_class'))
-        prj.steps.append({'step': 'M', 'forward_domains': sorted(f), 'reverse_domains': sorted(r), 'kept': both})
-        if not both: prj.ends.append('middle gap: the business and application layers point to no common BIAN domain')
-        if _L('technology') not in H: forward_a4(prj, [])
-    elif _L('business') in H:  # forward
-        doms = forward_a2(prj, have[_L('business')], registry)
-        if doms and _L('application') not in H:
-            a2p = {'level': _L('bian'), 'model_id': 'aid-selected', 'model_version': 'x', 'metamodel_version': mm.version, 'instances': list(prj.records[_L('bian')].values()), 'relationships': prj.rels[_L('bian')]}
-            a2p['instances'] = [{k: v for k, v in i.items() if k != 'projection'} for i in a2p['instances']]
-            forward_a3_a4(prj, doms, a2p, project_a4=_L('technology') not in H)
-    else:  # reverse from A3 and/or A4
-        a3 = have.get(_L('application'))
-        if a3 is None and _L('technology') in H:
-            stubs = reverse_a3(prj, have[_L('technology')])
-            a3 = {'level': _L('application'), 'model_id': 'aid-stubs', 'model_version': 'x', 'metamodel_version': mm.version, 'instances': [{k: v for k, v in s.items() if k != 'projection'} for s in stubs], 'relationships': []}
-        doms = reverse_a2(prj, a3, have.get(_L('technology')), registry) if a3 and a3['instances'] else []
-        if doms and _L('business') not in H: reverse_a1(prj, doms)
-    return prj.package(pid, created_at)
 
 
 # ------------------------------------------------------------------ package: write, read, check (CTL-17)
@@ -680,3 +374,11 @@ def main(argv=None):
 
 if __name__ == '__main__':
     raise SystemExit(main())
+
+
+def __getattr__(name):   # 0.22 step 3c: AID's projection moved to sdem/aid_bian.py — its names are still found here (aid._sha, subject_words …)
+    if name in ('GENERIC', 'Projection', 'RULE_BASIS', 'RULE_CLASS', '_clean', '_engine', '_ref', '_sha', 'basis', 'class_of', 'forward_a2',
+                'forward_a3_a4', 'forward_a4', 'mm_is', 'name_fallback', 'plain', 'reverse_a1', 'reverse_a2', 'reverse_a3', 'subject_words', 'why_text'):
+        from . import aid_bian
+        return getattr(aid_bian, name)
+    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")

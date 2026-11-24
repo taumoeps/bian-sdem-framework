@@ -130,51 +130,6 @@ def propose_links(docs, maps, mm, rules, mark, rejected=(), complete=False):
     return out, left
 
 
-def pattern_domains(docs, catalogue, maps, mm, structures, mark, rejected=()):
-    """AID-D05. A BIAN service domain a pattern names (a part found anywhere, by its name) that the design lacks is taken from the catalogue
-    with its parts, marked inferred (evidence: the pattern); and the one process whose name shares a word with the domain's is proposed as
-    using it. Returns ([A2 record], [A2 link], [(process, 'USES_DOMAIN', domain, why)], [domain id added])."""
-    from .profile import applies
-    from .bian import reach
-    a2 = docs.get(_L('bian')) or {'instances': [], 'relationships': []}
-    recs = {i['id']: (l, i) for l, d in docs.items() for i in d.get('instances', [])}
-    have = {i['name']: i['id'] for i in a2['instances'] if i['type'] == _T('bian.ServiceDomain')}
-    new, links, uses, added = [], [], [], []
-    live = {(s, r, t) for s, r, t in maps}
-    for st in structures:
-        pat, S = st['pattern'], st['structure']; aw = pat.get('applies_when') or {}
-        anchors = sorted(i for i, (l, r) in recs.items() if mm.known(r['type']) and mm.is_a(r['type'], aw.get('entity', '')) and applies({'when': aw.get('when') or {}}, r) and not _unconfirmed(r))
-        if not anchors: continue
-        for role in S['roles']:
-            name = (role.get('when') or {}).get('name')
-            if not (role.get('anywhere') and role['type'] == _T('bian.ServiceDomain') and isinstance(name, str)): continue
-            asked = f"{pat['id']}/{role['id']}"
-            if name not in have and catalogue:
-                keep = reach(catalogue, {name}); by = {i['id']: i for i in catalogue['instances']}
-                sd = next((i for i in keep if by[i]['type'] == _T('bian.ServiceDomain')), None)
-                if not sd or sd in rejected: continue
-                for i in sorted(keep):
-                    if i in recs or any(n['id'] == i for n in new): continue
-                    r = copy.deepcopy(by[i])
-                    r.setdefault('attributes', {})['inferred'] = mark('AID-D05', f"the pattern {pat['title']} ({pat['id']}) says a design that has {anchors[0]} has BIAN's {name}: {role.get('reasoning', '')}".rstrip(': '),
-                                                                      anchors[0] if i == sd else sd, confidence='low', evidence_class='pattern', asked_by=asked)
-                    new.append(r)
-                ids = set(recs) | {n['id'] for n in new}
-                links += [r for r in catalogue.get('relationships', []) if r['source'] in keep and r['target'] in ids and not any((r['source'], r['kind'], r['target']) == (x['source'], x['kind'], x['target']) for x in a2.get('relationships', []) + links)]
-                have[name] = sd; added.append(sd)
-            sd = have.get(name)
-            if not sd or any(r == 'USES_DOMAIN' and t == sd for _, r, t in live): continue
-            procs = [(i, r) for i, (l, r) in recs.items() if mm.known(r['type']) and mm.is_a(r['type'], _T('business.BusinessProcess')) and not _unconfirmed(r)]
-            others = set().union(*[words(n) for n in have if n != name] or [set()])
-            hits = {}
-            for w in words(name) - others:
-                got = [i for i, r in procs if w in words(r.get('name'))]
-                if len(got) == 1: hits[w] = got[0]
-            if len(set(hits.values())) == 1:
-                p = next(iter(hits.values())); w = sorted(hits)[0]
-                if (p, 'USES_DOMAIN', sd) not in live:
-                    uses.append((p, 'USES_DOMAIN', sd, f"{p} is the one process whose name has the word '{w}' of BIAN's {name}, which the pattern {pat['id']} asks a process to use — name evidence only"))
-    return new, links, uses, added
 
 
 def _bound(docs, maps, mm, structures):

@@ -315,12 +315,13 @@ def fill(workspace, person, dry_run=False, now=None, complete_draft=False):
                 after[_L('technology')].setdefault('relationships', []).extend(ends); placements += len(ends); connections += len(ends)
                 if _L('technology') not in added: added[_L('technology')] = []
     if after.get(_L('business')) or after.get(_L('bian')):   # AID-L01…L05, AID-K01 (the owner's approvals 2, 2b, 2026-11-16): direct A1->A3 links and field matches, proposed
-        from .aid_links import propose_direct, DIRECT_ORDER, BIAN_DIRECT
+        from .aid_links import propose_direct, DIRECT_ORDER
         from .metamodel import Metamodel as _MMl
         _mml = _MMl.load()
         maps_ = registry.get('mappings', []) + proposals
-        bdirect, bfields = B.direct(after, maps_, _mml)   # BIAN's rules of AID-L01…L05, I05, and K01
-        core = propose_direct(after, maps_, _mml, only=set(DIRECT_ORDER) - BIAN_DIRECT)   # the core's: AID-L06, I06
+        bdirect, bfields = B.direct(after, maps_, _mml)   # BIAN's: AID-L01, L02, I05, and K01
+        seen_b = [{'source': {'id': s_}, 'relationship': r_, 'target': {'id': t_}, 'status': 'proposed'} for s_, r_, t_, *_ in bdirect]
+        core = propose_direct(after, maps_ + seen_b, _mml)   # the core's AID-L03…L06, I06 — BIAN's found first, as an earlier rule's always were
         merged = sorted(bdirect + core, key=lambda x: DIRECT_ORDER.index(x[3]))   # stable: each rule's own order, the rules in the order they always ran
         for found in (merged, bfields):
             for src, rel, tgt, rule, why, conf in found:
