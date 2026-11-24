@@ -8,7 +8,8 @@ import json, os, shutil, subprocess, sys, tempfile, unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT))
+sys.path.insert(0, str(ROOT)); sys.path.insert(0, str(Path(__file__).resolve().parent))
+from bare_python import bare_python, bian_dirs  # noqa: E402
 from sdem import profile as P  # noqa: E402
 
 MANIFEST = {'name': 'bian', 'command': 'sdem-bian', 'version': '9.9.9', 'kind': ['metamodel'], 'sdem': '>=0.0', 'infers': ['aid-phases'],
@@ -35,7 +36,7 @@ sys.exit(2)
 
 
 def install(folder):
-    real = json.loads(subprocess.run([shutil.which('sdem-bian'), '--manifest'], capture_output=True, text=True, encoding='utf-8').stdout)
+    real = json.loads(subprocess.run([shutil.which('sdem-bian', path=os.pathsep.join(bian_dirs())), '--manifest'], capture_output=True, text=True, encoding='utf-8').stdout)
     man = {**MANIFEST, **{k: real[k] for k in ('bian_data', 'pack', 'api', 'commands') if k in real}}   # BIAN's data from the real one (R-D2): only its part of sdem aid is made up
     body = f'MANIFEST = {man!r}\nROOT = {str(ROOT)!r}\n' + PROGRAM
     if os.name == 'nt':
@@ -46,7 +47,7 @@ def install(folder):
 
 
 def _real_bian():
-    return any((Path(p) / n).exists() for p in os.environ.get('PATH', '').split(os.pathsep) if p for n in ('sdem-bian', 'sdem-bian.exe', 'sdem-bian.cmd'))
+    return bool(bian_dirs())
 
 
 @unittest.skipUnless(_real_bian(), 'needs sdem-bian installed (R-D2): the made-up one is compared with it')
@@ -56,9 +57,10 @@ class AidPhases(unittest.TestCase):
         cls.tmp = t = Path(tempfile.mkdtemp()); (t / 'bin').mkdir(); install(t / 'bin')
         cls.log = t / 'phases.log'
         base = {**os.environ, 'PYTHONPATH': str(ROOT), 'PYTHONIOENCODING': 'utf-8', 'FAKE_BIAN_LOG': str(cls.log)}
-        path = [p for p in os.environ.get('PATH', '').split(os.pathsep) if not (Path(p) / 'sdem-bian').exists() and not (Path(p) / 'sdem-bian.exe').exists()]
-        cls.own_env = {**base, 'PATH': os.environ.get('PATH', '')}   # the real sdem-bian, installed (R-D2: a banking design needs it)
-        cls.ext_env = {**base, 'PATH': os.pathsep.join([str(t / 'bin'), *path])}
+        path = [p for p in os.environ.get('PATH', '').split(os.pathsep) if p and p not in bian_dirs()]
+        cls.own_env = {**base, 'PATH': os.pathsep.join([*bian_dirs(), *path])}   # the real sdem-bian, installed (R-D2: a banking design needs it)
+        cls.ext_env = {**base, 'PATH': os.pathsep.join([str(t / 'bin'), *path])}   # the made-up one only
+        cls.py = bare_python(t)   # SDEM's own Python folder holds no extension: PATH alone decides
         cls.sdem(cls.own_env, 'new', '--workspace', t / 'own', '--person', 'steven', '--example', 'payment-initiation')
         shutil.copytree(t / 'own', t / 'ext'); shutil.copytree(t / 'own', t / 'broken')
         cls.own = json.loads(cls.sdem(cls.own_env, 'aid', '--workspace', t / 'own', '--person', 'steven', '--json')[1])
@@ -67,7 +69,7 @@ class AidPhases(unittest.TestCase):
 
     @classmethod
     def sdem(cls, env, *args, ok=(0,)):
-        r = subprocess.run([sys.executable, '-m', 'sdem', *map(str, args)], cwd=cls.tmp, capture_output=True, text=True, encoding='utf-8', env=env)
+        r = subprocess.run([str(cls.py), '-m', 'sdem', *map(str, args)], cwd=cls.tmp, capture_output=True, text=True, encoding='utf-8', env=env)
         assert ok is None or r.returncode in ok, f'sdem {" ".join(map(str, args))}: exit {r.returncode}\n{r.stdout[-1500:]}\n{r.stderr[-1500:]}'
         return r.returncode, r.stdout, r.stderr
 

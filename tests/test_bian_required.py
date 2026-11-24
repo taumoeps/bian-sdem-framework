@@ -5,24 +5,26 @@ import json, os, shutil, subprocess, sys, tempfile, unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from bare_python import bare_python, bian_dirs  # noqa: E402
 BANK = ROOT / 'examples' / '0.20' / 'payment-initiation'
 
 
 def without_bian():
-    path = [p for p in os.environ.get('PATH', '').split(os.pathsep) if p and not any((Path(p) / n).exists() for n in ('sdem-bian', 'sdem-bian.exe', 'sdem-bian.cmd'))]
+    path = [p for p in os.environ.get('PATH', '').split(os.pathsep) if p and p not in bian_dirs()]
     return {**os.environ, 'PYTHONPATH': str(ROOT), 'PYTHONIOENCODING': 'utf-8', 'PATH': os.pathsep.join(path)}
 
 
 class BianRequired(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.tmp = Path(tempfile.mkdtemp()); cls.env = without_bian()
+        cls.tmp = Path(tempfile.mkdtemp()); cls.env = without_bian(); cls.py = bare_python(cls.tmp)   # its own folder holds no sdem-bian
 
     @classmethod
     def tearDownClass(cls): shutil.rmtree(cls.tmp, ignore_errors=True)
 
     def sdem(self, *args):
-        r = subprocess.run([sys.executable, '-m', 'sdem', *map(str, args)], cwd=self.tmp, capture_output=True, text=True, encoding='utf-8', env=self.env)
+        r = subprocess.run([str(self.py), '-m', 'sdem', *map(str, args)], cwd=self.tmp, capture_output=True, text=True, encoding='utf-8', env=self.env)
         return r.returncode, r.stdout, r.stderr
 
     def test_rd2_a_design_with_a_bian_layer_is_refused_by_every_command(self):

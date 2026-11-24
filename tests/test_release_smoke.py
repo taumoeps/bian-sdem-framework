@@ -19,18 +19,20 @@ class ReleaseSmokeTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.tmp = Path(tempfile.mkdtemp(prefix='sdem-smoke-'))
+        clean = {k: v for k, v in os.environ.items() if k != 'PYTHONPATH'}   # built and installed as an organisation would: never with the checkout on the path
         dist = cls.tmp / 'dist'
-        run([sys.executable, '-m', 'pip', 'wheel', ROOT, '--no-deps', '-w', dist, '-q'], cwd=cls.tmp)
+        run([sys.executable, '-m', 'pip', 'wheel', ROOT, '--no-deps', '-w', dist, '-q'], cwd=cls.tmp, env=clean)
         cls.wheel = next(dist.glob('sdem-*.whl'))
-        run([sys.executable, '-m', 'venv', cls.tmp / 'venv'], cwd=cls.tmp)
+        run([sys.executable, '-m', 'venv', cls.tmp / 'venv'], cwd=cls.tmp, env=clean)
         bindir = cls.tmp / 'venv' / ('Scripts' if os.name == 'nt' else 'bin')
         cls.py = bindir / ('python.exe' if os.name == 'nt' else 'python')
-        run([cls.py, '-m', 'pip', 'install', '-q', '--no-index', cls.wheel], cwd=cls.tmp)
+        run([cls.py, '-m', 'pip', 'install', '-q', '--no-index', cls.wheel], cwd=cls.tmp, env=clean)
         # 0.22, R-D2: the bundled example is a banking design — BIAN comes only from sdem-bian: a local checkout beside SDEM's, or its repository
         sib = ROOT.parent / 'sdem-extensions' / 'metamodel' / 'bian'
         src = os.environ.get('SDEM_BIAN_SRC') or (str(sib) if (sib / 'pyproject.toml').is_file() else 'sdem-bian @ git+https://github.com/taumoeps/sdem-extensions@main#subdirectory=metamodel/bian')
-        run([cls.py, '-m', 'pip', 'install', '-q', '--no-deps', src], cwd=cls.tmp)
+        run([cls.py, '-m', 'pip', 'install', '-q', '--no-deps', src], cwd=cls.tmp, env=clean)
         cls.sd = bindir / ('sdem.exe' if os.name == 'nt' else 'sdem')
+        assert cls.sd.exists(), f'{cls.sd} was not installed — {bindir} holds {sorted(p.name for p in bindir.iterdir())}'
         cls.home = cls.tmp / 'my-sdem'; cls.home.mkdir()
         cls.env = {k: v for k, v in os.environ.items() if k != 'PYTHONPATH'}   # the installed package only — never the checkout
 
