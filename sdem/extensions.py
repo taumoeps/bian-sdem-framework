@@ -76,7 +76,11 @@ def run(name, argv):
     if not prog or not manifest(prog):   # only a program that says it is an SDEM extension — a stray sdem-<name> on the PATH is not run
         return None
     try:
-        return subprocess.call([prog, *argv])
+        if sys.stdout is sys.__stdout__ and sys.stderr is sys.__stderr__:
+            return subprocess.call([prog, *argv])   # straight to the terminal, as it runs
+        r = subprocess.run([prog, *argv], capture_output=True, text=True, encoding='utf-8', errors='replace', env={**os.environ, 'PYTHONIOENCODING': 'utf-8'})
+        sys.stdout.write(r.stdout); sys.stderr.write(r.stderr)   # SDEM's own output redirected (a test, the agent): the extension's goes there too
+        return r.returncode
     except KeyboardInterrupt:
         return 130
 
@@ -105,6 +109,10 @@ def main(argv=None):
              for n, m in BUILTIN.items() if n not in {x['name'] for x in items} or (parts.package() or {}).get('refused')]
     for x in built:   # BP-10: an installed sdem-bian SDEM cannot use — said, and the built-in one is used
         if (parts.package() or {}).get('refused'): x['manifest'] = {**x['manifest'], 'description': f"{x['manifest'].get('description', '')} — used instead of the installed sdem-bian: {parts.package()['refused']}"}   # BX-01: a built-in metamodel extension — an installed one of the same name takes its place
+    for x in items:   # BX-15: BIAN comes from the installed sdem-bian — whether it is on in this workspace, and why, said there
+        if a.estate and x['name'] == parts.EXT_BIAN.split(':', 1)[1]:
+            x.update({'on': parts.bian_on(), 'why': parts.why(), **({'make_explicit': f'sdem profile include {parts.EXT_BIAN} --workspace {a.estate} --person <you> --reason "…"'}
+                      if parts.bian_on() and 'BX-11' in parts.why() else {})})
     if a.json:
         print(json.dumps({'count': len(items), 'items': items, 'built_in': built}, indent=2, ensure_ascii=False))
         return 0
@@ -118,7 +126,8 @@ def main(argv=None):
     print(f'{len(items)} extension(s) — run one as sdem <name> …')
     for x in items:
         m = x['manifest']
-        print(f"  {x['name']:<14} {m.get('version', ''):<8} {m.get('description', '')}")
+        print(f"  {x['name']:<14} {m.get('version', ''):<8} {m.get('description', '')}"
+              + (f"\n  {'':<14} {'on' if x['on'] else 'off'} in this workspace: {x['why']}" + (f"\n  {'':<14} make it explicit: {x['make_explicit']}" if x.get('make_explicit') else '') if 'on' in x else ''))
         print(f"  {'':<14} supports SDEM {m.get('sdem', '?')}; sends to {', '.join(m.get('sends_to') or ['nothing'])}; data: {m.get('data', '?')}")
     return 0
 

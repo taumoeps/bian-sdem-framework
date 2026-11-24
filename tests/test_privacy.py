@@ -36,10 +36,10 @@ class PrivacyTests(unittest.TestCase):
             started |= set(re.findall(r"subprocess\.\w+\(\s*\[\s*'([\w.-]+)'", src))
             named = len(re.findall(r"subprocess\.\w+\(\s*\[\s*'", src))
             if f.name == 'extensions.py':   # PRIVACY.md §2, EXT-15, MX-47: an installed extension sdem-<name>, found by find() and run only if it answers --manifest — or, for its inference, only when the workspace includes it
-                self.assertEqual(re.findall(r'subprocess\.\w+\(\s*\[\s*(\w+)', src), ['program', 'prog', 'program'], f.name)
+                self.assertEqual(re.findall(r'subprocess\.\w+\(\s*\[\s*(\w+)', src), ['program', 'prog', 'prog', 'program'], f.name)   # sdem <name>: to the terminal, or through SDEM's output when it is redirected
                 self.assertIn("f'sdem-{name}'", src); self.assertIn('if not prog or not manifest(prog):', src)
                 self.assertIn("[program, 'infer', '--workspace'", src)
-                named += 3
+                named += 4
             self.assertEqual(len(re.findall(r'subprocess\.\w+\(', src)), named, f'{f.name}: every program SDEM starts is named literally')
         self.assertLessEqual(started, PROGRAMS)
 

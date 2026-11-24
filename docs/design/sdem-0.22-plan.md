@@ -49,6 +49,17 @@ This reverses **BP-D3** (the built-in BIAN as a fallback for all of 0.20).
 | **6** | **DESNRE (R-D9)** — publisher and bundle with `sdem-bian`; the Payment example republished | the site's integrity test (`tests/integrity-views.test.mjs`) green; live check in a fresh browser |
 | **7** | **Release** — SDEM 0.22.0, `sdem-bian` 1.0.0, GitHub releases with the migration note: *a design that uses BIAN needs `pip install sdem-bian` after upgrading* | `sdem upgrade check` on a 0.21 banking workspace names the step; CI green on both repositories |
 
+### Step 4 — staged (the owner, 2026-11-24: "Staged")
+
+Outside its four modules SDEM's code names BIAN's types 63 times (12 files) and its layer by id 196 times (36 files — the A1, A2 BIAN, A3 … numbering). **4a**: BIAN's data, rules, code, patterns and the built-in fallback leave the package; a design that uses BIAN is refused without `sdem-bian` (R-D2); metamodel 0.20.0 holds no BIAN type; the core keeps only BIAN's reserved layer slot — its id and its place in the stack — as a generic place for an extension's layer. **4b**, later: that slot made fully generic. Each proved: P1 with `sdem-bian`, the core suite without it.
+
+| Stage | What | Proof |
+|---|---|---|
+| **4a-1** ✅ | R-D2 (BX-15): a design that uses BIAN is refused without a usable `sdem-bian`; without it, other designs and a new design are core ones; with it, nothing changes. SDEM's CI installs `sdem-bian` (from `sdem-extensions` main) in every job, and its release smoke test in its clean environment. Running the suite with `sdem-bian` for the first time showed the dashboard numbering proposals unlike `sdem link` (`P-RUN-…` against `RUN-X…`): `sdem-bian` now gives the whole run's order and SDEM numbers in it (MX-53), every command through one function (`inference.propose`) — `sdem link`'s ids are 0.21's again | `tests/test_bian_required.py` (no `sdem-bian`); with it: the full suite, the 23 AID runs identical except `phases_by` |
+| 4a-2 | BIAN's data, code, catalogue and patterns leave the package; `sdem-bian` becomes their source (BP-11's generation retired) | P1 with `sdem-bian` |
+| 4a-3 | metamodel 0.20.0, no BIAN type in the core; frozen | `sdem model integrity --check` MET with `sdem-bian`; P1 |
+| 4a-4 | `sdem new` a core design unless `--with bian`; the no-BIAN gap count; the core suite without `sdem-bian` | both suites |
+
 ## 5. What does not change
 
 - **The metamodel's meaning.** Every type, link and rule BIAN brings is the same — it moves, it is not redesigned. A banking design with `sdem-bian` installed answers exactly as today (P1).

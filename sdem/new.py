@@ -286,6 +286,11 @@ def main(argv=None):
                 _p.activate_file(tf)
         else: _p.deactivate()
         core = getattr(a, 'core', False)
+        from . import parts as _parts
+        if not core and not _parts.usable():   # 0.22, R-D2: BIAN comes only from sdem-bian — without it, a new design is a core one
+            if a.bian: raise _parts.missing(f'--bian {a.bian}')
+            if a.source and _parts.uses_bian(a.source): raise _parts.missing(f'the baseline {a.example or a.source}')
+            a.no_bian = True
         if core:
             if a.bian or a.example: raise NewError('--core starts a design without BIAN: not with --bian or --example')
             from . import parts; parts._set(False, 'sdem new --core (BX-13)')

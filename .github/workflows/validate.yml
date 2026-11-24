@@ -11,6 +11,7 @@ jobs:
       matrix:
         part: [1, 2, 3, 4]
     env:
+      PYTHONPATH: ${{ github.workspace }}   # sdem-bian runs SDEM from this checkout (no install)
       PYTHONUTF8: '1'
     steps:
       - uses: actions/checkout@v4
@@ -19,6 +20,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: sdem-bian, the BIAN extension (0.22, R-D2 — a design that uses BIAN needs it; the banking examples do)
+        run: python -m pip install --no-deps "sdem-bian @ git+https://github.com/taumoeps/sdem-extensions@main#subdirectory=metamodel/bian"
       - name: Tests (no install)
         shell: bash
         run: |
@@ -37,6 +40,8 @@ jobs:
     strategy:
       matrix:
         python-version: ['3.10', '3.11', '3.12', '3.13']
+    env:
+      PYTHONPATH: ${{ github.workspace }}   # sdem-bian runs SDEM from this checkout (no install)
     steps:
       - uses: actions/checkout@v4
         with:
@@ -44,6 +49,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
+      - name: sdem-bian, the BIAN extension (0.22, R-D2 — a design that uses BIAN needs it; the banking examples do)
+        run: python -m pip install --no-deps "sdem-bian @ git+https://github.com/taumoeps/sdem-extensions@main#subdirectory=metamodel/bian"
       - name: The metamodel integrity design, met on the completed example
         run: python -m sdem model integrity --workspace examples/0.20/payment-initiation-v4/sdem --check
       - name: Validate (warnings are errors)
@@ -142,6 +149,8 @@ jobs:
       matrix:
         python-version: ['3.10', '3.11', '3.12', '3.13']
         part: [1, 2, 3, 4]
+    env:
+      PYTHONPATH: ${{ github.workspace }}   # sdem-bian runs SDEM from this checkout (no install)
     steps:
       - uses: actions/checkout@v4
         with:
@@ -149,6 +158,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
+      - name: sdem-bian, the BIAN extension (0.22, R-D2 — a design that uses BIAN needs it; the banking examples do)
+        run: python -m pip install --no-deps "sdem-bian @ git+https://github.com/taumoeps/sdem-extensions@main#subdirectory=metamodel/bian"
       - run: python ci/shard.py 4 ${{ matrix.part }}
   package:
     # SDEM as an organisation installs it: build the wheel, install it in a clean environment, run every journey from
@@ -169,6 +180,7 @@ jobs:
         run: |
           python -m venv /tmp/venv
           /tmp/venv/bin/pip install /tmp/dist/*.whl
+          /tmp/venv/bin/pip install --no-deps "sdem-bian @ git+https://github.com/taumoeps/sdem-extensions@main#subdirectory=metamodel/bian"   # R-D2: the example is a banking design
       - name: Run the journeys from outside the repository
         run: |
           cp -r examples/designs/confluence-folder-export /tmp/export

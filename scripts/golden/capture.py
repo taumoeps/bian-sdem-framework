@@ -20,7 +20,7 @@ def sdem(*args, cwd=None):
 
 
 def norm(x, tmp):
-    if isinstance(x, dict): return {k: ('<volatile>' if VOLATILE.match(k) else norm(v, tmp)) for k, v in x.items() if k != 'sdem'}
+    if isinstance(x, dict): return {k: ('<volatile>' if VOLATILE.match(k) else norm(v, tmp)) for k, v in x.items() if k not in ('sdem', 'phases_by')}   # phases_by: who gave BIAN's part of sdem aid (MX-54) — provenance, R-D11
     if isinstance(x, list): return [norm(v, tmp) for v in x]
     if isinstance(x, str):
         for p, tag in ((tmp, '<tmp>'), (ROOT, '<root>')):   # every spelling of the folder: as given, resolved, and with / (Windows)

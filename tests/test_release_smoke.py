@@ -26,6 +26,10 @@ class ReleaseSmokeTests(unittest.TestCase):
         bindir = cls.tmp / 'venv' / ('Scripts' if os.name == 'nt' else 'bin')
         cls.py = bindir / ('python.exe' if os.name == 'nt' else 'python')
         run([cls.py, '-m', 'pip', 'install', '-q', '--no-index', cls.wheel], cwd=cls.tmp)
+        # 0.22, R-D2: the bundled example is a banking design — BIAN comes only from sdem-bian: a local checkout beside SDEM's, or its repository
+        sib = ROOT.parent / 'sdem-extensions' / 'metamodel' / 'bian'
+        src = os.environ.get('SDEM_BIAN_SRC') or (str(sib) if (sib / 'pyproject.toml').is_file() else 'sdem-bian @ git+https://github.com/taumoeps/sdem-extensions@main#subdirectory=metamodel/bian')
+        run([cls.py, '-m', 'pip', 'install', '-q', '--no-deps', src], cwd=cls.tmp)
         cls.sd = bindir / ('sdem.exe' if os.name == 'nt' else 'sdem')
         cls.home = cls.tmp / 'my-sdem'; cls.home.mkdir()
         cls.env = {k: v for k, v in os.environ.items() if k != 'PYTHONPATH'}   # the installed package only — never the checkout

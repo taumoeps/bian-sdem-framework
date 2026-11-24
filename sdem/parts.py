@@ -14,10 +14,35 @@ A2_FILE, EXT_BIAN = 'a2-service-domain.json', 'ext:bian'
 def a2_code():
     """BIAN's layer code as read now (A2 where it is on; DL-06)."""
     return _L('bian')
-_STATE = {'bian': True, 'why': 'no workspace (BX-12)', 'migrated': False}
+_STATE = {'bian': None, 'why': 'no workspace (BX-12)', 'migrated': False}   # bian None: decided when first asked (whether sdem-bian is installed)
+
+LAYER_FILES = ('bian.json', A2_FILE)   # BIAN's layer file in the 0.20 form and in 0.19's
 
 
-def bian_on(): return _STATE['bian']
+def bian_on():
+    if _STATE['bian'] is None: _STATE['bian'] = usable()
+    return _STATE['bian']
+
+
+def usable():
+    """0.22, R-D2: is sdem-bian installed and usable here (it names its data and supports this SDEM)? BIAN comes only from it."""
+    p = package()
+    return bool(p and p.get('data'))
+
+
+def uses_bian(folder):
+    """R-D2: does the design in this folder use BIAN — a BIAN layer file (in either form), here or in its sdem/ folder?"""
+    f = Path(folder)
+    return any((d / n).is_file() for d in (f, f / 'sdem') for n in LAYER_FILES)
+
+
+def missing(what):
+    """R-D2: the refusal for a design that uses BIAN where sdem-bian is not installed (or not usable) — every command gives it."""
+    from .errors import SdemError
+    p = package() or {}
+    why = f" — the installed one is not usable: {p['refused']}" if p.get('refused') else ''
+    return SdemError('refused', f'{what} uses the BIAN extension — install sdem-bian{why}',
+                     hint='pip install sdem-bian (from the sdem-extensions repository); or start a core design: sdem new --core')
 
 
 def migrated():
@@ -60,14 +85,20 @@ def for_workspace(folder, merged=None):
     except (OSError, ValueError): raw = []
     from .identity import _ids_folder
     _set_form(_ids_folder(str(Path(folder).resolve())))   # DL-10…DL-12: the workspace's form, before anything is read
-    if included(merged) or EXT_BIAN in raw: _set(True, 'the profile includes ext:bian (BX-10)'); return
+    if included(merged) or EXT_BIAN in raw:
+        if not usable(): raise missing(f'{folder}: the design (its profile includes ext:bian)')
+        _set(True, 'the profile includes ext:bian (BX-10)'); return
     try: core = _jload(Path(folder) / 'workspace.json').get('core_only') is True
     except (OSError, ValueError): core = False
     if core: _set(False, 'a person chose a core-only design — sdem new --core or sdem profile exclude ext:bian (BX-13)'); return
-    _set(True, 'every workspace is a BIAN design unless a person chose otherwise, as in 0.19 — on until a person includes ext:bian (BX-11)')
+    if uses_bian(folder):
+        if not usable(): raise missing(f'{folder}: the design (it has a BIAN layer)')
+        _set(True, 'the design has a BIAN layer, and sdem-bian is installed (BX-11, R-D2)'); return
+    if usable(): _set(True, 'every workspace is a BIAN design where sdem-bian is installed, unless a person chose otherwise (BX-11)'); return
+    _set(False, 'a core design: no BIAN layer, its profile does not include ext:bian, and sdem-bian is not installed (0.22, R-D2)')
 
 
-def reset(): _set(True, 'no workspace (BX-12)'); _set_form(False)
+def reset(): _set(usable(), 'no workspace (BX-12)'); _set_form(False)
 
 
 def keep(rows, ends):
@@ -136,7 +167,7 @@ def package():
         d = Path(m.get('bian_data') or '')
         if not m.get('bian_data') or not all((d / f).is_file() for f in PKG_FILES.values()) or not (d / CATALOGUE).is_dir():
             res = {'refused': f"sdem-bian {m.get('version', '')} does not name a complete data folder — reinstall it"}
-        elif m.get('sdem') and not satisfies(version(), m['sdem']):
+        elif m.get('sdem') and version() != 'unknown' and not satisfies(version(), m['sdem']):   # a checkout run from elsewhere knows no version: not a reason to refuse
             res = {'refused': f"sdem-bian {m.get('version', '')} supports SDEM {m['sdem']}; this is SDEM {version()}"}
         else:
             res = {'version': m.get('version', ''), 'data': d, 'manifest': m,

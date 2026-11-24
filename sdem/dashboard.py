@@ -84,8 +84,8 @@ def collect(estate, proposals=None, projection=None, catalogue=None, graph=None,
     # review: what the rules engine proposes now (approved links excluded), or a given proposals file
     if proposals: props = _j(proposals).get('mappings', []); props_src = str(proposals)
     else:
-        from .rules_engine import RulesEngine
-        props = RulesEngine().infer(reader, {'id': 'RUN'})['proposals']; props_src = 'the rules engine, run on this workspace when the page was generated'   # the same ids as sdem link (O6)
+        from .inference import propose
+        props = propose(reader, estate)[1]['proposals']; props_src = 'the rules engine, run on this workspace when the page was generated'   # as sdem link proposes, the same ids (O6, MX-53)
     review = []
     for m in sorted(props, key=lambda m: (m.get('confidence', 0), m['relationship'], m['source']['id'])):
         if m.get('status', 'proposed') != 'proposed': continue

@@ -2,7 +2,7 @@
 
 The scenario the fourth new-architect walkthrough could not complete: an onboarded design, a BIAN layer from the base,
 and a person who knows which application realises a BIAN service domain — ending in a trace from capability to technology."""
-import json, shutil, subprocess, sys, tempfile, unittest
+import json, os, shutil, subprocess, sys, tempfile, unittest
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from forms import lf   # noqa: E402 — a layer's file in either form
@@ -15,7 +15,7 @@ class BianUpdateAndConnectTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.base = Path(tempfile.mkdtemp())
-        run = lambda *a: subprocess.run([sys.executable, '-m', 'sdem', *map(str, a)], cwd=cls.base, capture_output=True, text=True, env={'PYTHONPATH': str(ROOT), 'PATH': '/usr/bin:/bin'})
+        run = lambda *a: subprocess.run([sys.executable, '-m', 'sdem', *map(str, a)], cwd=cls.base, capture_output=True, text=True, env={'PYTHONPATH': str(ROOT), 'PATH': os.pathsep.join(['/usr/bin', '/bin', *[p for p in os.environ.get('PATH', '').split(os.pathsep) if p and shutil.which('sdem-bian', path=p)]])})
         shutil.copytree(ROOT / 'examples' / 'designs' / 'confluence-folder-export', cls.base / 'export')
         for a in (('bian', 'import', '--base', '--only', 'Payment Order Initiation', 'Payment Rail', '-o', 'bian/a2-service-domain.json'),
                   ('transform', 'run', 'export', '-o', 'history', '--ocr', 'off'),
@@ -34,7 +34,7 @@ class BianUpdateAndConnectTests(unittest.TestCase):
     def tearDown(self): shutil.rmtree(self.tmp, ignore_errors=True)
 
     def sdem(self, *a):
-        r = subprocess.run([sys.executable, '-m', 'sdem', *map(str, a)], cwd=self.w, capture_output=True, text=True, env={'PYTHONPATH': str(ROOT), 'PATH': '/usr/bin:/bin'})
+        r = subprocess.run([sys.executable, '-m', 'sdem', *map(str, a)], cwd=self.w, capture_output=True, text=True, env={'PYTHONPATH': str(ROOT), 'PATH': os.pathsep.join(['/usr/bin', '/bin', *[p for p in os.environ.get('PATH', '').split(os.pathsep) if p and shutil.which('sdem-bian', path=p)]])})
         return r.returncode, r.stdout + r.stderr
 
     def reg(self): return json.loads((self.w / 'workspaces' / 'payments' / 'mappings.json').read_text())

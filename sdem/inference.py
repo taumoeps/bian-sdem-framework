@@ -85,6 +85,57 @@ def _rules_engine():
 ENGINES = {'baseline': NameOverlapBaseline, 'rules': _rules_engine}
 
 
+def propose(reader, ext_workspace=None, engine='rules', threshold=0.2):
+    """What `sdem link` proposes — (engine, result, extension report): the rules engine's proposals, with what the workspace's extensions
+    propose (MX-51). Where an installed extension provides a built-in one's steps (BIAN, MX-53) the engine runs the core's, the extension
+    the rest, and every proposal and candidate is numbered in the whole run's order, as the extension ran it with the core's — the same ids
+    the engine alone gave (P-RUN-…). Every command that lists proposals goes through here (sdem link, the dashboard), so their ids agree."""
+    core_only = False
+    if ext_workspace and engine == 'rules':
+        from sdem.ext_infer import provides_builtin
+        core_only = provides_builtin('link')
+    eng = ENGINES[engine](threshold) if engine == 'baseline' else (RE_CORE() if core_only else ENGINES[engine]())
+    result = eng.infer(reader, {'id': 'RUN'})
+    report = []
+    if ext_workspace:
+        import datetime
+        from sdem.ext_infer import for_link
+        props, report = for_link(ext_workspace, datetime.datetime.now(datetime.timezone.utc).replace(microsecond=0).isoformat())
+        have = {_key(p) for p in result['proposals']}
+        theirs = [p for p in props if _key(p) not in have]
+        ctheirs = [x for e in report for x in e.pop('_candidates', [])]
+        for e in report:
+            if e.get('_design'): result['design'] = list(result.get('design') or []) + e['_design']
+            e.pop('_design', None)
+        order = next((e['_order'] for e in report if e.get('_order')), None)
+        corder = next((e['_corder'] for e in report if e.get('_corder')), None)
+        for e in report: e.pop('_order', None); e.pop('_corder', None)
+        result['proposals'] = _numbered(result['proposals'], theirs, order, 'RUN-X')
+        result['candidates'] = _numbered(result.get('candidates', []), ctheirs, corder, 'C-RUN-X')
+    return eng, result, report
+
+
+def _key(p): return (p['source']['id'], p['relationship'], p['target']['id'])
+
+
+def _numbered(own, theirs, order, prefix):
+    """MX-53: the engine's items (`own`) with the extensions' (`theirs`). With the whole run's order (an extension that ran the core's
+    rules with its own): every item it holds in that order, with its id; the rest after. Without: the engine's as numbered, then theirs.
+    What no order holds is numbered prefix### after the items before it."""
+    if order:
+        pos = {(s, r, t): (i, pid) for i, (s, r, t, pid) in enumerate(order)}
+        items = own + theirs
+        out = [{**p, 'mapping_id': pos[_key(p)][1]} if 'mapping_id' in p else p for p in sorted((p for p in items if _key(p) in pos), key=lambda p: pos[_key(p)][0])]
+        rest = [p for p in items if _key(p) not in pos]
+    else:
+        out, rest = list(own), list(theirs)
+    n = len(out)
+    for p in rest:
+        n += 1
+        out.append({**p, 'mapping_id': f'{prefix}{n:03d}'} if 'mapping_id' in p or prefix == 'RUN-X' else p)
+    return out
+
+
 def RE_CORE():
     from sdem.rules_engine import RulesEngine
     return RulesEngine(core_only=True)
@@ -105,30 +156,13 @@ def main(argv=None):
         reader = GraphReader.from_store(args.graph) if args.graph else GraphReader.from_exports(args.paths)
     except (OSError, ValueError, StoreError) as exc:
         print(f'ERROR: {exc}', file=sys.stderr); return 2
-    core_only = False
-    if args.ext_workspace and args.engine == 'rules':   # MX-53: an installed extension provides a built-in one's steps (BIAN) — the engine runs the core's
-        from sdem.ext_infer import provides_builtin
-        core_only = provides_builtin('link')
-    engine = ENGINES[args.engine](args.threshold) if args.engine == 'baseline' else (RE_CORE() if core_only else ENGINES[args.engine]())
-    result = engine.infer(reader, {'id': 'RUN'})
+    engine, result, report = propose(reader, args.ext_workspace, args.engine, args.threshold)
     if result.get('left_out_rejected'):   # RJ-03: said, not silently dropped
         print(f"{len(result['left_out_rejected'])} link(s) a person rejected were not proposed again (RJ-03): " + '; '.join(f'{a} {r} {b}' for a, r, b in result['left_out_rejected'][:5]), file=sys.stderr)
-    if args.ext_workspace:   # MX-51: what the workspace's extensions propose, checked as SDEM's own and listed with them
-        import datetime
-        from sdem.ext_infer import for_link
-        props, report = for_link(args.ext_workspace, datetime.datetime.now(datetime.timezone.utc).replace(microsecond=0).isoformat())
-        have = {(p['source']['id'], p['relationship'], p['target']['id']) for p in result['proposals']}
-        n = len(result['proposals'])
-        for p in props:
-            if (p['source']['id'], p['relationship'], p['target']['id']) in have: continue
-            n += 1; result['proposals'].append({**p, 'mapping_id': f'RUN-X{n:03d}'})
-        c = len(result.get('candidates', []))
-        for e in report:
-            for x in e.pop('_candidates', []): c += 1; result.setdefault('candidates', []).append({**x, 'mapping_id': f'C-RUN-X{c:03d}'} if 'mapping_id' in x else x)
-            if e.get('_design'): result['design'] = list(result.get('design') or []) + e.pop('_design')
-            e.pop('_design', None)
-        for e in report:
-            print(f"extension {e['extension']} {e.get('version') or ''}: {e['proposals']} proposal(s)" + (f"; refused {len(e['refused'])}: " + '; '.join(f"{x['item']} — {x['why']}" for x in e['refused'][:3]) if e['refused'] else ''), file=sys.stderr)
+    from sdem import parts
+    for e in report:
+        if e['extension'] == parts.EXT_BIAN.split(':', 1)[1] and not e['refused']: continue   # BIAN's are part of the list, as SDEM's own were (MX-53)
+        print(f"extension {e['extension']} {e.get('version') or ''}: {e['proposals']} proposal(s)" + (f"; refused {len(e['refused'])}: " + '; '.join(f"{x['item']} — {x['why']}" for x in e['refused'][:3]) if e['refused'] else ''), file=sys.stderr)
     head = {'registry_version': load_registry()['$schema_version'], 'metamodel_version': reader.mm.version, 'engine': engine.name}
     print(json.dumps({**head, 'mappings': result['proposals']}, indent=2, ensure_ascii=False))
     if args.out:

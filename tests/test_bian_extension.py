@@ -93,7 +93,7 @@ class OnAndOff(unittest.TestCase):
 
     def test_sdem_extensions_names_it_and_says_why(self):   # BX-01, BX-11
         d = json.loads(sdem('extensions', '--workspace', ROOT / 'examples' / 'payment-initiation-v3' / 'sdem', '--json'))
-        b = next(x for x in d['built_in'] if x['name'] == 'bian')
+        b = next(x for x in d['items'] + d['built_in'] if x['name'] == 'bian')   # BX-15: the installed sdem-bian (built in only before 0.22)
         self.assertTrue(b['on']); self.assertIn('sdem profile include ext:bian', b['make_explicit'])
 
     def test_switched_on_and_off_by_a_person(self):   # BX-10, BX-14

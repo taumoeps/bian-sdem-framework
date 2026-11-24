@@ -1,7 +1,8 @@
 """MX-54 (docs/design/sdem-metamodel-extensions-spec.md §16; the 0.22 plan, step 3c): BIAN's part of `sdem aid`, given by the extension that
 provides BIAN, at its phases. A made-up `sdem-bian` answers each phase through SDEM's own copy of BIAN's part (sdem/aid_bian.py, as the real
 sdem-bian carries it, BP-11): `sdem aid` asks it — never imports it (R-D5) — infers exactly what it infers without it, and says who gave
-BIAN's part (`phases_by`); one that fails stops the run with nothing written. The state crosses in ids, so neither side's numbering
+BIAN's part (`phases_by`); one that fails stops the run with nothing written. Compared with the real sdem-bian (R-D2: since 0.22 a banking
+design needs it). The state crosses in ids, so neither side's numbering
 matters (to_wire). The proof on every example is sdem-bian's tests/test_infer_aid.py. Synthetic data only."""
 import json, os, shutil, subprocess, sys, tempfile, unittest
 from pathlib import Path
@@ -34,7 +35,9 @@ sys.exit(2)
 
 
 def install(folder):
-    body = f'MANIFEST = {MANIFEST!r}\nROOT = {str(ROOT)!r}\n' + PROGRAM
+    real = json.loads(subprocess.run([shutil.which('sdem-bian'), '--manifest'], capture_output=True, text=True, encoding='utf-8').stdout)
+    man = {**MANIFEST, **{k: real[k] for k in ('bian_data', 'pack', 'api', 'commands') if k in real}}   # BIAN's data from the real one (R-D2): only its part of sdem aid is made up
+    body = f'MANIFEST = {man!r}\nROOT = {str(ROOT)!r}\n' + PROGRAM
     if os.name == 'nt':
         (folder / 'sdem-bian.py').write_text(body)
         (folder / 'sdem-bian.cmd').write_text(f'@"{sys.executable}" "%~dp0sdem-bian.py" %*\r\n')
@@ -42,6 +45,11 @@ def install(folder):
         prog = folder / 'sdem-bian'; prog.write_text(f'#!{sys.executable}\n' + body); prog.chmod(0o755)
 
 
+def _real_bian():
+    return any((Path(p) / n).exists() for p in os.environ.get('PATH', '').split(os.pathsep) if p for n in ('sdem-bian', 'sdem-bian.exe', 'sdem-bian.cmd'))
+
+
+@unittest.skipUnless(_real_bian(), 'needs sdem-bian installed (R-D2): the made-up one is compared with it')
 class AidPhases(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -49,7 +57,7 @@ class AidPhases(unittest.TestCase):
         cls.log = t / 'phases.log'
         base = {**os.environ, 'PYTHONPATH': str(ROOT), 'PYTHONIOENCODING': 'utf-8', 'FAKE_BIAN_LOG': str(cls.log)}
         path = [p for p in os.environ.get('PATH', '').split(os.pathsep) if not (Path(p) / 'sdem-bian').exists() and not (Path(p) / 'sdem-bian.exe').exists()]
-        cls.own_env = {**base, 'PATH': os.pathsep.join(path)}   # no sdem-bian at all: SDEM's own copy
+        cls.own_env = {**base, 'PATH': os.environ.get('PATH', '')}   # the real sdem-bian, installed (R-D2: a banking design needs it)
         cls.ext_env = {**base, 'PATH': os.pathsep.join([str(t / 'bin'), *path])}
         cls.sdem(cls.own_env, 'new', '--workspace', t / 'own', '--person', 'steven', '--example', 'payment-initiation')
         shutil.copytree(t / 'own', t / 'ext'); shutil.copytree(t / 'own', t / 'broken')
@@ -71,7 +79,7 @@ class AidPhases(unittest.TestCase):
         self.assertEqual(asked[0], 'projection')
         self.assertEqual(asked, ['projection', 'existing', 'information', 'access', 'direct'])   # in sdem aid's order (no pattern fits this design: no patterns phase)
         self.assertEqual(self.ext['phases_by'], 'bian 9.9.9')
-        self.assertNotIn('phases_by', self.own)   # SDEM's own copy: nobody else to name
+        self.assertTrue(self.own['phases_by'].startswith('bian '))   # the real sdem-bian named too
 
     def test_mx54_it_infers_exactly_what_sdems_own_copy_infers(self):
         for k in ('added', 'proposed_connections', 'zone_placements', 'a4_connections', 'draft', 'projection_ends', 'tables_not_inferred'):

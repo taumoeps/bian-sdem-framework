@@ -150,6 +150,9 @@ def contribute(step, workspace, docs, known, *, run, person, now, rejected=(), a
             ok = lambda c: isinstance(c, dict) and (c.get('source') or {}).get('id') in known and (c.get('target') or {}).get('id') in known
             entry['_candidates'] = [{**c, 'created_by': who} for c in (ans.get('candidates') or []) if ok(c)]
             entry['_design'] = [d for d in (ans.get('design') or []) if isinstance(d, dict) and d.get('level')]
+            for k, f in (('_order', 'order'), ('_corder', 'candidate_order')):   # MX-53: the whole run's sequence, from an extension that ran the core's rules too
+                o = ans.get(f)
+                if isinstance(o, list) and all(isinstance(x, list) and len(x) == 4 for x in o): entry[k] = [tuple(map(str, x)) for x in o]
     return added, proposals, report
 
 
