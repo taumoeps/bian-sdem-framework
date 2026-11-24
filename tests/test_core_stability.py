@@ -11,7 +11,7 @@ import core_stability as C   # noqa: E402
 
 ENV = {**os.environ, 'PYTHONPATH': str(ROOT), 'PYTHONIOENCODING': 'utf-8'}
 ME = 'steven'
-SECURITY = '\nsecurity ' in subprocess.run([sys.executable, '-m', 'sdem', 'extensions'], capture_output=True, text=True, env=ENV, cwd=ROOT).stdout.replace('  security', '\nsecurity ')   # sdem-security installed beside SDEM
+SECURITY = '\nsecurity ' in subprocess.run([sys.executable, '-m', 'sdem', 'extensions'], capture_output=True, text=True, encoding='utf-8', errors='replace', env=ENV, cwd=ROOT).stdout.replace('  security', '\nsecurity ')   # sdem-security installed beside SDEM
 
 
 def sdem(*args):
