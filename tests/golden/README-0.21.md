@@ -6,6 +6,7 @@
 |---|---|
 | `0.21-form-0.19/` | the examples in SDEM 0.19's form (`SDEM_FORM=0.19`) |
 | `0.21-link-scratch/` | `sdem link` on every 0.20 example with its approved links removed, so the engine proposes everything again (`scripts/golden/link_scratch.py`) — the 243 proposals step 3b is proved against; the recorded `link` answers above propose nothing, every link of those designs being approved already |
+| `0.21-aid-scratch/` | `sdem aid` on every 0.20 example in two scenarios — (a) business only, (b) without BIAN (`scripts/golden/aid_scratch.py`): the run record, every layer file and the proposals, compressed — what step 3c is proved against |
 | `0.21-form-0.20/` | the examples in SDEM 0.20's form (`SDEM_GOLDEN_P2=1`); the full trace kept compressed (`trace__pi-A1.json.gz`) |
 
 `0.19/` beside them is 0.20's own baseline (BX-30) and is unchanged.
