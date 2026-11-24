@@ -58,8 +58,13 @@ def _idx(docs):
     return every, rels
 
 
-def propose_direct(docs, mappings, mm):
-    """AID-L01…L05: [(source, relationship, target, rule, why, confidence)]."""
+DIRECT_ORDER = ('AID-L01', 'AID-L02', 'AID-L03', 'AID-L04', 'AID-L05', 'AID-L06', 'AID-I05', 'AID-I06')   # the order propose_direct's rules run in
+BIAN_DIRECT = {'AID-L01', 'AID-L02', 'AID-L03', 'AID-L04', 'AID-L05', 'AID-I05'}   # 0.22 step 3c: those that go through BIAN's service domains and objects
+
+
+def propose_direct(docs, mappings, mm, only=None):
+    """AID-L01…L05: [(source, relationship, target, rule, why, confidence)]. `only`: keep only these rules' results — every rule still runs and
+    still counts what it found as present, so a filtered run leaves out exactly what the whole run does (0.22 step 3c)."""
     every, rels = _idx(docs)
     live = [m for m in mappings if m.get('status') in ('approved', 'proposed')]
     have = {(m['source']['id'], m['relationship'], m['target']['id']) for m in mappings if m.get('status') != 'rejected'}
@@ -68,7 +73,8 @@ def propose_direct(docs, mappings, mm):
     out = []
     def add(s, rel, t, rule, why, conf):
         if (s, rel, t) not in have:
-            have.add((s, rel, t)); out.append((s, rel, t, rule, why, conf))
+            have.add((s, rel, t))
+            if only is None or rule in only: out.append((s, rel, t, rule, why, conf))
     parts = {}   # a component and its parts (composition, aggregation)
     for s, k, t in rels:
         if k in ('composition', 'aggregation'): parts.setdefault(s, set()).add(t)

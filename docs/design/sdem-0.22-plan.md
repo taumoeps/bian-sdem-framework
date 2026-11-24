@@ -78,6 +78,23 @@ Larger than any 0.20 step: about 280 code locations, 12 examples and the tests t
 | **3a** ✅ (0.20) | BIAN's 17 commands were already `sdem-bian`'s own (BP-03, ST-22): its copy is identical to SDEM's apart from imports, held so by its tests, and `sdem bian …` runs it when installed | checked 2026-11-24 |
 | **3b** ✅ 2026-11-24 | `sdem link`: the rules engine split — the engine and the core's 23 rules (`rules_engine.CoreRun`) apart from BIAN's 46 (`rules_bian.BianSteps`, now also `sdem-bian`'s, generated and held identical, BP-11); `sdem-bian infer --step link` runs SDEM's engine through `sdem.api` with BIAN's steps and answers with BIAN's proposals, candidates and target design whole (MX-53); SDEM runs the core's rules only when it does | **P1 (R-D11)**: 64 golden answers byte-identical after the split; `sdem link` from scratch on 13 examples — 243 proposals — identical except provenance with `sdem-bian` 1.1.0 installed, 160 of them made by it (`tests/golden/0.21-link-scratch`, held by sdem-bian's `test_infer_link.py`) |
 
+### Step 3c — `sdem aid`: a phased contract (the owner, 2026-11-24: "A")
+
+Unlike the rules engine, AID's core steps build on what BIAN infers in the same run — zones and connections are proposed for the deployments BIAN's container pattern just inferred, and every proposal is numbered in one sequence. So BIAN cannot answer once, at the end: SDEM calls it at the **four points** where AID goes through BIAN today, in the same order, with the state so far, and keeps everything between them (marking, naming, zones, connections, numbering) its own.
+
+| Phase | AID's rules | What BIAN gives back |
+|---|---|---|
+| **projection** | F1…F3, R1…R3, M (`aid.project` with BIAN's catalogue) | the projection package: records and links by layer, links between layers, its notes |
+| **patterns** | D05 | the BIAN domains a pattern names, with their parts and the uses it proposes |
+| **information** | K02, I01…I04, I07 | existing tables for BIAN objects, new entities and their fields, access links |
+| **direct** | L01…L05, I05 (BIAN's rules of `propose_direct`), K01 (`propose_fields`) | its links, which SDEM merges with the core's L06, I06 in the rules' order |
+
+| Stage | What | Proof |
+|---|---|---|
+| **1** ✅ | `aid fill` reaches BIAN only through the four phases (`sdem/aid_bian.py`); `propose_direct` runs per rule set and is merged in its rules' order | the 23 AID runs from scratch (`tests/golden/0.21-aid-scratch`) byte-identical |
+| 1b | the code behind the phases moves into `aid_bian.py` (the projection steps out of `aid.py`; `pattern_domains`, `match_existing`, `propose_information`, `propose_access`, `propose_fields` and BIAN's sections of `propose_direct`); reading, checking and tracing a projection package stay SDEM's | byte-identical again |
+| 2 | the phased contract (MX-54): `sdem-bian infer --step aid --phase <name> --state FILE`, the state as JSON; `aid_bian.py` becomes sdem-bian's (generated, BP-11); SDEM's copy steps aside when sdem-bian provides it | identical except provenance (R-D11), the 23 runs |
+
 **A correction to §3 (R-D5).** The plan said EXT-02 lets an extension use SDEM *only* through its commands and files. EXT-02 was amended in 0.20 (ST-21, approved): an extension may also use SDEM's published Python interface `sdem.api`, as `sdem-bian` already does. R-D5 stands as approved — SDEM *runs* an extension and never imports its code; inside its own program an extension may use `sdem.api`.
 
 **Found and fixed in step 2:** `sdem aid confirm|reject` failed on any 0.20 design with approved data-access links (the Payment example): it checked against the registry as stored, not as AID's 0.19 view reads it (approved ACCESSED_BY as links inside the layer, DL-12) — it now checks as `sdem aid` itself does.

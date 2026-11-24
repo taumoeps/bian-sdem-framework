@@ -71,6 +71,12 @@ def _ext_docs(ws, now=None):
     return out
 
 
+def _bian():
+    """0.22 step 3c: BIAN's part of AID — SDEM's own copy (sdem/aid_bian.py) until it moves to the sdem-bian extension."""
+    from . import aid_bian
+    return aid_bian
+
+
 def _workspace(ws):
     ws = Path(ws)
     if not (ws / 'mappings.json').exists(): raise AidError(f'{ws}: no workspace here — start one with sdem new --workspace {ws} --person <you>')
@@ -152,7 +158,6 @@ def _in_view(fn):
 @_in_view
 def fill(workspace, person, dry_run=False, now=None, complete_draft=False):
     """Infer what the workspace is missing into its layer files (AID-W01…W04). Returns the run record; nothing written when refused."""
-    from .aid import project
     from .connect import estate_errors
     _person(person)
     ws, docs, registry = _workspace(workspace)
@@ -163,9 +168,8 @@ def fill(workspace, person, dry_run=False, now=None, complete_draft=False):
                                                           and not (isinstance(r.get('inferred'), dict) and r['inferred'].get('rule', '').startswith('AID-D') and r['inferred'].get('status') != 'confirmed')]}   # … nor from a link it inferred to complete the draft
     have = {lvl: e for lvl, d in docs.items() if lvl != _L('bian') for e in [evidence(d)] if e.get('instances')}
     if not have: raise AidError(f'{ws}: nothing to infer from yet — write what you have first: any of {", ".join(f for l, f in DATASETS.items() if l != _L("bian"))}')
-    from .new import catalogue as workspace_catalogue
-    catalogue = workspace_catalogue(ws)   # WS-01: the workspace's own A2 plus the BIAN catalogue it uses — read, not copied
-    pkg = project(have, catalogue, registry, either=True)   # AID-M02: for a person to review, keep what either side supports
+    B = _bian()   # 0.22 step 3c: BIAN's part of AID, at its four points (projection, patterns, information, direct)
+    pkg, catalogue = B.projection(ws, have, registry)
     runs = ws / FOLDER
     n = 1 + max([int(m.group(1)) for p in (runs.glob('AID-*.json') if runs.exists() else []) for m in [re.match(r'AID-(\d+)\.json$', p.name)] if m] or [0])
     run = f'AID-{n:03d}'
@@ -228,9 +232,8 @@ def fill(workspace, person, dry_run=False, now=None, complete_draft=False):
         if hit: consulted.append({'id': st['pattern']['id'], 'title': st['pattern']['title'], 'included': st.get('included', True), 'applies_to': hit[0],
                                   **({'include': st['file']} if st.get('included') is False else {})})
     if structs:   # AID-D05: a BIAN domain a pattern names and the design lacks — from the catalogue, marked inferred
-        from .aid_complete import pattern_domains
         earlier_maps = [(m['source']['id'], m['relationship'], m['target']['id']) for f in (runs.glob('AID-*-proposals.json') if runs.exists() else []) for m in _j(f).get('mappings', [])]
-        drecs, dlinks, domain_uses, domains_added = pattern_domains(after, catalogue, live_maps + earlier_maps, _MMd.load(), structs, dmark, rejected)
+        drecs, dlinks, domain_uses, domains_added = B.pattern_domains(after, catalogue, live_maps + earlier_maps, _MMd.load(), structs, dmark, rejected)
         if drecs:
             a2doc = after.setdefault(_L('bian'), {'level': _L('bian'), 'model_id': f'{stem}-A2', 'model_version': now[:10], 'metamodel_version': _MMd.load().version,
                                             'source_system': 'SDEM-AID', 'instances': [], 'relationships': []})
@@ -266,27 +269,24 @@ def fill(workspace, person, dry_run=False, now=None, complete_draft=False):
                           'baseline_id': run, 'created_by': 'sdem aid'})
     not_stored = []
     if after.get(_L('bian')):   # AID-I01…I04 (metamodel 0.15.0, IM-10): a data entity with its fields for each typed business object — inferred, proposed
-        from .aid_info import propose_information
         mark = lambda rule, why, frm: {'by': 'sdem aid', 'run': run, 'at': now, 'requested_by': person.strip(), 'step': 'information', 'rule': rule,
                                        'source': 'docs/design/sdem-full-design-metamodel-design.md IM-10', 'reasoning': why, 'confidence': 'low',
                                        'evidence_class': 'attribute_join', 'from': frm}
         a3doc = after.setdefault(_L('application'), {'level': _L('application'), 'model_id': f'{stem}-A3', 'model_version': now[:10], 'metamodel_version': after[_L('bian')].get('metamodel_version'),
                                          'source_system': 'SDEM-AID', 'instances': [], 'relationships': []})
-        from .aid_links import match_existing   # AID-K02 first: an object an existing table stores is not given a new one
-        from .metamodel import Metamodel as _MMk
-        for src, rel, tgt, rule, why, conf in match_existing(after, registry.get('mappings', []) + earlier + proposals, _MMk.load()):
+        from .metamodel import Metamodel as _MMk   # AID-K02 first: an object an existing table stores is not given a new one
+        for src, rel, tgt, rule, why, conf in B.match_existing(after, registry.get('mappings', []) + earlier + proposals, _MMk.load()):
             if src in by_id and tgt in by_id and (src, rel, tgt) not in approved:
                 proposals.append({'mapping_id': f'{run}-P{len(proposals) + 1:03d}', 'source': end({'id': src, 'type': by_id[src]['type'], 'version': by_id[src]['version']}), 'relationship': rel,
                                   'target': {'id': tgt, 'type': by_id[tgt]['type'], 'version': by_id[tgt]['version']}, 'status': 'proposed', 'confidence': conf,
                                   'evidence': [f'engine_rationale:{run} {rule}'], 'rationale': f'Inferred by sdem aid ({rule}): {why}', 'baseline_id': run, 'created_by': 'sdem aid'})
-        iinst, irels, ilinks, not_stored = propose_information(after[_L('bian')], a3doc, registry.get('mappings', []) + earlier + proposals, mark, rejected, lambda r: is_inferred(r, confirmed=False))
+        iinst, irels, ilinks, not_stored = B.propose_information(after[_L('bian')], a3doc, registry.get('mappings', []) + earlier + proposals, mark, rejected, lambda r: is_inferred(r, confirmed=False))
         for rec in iinst:
             if rec['id'] in present: continue
             a3doc['instances'].append(rec); present.add(rec['id']); by_id[rec['id']] = rec; added.setdefault(_L('application'), []).append(rec['id'])
         a3doc.setdefault('relationships', []).extend(r for r in irels if r['source'] in present and r['target'] in present)
-        from .aid_info import propose_access   # AID-I07: a table nobody accesses, accessed by the component realising its object's domain (inferred)
-        from .metamodel import Metamodel as _MMi
-        acc = propose_access(after, registry.get('mappings', []) + proposals, _MMi.load(), mark)
+        from .metamodel import Metamodel as _MMi   # AID-I07: a table nobody accesses, accessed by the component realising its object's domain (inferred)
+        acc = B.propose_access(after, registry.get('mappings', []) + proposals, _MMi.load(), mark)
         if acc:
             a3doc['relationships'].extend(acc); added.setdefault(_L('application'), [])
         for src, rel, tgt, why in ilinks:
@@ -315,11 +315,15 @@ def fill(workspace, person, dry_run=False, now=None, complete_draft=False):
                 after[_L('technology')].setdefault('relationships', []).extend(ends); placements += len(ends); connections += len(ends)
                 if _L('technology') not in added: added[_L('technology')] = []
     if after.get(_L('business')) or after.get(_L('bian')):   # AID-L01…L05, AID-K01 (the owner's approvals 2, 2b, 2026-11-16): direct A1->A3 links and field matches, proposed
-        from .aid_links import propose_direct, propose_fields
+        from .aid_links import propose_direct, DIRECT_ORDER, BIAN_DIRECT
         from .metamodel import Metamodel as _MMl
         _mml = _MMl.load()
-        for fn in (propose_direct, propose_fields):
-            for src, rel, tgt, rule, why, conf in fn(after, registry.get('mappings', []) + proposals, _mml):
+        maps_ = registry.get('mappings', []) + proposals
+        bdirect, bfields = B.direct(after, maps_, _mml)   # BIAN's rules of AID-L01…L05, I05, and K01
+        core = propose_direct(after, maps_, _mml, only=set(DIRECT_ORDER) - BIAN_DIRECT)   # the core's: AID-L06, I06
+        merged = sorted(bdirect + core, key=lambda x: DIRECT_ORDER.index(x[3]))   # stable: each rule's own order, the rules in the order they always ran
+        for found in (merged, bfields):
+            for src, rel, tgt, rule, why, conf in found:
                 if src not in by_id or tgt not in by_id or (src, rel, tgt) in approved: continue
                 s_, t_ = by_id[src], by_id[tgt]
                 proposals.append({'mapping_id': f'{run}-P{len(proposals) + 1:03d}', 'source': end({'id': src, 'type': s_['type'], 'version': s_['version']}), 'relationship': rel,
