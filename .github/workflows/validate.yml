@@ -106,6 +106,8 @@ jobs:
           python -m sdem.validate --json $(ls examples/*/mappings.json | grep -v '/payment-initiation-v2/')
           python -m sdem.validate --json examples/payment-initiation-v2/mappings.json
       - name: Diagrams and the relationships document are generated from the JSON
+        env:
+          SDEM_CORE_DOCS: '1'   # BX-16: SDEM's own documents are its core's — the same with sdem-bian installed (as sdem model check runs them)
         run: |
           python -m sdem.diagram --check
           python -m sdem.relationships --check

@@ -49,7 +49,8 @@ class ReleaseSmokeTests(unittest.TestCase):
         self.assertIn('usage: sdem', self.sdem('--help')[0].stdout)
         _, d = self.sdem('commands', '--json'); self.assertIn('requirements evaluate', d['commands']); self.assertIn('governance verify', d['commands'])
         r = run([self.py, '-c', 'import sdem, pathlib; d = pathlib.Path(sdem.__file__).parent / "data"; print(sorted(p.name for p in d.iterdir() if p.is_dir()))'], cwd=self.home, env=self.env)
-        for res in ('schema', 'metamodel', 'bian', 'copilot', 'agents', 'examples'): self.assertIn(res, r.stdout)
+        for res in ('schema', 'metamodel', 'copilot', 'agents', 'examples'): self.assertIn(res, r.stdout)
+        self.assertNotIn("'bian'", r.stdout)   # BX-15: BIAN ships only with sdem-bian
         self.assertNotIn(str(ROOT), run([self.py, '-c', 'import sdem; print(sdem.__file__)'], cwd=self.home, env=self.env).stdout)   # not the checkout
 
     def test_2_a_new_workspace_is_empty_valid_and_recorded(self):
