@@ -57,14 +57,15 @@ def base_layer():
     return dataset, f"the base BIAN {dataset['model_version']} that ships with SDEM — all {n} service domains"
 
 
-EXAMPLES = {'payment-initiation': 'payment_initiation'}   # synthetic examples that ship with SDEM (made-up data)
+EXAMPLES = {'library-holds': 'library_holds', 'payment-initiation': 'payment_initiation'}   # synthetic examples that ship with SDEM (made-up data) — library-holds is a core design (0.22), payment-initiation a BIAN one
+CHECKOUT_DIR = {'library-holds': '0.20/library-holds'}   # where an example lives in a checkout, when not examples/<name>
 
 
 def example_dir(name):
     """A bundled example's folder: examples/<name> in a checkout, sdem/data/examples/<package> when installed."""
     from .paths import CHECKOUT, DATA_ROOT
     import os
-    d = Path(os.environ['SDEM_EXAMPLES']) / name if os.environ.get('SDEM_EXAMPLES') else DATA_ROOT / 'examples' / (name if CHECKOUT else EXAMPLES[name])   # SDEM_EXAMPLES: another folder of examples
+    d = Path(os.environ['SDEM_EXAMPLES']) / name if os.environ.get('SDEM_EXAMPLES') else DATA_ROOT / 'examples' / (CHECKOUT_DIR.get(name, name) if CHECKOUT else EXAMPLES[name])   # SDEM_EXAMPLES: another folder of examples
     if not any((d / f).exists() for f in ('a1-business.json', 'business.json')): raise NewError(f'the example {name} is not installed with this SDEM — reinstall it')
     return d
 

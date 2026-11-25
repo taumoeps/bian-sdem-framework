@@ -49,6 +49,10 @@ This reverses **BP-D3** (the built-in BIAN as a fallback for all of 0.20).
 | **6** | **DESNRE (R-D9)** — publisher and bundle with `sdem-bian`; the Payment example republished | the site's integrity test (`tests/integrity-views.test.mjs`) green; live check in a fresh browser |
 | **7** | **Release** — SDEM 0.22.0, `sdem-bian` 1.0.0, GitHub releases with the migration note: *a design that uses BIAN needs `pip install sdem-bian` after upgrading* | `sdem upgrade check` on a 0.21 banking workspace names the step; CI green on both repositories |
 
+### Step 5 — R-D6 amended (the owner, 2026-11-25: "Stay in SDEM")
+
+The banking examples move to `sdem-bian` (R-D6); **SDEM's tests that use them stay in SDEM**, beside the code they test, find the examples through the installed `sdem-bian`, and skip without it — SDEM's CI runs them with it installed. (R-D6 said the tests would move with the examples; most of them test SDEM's own code — trace, check, link, AID — with banking data as their input.) The core keeps `library-holds`, which `sdem new --example` now offers, and the reference structure, generated from the core with no BIAN layer.
+
 ### Step 4 — staged (the owner, 2026-11-24: "Staged")
 
 Outside its four modules SDEM's code names BIAN's types 63 times (12 files) and its layer by id 196 times (36 files — the A1, A2 BIAN, A3 … numbering). **4a**: BIAN's data, rules, code, patterns and the built-in fallback leave the package; a design that uses BIAN is refused without `sdem-bian` (R-D2); metamodel 0.20.0 holds no BIAN type; the core keeps only BIAN's reserved layer slot — its id and its place in the stack — as a generic place for an extension's layer. **4b**, later: that slot made fully generic. Each proved: P1 with `sdem-bian`, the core suite without it.
