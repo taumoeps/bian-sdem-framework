@@ -19,7 +19,13 @@ def start(ws, **kw):
     with contextlib.redirect_stdout(io.StringIO()): assert new.main(args) == 0
     return ws
 
+import sys as _s, pathlib as _pl; _s.path.insert(0, str(_pl.Path(__file__).resolve().parent)); from needs import bian as _needs_bian  # noqa: E402 — BX-15: tests that need sdem-bian
+
+@_needs_bian
 class DocumentedExamplesTests(unittest.TestCase):
+    def setUp(self):   # 0.22 (BX-15): outside a workspace, as a command run alone — BIAN on where sdem-bian is installed (BX-12), whatever a test before opened
+        from sdem import profile as _p; _p.deactivate()
+
     def test_the_starter_bian_layer_loads(self):  # docs/sdem-onboarding-workflow.md — "Your BIAN (A2) layer"
         doc = (ROOT / 'docs' / 'sdem-onboarding-workflow.md').read_text(encoding='utf-8')
         sec = doc[doc.index('A starter file with one service domain'):]

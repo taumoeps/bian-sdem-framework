@@ -483,7 +483,9 @@ def model(argv):
 def main(argv=None):
     import errno, os
     had = 'SDEM_CORE_DOCS' in os.environ
-    try: return _main_guarded(argv)
+    from . import profile as _kp
+    try:
+        with _kp.kept(): return _main_guarded(argv)   # the process as it was, after (a command called from Python)
     finally:
         if not had and 'SDEM_CORE_DOCS' in os.environ:   # SDEM's own documents were made in this call (BX-15): the core-only mode ends with it
             from . import parts; parts.leave_core_docs()

@@ -34,6 +34,9 @@ def back_to_070(ws):
         d = json.loads(f.read_text()); d['metamodel_version'] = '0.7.0'; f.write_text(json.dumps(d))
 
 
+import sys as _s, pathlib as _pl; _s.path.insert(0, str(_pl.Path(__file__).resolve().parent)); from needs import bian as _needs_bian  # noqa: E402 — BX-15: tests that need sdem-bian
+
+@_needs_bian
 class B1Tests(unittest.TestCase):
     def setUp(self):
         self.tmp = Path(tempfile.mkdtemp()); self.ws = self.tmp / 'ws'

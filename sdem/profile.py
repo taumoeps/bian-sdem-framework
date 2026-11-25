@@ -687,6 +687,16 @@ class opened:
         return False
 
 
+class kept(opened):
+    """`with kept():` — whatever runs inside (a command called from Python: a test, sdem.api, one of SDEM's own commands calling another)
+    may open a workspace; after it the process is as it was (0.22, BX-15: a core design opened leaves BIAN off — not for what runs next)."""
+    def __init__(self): super().__init__(None)
+    def __enter__(self):
+        from . import parts
+        self._was = (ACTIVE, _ACTIVE_KEY, _RAW, list(ACTIVE_EXCEPTIONS), dict(parts._STATE))
+        return ACTIVE
+
+
 def activate_from(folder):
     """Activate the workspace folder's profile if it has one; otherwise SDEM's metamodel alone. Returns the merged profile or None."""
     from . import parts

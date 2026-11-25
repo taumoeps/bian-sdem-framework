@@ -259,6 +259,8 @@ def main(argv=None):
     ap.add_argument('--bian', metavar='FILE', help=f'start with exactly this BIAN layer in {_L("bian")} (default: {_L("bian")} empty; sdem aid brings in the domains your design needs from {SHARED.as_posix()} if it exists, else the base BIAN)')
     ap.add_argument('--no-bian', action='store_true', help='start without a BIAN layer (add it later); business then does not connect to applications')
     ap.add_argument('--form', choices=('0.20', '0.19'), default=default_form(), help="0.20 (the default; DL-D9): the Data layer of its own, files named by layer, records that store type ids; 0.19: as SDEM 0.19 made them — migrate later with sdem migrate --to 0.20. SDEM_FORM sets the default")
+    ap.add_argument('--with', dest='with_ext', action='append', choices=['bian'], default=[], metavar='EXTENSION',
+                    help="start with an extension's layer — bian: the BIAN layer, empty, sdem aid bringing in the service domains your design needs (needs sdem-bian installed; 0.22, BX-15). Without it a new design is a core one")
     ap.add_argument('--core', action='store_true', help=f"a core-only design: SDEM's core layers {_L('business')}, {_L('application')} and {_L('technology')} and no BIAN — switch BIAN on later with sdem profile include ext:bian (BX-13)")
     ap.add_argument('--example', choices=sorted(EXAMPLES), help='start with a synthetic example that ships with SDEM as the baseline (made-up data, for learning) — the same as --from its folder')
     ap.add_argument('--from', dest='source', metavar='DIR', help='start with this content as the baseline: the four layers, mappings.json and requirements.json found in DIR — checked first, '
@@ -282,6 +284,13 @@ def main(argv=None):
         if a.example and a.source: raise NewError('give --example or --from, not both')
         if a.hosting and a.source: raise NewError('give --hosting or a baseline (--example, --from), not both — a baseline brings its own zones')
         if a.example: a.source = str(example_dir(a.example))
+        from . import parts as _parts
+        core = getattr(a, 'core', False)
+        wants = not core and ('bian' in a.with_ext or bool(a.bian) or bool(a.source and _parts.uses_bian(a.source)))   # 0.22 (BX-15): BIAN only when asked for, or the baseline has it
+        if wants and not _parts.usable():   # R-D2: BIAN comes only from sdem-bian
+            raise _parts.missing('--with bian' if 'bian' in a.with_ext else f'--bian {a.bian}' if a.bian else f'the baseline {a.example or a.source}')
+        if not wants and not core: a.no_bian = True   # a core design: Business, Data, Application, Technology
+        _parts._set(wants, 'sdem new with BIAN (BX-15)' if wants else 'sdem new: a core design (BX-15)')   # decided before the profile is read: its layers' numbering
         pf = a.profile or (str(Path(a.source) / 'sdem-profile.json') if a.source and (Path(a.source) / 'sdem-profile.json').exists() else None)
         pdoc = org_profile(org, a.estate) if org is not None and not pf else None
         if pf: _p.activate_file(pf)
@@ -294,10 +303,6 @@ def main(argv=None):
         else: _p.deactivate()
         core = getattr(a, 'core', False)
         from . import parts as _parts
-        if not core and not _parts.usable():   # 0.22, R-D2: BIAN comes only from sdem-bian — without it, a new design is a core one
-            if a.bian: raise _parts.missing(f'--bian {a.bian}')
-            if a.source and _parts.uses_bian(a.source): raise _parts.missing(f'the baseline {a.example or a.source}')
-            a.no_bian = True
         if core:
             if a.bian or a.example: raise NewError('--core starts a design without BIAN: not with --bian or --example')
             from . import parts; parts._set(False, 'sdem new --core (BX-13)')

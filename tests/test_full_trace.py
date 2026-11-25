@@ -22,6 +22,9 @@ def ids(tree):
     walk(tree); return out
 
 
+import sys as _s, pathlib as _pl; _s.path.insert(0, str(_pl.Path(__file__).resolve().parent)); from needs import bian as _needs_bian  # noqa: E402 — BX-15: tests that need sdem-bian
+
+@_needs_bian
 class FullTrace(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -163,6 +166,7 @@ if __name__ == '__main__':
     unittest.main()
 
 
+@_needs_bian
 class IntegrityReadsTheInstalledFreeze(unittest.TestCase):   # 0.21.14: an installed SDEM read the freeze from a checkout's folder and said 0
     def test_the_core_figures_come_from_the_metamodel_sdem_is_using(self):
         import json as J, shutil, tempfile

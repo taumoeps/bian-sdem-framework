@@ -16,6 +16,9 @@ def sdem(*args, cwd=ROOT, ok=(0,)):
     return r.returncode, r.stdout + r.stderr, (json.loads(r.stdout) if r.stdout.strip().startswith('{') else None)
 
 
+import sys as _s, pathlib as _pl; _s.path.insert(0, str(_pl.Path(__file__).resolve().parent)); from needs import bian as _needs_bian  # noqa: E402 — BX-15: tests that need sdem-bian
+
+@_needs_bian
 class TypesTests(unittest.TestCase):
     def test_a_type_lists_its_fields_values_and_links(self):  # TS-01, TS-02
         _, _, d = sdem('types', 'A1.BusinessProcess', '--json')
@@ -43,7 +46,7 @@ class TypesTests(unittest.TestCase):
     def test_a_workspace_profile_is_included(self):  # TS-05
         tmp = Path(tempfile.mkdtemp())
         try:
-            sdem('profile', 'example', '--out', tmp / 'p', cwd=tmp); sdem('new', '--workspace', tmp / 'ws', '--person', 'steven', cwd=tmp)
+            sdem('profile', 'example', '--out', tmp / 'p', cwd=tmp); sdem('new', '--with', 'bian', '--workspace', tmp / 'ws', '--person', 'steven', cwd=tmp)
             shutil.copy(tmp / 'p' / 'bank-base.json', tmp / 'ws' / 'sdem-profile.json')
             _, _, d = sdem('types', 'A3.ApplicationComponent', '--workspace', tmp / 'ws', '--json', cwd=tmp)
             self.assertIn('risk_tier', [x['name'] for x in d['attributes']]); self.assertIn('BANK-R01', [r['id'] for r in d['organisation_rules']])
@@ -51,6 +54,7 @@ class TypesTests(unittest.TestCase):
         finally: shutil.rmtree(tmp, ignore_errors=True)
 
 
+@_needs_bian
 class SearchTests(unittest.TestCase):
     def test_plain_words_find_domains_and_the_ids_aid_uses(self):  # TS-04
         _, _, d = sdem('bian', 'search', 'ledger', 'posting', '--json')
@@ -85,6 +89,7 @@ class SearchTests(unittest.TestCase):
         self.assertNotIn('engine', [x['name'] for x in d['commands']['link']['positionals']])
         self.assertIn('--baseline', [x['name'] for x in d['commands']['link']['options']])
 
+@_needs_bian
 class BaselineFixTests(unittest.TestCase):
     def setUp(self):
         self.tmp = Path(tempfile.mkdtemp()); sdem('new', '--workspace', self.tmp / 'ws', '--person', 'steven', '--example', 'payment-initiation', cwd=self.tmp)
@@ -105,7 +110,7 @@ class BaselineFixTests(unittest.TestCase):
 
 
     def test_a_healthy_aid_dry_run_lists_would_write_and_writes_nothing(self):
-        ws = self.tmp / 'gl'; sdem('new', '--workspace', ws, '--person', 'steven', cwd=self.tmp)
+        ws = self.tmp / 'gl'; sdem('new', '--with', 'bian', '--workspace', ws, '--person', 'steven', cwd=self.tmp)
         cs = {'layer': 'A1', 'reason': 'ledger', 'changes': [{'op': 'add', 'record': {'id': 'PRC-GL-POST', 'type': 'A1.BusinessProcess', 'version': '1', 'name': 'Post financial transactions',
               'lifecycle_status': 'planned', 'attributes': {'invokes': ['SO-FINANCIAL-ACCOUNTING-CAPTURE-LEDGER-POSTING']}}}]}
         (self.tmp / 'cs.json').write_text(json.dumps(cs)); sdem('change', 'propose', self.tmp / 'cs.json', '--workspace', ws, '--agent', 'sdem-a1-business', '--person', 'steven', cwd=self.tmp)

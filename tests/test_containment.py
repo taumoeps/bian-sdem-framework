@@ -13,6 +13,9 @@ def a2(name='payment-initiation'):
     return json.loads((EX / name / 'a2-service-domain.json').read_text(encoding='utf-8'))
 
 
+import sys as _s, pathlib as _pl; _s.path.insert(0, str(_pl.Path(__file__).resolve().parent)); from needs import bian as _needs_bian  # noqa: E402 — BX-15: tests that need sdem-bian
+
+@_needs_bian
 class A2LandscapeTests(unittest.TestCase):
     def test_payment_is_drawn_as_bians_landscape(self):
         lay = load(EX / 'payment-initiation', 'A2')
@@ -99,6 +102,7 @@ class A1CapabilityMapTests(unittest.TestCase):   # C3, C4: capability → sub-ca
         self.assertEqual([l['shown_by'] for l in other], ['line'])                        # its other capability: a line
 
 
+@_needs_bian
 class A3ApplicationStructureTests(unittest.TestCase):   # application → components, services, functions, interfaces → API operations
     def test_payment_is_drawn_as_its_application_structure(self):
         lay = load(EX / 'payment-initiation', 'A3')
@@ -118,6 +122,7 @@ class A3ApplicationStructureTests(unittest.TestCase):   # application → compon
         self.assertTrue(z['R:APP-LC']['part_of'].startswith('R:SBB'))
 
 
+@_needs_bian
 class SpacingTests(unittest.TestCase):   # C8 — the owner's screenshots of v2 (2026-11-16): shapes on top of each other, records over headings
     SITE_W, SITE_H = 0.9 / 5.6 * 0.5, 0.5 / 5.4 * 0.5   # DESNRE's shape (0.9 x 0.5) on its plate (5.6 x 5.4) at shape size 0.5, as fractions of the plate
 

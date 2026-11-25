@@ -22,6 +22,8 @@ def fingerprint(d):
     return {str(p.relative_to(d)): hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(Path(d).rglob('*')) if p.is_file()}
 
 
+import sys as _s, pathlib as _pl; _s.path.insert(0, str(_pl.Path(__file__).resolve().parent)); from needs import bian as _needs_bian  # noqa: E402 — BX-15: tests that need sdem-bian
+
 class Base(unittest.TestCase):
     def setUp(self):
         self.tmp = Path(tempfile.mkdtemp()); self.addCleanup(shutil.rmtree, self.tmp, True)
@@ -30,6 +32,7 @@ class Base(unittest.TestCase):
         d = self.tmp / (to or name); shutil.copytree(EX / name, d, ignore=shutil.ignore_patterns('graph')); return d
 
 
+@_needs_bian
 class WorkspaceFoundTests(Base):   # WS-11
     def test_inside_a_workspace_it_is_found(self):
         ws = self.copy('payment-initiation')
@@ -62,6 +65,7 @@ class WorkspaceFoundTests(Base):   # WS-11
         self.assertEqual(code, 2); self.assertNotIn('found from the current folder', err)
 
 
+@_needs_bian
 class StatusTests(Base):   # ST-01…ST-05
     def test_clear_open_and_blocked(self):
         clear = self.copy('payment-initiation')

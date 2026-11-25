@@ -31,13 +31,16 @@ def tree_hash(d):
     return h.hexdigest()
 
 
+import sys as _s, pathlib as _pl; _s.path.insert(0, str(_pl.Path(__file__).resolve().parent)); from needs import bian as _needs_bian  # noqa: E402 — BX-15: tests that need sdem-bian
+
+@_needs_bian
 class AgentTests(unittest.TestCase):
     def setUp(self): self.tmp = Path(tempfile.mkdtemp())
     def tearDown(self): shutil.rmtree(self.tmp, ignore_errors=True)
 
     def test_the_whole_workflow_with_json_only(self):  # AF-01, AF-03, AF-04
         t = self.tmp
-        _, d = sdem('new', '--workspace', 'ws', '--person', 'jane.architect', '--json', cwd=t)
+        _, d = sdem('new', '--with', 'bian', '--workspace', 'ws', '--person', 'jane.architect', '--json', cwd=t)
         self.assertEqual(d['sdem']['command'], 'new')
         a1 = json.loads(lf(t / 'ws', 'business').read_text())
         a1['instances'] = A1; a1['relationships'] = [{'source': 'PRC-1', 'kind': 'composition', 'target': 'ACT-1'}]
@@ -75,7 +78,7 @@ class AgentTests(unittest.TestCase):
         cases = [(('trace', 'NOPE', '--graph', G), 1, 'not_found', 'sdem query'),
                  (('check', '--workspace', self.tmp / 'none'), 2, 'not_found', 'sdem new'),
                  (('trace', 'A4', '--graph', G, '--direction', 'sideways'), 2, 'usage', 'sdem trace --help'),
-                 (('new', '--workspace', self.tmp / 'x', '--person', 'sdem-agent'), 2, 'needs_person', 'person'),
+                 (('new', '--with', 'bian', '--workspace', self.tmp / 'x', '--person', 'sdem-agent'), 2, 'needs_person', 'person'),
                  (('trace', 'A4', '--graph', G, '--limit', 'many'), 2, 'usage', None),
                  (('frobnicate',), 2, 'usage', 'sdem commands --json'),
                  (('validate', ROOT / 'pyproject.toml'), 2, 'invalid_input', 'fix the file'),
@@ -89,7 +92,7 @@ class AgentTests(unittest.TestCase):
 
     def test_an_edit_made_outside_sdem_is_noticed(self):  # AF-07
         t = self.tmp
-        sdem('new', '--workspace', 'ws', '--person', 'jane.architect', '--json', cwd=t)
+        sdem('new', '--with', 'bian', '--workspace', 'ws', '--person', 'jane.architect', '--json', cwd=t)
         _, d = sdem('check', '--workspace', 'ws', '--json', cwd=t)
         self.assertEqual(d['unrecorded_edits'], [])
         a1 = json.loads(lf(t / 'ws', 'business').read_text()); a1['instances'] = A1[:1]

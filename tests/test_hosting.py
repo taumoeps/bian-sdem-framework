@@ -24,6 +24,8 @@ def sdem(*args, cwd):
 def a4(ws): return json.loads(lf(ws, 'technology').read_text(encoding='utf-8'))
 
 
+import sys as _s, pathlib as _pl; _s.path.insert(0, str(_pl.Path(__file__).resolve().parent)); from needs import bian as _needs_bian  # noqa: E402 — BX-15: tests that need sdem-bian
+
 class Base(unittest.TestCase):
     def setUp(self):
         self.tmp = Path(tempfile.mkdtemp()); self.addCleanup(shutil.rmtree, self.tmp, True); self.mm = Metamodel.load()
@@ -51,6 +53,7 @@ class EvidenceTests(Base):   # HS-01…HS-10
         self.assertEqual((kind, conf), (None, 'unresolved')); self.assertEqual({u['points_to'] for u in used}, {'cloud', 'on_premises'})
 
 
+@_needs_bian
 class ProposalTests(Base):   # AID-Z01…Z04, LC-19
     def test_aid_proposes_a_zone_from_the_evidence(self):
         ws = self.without_zones(LEDGER)
@@ -146,6 +149,7 @@ class PolicyTests(Base):   # PR-32, WS-12
         self.assertEqual(code, 0, out + err); self.assertRegex(out + err, r'WARN: .*LC-16')
 
 
+@_needs_bian
 class ConnectionTests(Base):   # ZC-01…ZC-04
     def test_the_zone_connections_are_worked_out(self):
         c = {(a, b): r for a, b, r in zone_connections(a4(PAY), self.mm)}
@@ -173,6 +177,7 @@ class ConnectionTests(Base):   # ZC-01…ZC-04
         with self.assertRaises(ValueError): cut(PAY, 'ZONE-PAY-DMZ', 'ZONE-PAY-ONPREM')   # not a connection SDEM works out
 
 
+@_needs_bian
 class EvidenceAgainstTheExamplesTests(unittest.TestCase):   # G1–G3 (HS-11…HS-13): with its zones removed, each example's hosting is inferred as recorded
     def test_every_example_reinferred_as_recorded(self):
         from sdem.hosting import propose
@@ -209,6 +214,7 @@ class EvidenceAgainstTheExamplesTests(unittest.TestCase):   # G1–G3 (HS-11…H
         self.assertIn('HS-12', ids(fx, 'SYS-PG-FX-PROD'))            # in the private-cloud, data-centre environment
 
 
+@_needs_bian
 class S37Tests(unittest.TestCase):   # G4–G6: the network of the component's platform, not the deprecated network_zone
     def test_trade_finance_needs_no_network_zone(self):
         a3 = json.loads((ROOT / 'examples/trade-finance/a3-application.json').read_text(encoding='utf-8'))

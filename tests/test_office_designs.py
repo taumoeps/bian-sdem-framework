@@ -17,6 +17,8 @@ def sdem(*args, cwd):
     return r.returncode, r.stdout + r.stderr
 
 
+import sys as _s, pathlib as _pl; _s.path.insert(0, str(_pl.Path(__file__).resolve().parent)); from needs import bian as _needs_bian  # noqa: E402 — BX-15: tests that need sdem-bian
+
 class Base(unittest.TestCase):
     def setUp(self): self.tmp = Path(tempfile.mkdtemp())
     def tearDown(self): shutil.rmtree(self.tmp, ignore_errors=True)
@@ -33,6 +35,7 @@ class Base(unittest.TestCase):
     def items(doc, status): return [(i['where'], i['reason']) for i in doc['coverage']['items'] if i['status'] == status]
 
 
+@_needs_bian
 class ExcelTests(Base):   # HI-F02
     def setUp(self):
         super().setUp(); self.book = self.tmp / 'ledger-design.xlsx'; office_samples.ledger_workbook(self.book)
@@ -76,6 +79,7 @@ class ExcelTests(Base):   # HI-F02
         self.assertEqual(json.dumps(a['records']), json.dumps(b['records']))
 
 
+@_needs_bian
 class WordTests(Base):   # HI-F01
     def setUp(self):
         super().setUp(); self.doc = self.tmp / 'ledger-design.docx'; office_samples.ledger_document(self.doc)
@@ -98,6 +102,7 @@ class WordTests(Base):   # HI-F01
         self.assertEqual(len(doc['records']), 3)
 
 
+@_needs_bian
 class FilesAndFoldersTests(Base):   # HI-F03
     def test_design_files_in_the_top_folder(self):
         d = self.tmp / 'designs'; d.mkdir()

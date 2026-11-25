@@ -10,6 +10,9 @@ def sdem(*args, cwd):
     return subprocess.run([sys.executable, '-m', 'sdem', *map(str, args)], cwd=cwd, capture_output=True, text=True, env=ENV)
 
 
+import sys as _s, pathlib as _pl; _s.path.insert(0, str(_pl.Path(__file__).resolve().parent)); from needs import bian as _needs_bian  # noqa: E402 — BX-15: tests that need sdem-bian
+
+@_needs_bian
 class AgentCliFixesTests(unittest.TestCase):
     def setUp(self):
         self.d = Path(tempfile.mkdtemp())
@@ -75,6 +78,7 @@ class AgentCliFixesTests(unittest.TestCase):
         self.assertIn('sdem aid --workspace', sdem('aid', '--help', cwd=self.d).stdout)
 
 
+@_needs_bian
 class OwnerDecisionTests(unittest.TestCase):   # O6, O7 (owner's decisions 2026-11-06)
     def setUp(self):
         self.d = Path(tempfile.mkdtemp())

@@ -18,6 +18,9 @@ def sdem(*args, cwd=ROOT):
     return r.returncode, r.stdout, r.stderr
 
 
+import sys as _s, pathlib as _pl; _s.path.insert(0, str(_pl.Path(__file__).resolve().parent)); from needs import bian as _needs_bian  # noqa: E402 — BX-15: tests that need sdem-bian
+
+@_needs_bian
 class TemplateTests(unittest.TestCase):
     def test_the_templates_match_the_metamodel(self):                                    # DG-02
         self.assertEqual(vp.check(), [])
@@ -36,6 +39,7 @@ class TemplateTests(unittest.TestCase):
             self.assertNotIn(word, text)
 
 
+@_needs_bian
 class DrawingTests(unittest.TestCase):
     def test_every_template_on_every_example_draws_only_what_is_stored(self):           # DG-03 on any workspace
         for ws in EXAMPLES:
@@ -74,6 +78,7 @@ class DrawingTests(unittest.TestCase):
         with self.assertRaises(ValueError): vp.build(D, 'process', focus='NOPE')
 
 
+@_needs_bian
 class CommandTests(unittest.TestCase):
     def test_cli(self):                                                                  # DG-14
         code, out, err = sdem('diagram', '--list', '--json'); self.assertEqual(code, 0, err)

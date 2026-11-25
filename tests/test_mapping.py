@@ -12,6 +12,9 @@ def first_issue_matching(data, needle):
     return next((x for x in validate(data) if needle in x), None)
 
 
+import sys as _s, pathlib as _pl; _s.path.insert(0, str(_pl.Path(__file__).resolve().parent)); from needs import bian as _needs_bian  # noqa: E402 — BX-15: tests that need sdem-bian
+
+@_needs_bian
 class FixtureTests(unittest.TestCase):
     def test_registry_is_well_formed(self):
         self.assertEqual(validate_registry(REGISTRY), [])
@@ -75,6 +78,7 @@ class SchemaTests(unittest.TestCase):
         self.assertEqual(check_schema(DATA, load_schema()), [])
 
 
+@_needs_bian
 class RuleTests(unittest.TestCase):
     def mutate(self, fn):
         data = copy.deepcopy(DATA)
@@ -153,6 +157,7 @@ class RegistryRuleTests(unittest.TestCase):
         self.assertTrue(any('missing owner' in x for x in validate_registry(reg)))
 
 
+@_needs_bian
 class ReferenceResolverTests(unittest.TestCase):
     def test_resolver_flags_unknown_canonical_id(self):
         resolver = StaticReferenceResolver([ReferenceBinding('DEMO-BIAN-SD-ONBOARDING', 'DEMO-RELEASE', 'ServiceDomain')])
@@ -167,6 +172,7 @@ class ReferenceResolverTests(unittest.TestCase):
         self.assertEqual(validate(DATA), [])
 
 
+@_needs_bian
 class MultiFileTests(unittest.TestCase):
     def test_all_shipped_examples_validate_together(self):
         report = validate_files(sorted(p for p in (ROOT / 'examples').glob('*/mappings.json') if p.parent.name != 'payment-initiation-v2'))   # v2 extends v1: it keeps v1's ids
@@ -193,6 +199,7 @@ if __name__ == '__main__':
     unittest.main()
 
 
+@_needs_bian
 class V021RuleTests(unittest.TestCase):
     """Validator hardening: approval timestamp, canonical anchoring, typed evidence, entity resolution."""
     def mutate(self, fn):
@@ -343,6 +350,7 @@ class TraceTests(unittest.TestCase):
             self.assertEqual(main(['NOPE', str(ROOT / 'examples/card-fraud-alerts/mappings.json')]), 1)
 
 
+@_needs_bian
 class LevelAliasTests(unittest.TestCase):
     """v0.3.1: L0-L3 prefixes are aliases of A1-A4; old documents validate and a rename is not an edit."""
     def legacy(self):
@@ -371,6 +379,7 @@ class LevelAliasTests(unittest.TestCase):
         self.assertTrue(any("'X9.BusinessCapability' is not in the metamodel" in x for x in validate(data)))   # v0.13.0: any layer code passes the pattern; the metamodel knows the layers
 
 
+@_needs_bian
 class MetamodelTests(unittest.TestCase):
     def setUp(self):
         from sdem.metamodel import Metamodel
@@ -402,6 +411,7 @@ class MetamodelTests(unittest.TestCase):
         self.assertTrue(any('neither endpoint entity has a bian_* definition_source' in x for x in validate_registry(reg, self.mm)))
 
 
+@_needs_bian
 class V040ValidatorTests(unittest.TestCase):
     def mutate(self, fn):
         data = copy.deepcopy(DATA); fn(data); return data

@@ -13,6 +13,9 @@ KNOWN = ROOT / 'examples' / 'payment-initiation' / 'a3-application.json'
 FOLDER = ROOT / 'examples' / 'designs' / 'confluence-folder-export'
 
 
+import sys as _s, pathlib as _pl; _s.path.insert(0, str(_pl.Path(__file__).resolve().parent)); from needs import bian as _needs_bian  # noqa: E402 — BX-15: tests that need sdem-bian
+
+@_needs_bian
 class TransformTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -165,6 +168,7 @@ class TransformTests(unittest.TestCase):
             shutil.rmtree(tmp, ignore_errors=True)
 
 
+@_needs_bian
 class FolderLayoutTests(unittest.TestCase):
     """A prepared export: readme/source/evidence in the root, raw HTML and diagrams in archives/, sections as folders (HI-L*)."""
     @classmethod

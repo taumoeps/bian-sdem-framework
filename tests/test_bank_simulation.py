@@ -54,6 +54,8 @@ DESIGN = {   # a complete design, in all four layers, that meets every standard 
 }
 
 
+import sys as _s, pathlib as _pl; _s.path.insert(0, str(_pl.Path(__file__).resolve().parent)); from needs import bian as _needs_bian  # noqa: E402 — BX-15: tests that need sdem-bian
+
 class Simulation(unittest.TestCase):
     def setUp(self):
         self.addCleanup(profile.deactivate)
@@ -102,6 +104,7 @@ class Simulation(unittest.TestCase):
         if detail: self.assertIn(detail, why)
 
 
+@_needs_bian
 class TheBankDesign(Simulation):
     def test_the_profile_resolves_with_every_layer_specified(self):
         merged = profile.resolve(self.ws / 'sdem-profile.json')
@@ -125,6 +128,7 @@ class TheBankDesign(Simulation):
         self.assertEqual(code, 0, out)
 
 
+@_needs_bian
 class Upstream(Simulation):
     """A4 → A3 → A2 → A1: each layer's design is held to the approved design of the layer above."""
 
@@ -171,6 +175,7 @@ class Upstream(Simulation):
         self.assertEqual((reach('up', 'INF-K8S-PAY-PROD'), reach('down', 'CAP-PAY-010')), (up, down))
 
 
+@_needs_bian
 class Downstream(Simulation):
     def test_impact_of_rehosting_the_platform_reaches_every_layer(self):
         code, out = sdem('impact', 'INF-K8S-PAY-PROD', '--change', 'rehost', '--workspace', self.ws, '--json', cwd=self.tmp)
@@ -186,6 +191,7 @@ class Downstream(Simulation):
         self.assertOutcome('DS-04', 'APP-PAY-HUB', 'non_compliant')                         # the application's design must follow
 
 
+@_needs_bian
 class Sidestream(Simulation):
     """The same design, against the bank's security, network, technology and design standards and its reference patterns."""
 
@@ -228,6 +234,7 @@ class Sidestream(Simulation):
         self.assertEqual(comply.collect(self.ws, datetime.date(2027, 4, 1))['blocking'], 1)   # the day after it ends, the finding is back
 
 
+@_needs_bian
 class TheMetamodelHolds(Simulation):
     def test_a_design_spec_value_of_the_wrong_form_is_refused(self):
         self.set('a2-service-domain.json', 'SD-PI', adoption_scope='mostly')

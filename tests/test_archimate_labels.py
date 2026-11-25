@@ -17,6 +17,9 @@ MM = Metamodel.base()
 LEVEL_FILES = ('a1-business.json', 'a2-service-domain.json', 'a3-application.json', 'a4-technology.json')
 
 
+import sys as _s, pathlib as _pl; _s.path.insert(0, str(_pl.Path(__file__).resolve().parent)); from needs import bian as _needs_bian  # noqa: E402 — BX-15: tests that need sdem-bian
+
+@_needs_bian
 class ArchiMateLabels(unittest.TestCase):
     def test_every_type_says_where_it_comes_from_and_is_an_archimate_element(self):
         from sdem.metamodel import level_docs
@@ -79,6 +82,7 @@ class PacksSayTheirKinds(unittest.TestCase):   # MID-07 for an extension's own l
         self.assertTrue(any('no ArchiMate relationship' in i for i in issues), issues)
 
 
+@_needs_bian
 class PackLinkKindsInsideALayer(unittest.TestCase):   # MID-07, 0.21.13: an extension's own link inside its layer is drawn as the ArchiMate kind it maps to
     def test_a_link_kind_of_a_pack_says_its_archimate_kind(self):
         from sdem import profile as P

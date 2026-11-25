@@ -18,6 +18,9 @@ def rec(id_, type_, name, **attrs):
     return {'id': id_, 'type': type_, 'version': '1', 'name': name, 'lifecycle_status': 'active', **({'attributes': attrs} if attrs else {})}
 
 
+import sys as _s, pathlib as _pl; _s.path.insert(0, str(_pl.Path(__file__).resolve().parent)); from needs import bian as _needs_bian  # noqa: E402 — BX-15: tests that need sdem-bian
+
+@_needs_bian
 class MetamodelTests(unittest.TestCase):
     def test_the_information_model_is_in_the_metamodel(self):   # IM-02 … IM-05, CT-03, CT-04
         mm = Metamodel.load()
@@ -86,6 +89,9 @@ class ChecksTests(unittest.TestCase):   # IM-08: LC-23 … LC-27
 
 
 class BianImportTests(unittest.TestCase):   # IM-09
+    def setUp(self):
+        from sdem import profile as _p; _p.deactivate()   # 0.22 (BX-15): outside a workspace, as a command run alone (BX-12)
+
     def test_objects_come_typed_with_their_references_and_values(self):
         try: from sdem_bian.bian import main
         except ImportError: self.skipTest('needs sdem-bian installed (BX-15)')
@@ -113,6 +119,7 @@ class BianImportTests(unittest.TestCase):   # IM-09
         self.assertNotIn('object_fields', pack([read_domain(TYPED / 'SamplePaymentOrder.yaml')])['domains'][0])
 
 
+@_needs_bian
 class AidTests(unittest.TestCase):   # IM-10: AID-I01 … I04
     def test_no_table_is_inferred_for_an_object_whose_domain_nothing_here_realises(self):   # AID-I08 — the public twin's first run, F4 (2026-11-17)
         try: from sdem_bian.aid_bian import propose_information
@@ -163,6 +170,9 @@ class AidTests(unittest.TestCase):   # IM-10: AID-I01 … I04
 
 
 class RealBianShapesTests(unittest.TestCase):   # found importing BIAN 14.0.0's payment files (2026-11-16)
+    def setUp(self):
+        from sdem import profile as _p; _p.deactivate()   # 0.22 (BX-15): outside a workspace, as a command run alone (BX-12)
+
     def test_a_field_is_named_within_its_object_and_bian_data_types_are_types(self):
         try: from sdem_bian.bian import _fields, DATATYPES
         except ImportError: self.skipTest('needs sdem-bian installed (BX-15)')
@@ -188,6 +198,7 @@ class RealBianShapesTests(unittest.TestCase):   # found importing BIAN 14.0.0's 
         except ImportError: self.skipTest('needs sdem-bian installed (BX-15)')
         ws = Path(tempfile.mkdtemp())
         (ws / 'mappings.json').write_text('{"mappings": []}')
+        (ws / 'a2-service-domain.json').write_text('{"level": "A2", "model_id": "T-A2", "model_version": "1", "metamodel_version": "0.19.0", "source_system": "test", "instances": [], "relationships": []}')   # a BIAN design (BX-15)
         own = ws / 'own' / base_file().name; own.parent.mkdir(); shutil.copy(base_file(), own)   # the same pack, with no index beside it
         with self.assertRaises(BianError) as e, contextlib.redirect_stdout(io.StringIO()):
             main(['add', 'Payment Order', '--workspace', str(ws), '--person', 'a tester', '--objects', '--base', str(own)])

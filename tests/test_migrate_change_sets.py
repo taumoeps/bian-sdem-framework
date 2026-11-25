@@ -25,6 +25,9 @@ def back_to(ws, version):
         if isinstance(d, dict) and 'metamodel_version' in d: d['metamodel_version'] = version; f.write_text(json.dumps(d, indent=2))
 
 
+import sys as _s, pathlib as _pl; _s.path.insert(0, str(_pl.Path(__file__).resolve().parent)); from needs import bian as _needs_bian  # noqa: E402 — BX-15: tests that need sdem-bian
+
+@_needs_bian
 class MigrateWithChangeSetsTests(unittest.TestCase):
     def setUp(self):
         self.tmp = Path(tempfile.mkdtemp()); self.ws = self.tmp / 'ws'
@@ -62,7 +65,11 @@ class MigrateWithChangeSetsTests(unittest.TestCase):
         self.assertTrue(any('AG-S08' in i for i in self.coordination_issues()))   # still the person's to adopt
 
 
+@_needs_bian
 class CatalogueTests(unittest.TestCase):
+    def setUp(self):
+        from sdem import profile as _p0; _p0.deactivate()   # 0.22 (BX-15): as a command run alone — no workspace left open by a test before
+
     def test_every_examples_catalogue_passes_the_dataset_check(self):     # sdem aid refused 5 of the 8 before
         mm = Metamodel.load()
         for ws in EXAMPLES:

@@ -18,6 +18,9 @@ def sdem(*args, cwd, ok=(0,)):
     return r.returncode, r.stdout + r.stderr, (json.loads(r.stdout) if r.stdout.strip().startswith('{') else None)
 
 
+import sys as _s, pathlib as _pl; _s.path.insert(0, str(_pl.Path(__file__).resolve().parent)); from needs import bian as _needs_bian  # noqa: E402 — BX-15: tests that need sdem-bian
+
+@_needs_bian
 class StatusTests(unittest.TestCase):
     def test_every_unsettled_item_has_a_source_and_a_way_to_settle_it(self):  # MS-01, MS-02
         r = H.status()
@@ -50,6 +53,7 @@ class StabilityTests(unittest.TestCase):
         self.assertIn('removed without being deprecated first', issues); self.assertIn('A9.Gone', issues); self.assertNotIn('AT-OLD', issues)
 
 
+@_needs_bian
 class UsageAndReleaseTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):

@@ -7,7 +7,10 @@ ROOT = Path(__file__).resolve().parents[1]
 T = ROOT / 'templates' / 'workspace-repo'
 
 
+import sys as _s, pathlib as _pl; _s.path.insert(0, str(_pl.Path(__file__).resolve().parent)); from needs import bian as _needs_bian  # noqa: E402 — BX-15: tests that need sdem-bian
+
 @unittest.skipIf(os.name == 'nt', 'the workspace template runs its CI on Linux (bash scripts, a POSIX sdem shim)')
+@_needs_bian
 class EstateTemplateTests(unittest.TestCase):
     def setUp(self):
         self.tmp = Path(tempfile.mkdtemp()); self.repo = self.tmp / 'workspaces-repo'

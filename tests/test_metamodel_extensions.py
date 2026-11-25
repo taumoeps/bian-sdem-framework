@@ -38,6 +38,9 @@ def fake_extension(folder, name, sdem_range='>=0.0'):
         prog.chmod(0o755)
 
 
+import sys as _s, pathlib as _pl; _s.path.insert(0, str(_pl.Path(__file__).resolve().parent)); from needs import bian as _needs_bian  # noqa: E402 — BX-15: tests that need sdem-bian
+
+@_needs_bian
 class MetamodelExtensionTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):

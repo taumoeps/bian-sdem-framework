@@ -38,6 +38,9 @@ A5 = {'layer': 'A5', 'reason': 'data centres', 'changes': [
     'relationships': {'add': [{'source': 'FAC-DC1', 'kind': 'composition', 'target': 'EQP-RACK7'}]}}
 
 
+import sys as _s, pathlib as _pl; _s.path.insert(0, str(_pl.Path(__file__).resolve().parent)); from needs import bian as _needs_bian  # noqa: E402 — BX-15: tests that need sdem-bian
+
+@_needs_bian
 class LayerTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -71,7 +74,7 @@ class LayerTests(unittest.TestCase):
 
     def test_a_new_workspace_starts_with_every_layer(self):  # LR-03
         nw = self.tmp / 'nw'
-        _, out, _ = sdem('new', '--workspace', nw, '--person', 'steven', '--profile', self.tmp / 'profiles' / 'strategy-and-sites-team.json', cwd=self.tmp)
+        _, out, _ = sdem('new', '--with', 'bian', '--workspace', nw, '--person', 'steven', '--profile', self.tmp / 'profiles' / 'strategy-and-sites-team.json', cwd=self.tmp)
         self.assertIn('all 6 layers empty', out)
         for f in ('a0-strategy.json', 'a5-physical.json'): self.assertEqual(json.loads((nw / f).read_text())['instances'], [])
         self.assertEqual(json.loads((nw / 'sdem-profile.json').read_text())['extends'], '../profiles/bank-base.json')   # the base is still found

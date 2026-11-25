@@ -8,6 +8,9 @@ from sdem import identity  # noqa: E402
 from sdem.identity import T, IdentityError, layer, layer_id, type_id  # noqa: E402
 
 
+import sys as _s, pathlib as _pl; _s.path.insert(0, str(_pl.Path(__file__).resolve().parent)); from needs import bian as _needs_bian  # noqa: E402 — BX-15: tests that need sdem-bian
+
+@_needs_bian
 class IdentityTests(unittest.TestCase):
     def test_the_table_holds_every_type_of_the_metamodel_and_nothing_else(self):   # ST-04
         names = {e['type'] for f in sorted((ROOT / 'metamodel').glob('a[1-4]-*.json')) for e in json.loads(f.read_text())['entities']}

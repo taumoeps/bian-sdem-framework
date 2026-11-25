@@ -28,11 +28,14 @@ def sdem(*args, cwd):
 def rec(i, t, n, desc, **a): return {'id': i, 'type': t, 'version': '1.0', 'name': n, 'lifecycle_status': 'active', 'description': desc, 'attributes': a}
 
 
+import sys as _s, pathlib as _pl; _s.path.insert(0, str(_pl.Path(__file__).resolve().parent)); from needs import bian as _needs_bian  # noqa: E402 — BX-15: tests that need sdem-bian
+
+@_needs_bian
 class AidFillTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.base = Path(tempfile.mkdtemp())
-        assert sdem('new', '--workspace', W, '--person', 'jane.architect', cwd=cls.base)[0] == 0   # all 258 BIAN service domains
+        assert sdem('new', '--with', 'bian', '--workspace', W, '--person', 'jane.architect', cwd=cls.base)[0] == 0   # all 258 BIAN service domains
         p = lf(cls.base / W, 'business'); d = json.loads(p.read_text())
         d['instances'] = [rec('CAP-PAY-INIT', 'A1.BusinessCapability', 'Payment Initiation', 'Take a customer payment order and get it ready to execute.', level=2),
                           rec('PRC-PAY', 'A1.BusinessProcess', 'Make a payment', 'From the customer request to the money leaving the account.', level=2),
@@ -119,7 +122,7 @@ class AidFillTests(unittest.TestCase):
 
     def test_an_existing_design_gets_the_domain_its_business_layer_names(self):  # AID-M02: either side, for a person to review
         ws = self.tmp / 'workspaces' / 'hist'
-        self.assertEqual(sdem('new', '--workspace', ws, '--person', 'jane.architect', cwd=self.tmp)[0], 0)
+        self.assertEqual(sdem('new', '--with', 'bian', '--workspace', ws, '--person', 'jane.architect', cwd=self.tmp)[0], 0)
         a1 = json.loads(lf(ws, 'business').read_text()); a1['instances'] = [rec('CAP-1', 'A1.BusinessCapability', 'Payment Initiation', 'Initiate customer payments.', level=2)]
         a3 = json.loads(lf(ws, 'application').read_text())
         a3['instances'] = [{'id': 'APP-HUB', 'type': 'A3.ApplicationComponent', 'version': '1.0', 'name': 'Payments Hub', 'lifecycle_status': 'active'}]

@@ -20,6 +20,9 @@ def legacy_form(doc):
     return d
 
 
+import sys as _s, pathlib as _pl; _s.path.insert(0, str(_pl.Path(__file__).resolve().parent)); from needs import bian as _needs_bian  # noqa: E402 — BX-15: tests that need sdem-bian
+
+@_needs_bian
 class V02CompatibilityTests(unittest.TestCase):
     def test_shipped_examples_in_legacy_form_validate_with_no_issues_or_warnings(self):
         for path in sorted((ROOT / 'examples').glob('*/mappings.json')):

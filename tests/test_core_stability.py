@@ -26,6 +26,9 @@ def snap(ws):   # a fresh process each time: nothing of one step's state reaches
     return json.loads(r.stdout)
 
 
+import sys as _s, pathlib as _pl; _s.path.insert(0, str(_pl.Path(__file__).resolve().parent)); from needs import bian as _needs_bian  # noqa: E402 — BX-15: tests that need sdem-bian
+
+@_needs_bian
 class StableCore(unittest.TestCase):
     FORM = '0.20'
 
@@ -99,6 +102,7 @@ class StableCore(unittest.TestCase):
         self.assertIn('bian', self.S['+bian']['layers']); self.assertNotIn('bian', self.S['-bian']['layers'])
 
 
+@_needs_bian
 class StableCore019(StableCore):   # an unmigrated workspace: 0.19's three core layers, Data inside Application
     FORM = '0.19'
 

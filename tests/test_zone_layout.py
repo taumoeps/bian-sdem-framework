@@ -13,6 +13,9 @@ def inside(a, b, tol=1e-3):   # rect a within rect b
     return a[0] >= b[0] - tol and a[1] >= b[1] - tol and a[2] <= b[2] + tol and a[3] <= b[3] + tol
 
 
+import sys as _s, pathlib as _pl; _s.path.insert(0, str(_pl.Path(__file__).resolve().parent)); from needs import bian as _needs_bian  # noqa: E402 — BX-15: tests that need sdem-bian
+
+@_needs_bian
 class LayoutTests(unittest.TestCase):
     def test_payment_production(self):
         lay = load(EX / 'payment-initiation')

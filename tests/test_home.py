@@ -7,6 +7,9 @@ sys.path.insert(0, str(ROOT))
 from sdem import home  # noqa: E402
 
 
+import sys as _s, pathlib as _pl; _s.path.insert(0, str(_pl.Path(__file__).resolve().parent)); from needs import bian as _needs_bian  # noqa: E402 — BX-15: tests that need sdem-bian
+
+@_needs_bian
 class HomeTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):

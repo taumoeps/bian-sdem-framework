@@ -315,6 +315,10 @@ def _project(workspace, have, catalogue, registry):
     from .aid_fill import _bian
     with tempfile.TemporaryDirectory() as t:
         ws = Path(workspace) if workspace else Path(t)   # outside a workspace: an empty folder (BIAN on where sdem-bian is installed, BX-12)
+        from . import profile as _p, parts
+        if workspace: _p.activate_from(ws)
+        else: _p.deactivate(); (ws / parts.LAYER_FILES[0]).write_text('{}', encoding='utf-8')   # no workspace: BX-12 — the folder holds a BIAN layer so its part is asked for
+        if not parts.bian_on(): raise ValueError(f"{workspace or 'here'}: a core design — AID's projection plans from BIAN's service domains; add BIAN first (sdem profile include ext:bian, with sdem-bian installed)")
         return _bian(ws).call('projection', {'have': have, 'registry': registry or _registry(), 'catalogue': catalogue, 'either': False})['package']
 
 

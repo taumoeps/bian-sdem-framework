@@ -22,6 +22,8 @@ def sdem(*args, ok=(0,)):
     return r.returncode, (json.loads(r.stdout) if r.stdout.strip().startswith('{') else r.stdout)
 
 
+import sys as _s, pathlib as _pl; _s.path.insert(0, str(_pl.Path(__file__).resolve().parent)); from needs import bian as _needs_bian  # noqa: E402 — BX-15: tests that need sdem-bian
+
 class Base(unittest.TestCase):
     def setUp(self):
         self.tmp = Path(tempfile.mkdtemp()); self.ws = self.tmp / 'ws'
@@ -55,6 +57,7 @@ class Base(unittest.TestCase):
     def breaches_of(self, res): return [f['id'] for f in res['risks'] if f['type'] == 'confirmed_breach']
 
 
+@_needs_bian
 class Scenarios(Base):
     """The five infrastructure-to-business scenarios (S1–S5), each from the A4 rehost of INF-K8S-PAY-PROD to INF-K8S-PAY-PROD2."""
 
@@ -108,6 +111,7 @@ class Scenarios(Base):
         self.assertEqual(sorted(w['records'][0] for w in work), ['APP-PAY-HUB', 'ART-PAYHUB-IMG', 'CMP-PAY-EXEC'])   # the artifact the A4 agent found
 
 
+@_needs_bian
 class Acceptance(Base):
     def test_at_rr_01_the_registry_is_checked(self):
         reg = R.load(self.ws); ds = self.e.datasets()

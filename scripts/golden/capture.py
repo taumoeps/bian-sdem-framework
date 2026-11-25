@@ -94,7 +94,7 @@ def capture(out):
         cases['trace/pi-A1'] = ('trace', 'A1', '--graph', tmp / 'payment-initiation-graph', '--json')
         cases['impact/pi-APP'] = ('impact', 'APP-PAY-HUB', '--change', 'retire', '--graph', tmp / 'payment-initiation-graph', '--json')
         cases['bian/search'] = ('bian', 'search', 'payment', 'order', '--json')
-        nb = tmp / 'nb'; sdem('new', '--workspace', nb, '--person', 'golden.check', '--no-bian', *FORM)   # BP-D5: sdem bian add, before BIAN's code moves
+        nb = tmp / 'nb'; sdem('new', '--workspace', nb, '--person', 'golden.check', '--with', 'bian', *FORM)   # 0.22 (BX-15): a design with no BIAN layer yet is a core one — this one starts with BIAN's, empty   # BP-D5: sdem bian add, before BIAN's code moves
         if IDS: to_ids(nb)
         cases['bian/add-pi'] = ('bian', 'add', 'Card Authorization', '--workspace', ws, '--person', 'golden.check', '--dry-run', '--json')
         cases['bian/add-new'] = ('bian', 'add', 'Payment Rail', 'Party Reference Data Directory', '--workspace', nb, '--person', 'golden.check', '--dry-run', '--json')

@@ -61,6 +61,8 @@ def complete():
     }
 
 
+import sys as _s, pathlib as _pl; _s.path.insert(0, str(_pl.Path(__file__).resolve().parent)); from needs import bian as _needs_bian  # noqa: E402 — BX-15: tests that need sdem-bian
+
 class Base(unittest.TestCase):
     def setUp(self):
         self.tmp = Path(tempfile.mkdtemp()); self.addCleanup(shutil.rmtree, self.tmp, True); self.pkg = self.tmp / 'pkg'; self.ws = self.tmp / 'ws'
@@ -75,7 +77,12 @@ class Base(unittest.TestCase):
         return r.returncode, r.stdout, r.stderr
 
 
+@_needs_bian
 class Check(Base):
+    def setUp(self):
+        from sdem import profile as _p0; _p0.deactivate()   # 0.22 (BX-15): as a command run alone — no workspace left open by a test before
+        super().setUp()
+
     def test_a_good_package_passes_and_nothing_is_written(self):   # IN-01, IN-02
         self.write(package()); before = sorted(p.name for p in self.tmp.iterdir())
         code, out, err = self.sdem('intake', self.pkg, '--check', '--allow-gaps', '--json'); self.assertEqual(code, 0, out + err)
@@ -145,7 +152,12 @@ class Check(Base):
         code, out, err = self.sdem('intake', self.tmp / 'nowhere', '--check'); self.assertEqual(code, 2); self.assertIn('no such folder', out + err)
 
 
+@_needs_bian
 class Load(Base):
+    def setUp(self):
+        from sdem import profile as _p0; _p0.deactivate()   # 0.22 (BX-15): as a command run alone — no workspace left open by a test before
+        super().setUp()
+
     def test_one_command_loads_it_and_runs_the_draft_in_order(self):   # IN-05…IN-09
         self.write(package())
         code, out, err = self.sdem('intake', self.pkg, '--workspace', self.ws, '--person', 'sdem-a1-business'); self.assertEqual(code, 2); self.assertIn("a person's", out + err)   # CTL-21

@@ -11,6 +11,9 @@ LEVELS = sorted(F.glob('a*.json'))
 GOLD = json.loads((F / 'mappings.json').read_text())
 
 
+import sys as _s, pathlib as _pl; _s.path.insert(0, str(_pl.Path(__file__).resolve().parent)); from needs import bian as _needs_bian  # noqa: E402 — BX-15: tests that need sdem-bian
+
+@_needs_bian
 class EngineInterfaceTests(unittest.TestCase):
     def setUp(self):
         self.graph = FederatedGraph.load(LEVELS)
@@ -43,6 +46,7 @@ class EngineInterfaceTests(unittest.TestCase):
         self.assertTrue(any('proposal lacks required evidence' in w for w in warnings))
 
 
+@_needs_bian
 class EvaluationTests(unittest.TestCase):
     def test_baseline_scores_as_expected_on_fraud_example(self):
         props = {'mappings': NameOverlapBaseline().propose(FederatedGraph.load(LEVELS))}

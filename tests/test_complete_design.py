@@ -19,12 +19,15 @@ R = lambda i, t, n, **a: {'op': 'add', 'record': {'id': i, 'type': t, 'version':
 CS = lambda layer, recs, rels=(): {'layer': layer, 'reason': 'test', 'changes': recs, 'relationships': {'add': [dict(zip(('source', 'kind', 'target'), r)) for r in rels]}}
 
 
+import sys as _s, pathlib as _pl; _s.path.insert(0, str(_pl.Path(__file__).resolve().parent)); from needs import bian as _needs_bian  # noqa: E402 — BX-15: tests that need sdem-bian
+
+@_needs_bian
 class CompletenessTests(unittest.TestCase):
     def setUp(self):
         self.tmp = Path(tempfile.mkdtemp()); self.addCleanup(shutil.rmtree, self.tmp, True); self.ws = self.tmp / 'ws'
 
     def new(self, *extra):
-        code, out, err = sdem('new', '--workspace', self.ws, '--person', 'jane.architect', *extra, cwd=self.tmp); self.assertEqual(code, 0, err)
+        code, out, err = sdem('new', '--with', 'bian', '--workspace', self.ws, '--person', 'jane.architect', *extra, cwd=self.tmp); self.assertEqual(code, 0, err)
 
     def propose(self, cs, agent):
         f = self.tmp / 'cs.json'; f.write_text(json.dumps(cs), encoding='utf-8')

@@ -13,6 +13,9 @@ ORDER = ['sdem profile include', 'sdem aid --workspace', 'sdem link --workspace'
 def rec(i, t, n, **a): return {'id': i, 'type': t, 'version': '1', 'name': n, 'lifecycle_status': 'planned', 'attributes': a}
 
 
+import sys as _s, pathlib as _pl; _s.path.insert(0, str(_pl.Path(__file__).resolve().parent)); from needs import bian as _needs_bian  # noqa: E402 — BX-15: tests that need sdem-bian
+
+@_needs_bian
 class Order(unittest.TestCase):
     def setUp(self):
         self.tmp = Path(tempfile.mkdtemp()); self.addCleanup(shutil.rmtree, self.tmp, True); self.ws = self.tmp / 'ws'
@@ -29,7 +32,7 @@ class Order(unittest.TestCase):
         self.sdem('change', 'propose', f, '--workspace', self.ws, '--agent', agent, '--person', 'jane.architect')
 
     def design(self):
-        self.sdem('new', '--workspace', self.ws, '--person', 'jane.architect')
+        self.sdem('new', '--with', 'bian', '--workspace', self.ws, '--person', 'jane.architect')
         self.sdem('bian', 'add', 'Payment Order Initiation', '--workspace', self.ws, '--person', 'jane.architect')
         self.propose('business', 'sdem-a1-business', [rec('PROC-PAY', 'A1.BusinessProcess', 'Take the payment'), rec('PROC-SCREEN', 'A1.BusinessProcess', 'Screen for fraud')])
         self.propose('application', 'sdem-a3-application', [rec('APP-HUB', 'A3.ApplicationComponent', 'Payments hub'), rec('API-HUB', 'A3.ApplicationInterface', 'Hub API'), rec('API-X', 'A3.ApplicationInterface', 'Other')])

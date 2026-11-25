@@ -17,6 +17,9 @@ def sdem(*args, cwd):
     return json.loads(r.stdout)
 
 
+import sys as _s, pathlib as _pl; _s.path.insert(0, str(_pl.Path(__file__).resolve().parent)); from needs import bian as _needs_bian  # noqa: E402 — BX-15: tests that need sdem-bian
+
+@_needs_bian
 class AgentEvalTests(unittest.TestCase):
     def setUp(self):
         self.d = Path(tempfile.mkdtemp()) / 'eval'

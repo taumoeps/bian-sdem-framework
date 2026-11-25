@@ -7,6 +7,9 @@ from sdem.acceptance import ReplayEngine, load_cases, run
 ROOT = Path(__file__).resolve().parents[1]
 
 
+import sys as _s, pathlib as _pl; _s.path.insert(0, str(_pl.Path(__file__).resolve().parent)); from needs import bian as _needs_bian  # noqa: E402 — BX-15: tests that need sdem-bian
+
+@_needs_bian
 class HarnessTests(unittest.TestCase):
     def test_replaying_the_hand_runs_passes_every_case(self):
         """The harness is right only if the hand-executed runs, replayed, pass every case and validate."""
@@ -88,6 +91,7 @@ class RulesEngineTests(unittest.TestCase):
         for cid, r in self.rows.items(): self.assertGreaterEqual(r['score']['registry']['f1'], base[cid]['score']['registry']['f1'], cid)
 
 
+@_needs_bian
 class CommandTests(unittest.TestCase):
     def test_sdem_infer_rules_on_a_store(self):
         import contextlib, io, tempfile

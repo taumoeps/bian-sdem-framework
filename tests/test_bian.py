@@ -37,7 +37,9 @@ def setUpModule():   # 0.22 (BX-15): BIAN's code ships only with sdem-bian — t
     if bian is None: raise unittest.SkipTest('needs sdem-bian installed (BIAN\'s code is its own since SDEM 0.22)')
 
 class BianImportTests(unittest.TestCase):
-    def setUp(self): self.tmp = Path(tempfile.mkdtemp())
+    def setUp(self):
+        from sdem import profile as _p; _p.deactivate()   # 0.22 (BX-15): outside a workspace — BIAN on where sdem-bian is installed (BX-12), whatever a test before opened
+        self.tmp = Path(tempfile.mkdtemp())
     def tearDown(self): shutil.rmtree(self.tmp, ignore_errors=True)
 
     def imp(self, *extra, names=('Sample Order Initiation',)):
@@ -197,7 +199,9 @@ class BianImportTests(unittest.TestCase):
 
 class BaseBianTests(unittest.TestCase):
     """The base BIAN that ships with SDEM (docs/design/sdem-bian-base-spec.md, BB-*)."""
-    def setUp(self): self.tmp = Path(tempfile.mkdtemp())
+    def setUp(self):
+        from sdem import profile as _p; _p.deactivate()   # 0.22 (BX-15): outside a workspace — BIAN on where sdem-bian is installed (BX-12), whatever a test before opened
+        self.tmp = Path(tempfile.mkdtemp())
     def tearDown(self): shutil.rmtree(self.tmp, ignore_errors=True)
 
     def test_the_base_is_bians_release_14_without_descriptions(self):  # BB-S01, BB-S02

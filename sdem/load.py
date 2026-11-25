@@ -134,6 +134,9 @@ def load(src, estate, person, keep=None, exclude=None, all_=False, a2=None, dry_
     from . import profile as _p, parts, identity
     if not (Path(estate) / 'mappings.json').exists(): return _load(src, estate, person, keep, exclude, all_, a2, dry_run, now)   # refused there: no workspace
     with _p.opened(estate):   # the workspace's form and profile — and the process as it was, after
+        if a2 and not parts.bian_on():   # BX-15: a BIAN layer given makes the design a BIAN one — from sdem-bian, installed
+            if not parts.usable(): raise parts.missing(f'--a2 {a2}')
+            parts._set(True, 'sdem load with a BIAN layer (BX-15)')
         if parts.migrated() and not identity._VIEW_019[0]:
             with identity.view_019(): return _load(src, estate, person, keep, exclude, all_, a2, dry_run, now)
         return _load(src, estate, person, keep, exclude, all_, a2, dry_run, now)

@@ -32,7 +32,13 @@ def _pattern_file():   # BX-15: the Payment initiation pattern ships with sdem-b
     from sdem import profile
     return profile.shipped('sdem:sdem-pattern-payment-initiation.json')
 
+import sys as _s, pathlib as _pl; _s.path.insert(0, str(_pl.Path(__file__).resolve().parent)); from needs import bian as _needs_bian  # noqa: E402 — BX-15: tests that need sdem-bian
+
+@_needs_bian
 class Links(unittest.TestCase):
+    def setUp(self):
+        from sdem import profile as _p0; _p0.deactivate()   # 0.22 (BX-15): as a command run alone — no workspace left open by a test before
+
     """AID-D01, AID-D02 — the function, on a made-up application layer."""
     def run_(self, instances, rels=(), rejected=()):
         docs = {'A3': {'level': 'A3', 'instances': instances, 'relationships': [dict(zip(('source', 'kind', 'target'), r)) for r in rels]}}
@@ -91,7 +97,11 @@ class Links(unittest.TestCase):
         self.assertEqual(got, [])
 
 
+@_needs_bian
 class Defaults(unittest.TestCase):
+    def setUp(self):
+        from sdem import profile as _p0; _p0.deactivate()   # 0.22 (BX-15): as a command run alone — no workspace left open by a test before
+
     """AID-D08 — the option to complete the draft: a gap with no evidence is placed by default, said to be so, to review first."""
     def run_(self, instances, rels=(), rejected=(), complete=True):
         docs = {'A3': {'level': 'A3', 'instances': instances, 'relationships': [dict(zip(('source', 'kind', 'target'), r)) for r in rels]}}
@@ -126,7 +136,11 @@ class Defaults(unittest.TestCase):
         self.assertIn('rejected', next(o['why'] for o in open_ if o['record'] == 'API-ONE'))
 
 
+@_needs_bian
 class DefaultsBetweenLayers(unittest.TestCase):
+    def setUp(self):
+        from sdem import profile as _p0; _p0.deactivate()   # 0.22 (BX-15): as a command run alone — no workspace left open by a test before
+
     """AID-D09 — with the option, a gap between layers no rule proposes a link for gets a default PROPOSAL: where the others of its kind go."""
     def docs(self):
         return {'A3': {'instances': [rec(f'DATA-{x}', 'A3.DataEntity', f'table {x}') for x in 'ABC'] + [rec('APP-1', 'A3.ApplicationComponent', 'App')],
@@ -155,11 +169,13 @@ class DefaultsBetweenLayers(unittest.TestCase):
         self.assertEqual([g for g in got if g[0] == 'DATA-C'], [])
 
 
+@_needs_bian
 class Parts(unittest.TestCase):
     """AID-D06, AID-D07 — a part a pattern requires: added when the design has nothing of its kind, named when a name says which it is."""
     PID = 'PAT-PAYMENT-INITIATION'
 
     def setUp(self):
+        from sdem import profile as _p0; _p0.deactivate()   # 0.22 (BX-15): as a command run alone — no workspace left open by a test before
         self.st = [{'pattern': (d := json.loads(_pattern_file().read_text(encoding='utf-8')))['pattern'], 'structure': d['structure'], 'file': 'x'}]
 
     def docs(self, a3=(), a3rels=(), a4=()):
@@ -209,6 +225,7 @@ class Parts(unittest.TestCase):
         self.assertIsNone(next(x for x in aid_complete.name_parts(d2, self.MAPS, Metamodel.load(), self.st) if x['part'] == 'key-store')['suggested'])   # two say 'key': a person says which
 
 
+@_needs_bian
 class InAWorkspace(unittest.TestCase):
     def setUp(self):
         self.tmp = Path(tempfile.mkdtemp()); self.addCleanup(shutil.rmtree, self.tmp, True); self.ws = self.tmp / 'ws'
@@ -225,7 +242,7 @@ class InAWorkspace(unittest.TestCase):
     def inferred(self): return sorted((r['source'], r['kind'], r['target'], r['inferred']['rule'], r['inferred'].get('status')) for r in self.a3()['relationships'] if isinstance(r.get('inferred'), dict))
 
     def design(self):
-        self.ok('new', '--workspace', self.ws, '--person', 'jane.architect')
+        self.ok('new', '--with', 'bian', '--workspace', self.ws, '--person', 'jane.architect')
         self.propose('application', 'sdem-a3-application', [rec('APP-LEDGER', 'A3.ApplicationComponent', 'Account ledger'), rec('APP-DOOR', 'A3.ApplicationComponent', 'Front door'), rec('APP-HUB', 'A3.ApplicationComponent', 'Hub'), rec('APP-OTHER', 'A3.ApplicationComponent', 'Other'),
                                                    rec('API-LEDGER', 'A3.ApplicationInterface', 'Ledger internal API'), rec('API-AUTH', 'A3.ApplicationInterface', 'Customer authorisation'),
                                                    rec('API-OPEN', 'A3.ApplicationInterface', 'Open payments')], [('APP-DOOR', 'composition', 'API-OPEN')])
@@ -274,7 +291,7 @@ class InAWorkspace(unittest.TestCase):
         self.assertEqual(self.inferred(), [])
 
     def test_aid_adds_the_parts_and_the_workspace_still_passes_its_checks(self):   # AID-D06, AID-D07
-        self.ok('new', '--workspace', self.ws, '--person', 'jane.architect')
+        self.ok('new', '--with', 'bian', '--workspace', self.ws, '--person', 'jane.architect')
         self.ok('bian', 'add', 'Payment Order Initiation', '--workspace', self.ws, '--person', 'jane.architect')
         self.propose('business', 'sdem-a1-business', [rec('PROC-PAY', 'A1.BusinessProcess', 'Take the payment')])
         self.ok('profile', 'include', PATTERN, '--workspace', self.ws, '--person', 'jane.architect')
@@ -290,7 +307,7 @@ class InAWorkspace(unittest.TestCase):
         self.assertNotIn(one, again['draft']['parts_added'])
 
     def test_a_bian_domain_the_pattern_names_is_brought_in_marked_inferred(self):   # AID-D05
-        self.ok('new', '--workspace', self.ws, '--person', 'jane.architect')
+        self.ok('new', '--with', 'bian', '--workspace', self.ws, '--person', 'jane.architect')
         self.ok('bian', 'add', 'Payment Order Initiation', '--workspace', self.ws, '--person', 'jane.architect')
         self.propose('business', 'sdem-a1-business', [rec('PROC-SCREEN', 'A1.BusinessProcess', 'Screen for fraud'), rec('PROC-PAY', 'A1.BusinessProcess', 'Take the payment')])
         self.ok('profile', 'include', PATTERN, '--workspace', self.ws, '--person', 'jane.architect')

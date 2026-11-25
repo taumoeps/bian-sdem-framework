@@ -7,6 +7,9 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class DocDriftTests(unittest.TestCase):
+    def setUp(self):
+        from sdem import profile as _p0; _p0.deactivate()   # 0.22 (BX-15): as a command run alone — no workspace left open by a test before
+
     def test_no_drift(self):
         r = subprocess.run([sys.executable, str(ROOT / 'scripts' / 'doc_drift.py')], cwd=ROOT, capture_output=True, text=True)
         self.assertEqual(r.returncode, 0, r.stdout)

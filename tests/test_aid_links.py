@@ -8,9 +8,13 @@ V2 = ROOT / 'examples/payment-initiation-v2'
 STATED = {'SERVED_BY', 'AUTOMATED_BY', 'REALIZED_BY', 'ALIGNED_TO', 'STORED_IN'}
 
 
+import sys as _s, pathlib as _pl; _s.path.insert(0, str(_pl.Path(__file__).resolve().parent)); from needs import bian as _needs_bian  # noqa: E402 — BX-15: tests that need sdem-bian
+
+@_needs_bian
 class AidLinksTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
+        from sdem import profile as _p0; _p0.deactivate()   # 0.22 (BX-15): as a command run alone — no workspace left open by a test before
         from sdem.aid_fill import fill
         cls.ws = Path(tempfile.mkdtemp()) / 'ws'; shutil.copytree(V2, cls.ws, ignore=shutil.ignore_patterns('graph'))
         m = json.loads((cls.ws / 'mappings.json').read_text(encoding='utf-8'))
@@ -53,6 +57,7 @@ class AidLinksTests(unittest.TestCase):
         self.assertFalse(any(x['target']['id'] == 'F-PAY-INSTR-AUTHORISATION-STATUS' for x in k))         # one word of two is not enough
 
 
+@_needs_bian
 class FamilyAndOnboardingTests(unittest.TestCase):
     def test_a_bian_field_is_its_objects_own_or_from_a_parent(self):   # fix 3
         from sdem.aid_links import family
@@ -68,6 +73,7 @@ class FamilyAndOnboardingTests(unittest.TestCase):
         for t in ('A1.BusinessEvent', 'A1.Product', 'A1.BusinessInterface', 'A4.Location', 'A3.DataEntity'): self.assertIn(t, types)
 
 
+@_needs_bian
 class TraceDisplayTests(unittest.TestCase):   # the two display issues the v2 report noted
     def test_trace_lists_real_links_and_names_each_zone_once(self):
         import io, contextlib, subprocess, sys, os
@@ -82,6 +88,7 @@ class TraceDisplayTests(unittest.TestCase):   # the two display issues the v2 re
         self.assertEqual(branch.count("ZONE-PAY-INTERNAL 'Internal network"), 1)   # once — not also as PART_OF
 
 
+@_needs_bian
 class ConnectedAndPlacedTests(unittest.TestCase):   # the owner's screenshots of v2 (2026-11-16): unconnected shapes, A4 shapes stacked
     def test_every_shape_of_v2_is_connected_inside_its_layer(self):
         from sdem.containment import layout
@@ -119,6 +126,7 @@ class ConnectedAndPlacedTests(unittest.TestCase):   # the owner's screenshots of
         self.assertEqual([(x['source'], x['kind'], x['target'], x['inferred']['rule']) for x in got], [('APP-1', 'access', 'ENT-1', 'AID-I07')])
 
 
+@_needs_bian
 class PathAsLineTests(unittest.TestCase):   # PL-01 — the owner (2026-11-16): a path read as a network
     def test_a_path_between_two_drawn_nodes_is_a_line_not_a_shape(self):
         from sdem.zone_layout import layout
@@ -129,7 +137,11 @@ class PathAsLineTests(unittest.TestCase):   # PL-01 — the owner (2026-11-16): 
         self.assertFalse(any('PATH-PAY-CORE-HSM' in (l['source'], l['target']) for l in L['links']))
 
 
+@_needs_bian
 class A4ReviewTests(unittest.TestCase):   # ZL-01…ZL-04 — the owner's review of v2's A4 (2026-11-17)
+    def setUp(self):
+        from sdem import profile as _p0; _p0.deactivate()   # 0.22 (BX-15): as a command run alone — no workspace left open by a test before
+
     def lay(self, **kw):
         from sdem.zone_layout import layout
         from sdem.metamodel import Metamodel

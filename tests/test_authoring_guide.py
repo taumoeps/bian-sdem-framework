@@ -12,6 +12,8 @@ from sdem.metamodel import Metamodel  # noqa: E402
 ENV = {**os.environ, 'PYTHONPATH': str(ROOT) + os.pathsep + os.environ.get('PYTHONPATH', '')}
 
 
+import sys as _s, pathlib as _pl; _s.path.insert(0, str(_pl.Path(__file__).resolve().parent)); from needs import bian as _needs_bian  # noqa: E402 — BX-15: tests that need sdem-bian
+
 class Guide(unittest.TestCase):
     @classmethod
     def setUpClass(cls):   # the kept guide is a generated document: the core's (BX-15) — as sdem model regenerate makes it
@@ -73,6 +75,7 @@ class Guide(unittest.TestCase):
                 self.assertIn(f"| {r['source_type']} | `{r['relationship']}` | {r['target_type']} |", self.text)
 
 
+@_needs_bian
 class Kit(unittest.TestCase):
     def test_the_kit_is_the_guide_and_an_sdem_the_author_can_run_the_check_from(self):   # AU-07, IN-02
         import shutil, zipfile

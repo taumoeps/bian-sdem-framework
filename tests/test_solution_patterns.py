@@ -50,6 +50,8 @@ def design():
                  ('DATA-A', 'STORED_IN', 'SYS-DB'), ('DATA-B', 'STORED_IN', 'SYS-DB'), ('DATA-C', 'STORED_IN', 'SYS-DB'), ('IFC-OPEN', 'EXPOSED_THROUGH', 'NODE-EDGE')]}
 
 
+import sys as _s, pathlib as _pl; _s.path.insert(0, str(_pl.Path(__file__).resolve().parent)); from needs import bian as _needs_bian  # noqa: E402 — BX-15: tests that need sdem-bian
+
 class Base(unittest.TestCase):
     def setUp(self):
         self.addCleanup(profile.deactivate)
@@ -73,6 +75,7 @@ class Base(unittest.TestCase):
                 next((b['roles'] for b in bindings if b['anchor'] == anchor), None))
 
 
+@_needs_bian
 class Format(Base):
     """What the pattern format gained: a part may say which records can be it, and may be found anywhere in the design."""
     def pattern(self, **edit):
@@ -112,6 +115,7 @@ class Format(Base):
         self.assertTrue(any('role x is not connected to the anchor' in i for i in issues(roles=[{'id': 'domain', 'type': 'A2.ServiceDomain'}, {'id': 'x', 'type': 'A1.BusinessProcess'}], connectors=[])))
 
 
+@_needs_bian
 class PaymentInitiation(Base):
     def test_it_ships_with_sdem_and_passes_the_profile_check(self):   # CPL-08
         d = _j(profile.shipped(FILE))
@@ -155,10 +159,11 @@ class PaymentInitiation(Base):
         self.assertEqual(patterns.evaluate(datasets, maps, mm, profile.structures(), profile.exceptions()), ([], []))
 
 
+@_needs_bian
 class InAWorkspace(Base):
     """Through the command line: SDEM says a pattern fits, a person includes it, and sdem status says where the design stands — once."""
     def new(self):
-        code, out, err = sdem('new', '--workspace', self.ws, '--person', 'jane.architect', cwd=self.tmp); self.assertEqual(code, 0, err)
+        code, out, err = sdem('new', '--with', 'bian', '--workspace', self.ws, '--person', 'jane.architect', cwd=self.tmp); self.assertEqual(code, 0, err)
         code, out, err = sdem('bian', 'add', 'Payment Order Initiation', '--workspace', self.ws, '--person', 'jane.architect', cwd=self.tmp); self.assertEqual(code, 0, out + err)
 
     def status(self): return json.loads(sdem('status', '--workspace', self.ws, '--json', cwd=self.tmp)[1])
@@ -173,7 +178,7 @@ class InAWorkspace(Base):
         self.assertEqual(sdem('check', '--workspace', self.ws, cwd=self.tmp)[0], 0)   # nothing is applied until a person includes it
 
     def test_a_design_with_no_such_domain_is_offered_nothing(self):   # CPL-09
-        code, out, err = sdem('new', '--workspace', self.ws, '--person', 'jane.architect', cwd=self.tmp); self.assertEqual(code, 0, err)
+        code, out, err = sdem('new', '--with', 'bian', '--workspace', self.ws, '--person', 'jane.architect', cwd=self.tmp); self.assertEqual(code, 0, err)
         self.assertEqual(self.status()['patterns_available'], [])
 
     def test_a_person_includes_it_with_one_command(self):   # CPL-10 (PR-38)

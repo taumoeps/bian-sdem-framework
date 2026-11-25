@@ -90,6 +90,8 @@ def check(pkg, allow_gaps=False):
     """IN-01…IN-04, IN-11: everything wrong with a package, at once — and whether the design is COMPLETE: every record connected, every part
     of every pattern that fits present, counting the links between layers the package gives. Without a workspace. Not complete is an error
     unless `allow_gaps`. Returns the result; the keys starting with `_` are for the loader."""
+    from . import profile as _p0, parts as _pt; _p0.deactivate()   # a package, not a workspace: BIAN on where sdem-bian is installed (BX-12)
+    if not _pt.usable(): raise _pt.missing('sdem intake (a package names its BIAN service domains, and is written in their numbering)')   # BX-15
     from .metamodel import Metamodel
     from .validate import load_registry
     pkg = Path(pkg)
@@ -171,7 +173,7 @@ def check(pkg, allow_gaps=False):
         tmp = Path(tempfile.mkdtemp(prefix='sdem-intake-'))
         try:
             ws = tmp / 'ws'
-            _must('new', '--workspace', ws, '--person', CHECKER, '--form', '0.19', what='starting the throw-away workspace of the check')   # the package's own form (DL-26)
+            _must('new', '--workspace', ws, '--person', CHECKER, '--form', '0.19', '--with', 'bian', what='starting the throw-away workspace of the check')   # BX-15: a package is BIAN's numbering — its workspace has BIAN's layer   # the package's own form (DL-26)
             passed = []
             for layer, d in docs.items():
                 if not d['instances'] and not d['relationships']: continue   # a layer the design says nothing of: nothing to check, nothing to load
@@ -291,7 +293,7 @@ def load(pkg, workspace, person, dry_run=False, allow_gaps=False, accept=False, 
     if (ws / 'mappings.json').exists() and _ids_folder(str(ws.resolve())):   # DL-26: a package is authored in 0.19's form — its data records in the application file
         raise IntakeError(f'{ws} is in SDEM 0.20\'s form — sdem intake starts a design in a new folder: give one that does not exist yet, and it takes the form new workspaces take')
     fresh = not (ws / 'mappings.json').exists()
-    if fresh: _must('new', '--workspace', ws, '--person', person, '--form', '0.19', what='starting the workspace')   # the package's form; migrated below when 0.20 is the default
+    if fresh: _must('new', '--workspace', ws, '--person', person, '--form', '0.19', '--with', 'bian', what='starting the workspace')   # BX-15: a package is BIAN's numbering — its workspace has BIAN's layer   # the package's form; migrated below when 0.20 is the default
     steps.append({'step': 'workspace', 'did': str(ws)})
     tmp = Path(tempfile.mkdtemp(prefix='sdem-intake-'))
     try:

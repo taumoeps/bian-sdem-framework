@@ -15,6 +15,8 @@ def sdem(*args, cwd):
     return r.returncode, r.stdout, r.stderr
 
 
+import sys as _s, pathlib as _pl; _s.path.insert(0, str(_pl.Path(__file__).resolve().parent)); from needs import bian as _needs_bian  # noqa: E402 — BX-15: tests that need sdem-bian
+
 class Base(unittest.TestCase):
     def setUp(self):
         self.tmp = Path(tempfile.mkdtemp()); self.addCleanup(shutil.rmtree, self.tmp, True)
@@ -27,6 +29,7 @@ class Base(unittest.TestCase):
     def w(self, ws, f, d): (ws / f).write_text(json.dumps(d, indent=2), encoding='utf-8')
 
 
+@_needs_bian
 class ExposureTests(Base):   # X1–X5, LC-22, AID-X01
     def test_the_payment_api_is_exposed_through_the_gateway(self):
         m = next(x for x in self.j(EX / 'payment-initiation', 'mappings.json')['mappings'] if x['relationship'] == 'EXPOSED_THROUGH')
@@ -54,6 +57,7 @@ class ExposureTests(Base):   # X1–X5, LC-22, AID-X01
         self.assertEqual(pairs, []); self.assertEqual(unresolved[0]['id'], 'IFC-PAY-API'); self.assertEqual(sorted(unresolved[0]['candidates']), ['INF-APIGW-PAY', 'INF-WAF'])
 
 
+@_needs_bian
 class ConnectionTests(Base):   # X6, AID-C01…C06
     def unlinked(self):   # acquired-fintech as it was before its A4 links were recorded (2026-11-14): its platforms linked to nothing inside A4
         ws = self.copy('acquired-fintech'); d = self.j(ws, 'a4-technology.json')
@@ -109,6 +113,7 @@ class ConnectionTests(Base):   # X6, AID-C01…C06
                       [(r['source'], r['kind'], r['target'], r['inferred']['rule'], r['inferred']['confidence']) for r in links])   # production, not UAT
 
 
+@_needs_bian
 class DatabaseConnectionTests(Base):   # LC-21 counts only links to another shape; AID-C02 reads stored_in lists and the environment
     def test_a_database_on_a_network_but_used_by_no_shape_is_named_and_proposed(self):
         from sdem.a4_connect import propose_connections
@@ -137,6 +142,7 @@ class DatabaseConnectionTests(Base):   # LC-21 counts only links to another shap
         self.assertEqual([(r['source'], r['target']) for r in links if r['target'] == 'SYS-DB'], [('NODE-APP', 'SYS-DB')])   # the hub's node reaches the database; the ingress's does not
 
 
+@_needs_bian
 class BuiltAsTests(Base):   # metamodel 0.14.0: an application BUILT_AS its artifact (AID-X02)
     def test_the_payment_hub_is_built_as_its_image(self):
         m = next(x for x in self.j(EX / 'payment-initiation', 'mappings.json')['mappings'] if x['relationship'] == 'BUILT_AS')

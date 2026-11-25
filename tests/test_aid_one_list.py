@@ -27,11 +27,14 @@ def sdem(*args, cwd):
 def rec(i, t, n, **a): return {'id': i, 'type': t, 'version': '1', 'name': n, 'lifecycle_status': 'planned', 'attributes': a}
 
 
+import sys as _s, pathlib as _pl; _s.path.insert(0, str(_pl.Path(__file__).resolve().parent)); from needs import bian as _needs_bian  # noqa: E402 — BX-15: tests that need sdem-bian
+
+@_needs_bian
 class AidOneListTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.d = Path(tempfile.mkdtemp())
-        assert sdem('new', '--workspace', W, '--person', 'jane.architect', '--form', '0.19', cwd=cls.d)[0] == 0
+        assert sdem('new', '--with', 'bian', '--workspace', W, '--person', 'jane.architect', '--form', '0.19', cwd=cls.d)[0] == 0
         ws = cls.d / W
         a1 = json.loads(lf(ws, 'business').read_text(encoding='utf-8'))
         a1['instances'] = [rec('PRC-POST', 'A1.BusinessProcess', 'Post journal entries', invokes=['SO-FINANCIAL-ACCOUNTING-CAPTURE-LEDGER-POSTING'])]
@@ -77,6 +80,7 @@ if __name__ == '__main__':
     unittest.main()
 
 
+@_needs_bian
 class SecondPassTests(unittest.TestCase):   # AID-M03 after approvals — the public twin's run 2, F15 (2026-11-17)
     def test_a_rejection_does_not_bring_in_the_next_best_name_match(self):
         import json, os, shutil, subprocess, sys, tempfile
@@ -88,7 +92,7 @@ class SecondPassTests(unittest.TestCase):   # AID-M03 after approvals — the pu
             self.assertEqual(r.returncode, 0, r.stderr[-600:]); return r.stdout
         R = lambda i, t, n, **a: {'op': 'add', 'record': {'id': i, 'type': t, 'version': '1', 'name': n, 'lifecycle_status': 'planned', 'attributes': a}}
         cs = lambda layer, recs, rels=(): {'layer': layer, 'reason': 'test', 'changes': recs, 'relationships': {'add': [dict(zip(('source', 'kind', 'target'), r)) for r in rels]}}
-        sdem('new', '--workspace', ws, '--person', 'jane.architect')
+        sdem('new', '--with', 'bian', '--workspace', ws, '--person', 'jane.architect')
         (tmp / 'a1.json').write_text(json.dumps(cs('business', [R('PROC-SUBMIT', 'A1.BusinessProcess', 'Receive the payment', invokes=['SO-PAYMENT-ORDER-INITIATION-INITIATE'])])))
         (tmp / 'a3.json').write_text(json.dumps(cs('application', [R('APP-EDGE', 'A3.ApplicationComponent', 'API ingress'), R('IFC', 'A3.ApplicationInterface', 'Payment Initiation API'),
                                                           R('OP', 'A3.APIOperation', 'Create domestic payment', method='POST', path='/domestic-payments', payload_fields=['ConsentId', 'DomesticPaymentId', 'Status']),

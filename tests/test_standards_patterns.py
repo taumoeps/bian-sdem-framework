@@ -21,6 +21,8 @@ def sdem(*args, cwd):
     return r.returncode, r.stdout + r.stderr
 
 
+import sys as _s, pathlib as _pl; _s.path.insert(0, str(_pl.Path(__file__).resolve().parent)); from needs import bian as _needs_bian  # noqa: E402 — BX-15: tests that need sdem-bian
+
 class Base(unittest.TestCase):
     def setUp(self):
         self.addCleanup(profile.deactivate)
@@ -65,6 +67,7 @@ class Base(unittest.TestCase):
         fs = self.findings(rule, record); return fs[0]['outcome'] if fs else 'not_applicable'
 
 
+@_needs_bian
 class ProfileTests(Base):
     def test_the_example_profile_includes_its_standards_and_pattern(self):        # PR-13, PR-17
         merged = profile.resolve(self.tmp / 'profiles' / 'bank-with-standards.json')
@@ -113,6 +116,7 @@ class ProfileTests(Base):
         with self.assertRaises(profile.ProfileError): self.issues({'includes': ['../profiles/patterns/bad.json']})
 
 
+@_needs_bian
 class EvaluationTests(Base):
     def test_comparisons(self):
         t = lambda op, v, have: comply.test({'attribute': 'a', 'op': op, 'value': v}, have, AS_OF)
@@ -178,6 +182,7 @@ class EvaluationTests(Base):
         (self.tmp / 'empty').mkdir(); self.assertEqual(sdem('comply', '--workspace', self.tmp / 'empty', cwd=self.tmp)[0], 2)
 
 
+@_needs_bian
 class ExceptionTests(Base):
     def test_a_person_grants_a_time_limited_exception(self):                        # PR-18
         self.set_a4('INF-K8S-PAY-PROD', network_zone='internal')

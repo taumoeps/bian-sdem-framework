@@ -29,7 +29,9 @@ def setUpModule():   # 0.22 (BX-15): BIAN's code ships only with sdem-bian — t
 
 class AidInferenceTests(unittest.TestCase):
     @classmethod
-    def setUpClass(cls): cls.cat, _ = base_layer()
+    def setUpClass(cls):
+        from sdem import profile as _p0; _p0.deactivate()   # 0.22 (BX-15): as a command run alone — no workspace left open by a test before
+        cls.cat, _ = base_layer()
 
     def test_upstream_from_a_deployment_named_after_its_application(self):  # AID-R05, R06, R03: A4 → A3 → A2 → A1
         dep = {'id': 'DEP-1', 'type': 'A4.Deployment', 'version': '1', 'name': 'Term Deposit Engine — production', 'lifecycle_status': 'planned',

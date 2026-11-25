@@ -33,6 +33,9 @@ def start(ws, **kw):
     with contextlib.redirect_stdout(io.StringIO()): assert new.main(args) == 0
     return ws
 
+import sys as _s, pathlib as _pl; _s.path.insert(0, str(_pl.Path(__file__).resolve().parent)); from needs import bian as _needs_bian  # noqa: E402 — BX-15: tests that need sdem-bian
+
+@_needs_bian
 class LendingOnboardingTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):

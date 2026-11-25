@@ -55,6 +55,9 @@ def fake(folder, name, pack, mark):
         prog = folder / f'sdem-{name}'; prog.write_text(f'#!{sys.executable}\n' + body); prog.chmod(0o755)
 
 
+import sys as _s, pathlib as _pl; _s.path.insert(0, str(_pl.Path(__file__).resolve().parent)); from needs import bian as _needs_bian  # noqa: E402 — BX-15: tests that need sdem-bian
+
+@_needs_bian
 class ExtensionsThatInfer(unittest.TestCase):
     @classmethod
     def setUpClass(cls):

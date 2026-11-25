@@ -22,6 +22,8 @@ def found(doc, *ids):
     return [x for x in e + w if any(f'LC-{i}' in x for i in ids)]
 
 
+import sys as _s, pathlib as _pl; _s.path.insert(0, str(_pl.Path(__file__).resolve().parent)); from needs import bian as _needs_bian  # noqa: E402 — BX-15: tests that need sdem-bian
+
 class ModelTests(unittest.TestCase):
     def test_a_zone_is_a_grouping_with_a_level_and_a_kind(self):   # option 1, 2026-11-14: an ArchiMate Grouping, not a network (metamodel 0.13.0)
         mm = Metamodel.load()
@@ -36,6 +38,7 @@ class ModelTests(unittest.TestCase):
         self.assertEqual(at['AT-A3-07']['status'], 'deprecated')   # a component's zone is its platform's (Z3)
 
 
+@_needs_bian
 class PlacementTests(unittest.TestCase):   # LC-16
     def test_the_payment_example_places_every_shape(self):
         shapes, parent, _ = zones_of(a4(), Metamodel.load())
@@ -57,6 +60,7 @@ class PlacementTests(unittest.TestCase):   # LC-16
         w = found(doc, 16); self.assertEqual(len(w), 1); self.assertIn('no network zones recorded', w[0])
 
 
+@_needs_bian
 class StructureTests(unittest.TestCase):   # LC-17
     def test_a_kind_wrong_for_its_level_is_an_error(self):
         d = a4(); next(i for i in d['instances'] if i['id'] == 'ZONE-PAY-DMZ')['attributes']['zone_kind'] = 'private'
@@ -78,6 +82,7 @@ class StructureTests(unittest.TestCase):   # LC-17
         self.assertTrue(any('a level-0 zone has no internal zone yet' in x for x in w), w)
 
 
+@_needs_bian
 class FlatZoneTests(unittest.TestCase):   # ZF-01…ZF-06 — the owner's decisions D3, D4 (2026-11-17); the public twin, F1
     def flat(self):
         Z = lambda i, lvl, kind: {'id': i, 'type': 'A4.NetworkZone', 'version': '1', 'name': i, 'lifecycle_status': 'active', 'attributes': {'zone_level': lvl, 'zone_kind': kind}}
@@ -115,6 +120,7 @@ class FlatZoneTests(unittest.TestCase):   # ZF-01…ZF-06 — the owner's decisi
         self.assertEqual(sorted(z['id'] for z in layout(self.flat(), Metamodel.load(), environment='all')['zones']), ['ZONE-APP', 'ZONE-DATA', 'ZONE-EDGE', 'ZONE-INTEG', 'ZONE-SEC'])
 
 
+@_needs_bian
 class DmzTests(unittest.TestCase):   # LC-18
     def test_internet_facing_belongs_in_a_dmz_and_only_there(self):
         d = a4(); next(i for i in d['instances'] if i['id'] == 'INF-APIGW-PAY')['attributes']['internet_facing'] = False
@@ -133,6 +139,7 @@ class ImpactTests(unittest.TestCase):   # KG-Q-08 with zones
         self.assertEqual(got['ZONE-PAY-INTERNAL']['via'], ['RA4-39'])
 
 
+@_needs_bian
 class UnconnectedTests(unittest.TestCase):   # LC-21
     def test_a_shape_connected_to_nothing_is_named(self):
         docs = {f: json.loads((PAY / f).read_text(encoding='utf-8')) for f in FILES}

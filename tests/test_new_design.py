@@ -16,9 +16,12 @@ def sdem(*args, cwd, ok=(0,)):
     return r.returncode, r.stdout + r.stderr, (json.loads(r.stdout) if r.stdout.strip().startswith('{') else None)
 
 
+import sys as _s, pathlib as _pl; _s.path.insert(0, str(_pl.Path(__file__).resolve().parent)); from needs import bian as _needs_bian  # noqa: E402 — BX-15: tests that need sdem-bian
+
+@_needs_bian
 class NewDesignTests(unittest.TestCase):
     def setUp(self):
-        self.tmp = Path(tempfile.mkdtemp()); sdem('new', '--workspace', self.tmp / 'ws', '--person', 'steven', cwd=self.tmp)
+        self.tmp = Path(tempfile.mkdtemp()); sdem('new', '--with', 'bian', '--workspace', self.tmp / 'ws', '--person', 'steven', cwd=self.tmp)
 
     def tearDown(self): shutil.rmtree(self.tmp, ignore_errors=True)
 

@@ -166,6 +166,21 @@ jobs:
         shell: bash
         run: for i in 1 2 3; do python -m pip install --no-deps "sdem-bian @ git+https://github.com/taumoeps/sdem-extensions@main#subdirectory=metamodel/bian" && break; [ $i = 3 ] && exit 1; sleep 20; done   # GitHub sometimes refuses a clone for a moment
       - run: python ci/shard.py 4 ${{ matrix.part }}
+  core:   # 0.22 step 4a (BX-15): SDEM's core alone — no sdem-bian installed; the tests that need it skip (tests/needs.py), the rest must pass
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: The core suite, without sdem-bian
+        run: python -m unittest discover -s tests
+      - name: A core design, start to trace, without sdem-bian
+        run: |
+          python -m sdem new --workspace /tmp/core --person ci.check
+          python -m sdem check --workspace /tmp/core
+          python -m sdem model check
+
   package:
     # SDEM as an organisation installs it: build the wheel, install it in a clean environment, run every journey from
     # outside the repository — catches anything that needs the repository's folders (docs/, examples/, scripts/).

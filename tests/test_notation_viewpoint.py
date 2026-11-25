@@ -9,6 +9,9 @@ from sdem.metamodel import Metamodel  # noqa: E402
 from sdem.validate import load_registry  # noqa: E402
 
 
+import sys as _s, pathlib as _pl; _s.path.insert(0, str(_pl.Path(__file__).resolve().parent)); from needs import bian as _needs_bian  # noqa: E402 — BX-15: tests that need sdem-bian
+
+@_needs_bian
 class Notation(unittest.TestCase):
     def test_every_type_link_and_relationship_has_a_notation(self):   # ARV-12, ARV-14, ARV-16
         self.assertEqual(N.check(Metamodel.base(), load_registry()), [])
@@ -36,6 +39,7 @@ class Notation(unittest.TestCase):
         self.assertEqual(sd['archimate']['element'], 'Business Function')
 
 
+@_needs_bian
 class Viewpoint(unittest.TestCase):
     def test_the_architecture_viewpoint_agrees_with_the_metamodel(self):   # ARV-18, ARV-21, ARV-05
         self.assertIn('architecture', V.names())

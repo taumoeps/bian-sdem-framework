@@ -31,6 +31,9 @@ def sdem(*args):
 def codes(r, level=None): return [f['code'] for f in r['findings'] if level in (None, f['level'])]
 
 
+import sys as _s, pathlib as _pl; _s.path.insert(0, str(_pl.Path(__file__).resolve().parent)); from needs import bian as _needs_bian  # noqa: E402 — BX-15: tests that need sdem-bian
+
+@_needs_bian
 class VerifyTests(unittest.TestCase):
     def test_a_cited_narrative_passes(self):   # UX-D09
         r = verify(GOOD, WS)

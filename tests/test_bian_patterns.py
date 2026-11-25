@@ -38,6 +38,8 @@ def design(fp='FP-TRANSACT'):
                  ('DATA-W', 'STORED_IN', 'SYS-W'), ('APP-W', 'DEPLOYED_AS', 'DEP-W')]}
 
 
+import sys as _s, pathlib as _pl; _s.path.insert(0, str(_pl.Path(__file__).resolve().parent)); from needs import bian as _needs_bian  # noqa: E402 — BX-15: tests that need sdem-bian
+
 class Base(unittest.TestCase):
     def setUp(self):
         self.addCleanup(profile.deactivate)
@@ -57,6 +59,7 @@ class Base(unittest.TestCase):
         return {(f['pattern']['id'], f['part']['id']): (f['outcome'], f['detail']) for f in found}
 
 
+@_needs_bian
 class Shipped(Base):
     def test_both_ship_and_pass_the_profile_check(self):   # CPL-12
         for name, pid, fp, artefact in ((T, 'PAT-BIAN-TRANSACT', 'FP-TRANSACT', 'transaction'), (F, 'PAT-BIAN-FULFILL', 'FP-FULFILL', 'arrangement')):
@@ -100,11 +103,12 @@ class Shipped(Base):
         self.assertIn('AID-PAT-BIAN-TRANSACT-DEPLOYMENT', ids)                                          # what only the second asks for
 
 
+@_needs_bian
 class InAWorkspace(Base):
     def test_status_offers_the_pattern_for_the_domains_kind(self):   # CPL-12, CPL-09
         for domain, want in (('Payment Order Initiation', T), ('Current Account', F)):
             ws = self.tmp / domain.replace(' ', '-')
-            self.assertEqual(sdem('new', '--workspace', ws, '--person', 'jane.architect', cwd=self.tmp)[0], 0)
+            self.assertEqual(sdem('new', '--with', 'bian', '--workspace', ws, '--person', 'jane.architect', cwd=self.tmp)[0], 0)
             code, out, err = sdem('bian', 'add', domain, '--workspace', ws, '--person', 'jane.architect', cwd=self.tmp); self.assertEqual(code, 0, out + err)
             s = json.loads(sdem('status', '--workspace', ws, '--json', cwd=self.tmp)[1])
             got = [p['include'] for p in s['patterns_available']]

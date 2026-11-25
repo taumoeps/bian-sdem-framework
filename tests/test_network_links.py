@@ -25,6 +25,9 @@ def a4(instances, relationships):
             'relationships': [{'source': s, 'kind': k, 'target': t} for s, k, t in relationships]}
 
 
+import sys as _s, pathlib as _pl; _s.path.insert(0, str(_pl.Path(__file__).resolve().parent)); from needs import bian as _needs_bian  # noqa: E402 — BX-15: tests that need sdem-bian
+
+@_needs_bian
 class RuleTests(unittest.TestCase):   # RA4-37
     def test_a_platform_is_connected_to_a_network_by_a_rule_of_its_own(self):
         mm = Metamodel.load()
@@ -37,6 +40,7 @@ class RuleTests(unittest.TestCase):   # RA4-37
         self.assertEqual((at['name'], at['status']), ('connects', 'deprecated'))
 
 
+@_needs_bian
 class OnANetworkTests(unittest.TestCase):   # LC-15
     def warnings(self, doc):
         return [w for w in check_level(doc, Metamodel.load())[1] if 'LC-15' in w]
@@ -79,6 +83,7 @@ class FollowedTests(unittest.TestCase):   # KG-Q-08
         self.assertEqual(code, 0, err); self.assertIn('CONNECTED_TO', out); self.assertIn('NET-PAY-PRIVATE', out)
 
 
+@_needs_bian
 class MigrationTests(unittest.TestCase):   # 0.8.1 → 0.9.0
     def test_connects_becomes_links_once(self):
         step = next(m for m in migrate._j(migrate.RECORD)['migrations'] if m['to'] == '0.9.0')['steps']

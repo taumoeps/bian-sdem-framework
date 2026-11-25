@@ -40,6 +40,8 @@ def shape_of(d):
             'zones': sorted((z['id'], json.dumps(z.get('check'), sort_keys=True), z.get('entity')) for z in S['zones'])}
 
 
+import sys as _s, pathlib as _pl; _s.path.insert(0, str(_pl.Path(__file__).resolve().parent)); from needs import bian as _needs_bian  # noqa: E402 — BX-15: tests that need sdem-bian
+
 class Base(unittest.TestCase):
     def setUp(self):
         self.addCleanup(profile.deactivate)
@@ -57,6 +59,7 @@ class Base(unittest.TestCase):
         return patterns.extract(path, merged or self.merged, self.base, {'id': PID, 'title': 'Secure API edge', 'version': '1.0', 'owner': 'security architecture'}, anchor)
 
 
+@_needs_bian
 class Extraction(Base):
     def test_the_four_formats_give_one_pattern(self):                                  # PR-27, PR-28
         approved = shape_of(_j(self.tmp / 'profiles' / 'patterns' / 'example-secure-api-edge.json'))
@@ -131,6 +134,7 @@ class Extraction(Base):
         self.assertEqual(code, 2); self.assertIn('draw.io (.drawio), Visio (.vsdx), PlantUML (.puml) and Mermaid', txt)
 
 
+@_needs_bian
 class ProfileCheck(Base):
     def issues(self, edit):
         p = self.tmp / 'profiles' / 'patterns' / 'example-secure-api-edge.json'; d = _j(p); edit(d['structure']); _w(p, d)
@@ -185,6 +189,7 @@ class Design(Base):
         d = _j(self.ws / 'a3-application.json'); fn(d); _w(self.ws / 'a3-application.json', d)
 
 
+@_needs_bian
 class Evaluation(Design):
     def parts(self, record='APP-PAY-HUB'):
         datasets, maps, mm, _ = comply.workspace_data(self.ws)
@@ -281,6 +286,7 @@ class Evaluation(Design):
         self.assertEqual(code, 1); self.assertIn(f'NOT MET    {PID}/container-platform', txt)
 
 
+@_needs_bian
 class Drawing(Design):
     def test_the_pattern_and_the_design_over_it(self):                                  # PR-25
         code, svg = sdem('pattern', 'draw', '--file', self.tmp / 'profiles' / 'patterns' / 'example-secure-api-edge.json', '--profile', self.tmp / 'profiles' / 'bank-with-structures.json', cwd=self.tmp)

@@ -46,6 +46,8 @@ def phase_b(reg):
     return reg
 
 
+import sys as _s, pathlib as _pl; _s.path.insert(0, str(_pl.Path(__file__).resolve().parent)); from needs import bian as _needs_bian  # noqa: E402 — BX-15: tests that need sdem-bian
+
 class Base(unittest.TestCase):
     def setUp(self):
         self.tmp = Path(tempfile.mkdtemp()); self.ws = self.tmp / 'ws'
@@ -68,6 +70,7 @@ class Base(unittest.TestCase):
     def disp(self, an): return {e['requirement']: e['disposition'] for e in an['requirements']}
 
 
+@_needs_bian
 class TestA_NonCompliantTarget(Base):
     def test_four_proposed_breaches_are_governed(self):
         v = self.rehost_and_assess(); an = v['analysis']
@@ -107,6 +110,7 @@ class TestA_NonCompliantTarget(Base):
         self.assertIn('RR-E06', str(c.exception))
 
 
+@_needs_bian
 class TestB_CompliantTarget(Base):
     def setUp(self):
         super().setUp(); R.save(self.ws, phase_b(R.load(self.ws)))
@@ -122,6 +126,7 @@ class TestB_CompliantTarget(Base):
         self.assertTrue(self.e.plan('CE-001', ORCH, P)['work_items'])
 
 
+@_needs_bian
 class TestC_MissingProposedEvidence(Base):
     def test_no_proposed_evidence_is_not_compliance(self):
         reg = phase_b(R.load(self.ws)); reg['measurements'] = [m for m in reg['measurements'] if not (m['record'] == 'APP-PAY-HUB' and m['metric'] == 'p95_latency' and m['state'] == 'proposed')]
@@ -134,6 +139,7 @@ class TestC_MissingProposedEvidence(Base):
 
 
 @unittest.skipIf(os.name == 'nt' or not shutil.which('ssh-keygen'), 'SSH commit signing via ssh-keygen (POSIX CI)')
+@_needs_bian
 class TestD_HumanGovernanceBypass(Base):
     """An agent can type a person's name; it cannot sign as that person. Verification and the fail-closed gate rest on the signature."""
     def setUp(self):
@@ -206,6 +212,7 @@ class TestD_HumanGovernanceBypass(Base):
         self.assertEqual(self.statuses()['accept_impact'], 'not_an_approver')
 
 
+@_needs_bian
 class TestE_WorkspaceBaseline(Base):
     def test_a_baseline_is_recorded_and_edits_after_it_are_noticed(self):
         nw = self.tmp / 'fresh'
@@ -240,6 +247,7 @@ class TestE_WorkspaceBaseline(Base):
         self.assertEqual(d['error']['code'], 'needs_person')
 
 
+@_needs_bian
 class TestF_MultiValueOptions(Base):
     def test_repeated_options_keep_every_value(self):
         self.e.propose(json.loads(REHOST.read_text()), AGENT['A4'], P); self.e.request_validation('CE-001', ORCH, P)

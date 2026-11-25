@@ -8,12 +8,15 @@ HIGH = ROOT / 'docs' / 'design' / 'architecture-metamodel-high-level-spec.md'
 HIGH_SHA256 = '2e6a7d70d1d5006d18b506c9aaf05439f9042021bd9d3989fb327e49072f4bf1'
 
 
+import sys as _s, pathlib as _pl; _s.path.insert(0, str(_pl.Path(__file__).resolve().parent)); from needs import bian as _needs_bian  # noqa: E402 — BX-15: tests that need sdem-bian
+
 class HighLevelSpecTests(unittest.TestCase):
     def test_high_level_spec_is_unchanged(self):
         self.assertEqual(hashlib.sha256(HIGH.read_bytes()).hexdigest(), HIGH_SHA256,
                          'docs/design/architecture-metamodel-high-level-spec.md changed: the owner must approve any edit (then update HIGH_SHA256)')
 
 
+@_needs_bian
 class DetailSpecTests(unittest.TestCase):
     def test_current(self):
         from sdem.metamodel_spec import main

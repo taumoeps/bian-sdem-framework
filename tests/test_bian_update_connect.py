@@ -11,6 +11,9 @@ ROOT = Path(__file__).resolve().parents[1]
 ME = 'jane.architect'
 
 
+import sys as _s, pathlib as _pl; _s.path.insert(0, str(_pl.Path(__file__).resolve().parent)); from needs import bian as _needs_bian  # noqa: E402 — BX-15: tests that need sdem-bian
+
+@_needs_bian
 class BianUpdateAndConnectTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -19,7 +22,7 @@ class BianUpdateAndConnectTests(unittest.TestCase):
         shutil.copytree(ROOT / 'examples' / 'designs' / 'confluence-folder-export', cls.base / 'export')
         for a in (('bian', 'import', '--base', '--only', 'Payment Order Initiation', 'Payment Rail', '-o', 'bian/a2-service-domain.json'),
                   ('transform', 'run', 'export', '-o', 'history', '--ocr', 'off'),
-                  ('new', '--workspace', 'workspaces/payments', '--person', ME),   # starts from the shared BIAN layer, bian/a2-service-domain.json
+                  ('new', '--with', 'bian', '--workspace', 'workspaces/payments', '--person', ME),   # starts from the shared BIAN layer, bian/a2-service-domain.json
                   ('load', 'history', '--workspace', 'workspaces/payments', '--person', ME, '--exclude', 'HIS-A3-PAYMENT-ORDER'),
                   ('bian', 'add', '--workspace', 'workspaces/payments', 'Payment Order Initiation', 'Payment Rail', '--person', ME),
                   ('link', '--workspace', 'workspaces/payments', '--out', 'links')):

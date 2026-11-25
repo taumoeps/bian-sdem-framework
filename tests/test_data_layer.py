@@ -70,6 +70,9 @@ def diffs(a, b, p=''):
     elif a != b and not p.endswith('sha256'): yield p
 
 
+import sys as _s, pathlib as _pl; _s.path.insert(0, str(_pl.Path(__file__).resolve().parent)); from needs import bian as _needs_bian  # noqa: E402 — BX-15: tests that need sdem-bian
+
+@_needs_bian
 class Boundary(unittest.TestCase):   # DL-10…DL-13, DL-20
     def test_p2_the_32_answers_of_0_19_translated_differ_only_where_named(self):
         out = Path(tempfile.mkdtemp())
@@ -164,6 +167,7 @@ class Reconciled(unittest.TestCase):   # DL-20: each example, 0.19 against 0.20 
             self.assertEqual([r['id'] for r in j(new / 'requirements.json')['requirements']], [r['id'] for r in j(old / 'requirements.json')['requirements']])
 
 
+@_needs_bian
 class NamedInEitherForm(unittest.TestCase):   # DL-25: a layer named in a change set or a profile means one layer, in either form
     @classmethod
     def setUpClass(cls):

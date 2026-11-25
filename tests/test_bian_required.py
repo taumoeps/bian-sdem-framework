@@ -56,5 +56,15 @@ class BianRequired(unittest.TestCase):
         self.assertEqual(code, 0, err)
 
 
+    def test_a_core_design_counts_its_gaps_by_its_own_layers(self):   # the 0.21.13 known limit: without BIAN, sdem trace GAPS expected BIAN's layer
+        ws = self.tmp / 'lib'; shutil.copytree(ROOT / 'examples' / '0.20' / 'library-holds', ws, ignore=shutil.ignore_patterns('graph'))
+        self.assertEqual(self.sdem('build', '--workspace', ws, '-o', self.tmp / 'lib-g')[0], 0)
+        code, out, err = self.sdem('trace', 'GAPS', '--graph', self.tmp / 'lib-g')
+        import re
+        m = re.search(r'(\d+) record\(s\): (\d+) reach every other layer', out)
+        self.assertTrue(m, out[:400]); self.assertGreater(int(m.group(2)), 0, out[:400])   # 13 of 25 — 0.21.13 counted none
+        self.assertNotIn('BIAN', out.split('\n', 2)[0])
+
+
 if __name__ == '__main__':
     unittest.main()

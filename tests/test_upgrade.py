@@ -25,6 +25,8 @@ def fingerprint(d):
     return {p.relative_to(d).as_posix(): p.read_bytes() for p in sorted(d.rglob('*')) if p.is_file() and '.git' not in p.parts}
 
 
+import sys as _s, pathlib as _pl; _s.path.insert(0, str(_pl.Path(__file__).resolve().parent)); from needs import bian as _needs_bian  # noqa: E402 — BX-15: tests that need sdem-bian
+
 class ReleaseNotesTests(unittest.TestCase):
     def test_every_release_since_0_10_has_its_notes(self):  # UF-03
         doc = json.loads(U.NOTES.read_text())
@@ -60,6 +62,7 @@ class ReleaseNotesTests(unittest.TestCase):
         self.assertFalse(U.satisfies('0.12.0', '>=0.13')); self.assertTrue(U.satisfies('0.16.1', '==0.16.1')); self.assertFalse(U.satisfies('1.0.0', '<1.0'))
 
 
+@_needs_bian
 class UpgradeCheckTests(unittest.TestCase):
     def setUp(self):
         """A repository as an architect has it on SDEM 0.14.0: pinned, two workspaces on metamodel 0.7.0, a team change to AGENTS.md."""

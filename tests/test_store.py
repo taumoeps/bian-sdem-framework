@@ -21,6 +21,9 @@ def inputs(estate):
     return sorted(str(p) for p in e.glob('a[1-4]-*.json')) + [str(e / 'mappings.json')]
 
 
+import sys as _s, pathlib as _pl; _s.path.insert(0, str(_pl.Path(__file__).resolve().parent)); from needs import bian as _needs_bian  # noqa: E402 — BX-15: tests that need sdem-bian
+
+@_needs_bian
 class StoreTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):

@@ -9,6 +9,9 @@ F = ROOT / 'examples/card-fraud-alerts'
 FILES = sorted(F.glob('a*.json')) + [F / 'mappings.json']
 
 
+import sys as _s, pathlib as _pl; _s.path.insert(0, str(_pl.Path(__file__).resolve().parent)); from needs import bian as _needs_bian  # noqa: E402 — BX-15: tests that need sdem-bian
+
+@_needs_bian
 class LevelGraphTests(unittest.TestCase):
     def setUp(self):
         self.mm = Metamodel.load()
@@ -44,6 +47,7 @@ class LevelGraphTests(unittest.TestCase):
         self.assertTrue(any('duplicate' in x for x in LevelGraph(d, self.mm).validate()))
 
 
+@_needs_bian
 class FederatedGraphTests(unittest.TestCase):
     def setUp(self):
         self.fg = FederatedGraph.load(FILES)
@@ -108,6 +112,7 @@ if __name__ == '__main__':
     unittest.main()
 
 
+@_needs_bian
 class V051Tests(unittest.TestCase):
     def test_graph_trace_exits_1_on_empty_trace(self):
         from sdem.graph import main
@@ -148,6 +153,7 @@ class V051Tests(unittest.TestCase):
         self.assertEqual(fg.instance('POST /fraud/alerts')['attributes']['method'], 'POST')
 
 
+@_needs_bian
 class PaymentInitiationExampleTests(unittest.TestCase):
     P = ROOT / 'examples/payment-initiation'
 
@@ -168,6 +174,7 @@ class PaymentInitiationExampleTests(unittest.TestCase):
         op = next(i for i in a2['instances'] if i['id'] == 'SO-PI-04'); self.assertEqual(op['attributes']['action_term'], 'Retrieve')
 
 
+@_needs_bian
 class LegacyLedgerExampleTests(unittest.TestCase):
     P = ROOT / 'examples/legacy-core-ledger'
 
@@ -212,6 +219,7 @@ class FollowCompositionTests(unittest.TestCase):
         self.assertIn('LM-ACCT', modules)
 
 
+@_needs_bian
 class AcquiredFintechExampleTests(unittest.TestCase):
     P = ROOT / 'examples/acquired-fintech'
 
@@ -236,6 +244,7 @@ class AcquiredFintechExampleTests(unittest.TestCase):
         self.assertEqual(zap['attributes']['field_aliases']['sender'], 'debtor_account_reference')
 
 
+@_needs_bian
 class CustomerOnboardingExampleTests(unittest.TestCase):
     P = ROOT / 'examples/customer-onboarding'
 
@@ -265,6 +274,7 @@ class CustomerOnboardingExampleTests(unittest.TestCase):
         self.assertNotIn('BBO-001', rows); self.assertNotIn('ENT-001', rows)
 
 
+@_needs_bian
 class DigitalLendingExampleTests(unittest.TestCase):
     P = ROOT / 'examples/digital-lending'
 
@@ -294,6 +304,7 @@ class DesignTraceMarkerTests(unittest.TestCase):
         self.assertNotIn('DESIGN', render_trace(fg.trace('CAP-LEND', 'down'), 'down'))
 
 
+@_needs_bian
 class TradeFinanceCoverageTests(unittest.TestCase):
     P = ROOT / 'examples/trade-finance'
 
@@ -320,6 +331,7 @@ class TradeFinanceCoverageTests(unittest.TestCase):
         self.assertEqual(untested - (cand | reg), set())
 
 
+@_needs_bian
 class WithinLevelConstraintTests(unittest.TestCase):
     def test_every_level_has_a_constraint_set(self):
         from sdem.metamodel import Metamodel

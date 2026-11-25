@@ -58,6 +58,15 @@ class Checks:
 
 
 class ReferenceTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):   # BX-16: the CLI reference is a generated document — rendered as sdem model regenerate makes it
+        import sys; from pathlib import Path
+        sys.path.insert(0, str(Path(__file__).resolve().parent)); import core_docs; core_docs.enter()
+
+    @classmethod
+    def tearDownClass(cls):
+        import core_docs; core_docs.leave()
+
     def test_the_reference_is_current_and_complete(self):   # CR-01
         out = clidoc.OUT.read_text(encoding='utf-8')
         self.assertEqual(out, clidoc.render(), 'docs/reference/cli-reference.md is stale — run sdem model regenerate')

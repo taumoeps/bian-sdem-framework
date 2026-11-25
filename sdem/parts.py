@@ -99,8 +99,7 @@ def for_workspace(folder, merged=None):
     if uses_bian(folder):
         if not usable(): raise missing(f'{folder}: the design (it has a BIAN layer)')
         _set(True, 'the design has a BIAN layer, and sdem-bian is installed (BX-11, R-D2)'); return
-    if usable(): _set(True, 'every workspace is a BIAN design where sdem-bian is installed, unless a person chose otherwise (BX-11)'); return
-    _set(False, 'a core design: no BIAN layer, its profile does not include ext:bian, and sdem-bian is not installed (0.22, R-D2)')
+    _set(False, 'a core design: no BIAN layer and its profile does not include ext:bian (0.22, BX-15) — sdem profile include ext:bian adds BIAN')
 
 
 def reset():

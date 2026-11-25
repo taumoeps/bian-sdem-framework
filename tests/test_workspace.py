@@ -24,6 +24,9 @@ def sdem(*args, cwd):
     return r.returncode, (r.stdout + r.stderr).replace('\\', '/')   # paths as printed on any platform
 
 
+import sys as _s, pathlib as _pl; _s.path.insert(0, str(_pl.Path(__file__).resolve().parent)); from needs import bian as _needs_bian  # noqa: E402 — BX-15: tests that need sdem-bian
+
+@_needs_bian
 class WorkspaceTests(unittest.TestCase):
     def setUp(self): self.tmp = Path(tempfile.mkdtemp())
     def tearDown(self): shutil.rmtree(self.tmp, ignore_errors=True)
@@ -32,7 +35,7 @@ class WorkspaceTests(unittest.TestCase):
     def sds(self, ws): return [i for i in self.a2(ws)['instances'] if i['type'] == stored(self.tmp / ws, 'A2.ServiceDomain')]
 
     def test_new_starts_empty_and_records_its_catalogue(self):  # WS-01, WS-02
-        code, out = sdem('new', '--workspace', 'workspaces/payments', '--person', 'jane.architect', cwd=self.tmp)
+        code, out = sdem('new', '--with', 'bian', '--workspace', 'workspaces/payments', '--person', 'jane.architect', cwd=self.tmp)
         self.assertEqual(code, 0, out)
         ws = self.tmp / 'workspaces' / 'payments'
         layers = ['application.json', 'bian.json', 'business.json', 'data.json', 'technology.json'] if migrated(ws) else \
@@ -43,14 +46,14 @@ class WorkspaceTests(unittest.TestCase):
         rec = json.loads((ws / 'workspace.json').read_text())
         self.assertEqual((rec['created_by'], rec['bian']['catalogue'], rec['bian']['selection']), ('jane.architect', 'base', 'relevant'))
         self.assertEqual(sdem('check', '--workspace', ws, cwd=self.tmp)[0], 0)
-        code, out = sdem('new', '--workspace', 'workspaces/payments', '--person', 'jane.architect', cwd=self.tmp)   # started once
+        code, out = sdem('new', '--with', 'bian', '--workspace', 'workspaces/payments', '--person', 'jane.architect', cwd=self.tmp)   # started once
         self.assertEqual(code, 2); self.assertIn('already exists', out)
-        code, out = sdem('new', '--workspace', 'workspaces/x', '--person', 'sdem-agent', cwd=self.tmp)
+        code, out = sdem('new', '--with', 'bian', '--workspace', 'workspaces/x', '--person', 'sdem-agent', cwd=self.tmp)
         self.assertEqual(code, 2); self.assertIn('person', out)
 
     def test_new_records_the_shared_layer_or_starts_with_a_given_one(self):  # WS-01
         (self.tmp / 'bian').mkdir(); shutil.copy(EX / 'a2-service-domain.json', self.tmp / 'bian' / 'a2-service-domain.json')
-        self.assertEqual(sdem('new', '--workspace', 'workspaces/payments', '--person', 'jane.architect', cwd=self.tmp)[0], 0)
+        self.assertEqual(sdem('new', '--with', 'bian', '--workspace', 'workspaces/payments', '--person', 'jane.architect', cwd=self.tmp)[0], 0)
         rec = json.loads((self.tmp / 'workspaces' / 'payments' / 'workspace.json').read_text())
         self.assertEqual(rec['bian']['catalogue'], 'bian/a2-service-domain.json'); self.assertEqual(self.sds('workspaces/payments'), [])
         self.assertEqual(sdem('new', '--workspace', 'workspaces/given', '--person', 'jane.architect', '--bian', EX / 'a2-service-domain.json', cwd=self.tmp)[0], 0)
@@ -65,7 +68,7 @@ class WorkspaceTests(unittest.TestCase):
         self.assertNotEqual(code, 0); self.assertIn('sdem new --workspace workspaces/none', out)
 
     def test_add_or_select_one_workspaces_domains(self):  # WS-04
-        for w in ('payments', 'lending'): self.assertEqual(sdem('new', '--workspace', f'workspaces/{w}', '--person', 'jane.architect', cwd=self.tmp)[0], 0)
+        for w in ('payments', 'lending'): self.assertEqual(sdem('new', '--with', 'bian', '--workspace', f'workspaces/{w}', '--person', 'jane.architect', cwd=self.tmp)[0], 0)
         code, out = sdem('bian', 'add', '--workspace', 'workspaces/payments', 'Payment Order Initiation', 'Term Deposit', '--person', 'jane.architect', cwd=self.tmp)
         self.assertEqual(code, 0, out); self.assertIn('added 2 service domain(s)', out)
         self.assertEqual(sorted(i['name'] for i in self.sds('workspaces/payments')), ['Payment Order Initiation', 'Term Deposit'])

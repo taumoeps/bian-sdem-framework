@@ -30,6 +30,9 @@ def fingerprint(d):
     return {p.relative_to(d).as_posix(): p.read_bytes() for p in sorted(Path(d).rglob('*')) if p.is_file() and 'graph' not in p.relative_to(d).parts and p.suffix != '.html'}
 
 
+import sys as _s, pathlib as _pl; _s.path.insert(0, str(_pl.Path(__file__).resolve().parent)); from needs import bian as _needs_bian  # noqa: E402 — BX-15: tests that need sdem-bian
+
+@_needs_bian
 class NavigationTests(unittest.TestCase):
     def setUp(self):
         self.tmp = Path(tempfile.mkdtemp())

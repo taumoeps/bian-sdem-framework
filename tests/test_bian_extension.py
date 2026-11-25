@@ -43,6 +43,10 @@ def core_workspace(tmp, name='core'):
     return ws
 
 
+import sys as _s, pathlib as _pl; _s.path.insert(0, str(_pl.Path(__file__).resolve().parent)); from needs import bian as _needs_bian  # noqa: E402 — BX-15: tests that need sdem-bian
+
+
+@_needs_bian
 class Equivalence(unittest.TestCase):
     def test_with_bian_on_every_answer_is_the_same_as_0_19(self):   # BX-31
         out = Path(tempfile.mkdtemp())
@@ -57,6 +61,7 @@ class Equivalence(unittest.TestCase):
             shutil.rmtree(out, ignore_errors=True)
 
 
+@_needs_bian
 class OnAndOff(unittest.TestCase):
     @classmethod
     def setUpClass(cls): cls.tmp = Path(tempfile.mkdtemp()); cls.core = core_workspace(cls.tmp)
@@ -69,8 +74,10 @@ class OnAndOff(unittest.TestCase):
     def test_when_bian_is_on(self):   # BX-10, BX-11, BX-12, BX-13
         P.deactivate(); self.assertTrue(parts.bian_on())   # no workspace
         P.activate_from(ROOT / 'examples' / 'payment-initiation-v3' / 'sdem'); self.assertTrue(parts.bian_on()); self.assertIn('BX-11', parts.why())
-        nb = Path(tempfile.mkdtemp()) / 'nb'; sdem('new', '--workspace', nb, '--person', 'bx.check', '--no-bian')   # 0.19's --no-bian: still a BIAN design, A2 empty
-        P.activate_from(nb); self.assertTrue(parts.bian_on())
+        nb = Path(tempfile.mkdtemp()) / 'nb'; sdem('new', '--workspace', nb, '--person', 'bx.check', '--no-bian')   # 0.22 (BX-15): no BIAN layer, no ext:bian — a core design
+        P.activate_from(nb); self.assertFalse(parts.bian_on())
+        wb = Path(tempfile.mkdtemp()) / 'wb'; sdem('new', '--workspace', wb, '--person', 'bx.check', '--with', 'bian')   # BIAN's layer, empty: a BIAN design
+        P.activate_from(wb); self.assertTrue(parts.bian_on())
         P.activate_from(self.core); self.assertFalse(parts.bian_on())
 
     def test_off_the_metamodel_has_no_a2(self):   # BX-02, BX-04
@@ -119,6 +126,7 @@ class OnAndOff(unittest.TestCase):
         self.assertIn('nothing written', out); self.assertEqual(lf(ws, 'bian').read_text(), before)
 
 
+@_needs_bian
 class PackLinkTypes(unittest.TestCase):   # BX-50: a pack's link type that requires BIAN is left out where BIAN is off — said, not an error
     def test_left_out_off_kept_on(self):
         tmp = Path(tempfile.mkdtemp()); (tmp / 'bin').mkdir()

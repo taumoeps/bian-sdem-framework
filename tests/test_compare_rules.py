@@ -23,6 +23,9 @@ def outcome(mine, theirs, rule=DIFFER, target='P2', extra=None):
     return f['outcome'], f.get('detail', '')
 
 
+import sys as _s, pathlib as _pl; _s.path.insert(0, str(_pl.Path(__file__).resolve().parent)); from needs import bian as _needs_bian  # noqa: E402 — BX-15: tests that need sdem-bian
+
+@_needs_bian
 class CompareRuleTests(unittest.TestCase):
     def test_values_that_compare(self):                                  # PR-11
         self.assertEqual(outcome('east', 'west')[0], 'compliant')

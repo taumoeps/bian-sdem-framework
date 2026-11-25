@@ -12,6 +12,9 @@ def ws_copy():
     ws = Path(tempfile.mkdtemp()) / 'ws'; shutil.copytree(ONB, ws, ignore=shutil.ignore_patterns('graph')); return ws
 
 
+import sys as _s, pathlib as _pl; _s.path.insert(0, str(_pl.Path(__file__).resolve().parent)); from needs import bian as _needs_bian  # noqa: E402 — BX-15: tests that need sdem-bian
+
+@_needs_bian
 class SkipLevelTests(unittest.TestCase):   # D9
     def test_only_a_named_a1_to_a3_type_may_skip_a_layer(self):
         from sdem.validate import validate_registry
@@ -33,6 +36,7 @@ class SkipLevelTests(unittest.TestCase):   # D9
         self.assertTrue({'SERVED_BY', 'AUTOMATED_BY', 'STORED_IN', 'FIELD_MAPPED_TO'} <= rels)
 
 
+@_needs_bian
 class AttributesAsEvidenceTests(unittest.TestCase):   # AT-01: AID-A01…A03, LC-28
     def test_aid_proposes_what_attributes_say_and_links_a_path_to_its_ends(self):
         from sdem.aid_fill import fill
@@ -67,6 +71,7 @@ class AttributesAsEvidenceTests(unittest.TestCase):   # AT-01: AID-A01…A03, LC
         self.assertIn('ENT-001: stored_in names INF-001 but its approved STORED_IN links are to INF-002', w)
 
 
+@_needs_bian
 class FoundBuildingV2Tests(unittest.TestCase):   # Payment Initiation v2 (2026-11-16)
     def test_aid_records_its_writes_as_change_sets(self):   # AID-W10, CTL-20
         import subprocess, sys
