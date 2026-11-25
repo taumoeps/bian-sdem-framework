@@ -75,7 +75,7 @@ class LayerTests(unittest.TestCase):
     def test_a_new_workspace_starts_with_every_layer(self):  # LR-03
         nw = self.tmp / 'nw'
         _, out, _ = sdem('new', '--with', 'bian', '--workspace', nw, '--person', 'steven', '--profile', self.tmp / 'profiles' / 'strategy-and-sites-team.json', cwd=self.tmp)
-        self.assertIn('all 6 layers empty', out)
+        self.assertIn('all 7 layers empty', out)   # A0, Business, BIAN, Data, Application, Technology, A5 — 0.20's form has the Data layer (it said 6 before 0.22)
         for f in ('a0-strategy.json', 'a5-physical.json'): self.assertEqual(json.loads((nw / f).read_text())['instances'], [])
         self.assertEqual(json.loads((nw / 'sdem-profile.json').read_text())['extends'], '../profiles/bank-base.json')   # the base is still found
         self.assertEqual(sdem('check', '--workspace', nw, '--require-recorded', cwd=self.tmp)[0], 0)

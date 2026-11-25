@@ -2,6 +2,8 @@
 
 > **Status: current.** A first design, end to end, with the ten commands an architect uses most (CR-05). Every command here is checked against the CLI by a test (`tests/test_scenarios_doc.py`). Everything else SDEM does: the [scenarios](sdem-scenarios.md) (15 jobs, in order) and the [CLI reference](reference/cli-reference.md) (every command and option). The data is made up.
 
+**A banking design, with BIAN.** This walk-through uses BIAN's Service Domain layer, so it needs the [`sdem-bian`](https://github.com/taumoeps/sdem-extensions/tree/main/metamodel/bian) extension installed (SDEM 0.22, R-D2); `--with bian` starts the workspace with it. A design for any other industry leaves both out — the [README](../README.md#start-a-design-of-your-own) walks one through.
+
 **Conventions.** `bank-xyz` is a made-up organisation and `workspaces/ledger` one of its workspaces; `your.name` is your own name. **👤 marks a person's decision:** SDEM records the name you give — your own, never an agent's (CTL-21) — so an agent prepares these commands and asks you; it never runs them for you.
 
 | Command | What it does |
@@ -24,7 +26,7 @@ Once per organisation, then once per design:
 ```bash
 sdem new --organisation bank-xyz --person your.name
 cd bank-xyz
-sdem new --workspace workspaces/ledger --person your.name
+sdem new --workspace workspaces/ledger --person your.name --with bian
 cd workspaces/ledger
 ```
 

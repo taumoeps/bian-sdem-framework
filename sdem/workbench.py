@@ -41,8 +41,8 @@ def framework():
              for r in load_registry()['relationships']]
     stab = _j(DATA_ROOT / 'metamodel' / 'stability.json', {}) or {}
     schemas = sorted(p.relative_to(DATA_ROOT).as_posix() for p in (DATA_ROOT / 'schema' / 'entities').rglob('*.json')) if (DATA_ROOT / 'schema' / 'entities').is_dir() else []
-    from .parts import catalogue_dir
-    bian = sorted(p.name for p in catalogue_dir().glob('base-*.json')) if catalogue_dir().is_dir() else []
+    from .parts import catalogue_dir, usable, bian_on
+    bian = sorted(p.name for p in catalogue_dir().glob('base-*.json')) if bian_on() and usable() and catalogue_dir().is_dir() else []   # a core design, or no sdem-bian: no catalogue to list (BX-15)
     return {'version': mm.version, 'frozen_at': stab.get('frozen_at'), 'frozen_by': stab.get('frozen_by'), 'types': types, 'within': within, 'cross': cross,
             'controls': _controls()['rows'], 'schemas': schemas, 'bian': bian}
 

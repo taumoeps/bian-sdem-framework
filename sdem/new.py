@@ -192,7 +192,9 @@ def plan(workspace, person, bian_file=None, today=None, no_bian=False, core_only
     stem = re.sub(r'[^A-Z0-9]+', '-', ws.name.upper()).strip('-') or 'WORKSPACE'
     if no_bian:
         a2, catalogue = None, None
-        source = 'none — business does not connect to applications until a BIAN layer is added (sdem bian add)'
+        from . import parts as _parts
+        source = ('none — business does not connect to applications until a BIAN layer is added (sdem bian add)' if _parts.bian_on()
+                  else 'not used — a core design: business connects to applications directly (SERVED_BY, REALIZED_BY); sdem new --with bian starts a BIAN one')   # BX-15
     elif bian_file:   # started with exactly this BIAN layer
         a2 = _jload(shared)
         if a2.get('level') != _L('bian'): raise NewError(f'{shared}: not an {_L("bian")} dataset (level {a2.get("level")!r})')
@@ -201,7 +203,7 @@ def plan(workspace, person, bian_file=None, today=None, no_bian=False, core_only
         a2 = {'level': _L('bian'), 'model_id': f'{stem}-A2', 'model_version': today, 'metamodel_version': mm.version, 'source_system': SYSTEM,
               'instances': [], 'relationships': []}
         catalogue = SHARED.as_posix() if SHARED.exists() else 'base'
-        source = 'sdem aid brings in the service domains your design needs, from ' + (f'your shared BIAN layer {SHARED}' if SHARED.exists() else 'the base BIAN that ships with SDEM')
+        source = 'sdem aid brings in the service domains your design needs, from ' + (f'your shared BIAN layer {SHARED}' if SHARED.exists() else 'the base BIAN that sdem-bian ships')
     docs = {f: ({'level': lvl, 'model_id': f'{stem}-{lvl}', 'model_version': today, 'metamodel_version': mm.version, 'source_system': SYSTEM,
                  'instances': [], 'relationships': []} if lvl != _L('bian') else a2) for lvl, f in DATASETS.items() if lvl != _L('bian') or a2}
     registry = {**EMPTY_REGISTRY, 'metamodel_version': mm.version}
@@ -343,7 +345,7 @@ def main(argv=None):
                   + (f", {len(extra['requirements.json']['requirements'])} requirement(s)" if 'requirements.json' in extra else '') + ' — checked')
         else:
             print(f"{'would start' if a.dry_run else 'started'} {a.estate}: "
-                  + (f"{_L('business')}, {_L('application')}, {_L('technology')} empty; {_L('bian')} {b_['service_domains']} service domains from {b_['source']}" if a.bian else f"all {len(docs)} layers empty; BIAN: {b_['source']}")
+                  + (f"{_L('business')}, {_L('application')}, {_L('technology')} empty; {_L('bian')} {b_['service_domains']} service domains from {b_['source']}" if a.bian else f"all {len(docs) + (getattr(a, 'form', '0.19') == '0.20')} layers empty; BIAN: {b_['source']}")
                   + (f"; profile {record['profile']['name']} ({', '.join(d['level'] for d in docs.values() if d['level'] not in (_L('business'), _L('bian'), _L('application'), _L('technology'))) or 'no extra layers'})" if record.get('profile') else '')
                   + (f"; network zones from the {a.hosting} template: {', '.join(record['hosting']['zones'])}" if a.hosting else '')
                   + '; no connections yet — checked')
@@ -377,7 +379,7 @@ def main(argv=None):
               f'sdem impact <id> --change rehost --graph {a.estate}/graph, sdem requirements evaluate --workspace {a.estate} --record <id> --change <kind>')
     elif not a.json:
         print(f'Next — write what you have (any of a1…a4), or load existing designs (sdem load work/history --workspace {a.estate} --person <you>); '
-              f'then sdem aid --workspace {a.estate} --person <you> fills the gaps, including the BIAN service domains your design needs')
+              f'then sdem aid --workspace {a.estate} --person <you> fills the gaps' + (', including the BIAN service domains your design needs' if __import__('sdem.parts', fromlist=['x']).bian_on() else ''))
     return 0
 
 

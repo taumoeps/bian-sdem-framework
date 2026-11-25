@@ -17,7 +17,7 @@
 
 ## Key features
 
-- **One model, every layer** — business capabilities and processes, BIAN service domains, data, applications and technology, checked against one metamodel aligned to ArchiMate 3.2, TOGAF and BIAN.
+- **One model, every layer** — business capabilities and processes, data, applications and technology, checked against one metamodel aligned to ArchiMate 3.2 and TOGAF — and, with the BIAN extension, BIAN's service domains for banking.
 - **Trace and impact** — follow approved links down from a requirement to its technology, or up from a server to everything that depends on it; see what a change would affect (`sdem trace`, `sdem impact`).
 - **People decide** — SDEM proposes the links between layers and drafts what a design leaves out (AID), but nothing counts until a person approves it, with evidence.
 - **Architecture as code** — designs are JSON in your own Git repository; every change is a recorded change set; the knowledge graph is rebuilt from them.
@@ -33,106 +33,157 @@
 ```bash
 mkdir my-sdem && cd my-sdem
 python3 -m venv .venv && source .venv/bin/activate          # Windows PowerShell: .venv\Scripts\Activate.ps1
-python -m pip install "sdem @ git+https://github.com/taumoeps/sdem@v0.21.14"
+python -m pip install "sdem @ git+https://github.com/taumoeps/sdem@v0.22.0"
 sdem --version
 ```
 
-The install includes the metamodel, its rules and BIAN's catalogue of 258 service domains (Semantic APIs 14.0.0).
+The install is SDEM's core: the metamodel for Business, Data, Application and Technology, its rules, and a made-up example — for any industry. **For banking**, add BIAN's Service Domain layer and its catalogue of 258 service domains (Semantic APIs 14.0.0):
+
+```bash
+python -m pip install "sdem-bian @ git+https://github.com/taumoeps/sdem-extensions@bian-v1.3.0#subdirectory=metamodel/bian"
+```
 
 ## Quick start
 
 ### See a finished design in one command
 
 ```bash
-sdem new --workspace workspaces/payments --person your.name --example payment-initiation --explore
+sdem new --workspace workspaces/library --person your.name --example library-holds --explore
 open work/sdem/index.html                                     # Linux: xdg-open · Windows: start
 ```
 
-A complete made-up Payments architecture with approved links: its records, the knowledge graph, trace and impact, as local HTML pages.
+A made-up library's holds service with approved links: its records, the knowledge graph, trace and impact, as local HTML pages. With `sdem-bian` installed, `--example payment-initiation` gives a complete banking design the same way.
 
 ### Start a design of your own
 
-Every command below was run as written on SDEM v0.21.14; the ledger is made-up data.
+Every command below was run as written on SDEM 0.22 without `sdem-bian`; the room bookings are made-up data.
 
 **1. Create an organisation and a workspace**
 
 ```bash
-sdem new --organisation bank-xyz --person your.name                                # once per organisation
-cd bank-xyz
-sdem new --workspace workspaces/ledger --organisation bank-xyz --person your.name   # each workspace
+sdem new --organisation acme --person your.name                                    # once per organisation
+cd acme
+sdem new --workspace workspaces/bookings --organisation acme --person your.name    # each workspace
 ```
 
 ```
-bank-xyz/
-├── profiles/bank-xyz-base.json        ← your organisation's own types, attributes and rules
-└── workspaces/ledger/
-    ├── business.json  bian.json  data.json  application.json  technology.json   ← one file per layer
+acme/
+├── profiles/acme-base.json            ← your organisation's own types, attributes and rules
+└── workspaces/bookings/
+    ├── business.json  data.json  application.json  technology.json   ← one file per layer
     ├── mappings.json                  ← the approved links between layers
     └── sdem-profile.json              ← extends the organisation's base profile
 ```
 
-**2. Find the BIAN service domains** your design needs
-
-```bash
-sdem bian search ledger posting       # → Financial Accounting, operation SO-FINANCIAL-ACCOUNTING-CAPTURE-LEDGER-POSTING
-```
-
-**3. Write what you know** — one capability and one process that invokes that BIAN operation. Save as `ledger-a1.json` (`sdem types A1` lists the allowed types and fields):
+**2. Write what you know** — one change set per layer (`sdem types A1` lists the allowed types and fields). The business, saved as `bookings-a1.json`:
 
 ```json
 {
   "layer": "A1",
-  "reason": "Initial business design for the general ledger",
+  "reason": "Initial business design for room bookings",
   "changes": [
-    {"op": "add", "record": {"id": "CAP-GL", "type": "A1.BusinessCapability", "version": "1",
-      "name": "General Ledger Management", "lifecycle_status": "planned"}},
-    {"op": "add", "record": {"id": "PRC-GL-POST", "type": "A1.BusinessProcess", "version": "1",
-      "name": "Post journal entries", "lifecycle_status": "planned",
-      "attributes": {"invokes": ["SO-FINANCIAL-ACCOUNTING-CAPTURE-LEDGER-POSTING"]}}}
+    {"op": "add", "record": {"id": "CAP-BOOK", "type": "A1.BusinessCapability", "version": "1",
+      "name": "Room Booking", "lifecycle_status": "planned"}},
+    {"op": "add", "record": {"id": "PRC-BOOK", "type": "A1.BusinessProcess", "version": "1",
+      "name": "Book a meeting room", "lifecycle_status": "planned"}}
   ],
-  "relationships": {"add": [{"source": "PRC-GL-POST", "kind": "realization", "target": "CAP-GL"}]}
+  "relationships": {"add": [{"source": "PRC-BOOK", "kind": "realization", "target": "CAP-BOOK"}]}
+}
+```
+
+The application that serves it and where it runs, as `bookings-a3.json` and `bookings-a4.json`:
+
+```json
+{
+  "layer": "A3",
+  "reason": "The application that books rooms",
+  "changes": [
+    {"op": "add", "record": {"id": "APP-BOOK", "type": "A3.ApplicationComponent", "version": "1",
+      "name": "Room booking app", "lifecycle_status": "planned", "attributes": {"deployed_on": ["SYS-BOOK-RT"]}}},
+    {"op": "add", "record": {"id": "APS-BOOK", "type": "A3.ApplicationService", "version": "1",
+      "name": "Room reservation", "lifecycle_status": "planned"}}
+  ],
+  "relationships": {"add": [{"source": "APP-BOOK", "kind": "realization", "target": "APS-BOOK"}]}
+}
+```
+
+```json
+{
+  "layer": "A4",
+  "reason": "Where room bookings runs",
+  "changes": [
+    {"op": "add", "record": {"id": "SYS-BOOK-RT", "type": "A4.SystemSoftware", "version": "1",
+      "name": "Bookings runtime", "lifecycle_status": "planned"}}
+  ]
 }
 ```
 
 ```bash
-sdem change propose ledger-a1.json --workspace workspaces/ledger --agent architect --person your.name --dry-run
-sdem change propose ledger-a1.json --workspace workspaces/ledger --agent architect --person your.name
+sdem change propose bookings-a1.json --workspace workspaces/bookings --agent architect --person your.name --dry-run
+sdem change propose bookings-a1.json --workspace workspaces/bookings --agent architect --person your.name
+sdem change propose bookings-a4.json --workspace workspaces/bookings --agent architect --person your.name
+sdem change propose bookings-a3.json --workspace workspaces/bookings --agent architect --person your.name
 ```
 
-SDEM checks the change against the metamodel before writing it, and records it.
+SDEM checks each change against the metamodel before writing it, and records it.
 
-**4. Let AID draft the rest** — the BIAN service domain the process invokes, candidate applications, APIs and a deployment, and the links between layers, each marked *inferred* with its source, reasoning and confidence:
+**3. Let SDEM propose the links between layers** — from what the records say (`deployed_on`), each with its rule and confidence:
+
+```bash
+sdem link --workspace workspaces/bookings --out workspaces/bookings/links
+```
+
+```
+  [0.8] P-RUN-001  APP-BOOK -DEPLOYED_ON-> SYS-BOOK-RT   rule S33
+        why: data join (S36 subsumed in S33); a3 APP-BOOK.deployed_on lists SYS-BOOK-RT
+```
+
+**4. Review and decide** — only what a person approves or states counts:
+
+```bash
+sdem approve P-RUN-001 --proposals workspaces/bookings/links/proposals.json \
+  --workspace workspaces/bookings --reviewer your.name --evidence deployment_design:bookings-deploy-v1
+sdem connect PRC-BOOK SERVED_BY APS-BOOK --workspace workspaces/bookings --person your.name \
+  --evidence process_model:bookings-design-v1 --rationale "the reservation service serves the booking process"
+```
+
+**5. Build the knowledge graph and trace**
+
+```bash
+sdem build --workspace workspaces/bookings --out workspaces/bookings/graph
+sdem trace SYS-BOOK-RT --direction up --graph workspaces/bookings/graph    # everything that depends on the runtime
+sdem trace GAPS --graph workspaces/bookings/graph                          # what does not yet reach every layer
+sdem status --workspace workspaces/bookings                                # where the design is, and what to do next
+```
+
+```
+SYS-BOOK-RT 'Bookings runtime'  [A4 Technology · System Software]
+└─ <-DEPLOYED_ON- APP-BOOK 'Room booking app'  [A3 Application · Application Component]  (MAP-002)
+   └─ <-REALIZES- APS-BOOK 'Room reservation'  [A3 Application · Application Service]
+      └─ <-SERVED_BY- PRC-BOOK 'Book a meeting room'  [A1 Business · Business Process]  (MAP-001)
+         └─ <-REALIZES- CAP-BOOK 'Room Booking'  [A1 Business · Business Capability]
+```
+
+The trace follows only what you have approved or stated.
+
+### A banking design, with BIAN
+
+With `sdem-bian` installed, a design can take BIAN's Service Domain layer between Business and Application, and AID drafts much of the rest from it — the service domains a process invokes, candidate applications, APIs and a deployment, and the links between layers, each marked *inferred* with its source, reasoning and confidence:
+
+```bash
+sdem new --workspace workspaces/ledger --organisation acme --person your.name --with bian
+sdem bian search ledger posting       # → Financial Accounting, operation SO-FINANCIAL-ACCOUNTING-CAPTURE-LEDGER-POSTING
+```
+
+A process names the BIAN operation it invokes (`"attributes": {"invokes": ["SO-FINANCIAL-ACCOUNTING-CAPTURE-LEDGER-POSTING"]}`); then:
 
 ```bash
 sdem aid --workspace workspaces/ledger --person your.name
-```
-
-**5. Review and decide** — only what you approve counts:
-
-```bash
 sdem aid confirm SD-FINANCIAL-ACCOUNTING --workspace workspaces/ledger --person your.name
 sdem review workspaces/ledger/aid/AID-001-proposals.json                  # proposed links, weakest first
-sdem approve AID-001-P001 --proposals workspaces/ledger/aid/AID-001-proposals.json \
-  --workspace workspaces/ledger --reviewer your.name --evidence process_model:GL-design-v1
 ```
 
-**6. Build the knowledge graph and trace**
-
-```bash
-sdem build --workspace workspaces/ledger --out workspaces/ledger/graph
-sdem trace PRC-GL-POST --direction down --graph workspaces/ledger/graph
-sdem trace GAPS --graph workspaces/ledger/graph                            # what does not yet reach every layer
-sdem status --workspace workspaces/ledger                                  # where the design is, and what to do next
-```
-
-```
-PRC-GL-POST 'Post journal entries'  [A1 Business · Business Process]
-├─ -USES_DOMAIN-> SD-FINANCIAL-ACCOUNTING 'Financial Accounting'  [A2 BIAN · Service Domain]  (MAP-001)
-│  └─ -HAS_PART-> CR-FINANCIAL-ACCOUNTING 'Financial Booking Log'  [A2 BIAN · Control Record]
-└─ -REALIZES-> CAP-GL 'General Ledger Management'  [A1 Business · Business Capability]
-```
-
-The trace reaches as far as you have approved: approve the remaining proposals to see the chain run on to applications and technology.
+The whole walk-through: [Quick start](docs/sdem-quick-start.md); what BIAN adds: [`sdem-bian`](https://github.com/taumoeps/sdem-extensions/tree/main/metamodel/bian).
 
 > [!TIP]
 > **Already have designs?** A Confluence export, a folder of designs, or a Word or Excel file can be brought in by rules with `sdem transform` and `sdem load` ([onboarding](docs/sdem-onboarding-workflow.md)); prose design documents through an AI agent ([AI agent setup](docs/sdem-agent-setup.md)). How a design gets in and how a trace works: [From a design to a trace](docs/sdem-from-design-to-trace.md).
@@ -142,7 +193,7 @@ The trace reaches as far as you have approved: approve the remaining proposals t
 ```mermaid
 flowchart LR
     D["<b>Your design</b><br/>a document, tables, or change sets"] --> W["<b>Workspace</b><br/>one JSON file per layer<br/>+ approved links"]
-    MM["<b>SDEM metamodel</b><br/>ArchiMate · TOGAF · BIAN"] -. "checks every change" .-> W
+    MM["<b>SDEM metamodel</b><br/>ArchiMate · TOGAF<br/>+ extensions (BIAN …)"] -. "checks every change" .-> W
     W --> L["<b>sdem link · sdem aid</b><br/>propose links, draft gaps"]
     L --> P(["👤 a person approves"])
     P --> W
@@ -189,6 +240,6 @@ Contributions are welcome — read [CONTRIBUTING.md](CONTRIBUTING.md) first: tes
 
 ## Licence
 
-Apache License 2.0 — private, commercial and organisational use, under its terms ([`LICENSE`](LICENSE), [what it means in plain words](docs/sdem-licence-and-use.md)). The base BIAN catalogue in `bian/` is BIAN's Semantic APIs under BIAN's own Apache-2.0 licence ([`LICENSES.md`](LICENSES.md), [`THIRD_PARTY.md`](THIRD_PARTY.md)). SDEM collects nothing ([`PRIVACY.md`](PRIVACY.md)).
+Apache License 2.0 — private, commercial and organisational use, under its terms ([`LICENSE`](LICENSE), [what it means in plain words](docs/sdem-licence-and-use.md)). The base BIAN catalogue, in the `sdem-bian` extension, is BIAN's Semantic APIs under BIAN's own Apache-2.0 licence ([`LICENSES.md`](LICENSES.md), [`THIRD_PARTY.md`](THIRD_PARTY.md)). SDEM collects nothing ([`PRIVACY.md`](PRIVACY.md)).
 
 BIAN®, ArchiMate® and TOGAF® are trademarks of their owners. SDEM is an independent project — not affiliated with, endorsed by, or sponsored by BIAN, The Open Group or any other organisation; no guarantees of fitness, correctness or compliance.
