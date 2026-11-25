@@ -21,14 +21,13 @@ def sdem(*args, cwd, ok=(0,)):
 class StatusTests(unittest.TestCase):
     def test_every_unsettled_item_has_a_source_and_a_way_to_settle_it(self):  # MS-01, MS-02
         r = H.status()
-        self.assertEqual(r['summary']['cross-layer link type']['total'], 31)                                       # twelve link types; DEPLOYED_ON and EXPOSED_THROUGH have three target types each (B1, X1); FIELD_MAPPED_TO (0.15.0); twelve rows of 0.16.0
-        self.assertEqual(len({i['id'].rsplit(' ', 1)[0] for i in r['items'] if i['area'] == 'cross-layer link type'}), 21)   # 5 after B1, EXPOSED_THROUGH and BUILT_AS; FIELD_MAPPED_TO (0.15.0, SDEM's own definition); the ten link types of 0.16.0 and three of 0.17.0, grounded, confirmed on review — grounded in the ArchiMate 3.2 tables (2026-11-14), still confirmed on review like B1's grounded types
+        self.assertEqual(r['summary']['cross-layer link type']['total'], 21)   # 0.22 (BX-15): the core's — BIAN's ten are sdem-bian's;                                       # twelve link types; DEPLOYED_ON and EXPOSED_THROUGH have three target types each (B1, X1); FIELD_MAPPED_TO (0.15.0); twelve rows of 0.16.0
+        self.assertEqual(len({i['id'].rsplit(' ', 1)[0] for i in r['items'] if i['area'] == 'cross-layer link type'}), 14)   # the core's (BIAN's link types are sdem-bian's since 0.22);   # 5 after B1, EXPOSED_THROUGH and BUILT_AS; FIELD_MAPPED_TO (0.15.0, SDEM's own definition); the ten link types of 0.16.0 and three of 0.17.0, grounded, confirmed on review — grounded in the ArchiMate 3.2 tables (2026-11-14), still confirmed on review like B1's grounded types
         links = {i['id']: i for i in r['items'] if i['area'] == 'cross-layer link type'}
         self.assertIn('A3.ApplicationComponent DEPLOYED_AS A4.Deployment', links)                                # an SDEM definition, not a standard's
         self.assertNotIn('A3.ApplicationComponent DEPLOYED_ON A4.SystemSoftware', links)                         # verified against ArchiMate 3.2 (B1)
         self.assertNotIn('A2.ServiceDomain REALIZED_BY A3.ApplicationComponent', links)                           # verified against BIAN's public guidance
         for i in r['items']: self.assertTrue(i['source'] and i['settle'] and all(i['settle']), i)
-        self.assertIn('pending_release_validation', r['by_status'])
 
     def test_the_cli_reports_it(self):
         _, out, _ = sdem('model', 'status', '--area', 'cross-layer link type', cwd=ROOT)
@@ -66,7 +65,7 @@ class UsageAndReleaseTests(unittest.TestCase):
         self.assertGreater(d['entity_types'][app], 0)
         self.assertIn(f'A2.ServiceDomain REALIZED_BY {app}', d['link_types'])
         unused = [x['type'] for x in d['unused_core_types']]
-        self.assertIn('A2.BOMModel', unused)   # A2.BusinessArea is used since the payment example's landscape was completed (2026-11-15)
+        self.assertFalse([t for t in unused if t.startswith('A2.')])   # BX-15: BIAN's types are sdem-bian's, not unused core types
         self.assertNotIn(app, unused)
         used = {t.split('.', 1)[1] for t in d['entity_types']}
         self.assertEqual([t for t in unused if t.split('.', 1)[1] in used], [])   # named as the workspace numbers its layers: no type both used and unused

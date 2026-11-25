@@ -39,15 +39,22 @@ def default_form():
     import os
     return os.environ.get('SDEM_FORM') or '0.20'
 
+_BASE = {}
+
+
 def base_layer():
-    """Every service domain of the base BIAN, accepted inferences applied — as `sdem bian import --base --all`."""
-    from . import bian
-    from .inferences import installed_file, read, accepted
+    """Every service domain of the base BIAN, accepted inferences applied — as `sdem bian import --base --all`. Since 0.22 (BX-15) the
+    installed sdem-bian ships it built (its catalogue's layer-<release>.json): SDEM reads it as data, the newest release."""
+    import re
+    from . import parts
     from .metamodel import Metamodel
-    domains = bian.read_pack(bian.base_file())
-    f = installed_file(max((d['release'] for d in domains), default=''))
-    dataset, _ = bian.build(domains, Metamodel.load().version, patterns=None, inferences=accepted(read(f)) if f else {})
-    return dataset, f"the base BIAN {dataset['model_version']} that ships with SDEM — all {len(domains)} service domains"
+    found = sorted(parts.catalogue_dir().glob('layer-*.json'), key=lambda p: [int(x) if x.isdigit() else x for x in re.split(r'[.-]', p.stem[6:])])
+    if not found: raise NewError(f'{parts.catalogue_dir()}: no base BIAN layer (layer-<release>.json) — install sdem-bian 1.2 or later')
+    key = (str(found[-1]), Metamodel.load().version)
+    if key not in _BASE: _BASE.clear(); _BASE[key] = {**_jload(found[-1]), 'metamodel_version': key[1]}   # read in the numbering in use; this metamodel's version, as built before
+    dataset = json.loads(json.dumps(_BASE[key]))
+    n = sum(1 for i in dataset['instances'] if i.get('type') == _T('bian.ServiceDomain'))
+    return dataset, f"the base BIAN {dataset['model_version']} that ships with SDEM — all {n} service domains"
 
 
 EXAMPLES = {'payment-initiation': 'payment_initiation'}   # synthetic examples that ship with SDEM (made-up data)

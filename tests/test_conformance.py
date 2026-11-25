@@ -117,9 +117,14 @@ class PhysicalDataModelTests(unittest.TestCase):
     """The per-entity JSON Schemas (sdem/physical.py) are current, carry provenance, accept the examples and reject bad records."""
 
     @classmethod
-    def setUpClass(cls):
-        import glob
+    def setUpClass(cls):   # the physical model is a generated document: the core's (BX-15) — BIAN's schemas are sdem-bian's
+        import glob, sys
+        sys.path.insert(0, str(Path(__file__).resolve().parent)); import core_docs; core_docs.enter()
         cls.S = {json.loads(Path(p).read_text(encoding='utf-8'))['title']: json.loads(Path(p).read_text(encoding='utf-8')) for p in glob.glob(str(ROOT / 'schema/entities/*/*.schema.json'))}
+
+    @classmethod
+    def tearDownClass(cls):
+        import core_docs; core_docs.leave()
 
     def test_current(self):
         from sdem.physical import main
@@ -141,6 +146,7 @@ class PhysicalDataModelTests(unittest.TestCase):
         from sdem.validate import check_schema
         for f in glob.glob(str(ROOT / 'examples/*/a[1-4]-*.json')):
             for i in json.loads(Path(f).read_text(encoding='utf-8'))['instances']:
+                if i['type'].startswith('A2.'): continue   # BIAN's records: sdem-bian's schemas (BX-15)
                 self.assertEqual(check_schema(i, self.S[i['type']]), [], f"{f} {i['id']}")
         s = self.S['A1.BusinessProcess']; ok = {'id': 'P1', 'type': 'A1.BusinessProcess', 'version': '1', 'name': 'p'}
         for bad in ({'criticality': 'urgent'}, {'level': 'two'}, {'modified': '30/09/2026'}, {'owner': 3}):

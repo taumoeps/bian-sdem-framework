@@ -321,6 +321,279 @@
           "edges": 30
         }
       ]
+    },
+    {
+      "build": 4,
+      "at": "2026-11-24T20:03:34+00:00",
+      "inputs": [
+        {
+          "path": "examples/0.20/payment-initiation//application.json",
+          "kind": "export",
+          "level": "A4",
+          "model_id": "synthetic-bank-payments-a3",
+          "model_version": "2026.10",
+          "sha256": "9c10c1af140e5ff6a23f05c4c1b41114d830b2ade1aa5df58687fd3676e297e2"
+        },
+        {
+          "path": "examples/0.20/payment-initiation//mappings.json",
+          "kind": "registry",
+          "registry_version": "0.4.0",
+          "sha256": "8369acc78bd1467e6586686fc08351ce8db620da296faab6323c21261c836f17"
+        }
+      ],
+      "metamodel_version": "0.20.0",
+      "errors": [
+        "mappings #1: mapping #1 (PAY-001): source A1.BusinessCapability CAP-PAY-010@1.0 not found in level model",
+        "mappings #1: mapping #1 (PAY-001): target A2.ServiceDomain SD-PI@1.0 not found in level model",
+        "mappings #1: mapping #2 (PAY-002): source A1.ValueStream VS-MAKE-PAYMENT@1.0 not found in level model",
+        "mappings #1: mapping #2 (PAY-002): target A2.BusinessScenario BS-CREDIT-TRANSFER@1.0 not found in level model",
+        "mappings #1: mapping #3 (PAY-003): source A1.BusinessProcess PRC-PAY-01@1.0 not found in level model",
+        "mappings #1: mapping #3 (PAY-003): target A2.ServiceDomain SD-PI@1.0 not found in level model",
+        "mappings #1: mapping #4 (PAY-004): source A1.BusinessProcess PRC-PAY-02@1.0 not found in level model",
+        "mappings #1: mapping #4 (PAY-004): target A2.ServiceDomain SD-PI@1.0 not found in level model",
+        "mappings #1: mapping #5 (PAY-005): source A1.BusinessObject BO-PAY-INSTR@1.0 not found in level model",
+        "mappings #1: mapping #5 (PAY-005): target A2.BusinessObject BBO-PAY-INSTR@1.0 not found in level model",
+        "mappings #1: mapping #6 (PAY-101): source A2.ServiceOperation SO-PI-01@1.0 not found in level model",
+        "mappings #1: mapping #7 (PAY-102): source A2.ServiceOperation SO-PI-02@1.0 not found in level model",
+        "mappings #1: mapping #8 (PAY-103): source A2.ServiceOperation SO-PI-03@1.0 not found in level model",
+        "mappings #1: mapping #9 (PAY-104): source A2.ServiceOperation SO-PI-04@1.0 not found in level model",
+        "mappings #1: mapping #10 (PAY-105): source A2.ServiceOperation SO-PI-05@1.0 not found in level model",
+        "mappings #1: mapping #11 (PAY-106): source A2.ServiceDomain SD-PI@1.0 not found in level model",
+        "mappings #1: mapping #12 (PAY-107): source A2.BusinessObject BBO-PAY-INSTR@1.0 not found in level model",
+        "mappings #1: mapping #12 (PAY-107): target A3.DataEntity ENT-PAY-INSTR@7.1 not found in level model",
+        "mappings #1: mapping #13 (PAY-108): target A5.SystemSoftware INF-K8S-PAY-PROD@1.29 not found in level model",
+        "mappings #1: mapping #14 (PAY-109): target A5.Deployment DEP-PAYHUB-PROD@1.0 not found in level model",
+        "mappings #1: mapping #15 (PAY-110): target A5.Deployment DEP-PAYHUB-UAT@1.0 not found in level model",
+        "mappings #1: mapping #16 (PAY-111): target A5.SystemSoftware INF-K8S-PAY-PROD@1.29 not found in level model",
+        "mappings #1: mapping #17 (PAY-112): target A5.Deployment DEP-PAYEXEC-PROD@1.0 not found in level model",
+        "mappings #1: mapping #18 (PAY-113): target A5.SystemSoftware INF-K8S-PAY-UAT@1.29 not found in level model",
+        "mappings #1: mapping #19 (PAY-114): target A5.SystemSoftware INF-APIGW-PAY@2.4 not found in level model",
+        "mappings #1: mapping #20 (PAY-115): target A5.Artifact ART-PAYHUB-IMG@7.1 not found in level model",
+        "mappings #1: mapping #21 (MIG-020-021): source A3.DataEntity ENT-PAY-INSTR@7.1 not found in level model",
+        "mappings #1: mapping #22 (MIG-020-022): source A3.DataEntity ENT-PAY-INSTR@7.1 not found in level model",
+        "mappings #1: mapping #23 (MIG-020-023): source A3.DataEntity ENT-ACCOUNT-CACHE@7.1 not found in level model",
+        "mappings #1: mapping #24 (MIG-020-024): source A3.DataEntity ENT-PAY-INSTR@7.1 not found in level model",
+        "mappings #1: mapping #25 (MIG-020-025): source A3.DataEntity ENT-PAY-EVENT@7.1 not found in level model",
+        "mappings #1: mapping #26 (MIG-020-026): source A3.DataEntity ENT-PAY-EVENT@7.1 not found in level model"
+      ],
+      "warnings": [
+        "level A4 (synthetic-bank-payments-a3): instance EVT-PAY-STATUS: attribute 'event_source' refers to '/payments-hub', which is not a A4.ApplicationComponent in this architecture dataset (LC-07)"
+      ],
+      "result": "rejected"
+    },
+    {
+      "build": 5,
+      "at": "2026-11-24T20:03:34+00:00",
+      "inputs": [
+        {
+          "path": "examples/0.20/payment-initiation/business.json",
+          "kind": "export",
+          "level": "A1",
+          "model_id": "synthetic-bank-payments-a1",
+          "model_version": "2026.10",
+          "sha256": "ee61faf2fd046e274b3af5b0202598b1216b3238b20348a0a784e7560ef6ebd1"
+        },
+        {
+          "path": "examples/0.20/payment-initiation/bian.json",
+          "kind": "export",
+          "level": "A2",
+          "model_id": "synthetic-bank-payments-a2",
+          "model_version": "2026.10",
+          "sha256": "6929cd74ec08727fba1fc8a891fc824ed976eb2b5af7e6bd4b5c4fd8e4fcf953"
+        },
+        {
+          "path": "examples/0.20/payment-initiation/data.json",
+          "kind": "export",
+          "level": "A3",
+          "model_id": "synthetic-bank-payments-a3-data",
+          "model_version": "2026.10",
+          "sha256": "dc25f332467659ab4cf2cb9980d8fe44074930ef3f1f3279602e29865381e8c0"
+        },
+        {
+          "path": "examples/0.20/payment-initiation/application.json",
+          "kind": "export",
+          "level": "A4",
+          "model_id": "synthetic-bank-payments-a3",
+          "model_version": "2026.10",
+          "sha256": "9c10c1af140e5ff6a23f05c4c1b41114d830b2ade1aa5df58687fd3676e297e2"
+        },
+        {
+          "path": "examples/0.20/payment-initiation/technology.json",
+          "kind": "export",
+          "level": "A5",
+          "model_id": "synthetic-bank-payments-a4",
+          "model_version": "2026.10",
+          "sha256": "34ba2bbb8a210db0d32f43c22e4e7b6c4b0708ed0afb72bba647b5209a02b753"
+        },
+        {
+          "path": "examples/0.20/payment-initiation/mappings.json",
+          "kind": "registry",
+          "registry_version": "0.4.0",
+          "sha256": "8369acc78bd1467e6586686fc08351ce8db620da296faab6323c21261c836f17"
+        }
+      ],
+      "metamodel_version": "0.20.0",
+      "errors": [],
+      "warnings": [
+        "level A1 (synthetic-bank-payments-a1): instance PRC-PAY-01: attribute 'triggered_by' refers to 'customer submits a payment', which is not a A1.BusinessEvent in this architecture dataset (LC-07)",
+        "level A1 (synthetic-bank-payments-a1): instance PRC-PAY-02: attribute 'triggered_by' refers to 'instruction authorised', which is not a A1.BusinessEvent in this architecture dataset (LC-07)",
+        "level A4 (synthetic-bank-payments-a3): instance EVT-PAY-STATUS: attribute 'event_source' refers to '/payments-hub', which is not a A4.ApplicationComponent in this architecture dataset (LC-07)",
+        "level A2 (synthetic-bank-payments-a2): instance BBO-PAY-INSTR: its field names and its field records disagree — no record for creditor_account_reference, currency, debtor_account_reference, payment_instruction_reference, payment_status, remittance_information, value_date (LC-24)",
+        "level A2 (synthetic-bank-payments-a2): instance BBO-PARTY: its field names and its field records disagree — no record for party_name, party_reference, party_type — not in its list: party reference (LC-24)"
+      ],
+      "result": "accepted",
+      "stack": [
+        "business",
+        "bian",
+        "data",
+        "application",
+        "technology"
+      ],
+      "outputs": [
+        {
+          "file": "application.graph.json",
+          "sha256": "e2705e4eed4e3d3bdd857e2fd330f0678805bb73bef0ac570c0c0d0cb316a282",
+          "nodes": 13,
+          "edges": 13
+        },
+        {
+          "file": "bian.graph.json",
+          "sha256": "435ed9214ac052e984fd2402e3196f7f04f7cc9b86b9f0ebeb2534e745797545",
+          "nodes": 48,
+          "edges": 68
+        },
+        {
+          "file": "business.graph.json",
+          "sha256": "b98d65546bd53f061f1422a4b1a2c579338030bd95011ab3b23ffda0a9d45fdd",
+          "nodes": 16,
+          "edges": 16
+        },
+        {
+          "file": "data.graph.json",
+          "sha256": "a537ea57e615c283c6210fddcba330570fc378c039a8d38296d7504c220ed9d9",
+          "nodes": 3,
+          "edges": 0
+        },
+        {
+          "file": "federated.graph.json",
+          "sha256": "33b68885571f6220e68244a5c4575d441944d0674e31d2013638d0d17e15c5bf",
+          "nodes": 35,
+          "edges": 26
+        },
+        {
+          "file": "technology.graph.json",
+          "sha256": "973c58f22fec30d47c5b30d9c1183ac26e68b9fcd26af4e03c361037039a32ca",
+          "nodes": 20,
+          "edges": 30
+        }
+      ]
+    },
+    {
+      "build": 6,
+      "at": "2026-11-24T20:03:50+00:00",
+      "inputs": [
+        {
+          "path": "examples/0.20/payment-initiation/business.json",
+          "kind": "export",
+          "level": "A1",
+          "model_id": "synthetic-bank-payments-a1",
+          "model_version": "2026.10",
+          "sha256": "ee61faf2fd046e274b3af5b0202598b1216b3238b20348a0a784e7560ef6ebd1"
+        },
+        {
+          "path": "examples/0.20/payment-initiation/bian.json",
+          "kind": "export",
+          "level": "A2",
+          "model_id": "synthetic-bank-payments-a2",
+          "model_version": "2026.10",
+          "sha256": "6929cd74ec08727fba1fc8a891fc824ed976eb2b5af7e6bd4b5c4fd8e4fcf953"
+        },
+        {
+          "path": "examples/0.20/payment-initiation/data.json",
+          "kind": "export",
+          "level": "A3",
+          "model_id": "synthetic-bank-payments-a3-data",
+          "model_version": "2026.10",
+          "sha256": "dc25f332467659ab4cf2cb9980d8fe44074930ef3f1f3279602e29865381e8c0"
+        },
+        {
+          "path": "examples/0.20/payment-initiation/application.json",
+          "kind": "export",
+          "level": "A4",
+          "model_id": "synthetic-bank-payments-a3",
+          "model_version": "2026.10",
+          "sha256": "9c10c1af140e5ff6a23f05c4c1b41114d830b2ade1aa5df58687fd3676e297e2"
+        },
+        {
+          "path": "examples/0.20/payment-initiation/technology.json",
+          "kind": "export",
+          "level": "A5",
+          "model_id": "synthetic-bank-payments-a4",
+          "model_version": "2026.10",
+          "sha256": "34ba2bbb8a210db0d32f43c22e4e7b6c4b0708ed0afb72bba647b5209a02b753"
+        },
+        {
+          "path": "examples/0.20/payment-initiation/mappings.json",
+          "kind": "registry",
+          "registry_version": "0.4.0",
+          "sha256": "8369acc78bd1467e6586686fc08351ce8db620da296faab6323c21261c836f17"
+        }
+      ],
+      "metamodel_version": "0.20.0",
+      "errors": [],
+      "warnings": [
+        "level A1 (synthetic-bank-payments-a1): instance PRC-PAY-01: attribute 'triggered_by' refers to 'customer submits a payment', which is not a A1.BusinessEvent in this architecture dataset (LC-07)",
+        "level A1 (synthetic-bank-payments-a1): instance PRC-PAY-02: attribute 'triggered_by' refers to 'instruction authorised', which is not a A1.BusinessEvent in this architecture dataset (LC-07)",
+        "level A4 (synthetic-bank-payments-a3): instance EVT-PAY-STATUS: attribute 'event_source' refers to '/payments-hub', which is not a A4.ApplicationComponent in this architecture dataset (LC-07)",
+        "level A2 (synthetic-bank-payments-a2): instance BBO-PAY-INSTR: its field names and its field records disagree — no record for creditor_account_reference, currency, debtor_account_reference, payment_instruction_reference, payment_status, remittance_information, value_date (LC-24)",
+        "level A2 (synthetic-bank-payments-a2): instance BBO-PARTY: its field names and its field records disagree — no record for party_name, party_reference, party_type — not in its list: party reference (LC-24)"
+      ],
+      "result": "accepted",
+      "stack": [
+        "business",
+        "bian",
+        "data",
+        "application",
+        "technology"
+      ],
+      "outputs": [
+        {
+          "file": "application.graph.json",
+          "sha256": "e2705e4eed4e3d3bdd857e2fd330f0678805bb73bef0ac570c0c0d0cb316a282",
+          "nodes": 13,
+          "edges": 13
+        },
+        {
+          "file": "bian.graph.json",
+          "sha256": "435ed9214ac052e984fd2402e3196f7f04f7cc9b86b9f0ebeb2534e745797545",
+          "nodes": 48,
+          "edges": 68
+        },
+        {
+          "file": "business.graph.json",
+          "sha256": "b98d65546bd53f061f1422a4b1a2c579338030bd95011ab3b23ffda0a9d45fdd",
+          "nodes": 16,
+          "edges": 16
+        },
+        {
+          "file": "data.graph.json",
+          "sha256": "a537ea57e615c283c6210fddcba330570fc378c039a8d38296d7504c220ed9d9",
+          "nodes": 3,
+          "edges": 0
+        },
+        {
+          "file": "federated.graph.json",
+          "sha256": "33b68885571f6220e68244a5c4575d441944d0674e31d2013638d0d17e15c5bf",
+          "nodes": 35,
+          "edges": 26
+        },
+        {
+          "file": "technology.graph.json",
+          "sha256": "973c58f22fec30d47c5b30d9c1183ac26e68b9fcd26af4e03c361037039a32ca",
+          "nodes": 20,
+          "edges": 30
+        }
+      ]
     }
   ]
 }

@@ -37,149 +37,6 @@
   ],
   "relationships": [
     {
-      "mapping_type_id": "CAPABILITY_SUPPORTED_BY_DOMAIN",
-      "source_type": "A1.BusinessCapability",
-      "relationship": "SUPPORTED_BY",
-      "target_type": "A2.ServiceDomain",
-      "cardinality": "many_to_many",
-      "perspective": "architecture",
-      "authority": "bian_alignment_guidance",
-      "direction_semantics": "The capability's responsibilities are (partly) fulfilled by the functional scope of the selected Service Domain.",
-      "required_evidence": [
-        "business_architecture_document",
-        "domain_scope_assessment"
-      ],
-      "rule_version": "1.0",
-      "owner": "enterprise-architecture",
-      "source_reference": "plan row S01 — BIAN states the intent only. BIAN v14.0.0 Release Notes v1.0 (read 2026-11-02) §3: the structure 'fit for purpose for carrying both the Service Domains and the Business Capabilities' is 'not yet documented in the BIAN BiZZdesign repository because still work in progress'. B1 review 2026-11-02: unchanged, re-cited.",
-      "verification": "verified_intent_or_target_only",
-      "confidence": "medium",
-      "confidence_basis": "BIAN states the intent or the target only",
-      "reasoning": "BIAN intends a capability-to-Service-Domain mapping but has not published it — still work in progress in Release 14.0 (§3); SDEM encodes the intent so capabilities can be traced, and derives it from process arrows (S01). Many-to-many: a capability may need several domains, and a domain serves several capabilities."
-    },
-    {
-      "mapping_type_id": "VALUE_STREAM_ALIGNED_TO_SCENARIO",
-      "source_type": "A1.ValueStream",
-      "relationship": "ALIGNED_TO",
-      "target_type": "A2.BusinessScenario",
-      "cardinality": "many_to_many",
-      "perspective": "process",
-      "authority": "enterprise_rule",
-      "direction_semantics": "The value stream's stages are realised by the interactions described in the Business Scenario.",
-      "required_evidence": [
-        "process_model",
-        "scenario_suitability_review"
-      ],
-      "rule_version": "1.0",
-      "owner": "business-architecture",
-      "source_reference": "plan row S02 — SDEM mapping only; no official equivalent. BIAN v14.0.0 Release Notes v1.0 (read 2026-11-02) §3: BIAN's work on value streams is 'not yet modelled'. B1 review, owner's decision 2026-11-02: authority corrected from bian_alignment_guidance to enterprise_rule.",
-      "verification": "sdem_definition",
-      "confidence": "medium",
-      "confidence_basis": "SDEM definition; validated against sealed answers",
-      "reasoning": "No standard aligns a value stream to a BIAN Business Scenario, and BIAN states its value-stream work is not yet modelled (Release Notes 14.0 §3); SDEM defines the link so a business journey can be checked against BIAN's operation sequence (S02). It is SDEM's own rule, not BIAN guidance."
-    },
-    {
-      "mapping_type_id": "PROCESS_USES_DOMAIN",
-      "source_type": "A1.BusinessProcess",
-      "relationship": "USES_DOMAIN",
-      "target_type": "A2.ServiceDomain",
-      "cardinality": "many_to_many",
-      "perspective": "process",
-      "authority": "enterprise_rule",
-      "direction_semantics": "A process activity invokes one or more Service Operations of the Service Domain.",
-      "required_evidence": [
-        "process_model"
-      ],
-      "rule_version": "1.0",
-      "owner": "business-architecture",
-      "source_reference": "plan row S04 — Official guidance only; no exact cross-standard entity pair; Unverified — rests on [W135], not readable in this review (login required); existence, date and SL 2.0 basis confirmed",
-      "verification": "unverified_w135",
-      "confidence": "medium",
-      "confidence_basis": "cited source login-gated and unverified; validated against sealed answers",
-      "reasoning": "The citation for process-to-domain usage rests on an Open Group document behind a login (W135); SDEM keeps the relationship because the process's invoked operations make it derivable by join (S04)."
-    },
-    {
-      "mapping_type_id": "BUSINESS_OBJECT_ALIGNED_TO_BIAN_OBJECT",
-      "source_type": "A1.BusinessObject",
-      "relationship": "ALIGNED_TO",
-      "target_type": "A2.BusinessObject",
-      "cardinality": "many_to_many",
-      "perspective": "information",
-      "authority": "bian_alignment_guidance",
-      "direction_semantics": "The bank business concept carries the same meaning as (or specialises) the BIAN business object.",
-      "required_evidence": [
-        "business_glossary",
-        "object_alignment_review"
-      ],
-      "rule_version": "1.0",
-      "owner": "data-architecture",
-      "source_reference": "plan row S12 — BIAN publishes the target only: BIAN v14.0.0 Release Notes v1.0 (read 2026-11-02) §1.2 and §8 — the Business Object Model is documented in UML class diagrams; no method for aligning an organisation's own objects. B1 review 2026-11-02: unchanged, re-cited.",
-      "verification": "verified_intent_or_target_only",
-      "confidence": "medium",
-      "confidence_basis": "BIAN states the intent or the target only",
-      "reasoning": "BIAN publishes the Business Object Model (UML, Release Notes 14.0 §1.2, §8) as the target to align to, but no rule for aligning an organisation's own business objects; SDEM aligns by attribute match (S12)."
-    },
-    {
-      "mapping_type_id": "DOMAIN_REALIZED_BY_COMPONENT",
-      "source_type": "A2.ServiceDomain",
-      "relationship": "REALIZED_BY",
-      "target_type": "A3.ApplicationComponent",
-      "cardinality": "many_to_many",
-      "perspective": "architecture",
-      "authority": "enterprise_rule",
-      "direction_semantics": "The application component implements some or all of the Service Domain's functional responsibilities.",
-      "required_evidence": [
-        "application_architecture_document"
-      ],
-      "rule_version": "1.0",
-      "owner": "application-architecture",
-      "source_reference": "plan row S17 — Official guidance only; no exact cross-standard entity pair; Verified — [SAPG] §3.4 p. 52 (functional partition), §4.3.1 p. 91",
-      "verification": "verified",
-      "confidence": "high",
-      "confidence_basis": "BIAN public guidance names this alignment and it was checked",
-      "reasoning": "BIAN's Semantic API guide treats a Service Domain as realized by the application component that implements its operations (§3.4); SDEM derives it from implemented operations (S17)."
-    },
-    {
-      "mapping_type_id": "OPERATION_IMPLEMENTED_BY_API",
-      "source_type": "A2.ServiceOperation",
-      "relationship": "IMPLEMENTED_BY",
-      "target_type": "A3.APIOperation",
-      "cardinality": "many_to_many",
-      "perspective": "architecture",
-      "authority": "enterprise_rule",
-      "direction_semantics": "The API operation exposes the behaviour of the Service Operation; semantic gaps must be documented.",
-      "required_evidence": [
-        "api_contract"
-      ],
-      "rule_version": "1.0",
-      "owner": "application-architecture",
-      "source_reference": "plan row S24 — Official guidance only; no exact cross-standard entity pair; Verified — [SAPG] §3.5 pp. 52–55 (REST mapping); [APIP]",
-      "verification": "verified",
-      "confidence": "high",
-      "confidence_basis": "BIAN public guidance names this alignment and it was checked",
-      "reasoning": "BIAN's Semantic API guide maps each service operation to a REST operation (§3.5, pp. 52–55); SDEM applies that mapping as a decision procedure (S24)."
-    },
-    {
-      "mapping_type_id": "BIAN_OBJECT_MAPPED_TO_DATA_ENTITY",
-      "source_type": "A2.BusinessObject",
-      "relationship": "MAPPED_TO",
-      "target_type": "A3.DataEntity",
-      "cardinality": "many_to_many",
-      "perspective": "information",
-      "authority": "enterprise_rule",
-      "direction_semantics": "The application data entity stores (part of) the BIAN business object; transformations and partial coverage are recorded.",
-      "required_evidence": [
-        "data_model"
-      ],
-      "rule_version": "1.0",
-      "owner": "data-architecture",
-      "source_reference": "plan row S30 — Official guidance only; no exact cross-standard entity pair; Verified — [SAPG] §3.2.7; [SL14] BOM",
-      "verification": "verified",
-      "confidence": "high",
-      "confidence_basis": "BIAN public guidance names this alignment and it was checked",
-      "reasoning": "BIAN's guide and BOM relate business objects to implementation data (§3.2.7); SDEM maps a BIAN object to a table by attribute match (S30)."
-    },
-    {
       "mapping_type_id": "COMPONENT_DEPLOYED_ON_NODE",
       "source_type": "A3.ApplicationComponent",
       "relationship": "DEPLOYED_ON",
@@ -340,26 +197,6 @@
       "reasoning": "An image or package realises the application it is built from (ArchiMate: Artifact realizes Application Component); BUILT_AS names that from the application's side, as DEPLOYED_ON does for hosting. With it, trace and impact reach from an image — a vulnerable base image, a rebuilt package — to the application, its service domain and the business. sdem aid proposes it (AID-X02); a person approves it with build_pipeline evidence."
     },
     {
-      "mapping_type_id": "BIAN_ATTRIBUTE_FIELD_MAPPED_TO_DATA_ATTRIBUTE",
-      "source_type": "A2.BusinessObjectAttribute",
-      "relationship": "FIELD_MAPPED_TO",
-      "target_type": "A3.DataAttribute",
-      "cardinality": "many_to_many",
-      "perspective": "information",
-      "authority": "enterprise_rule",
-      "direction_semantics": "The data attribute stores the BIAN attribute — field-level lineage; a transformation is recorded on the link.",
-      "required_evidence": [
-        "data_model"
-      ],
-      "rule_version": "1.0",
-      "owner": "data-architecture",
-      "source_reference": "SDEM; the owner's decision, 2026-11-16 (IM-07, metamodel 0.15.0). The field-level refinement of MAPPED_TO (BIAN SAPG §3.2.7 relates business objects to implementation data).",
-      "verification": "sdem_definition",
-      "confidence": "low",
-      "confidence_basis": "no standard basis; not validated",
-      "reasoning": "With fields as records, a BIAN attribute is mapped to the column that stores it, so impact reaches a field and lineage is checked, not matched by name."
-    },
-    {
       "mapping_type_id": "BUSINESSPROCESS_SERVED_BY_APPLICATION_SERVICE",
       "source_type": "A1.BusinessProcess",
       "relationship": "SERVED_BY",
@@ -377,7 +214,7 @@
       "verification": "sdem_definition_grounded",
       "confidence": "high",
       "confidence_basis": "SDEM's own definition, grounded in an ArchiMate 3.2 pattern checked against the relationship tables",
-      "reasoning": "ArchiMate: an application service serves business behaviour and the actors and roles that perform it. Named from the business side, as SUPPORTED_BY is. Skips A2 by the owner’s decision D9.",
+      "reasoning": "ArchiMate: an application service serves business behaviour and the actors and roles that perform it. Named from the business side, as SUPPORTED_BY is. Skips BIAN by the owner’s decision D9.",
       "skips_level": true,
       "skips_level_reasoning": "The owner's decision D9 (2026-11-16, option 1): links stay between adjacent layers (KG-F-03), except a named list of direct A1↔A3 types ArchiMate defines and BIAN has no counterpart for."
     },
@@ -399,7 +236,7 @@
       "verification": "sdem_definition_grounded",
       "confidence": "high",
       "confidence_basis": "SDEM's own definition, grounded in an ArchiMate 3.2 pattern checked against the relationship tables",
-      "reasoning": "ArchiMate: an application service serves business behaviour and the actors and roles that perform it. Named from the business side, as SUPPORTED_BY is. Skips A2 by the owner’s decision D9.",
+      "reasoning": "ArchiMate: an application service serves business behaviour and the actors and roles that perform it. Named from the business side, as SUPPORTED_BY is. Skips BIAN by the owner’s decision D9.",
       "skips_level": true,
       "skips_level_reasoning": "The owner's decision D9 (2026-11-16, option 1): links stay between adjacent layers (KG-F-03), except a named list of direct A1↔A3 types ArchiMate defines and BIAN has no counterpart for."
     },
@@ -421,7 +258,7 @@
       "verification": "sdem_definition_grounded",
       "confidence": "high",
       "confidence_basis": "SDEM's own definition, grounded in an ArchiMate 3.2 pattern checked against the relationship tables",
-      "reasoning": "ArchiMate: an application service serves business behaviour and the actors and roles that perform it. Named from the business side, as SUPPORTED_BY is. Skips A2 by the owner’s decision D9.",
+      "reasoning": "ArchiMate: an application service serves business behaviour and the actors and roles that perform it. Named from the business side, as SUPPORTED_BY is. Skips BIAN by the owner’s decision D9.",
       "skips_level": true,
       "skips_level_reasoning": "The owner's decision D9 (2026-11-16, option 1): links stay between adjacent layers (KG-F-03), except a named list of direct A1↔A3 types ArchiMate defines and BIAN has no counterpart for."
     },
@@ -443,7 +280,7 @@
       "verification": "sdem_definition_grounded",
       "confidence": "high",
       "confidence_basis": "SDEM's own definition, grounded in an ArchiMate 3.2 pattern checked against the relationship tables",
-      "reasoning": "ArchiMate: application behaviour realises business behaviour — the process, or the activity (is-a), is automated. Replaces guessing from automation_level. Skips A2 (D9).",
+      "reasoning": "ArchiMate: application behaviour realises business behaviour — the process, or the activity (is-a), is automated. Replaces guessing from automation_level. Skips BIAN (D9).",
       "skips_level": true,
       "skips_level_reasoning": "The owner's decision D9 (2026-11-16, option 1): links stay between adjacent layers (KG-F-03), except a named list of direct A1↔A3 types ArchiMate defines and BIAN has no counterpart for."
     },
@@ -465,7 +302,7 @@
       "verification": "sdem_definition_grounded",
       "confidence": "high",
       "confidence_basis": "SDEM's own definition, grounded in an ArchiMate 3.2 pattern checked against the relationship tables",
-      "reasoning": "ArchiMate: application behaviour or structure realises a business service. Skips A2 (D9).",
+      "reasoning": "ArchiMate: application behaviour or structure realises a business service. Skips BIAN (D9).",
       "skips_level": true,
       "skips_level_reasoning": "The owner's decision D9 (2026-11-16, option 1): links stay between adjacent layers (KG-F-03), except a named list of direct A1↔A3 types ArchiMate defines and BIAN has no counterpart for."
     },
@@ -487,7 +324,7 @@
       "verification": "sdem_definition_grounded",
       "confidence": "high",
       "confidence_basis": "SDEM's own definition, grounded in an ArchiMate 3.2 pattern checked against the relationship tables",
-      "reasoning": "ArchiMate: application behaviour or structure realises a business service. Skips A2 (D9).",
+      "reasoning": "ArchiMate: application behaviour or structure realises a business service. Skips BIAN (D9).",
       "skips_level": true,
       "skips_level_reasoning": "The owner's decision D9 (2026-11-16, option 1): links stay between adjacent layers (KG-F-03), except a named list of direct A1↔A3 types ArchiMate defines and BIAN has no counterpart for."
     },
@@ -509,29 +346,9 @@
       "verification": "sdem_definition_grounded",
       "confidence": "high",
       "confidence_basis": "SDEM's own definition, grounded in an ArchiMate 3.2 pattern checked against the relationship tables",
-      "reasoning": "A data object realises a business object (ArchiMate). With it the information chain runs for every A1 object, through BIAN where BIAN has one, directly where it has not. Skips A2 (D9).",
+      "reasoning": "A data object realises a business object (ArchiMate). With it the information chain runs for every A1 object, through BIAN where BIAN has one, directly where it has not. Skips BIAN (D9).",
       "skips_level": true,
       "skips_level_reasoning": "The owner's decision D9 (2026-11-16, option 1): links stay between adjacent layers (KG-F-03), except a named list of direct A1↔A3 types ArchiMate defines and BIAN has no counterpart for."
-    },
-    {
-      "mapping_type_id": "NOTIFY_OPERATION_IMPLEMENTED_BY_EVENT",
-      "source_type": "A2.ServiceOperation",
-      "relationship": "IMPLEMENTED_BY",
-      "target_type": "A3.Event",
-      "cardinality": "many_to_many",
-      "perspective": "architecture",
-      "authority": "enterprise_rule",
-      "direction_semantics": "The application event implements a BIAN Notify operation (XL-09) — the registered candidate.",
-      "required_evidence": [
-        "event_design"
-      ],
-      "rule_version": "1.0",
-      "owner": "application-architecture",
-      "source_reference": "Archi's implementation of the ArchiMate 3.2 relationship tables (relationships.xml, version 3.2, read 2026-11-16): BIAN Semantic API Practitioner Guide §3.5: Notify has no REST form; an event is its natural implementation (candidate in metamodel/relationship-rules.json). The owner's decision, 2026-11-16 (metamodel 0.16.0, docs/design/sdem-full-design-metamodel-design.md).",
-      "verification": "sdem_definition_grounded",
-      "confidence": "high",
-      "confidence_basis": "SDEM's own definition, grounded in an ArchiMate 3.2 pattern checked against the relationship tables",
-      "reasoning": "A Notify operation is delivered as an event, not an API call; IMPLEMENTED_BY names it as it does for an API operation."
     },
     {
       "mapping_type_id": "COMPONENT_SERVED_BY_TECHNOLOGY_SERVICE",
@@ -551,7 +368,7 @@
       "verification": "sdem_definition_grounded",
       "confidence": "high",
       "confidence_basis": "SDEM's own definition, grounded in an ArchiMate 3.2 pattern checked against the relationship tables",
-      "reasoning": "ArchiMate: a technology service serves application structure and behaviour. Was the attribute consumes (A3 → A4); now a link, proposed from it (AT-01)."
+      "reasoning": "ArchiMate: a technology service serves application structure and behaviour. Was the attribute consumes (A2 → A3); now a link, proposed from it (AT-01)."
     },
     {
       "mapping_type_id": "FUNCTION_SERVED_BY_TECHNOLOGY_SERVICE",
@@ -571,7 +388,7 @@
       "verification": "sdem_definition_grounded",
       "confidence": "high",
       "confidence_basis": "SDEM's own definition, grounded in an ArchiMate 3.2 pattern checked against the relationship tables",
-      "reasoning": "ArchiMate: a technology service serves application structure and behaviour. Was the attribute consumes (A3 → A4); now a link, proposed from it (AT-01)."
+      "reasoning": "ArchiMate: a technology service serves application structure and behaviour. Was the attribute consumes (A2 → A3); now a link, proposed from it (AT-01)."
     },
     {
       "mapping_type_id": "DATA_ENTITY_STORED_IN_ARTIFACT",
@@ -631,7 +448,7 @@
       "verification": "sdem_definition_grounded",
       "confidence": "high",
       "confidence_basis": "SDEM's own definition, grounded in an ArchiMate 3.2 pattern checked against the relationship tables",
-      "reasoning": "The software’s event is how the business event happens in the system — a payment received, a cut-off reached. Skips A2 (D9).",
+      "reasoning": "The software’s event is how the business event happens in the system — a payment received, a cut-off reached. Skips BIAN (D9).",
       "skips_level": true,
       "skips_level_reasoning": "The owner's decision D9 (2026-11-16, option 1): links stay between adjacent layers (KG-F-03), except a named list of direct A1↔A3 types ArchiMate defines and BIAN has no counterpart for."
     },
@@ -653,30 +470,9 @@
       "verification": "sdem_definition_grounded",
       "confidence": "high",
       "confidence_basis": "SDEM's own definition, grounded in an ArchiMate 3.2 pattern checked against the relationship tables",
-      "reasoning": "A mobile app, an API or a file exchange is the software side of a channel. Skips A2 (D9).",
+      "reasoning": "A mobile app, an API or a file exchange is the software side of a channel. Skips BIAN (D9).",
       "skips_level": true,
       "skips_level_reasoning": "The owner's decision D9 (2026-11-16, option 1): links stay between adjacent layers (KG-F-03), except a named list of direct A1↔A3 types ArchiMate defines and BIAN has no counterpart for."
-    },
-    {
-      "mapping_type_id": "VALUE_STREAM_STAGE_ALIGNED_TO_SCENARIO",
-      "source_type": "A1.ValueStreamStage",
-      "relationship": "ALIGNED_TO",
-      "target_type": "A2.BusinessScenario",
-      "cardinality": "many_to_many",
-      "perspective": "process",
-      "authority": "enterprise_rule",
-      "direction_semantics": "The value stream's stages are realised by the interactions described in the Business Scenario.",
-      "required_evidence": [
-        "process_model",
-        "scenario_suitability_review"
-      ],
-      "rule_version": "1.0",
-      "owner": "business-architecture",
-      "source_reference": "plan row S02 — SDEM mapping only; no official equivalent. BIAN v14.0.0 Release Notes v1.0 (read 2026-11-02) §3: BIAN's work on value streams is 'not yet modelled'. B1 review, owner's decision 2026-11-02: authority corrected from bian_alignment_guidance to enterprise_rule.",
-      "verification": "sdem_definition",
-      "confidence": "medium",
-      "confidence_basis": "SDEM definition; validated against sealed answers",
-      "reasoning": "No standard aligns a value stream to a BIAN Business Scenario, and BIAN states its value-stream work is not yet modelled (Release Notes 14.0 §3); SDEM defines the link so a business journey can be checked against BIAN's operation sequence (S02). It is SDEM's own rule, not BIAN guidance. Stated for a value-stream stage on its own from metamodel 0.17.0, when a stage stopped extending a value stream (CN-01) — it held before by inheritance."
     }
   ],
   "deprecated_relationships": []

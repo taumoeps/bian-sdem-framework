@@ -83,18 +83,18 @@ Every control, where it runs and its last test result: [controls register](refer
 
 ## The architecture model in numbers
 
-The same numbers appear in the [rules specification](design/relationship-rules-spec.md) and the [model diagram](design/architecture-model-diagram.puml); a test keeps all three in step with the records.
+The same numbers appear in the [rules specification](design/relationship-rules-spec.md) and the [model diagram](design/architecture-model-diagram.puml); a test keeps all three in step with the records. They are SDEM's core (metamodel 0.20.0): BIAN's types, rows, rules and join keys are the `sdem-bian` extension's since SDEM 0.22 (BX-15) — installed, it adds them.
 
 | What | Count | Where in the spec | In the diagram |
 |---|---|---|---|
-| Entity types (boxes) | 51 | §2 | every box |
-| Within-level rows: links allowed *inside* one architecture | 164 | §3.1 (`RA…`) | thin grey arrows |
-| Relationship type catalogue: kinds of link allowed *between* architectures | 24 | §4.1 | named on the blue arrows |
-| Plan rows: rules for finding cross-level relationships | 69 | §4.2 (`S…`, `B…`) | — |
-| …of which drawn as cross-level rules | 50 | §4.3 | coloured arrows |
-| …of which catalogue rules, the only ones that produce registry records | 9 | §4.3 | blue arrows |
-| Join keys the rules read from the architecture datasets | 52 | §5 (`K…`) | — |
-| Inference engine requirements | 33 | §10 (`REQ-…`) | — |
+| Entity types (boxes) | 36 | §2 | every box |
+| Within-level rows: links allowed *inside* one architecture | 141 | §3.1 (`RA…`) | thin grey arrows |
+| Relationship type catalogue: kinds of link allowed *between* architectures | 15 | §4.1 | named on the blue arrows |
+| Plan rows: rules for finding cross-level relationships | 23 | §4.2 (`S…`) | — |
+| …of which drawn as cross-level rules | 22 | §4.3 | coloured arrows |
+| …of which catalogue rules, the only ones that produce registry records | 2 | §4.3 | blue arrows |
+| Join keys the rules read from the architecture datasets | 40 | §5 (`K…`) | — |
+| Inference engine requirements | 25 | §10 (`REQ-…`) | — |
 
 ## Reading the architecture-model diagram
 

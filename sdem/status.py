@@ -90,9 +90,7 @@ def collect(ws):
         step(f'sdem aid --workspace {w} --person <you> --dry-run', f"infer what is missing ({', '.join(gone)}) from the business design — every record marked inferred until a person confirms it; then without --dry-run when the person agrees")
     if not blocking and not unresolved and not (complete and (complete['gaps'] or complete.get('inferred_to_confirm'))) and not any(p['open'] for p in pats): step(f'sdem document --workspace {w} --layer all', 'nothing blocks the design or waits on a person: write it up, or look at it all: sdem workbench --workspace ' + w)
 
-    try:
-        from .bian import objects_gap   # BO-06: the BIAN module's own finding — said here, never worked out here
-        gap = objects_gap(ws)
+    try: gap = _objects_gap(ws)   # BO-06
     except Exception: gap = None
     if gap:
         warnings.append(_item('bian_objects_missing', f"BIAN: {gap['service_domains']} service domain(s) but no BIAN business object — the design's BIAN → Data connections are empty (BO-06)"))
@@ -173,3 +171,16 @@ def main(argv=None):
 
 if __name__ == '__main__':
     sys.exit(main())
+
+
+def _objects_gap(workspace):
+    """BO-06: a design that holds BIAN service domains but no BIAN business object — its BIAN → Data connections are empty. None otherwise."""
+    from . import parts
+    from .identity import F as _F, T as _T, load as _jload
+    if not parts.bian_on(): return None
+    p = Path(workspace) / _F('bian')
+    if not p.is_file(): return None
+    recs = [i for i in (_jload(p).get('instances') or []) if isinstance(i, dict)]
+    sds = sum(1 for i in recs if i.get('type') == _T('bian.ServiceDomain'))
+    if not sds or any(i.get('type') == _T('bian.BusinessObject') for i in recs): return None
+    return {'service_domains': sds}

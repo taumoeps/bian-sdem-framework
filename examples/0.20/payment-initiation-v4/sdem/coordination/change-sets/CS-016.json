@@ -1,0 +1,22 @@
+{
+  "id": "CS-016",
+  "layer": "bian",
+  "reason": "metamodel migration MIG-003: 0.19.0 → 0.20.0 (sdem migrate)",
+  "changes": [],
+  "relationships": {
+    "add": [],
+    "remove": []
+  },
+  "adopted": true,
+  "agent": "architect",
+  "person": "sdem.maintainer",
+  "created_at": "2026-11-24T20:03:10+00:00",
+  "work_items": [],
+  "event": "CE-016",
+  "branch": "main",
+  "dataset": {
+    "file": "bian.json",
+    "before_sha256": "b252bc1a1ff7bd2c3d1206fdf9151df9c6673a3c9340051a1d0d25b61028d956",
+    "after_sha256": "d7f032974036c6dc72f421137cb674fffd0e1e869c184fea558619cb7f69ff45"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "id": "CS-020",
+  "layer": "S",
+  "reason": "metamodel migration MIG-003: 0.19.0 → 0.20.0 (sdem migrate)",
+  "changes": [],
+  "relationships": {
+    "add": [],
+    "remove": []
+  },
+  "adopted": true,
+  "agent": "architect",
+  "person": "sdem.maintainer",
+  "created_at": "2026-11-24T20:03:10+00:00",
+  "work_items": [],
+  "event": "CE-020",
+  "branch": "main",
+  "dataset": {
+    "file": "security.json",
+    "before_sha256": "14ded9f837ede3839df7a66891d204a14395fb899e40f142ae92b1768ddca4c6",
+    "after_sha256": "b2c2636d7950085befb4c9186a472479d53113bcbc4319ee08d423d4415e095e"
+  }
+}

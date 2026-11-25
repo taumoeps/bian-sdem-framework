@@ -2,40 +2,45 @@
   "format": "sdem-ledger/1",
   "files": {
     "application.json": {
-      "sha256": "0c1e6e203ff86ecbc2f8261e0629bb0d9f672c1cf582865608479111ee925ee3",
-      "by": "sdem change propose",
-      "at": "2026-11-22T18:54:47"
+      "sha256": "c9e99426880c786067f63158698b144f3b63ce24ad6fbb35614b714d2dcc9cea",
+      "by": "sdem.maintainer (sdem change adopt)",
+      "at": "2026-11-25T09:03:10",
+      "note": "metamodel migration MIG-003: 0.19.0 → 0.20.0 (sdem migrate)"
     },
     "bian.json": {
-      "sha256": "b252bc1a1ff7bd2c3d1206fdf9151df9c6673a3c9340051a1d0d25b61028d956",
-      "by": "sdem change propose",
-      "at": "2026-11-22T18:44:42"
+      "sha256": "d7f032974036c6dc72f421137cb674fffd0e1e869c184fea558619cb7f69ff45",
+      "by": "sdem.maintainer (sdem change adopt)",
+      "at": "2026-11-25T09:03:10",
+      "note": "metamodel migration MIG-003: 0.19.0 → 0.20.0 (sdem migrate)"
     },
     "business.json": {
-      "sha256": "9a4c0ffdf566249ce83d066b94e1b8210bc5cf2ef359970355e8f89dbd30f99d",
-      "by": "sdem change propose",
-      "at": "2026-11-22T18:44:39"
+      "sha256": "a1d8d3085bc65876ba1f01f0e838d99438bddfc5c581306df2bd5617e19dc3ea",
+      "by": "sdem.maintainer (sdem change adopt)",
+      "at": "2026-11-25T09:03:10",
+      "note": "metamodel migration MIG-003: 0.19.0 → 0.20.0 (sdem migrate)"
     },
     "data.json": {
-      "sha256": "ca8f6dd7799633692e6465995be735a247e75a2200d398478e2be1e7aac29062",
-      "by": "sdem change propose",
-      "at": "2026-11-22T18:44:42"
+      "sha256": "e2afc5be724aebd3a1c7d81b6f2a4f686cf1562a9f5865bd6102d19f6078ad2e",
+      "by": "sdem.maintainer (sdem change adopt)",
+      "at": "2026-11-25T09:03:10",
+      "note": "metamodel migration MIG-003: 0.19.0 → 0.20.0 (sdem migrate)"
     },
     "mappings.json": {
-      "sha256": "2c8f5aee503cc8e3e7f6aab44f1c6c75f24126e36a8a6ebfec5877751ce0dfe5",
-      "by": "sdem connect DATA-POSTING",
-      "at": "2026-11-22T19:22:50"
+      "sha256": "ca8fdd6412050324013f9bcb09fb663013ad37a6ba5494d64bf45b89359b1dd2",
+      "by": "sdem migrate",
+      "at": "2026-11-25T09:03:10"
     },
     "security.json": {
-      "sha256": "14ded9f837ede3839df7a66891d204a14395fb899e40f142ae92b1768ddca4c6",
-      "by": "steven.taumoepeau (sdem change adopt)",
-      "at": "2026-11-22T10:55:38",
-      "note": "metamodel migration MIG-002: 0.18.0 → 0.19.0 (sdem migrate)"
+      "sha256": "b2c2636d7950085befb4c9186a472479d53113bcbc4319ee08d423d4415e095e",
+      "by": "sdem.maintainer (sdem change adopt)",
+      "at": "2026-11-25T09:03:10",
+      "note": "metamodel migration MIG-003: 0.19.0 → 0.20.0 (sdem migrate)"
     },
     "technology.json": {
-      "sha256": "18f7324df0ba4affe25b3d7b73ff35ed6451a04696b9451365a20fd87fe03d91",
-      "by": "sdem change propose",
-      "at": "2026-11-22T18:54:44"
+      "sha256": "0fd1dad0ab319f46bfc808e0eb6d0e05772140defd6f06c2c977900beaeca096",
+      "by": "sdem.maintainer (sdem change adopt)",
+      "at": "2026-11-25T09:03:10",
+      "note": "metamodel migration MIG-003: 0.19.0 → 0.20.0 (sdem migrate)"
     }
   }
 }

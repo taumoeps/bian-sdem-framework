@@ -2496,6 +2496,172 @@
           "edges": 7
         }
       ]
+    },
+    {
+      "build": 31,
+      "at": "2026-11-24T20:03:31+00:00",
+      "inputs": [
+        {
+          "path": "examples/card-fraud-alerts//a1-business.json",
+          "kind": "export",
+          "level": "A1",
+          "model_id": "synthetic-bank-a1",
+          "model_version": "2026.10",
+          "sha256": "d4db6d5f1ba27fcea8be9b1ed68200afe6ad19097e3baf4fc4a4a90c8c8dc4af"
+        },
+        {
+          "path": "examples/card-fraud-alerts//a2-service-domain.json",
+          "kind": "export",
+          "level": "A2",
+          "model_id": "synthetic-bank-a2",
+          "model_version": "2026.10",
+          "sha256": "a3f91ba86d102a20307c3dd4a0f0cf404b57f08ffa9c828abf261ff42bf05c61"
+        },
+        {
+          "path": "examples/card-fraud-alerts//a3-application.json",
+          "kind": "export",
+          "level": "A3",
+          "model_id": "synthetic-bank-a3",
+          "model_version": "2026.10",
+          "sha256": "a2856cc3ca63d5079886f4b1be3f8e91d2d92689a8ead5725f850c48b0fd661b"
+        },
+        {
+          "path": "examples/card-fraud-alerts//a4-technology.json",
+          "kind": "export",
+          "level": "A4",
+          "model_id": "synthetic-bank-a4",
+          "model_version": "2026.10",
+          "sha256": "465aa95544524a7e78f5d1bf3b22c44fb2154de96508c54098e0d43a87b84f2d"
+        },
+        {
+          "path": "examples/card-fraud-alerts//mappings.json",
+          "kind": "registry",
+          "registry_version": "0.4.0",
+          "sha256": "04a8c3a350e90574e053abe29b041a61f4396f2fe027fa63649ce743220c0304"
+        }
+      ],
+      "metamodel_version": "0.20.0",
+      "errors": [],
+      "warnings": [
+        "level A2 (synthetic-bank-a2): instance BD-FRAUD: 0 composition links with A2.BusinessArea, RA2-01 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-bank-a2): instance SO-044-07: 0 access links with A2.ControlRecord, RA2-13 expects at least 1 (LC-10m)"
+      ],
+      "result": "accepted",
+      "outputs": [
+        {
+          "file": "a1-business.graph.json",
+          "sha256": "d315d69147af002f449c3eb05a8ac5b49fc72a344a4ed69466f21d34d3f95561",
+          "nodes": 9,
+          "edges": 7
+        },
+        {
+          "file": "a2-service-domain.graph.json",
+          "sha256": "fefffb7782680d7478d21297e43298ffd578da908f0063e603b1d9f978b67266",
+          "nodes": 8,
+          "edges": 7
+        },
+        {
+          "file": "a3-application.graph.json",
+          "sha256": "0950ae4f69ba3ccefe2f1dd501bff4365a4d952e53e7cd621ecb20c44e3a3796",
+          "nodes": 4,
+          "edges": 3
+        },
+        {
+          "file": "a4-technology.graph.json",
+          "sha256": "157c15804f8e9c5b8f14540a65c7c0f978bdb9b6ee5d1d14813a6d0f16d1a69c",
+          "nodes": 9,
+          "edges": 9
+        },
+        {
+          "file": "federated.graph.json",
+          "sha256": "9e69ca3db4de5c815557b67f643a37d0d44849d956d45920ae95671fc0023a77",
+          "nodes": 10,
+          "edges": 7
+        }
+      ]
+    },
+    {
+      "build": 32,
+      "at": "2026-11-24T20:03:48+00:00",
+      "inputs": [
+        {
+          "path": "examples/card-fraud-alerts//a1-business.json",
+          "kind": "export",
+          "level": "A1",
+          "model_id": "synthetic-bank-a1",
+          "model_version": "2026.10",
+          "sha256": "d4db6d5f1ba27fcea8be9b1ed68200afe6ad19097e3baf4fc4a4a90c8c8dc4af"
+        },
+        {
+          "path": "examples/card-fraud-alerts//a2-service-domain.json",
+          "kind": "export",
+          "level": "A2",
+          "model_id": "synthetic-bank-a2",
+          "model_version": "2026.10",
+          "sha256": "a3f91ba86d102a20307c3dd4a0f0cf404b57f08ffa9c828abf261ff42bf05c61"
+        },
+        {
+          "path": "examples/card-fraud-alerts//a3-application.json",
+          "kind": "export",
+          "level": "A3",
+          "model_id": "synthetic-bank-a3",
+          "model_version": "2026.10",
+          "sha256": "a2856cc3ca63d5079886f4b1be3f8e91d2d92689a8ead5725f850c48b0fd661b"
+        },
+        {
+          "path": "examples/card-fraud-alerts//a4-technology.json",
+          "kind": "export",
+          "level": "A4",
+          "model_id": "synthetic-bank-a4",
+          "model_version": "2026.10",
+          "sha256": "465aa95544524a7e78f5d1bf3b22c44fb2154de96508c54098e0d43a87b84f2d"
+        },
+        {
+          "path": "examples/card-fraud-alerts//mappings.json",
+          "kind": "registry",
+          "registry_version": "0.4.0",
+          "sha256": "04a8c3a350e90574e053abe29b041a61f4396f2fe027fa63649ce743220c0304"
+        }
+      ],
+      "metamodel_version": "0.20.0",
+      "errors": [],
+      "warnings": [
+        "level A2 (synthetic-bank-a2): instance BD-FRAUD: 0 composition links with A2.BusinessArea, RA2-01 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-bank-a2): instance SO-044-07: 0 access links with A2.ControlRecord, RA2-13 expects at least 1 (LC-10m)"
+      ],
+      "result": "accepted",
+      "outputs": [
+        {
+          "file": "a1-business.graph.json",
+          "sha256": "d315d69147af002f449c3eb05a8ac5b49fc72a344a4ed69466f21d34d3f95561",
+          "nodes": 9,
+          "edges": 7
+        },
+        {
+          "file": "a2-service-domain.graph.json",
+          "sha256": "fefffb7782680d7478d21297e43298ffd578da908f0063e603b1d9f978b67266",
+          "nodes": 8,
+          "edges": 7
+        },
+        {
+          "file": "a3-application.graph.json",
+          "sha256": "0950ae4f69ba3ccefe2f1dd501bff4365a4d952e53e7cd621ecb20c44e3a3796",
+          "nodes": 4,
+          "edges": 3
+        },
+        {
+          "file": "a4-technology.graph.json",
+          "sha256": "157c15804f8e9c5b8f14540a65c7c0f978bdb9b6ee5d1d14813a6d0f16d1a69c",
+          "nodes": 9,
+          "edges": 9
+        },
+        {
+          "file": "federated.graph.json",
+          "sha256": "9e69ca3db4de5c815557b67f643a37d0d44849d956d45920ae95671fc0023a77",
+          "nodes": 10,
+          "edges": 7
+        }
+      ]
     }
   ]
 }

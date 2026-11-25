@@ -1,0 +1,22 @@
+{
+  "id": "CS-017",
+  "layer": "data",
+  "reason": "metamodel migration MIG-003: 0.19.0 → 0.20.0 (sdem migrate)",
+  "changes": [],
+  "relationships": {
+    "add": [],
+    "remove": []
+  },
+  "adopted": true,
+  "agent": "architect",
+  "person": "sdem.maintainer",
+  "created_at": "2026-11-24T20:03:10+00:00",
+  "work_items": [],
+  "event": "CE-017",
+  "branch": "main",
+  "dataset": {
+    "file": "data.json",
+    "before_sha256": "ca8f6dd7799633692e6465995be735a247e75a2200d398478e2be1e7aac29062",
+    "after_sha256": "e2afc5be724aebd3a1c7d81b6f2a4f686cf1562a9f5865bd6102d19f6078ad2e"
+  }
+}

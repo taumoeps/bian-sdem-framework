@@ -12,6 +12,19 @@ MM_DIR = ROOT / 'metamodel'
 LEVEL_FILES = ['a1-business.json', 'a2-service-domain.json', 'a3-application.json', 'a4-technology.json']
 
 
+def level_docs(mm_dir=None):
+    """{file name: its document} for each layer's metamodel file — BIAN's (A2) from the installed sdem-bian when it is on, and left out when
+    not (BX-15, 0.22: SDEM ships none). Every reader of the layer files goes through here."""
+    from . import parts
+    out = {}
+    for name in LEVEL_FILES:
+        if name == parts.A2_FILE:
+            doc = parts.metamodel_doc(None) if parts.bian_on() else None
+            if doc is not None: out[name] = doc
+        else: out[name] = _jload(Path(mm_dir or MM_DIR) / name)
+    return out
+
+
 PROJECTED_PREFIXES = ('PRJ-', 'DSN-')  # AID projections and target designs (CTL-16)
 
 
@@ -35,7 +48,7 @@ class Metamodel:
         cache = getattr(cls, '_merged_cache', None)
         if cache is None: cache = {}; setattr(cls, '_merged_cache', cache)
         from . import parts
-        key = (_p.digest(_p.ACTIVE), parts.bian_on(), parts.migrated())   # DL-12: the workspace's form decides the layers too
+        key = (_p.digest(_p.ACTIVE), parts.bian_on(), parts.migrated(), parts._STATE.get('content') is False)   # DL-12: the workspace's form decides the layers too; BX-15: SDEM's own documents, the core's alone
         if key not in cache:
             cache.clear(); cache[key] = _p.apply(base, _p.ACTIVE)
             cache[key].trace = {'rules': base.trace['rules'] + list(_p.ACTIVE.get('trace_rules') or []),   # MID-08: an extension's pack declares its own
@@ -48,11 +61,15 @@ class Metamodel:
         from . import parts
         ents, versions, trace = [], set(), {'rules': [], 'information': []}
         for name in LEVEL_FILES:
-            doc = _jload(Path(mm_dir) / name)
-            versions.add(doc['metamodel_version'])
-            if name == parts.A2_FILE and not parts.bian_on(): continue   # BX-02, BX-13: BIAN's types belong to ext:bian
-            t = doc.get('trace') or {}
-            if name == parts.A2_FILE: doc = parts.metamodel_doc(doc); t = doc.get('trace') or t   # BP-02: the installed sdem-bian's, if any (its own trace, else the shipped one)
+            if name == parts.A2_FILE:   # BX-15 (0.22): BIAN's layer comes only from the installed sdem-bian — its own version, not the core's
+                if not parts.bian_on(): continue   # BX-02, BX-13: BIAN's types belong to ext:bian
+                doc = parts.metamodel_doc(None)
+                if doc is None: continue
+                t = doc.get('trace') or {}
+            else:
+                doc = _jload(Path(mm_dir) / name)
+                versions.add(doc['metamodel_version'])
+                t = doc.get('trace') or {}
             ents += doc['entities']   # MID-08: how the trace walks this layer's own links — declared by the layer, not written into the trace
             trace['rules'] += t.get('rules') or []; trace['information'] += t.get('information') or []
         rels = _jload(Path(mm_dir) / 'level-relationships.json')

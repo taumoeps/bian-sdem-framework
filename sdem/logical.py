@@ -72,7 +72,8 @@ def conformance(mm, attrs=None, common=None):
 
 def render():
     mm = Metamodel.load()
-    ents = [e for f in LEVEL_FILES for e in _j(MM_DIR / f)['entities']]
+    from sdem.metamodel import level_docs
+    ents = [e for d in level_docs().values() for e in d['entities']]   # BX-15: BIAN's layer from sdem-bian
     rec = _j(MM_DIR / 'entity-attributes.json'); attrs = rec['attributes']; core = rec['core_fields']; common = rec.get('common_attributes', [])
     lr = _j(MM_DIR / 'level-relationships.json'); reg = _j(ROOT / 'schema' / 'relationship-types.json')['relationships']
     byent = {}

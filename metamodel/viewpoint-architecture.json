@@ -80,64 +80,6 @@
    "layer": "business"
   },
   {
-   "code": "A2",
-   "name": "Service Domains",
-   "answers": "the BIAN functions used, and how each is organised",
-   "layout": "nested-groupings",
-   "shapes": [
-    "A2.ControlRecord",
-    "A2.ServiceGroup",
-    "A2.AssetType",
-    "A2.FunctionalPattern"
-   ],
-   "groupings": [
-    {
-     "type": "A2.ServiceDomain",
-     "holds": [
-      {
-       "kind": "aggregation",
-       "of": "A2.ControlRecord"
-      },
-      {
-       "kind": "composition",
-       "of": "A2.ServiceGroup"
-      }
-     ]
-    }
-   ],
-   "connections": [
-    "association"
-   ],
-   "left_out": [
-    {
-     "types": [
-      "A2.ServiceOperation",
-      "A2.BehaviorQualifier"
-     ],
-     "why": "counted on each service group and control record (\"7 operations\"), listed in table 9.3"
-    },
-    {
-     "types": [
-      "A2.BusinessArea",
-      "A2.BusinessDomain"
-     ],
-     "why": "BIAN's catalogue structure above the service domains"
-    },
-    {
-     "types": [
-      "A2.BusinessScenario",
-      "A2.BusinessObject",
-      "A2.BusinessObjectAttribute",
-      "A2.BOMModel",
-      "A2.Wireframe",
-      "A2.SemanticAPI"
-     ],
-     "why": "BIAN's reference content — in the A2 layer document"
-    }
-   ],
-   "layer": "bian"
-  },
-  {
    "code": "A3-1",
    "name": "Data Architecture",
    "answers": "what is held, and its fields, by domain",

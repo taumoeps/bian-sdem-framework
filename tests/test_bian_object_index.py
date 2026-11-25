@@ -6,7 +6,10 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from sdem import bian as B  # noqa: E402
+try:
+    from sdem_bian import bian as B  # noqa: E402 — BIAN's code, from the installed sdem-bian (BX-15)
+except ImportError:
+    B = None
 
 ENV = {**os.environ, 'PYTHONPATH': str(ROOT), 'PYTHONIOENCODING': 'utf-8'}
 FIELD_KEYS = {'name', 'data_type', 'required', 'many', 'identifier', 'allowed_values', 'refers_to'}
@@ -20,6 +23,10 @@ def sdem(*a, ok=(0,)):
 
 def files(ws): return {p.name: p.read_bytes() for p in Path(ws).glob('*.json')}
 
+
+
+def setUpModule():   # 0.22 (BX-15): BIAN's code ships only with sdem-bian — these tests need it installed
+    if B is None: raise unittest.SkipTest('needs sdem-bian installed (BIAN\'s code is its own since SDEM 0.22)')
 
 class Index(unittest.TestCase):   # BO-01
     def setUp(self):
@@ -91,7 +98,7 @@ class Gap(unittest.TestCase):   # BO-06
             p = ws / 'bian.json'; d = json.loads(p.read_text(encoding='utf-8'))   # a made-up copy without them
             d['instances'] = [i for i in d['instances'] if not i['type'].endswith(('BusinessObject', 'BusinessObjectAttribute'))]
             p.write_text(json.dumps(d), encoding='utf-8')
-            gap = subprocess.run([sys.executable, '-c', f'from sdem.bian import objects_gap; print(objects_gap({str(ws)!r}))'], capture_output=True, text=True, env=ENV, cwd=ROOT).stdout
+            gap = subprocess.run([sys.executable, '-c', f'from sdem_bian.bian import objects_gap; print(objects_gap({str(ws)!r}))'], capture_output=True, text=True, env=ENV, cwd=ROOT).stdout
             self.assertIn('service_domains', gap)   # in its own process: it reads the design's own numbering (ST-01), as every command does
             st = json.loads(sdem('status', '--workspace', ws, '--json', ok=(0, 1)))
             self.assertTrue(any(w['kind'] == 'bian_objects_missing' for w in st['warnings']))

@@ -12,7 +12,7 @@ sys.path.insert(0, str(ROOT)); sys.path.insert(0, str(Path(__file__).resolve().p
 from bare_python import bare_python, bian_dirs  # noqa: E402
 from sdem import profile as P  # noqa: E402
 
-MANIFEST = {'name': 'bian', 'command': 'sdem-bian', 'version': '9.9.9', 'kind': ['metamodel'], 'sdem': '>=0.0', 'infers': ['aid-phases'],
+MANIFEST = {'name': 'bian', 'command': 'sdem-bian', 'version': '9.9.9', 'kind': ['metamodel'], 'sdem': '>=0.0', 'infers': ['link', 'aid-phases'],
             'description': 'a made-up stand-in for sdem-bian: BIAN\'s part of sdem aid, through SDEM\'s own copy'}
 PROGRAM = r'''
 import contextlib, json, os, sys
@@ -22,7 +22,7 @@ if a[:1] == ["infer"] and "--phase" in a:
     if os.environ.get("FAKE_BIAN_FAILS"): print("broken on purpose", file=sys.stderr); sys.exit(3)
     sys.path.insert(0, ROOT)
     from sdem import api
-    from sdem.aid_bian import answer
+    from sdem_bian.aid_bian import answer
     ws, phase, state = a[a.index("--workspace") + 1], a[a.index("--phase") + 1], a[a.index("--state") + 1]
     api.activate(ws)
     with open(state, encoding="utf-8") as f: st = json.load(f)
@@ -109,11 +109,8 @@ class AidPhases(unittest.TestCase):
             self.assertFalse(any(k in wire['after'] for k in docs), 'layers cross by id, not by code')
             self.assertEqual(identity.from_wire(wire), x)
 
-    def test_bp11_the_package_carries_aid_bian_as_sdem_has_it(self):
-        from sdem import parts
-        code = parts.package_code()
-        self.assertIn('aid_bian.py', code)
-        self.assertNotRegex(code['aid_bian.py'], r'(?m)^\s*from \.(?!rules_bian |bian )\w* import')   # only sdem.api, and the package's own
+    def test_bx15_sdem_carries_no_copy_of_bians_part(self):
+        for f in ('aid_bian.py', 'rules_bian.py', 'bian.py', 'inferences.py'): self.assertFalse((ROOT / 'sdem' / f).exists(), f)   # only sdem-bian has them
 
 
 def _no_time(x):

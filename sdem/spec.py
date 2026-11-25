@@ -128,6 +128,7 @@ def render():
             req('M', f"{m['id']}: propose `{(m.get('sdem_rule') or m.get('sdmm_rule')) or m.get('relation')}` {m['source']} → {m['target']} at step {m.get('fill_step')} ({m.get('confidence')}); data: {m.get('data_needed', '')}", m['id'], validated_in(m['id']))
     for grp, label in (('candidate_rule', 'report (candidate rule)'), ('conditional_rule', 'report when its data is present (conditional rule)'), ('institution_only', 'report from the architecture dataset key (institution-only)'), ('derived_path', 'compute as a closure and report (derived path)')):
         ids = [m['id'] for m in nm if m['rule_decision'] == grp]
+        if not ids: continue   # a kind of rule the core has none of (0.22: BIAN's candidate rules are sdem-bian's)
         req('M', f"{label}: {', '.join(ids)} — each with the working and the plan band, in `<uc>-candidates.json` with `relationship` = plan ID.", ', '.join(ids), '; '.join(sorted({validated_in(i).split(':')[0] for i in ids})))
 
     # ---- 5 data

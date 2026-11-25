@@ -1366,7 +1366,8 @@ def best(sources):
 
 
 def _cross_types():
-    return _jload(DATA_ROOT / 'schema' / 'relationship-types.json')['relationships']
+    from .validate import load_registry
+    return load_registry()['relationships']   # the link types in use — BIAN's with them from sdem-bian (BX-15)
 
 
 def _digest(root):

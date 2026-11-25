@@ -11,7 +11,7 @@ from sdem.identity import T, IdentityError, layer, layer_id, type_id  # noqa: E4
 class IdentityTests(unittest.TestCase):
     def test_the_table_holds_every_type_of_the_metamodel_and_nothing_else(self):   # ST-04
         names = {e['type'] for f in sorted((ROOT / 'metamodel').glob('a[1-4]-*.json')) for e in json.loads(f.read_text())['entities']}
-        self.assertEqual({x['name_0_19'] for x in identity.table()['types']}, names)
+        self.assertEqual({x['name_0_19'] for x in identity.table()['types'] if not x['name_0_19'].startswith('A2.')}, names)   # BIAN's (A2) keep their ids here — the layer's place (4b) — and their definitions in sdem-bian (BX-15)
         ids = [x['id'] for x in identity.table()['types']]
         self.assertEqual(len(ids), len(set(ids)))
 

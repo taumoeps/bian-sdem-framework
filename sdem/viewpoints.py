@@ -18,7 +18,27 @@ e = html.escape
 
 
 def templates():
-    return _jload(TEMPLATES_FILE)
+    """SDEM's diagram templates — with BIAN's (sdem-bian's viewpoints.json: its templates by id, its relationships' notation) where BIAN
+    is on (BX-15, 0.22: SDEM ships none of BIAN)."""
+    d = _jload(TEMPLATES_FILE)
+    from . import parts
+    b = ((parts._pkg_data() if parts.bian_on() else None) or {}).get('viewpoints')
+    if not b: return d
+    import copy
+    b = copy.deepcopy(b)   # sdem-bian's data is read once and shared: each caller gets its own
+    own = {t['id']: t for t in b.get('templates') or []}
+    out = [own.pop(t['id'], t) for t in d['templates']]
+    for tid, t in list(own.items()):   # one SDEM lacks: after the one named
+        after = (b.get('after') or {}).get(tid); i = next((n for n, x in enumerate(out) if x['id'] == after), len(out) - 1)
+        out.insert(i + 1, t)
+    rels = dict(d['notation']['relationships']); merged = {}
+    extra = b.get('relationships') or {}; anchors = b.get('relationships_after') or {}
+    for k in [k for k, a in anchors.items() if a is None and k in extra]: merged[k] = extra[k]
+    for k, v in rels.items():
+        merged[k] = v
+        for x in [x for x, a in anchors.items() if a == k and x in extra]: merged[x] = extra[x]
+    for k in extra: merged.setdefault(k, extra[k])
+    return {**d, 'templates': out, 'notation': {**d['notation'], 'relationships': merged}}
 
 
 def template(tid):

@@ -6,7 +6,10 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from sdem.aid import project  # noqa: E402
+try:
+    from sdem_bian.aid_bian import project  # noqa: E402 — BIAN's code, from the installed sdem-bian (BX-15)
+except ImportError:
+    project = None
 from sdem.metamodel import Metamodel  # noqa: E402
 from sdem.new import base_layer  # noqa: E402
 
@@ -19,6 +22,10 @@ def ds(level, instances):
 def names(pkg, level, kind):
     return sorted(i['name'] for i in pkg['layers'].get(level, {}).get('instances', []) if i['type'] == kind)
 
+
+
+def setUpModule():   # 0.22 (BX-15): BIAN's code ships only with sdem-bian — these tests need it installed
+    if project is None: raise unittest.SkipTest('needs sdem-bian installed (BIAN\'s code is its own since SDEM 0.22)')
 
 class AidInferenceTests(unittest.TestCase):
     @classmethod

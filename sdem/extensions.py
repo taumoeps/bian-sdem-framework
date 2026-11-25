@@ -87,10 +87,11 @@ def run(name, argv):
         return 130
 
 
-def infer(program, workspace, step, timeout, phase=None, state=None):
+def infer(program, workspace, step, timeout, phase=None, state=None, options=None):
     """MX-47: ask an installed extension for its inference — `sdem-<name> infer --workspace DIR --step aid|link --json`. Only for one the
     workspace's profile includes and whose manifest says it infers (sdem.ext_infer.askable, MX-45, MX-46); the one other place SDEM runs an extension."""
     extra = ['--phase', phase, '--state', str(state)] if phase else []   # MX-54: one phase of a built-in extension's part of sdem aid, its state in a file
+    if options: extra += ['--options', json.dumps(options)]   # MX-53: the engine's options (an acceptance case's), for its rules too
     return subprocess.run([program, 'infer', '--workspace', str(workspace), '--step', step, *extra, '--json'], capture_output=True, text=True, timeout=timeout,
                           encoding='utf-8', errors='replace', env={**os.environ, 'PYTHONIOENCODING': 'utf-8'})   # the answer is UTF-8 JSON on every platform (Windows' console is not)
 
@@ -105,13 +106,9 @@ def main(argv=None):
     from . import parts
     if a.estate:
         from . import profile as _p; _p.activate_from(a.estate)
-    built = [{'name': n, 'program': 'built into SDEM', 'manifest': {k: v for k, v in m.items() if k != 'pack_file'},
-              **({'on': parts.bian_on(), 'why': parts.why(), **({'make_explicit': f'sdem profile include ext:{n} --workspace {a.estate} --person <you> --reason "…"'}
-                 if parts.bian_on() and 'BX-11' in parts.why() else {})} if a.estate and n == 'bian' else {})}
-             for n, m in BUILTIN.items() if n not in {x['name'] for x in items} or (parts.package() or {}).get('refused')]
-    for x in built:   # BP-10: an installed sdem-bian SDEM cannot use — said, and the built-in one is used
-        if (parts.package() or {}).get('refused'): x['manifest'] = {**x['manifest'], 'description': f"{x['manifest'].get('description', '')} — used instead of the installed sdem-bian: {parts.package()['refused']}"}   # BX-01: a built-in metamodel extension — an installed one of the same name takes its place
+    built = []   # BX-15 (0.22): SDEM builds in no extension — BIAN comes only from sdem-bian
     for x in items:   # BX-15: BIAN comes from the installed sdem-bian — whether it is on in this workspace, and why, said there
+        if x['name'] == parts.EXT_BIAN.split(':', 1)[1] and (parts.package() or {}).get('refused'): x['refused'] = parts.package()['refused']   # said, not used
         if a.estate and x['name'] == parts.EXT_BIAN.split(':', 1)[1]:
             x.update({'on': parts.bian_on(), 'why': parts.why(), **({'make_explicit': f'sdem profile include {parts.EXT_BIAN} --workspace {a.estate} --person <you> --reason "…"'}
                       if parts.bian_on() and 'BX-11' in parts.why() else {})})
@@ -128,7 +125,7 @@ def main(argv=None):
     print(f'{len(items)} extension(s) — run one as sdem <name> …')
     for x in items:
         m = x['manifest']
-        print(f"  {x['name']:<14} {m.get('version', ''):<8} {m.get('description', '')}"
+        print(f"  {x['name']:<14} {m.get('version', ''):<8} {m.get('description', '')}" + (f"\n  {'':<14} not usable: {x['refused']}" if x.get('refused') else '')
               + (f"\n  {'':<14} {'on' if x['on'] else 'off'} in this workspace: {x['why']}" + (f"\n  {'':<14} make it explicit: {x['make_explicit']}" if x.get('make_explicit') else '') if 'on' in x else ''))
         print(f"  {'':<14} supports SDEM {m.get('sdem', '?')}; sends to {', '.join(m.get('sends_to') or ['nothing'])}; data: {m.get('data', '?')}")
     return 0

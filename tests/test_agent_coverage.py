@@ -50,8 +50,8 @@ class AgentCoverageTests(unittest.TestCase):
     def test_one_command_on_request(self):   # AG-S03
         code, out, _ = sdem('commands', 'events', 'assess', '--json')
         self.assertEqual(code, 0); self.assertEqual(list(json.loads(out)['commands']), ['events assess'])
-        code, out, _ = sdem('commands', 'bian inference', '--json')
-        self.assertIn('bian inference accept', json.loads(out)['commands'])
+        code, out, _ = sdem('commands', 'aid', '--json')   # a group: every command in it (BX-15: sdem bian … is sdem-bian's own)
+        self.assertIn('aid confirm', json.loads(out)['commands'])
         self.assertLess(len(out), 20000)
         code, _, err = sdem('commands', 'evnts', 'assess')
         self.assertEqual(code, 2); self.assertIn('did you mean: events assess', err)

@@ -1,5 +1,5 @@
 """Inference-engine acceptance (sdem/acceptance.py; relationship-rules-spec.md §8, DEC-E-01)."""
-import json, unittest
+import json, shutil, unittest
 from pathlib import Path
 
 from sdem.acceptance import ReplayEngine, load_cases, run
@@ -19,11 +19,29 @@ class HarnessTests(unittest.TestCase):
             self.assertNotIn('gold', c['given']); self.assertNotEqual(c['given'], 'mappings.json')
 
 
+
+def full_engine():
+    """The whole rules engine — the core's rules with BIAN's steps, from the installed sdem-bian (BX-15; tests may use an extension's
+    code, SDEM may not, R-D5): what the acceptance cases measure, with each case's own options."""
+    from sdem import api
+    from sdem.rules_engine import ENGINE_NAME
+    try:
+        from sdem_bian.rules_bian import BianSteps
+    except ImportError:
+        raise unittest.SkipTest('needs sdem-bian installed: the cases measure the core\'s rules with BIAN\'s')
+
+    class Full(BianSteps, api.CoreRun):
+        pass
+
+    class Engine:
+        name = ENGINE_NAME
+        def infer(self, reader, case=None): return Full(reader, (case or {}).get('id', 'RUN')).run((case or {}).get('options'))
+    return Engine()
+
 class RulesEngineTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        from sdem.rules_engine import RulesEngine
-        cls.rows = {r['case']: r for r in run(RulesEngine())}
+        cls.rows = {r['case']: r for r in run(full_engine())}
 
     def test_cases_marked_passing_pass(self):
         for c in load_cases():
@@ -61,8 +79,7 @@ class RulesEngineTests(unittest.TestCase):
             if cid != 'M2': self.assertNotIn('design', r['result'], cid)
 
     def test_deterministic(self):
-        from sdem.rules_engine import RulesEngine
-        again = {r['case']: r for r in run(RulesEngine(), ['M1', 'C2'])}
+        again = {r['case']: r for r in run(full_engine(), ['M1', 'C2'])}
         for cid in again: self.assertEqual(again[cid]['result'], self.rows[cid]['result'], cid)
 
     def test_beats_the_baseline(self):
@@ -79,8 +96,11 @@ class CommandTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as t:
             e = ROOT / 'examples' / 'payment-initiation'
             build(sorted(str(p) for p in e.glob('a[1-4]-*.json')) + [str(e / 'm1-mappings-given.json')], Path(t) / 'g')
+            ws = Path(t) / 'ws'; ws.mkdir()   # the design as a workspace — BIAN's rules read it, in sdem-bian (BX-15), as sdem link gives it
+            for p in e.glob('a[1-4]-*.json'): shutil.copy(p, ws / p.name)
+            shutil.copy(e / 'm1-mappings-given.json', ws / 'mappings.json')
             buf = io.StringIO()
-            with contextlib.redirect_stdout(buf): self.assertEqual(main(['rules', '--graph', str(Path(t) / 'g'), '--out', str(Path(t) / 'o')]), 0)
+            with contextlib.redirect_stdout(buf): self.assertEqual(main(['rules', '--graph', str(Path(t) / 'g'), '--out', str(Path(t) / 'o'), '--ext-workspace', str(ws)]), 0)
             self.assertEqual(len(json.loads(buf.getvalue())['mappings']), 13)
             self.assertTrue((Path(t) / 'o' / 'inference-log.json').exists())
 

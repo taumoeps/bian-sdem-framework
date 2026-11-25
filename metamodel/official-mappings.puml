@@ -10,7 +10,7 @@ skinparam package {
 }
 skinparam ArrowColor #1565C0
 skinparam ArrowFontSize 10
-title Official mappings — 24 verified connectors (B = BIAN-internal, S = cross-level with BIAN guidance)
+title Official mappings — 0 verified connectors (B = BIAN-internal, S = cross-level with BIAN guidance)
 
 package "A1 Business Architecture" as A1 {
   rectangle "A1.BusinessCapability" as a1_businesscapability
@@ -29,21 +29,6 @@ package "A1 Business Architecture" as A1 {
 }
 
 package "A2 Service Domain Architecture" as A2 {
-  rectangle "A2.BusinessArea" as a2_businessarea
-  rectangle "A2.BusinessDomain" as a2_businessdomain
-  rectangle "A2.ServiceDomain" as a2_servicedomain
-  rectangle "A2.FunctionalPattern" as a2_functionalpattern
-  rectangle "A2.AssetType" as a2_assettype
-  rectangle "A2.ControlRecord" as a2_controlrecord
-  rectangle "A2.ServiceGroup" as a2_servicegroup
-  rectangle "A2.ServiceOperation" as a2_serviceoperation
-  rectangle "A2.BehaviorQualifier" as a2_behaviorqualifier
-  rectangle "A2.BusinessScenario" as a2_businessscenario
-  rectangle "A2.BusinessObject" as a2_businessobject
-  rectangle "A2.BusinessObjectAttribute" as a2_businessobjectattribute
-  rectangle "A2.BOMModel\n(artefact)" as a2_bommodel
-  rectangle "A2.Wireframe\n(artefact)" as a2_wireframe
-  rectangle "A2.SemanticAPI\n(artefact)" as a2_semanticapi
 }
 
 package "A3 Application Architecture" as A3 {
@@ -75,37 +60,13 @@ package "A4 Technology Architecture" as A4 {
   rectangle "A4.Location" as a4_location
 }
 
-' --- B: BIAN's own relationships inside A2 (14)
-a2_businessarea -[#1565C0]-> a2_businessdomain : B02 contains
-a2_businessdomain -[#1565C0]-> a2_servicedomain : B03 contains
-a2_servicedomain -[#1565C0]-> a2_functionalpattern : B04 applies
-a2_servicedomain -[#1565C0]-> a2_assettype : B05 manages
-a2_servicedomain -[#1565C0]-> a2_controlrecord : B06 governs
-a2_controlrecord -[#1565C0]-> a2_behaviorqualifier : B07 is partitioned by
-a2_controlrecord -[#1565C0]-> a2_businessobject : B08 attributes typed by
-a2_servicedomain -[#1565C0]-> a2_servicegroup : B09 offers
-a2_servicegroup -[#1565C0]-> a2_serviceoperation : B10 contains
-a2_serviceoperation -[#1565C0]-> a2_controlrecord : B11 acts on
-a2_servicedomain -[#1565C0]-> a2_servicedomain : B12 connects to
-a2_businessscenario -[#1565C0]-> a2_serviceoperation : B13 sequences
-a2_wireframe -[#1565C0]-> a2_servicedomain : B14 depicts
-a2_semanticapi -[#1565C0]-> a2_servicedomain : B15 derived from
+' --- B: BIAN's own relationships inside A2 (0)
 
-' --- S: cross-level mappings with BIAN guidance (8 solid, 2 dashed = intent/target only)
-a2_servicedomain -[#2E7D32]-> a3_applicationcomponent : S17 REALIZED_BY
-a2_controlrecord -[#2E7D32]-> a3_dataentity : S20 guidance
-a2_controlrecord -[#2E7D32]-> a3_applicationfunction : S21 guidance
-a2_serviceoperation -[#2E7D32]-> a3_apioperation : S24 IMPLEMENTED_BY
-a2_serviceoperation -[#2E7D32]-> a3_applicationservice : S25 guidance
-a2_businessscenario -[#2E7D32]-> a3_applicationservice : S28 guidance
-a2_businessscenario -[#2E7D32]-> a3_applicationcomponent : S29 guidance
-a2_businessobject -[#2E7D32]-> a3_dataentity : S30 MAPPED_TO
-a1_businesscapability -[#2E7D32,dashed]-> a2_servicedomain : S01 SUPPORTED_BY (intent)
-a1_businessobject -[#2E7D32,dashed]-> a2_businessobject : S12 ALIGNED_TO (target)
+' --- S: cross-level mappings with BIAN guidance (0 solid, 0 dashed = intent/target only)
 
 legend right
-  Blue solid: BIAN-internal (B02–B15, 14)
-  Green solid: cross-level, BIAN guidance (8)
-  Green dashed: cross-level, intent/target only (2)
+  Blue solid: BIAN-internal (B02–B15, 0)
+  Green solid: cross-level, BIAN guidance (0)
+  Green dashed: cross-level, intent/target only (0)
 endlegend
 @enduml

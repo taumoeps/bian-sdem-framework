@@ -14,15 +14,21 @@ ENV = {**os.environ, 'PYTHONPATH': str(ROOT) + os.pathsep + os.environ.get('PYTH
 
 class Guide(unittest.TestCase):
     @classmethod
-    def setUpClass(cls): cls.text = authorguide.render(); cls.mm = Metamodel.base()
+    def setUpClass(cls):   # the kept guide is a generated document: the core's (BX-15) — as sdem model regenerate makes it
+        sys.path.insert(0, str(Path(__file__).resolve().parent)); import core_docs; core_docs.enter()
+        cls.text = authorguide.render(); cls.mm = Metamodel.base()
+
+    @classmethod
+    def tearDownClass(cls):
+        import core_docs; core_docs.leave()
 
     def test_the_command_prints_it_and_the_kept_copy_is_current(self):   # AU-01, AU-06
-        r = subprocess.run([sys.executable, '-m', 'sdem', 'types', 'authoring'], capture_output=True, text=True, env=ENV, cwd=ROOT)
+        r = subprocess.run([sys.executable, '-m', 'sdem', 'types', 'authoring'], capture_output=True, text=True, env={**ENV, 'SDEM_CORE_DOCS': '1'}, cwd=ROOT)   # the core's, as kept
         self.assertEqual(r.returncode, 0, r.stderr); self.assertEqual(r.stdout.rstrip('\n'), self.text.rstrip('\n'))
         self.assertEqual((ROOT / 'docs' / 'reference' / 'authoring-guide.md').read_text(encoding='utf-8'), self.text)
         with tempfile.TemporaryDirectory() as t:
             f = Path(t) / 'g.md'
-            r = subprocess.run([sys.executable, '-m', 'sdem', 'types', 'authoring', '-o', f], capture_output=True, text=True, env=ENV, cwd=ROOT)
+            r = subprocess.run([sys.executable, '-m', 'sdem', 'types', 'authoring', '-o', f], capture_output=True, text=True, env={**ENV, 'SDEM_CORE_DOCS': '1'}, cwd=ROOT)
             self.assertEqual(r.returncode, 0, r.stderr); self.assertEqual(f.read_text(encoding='utf-8'), self.text)
 
     def test_it_stands_alone_method_files_rules_checks(self):   # AU-02
@@ -58,7 +64,7 @@ class Guide(unittest.TestCase):
     def test_what_sdem_checks_is_the_shipped_standard_and_patterns(self):   # AU-04
         std = json.loads((ROOT / 'standards' / 'sdem-completeness.json').read_text(encoding='utf-8'))
         for r in std['rules']: self.assertIn(f"| {r['id']} | {r['entity']} |", self.text)
-        for title in ('Payment initiation', 'BIAN Transact', 'BIAN Fulfill'): self.assertIn(f'**{title}', self.text)
+        for title in ('Payment initiation', 'BIAN Transact', 'BIAN Fulfill'): self.assertNotIn(f'**{title}', self.text)   # BX-15: sdem-bian's patterns, in its guide when installed
 
     def test_the_links_between_layers_are_the_registrys(self):   # AU-03
         from sdem.validate import load_registry

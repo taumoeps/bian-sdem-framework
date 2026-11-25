@@ -133,13 +133,13 @@ class AgentTests(unittest.TestCase):
     def test_every_command_is_listed_as_data(self):  # AF-06
         _, d = sdem('commands', '--json', cwd=self.tmp)
         cmds = d['commands']
-        for c in ('new', 'aid', 'aid confirm', 'link', 'approve', 'build', 'trace', 'bian inference list'):
+        for c in ('new', 'aid', 'aid confirm', 'link', 'approve', 'build', 'trace'):   # BX-15: sdem bian … is sdem-bian's own (its --help)
             self.assertIn(c, cmds)
         self.assertEqual(cmds['trace']['json'], 'native'); self.assertIn('--direction', [o['name'] for o in cmds['trace']['options']])
         self.assertEqual(cmds['new']['dry_run'], 'native')
         self.assertEqual(sorted(d['exit_codes']), ['0', '1', '2', '3'])
         wrapped = sorted(n for n, c in cmds.items() if c.get('json') == 'wrapped')   # only maintainers' tools lack JSON of their own
-        self.assertTrue(all(n.startswith(('model', 'transform rules', 'bian pack')) for n in wrapped), wrapped)
+        self.assertTrue(all(n.startswith(('model', 'transform rules', 'bian')) for n in wrapped), wrapped)   # bian: sdem-bian's own command (BX-15)
 
 
 if __name__ == '__main__':

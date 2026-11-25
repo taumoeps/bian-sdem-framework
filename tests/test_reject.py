@@ -87,7 +87,8 @@ class RejectTests(unittest.TestCase):
         self.assertEqual(sdem('validate', '--workspace', self.ws, cwd=self.tmp)[0], 0)
 
     def test_aid_puts_nothing_in_the_place_of_a_rejected_mapping(self):   # RJ-04
-        from sdem.aid_info import propose_information
+        try: from sdem_bian.aid_bian import propose_information
+        except ImportError: self.skipTest('needs sdem-bian installed: AID-I01…I07 are BIAN\'s (BX-15)')
         R = lambda i, t, **a: {'id': i, 'type': t, 'version': '1', 'name': i, 'attributes': a}
         a2 = {'instances': [R('BO-1', 'A2.BusinessObject'), R('BOA-1', 'A2.BusinessObjectAttribute', data_type='identifier', identifier=True)],
               'relationships': [{'source': 'BO-1', 'kind': 'composition', 'target': 'BOA-1'}]}

@@ -71,9 +71,14 @@ def _ext_docs(ws, now=None):
     return out
 
 
-def _marker(template):   # a provenance mark from its template (MX-54) — the same function BIAN's part of AID uses
-    from .aid_bian import marker
-    return marker(template)
+def _marker(template):
+    """A provenance mark from its template (MX-54) — the values '$rule', '$why', '$from' filled in, the rest as given, then any extra fields.
+    SDEM sends the template to the extension that gives BIAN's part, so what it marks is what SDEM's own run would have written."""
+    def mark(rule, why, frm, **k):
+        v = {'$rule': rule, '$why': why, '$from': frm}
+        return {**{a: (v.get(b, b) if isinstance(b, str) else b) for a, b in template.items()}, **k}
+    mark.template = template
+    return mark
 
 
 class _Phases:
@@ -105,6 +110,20 @@ class _Phases:
         return [tuple(x) for x in r['links']], [tuple(x) for x in r['fields']]
 
 
+class _NoBian(_Phases):
+    """A design without BIAN (BX-13, BX-15): BIAN's part of AID gives nothing — AID infers among the core's layers only."""
+    def __init__(self, ws):
+        self.ws, self.by = ws, None
+        self.call = self._nothing
+
+    @staticmethod
+    def _nothing(phase, state):
+        return {'projection': {'package': {'layers': {}, 'links': {'links': []}, 'projection': {'projection_ends': []}}},
+                'patterns': {'records': [], 'links': [], 'uses': [], 'added': []}, 'existing': {'links': []},
+                'information': {'records': [], 'relationships': [], 'links': [], 'not_stored': []}, 'access': {'relationships': []},
+                'direct': {'links': [], 'fields': []}}[phase]
+
+
 def _bian(ws):
     """BIAN's part of AID (0.22 step 3c, MX-54): sdem-bian's when it provides it, otherwise SDEM's own copy — both through the phases."""
     import json as _json
@@ -119,8 +138,9 @@ def _bian(ws):
                 raise AidError(f'{e} — nothing written; uninstall or fix the extension and run again')
         name, _, manifest = ext_infer.builtin_provider('aid-phases')
         return _Phases(ws, ask, f"{name} {manifest.get('version', '')}".strip())
-    from . import aid_bian
-    return _Phases(ws, lambda phase, state: from_wire(_json.loads(_json.dumps(aid_bian.answer(phase, _json.loads(_json.dumps(to_wire(state))), ws)))))
+    from . import parts
+    if not parts.bian_on(): return _NoBian(ws)   # a core design: no BIAN, so no part of BIAN's to ask for (BX-13, BX-15)
+    raise AidError('BIAN is on in this workspace, but no installed extension gives its part of sdem aid — install sdem-bian 1.2 or later (BX-15)')
 
 
 def _workspace(ws):

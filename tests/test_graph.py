@@ -1,5 +1,5 @@
 import re
-import copy, json, unittest
+import copy, json, sys, unittest
 from pathlib import Path
 from sdem.graph import LevelGraph, FederatedGraph, IMPACT_RULES
 from sdem.metamodel import Metamodel
@@ -339,6 +339,14 @@ class WithinLevelConstraintTests(unittest.TestCase):
 
 
 class ReferenceStructureTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):   # BX-15: the reference structure is generated from SDEM's core (sdem.structure, a generator) — rendered as it is made
+        sys.path.insert(0, str(Path(__file__).resolve().parent)); import core_docs; core_docs.enter()
+
+    @classmethod
+    def tearDownClass(cls):
+        import core_docs; core_docs.leave()
+
     """Every enforceable within-level row is exercised on committed data and accepted by the checker."""
     P = ROOT / 'examples/reference-structure'
 
@@ -355,4 +363,4 @@ class ReferenceStructureTests(unittest.TestCase):
         enforceable = {c['id'] for c in lr['constraints'] if c.get('enforceable') is not False}
         present = {r['name'] for f in self.P.glob('a*.json') for r in json.loads(f.read_text(encoding='utf-8'))['relationships']}
         self.assertEqual(enforceable - present, set())
-        self.assertEqual(len(enforceable), 161)   # RA3-35, RA3-36 (0.19.0); RA4-37 (0.9.0), RA4-38 (0.10.0), RA4-39 (0.13.0); RA1-49, RA2-18…RA2-23, RA3-32…RA3-34 (0.15.0); RA4-40, RA4-41 (0.16.0); fifteen rows of 0.17.0
+        self.assertEqual(len(enforceable), 141)   # 0.22 (BX-15): the core's — BIAN's RA2-01…RA2-23 are sdem-bian's; RA3-35, RA3-36 (0.19.0); RA4-37 (0.9.0), RA4-38 (0.10.0), RA4-39 (0.13.0); RA1-49, RA2-18…RA2-23, RA3-32…RA3-34 (0.15.0); RA4-40, RA4-41 (0.16.0); fifteen rows of 0.17.0

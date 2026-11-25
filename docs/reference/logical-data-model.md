@@ -583,431 +583,11 @@ A channel through which the business offers its services — a branch, a mobile 
 
 ## 2. A2 Service Domain Architecture
 
-15 entities. The diagram shows the entities, their key fields and references, and the links between them.
+0 entities. The diagram shows the entities, their key fields and references, and the links between them.
 
 ```mermaid
 erDiagram
-    A2_BusinessArea {
-        string id PK
-    }
-    A2_BusinessDomain {
-        string id PK
-    }
-    A2_ServiceDomain {
-        string id PK
-        string asset_type FK
-        string functional_pattern FK
-        string adoption_status
-        string classification
-        string inference_ref
-    }
-    A2_FunctionalPattern {
-        string id PK
-        string generic_artefact
-        string behavior_qualifier_type
-        string rest_archetype
-    }
-    A2_AssetType {
-        string id PK
-        list aliases
-    }
-    A2_ControlRecord {
-        string id PK
-        list attributes
-        list lifecycle_states
-    }
-    A2_ServiceGroup {
-        string id PK
-    }
-    A2_ServiceOperation {
-        string id PK
-        string action_term
-        string behavior_qualifier
-        list input_attributes
-        list output_attributes
-        string http_method
-    }
-    A2_BehaviorQualifier {
-        string id PK
-        list aliases
-    }
-    A2_BusinessScenario {
-        string id PK
-        list operation_sequence FK
-        string trigger_event
-    }
-    A2_BusinessObject {
-        string id PK
-        list attributes
-        string glossary_uri
-        string iso20022_ref
-        boolean personal_information
-    }
-    A2_BusinessObjectAttribute {
-        string id PK
-        string data_type
-        string iso20022_ref
-        boolean personal_information
-        boolean required
-        list allowed_values
-        boolean identifier
-        string multiplicity
-    }
-    A2_BOMModel {
-        string id PK
-    }
-    A2_Wireframe {
-        string id PK
-    }
-    A2_SemanticAPI {
-        string id PK
-        string spec_format
-    }
-    A2_BusinessArea ||--|{ A2_BusinessDomain : "composition"
-    A2_BusinessDomain ||--|{ A2_ServiceDomain : "composition"
-    A2_ServiceDomain ||--|{ A2_ServiceGroup : "composition"
-    A2_ServiceGroup ||--|{ A2_ServiceOperation : "composition"
-    A2_ServiceDomain ||--|| A2_ControlRecord : "aggregation"
-    A2_ServiceDomain }o--|| A2_FunctionalPattern : "association"
-    A2_ServiceDomain }o--|| A2_AssetType : "association"
-    A2_ServiceOperation }o--o| A2_BehaviorQualifier : "association"
-    A2_BusinessScenario }o--|{ A2_ServiceOperation : "aggregation"
-    A2_BusinessObject ||--|{ A2_BusinessObjectAttribute : "composition"
-    A2_ControlRecord ||--o{ A2_BehaviorQualifier : "composition"
-    A2_ControlRecord }o--o{ A2_BusinessObject : "association"
-    A2_ServiceOperation }o--|| A2_ControlRecord : "access"
-    A2_ServiceDomain }o--o{ A2_ServiceDomain : "flow"
-    A2_Wireframe }o--|| A2_ServiceDomain : "association"
-    A2_SemanticAPI }o--|| A2_ServiceDomain : "realization"
-    A2_BOMModel }o--|{ A2_BusinessObject : "aggregation"
-    A2_BusinessObject |o--o{ A2_BusinessObject : "composition"
-    A2_BusinessObject }o--o{ A2_BusinessObject : "aggregation"
-    A2_BusinessObject |o--o{ A2_BusinessObject : "specialization"
-    A2_BusinessObject }o--o{ A2_BusinessObject : "association"
-    A2_BusinessObjectAttribute }o--o| A2_BusinessObject : "association"
-    A2_ServiceOperation }o--o{ A2_BusinessObject : "access"
 ```
-
-### `A2.BusinessArea`
-
-*entity*
-
-Top-level grouping of the Service Landscape
-
-**Identified by:** `name` — no standard key; SDEM recommends a unique name within the architecture dataset so duplicates can be detected
-
-**Fields:** core fields only.
-
-**Links**
-
-| Link | With | How many |
-|---|---|---|
-| composition → | `BusinessDomain` | one or more |
-
-### `A2.BusinessDomain`
-
-*entity*
-
-Coarse functional grouping within a Business Area
-
-**Identified by:** `name` — no standard key; SDEM recommends a unique name within the architecture dataset so duplicates can be detected
-
-**Fields:** core fields only.
-
-**Links**
-
-| Link | With | How many |
-|---|---|---|
-| ← composition | `BusinessArea` | exactly one |
-| composition → | `ServiceDomain` | one or more |
-
-### `A2.ServiceDomain`
-
-*entity*
-
-A discrete functional scope of the bank and its responsibilities
-
-**Identified by:** `canonical_id` — a BIAN Service Domain is identified by its BIAN concept id; one instance per BIAN domain in a workspace
-
-**Fields**
-
-| Field | Type | Required | Meaning | Refers to |
-|---|---|---|---|---|
-| `asset_type` | text | yes, unless classification is unknown | id of the domain's asset type | `A2.AssetType` |
-| `functional_pattern` | text | yes, unless classification is unknown | id of the domain's functional pattern | `A2.FunctionalPattern` |
-| `adoption_status` | text | no | how far the bank intends to adopt the Service Domain | one of: adopted, partly adopted, planned, not adopted |
-| `classification` | text | no | how the domain's asset type and functional pattern were set: derived (from the control record's name — to confirm), given (by a person), inferred (from SDEM's inference record — see inference_ref), unknown (not known yet; the two may be absent) | one of: derived, given, inferred, unknown |
-| `inference_ref` | text | no | the entry in SDEM's inference record (e.g. BI-INF-063) the asset type and functional pattern come from — set when classification is inferred | — |
-
-**Links**
-
-| Link | With | How many |
-|---|---|---|
-| ← composition | `BusinessDomain` | exactly one |
-| composition → | `ServiceGroup` | one or more |
-| aggregation → | `ControlRecord` | exactly one |
-| association → | `FunctionalPattern` | exactly one |
-| association → | `AssetType` | exactly one |
-| flow (with itself) | `ServiceDomain` | any number |
-| ← association | `Wireframe` | any number |
-| ← realization | `SemanticAPI` | any number |
-
-### `A2.FunctionalPattern`
-
-*entity*
-
-The generic behaviour pattern a Service Domain applies
-
-**Identified by:** `name` — no standard key; SDEM recommends a unique name within the architecture dataset so duplicates can be detected
-
-**Fields**
-
-| Field | Type | Required | Meaning | Refers to |
-|---|---|---|---|---|
-| `generic_artefact` | text | no | the kind of control record the pattern manages (the pattern as a noun) | — |
-| `behavior_qualifier_type` | text | no | the kind of behaviour qualifier used to break the pattern down | — |
-| `rest_archetype` | text | no | the REST resource archetype the pattern's control record maps to | one of: document, collection, controller |
-
-**Links**
-
-| Link | With | How many |
-|---|---|---|
-| ← association | `ServiceDomain` | any number |
-
-### `A2.AssetType`
-
-*entity*
-
-The class of asset a Service Domain manages through its lifecycle
-
-**Identified by:** `name` — no standard key; SDEM recommends a unique name within the architecture dataset so duplicates can be detected
-
-**Fields**
-
-| Field | Type | Required | Meaning | Refers to |
-|---|---|---|---|---|
-| `aliases` | list | no | tokens the workspace uses for the asset | — |
-
-**Links**
-
-| Link | With | How many |
-|---|---|---|
-| ← association | `ServiceDomain` | any number |
-
-### `A2.ControlRecord`
-
-*entity*
-
-Lifecycle and control information for a Service Domain's activity
-
-**Identified by:** `owning service domain` — BIAN gives each Service Domain exactly one control record
-
-**Fields**
-
-| Field | Type | Required | Meaning | Refers to |
-|---|---|---|---|---|
-| `attributes` | list | yes | the control record's attribute names | — |
-| `lifecycle_states` | list | no | ordered lifecycle states | — |
-
-**Links**
-
-| Link | With | How many |
-|---|---|---|
-| ← aggregation | `ServiceDomain` | exactly one |
-| composition → | `BehaviorQualifier` | any number |
-| association → | `BusinessObject` | any number |
-| ← access | `ServiceOperation` | any number |
-
-### `A2.ServiceGroup`
-
-*entity*
-
-A grouping of a Service Domain's operations
-
-**Identified by:** `name` — no standard key; SDEM recommends a unique name within the architecture dataset so duplicates can be detected
-
-**Fields:** core fields only.
-
-**Links**
-
-| Link | With | How many |
-|---|---|---|
-| ← composition | `ServiceDomain` | exactly one |
-| composition → | `ServiceOperation` | one or more |
-
-### `A2.ServiceOperation`
-
-*entity*
-
-An operation a Service Domain exposes
-
-**Identified by:** `owning service domain`, `action_term`, `behavior_qualifier` — BIAN names an operation by its domain, action term and qualifier (Semantic API Practitioner Guide §3.2.5); two operations with the same three are the same operation
-
-**Fields**
-
-| Field | Type | Required | Meaning | Refers to |
-|---|---|---|---|---|
-| `action_term` | text | yes | one of BIAN's 17 action terms | one of: Activate, Configure, Feedback, Create, Initiate, Register, Evaluate, Provide, Update, Control, Exchange, Capture, Execute, Request, Grant, Retrieve, Notify |
-| `behavior_qualifier` | text | no | qualifier name, or null | — |
-| `input_attributes` | list | yes | control-record attributes the operation takes | — |
-| `output_attributes` | list | yes | control-record attributes the operation returns | — |
-| `http_method` | text | no | the HTTP method of the operation, where it is not derivable or the bank overrides BIAN | one of: GET, PUT, POST, PATCH, DELETE |
-
-**Links**
-
-| Link | With | How many |
-|---|---|---|
-| ← composition | `ServiceGroup` | exactly one |
-| association → | `BehaviorQualifier` | at most one |
-| ← aggregation | `BusinessScenario` | any number |
-| access → | `ControlRecord` | exactly one |
-| access → | `BusinessObject` | any number |
-
-### `A2.BehaviorQualifier`
-
-*entity*
-
-A refinement of a Service Domain's generic behaviour
-
-**Identified by:** `name` — no standard key; SDEM recommends a unique name within the architecture dataset so duplicates can be detected
-
-**Fields**
-
-| Field | Type | Required | Meaning | Refers to |
-|---|---|---|---|---|
-| `aliases` | list | no | tokens the workspace's API paths use for the qualifier | — |
-
-**Links**
-
-| Link | With | How many |
-|---|---|---|
-| ← association | `ServiceOperation` | any number |
-| ← composition | `ControlRecord` | exactly one |
-
-### `A2.BusinessScenario`
-
-*entity*
-
-An illustrative, non-prescriptive collaboration of Service Domain operations
-
-**Identified by:** `canonical_id` — identified by its BIAN scenario id
-
-**Fields**
-
-| Field | Type | Required | Meaning | Refers to |
-|---|---|---|---|---|
-| `operation_sequence` | list | yes | ordered ids of the operations the scenario sequences | `A2.ServiceOperation` |
-| `trigger_event` | text | no | the business event that starts the scenario | — |
-
-**Links**
-
-| Link | With | How many |
-|---|---|---|
-| aggregation → | `ServiceOperation` | one or more |
-
-### `A2.BusinessObject`
-
-*entity*
-
-A canonical business information concept
-
-**Identified by:** `canonical_id` — identified by its BIAN Business Object Model id
-
-**Fields**
-
-| Field | Type | Required | Meaning | Refers to |
-|---|---|---|---|---|
-| `attributes` | list | yes | the canonical object's attribute names | — |
-| `glossary_uri` | text | no | link to the agreed glossary definition | — |
-| `iso20022_ref` | text | no | the matching ISO 20022 business component | — |
-| `personal_information` | boolean | no | whether it holds information about an identifiable person | — |
-
-**Links**
-
-| Link | With | How many |
-|---|---|---|
-| composition → | `BusinessObjectAttribute` | one or more |
-| ← association | `ControlRecord` | any number |
-| ← aggregation | `BOMModel` | any number |
-| composition (with itself) | `BusinessObject` | any number |
-| aggregation (with itself) | `BusinessObject` | any number |
-| specialization (with itself) | `BusinessObject` | any number |
-| association (with itself) | `BusinessObject` | any number |
-| ← association | `BusinessObjectAttribute` | any number |
-| ← access | `ServiceOperation` | any number |
-
-### `A2.BusinessObjectAttribute`
-
-*entity*
-
-A property of a Business Object
-
-**Identified by:** `owning business object`, `name` — a field is named within the business object that is composed of it — the same name in two of them is two fields (found importing BIAN 14.0.0, where PaymentIdentification is a field of several objects)
-
-**Fields**
-
-| Field | Type | Required | Meaning | Refers to |
-|---|---|---|---|---|
-| `data_type` | text | no | the attribute's data type in the Business Object Model | one of: string, text, integer, decimal, amount, currency_code, date, datetime, boolean, identifier, enum, reference |
-| `iso20022_ref` | text | no | the matching ISO 20022 business element | — |
-| `personal_information` | boolean | no | whether the attribute is personal information | — |
-| `required` | boolean | no | whether every business object of this kind has a value for this attribute | — |
-| `allowed_values` | list | no | the values the attribute may take, when it is an enumeration | — |
-| `identifier` | boolean | no | whether the attribute identifies the business object | — |
-| `multiplicity` | text | no | how many values one business object holds for the attribute | one of: 1, 0..1, 0..n, 1..n |
-
-**Links**
-
-| Link | With | How many |
-|---|---|---|
-| ← composition | `BusinessObject` | exactly one |
-| association → | `BusinessObject` | at most one |
-
-### `A2.BOMModel`
-
-*artefact — a document, never instantiated*
-
-A versioned Business Object Model artefact
-
-**Fields:** core fields only.
-
-**Links**
-
-| Link | With | How many |
-|---|---|---|
-| aggregation → | `BusinessObject` | one or more |
-
-### `A2.Wireframe`
-
-*artefact — a document, never instantiated*
-
-An archetypal Service Domain interaction pattern artefact
-
-**Fields:** core fields only.
-
-**Links**
-
-| Link | With | How many |
-|---|---|---|
-| association → | `ServiceDomain` | exactly one |
-
-### `A2.SemanticAPI`
-
-*artefact — a document, never instantiated*
-
-A Semantic API definition artefact
-
-**Fields**
-
-| Field | Type | Required | Meaning | Refers to |
-|---|---|---|---|---|
-| `spec_format` | text | no | the format of the published API definition | one of: OpenAPI 3.1, OpenAPI 3.0, Swagger 2.0 |
-
-**Links**
-
-| Link | With | How many |
-|---|---|---|
-| realization → | `ServiceDomain` | exactly one |
 
 ## 3. A3 Application Architecture
 
@@ -1926,13 +1506,6 @@ The model above covers each architecture on its own. Links **between** architect
 
 | Relationship | From → to | How many |
 |---|---|---|
-| `SUPPORTED_BY` | `A1.BusinessCapability` → `A2.ServiceDomain` | many to many |
-| `ALIGNED_TO` | `A1.ValueStream` → `A2.BusinessScenario` | many to many |
-| `USES_DOMAIN` | `A1.BusinessProcess` → `A2.ServiceDomain` | many to many |
-| `ALIGNED_TO` | `A1.BusinessObject` → `A2.BusinessObject` | many to many |
-| `REALIZED_BY` | `A2.ServiceDomain` → `A3.ApplicationComponent` | many to many |
-| `IMPLEMENTED_BY` | `A2.ServiceOperation` → `A3.APIOperation` | many to many |
-| `MAPPED_TO` | `A2.BusinessObject` → `A3.DataEntity` | many to many |
 | `DEPLOYED_ON` | `A3.ApplicationComponent` → `A4.Node` | many to many |
 | `DEPLOYED_ON` | `A3.ApplicationComponent` → `A4.Device` | many to many |
 | `DEPLOYED_ON` | `A3.ApplicationComponent` → `A4.SystemSoftware` | many to many |
@@ -1941,7 +1514,6 @@ The model above covers each architecture on its own. Links **between** architect
 | `EXPOSED_THROUGH` | `A3.ApplicationInterface` → `A4.Device` | many to many |
 | `EXPOSED_THROUGH` | `A3.ApplicationInterface` → `A4.SystemSoftware` | many to many |
 | `BUILT_AS` | `A3.ApplicationComponent` → `A4.Artifact` | many to many |
-| `FIELD_MAPPED_TO` | `A2.BusinessObjectAttribute` → `A3.DataAttribute` | many to many |
 | `SERVED_BY` | `A1.BusinessProcess` → `A3.ApplicationService` | many to many |
 | `SERVED_BY` | `A1.BusinessActor` → `A3.ApplicationService` | many to many |
 | `SERVED_BY` | `A1.BusinessRole` → `A3.ApplicationService` | many to many |
@@ -1949,14 +1521,12 @@ The model above covers each architecture on its own. Links **between** architect
 | `REALIZED_BY` | `A1.BusinessService` → `A3.ApplicationService` | many to many |
 | `REALIZED_BY` | `A1.BusinessService` → `A3.ApplicationComponent` | many to many |
 | `MAPPED_TO` | `A1.BusinessObject` → `A3.DataEntity` | many to many |
-| `IMPLEMENTED_BY` | `A2.ServiceOperation` → `A3.Event` | many to many |
 | `SERVED_BY` | `A3.ApplicationComponent` → `A4.TechnologyService` | many to many |
 | `SERVED_BY` | `A3.ApplicationFunction` → `A4.TechnologyService` | many to many |
 | `STORED_IN` | `A3.DataEntity` → `A4.Artifact` | many to many |
 | `STORED_IN` | `A3.DataEntity` → `A4.SystemSoftware` | many to many |
 | `REALIZED_BY` | `A1.BusinessEvent` → `A3.Event` | many to many |
 | `REALIZED_BY` | `A1.BusinessInterface` → `A3.ApplicationInterface` | many to many |
-| `ALIGNED_TO` | `A1.ValueStreamStage` → `A2.BusinessScenario` | many to many |
 
 ---
 
@@ -1999,18 +1569,18 @@ The rules the data must satisfy, and which the checker enforces today.
 
 ## Appendix B. How the example data measures up
 
-The 9 example workspaces (1136 instances) (the generated reference-structure workspace excluded) checked by `sdem check` against the enforced rules. No errors; 29 completeness warning(s), where an example architecture datasets part of BIAN's structure (a business domain without its area, a business object without attribute instances, a stub Service Domain without its groups or control record).
+The 9 example workspaces (1136 instances) (the generated reference-structure workspace excluded) checked by `sdem check` against the enforced rules. No errors; 0 completeness warning(s), where an example architecture datasets part of BIAN's structure (a business domain without its area, a business object without attribute instances, a stub Service Domain without its groups or control record).
 
 | Rule | Values checked | Failures |
 |---|---|---|
-| LC-04 | 1367 | 0 |
-| LC-05 | 3802 | 0 |
-| LC-06 | 2063 | 0 |
-| LC-07 | 291 | 0 |
-| LC-08 (warning) | 213 | 0 |
-| LC-09 | 1063 | 0 |
-| LC-10 | 3396 | 0 |
-| LC-10m (warning) | 3396 | 29 |
+| LC-04 | 443 | 0 |
+| LC-05 | 1419 | 0 |
+| LC-06 | 807 | 0 |
+| LC-07 | 215 | 0 |
+| LC-08 (warning) | 162 | 0 |
+| LC-09 | 518 | 0 |
+| LC-10 | 1279 | 0 |
+| LC-10m (warning) | 1279 | 0 |
 | LC-13 deprecated field in use | — | 0 |
 | fields not in the model | — | 0 |
 
@@ -2020,16 +1590,11 @@ Each entity's, field's and link's source, reasoning and confidence are in [`arch
 
 | Decision | Count | Basis |
 |---|---|---|
-| Link counts — SDEM default | 112 | no standard sets a number; left open |
-| Link counts — ArchiMate composition semantics | 26 | a part belongs to at most one whole (ArchiMate) |
-| Link counts — BIAN | 14 | stated by BIAN |
-| Link counts — SDEM | 6 | a part belongs to at most one whole (ArchiMate) |
-| Link counts — ArchiMate association semantics | 3 | a part belongs to at most one whole (ArchiMate) |
-| Link counts — SDEM reading | 1 | SDEM's reading of a BIAN page |
-| Link counts — ArchiMate aggregation semantics | 1 | a part belongs to at most one whole (ArchiMate) |
-| Link counts — ArchiMate specialization semantics | 1 | a part belongs to at most one whole (ArchiMate) |
-| Identifiers — SDEM | 41 | SDEM recommendation: a unique name |
-| Identifiers — BIAN | 5 | BIAN concept ids and operation naming |
+| Link counts — SDEM default | 109 | no standard sets a number; left open |
+| Link counts — ArchiMate composition semantics | 25 | a part belongs to at most one whole (ArchiMate) |
+| Link counts — SDEM | 5 | a part belongs to at most one whole (ArchiMate) |
+| Link counts — ArchiMate association semantics | 2 | a part belongs to at most one whole (ArchiMate) |
+| Identifiers — SDEM | 34 | SDEM recommendation: a unique name |
 | Identifiers — OpenAPI | 1 | path and method unique per API |
 
 ## Appendix D. Where this sits

@@ -20,6 +20,19 @@ from sdem.evaluate import evaluate  # noqa: E402
 from sdem.graph import FederatedGraph, LevelGraph  # noqa: E402
 from sdem.metamodel import Metamodel  # noqa: E402
 from sdem.rules_engine import RulesEngine  # noqa: E402
+
+
+def _engine():
+    """The whole rules engine — the core's rules with BIAN's steps from the installed sdem-bian (BX-15): this is a banking example."""
+    from sdem import api
+    from sdem_bian.rules_bian import BianSteps
+
+    class Full(BianSteps, api.CoreRun):
+        pass
+
+    class Engine(RulesEngine):
+        def infer(self, reader, case=None): return Full(reader, (case or {}).get('id', 'RUN')).run((case or {}).get('options'))
+    return Engine()
 from sdem.store import GraphReader, build  # noqa: E402
 from sdem.validate import load_registry, load_schema, validate  # noqa: E402
 
@@ -92,7 +105,7 @@ def run():
         E['run1-02-load-record.json'] = _j(st / 'load-record.json')
         t('Knowledge graph', 'build the graph store with no links between layers', 'built; 0 links between layers', f"{e['result']}; {len(reader.fg.edges())} links between layers",
           'CTL-15', 'run1-02-load-record.json', e['result'] == 'accepted' and not reader.fg.edges())
-        res = RulesEngine().infer(reader, {'id': 'UCE1'}); props = res['proposals']
+        res = _engine().infer(reader, {'id': 'UCE1'}); props = res['proposals']
         score = evaluate([answer], [{'mappings': props}]); o = score['overall']
         E['run1-03-proposals.json'] = {**empty_registry(), 'mappings': props}; E['run1-04-inference-log.json'] = res['log']; E['run1-05-score.json'] = score
         t('5 Finding links', 'engine applies the 69 link-finding rules', '18 links, all correct', f"{o['proposed']} proposed — {o['tp']} correct, {o['fp']} wrong, {o['fn']} missed",
@@ -139,12 +152,12 @@ def run():
         # controls exercised on good data that the steps above do not reach
         from sdem.validate import check_schema
         schemas = {json.loads(p_.read_text())['title']: json.loads(p_.read_text()) for p_ in (ROOT / 'schema' / 'entities').glob('*/*.schema.json')}
-        bad_s = [i['id'] for d in ds.values() for i in d['instances'] if check_schema(i, schemas[i['type']])]
+        bad_s = [i['id'] for d in ds.values() for i in d['instances'] if i['type'] in schemas and check_schema(i, schemas[i['type']])]   # BIAN's records: sdem-bian's schemas (BX-15)
         E['run1-13-schemas.json'] = {'records_checked': n_rec, 'failing': bad_s}
         t('2 Record information (format)', f'every one of the {n_rec} records against its per-entity schema', 'all match', f'{n_rec - len(bad_s)} match, {len(bad_s)} fail', 'CTL-04', 'run1-13-schemas.json', not bad_s)
         e2, _ = check(ds, good); E['run1-14-approved-links-resolve.json'] = e2
         t('4 Links between layers (resolution)', 'the 17 approved links against the datasets', 'every end exists', 'all resolve' if not e2 else f'{len(e2)} errors', 'CTL-08', 'run1-14-approved-links-resolve.json', not e2)
-        again = RulesEngine().infer(r2, {'id': 'UCE1R'})['proposals']; appr = {(m['source']['id'], m['relationship'], m['target']['id']) for m in good['mappings'] if m['status'] == 'approved'}
+        again = _engine().infer(r2, {'id': 'UCE1R'})['proposals']; appr = {(m['source']['id'], m['relationship'], m['target']['id']) for m in good['mappings'] if m['status'] == 'approved'}
         rep_ = [m for m in again if (m['source']['id'], m['relationship'], m['target']['id']) in appr]; nonp = [m for m in again if m['status'] != 'proposed']
         E['run1-15-engine-second-run.json'] = {'proposals': again, 're_proposed_approved': rep_, 'not_proposed_status': nonp}
         t('5 Finding links (engine discipline)', 'run the engine again after the 17 links are approved', 'never re-proposes an approved link; only ever outputs "proposed"',
@@ -196,7 +209,7 @@ def run():
                 for i in f['instances']:
                     if (i.get('attributes') or {}).get('component_id') == 'APP-PAY-HUB': i['attributes'].pop('platform_id', None)
         st3 = tmp / 'store3'; build(write_set(tmp, mutate(app_silent), empty_registry()), st3)
-        r3 = RulesEngine().infer(GraphReader.from_store(st3), {'id': 'UCE1M5A'})['proposals']
+        r3 = _engine().infer(GraphReader.from_store(st3), {'id': 'UCE1M5A'})['proposals']
         sc3 = evaluate([answer], [{'mappings': r3}])['overall']; hub_on = [m for m in r3 if m['source']['id'] == 'APP-PAY-HUB' and m['relationship'] == 'DEPLOYED_ON']
         E['run2-5a-application-silent.json'] = {'proposals': r3, 'score': sc3}
         t('5 Finding links', '5a — the Payments Hub no longer names its server, but its deployment records still do', 'the "runs on" links still found from the deployment records; nothing invented',

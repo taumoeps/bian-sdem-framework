@@ -1,0 +1,22 @@
+{
+  "id": "CS-015",
+  "layer": "business",
+  "reason": "metamodel migration MIG-003: 0.19.0 → 0.20.0 (sdem migrate)",
+  "changes": [],
+  "relationships": {
+    "add": [],
+    "remove": []
+  },
+  "adopted": true,
+  "agent": "architect",
+  "person": "sdem.maintainer",
+  "created_at": "2026-11-24T20:03:10+00:00",
+  "work_items": [],
+  "event": "CE-015",
+  "branch": "main",
+  "dataset": {
+    "file": "business.json",
+    "before_sha256": "9a4c0ffdf566249ce83d066b94e1b8210bc5cf2ef359970355e8f89dbd30f99d",
+    "after_sha256": "a1d8d3085bc65876ba1f01f0e838d99438bddfc5c581306df2bd5617e19dc3ea"
+  }
+}

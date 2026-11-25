@@ -312,6 +312,275 @@
           "edges": 13
         }
       ]
+    },
+    {
+      "build": 4,
+      "at": "2026-11-24T20:03:32+00:00",
+      "inputs": [
+        {
+          "path": "examples/0.20/customer-onboarding//application.json",
+          "kind": "export",
+          "level": "A4",
+          "model_id": "synthetic-bank-onboarding-a3",
+          "model_version": "2026.10",
+          "sha256": "805196768f28bcd0a662c2142b421b9045d7cf1f643e62942e11eb0698ca2630"
+        },
+        {
+          "path": "examples/0.20/customer-onboarding//mappings.json",
+          "kind": "registry",
+          "registry_version": "0.4.0",
+          "sha256": "95c0f9093c8f181269011e43af25353f2d3e210a358a93cf55c4128d133bde05"
+        }
+      ],
+      "metamodel_version": "0.20.0",
+      "errors": [
+        "mappings #1: mapping #1 (MAP-001): source A1.BusinessCapability CAP-001@1.0 not found in level model",
+        "mappings #1: mapping #1 (MAP-001): target A2.ServiceDomain SD-001@1.0 not found in level model",
+        "mappings #1: mapping #2 (MAP-002): source A2.ServiceDomain SD-001@1.0 not found in level model",
+        "mappings #1: mapping #3 (MAP-003): target A5.SystemSoftware INF-001@1.0 not found in level model",
+        "mappings #1: mapping #4 (MAP-004): source A1.ValueStream VS-001@1.0 not found in level model",
+        "mappings #1: mapping #4 (MAP-004): target A2.BusinessScenario BS-001@1.0 not found in level model",
+        "mappings #1: mapping #5 (MAP-005): source A1.BusinessProcess PRC-001@1.0 not found in level model",
+        "mappings #1: mapping #5 (MAP-005): target A2.ServiceDomain SD-001@1.0 not found in level model",
+        "mappings #1: mapping #6 (MAP-006): source A1.BusinessObject BO-001@1.0 not found in level model",
+        "mappings #1: mapping #6 (MAP-006): target A2.BusinessObject BBO-001@1.0 not found in level model",
+        "mappings #1: mapping #7 (MAP-007): source A2.BusinessObject BBO-001@1.0 not found in level model",
+        "mappings #1: mapping #7 (MAP-007): target A3.DataEntity ENT-001@1.0 not found in level model",
+        "mappings #1: mapping #8 (MAP-008): target A5.Node INF-000@1.0 not found in level model",
+        "mappings #1: mapping #9 (MAP-009): source A2.ServiceOperation SO-001@1.0 not found in level model",
+        "mappings #1: mapping #10 (MAP-010): source A2.ServiceOperation SO-002@1.0 not found in level model",
+        "mappings #1: mapping #11 (MAP-011): target A5.Deployment DEP-001@1.0 not found in level model",
+        "mappings #1: mapping #12 (MAP-012): target A5.Node INF-003@1.0 not found in level model",
+        "mappings #1: mapping #13 (MAP-013): target A5.Artifact ART-001@1.0 not found in level model",
+        "mappings #1: mapping #14 (MAP-014): source A2.BusinessObjectAttribute BBOA-001-01@1.0 not found in level model",
+        "mappings #1: mapping #14 (MAP-014): target A3.DataAttribute ENT-001-F01@1.0 not found in level model",
+        "mappings #1: mapping #15 (MAP-015): source A1.BusinessProcess PRC-001@1.0 not found in level model",
+        "mappings #1: mapping #16 (MAP-016): source A1.BusinessActor ACT-001@1.0 not found in level model",
+        "mappings #1: mapping #17 (MAP-017): source A1.BusinessRole ROL-001@1.0 not found in level model",
+        "mappings #1: mapping #18 (MAP-018): source A1.BusinessProcess PRC-001@1.0 not found in level model",
+        "mappings #1: mapping #19 (MAP-019): source A1.BusinessService BSV-001@1.0 not found in level model",
+        "mappings #1: mapping #20 (MAP-020): source A1.BusinessObject BO-001@1.0 not found in level model",
+        "mappings #1: mapping #20 (MAP-020): target A3.DataEntity ENT-001@1.0 not found in level model",
+        "mappings #1: mapping #21 (MAP-021): target A5.TechnologyService TSV-001@1.0 not found in level model",
+        "mappings #1: mapping #22 (MAP-022): target A5.TechnologyService TSV-001@1.0 not found in level model",
+        "mappings #1: mapping #23 (MAP-023): source A3.DataEntity ENT-001@1.0 not found in level model",
+        "mappings #1: mapping #23 (MAP-023): target A5.SystemSoftware INF-002@16 not found in level model",
+        "mappings #1: mapping #24 (MAP-024): source A1.BusinessEvent BEV-001@1.0 not found in level model",
+        "mappings #1: mapping #25 (MAP-025): source A1.BusinessInterface CHN-001@1.0 not found in level model",
+        "mappings #1: mapping #26 (MAP-026): source A1.ValueStreamStage VSS-001@1.0 not found in level model",
+        "mappings #1: mapping #26 (MAP-026): target A2.BusinessScenario BS-001@1.0 not found in level model",
+        "mappings #1: mapping #27 (MIG-020-027): source A3.DataEntity ENT-001@1.0 not found in level model"
+      ],
+      "warnings": [],
+      "result": "rejected"
+    },
+    {
+      "build": 5,
+      "at": "2026-11-24T20:03:32+00:00",
+      "inputs": [
+        {
+          "path": "examples/0.20/customer-onboarding/business.json",
+          "kind": "export",
+          "level": "A1",
+          "model_id": "synthetic-bank-onboarding-a1",
+          "model_version": "2026.10",
+          "sha256": "3b0c11bed5ea70d2b351115e1f0249289120730b4419214b86091105346bd69e"
+        },
+        {
+          "path": "examples/0.20/customer-onboarding/bian.json",
+          "kind": "export",
+          "level": "A2",
+          "model_id": "synthetic-bank-onboarding-a2",
+          "model_version": "2026.10",
+          "sha256": "c35be8b6138987b1cede1fb916ac33e7c5d4ffbced9c302c2d7e6255f426644e"
+        },
+        {
+          "path": "examples/0.20/customer-onboarding/data.json",
+          "kind": "export",
+          "level": "A3",
+          "model_id": "synthetic-bank-onboarding-a3-data",
+          "model_version": "2026.10",
+          "sha256": "6a65927a2ce744da9bea08963bab1080fd51b25ece12269d8bdfacde85999215"
+        },
+        {
+          "path": "examples/0.20/customer-onboarding/application.json",
+          "kind": "export",
+          "level": "A4",
+          "model_id": "synthetic-bank-onboarding-a3",
+          "model_version": "2026.10",
+          "sha256": "805196768f28bcd0a662c2142b421b9045d7cf1f643e62942e11eb0698ca2630"
+        },
+        {
+          "path": "examples/0.20/customer-onboarding/technology.json",
+          "kind": "export",
+          "level": "A5",
+          "model_id": "synthetic-bank-onboarding-a4",
+          "model_version": "2026.10",
+          "sha256": "7f8dfd4be7770c016da3230649ebba5001caaeb78599a92354f90eda1312ff09"
+        },
+        {
+          "path": "examples/0.20/customer-onboarding/mappings.json",
+          "kind": "registry",
+          "registry_version": "0.4.0",
+          "sha256": "95c0f9093c8f181269011e43af25353f2d3e210a358a93cf55c4128d133bde05"
+        }
+      ],
+      "metamodel_version": "0.20.0",
+      "errors": [],
+      "warnings": [
+        "level A2 (synthetic-bank-onboarding-a2): instance SD-001: 0 composition links with A2.BusinessDomain, RA2-02 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-bank-onboarding-a2): instance BBO-001: its field names and its field records disagree — no record for address, date_of_birth, legal_name, national_id, verification_status (LC-24)"
+      ],
+      "result": "accepted",
+      "stack": [
+        "business",
+        "bian",
+        "data",
+        "application",
+        "technology"
+      ],
+      "outputs": [
+        {
+          "file": "application.graph.json",
+          "sha256": "e66547c7c72ef3e645f23d8e0b12154abbb21d77831efde30d96a2f4cfabffec",
+          "nodes": 7,
+          "edges": 6
+        },
+        {
+          "file": "bian.graph.json",
+          "sha256": "f8c0d0969209feee099c7363c76678ed53072a550c9df063e389edeb588dfe84",
+          "nodes": 10,
+          "edges": 12
+        },
+        {
+          "file": "business.graph.json",
+          "sha256": "71effc6232a03ac9c48be359e2f75929accbb2e369d769e5bfe61c5ef3665ba6",
+          "nodes": 12,
+          "edges": 12
+        },
+        {
+          "file": "data.graph.json",
+          "sha256": "4ce34613c2f2fd0d8b30c90864c26832f325e55ba8185ca60d73c97f0f31c43a",
+          "nodes": 2,
+          "edges": 1
+        },
+        {
+          "file": "federated.graph.json",
+          "sha256": "f3afffcbd7797a1bb00e6ee532247381ca45dcc0fc719a4486fb5f4b3d5e2043",
+          "nodes": 27,
+          "edges": 24
+        },
+        {
+          "file": "technology.graph.json",
+          "sha256": "4394efc9b3f929a97d89e6f0b767b6c5a45fa990e693ca197c159d408d199da6",
+          "nodes": 11,
+          "edges": 13
+        }
+      ]
+    },
+    {
+      "build": 6,
+      "at": "2026-11-24T20:03:49+00:00",
+      "inputs": [
+        {
+          "path": "examples/0.20/customer-onboarding/business.json",
+          "kind": "export",
+          "level": "A1",
+          "model_id": "synthetic-bank-onboarding-a1",
+          "model_version": "2026.10",
+          "sha256": "3b0c11bed5ea70d2b351115e1f0249289120730b4419214b86091105346bd69e"
+        },
+        {
+          "path": "examples/0.20/customer-onboarding/bian.json",
+          "kind": "export",
+          "level": "A2",
+          "model_id": "synthetic-bank-onboarding-a2",
+          "model_version": "2026.10",
+          "sha256": "c35be8b6138987b1cede1fb916ac33e7c5d4ffbced9c302c2d7e6255f426644e"
+        },
+        {
+          "path": "examples/0.20/customer-onboarding/data.json",
+          "kind": "export",
+          "level": "A3",
+          "model_id": "synthetic-bank-onboarding-a3-data",
+          "model_version": "2026.10",
+          "sha256": "6a65927a2ce744da9bea08963bab1080fd51b25ece12269d8bdfacde85999215"
+        },
+        {
+          "path": "examples/0.20/customer-onboarding/application.json",
+          "kind": "export",
+          "level": "A4",
+          "model_id": "synthetic-bank-onboarding-a3",
+          "model_version": "2026.10",
+          "sha256": "805196768f28bcd0a662c2142b421b9045d7cf1f643e62942e11eb0698ca2630"
+        },
+        {
+          "path": "examples/0.20/customer-onboarding/technology.json",
+          "kind": "export",
+          "level": "A5",
+          "model_id": "synthetic-bank-onboarding-a4",
+          "model_version": "2026.10",
+          "sha256": "7f8dfd4be7770c016da3230649ebba5001caaeb78599a92354f90eda1312ff09"
+        },
+        {
+          "path": "examples/0.20/customer-onboarding/mappings.json",
+          "kind": "registry",
+          "registry_version": "0.4.0",
+          "sha256": "95c0f9093c8f181269011e43af25353f2d3e210a358a93cf55c4128d133bde05"
+        }
+      ],
+      "metamodel_version": "0.20.0",
+      "errors": [],
+      "warnings": [
+        "level A2 (synthetic-bank-onboarding-a2): instance SD-001: 0 composition links with A2.BusinessDomain, RA2-02 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-bank-onboarding-a2): instance BBO-001: its field names and its field records disagree — no record for address, date_of_birth, legal_name, national_id, verification_status (LC-24)"
+      ],
+      "result": "accepted",
+      "stack": [
+        "business",
+        "bian",
+        "data",
+        "application",
+        "technology"
+      ],
+      "outputs": [
+        {
+          "file": "application.graph.json",
+          "sha256": "e66547c7c72ef3e645f23d8e0b12154abbb21d77831efde30d96a2f4cfabffec",
+          "nodes": 7,
+          "edges": 6
+        },
+        {
+          "file": "bian.graph.json",
+          "sha256": "f8c0d0969209feee099c7363c76678ed53072a550c9df063e389edeb588dfe84",
+          "nodes": 10,
+          "edges": 12
+        },
+        {
+          "file": "business.graph.json",
+          "sha256": "71effc6232a03ac9c48be359e2f75929accbb2e369d769e5bfe61c5ef3665ba6",
+          "nodes": 12,
+          "edges": 12
+        },
+        {
+          "file": "data.graph.json",
+          "sha256": "4ce34613c2f2fd0d8b30c90864c26832f325e55ba8185ca60d73c97f0f31c43a",
+          "nodes": 2,
+          "edges": 1
+        },
+        {
+          "file": "federated.graph.json",
+          "sha256": "f3afffcbd7797a1bb00e6ee532247381ca45dcc0fc719a4486fb5f4b3d5e2043",
+          "nodes": 27,
+          "edges": 24
+        },
+        {
+          "file": "technology.graph.json",
+          "sha256": "4394efc9b3f929a97d89e6f0b767b6c5a45fa990e693ca197c159d408d199da6",
+          "nodes": 11,
+          "edges": 13
+        }
+      ]
     }
   ]
 }

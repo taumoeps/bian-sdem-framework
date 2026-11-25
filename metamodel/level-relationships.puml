@@ -91,45 +91,7 @@ package "A1 Business Architecture" as A1 {
 }
 
 package "A2 Service Domain Architecture" as A2 {
-  rectangle "A2.BusinessArea" as a2_businessarea
-  rectangle "A2.BusinessDomain" as a2_businessdomain
-  rectangle "A2.ServiceDomain" as a2_servicedomain
-  rectangle "A2.FunctionalPattern" as a2_functionalpattern
-  rectangle "A2.AssetType" as a2_assettype
-  rectangle "A2.ControlRecord" as a2_controlrecord
-  rectangle "A2.ServiceGroup" as a2_servicegroup
-  rectangle "A2.ServiceOperation" as a2_serviceoperation
-  rectangle "A2.BehaviorQualifier" as a2_behaviorqualifier
-  rectangle "A2.BusinessScenario" as a2_businessscenario
-  rectangle "A2.BusinessObject" as a2_businessobject
-  rectangle "A2.BusinessObjectAttribute" as a2_businessobjectattribute
-  rectangle "A2.BOMModel\n(artefact)" as a2_bommodel
-  rectangle "A2.Wireframe\n(artefact)" as a2_wireframe
-  rectangle "A2.SemanticAPI\n(artefact)" as a2_semanticapi
-  ' constraints from BIAN Service Landscape metamodel (23)
-  a2_businessarea -[#1565C0]-> a2_businessdomain : RA2-01 composition
-  a2_businessdomain -[#1565C0]-> a2_servicedomain : RA2-02 composition
-  a2_servicedomain -[#1565C0]-> a2_servicegroup : RA2-03 composition
-  a2_servicegroup -[#1565C0]-> a2_serviceoperation : RA2-04 composition
-  a2_servicedomain -[#1565C0,dashed]-> a2_controlrecord : RA2-05 aggregation
-  a2_servicedomain -[#9E9E9E,dotted]-> a2_functionalpattern : RA2-06 association
-  a2_servicedomain -[#9E9E9E,dotted]-> a2_assettype : RA2-07 association
-  a2_serviceoperation -[#9E9E9E,dotted]-> a2_behaviorqualifier : RA2-08 association
-  a2_businessscenario -[#1565C0,dashed]-> a2_serviceoperation : RA2-09 aggregation
-  a2_businessobject -[#1565C0]-> a2_businessobjectattribute : RA2-10 composition
-  a2_controlrecord -[#1565C0]-> a2_behaviorqualifier : RA2-11 composition
-  a2_controlrecord -[#9E9E9E,dotted]-> a2_businessobject : RA2-12 association
-  a2_serviceoperation -[#616161,dotted]-> a2_controlrecord : RA2-13 access
-  a2_servicedomain -[#EF6C00,dashed]-> a2_servicedomain : RA2-14 flow
-  a2_wireframe -[#9E9E9E,dotted]-> a2_servicedomain : RA2-15 association
-  a2_semanticapi -[#2E7D32,dashed]-> a2_servicedomain : RA2-16 realization
-  a2_bommodel -[#1565C0,dashed]-> a2_businessobject : RA2-17 aggregation
-  a2_businessobject -[#1565C0]-> a2_businessobject : RA2-18 composition
-  a2_businessobject -[#1565C0,dashed]-> a2_businessobject : RA2-19 aggregation
-  a2_businessobject -[#424242]-> a2_businessobject : RA2-20 specialization
-  a2_businessobject -[#9E9E9E,dotted]-> a2_businessobject : RA2-21 association
-  a2_businessobjectattribute -[#9E9E9E,dotted]-> a2_businessobject : RA2-22 association
-  a2_serviceoperation -[#616161,dotted]-> a2_businessobject : RA2-23 access
+  ' constraints from BIAN Service Landscape metamodel (0)
 }
 
 package "A3 Application Architecture" as A3 {

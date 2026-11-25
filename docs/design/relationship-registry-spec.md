@@ -68,13 +68,6 @@ From the relationship type catalogue (Architecture Metamodel).
 
 | Type | Source → target | Authority | Required evidence |
 |---|---|---|---|
-| `SUPPORTED_BY` (CAPABILITY_SUPPORTED_BY_DOMAIN) | A1.BusinessCapability → A2.ServiceDomain | bian_alignment_guidance | business_architecture_document, domain_scope_assessment |
-| `ALIGNED_TO` (VALUE_STREAM_ALIGNED_TO_SCENARIO) | A1.ValueStream → A2.BusinessScenario | enterprise_rule | process_model, scenario_suitability_review |
-| `USES_DOMAIN` (PROCESS_USES_DOMAIN) | A1.BusinessProcess → A2.ServiceDomain | enterprise_rule | process_model |
-| `ALIGNED_TO` (BUSINESS_OBJECT_ALIGNED_TO_BIAN_OBJECT) | A1.BusinessObject → A2.BusinessObject | bian_alignment_guidance | business_glossary, object_alignment_review |
-| `REALIZED_BY` (DOMAIN_REALIZED_BY_COMPONENT) | A2.ServiceDomain → A3.ApplicationComponent | enterprise_rule | application_architecture_document |
-| `IMPLEMENTED_BY` (OPERATION_IMPLEMENTED_BY_API) | A2.ServiceOperation → A3.APIOperation | enterprise_rule | api_contract |
-| `MAPPED_TO` (BIAN_OBJECT_MAPPED_TO_DATA_ENTITY) | A2.BusinessObject → A3.DataEntity | enterprise_rule | data_model |
 | `DEPLOYED_ON` (COMPONENT_DEPLOYED_ON_NODE) | A3.ApplicationComponent → A4.Node | enterprise_rule | deployment_design |
 | `DEPLOYED_ON` (COMPONENT_DEPLOYED_ON_DEVICE) | A3.ApplicationComponent → A4.Device | enterprise_rule | deployment_design |
 | `DEPLOYED_ON` (COMPONENT_DEPLOYED_ON_SYSTEM_SOFTWARE) | A3.ApplicationComponent → A4.SystemSoftware | enterprise_rule | deployment_design |
@@ -83,7 +76,6 @@ From the relationship type catalogue (Architecture Metamodel).
 | `EXPOSED_THROUGH` (INTERFACE_EXPOSED_THROUGH_DEVICE) | A3.ApplicationInterface → A4.Device | enterprise_rule | network_design |
 | `EXPOSED_THROUGH` (INTERFACE_EXPOSED_THROUGH_SYSTEM_SOFTWARE) | A3.ApplicationInterface → A4.SystemSoftware | enterprise_rule | network_design |
 | `BUILT_AS` (COMPONENT_BUILT_AS_ARTIFACT) | A3.ApplicationComponent → A4.Artifact | enterprise_rule | build_pipeline |
-| `FIELD_MAPPED_TO` (BIAN_ATTRIBUTE_FIELD_MAPPED_TO_DATA_ATTRIBUTE) | A2.BusinessObjectAttribute → A3.DataAttribute | enterprise_rule | data_model |
 | `SERVED_BY` (BUSINESSPROCESS_SERVED_BY_APPLICATION_SERVICE) | A1.BusinessProcess → A3.ApplicationService | enterprise_rule | process_model |
 | `SERVED_BY` (BUSINESSACTOR_SERVED_BY_APPLICATION_SERVICE) | A1.BusinessActor → A3.ApplicationService | enterprise_rule | process_model |
 | `SERVED_BY` (BUSINESSROLE_SERVED_BY_APPLICATION_SERVICE) | A1.BusinessRole → A3.ApplicationService | enterprise_rule | process_model |
@@ -91,14 +83,12 @@ From the relationship type catalogue (Architecture Metamodel).
 | `REALIZED_BY` (BUSINESS_SERVICE_REALIZED_BY_APPLICATION_SERVICE) | A1.BusinessService → A3.ApplicationService | enterprise_rule | application_architecture_document |
 | `REALIZED_BY` (BUSINESS_SERVICE_REALIZED_BY_APPLICATION_COMPONENT) | A1.BusinessService → A3.ApplicationComponent | enterprise_rule | application_architecture_document |
 | `MAPPED_TO` (BUSINESS_OBJECT_MAPPED_TO_DATA_ENTITY) | A1.BusinessObject → A3.DataEntity | enterprise_rule | data_model |
-| `IMPLEMENTED_BY` (NOTIFY_OPERATION_IMPLEMENTED_BY_EVENT) | A2.ServiceOperation → A3.Event | enterprise_rule | event_design |
 | `SERVED_BY` (COMPONENT_SERVED_BY_TECHNOLOGY_SERVICE) | A3.ApplicationComponent → A4.TechnologyService | enterprise_rule | deployment_design |
 | `SERVED_BY` (FUNCTION_SERVED_BY_TECHNOLOGY_SERVICE) | A3.ApplicationFunction → A4.TechnologyService | enterprise_rule | deployment_design |
 | `STORED_IN` (DATA_ENTITY_STORED_IN_ARTIFACT) | A3.DataEntity → A4.Artifact | enterprise_rule | deployment_design |
 | `STORED_IN` (DATA_ENTITY_STORED_IN_SYSTEM_SOFTWARE) | A3.DataEntity → A4.SystemSoftware | enterprise_rule | deployment_design |
 | `REALIZED_BY` (BUSINESS_EVENT_REALIZED_BY_EVENT) | A1.BusinessEvent → A3.Event | enterprise_rule | event_design |
 | `REALIZED_BY` (CHANNEL_REALIZED_BY_APPLICATION_INTERFACE) | A1.BusinessInterface → A3.ApplicationInterface | enterprise_rule | application_architecture_document |
-| `ALIGNED_TO` (VALUE_STREAM_STAGE_ALIGNED_TO_SCENARIO) | A1.ValueStreamStage → A2.BusinessScenario | enterprise_rule | process_model, scenario_suitability_review |
 
 ## 6. Validation
 

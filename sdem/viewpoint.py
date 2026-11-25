@@ -16,7 +16,14 @@ def names(): return sorted(p.stem[len('viewpoint-'):] for p in DIR.glob('viewpoi
 def load(name):
     f = DIR / f'viewpoint-{name}.json'
     if not f.is_file(): raise ValueError(f"no viewpoint {name!r} — SDEM defines: {', '.join(names()) or 'none'}")
-    return _jload(f)
+    d = _jload(f)
+    from . import parts
+    extra = (((parts._pkg_data() if parts.bian_on() else None) or {}).get('viewpoint_plates') or {}).get('plates') or []
+    if name == 'architecture' and extra:   # BX-15: BIAN's plate (sdem-bian's), in its place — after the business layer's
+        plates = list(d.get('plates', [])); i = next((n for n, p in enumerate(plates) if p['code'] == _L('business')), -1)
+        import copy
+        d = {**d, 'plates': plates[:i + 1] + copy.deepcopy(extra) + plates[i + 1:]}   # a copy: sdem-bian's data is read once and shared
+    return d
 
 
 def check(mm, d):

@@ -312,6 +312,251 @@
           "edges": 9
         }
       ]
+    },
+    {
+      "build": 4,
+      "at": "2026-11-24T20:03:32+00:00",
+      "inputs": [
+        {
+          "path": "examples/0.20/card-fraud-alerts//application.json",
+          "kind": "export",
+          "level": "A4",
+          "model_id": "synthetic-bank-a3",
+          "model_version": "2026.10",
+          "sha256": "8efbcb14e0eebaa47c28464381ebdc7b33f557d01311add5e43c5f7ab22c8c02"
+        },
+        {
+          "path": "examples/0.20/card-fraud-alerts//mappings.json",
+          "kind": "registry",
+          "registry_version": "0.4.0",
+          "sha256": "95eb735c02ef39f280405cabd5d39ec2671860bd399b047db85980065a2a3f6e"
+        }
+      ],
+      "metamodel_version": "0.20.0",
+      "errors": [
+        "mappings #1: mapping #1 (FRD-001): source A1.BusinessCapability CAP-310@1.0 not found in level model",
+        "mappings #1: mapping #1 (FRD-001): target A2.ServiceDomain SD-044@1.0 not found in level model",
+        "mappings #1: mapping #2 (FRD-002): source A2.ServiceDomain SD-044@1.0 not found in level model",
+        "mappings #1: mapping #3 (FRD-003): target A5.Node INF-ONPREM-VM-CLUSTER-B@2.0 not found in level model",
+        "mappings #1: mapping #4 (FRD-004): source A2.ServiceOperation SO-044-07@1.0 not found in level model",
+        "mappings #1: mapping #5 (FRD-005): target A5.SystemSoftware INF-CLOUD-K8S-PROD@1.3 not found in level model",
+        "mappings #1: mapping #6 (FRD-006): target A5.Deployment DEP-FRAUD-PROD@1.0 not found in level model",
+        "mappings #1: mapping #7 (FRD-007): source A1.ValueStream VS-CARD-USE@1.0 not found in level model",
+        "mappings #1: mapping #7 (FRD-007): target A2.BusinessScenario BS-FRAUD-ALERT@1.0 not found in level model",
+        "mappings #1: mapping #8 (FRD-008): source A1.BusinessProcess PRC-310-01@1.0 not found in level model",
+        "mappings #1: mapping #8 (FRD-008): target A2.ServiceDomain SD-044@1.0 not found in level model",
+        "mappings #1: mapping #9 (FRD-009): source A2.ServiceDomain SD-044@1.0 not found in level model"
+      ],
+      "warnings": [],
+      "result": "rejected"
+    },
+    {
+      "build": 5,
+      "at": "2026-11-24T20:03:32+00:00",
+      "inputs": [
+        {
+          "path": "examples/0.20/card-fraud-alerts/business.json",
+          "kind": "export",
+          "level": "A1",
+          "model_id": "synthetic-bank-a1",
+          "model_version": "2026.10",
+          "sha256": "00262c2d985e0f8f8969faf7c060fac32893f9b41be5d8cde38028f320d0aca2"
+        },
+        {
+          "path": "examples/0.20/card-fraud-alerts/bian.json",
+          "kind": "export",
+          "level": "A2",
+          "model_id": "synthetic-bank-a2",
+          "model_version": "2026.10",
+          "sha256": "4108752a3a0526371317957f8c75476517555f26982dc97bcc0f6c1309f05195"
+        },
+        {
+          "path": "examples/0.20/card-fraud-alerts/data.json",
+          "kind": "export",
+          "level": "A3",
+          "model_id": "synthetic-bank-a3-data",
+          "model_version": "2026.10",
+          "sha256": "2cf8bd650d688a9e77b79ce50e8f1938fd40e44f7c513a4a4860710448f790b4"
+        },
+        {
+          "path": "examples/0.20/card-fraud-alerts/application.json",
+          "kind": "export",
+          "level": "A4",
+          "model_id": "synthetic-bank-a3",
+          "model_version": "2026.10",
+          "sha256": "8efbcb14e0eebaa47c28464381ebdc7b33f557d01311add5e43c5f7ab22c8c02"
+        },
+        {
+          "path": "examples/0.20/card-fraud-alerts/technology.json",
+          "kind": "export",
+          "level": "A5",
+          "model_id": "synthetic-bank-a4",
+          "model_version": "2026.10",
+          "sha256": "169e493d7d21f55dcfb805e7be89dfe14df20f5ca4c4fa94b018090051575dbd"
+        },
+        {
+          "path": "examples/0.20/card-fraud-alerts/mappings.json",
+          "kind": "registry",
+          "registry_version": "0.4.0",
+          "sha256": "95eb735c02ef39f280405cabd5d39ec2671860bd399b047db85980065a2a3f6e"
+        }
+      ],
+      "metamodel_version": "0.20.0",
+      "errors": [],
+      "warnings": [
+        "level A2 (synthetic-bank-a2): instance BD-FRAUD: 0 composition links with A2.BusinessArea, RA2-01 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-bank-a2): instance SO-044-07: 0 access links with A2.ControlRecord, RA2-13 expects at least 1 (LC-10m)"
+      ],
+      "result": "accepted",
+      "stack": [
+        "business",
+        "bian",
+        "data",
+        "application",
+        "technology"
+      ],
+      "outputs": [
+        {
+          "file": "application.graph.json",
+          "sha256": "2cf9a5c431c2e10f213a4543d30acb1af1e0d8c2f34560993c3936276e605fe1",
+          "nodes": 4,
+          "edges": 3
+        },
+        {
+          "file": "bian.graph.json",
+          "sha256": "8f04a1515dd2620ecde62e232123d140de158542b75268a94efe815899afe18f",
+          "nodes": 8,
+          "edges": 7
+        },
+        {
+          "file": "business.graph.json",
+          "sha256": "0f5e6b25666faa8ab13eaa4b4d33f1832eb10aca5f8aba763e8befbfc8f3ca12",
+          "nodes": 9,
+          "edges": 7
+        },
+        {
+          "file": "data.graph.json",
+          "sha256": "7ecd3ae4b5f8ddb756694193029d88dc0d76dfb0bfdbc0eb05366e37d7ab3346",
+          "nodes": 0,
+          "edges": 0
+        },
+        {
+          "file": "federated.graph.json",
+          "sha256": "9e168b5c582c441e7005bf34a8195dafc554c1733737d75a8a3919bdee9bc60c",
+          "nodes": 10,
+          "edges": 7
+        },
+        {
+          "file": "technology.graph.json",
+          "sha256": "40f105c53da7a8286ead053cc6d72246debb7877da74f1ac1cf5db0ecb174b07",
+          "nodes": 9,
+          "edges": 9
+        }
+      ]
+    },
+    {
+      "build": 6,
+      "at": "2026-11-24T20:03:49+00:00",
+      "inputs": [
+        {
+          "path": "examples/0.20/card-fraud-alerts/business.json",
+          "kind": "export",
+          "level": "A1",
+          "model_id": "synthetic-bank-a1",
+          "model_version": "2026.10",
+          "sha256": "00262c2d985e0f8f8969faf7c060fac32893f9b41be5d8cde38028f320d0aca2"
+        },
+        {
+          "path": "examples/0.20/card-fraud-alerts/bian.json",
+          "kind": "export",
+          "level": "A2",
+          "model_id": "synthetic-bank-a2",
+          "model_version": "2026.10",
+          "sha256": "4108752a3a0526371317957f8c75476517555f26982dc97bcc0f6c1309f05195"
+        },
+        {
+          "path": "examples/0.20/card-fraud-alerts/data.json",
+          "kind": "export",
+          "level": "A3",
+          "model_id": "synthetic-bank-a3-data",
+          "model_version": "2026.10",
+          "sha256": "2cf8bd650d688a9e77b79ce50e8f1938fd40e44f7c513a4a4860710448f790b4"
+        },
+        {
+          "path": "examples/0.20/card-fraud-alerts/application.json",
+          "kind": "export",
+          "level": "A4",
+          "model_id": "synthetic-bank-a3",
+          "model_version": "2026.10",
+          "sha256": "8efbcb14e0eebaa47c28464381ebdc7b33f557d01311add5e43c5f7ab22c8c02"
+        },
+        {
+          "path": "examples/0.20/card-fraud-alerts/technology.json",
+          "kind": "export",
+          "level": "A5",
+          "model_id": "synthetic-bank-a4",
+          "model_version": "2026.10",
+          "sha256": "169e493d7d21f55dcfb805e7be89dfe14df20f5ca4c4fa94b018090051575dbd"
+        },
+        {
+          "path": "examples/0.20/card-fraud-alerts/mappings.json",
+          "kind": "registry",
+          "registry_version": "0.4.0",
+          "sha256": "95eb735c02ef39f280405cabd5d39ec2671860bd399b047db85980065a2a3f6e"
+        }
+      ],
+      "metamodel_version": "0.20.0",
+      "errors": [],
+      "warnings": [
+        "level A2 (synthetic-bank-a2): instance BD-FRAUD: 0 composition links with A2.BusinessArea, RA2-01 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-bank-a2): instance SO-044-07: 0 access links with A2.ControlRecord, RA2-13 expects at least 1 (LC-10m)"
+      ],
+      "result": "accepted",
+      "stack": [
+        "business",
+        "bian",
+        "data",
+        "application",
+        "technology"
+      ],
+      "outputs": [
+        {
+          "file": "application.graph.json",
+          "sha256": "2cf9a5c431c2e10f213a4543d30acb1af1e0d8c2f34560993c3936276e605fe1",
+          "nodes": 4,
+          "edges": 3
+        },
+        {
+          "file": "bian.graph.json",
+          "sha256": "8f04a1515dd2620ecde62e232123d140de158542b75268a94efe815899afe18f",
+          "nodes": 8,
+          "edges": 7
+        },
+        {
+          "file": "business.graph.json",
+          "sha256": "0f5e6b25666faa8ab13eaa4b4d33f1832eb10aca5f8aba763e8befbfc8f3ca12",
+          "nodes": 9,
+          "edges": 7
+        },
+        {
+          "file": "data.graph.json",
+          "sha256": "7ecd3ae4b5f8ddb756694193029d88dc0d76dfb0bfdbc0eb05366e37d7ab3346",
+          "nodes": 0,
+          "edges": 0
+        },
+        {
+          "file": "federated.graph.json",
+          "sha256": "9e168b5c582c441e7005bf34a8195dafc554c1733737d75a8a3919bdee9bc60c",
+          "nodes": 10,
+          "edges": 7
+        },
+        {
+          "file": "technology.graph.json",
+          "sha256": "40f105c53da7a8286ead053cc6d72246debb7877da74f1ac1cf5db0ecb174b07",
+          "nodes": 9,
+          "edges": 9
+        }
+      ]
     }
   ]
 }

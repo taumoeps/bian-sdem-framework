@@ -2,7 +2,7 @@
 
 > **Generated** from the code by `sdem model regenerate` (`sdem/clidoc.py`), from the same catalogue as `sdem commands --json`; `sdem model check` fails in CI when it is stale — **do not edit by hand**. Each command's `--help` has the same options and a worked example. For *when* to use which command, in order, see the [scenarios](../sdem-scenarios.md); for what each does to your data, the [user guide](../sdem-workbench-user-guide.md#7-command-reference).
 
-137 commands and subcommands.
+121 commands and subcommands.
 
 ## Every command takes
 
@@ -42,23 +42,7 @@
 | Command | What it does |
 |---|---|
 | [`sdem bian`](#cmd-bian) | the BIAN (A2) layer: from the base BIAN that ships with SDEM, your own BIAN pack, or BIAN's files |
-| [`sdem bian add`](#cmd-bian-add) 👤 | add BIAN service domains to one workspace, beside what it holds |
-| [`sdem bian custom`](#cmd-bian-custom) 👤 | the old name for `sdem bian add` (--add) and `sdem bian select` (--only, --from, --all) |
-| [`sdem bian impact`](#cmd-bian-impact) | before an update: what in each workspace points at BIAN records the new layer drops, renames or changes |
-| [`sdem bian import`](#cmd-bian-import) | write an A2 dataset for the service domains you choose |
-| [`sdem bian inference`](#cmd-bian-inference) | SDEM's record of inferred BIAN asset types and functional patterns: list, show, accept, challenge … |
-| [`sdem bian inference accept`](#cmd-bian-inference-accept) 👤 | accept an entry |
-| [`sdem bian inference challenge`](#cmd-bian-inference-challenge) 👤 | question an entry |
-| [`sdem bian inference change`](#cmd-bian-inference-change) 👤 | give new values |
-| [`sdem bian inference list`](#cmd-bian-inference-list) | the entries, with values, confidence and status |
-| [`sdem bian inference reject`](#cmd-bian-inference-reject) 👤 | reject an entry |
-| [`sdem bian inference show`](#cmd-bian-inference-show) | one entry: values, sources, reasoning, history |
-| [`sdem bian list`](#cmd-bian-list) | the service domains in the base, a pack or a folder; writes nothing |
-| [`sdem bian objects`](#cmd-bian-objects) | BIAN business objects for a design's data |
-| [`sdem bian pack`](#cmd-bian-pack) | pack a folder of BIAN-format files into one file |
-| [`sdem bian search`](#cmd-bian-search) | BIAN service domains and operations for plain words |
-| [`sdem bian select`](#cmd-bian-select) 👤 | set exactly which BIAN service domains one workspace holds |
-| [`sdem bian update`](#cmd-bian-update) 👤 | replace a workspace's BIAN layer with your shared one |
+| [`sdem bian inference`](#cmd-bian-inference) | — |
 | [`sdem designs`](#cmd-designs) | design records and gap records: the pages onboarded designs came from, and what did not fit an entity |
 | [`sdem extensions`](#cmd-extensions) | the installed SDEM extensions (a program called sdem-<name> beside SDEM, with a manifest) |
 | [`sdem load`](#cmd-load) 👤 | load reviewed candidate entities from sdem transform into a workspace |
@@ -465,370 +449,27 @@ sdem baseline release-1 --graph work/graph
 
 the BIAN (A2) layer: from the base BIAN that ships with SDEM, your own BIAN pack, or BIAN's files — list, search, import the service domains you choose (checked), add one to a workspace or select exactly which it holds, pack
 
-Subcommands: [`sdem bian add`](#cmd-bian-add) · [`sdem bian custom`](#cmd-bian-custom) · [`sdem bian impact`](#cmd-bian-impact) · [`sdem bian import`](#cmd-bian-import) · [`sdem bian inference`](#cmd-bian-inference) · [`sdem bian list`](#cmd-bian-list) · [`sdem bian objects`](#cmd-bian-objects) · [`sdem bian pack`](#cmd-bian-pack) · [`sdem bian search`](#cmd-bian-search) · [`sdem bian select`](#cmd-bian-select) · [`sdem bian update`](#cmd-bian-update)
-
-### sdem bian add
-
-<a id="cmd-bian-add"></a>
-
-add BIAN service domains to one workspace, beside what it holds — checked; what AID inferred keeps its mark
-
 ```
-sdem bian add <names> [--base BASE] [--folder FOLDER] --workspace WORKSPACE [--patterns PATTERNS] [--inferences INFERENCES] [--no-inferences] --person PERSON [--dry-run] [--objects] [--object OBJECT]
+sdem bian
 ```
 
-*JSON: native · dry run: native · 👤 a person's own name*
+*JSON: wrapped · dry run: sandbox*
 
-| Argument | Required | What it is |
-|---|---|---|
-| `<names>` | yes | service domains by name, e.g. "Financial Accounting" — find them with sdem bian search |
-| `--base` |  | choose from the base BIAN that ships with SDEM (default) — or, with FILE, your own packed BIAN |
-| `--folder` |  | choose from a downloaded BIAN release instead |
-| `--workspace` | yes | the workspace folder — found from the current folder when you are inside one (WS-11) |
-| `--patterns` |  | a table of service domain → functional pattern, asset type (CSV: Service Domain, pattern, asset type) |
-| `--inferences` |  | SDEM's record of inferred asset types and patterns to apply (default: the one for the BIAN release) |
-| `--no-inferences` |  | do not apply SDEM's accepted inferences |
-| `--person` | yes | your name — a person |
-| `--dry-run` |  | nothing written; what would be written is listed under "would_write" |
-| `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
-| `--objects` |  | also the domains' business objects, typed (metamodel 0.15.0, IM-09) — from a downloaded BIAN release (--folder); the base leaves them out |
-| `--object` |  | only this business object (repeat; BIAN's name, e.g. PaymentTransaction or "Payment Transaction") — implies --objects |
+Example:
 
-### sdem bian custom
-
-<a id="cmd-bian-custom"></a>
-
-the old name for `sdem bian add` (--add) and `sdem bian select` (--only, --from, --all) — still works
-
+```bash
+sdem bian import ~/bian/release14.0.0 --only "Payment Order Initiation" -o work/bian/a2-service-domain.json
 ```
-sdem bian custom [<folder>] [--base BASE] [--add ADD …] [--only ONLY …] [--from FROM] [--all] --workspace WORKSPACE [--patterns PATTERNS] [--inferences INFERENCES] [--no-inferences] --person PERSON [--dry-run] [--objects] [--object OBJECT]
-```
-
-*JSON: native · dry run: native · 👤 a person's own name*
-
-| Argument | Required | What it is |
-|---|---|---|
-| `<folder>` |  | a folder of BIAN-format files (e.g. a release downloaded from BIAN's GitHub) |
-| `--base` |  | the base BIAN that ships with SDEM — or, with FILE, your own packed BIAN |
-| `--add` |  | as sdem bian add |
-| `--only` |  | as sdem bian select --only |
-| `--from` |  | as sdem bian select --from |
-| `--all` |  | as sdem bian select --all |
-| `--workspace` | yes | the workspace folder — found from the current folder when you are inside one (WS-11) |
-| `--patterns` |  | a table of service domain → functional pattern, asset type (CSV: Service Domain, pattern, asset type) |
-| `--inferences` |  | SDEM's record of inferred asset types and patterns to apply (default: the one for the BIAN release) |
-| `--no-inferences` |  | do not apply SDEM's accepted inferences |
-| `--person` | yes | your name — a person |
-| `--dry-run` |  | nothing written; what would be written is listed under "would_write" |
-| `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
-| `--objects` |  | also the domains' business objects, typed (metamodel 0.15.0, IM-09) — from a downloaded BIAN release (--folder); the base leaves them out |
-| `--object` |  | only this business object (repeat; BIAN's name, e.g. PaymentTransaction or "Payment Transaction") — implies --objects |
-
-### sdem bian impact
-
-<a id="cmd-bian-impact"></a>
-
-before an update: what in each workspace points at BIAN records the new layer drops, renames or changes — read-only
-
-```
-sdem bian impact [--workspace WORKSPACE] [--root ROOT] --a2 A2
-```
-
-*JSON: native · dry run: sandbox*
-
-| Argument | Required | What it is |
-|---|---|---|
-| `--workspace` |  | the workspace folder — found from the current folder when you are inside one (WS-11) |
-| `--root` |  | every workspace in a folder |
-| `--a2` | yes | the new shared BIAN layer, e.g. bian/a2-service-domain.json |
-| `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
-
-### sdem bian import
-
-<a id="cmd-bian-import"></a>
-
-write an A2 dataset for the service domains you choose — checked first
-
-```
-sdem bian import [<folder>] [--base BASE] -o O [--only ONLY …] [--from FROM] [--all] [--patterns PATTERNS] [--inferences INFERENCES] [--no-inferences] [--descriptions] [--objects] [--object OBJECT] [--previous PREVIOUS]
-```
-
-*JSON: native · dry run: sandbox*
-
-| Argument | Required | What it is |
-|---|---|---|
-| `<folder>` |  | a folder of BIAN-format files (e.g. a release downloaded from BIAN's GitHub) |
-| `--base` |  | the base BIAN that ships with SDEM — or, with FILE, your own packed BIAN |
-| `-o`, `--out` | yes | where to write the result (a file or folder) |
-| `--only` |  | service domains by name (or file name) |
-| `--from` |  | a file of service-domain names, one per line |
-| `--all` |  | every service domain in the release (about 3,000 records for release 14) |
-| `--patterns` |  | service domain, asset type, functional pattern — overrides the derived values |
-| `--inferences` |  | your own copy of the inference record (default: the one that ships with SDEM for the release) |
-| `--no-inferences` |  | do not apply SDEM's accepted inferences (bian/inferences-<release>.json) |
-| `--descriptions` |  | include BIAN's descriptions (left out by default) |
-| `--objects` |  | also write BIAN business objects (many) |
-| `--object` |  | only this business object (repeat; BIAN's name or its words) — implies --objects |
-| `--previous` |  | a previous A2 dataset: report what was added, dropped or renamed |
-| `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
 
 ### sdem bian inference
 
 <a id="cmd-bian-inference"></a>
 
-SDEM's record of inferred BIAN asset types and functional patterns: list, show, accept, challenge, change or reject an entry. Every change names a person and a reason and is kept in the entry's history; the import applies accepted entries only.
-
-Subcommands: [`sdem bian inference accept`](#cmd-bian-inference-accept) · [`sdem bian inference challenge`](#cmd-bian-inference-challenge) · [`sdem bian inference change`](#cmd-bian-inference-change) · [`sdem bian inference list`](#cmd-bian-inference-list) · [`sdem bian inference reject`](#cmd-bian-inference-reject) · [`sdem bian inference show`](#cmd-bian-inference-show)
-
-### sdem bian inference accept
-
-<a id="cmd-bian-inference-accept"></a>
-
-accept an entry — the import applies it
-
 ```
-sdem bian inference accept <id> --person PERSON [--reason REASON] [--dry-run] [--file FILE]
-```
-
-*JSON: native · dry run: native · 👤 a person's own name*
-
-| Argument | Required | What it is |
-|---|---|---|
-| `<id>` | yes | the inference id (e.g. INF-001) |
-| `--person` | yes | your name — a person |
-| `--reason` |  | why — kept in the history |
-| `--dry-run` |  | nothing written; what would be written is listed under "would_write" |
-| `--file` |  | the record (default: bian/inferences-14.0.0.json in this folder, or the installed one to read) |
-| `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
-
-### sdem bian inference challenge
-
-<a id="cmd-bian-inference-challenge"></a>
-
-question an entry — the import stops applying it
-
-```
-sdem bian inference challenge <id> --person PERSON --reason REASON [--dry-run] [--file FILE]
-```
-
-*JSON: native · dry run: native · 👤 a person's own name*
-
-| Argument | Required | What it is |
-|---|---|---|
-| `<id>` | yes | the inference id (e.g. INF-001) |
-| `--person` | yes | your name — a person |
-| `--reason` | yes | why — kept in the history |
-| `--dry-run` |  | nothing written; what would be written is listed under "would_write" |
-| `--file` |  | the record (default: bian/inferences-14.0.0.json in this folder, or the installed one to read) |
-| `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
-
-### sdem bian inference change
-
-<a id="cmd-bian-inference-change"></a>
-
-give new values — the entry becomes proposed
-
-```
-sdem bian inference change <id> --person PERSON --reason REASON [--asset-type ASSET_TYPE] [--pattern PATTERN] [--confidence {high,medium,low}] [--source SOURCE] [--reasoning REASONING] [--dry-run] [--file FILE]
-```
-
-*JSON: native · dry run: native · 👤 a person's own name*
-
-| Argument | Required | What it is |
-|---|---|---|
-| `<id>` | yes | the inference id (e.g. INF-001) |
-| `--person` | yes | your name — a person |
-| `--reason` | yes | why — kept in the history |
-| `--asset-type` |  | the service domain's asset type, as the BIAN portal shows it |
-| `--pattern` |  | its functional pattern (e.g. Fulfill, Process, Manage) |
-| `--confidence` {high, medium, low} |  | how sure, from 0 to 1 |
-| `--source` |  | where it came from, as kind:reference |
-| `--reasoning` |  | why the new value is right — in a sentence or two |
-| `--dry-run` |  | nothing written; what would be written is listed under "would_write" |
-| `--file` |  | the record (default: bian/inferences-14.0.0.json in this folder, or the installed one to read) |
-| `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
-
-### sdem bian inference list
-
-<a id="cmd-bian-inference-list"></a>
-
-the entries, with values, confidence and status
-
-```
-sdem bian inference list [--status {open,proposed,accepted,challenged,rejected}] [--file FILE]
-```
-
-*JSON: native · dry run: sandbox*
-
-| Argument | Required | What it is |
-|---|---|---|
-| `--status` {open, proposed, accepted, challenged, rejected} |  | only those with this status |
-| `--file` |  | the record (default: bian/inferences-14.0.0.json in this folder, or the installed one to read) |
-| `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
-
-### sdem bian inference reject
-
-<a id="cmd-bian-inference-reject"></a>
-
-reject an entry — the import does not apply it
-
-```
-sdem bian inference reject <id> --person PERSON --reason REASON [--dry-run] [--file FILE]
-```
-
-*JSON: native · dry run: native · 👤 a person's own name*
-
-| Argument | Required | What it is |
-|---|---|---|
-| `<id>` | yes | the inference id (e.g. INF-001) |
-| `--person` | yes | your name — a person |
-| `--reason` | yes | why — kept in the history |
-| `--dry-run` |  | nothing written; what would be written is listed under "would_write" |
-| `--file` |  | the record (default: bian/inferences-14.0.0.json in this folder, or the installed one to read) |
-| `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
-
-### sdem bian inference show
-
-<a id="cmd-bian-inference-show"></a>
-
-one entry: values, sources, reasoning, history
-
-```
-sdem bian inference show <id> [--file FILE]
-```
-
-*JSON: native · dry run: sandbox*
-
-| Argument | Required | What it is |
-|---|---|---|
-| `<id>` | yes | the inference id (e.g. INF-001) — sdem bian inference list shows them |
-| `--file` |  | the record (default: bian/inferences-14.0.0.json in this folder, or the installed one to read) |
-| `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
-
-### sdem bian list
-
-<a id="cmd-bian-list"></a>
-
-the service domains in the base, a pack or a folder; writes nothing
-
-```
-sdem bian list [<folder>] [--base BASE]
-```
-
-*JSON: native · dry run: sandbox*
-
-| Argument | Required | What it is |
-|---|---|---|
-| `<folder>` |  | a folder of BIAN-format files (e.g. a release downloaded from BIAN's GitHub) |
-| `--base` |  | the base BIAN that ships with SDEM — or, with FILE, your own packed BIAN |
-| `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
-
-### sdem bian objects
-
-<a id="cmd-bian-objects"></a>
-
-BIAN business objects for a design's data — suggest which BIAN object each data entity may be; writes nothing (BO-04)
-
-```
-sdem bian objects <action> --workspace WORKSPACE [--top TOP]
-```
-
-*JSON: native · dry run: sandbox*
-
-| Argument | Required | What it is |
-|---|---|---|
-| `<action>` | yes | suggest: for each data entity, up to three BIAN business objects it may be, with the evidence and the commands for a person |
-| `--workspace` | yes | the workspace folder — found from the current folder when you are inside one (WS-11) |
-| `--top` |  | how many per data entity (default 3) |
-| `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
-
-### sdem bian pack
-
-<a id="cmd-bian-pack"></a>
-
-pack a folder of BIAN-format files into one file — your own base
-
-```
-sdem bian pack <folder> -o O
+sdem bian inference
 ```
 
 *JSON: wrapped · dry run: sandbox*
-
-| Argument | Required | What it is |
-|---|---|---|
-| `<folder>` | yes | a folder of BIAN-format files (e.g. a release downloaded from BIAN's GitHub) |
-| `-o`, `--out` | yes | where to write the result (a file or folder) |
-
-### sdem bian search
-
-<a id="cmd-bian-search"></a>
-
-BIAN service domains and operations for plain words — with the ids to use in a process's invokes
-
-```
-sdem bian search <words> [--base BASE] [--folder FOLDER] [--top TOP] [--all-operations]
-```
-
-*JSON: native · dry run: sandbox*
-
-| Argument | Required | What it is |
-|---|---|---|
-| `<words>` | yes | e.g. ledger posting |
-| `--base` |  | the base BIAN (default) — or your own pack |
-| `--folder` |  | a downloaded BIAN release instead |
-| `--top` |  | how many service domains (default 5) |
-| `--all-operations` |  | every operation of each domain found, not only those matching the words |
-| `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
-
-### sdem bian select
-
-<a id="cmd-bian-select"></a>
-
-set exactly which BIAN service domains one workspace holds — checked; never strands an approved connection
-
-```
-sdem bian select [<folder>] [--base BASE] [--only ONLY …] [--from FROM] [--all] --workspace WORKSPACE [--patterns PATTERNS] [--inferences INFERENCES] [--no-inferences] --person PERSON [--dry-run] [--objects] [--object OBJECT]
-```
-
-*JSON: native · dry run: native · 👤 a person's own name*
-
-| Argument | Required | What it is |
-|---|---|---|
-| `<folder>` |  | a folder of BIAN-format files (e.g. a release downloaded from BIAN's GitHub) |
-| `--base` |  | the base BIAN that ships with SDEM — or, with FILE, your own packed BIAN |
-| `--only` |  | service domains by name — exactly these |
-| `--from` |  | a file of names, one per line — exactly these |
-| `--all` |  | back to every service domain |
-| `--workspace` | yes | the workspace folder — found from the current folder when you are inside one (WS-11) |
-| `--patterns` |  | a table of service domain → functional pattern, asset type (CSV: Service Domain, pattern, asset type) |
-| `--inferences` |  | SDEM's record of inferred asset types and patterns to apply (default: the one for the BIAN release) |
-| `--no-inferences` |  | do not apply SDEM's accepted inferences |
-| `--person` | yes | your name — a person |
-| `--dry-run` |  | nothing written; what would be written is listed under "would_write" |
-| `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
-| `--objects` |  | also the domains' business objects, typed (metamodel 0.15.0, IM-09) — from a downloaded BIAN release (--folder); the base leaves them out |
-| `--object` |  | only this business object (repeat; BIAN's name, e.g. PaymentTransaction or "Payment Transaction") — implies --objects |
-
-### sdem bian update
-
-<a id="cmd-bian-update"></a>
-
-replace a workspace's BIAN layer with your shared one — checked; never strands an approved connection
-
-```
-sdem bian update [--workspace WORKSPACE] [--root ROOT] --a2 A2 --person PERSON [--dry-run]
-```
-
-*JSON: native · dry run: native · 👤 a person's own name*
-
-| Argument | Required | What it is |
-|---|---|---|
-| `--workspace` |  | one workspace |
-| `--root` |  | every workspace in a folder, e.g. workspaces |
-| `--a2` | yes | your shared BIAN layer, e.g. bian/a2-service-domain.json |
-| `--person` | yes | your name — a person |
-| `--dry-run` |  | nothing written; what would be written is listed under "would_write" |
-| `--json` |  | the result as JSON on stdout; failures as {"error": {code, exit, message, hint, details}} |
 
 ### sdem build
 

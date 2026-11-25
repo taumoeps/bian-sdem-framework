@@ -33,10 +33,6 @@ SCHEMA = _DATA_ROOT / 'schema' / 'projection.schema.json'
 FILES = _live(lambda: {_L('business'): 'projected-a1-business.json', _L('bian'): 'projected-a2-service-domain.json', _L('data'): 'projected-a3-data.json', _L('application'): 'projected-a3-application.json', _L('technology'): 'projected-a4-technology.json'})
 CATALOGUE_RULE = 'BIAN catalogue reference'
 PROVENANCE = ('step', 'rule', 'source_reference', 'inferred_from', 'reasoning', 'confidence')
-def project(*a, **k):   # 0.22 step 3c: AID's projection is BIAN's (sdem/aid_bian.py) — here for those who call it from aid
-    from .aid_bian import project as _p
-    return _p(*a, **k)
-
 
 
 
@@ -159,7 +155,7 @@ def gaps(pkg, real, registry):
     pnames = {i['id']: i.get('name', i['id']) for d in pkg['layers'].values() for i in d['instances']}
     nm = lambda i: (inst.get(i) or {}).get('name') or pnames.get(i, i)
     run = Run(_reader({_L('bian'): real[_L('bian')]}, mm), 'AID') if _L('bian') in real else None
-    dom = lambda x: x if (inst.get(x) or {}).get('type') == _T('bian.ServiceDomain') else ((run.domain_of(x) or {}).get('id') if run and x in inst else None)
+    dom = lambda x: x if (inst.get(x) or {}).get('type') == _T('bian.ServiceDomain') else ((run.climb(x, _T('bian.ServiceDomain'), _L('bian')) or {}).get('id') if run and x in inst else None)   # the core's climb (BIAN's domain_of)
     used = {dom(t) for s, t in rel('USES_DOMAIN') + rel('SUPPORTED_BY')} | {dom(s) for r in ('REALIZED_BY', 'IMPLEMENTED_BY', 'MAPPED_TO') for s, _ in rel(r)}
     used.discard(None)
     realised = {}
@@ -312,6 +308,16 @@ def trace(reader, pkg, start, direction='down'):
     return out
 
 
+def _project(workspace, have, catalogue, registry):
+    """AID's projection package (AID-F1…F3, R1…R3, M) — BIAN's part of AID, from the installed sdem-bian (MX-54, BX-15): its projection
+    phase with this catalogue, keeping only what both sides support (either=False), as `sdem aid project` always did."""
+    import tempfile
+    from .aid_fill import _bian
+    with tempfile.TemporaryDirectory() as t:
+        ws = Path(workspace) if workspace else Path(t)   # outside a workspace: an empty folder (BIAN on where sdem-bian is installed, BX-12)
+        return _bian(ws).call('projection', {'have': have, 'registry': registry or _registry(), 'catalogue': catalogue, 'either': False})['package']
+
+
 def main(argv=None):
     argv = sys.argv[1:] if argv is None else list(argv)
     if argv and argv[0] not in ('project', 'check', 'gaps', '-h', '--help'):   # DA2-05: `sdem aid` fills the workspace; confirm, reject
@@ -340,7 +346,7 @@ def main(argv=None):
         if not a.have or not a.out: ap.error('project needs --workspace, or --have and --out')
         have = {j(f)['level']: j(f) for f in a.have}
     if a.cmd == 'project':
-        try: pkg = project(have, j(a.catalogue) if a.catalogue else None, j(a.registry) if a.registry else None)
+        try: pkg = _project(a.estate, have, j(a.catalogue) if a.catalogue else None, j(a.registry) if a.registry else None)   # BX-15: BIAN's projection, by sdem-bian
         except ValueError as e: print(f'ERROR: {e}', file=sys.stderr); return 1
         issues = check(pkg, j(a.catalogue) if a.catalogue else None)
         if issues: print('ERROR: ' + '\nERROR: '.join(issues), file=sys.stderr); return 1
@@ -375,10 +381,3 @@ def main(argv=None):
 if __name__ == '__main__':
     raise SystemExit(main())
 
-
-def __getattr__(name):   # 0.22 step 3c: AID's projection moved to sdem/aid_bian.py — its names are still found here (aid._sha, subject_words …)
-    if name in ('GENERIC', 'Projection', 'RULE_BASIS', 'RULE_CLASS', '_clean', '_engine', '_ref', '_sha', 'basis', 'class_of', 'forward_a2',
-                'forward_a3_a4', 'forward_a4', 'mm_is', 'name_fallback', 'plain', 'reverse_a1', 'reverse_a2', 'reverse_a3', 'subject_words', 'why_text'):
-        from . import aid_bian
-        return getattr(aid_bian, name)
-    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")

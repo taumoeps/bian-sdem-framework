@@ -64,12 +64,23 @@ EXT = 'ext:'   # MX-01, MX-10: an include that names an installed metamodel exte
 SHIPPED = 'sdem:'   # CPL-02: an include that names a standard or pattern shipped with SDEM — "sdem:sdem-completeness.json"
 
 
+def _standard_dirs():
+    """Where SDEM's shipped standards and patterns are: `standards/` (`sdem/data/standards/` when installed), and — BX-15, 0.22 — the
+    installed sdem-bian's `data/standards` (BIAN's patterns, under the same names as before)."""
+    from . import parts
+    dirs = [(DATA_ROOT / 'standards').resolve()]
+    p = parts.package() if parts._STATE.get('content') is not False else None   # SDEM's own documents: the core's only
+    if p and p.get('data') and (p['data'] / 'standards').is_dir(): dirs.append((p['data'] / 'standards').resolve())
+    return dirs
+
+
 def shipped(name):
-    """The file of a standard or pattern shipped with SDEM (the folder `standards/`; `sdem/data/standards/` when installed)."""
-    base = (DATA_ROOT / 'standards').resolve(); f = (base / name[len(SHIPPED):]).resolve()
-    if base not in f.parents or f.suffix != '.json': raise ProfileError(f'{name}: not a file shipped with SDEM — the ones it ships are in {base}')
-    if not f.is_file(): raise ProfileError(f"{name}: SDEM ships no such standard or pattern — it ships: {', '.join(sorted(p.name for p in base.glob('*.json'))) or 'none'}")
-    return f
+    """The file of a standard or pattern shipped with SDEM (the folder `standards/`; `sdem/data/standards/` when installed; sdem-bian's)."""
+    for base in _standard_dirs():
+        f = (base / name[len(SHIPPED):]).resolve()
+        if base not in f.parents or f.suffix != '.json': raise ProfileError(f'{name}: not a file shipped with SDEM — the ones it ships are in {base}')
+        if f.is_file(): return f
+    raise ProfileError(f"{name}: SDEM ships no such standard or pattern — it ships: {', '.join(sorted(p.name for b in _standard_dirs() for p in b.glob('*.json'))) or 'none'}")
 
 
 _PACKS = {}
@@ -89,8 +100,9 @@ def pack(name):
     if ext == 'bian' and prog:   # BP-10: an installed sdem-bian SDEM cannot use — the built-in BIAN instead, and `sdem extensions` says why
         from . import parts
         if (parts.package() or {}).get('refused'): prog = None
-    if not prog and ext in BUILTIN:   # BX-01: a metamodel extension shipped inside SDEM (step 1 of 0.20: BIAN)
-        _PACKS[name] = (DATA_ROOT / 'metamodel' / BUILTIN[ext]['pack_file'], {k: v for k, v in BUILTIN[ext].items() if k != 'pack_file'}); return _PACKS[name]
+    if not prog and ext == 'bian':   # BX-15 (0.22): BIAN ships only with sdem-bian
+        from . import parts
+        raise parts.missing(f'{name}: the profile')
     if not prog: raise ProfileError(f"{name}: the profile includes the metamodel extension {ext!r}, but sdem-{ext} is not installed — install it into SDEM's environment (sdem extensions lists what is), or take it out of the profile")
     m = _x.manifest(prog) or {}
     kinds = m.get('kind') if isinstance(m.get('kind'), list) else [m.get('kind')]
@@ -107,7 +119,9 @@ def pack(name):
 def shipped_patterns():
     """CPL-09: the patterns shipped with SDEM — [(the name a profile includes it by, the pattern file)]."""
     out = []
-    for f in sorted((DATA_ROOT / 'standards').glob('*.json')):
+    from . import parts
+    dirs = _standard_dirs() if parts.bian_on() else _standard_dirs()[:1]   # BX-15: BIAN's patterns only where BIAN is on
+    for f in sorted([p for d in dirs for p in d.glob('*.json')], key=lambda p: p.name):
         try: d = _jload(f)
         except ValueError: continue
         if d.get('format') == PATTERN_FORMAT: out.append((SHIPPED + f.name, d))
@@ -137,8 +151,8 @@ def fitting(datasets, mm):
 
 def shipped_included():
     """The ids of the active profile's standards and patterns that are SDEM's own shipped files (CPL-11)."""
-    base = (DATA_ROOT / 'standards').resolve().as_posix() + '/'
-    return {x['id'] for x in (ACTIVE or {}).get('included', []) if x['file'].startswith(base)}
+    bases = tuple(d.as_posix() + '/' for d in _standard_dirs())
+    return {x['id'] for x in (ACTIVE or {}).get('included', []) if x['file'].startswith(bases)}
 
 
 def _fragment(path):

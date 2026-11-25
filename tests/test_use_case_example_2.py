@@ -7,6 +7,15 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'scripts'))
 
 
+try:
+    from sdem_bian import aid_bian  # noqa: E402 — AID's projection is BIAN's, from the installed sdem-bian (BX-15)
+except ImportError:
+    aid_bian = None
+
+
+def setUpModule():
+    if aid_bian is None: raise unittest.SkipTest('needs sdem-bian installed (AID\'s projection is BIAN\'s since SDEM 0.22)')
+
 class UseCaseExample2Tests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -29,9 +38,9 @@ class UseCaseExample2Tests(unittest.TestCase):
         import copy, json
         from sdem import aid
         a1 = json.loads((ROOT / 'examples' / 'payment-initiation' / 'a1-business.json').read_text(encoding='utf-8'))
-        with self.assertRaises(ValueError): aid.project({})
+        with self.assertRaises(ValueError): aid_bian.project({})
         bad = copy.deepcopy(a1); bad['instances'].append({'id': 'PRJ-CAP-X', 'type': 'A1.BusinessCapability', 'version': '1.0', 'name': 'x'})
-        with self.assertRaisesRegex(ValueError, 'CTL-16'): aid.project({'A1': bad})
+        with self.assertRaisesRegex(ValueError, 'CTL-16'): aid_bian.project({'A1': bad})
 
     def test_projection_schema_rejects_a_bad_package(self):
         import copy, json
@@ -40,7 +49,7 @@ class UseCaseExample2Tests(unittest.TestCase):
         sys.path.insert(0, str(ROOT / 'scripts'))
         from use_case_example_2 import catalogue, LEVELS, EST
         a1 = json.loads((EST / LEVELS['A1']).read_text(encoding='utf-8'))
-        pkg = aid.project({'A1': a1}, catalogue(), created_at='2026-10-28T00:00:00+00:00')
+        pkg = aid_bian.project({'A1': a1}, catalogue(), created_at='2026-10-28T00:00:00+00:00')
         schema = json.loads(aid.SCHEMA.read_text(encoding='utf-8'))
         self.assertEqual(check_schema(pkg, schema), [])
         bad = copy.deepcopy(pkg); bad['links']['links'][0]['status'] = 'approved'; bad['layers']['A3']['instances'][0]['projection'].pop('source_reference')

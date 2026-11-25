@@ -29,13 +29,10 @@ class MetamodelTests(unittest.TestCase):
             self.assertIsNone(mm.relationship_issue(s[:2], s, k, t), (s, k, t))
         ea = json.loads((ROOT / 'metamodel/entity-attributes.json').read_text(encoding='utf-8'))['attributes']
         names = {(a['entity'], a['name']) for a in ea}
-        for x in [('A2.BusinessObjectAttribute', 'required'), ('A2.BusinessObjectAttribute', 'allowed_values'), ('A2.BusinessObjectAttribute', 'identifier'),
-                  ('A3.DataAttribute', 'physical_type'), ('A3.DataAttribute', 'primary_key'), ('A3.APIOperation', 'request_fields'),
+        for x in [('A3.DataAttribute', 'physical_type'), ('A3.DataAttribute', 'primary_key'), ('A3.APIOperation', 'request_fields'),
                   ('A3.APIOperation', 'response_fields'), ('A4.Path', 'carries_data')]:
             self.assertIn(x, names)
-        rt = json.loads((ROOT / 'schema/relationship-types.json').read_text(encoding='utf-8'))['relationships']
-        f = next(r for r in rt if r['relationship'] == 'FIELD_MAPPED_TO')
-        self.assertEqual((f['source_type'], f['target_type']), ('A2.BusinessObjectAttribute', 'A3.DataAttribute'))
+        # FIELD_MAPPED_TO (A2.BusinessObjectAttribute → A3.DataAttribute) is BIAN's link type: sdem-bian's since 0.22 (BX-15)
 
     def test_stricter_attributes_report_old_data_never_refuse_it(self):   # FD-P2
         from sdem.conformance import check_level
@@ -90,7 +87,8 @@ class ChecksTests(unittest.TestCase):   # IM-08: LC-23 … LC-27
 
 class BianImportTests(unittest.TestCase):   # IM-09
     def test_objects_come_typed_with_their_references_and_values(self):
-        from sdem.bian import main
+        try: from sdem_bian.bian import main
+        except ImportError: self.skipTest('needs sdem-bian installed (BX-15)')
         out = Path(tempfile.mkdtemp()) / 'a2.json'
         import io, contextlib
         with contextlib.redirect_stdout(io.StringIO()):
@@ -110,13 +108,15 @@ class BianImportTests(unittest.TestCase):   # IM-09
         self.assertNotIn('BBO-CURRENCY-AMOUNT', i)   # an amount is a type, not an object
 
     def test_the_base_still_ships_no_objects(self):   # BB-D2 unchanged
-        from sdem.bian import pack, read_domain
+        try: from sdem_bian.bian import pack, read_domain
+        except ImportError: self.skipTest('needs sdem-bian installed (BX-15)')
         self.assertNotIn('object_fields', pack([read_domain(TYPED / 'SamplePaymentOrder.yaml')])['domains'][0])
 
 
 class AidTests(unittest.TestCase):   # IM-10: AID-I01 … I04
     def test_no_table_is_inferred_for_an_object_whose_domain_nothing_here_realises(self):   # AID-I08 — the public twin's first run, F4 (2026-11-17)
-        from sdem.aid_info import propose_information
+        try: from sdem_bian.aid_bian import propose_information
+        except ImportError: self.skipTest('needs sdem-bian installed: AID-I01…I07 are BIAN\'s (BX-15)')
         R = lambda i, t, **a: {'id': i, 'type': t, 'version': '1', 'name': i, 'attributes': a}
         a2 = {'instances': [R('SD-1', 'A2.ServiceDomain'), R('CR-1', 'A2.ControlRecord'), R('BO-1', 'A2.BusinessObject'), R('BOA-1', 'A2.BusinessObjectAttribute', data_type='identifier', identifier=True)],
               'relationships': [{'source': 'SD-1', 'kind': 'aggregation', 'target': 'CR-1'}, {'source': 'CR-1', 'kind': 'association', 'target': 'BO-1'}, {'source': 'BO-1', 'kind': 'composition', 'target': 'BOA-1'}]}
@@ -164,7 +164,8 @@ class AidTests(unittest.TestCase):   # IM-10: AID-I01 … I04
 
 class RealBianShapesTests(unittest.TestCase):   # found importing BIAN 14.0.0's payment files (2026-11-16)
     def test_a_field_is_named_within_its_object_and_bian_data_types_are_types(self):
-        from sdem.bian import _fields, DATATYPES
+        try: from sdem_bian.bian import _fields, DATATYPES
+        except ImportError: self.skipTest('needs sdem-bian installed (BX-15)')
         doc = {'components': {'schemas': {
             'Payment': {'type': 'object', 'properties': {'PaymentIdentification': {'$ref': '#/components/schemas/Identifier'}, 'Booked': {'$ref': '#/components/schemas/Datetime'}}},
             'Refund': {'type': 'object', 'properties': {'PaymentIdentification': {'$ref': '#/components/schemas/Identifier'}}},
@@ -183,7 +184,8 @@ class RealBianShapesTests(unittest.TestCase):   # found importing BIAN 14.0.0's 
 
     def test_bian_add_objects_needs_an_object_index(self):   # BO-03 (was BB-D2): the base has its index; a pack of one's own has none
         import io, contextlib, shutil
-        from sdem.bian import main, BianError, base_file
+        try: from sdem_bian.bian import main, BianError, base_file
+        except ImportError: self.skipTest('needs sdem-bian installed (BX-15)')
         ws = Path(tempfile.mkdtemp())
         (ws / 'mappings.json').write_text('{"mappings": []}')
         own = ws / 'own' / base_file().name; own.parent.mkdir(); shutil.copy(base_file(), own)   # the same pack, with no index beside it

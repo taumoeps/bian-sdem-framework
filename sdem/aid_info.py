@@ -14,22 +14,3 @@ AID-I08  Where the workspace has applications, a table is inferred for a BIAN ob
 """
 from .identity import T as _T, layer as _L  # ST-01…ST-05: layers and types by id (docs/design/sdem-stable-identity-spec.md)
 import re
-
-
-
-
-
-
-
-
-
-
-
-def propose_information(*a, **k):   # 0.22 step 3c: AID-I01…I04 are BIAN's (sdem/aid_bian.py) — here for those who call them from aid_info
-    from .aid_bian import propose_information as f
-    return f(*a, **k)
-
-
-def propose_access(*a, **k):   # AID-I07, likewise
-    from .aid_bian import propose_access as f
-    return f(*a, **k)

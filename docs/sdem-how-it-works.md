@@ -261,11 +261,11 @@ Examples, grouped for reading (the groups are SDEM's, not BIAN's classification)
 | **Corporate and specialised finance** | Factoring · Corporate Lease · Project Finance · Corporate Payroll Services · Corporate Trust Services |
 | **Customer services** | Customer Event History · Customer Tax Handling · Reward Points Account |
 
-**[Explore the complete catalogue — 258 Service Domains](../bian/base-14.0.0.json)**, or list it with `sdem bian list --base`. For each domain the catalogue holds its **operations** (method, path, input and output fields), its **control record** and fields, and its **behaviour qualifiers** — what lets AID find the domains a business process uses. BIAN's descriptions and object schemas are left out.
+**[Explore the complete catalogue — 258 Service Domains](https://github.com/taumoeps/sdem-extensions/blob/main/metamodel/bian/sdem_bian/data/catalogue/base-14.0.0.json)**, or list it with `sdem bian list --base`. For each domain the catalogue holds its **operations** (method, path, input and output fields), its **control record** and fields, and its **behaviour qualifiers** — what lets AID find the domains a business process uses. BIAN's descriptions and object schemas are left out.
 
 | Catalogue | |
 |---|---|
-| **File** | [`bian/base-14.0.0.json`](../bian/base-14.0.0.json) (about 3.4 MB) — what it is: [`bian/README.md`](../bian/README.md) |
+| **File** | [`base-14.0.0.json`](https://github.com/taumoeps/sdem-extensions/blob/main/metamodel/bian/sdem_bian/data/catalogue/base-14.0.0.json) in the `sdem-bian` extension (about 3.4 MB; since SDEM 0.22 BIAN ships only there, BX-15) — what it is: [`README.md`](https://github.com/taumoeps/sdem-extensions/blob/main/metamodel/bian/sdem_bian/data/catalogue/README.md) |
 | **Source** | [BIAN's public repository](https://github.com/bian-official/public), Semantic APIs 14.0.0 |
 | **Licence** | Apache License 2.0 (BIAN's) |
 | **In a workspace** | a shared reference — each workspace holds only the domains it needs |

@@ -38,7 +38,7 @@ SETTLE = {
 def _j(p): return _jload(Path(p))
 
 
-def _entities(): return [e for f in LEVEL_FILES for e in _j(MM / f)['entities']]
+def _entities(): return [e for f in LEVEL_FILES if (MM / f).is_file() for e in _j(MM / f)['entities']]   # the core's own (BX-15: BIAN's layer is sdem-bian's)
 
 
 def _ref(r):
@@ -161,8 +161,9 @@ def stability():
         issues.append(f"the core changed since the freeze at {frozen['metamodel_version']} but metamodel_version is still {now['metamodel_version']} — raise it (MS-05)")
     if changed and not any(m['to'] == now['metamodel_version'] for m in _j(MM / 'migrations.json')['migrations']):
         issues.append(f"no migration to {now['metamodel_version']} in metamodel/migrations.json — record one, with the owner's approval (MS-05)")
-    for k, ids in removed.items():
-        early = [i for i in ids if frozen[k][i] != 'deprecated']
+    moved = {k: set(v) for m in _j(MM / 'migrations.json')['migrations'] if m['to'] == now['metamodel_version'] for k, v in ((m.get('moved') or {}).get('items') or {}).items()}
+    for k, ids in removed.items():   # MS-06; BX-15 (R-D3): an item the migration records as moved to an extension is not removed — that extension gives it, unchanged
+        early = [i for i in ids if frozen[k][i] != 'deprecated' and i not in moved.get(k, set())]
         if early: issues.append(f"{k}: removed without being deprecated first (mark them deprecated, freeze, and remove in a later version — MS-06): {', '.join(early)}")
     if not changed and now['metamodel_version'] != frozen['metamodel_version']:
         issues.append(f"metamodel_version moved to {now['metamodel_version']} but the core did not change since the freeze at {frozen['metamodel_version']}")

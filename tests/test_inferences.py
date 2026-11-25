@@ -5,9 +5,12 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from sdem import bian, inferences  # noqa: E402
+try:
+    from sdem_bian import bian, inferences  # noqa: E402 — BIAN's code, from the installed sdem-bian (BX-15)
+except ImportError:
+    bian = None
 
-RECORD = ROOT / 'bian' / 'inferences-14.0.0.json'
+RECORD = Path(bian.__file__).parent / 'data' / 'catalogue' / 'inferences-14.0.0.json' if bian else None   # sdem-bian's catalogue
 
 
 def sdem(*args, cwd=ROOT):
@@ -15,6 +18,10 @@ def sdem(*args, cwd=ROOT):
     r = subprocess.run([sys.executable, '-m', 'sdem', 'bian', *map(str, args)], cwd=cwd, capture_output=True, text=True, env=env)
     return r.returncode, r.stdout + r.stderr
 
+
+
+def setUpModule():   # 0.22 (BX-15): BIAN's code ships only with sdem-bian — these tests need it installed
+    if bian is None: raise unittest.SkipTest('needs sdem-bian installed (BIAN\'s code is its own since SDEM 0.22)')
 
 class InferenceRecordTests(unittest.TestCase):
     def setUp(self):

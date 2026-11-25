@@ -13,7 +13,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from sdem.aid import project, subject_words  # noqa: E402
+from sdem_bian.aid_bian import project, subject_words  # noqa: E402 — BIAN's, from the installed sdem-bian (BX-15)
 from sdem.metamodel import Metamodel  # noqa: E402
 from sdem.new import base_layer  # noqa: E402
 

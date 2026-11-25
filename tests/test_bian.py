@@ -8,7 +8,10 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from forms import lf   # noqa: E402 — a layer's file in either form
 
-from sdem import bian
+try:
+    from sdem_bian import bian  # noqa: E402 — BIAN's code, from the installed sdem-bian (BX-15)
+except ImportError:
+    bian = None
 
 ROOT = Path(__file__).resolve().parents[1]
 SAMPLE = ROOT / 'tests' / 'fixtures' / 'bian-release-sample'
@@ -28,6 +31,10 @@ def start(ws, **kw):
     args = ['--workspace', str(ws), '--person', 'jane.architect'] + (['--bian', str(kw['bian'])] if kw.get('bian') else ['--no-bian'])
     with contextlib.redirect_stdout(io.StringIO()): assert new.main(args) == 0
     return ws
+
+
+def setUpModule():   # 0.22 (BX-15): BIAN's code ships only with sdem-bian — these tests need it installed
+    if bian is None: raise unittest.SkipTest('needs sdem-bian installed (BIAN\'s code is its own since SDEM 0.22)')
 
 class BianImportTests(unittest.TestCase):
     def setUp(self): self.tmp = Path(tempfile.mkdtemp())
@@ -61,7 +68,7 @@ class BianImportTests(unittest.TestCase):
         self.assertEqual(code, 2); self.assertIn('no file could be read', out)
 
     def test_no_network(self):  # BI-C03
-        src = (ROOT / 'sdem' / 'bian.py').read_text(encoding='utf-8')
+        src = Path(bian.__file__).read_text(encoding='utf-8')   # sdem-bian's (BX-15)
         for word in ('urllib.request', 'http.client', 'socket', 'requests'):
             self.assertNotIn(f'import {word}', src)
 
@@ -199,8 +206,8 @@ class BaseBianTests(unittest.TestCase):
         self.assertEqual((p['format'], p['release'], len(p['domains'])), (bian.PACK_FORMAT, '14.0.0', 258))
         for d in p['domains']:
             self.assertEqual(set(d), {'file', 'name', 'release', 'operations', 'control_record', 'qualifiers', 'control_record_fields'}, d['name'])
-        self.assertIn('Apache License', (ROOT / 'bian' / 'LICENSE').read_text())
-        readme = (ROOT / 'bian' / 'README.md').read_text()
+        self.assertIn('Apache License', (Path(bian.__file__).parent / 'data' / 'catalogue' / 'LICENSE').read_text())
+        readme = (Path(bian.__file__).parent / 'data' / 'catalogue' / 'README.md').read_text()
         for must in ('github.com/bian-official/public', 'Apache License 2.0', 'left out', 'not affiliated with, endorsed by'):
             self.assertIn(must, readme)
         self.assertIn('bian/base-14.0.0.json', (ROOT / 'THIRD_PARTY.md').read_text())

@@ -30,7 +30,7 @@ The **physical data model** is the logical data model written as files a tool ca
 
 A schema sees one record. These rules need the whole architecture dataset or workspace and are enforced by `sdem check` ([logical rules](logical-data-model.md)): references resolve (LC-07 error, LC-08 warning), natural keys are unique (LC-09), cardinality (LC-10, LC-10m), within-level and cross-level relationships (LC-03, LC-11). Attributes not in the model are accepted by the schema and reported as warnings.
 
-## Schemas (47 entity types)
+## Schemas (35 entity types)
 
 Artefact types (BOM model, wireframe, Semantic API) and abstract types are not architecture dataset instance types and have no schema.
 
@@ -49,18 +49,6 @@ Artefact types (BOM model, wireframe, Semantic API) and abstract types are not a
 | `A1.BusinessEvent` | [`A1/BusinessEvent.schema.json`](../../schema/entities/A1/BusinessEvent.schema.json) | 8 | 13 | 0 | 2 | 0 | 9 / 2 / 4 |
 | `A1.Product` | [`A1/Product.schema.json`](../../schema/entities/A1/Product.schema.json) | 8 | 13 | 0 | 3 | 0 | 9 / 2 / 5 |
 | `A1.BusinessInterface` | [`A1/BusinessInterface.schema.json`](../../schema/entities/A1/BusinessInterface.schema.json) | 8 | 13 | 0 | 3 | 0 | 9 / 2 / 5 |
-| `A2.BusinessArea` | [`A2/BusinessArea.schema.json`](../../schema/entities/A2/BusinessArea.schema.json) | 8 | 13 | 0 | 0 | 0 | 9 / 2 / 2 |
-| `A2.BusinessDomain` | [`A2/BusinessDomain.schema.json`](../../schema/entities/A2/BusinessDomain.schema.json) | 8 | 13 | 0 | 0 | 0 | 9 / 2 / 2 |
-| `A2.ServiceDomain` | [`A2/ServiceDomain.schema.json`](../../schema/entities/A2/ServiceDomain.schema.json) | 8 | 13 | 0 | 5 | 0 | 11 / 2 / 5 |
-| `A2.FunctionalPattern` | [`A2/FunctionalPattern.schema.json`](../../schema/entities/A2/FunctionalPattern.schema.json) | 8 | 13 | 0 | 3 | 0 | 12 / 2 / 2 |
-| `A2.AssetType` | [`A2/AssetType.schema.json`](../../schema/entities/A2/AssetType.schema.json) | 8 | 13 | 0 | 1 | 0 | 9 / 3 / 2 |
-| `A2.ControlRecord` | [`A2/ControlRecord.schema.json`](../../schema/entities/A2/ControlRecord.schema.json) | 8 | 13 | 0 | 2 | 1 | 10 / 3 / 2 |
-| `A2.ServiceGroup` | [`A2/ServiceGroup.schema.json`](../../schema/entities/A2/ServiceGroup.schema.json) | 8 | 13 | 0 | 0 | 0 | 9 / 2 / 2 |
-| `A2.ServiceOperation` | [`A2/ServiceOperation.schema.json`](../../schema/entities/A2/ServiceOperation.schema.json) | 8 | 13 | 0 | 5 | 3 | 14 / 2 / 2 |
-| `A2.BehaviorQualifier` | [`A2/BehaviorQualifier.schema.json`](../../schema/entities/A2/BehaviorQualifier.schema.json) | 8 | 13 | 0 | 1 | 0 | 9 / 3 / 2 |
-| `A2.BusinessScenario` | [`A2/BusinessScenario.schema.json`](../../schema/entities/A2/BusinessScenario.schema.json) | 8 | 13 | 0 | 2 | 1 | 10 / 3 / 2 |
-| `A2.BusinessObject` | [`A2/BusinessObject.schema.json`](../../schema/entities/A2/BusinessObject.schema.json) | 8 | 13 | 0 | 4 | 1 | 13 / 2 / 2 |
-| `A2.BusinessObjectAttribute` | [`A2/BusinessObjectAttribute.schema.json`](../../schema/entities/A2/BusinessObjectAttribute.schema.json) | 8 | 13 | 0 | 7 | 0 | 13 / 3 / 4 |
 | `A3.ApplicationComponent` | [`A3/ApplicationComponent.schema.json`](../../schema/entities/A3/ApplicationComponent.schema.json) | 8 | 13 | 0 | 13 | 0 | 15 / 6 / 5 |
 | `A3.ApplicationService` | [`A3/ApplicationService.schema.json`](../../schema/entities/A3/ApplicationService.schema.json) | 8 | 13 | 0 | 1 | 0 | 9 / 3 / 2 |
 | `A3.ApplicationInterface` | [`A3/ApplicationInterface.schema.json`](../../schema/entities/A3/ApplicationInterface.schema.json) | 8 | 13 | 0 | 6 | 0 | 11 / 5 / 3 |
@@ -84,7 +72,7 @@ Artefact types (BOM model, wireframe, Semantic API) and abstract types are not a
 | `A4.Artifact` | [`A4/Artifact.schema.json`](../../schema/entities/A4/Artifact.schema.json) | 8 | 13 | 5 | 4 | 0 | 11 / 4 / 7 |
 | `A4.Location` | [`A4/Location.schema.json`](../../schema/entities/A4/Location.schema.json) | 8 | 13 | 0 | 2 | 0 | 10 / 2 / 3 |
 
-Attribute definitions across all schemas: **485 high, 153 medium, 201 low** (the 11 common attributes are counted in every schema).
+Attribute definitions across all schemas: **357 high, 124 medium, 172 low** (the 11 common attributes are counted in every schema).
 
 ## Using a schema
 

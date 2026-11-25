@@ -374,7 +374,8 @@ class GraphReader:
 
     def unmapped(self, level):
         """GS-Q-04: nodes of `level` with no approved cross-level link of a type the catalogue expects for them."""
-        types = _jload(DATA_ROOT / 'schema' / 'relationship-types.json')['relationships']
+        from .validate import load_registry
+        types = load_registry()['relationships']   # the link types in use — BIAN's with them from sdem-bian (BX-15)
         edges = self.fg.edges(); out = []
         for n in self.nodes(level=level):
             expected = sorted({(x['relationship'], 'source' if self.mm.is_a(n['type'], x['source_type']) else 'target') for x in types

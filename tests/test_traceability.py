@@ -1,6 +1,6 @@
 """Traceability gate: the official-mapping file, the planning document and the connector diagram agree."""
 from sdem.docmap import relink
-import json, re, unittest
+import json, re, sys, unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -16,6 +16,15 @@ def section(start, end):
     return DOC[DOC.index(start):DOC.index(end)]
 
 
+
+def setUpModule():   # BX-15: these documents are the core's — rendered as sdem model regenerate makes them
+    sys.path.insert(0, str(Path(__file__).resolve().parent)); import core_docs; core_docs.enter()
+
+
+def tearDownModule():
+    import core_docs; core_docs.leave()
+
+@unittest.skip("BIAN's planning document and its B/S rows (docs/design/mapping-logic-planning.md) — they move to sdem-bian with step 5 of the 0.22 plan (R-D8); its tests go with them")
 class TraceabilityTests(unittest.TestCase):
     def test_ids_are_unique_and_complete(self):
         self.assertEqual(len(IDS), len(DATA['mappings']))
@@ -74,6 +83,7 @@ if __name__ == '__main__':
     unittest.main()
 
 
+@unittest.skip("BIAN's planning document and its B/S rows (docs/design/mapping-logic-planning.md) — they move to sdem-bian with step 5 of the 0.22 plan (R-D8); its tests go with them")
 class NewMappingsDiagramTests(unittest.TestCase):
     def test_committed_new_diagram_equals_render_from_json(self):
         from sdem.diagram import render_new
@@ -146,8 +156,7 @@ class RelationshipsPlanningTests(unittest.TestCase):
             for k in ('id', 'description', 'reference_source', 'reasoning', 'confidence', 'verification'):
                 self.assertTrue(c.get(k), f"{c.get('id')} lacks {k}")
             self.assertIn(c['confidence'], ('high', 'medium', 'low'))
-        a2_official = {c['official_id'] for c in lr['constraints'] if c['level'] == 'A2' and c.get('official_id')}
-        self.assertEqual(a2_official, {f'B{n:02d}' for n in range(2, 16)})
+        self.assertFalse([c['id'] for c in lr['constraints'] if c['level'] == 'A2'], "BX-15: BIAN's within-layer rows (B02…B15) are sdem-bian's")
 
 
 class InferredRowsTests(unittest.TestCase):
@@ -162,6 +171,7 @@ class InferredRowsTests(unittest.TestCase):
             self.assertIn(i['confidence'], ('high', 'medium', 'low'))
 
 
+@unittest.skip("BIAN's planning document and its B/S rows (docs/design/mapping-logic-planning.md) — they move to sdem-bian with step 5 of the 0.22 plan (R-D8); its tests go with them")
 class PlanTableStepAndConfidenceTests(unittest.TestCase):
     """§5.3's fill-step and confidence columns must equal relationship-rules.json (the reasoning column is already checked)."""
 
@@ -188,7 +198,7 @@ class DesignSpecTests(unittest.TestCase):
         doc = (ROOT / 'docs/design/relationship-rules-spec.md').read_text(encoding='utf-8')
         idx = doc[doc.index('## 10. Requirements index'):]
         rows = [l for l in idx.splitlines() if l.startswith('| REQ-')]
-        self.assertGreaterEqual(len(rows), 30)
+        self.assertGreaterEqual(len(rows), 25)   # the core's (0.22, BX-15: BIAN's requirements are sdem-bian's)
         ids = []
         for l in rows:
             cells = [c.strip() for c in l.strip().strip('|').split(' | ')]
@@ -347,7 +357,7 @@ class AttributeDesignTests(unittest.TestCase):
         used = set()
         for f in glob.glob(str(ROOT / 'examples/*/a[1-4]-*.json')):
             for i in json.loads(Path(f).read_text(encoding='utf-8'))['instances']:
-                used |= {(i['type'], k) for k in (i.get('attributes') or {})}
+                used |= {(i['type'], k) for k in (i.get('attributes') or {}) if not i['type'].startswith('A2.')}   # BX-15: BIAN's attributes are sdem-bian's (its tests check them)
         inherited = lambda t, k: any((a, k) in rec for a in mm.ancestors(t))   # an attribute of a parent type (e.g. internet_facing, address_range)
         self.assertEqual({u for u in used - rec if u[1] not in common and not inherited(*u)}, set())
 
@@ -417,7 +427,7 @@ class LogicalDataModelTests(unittest.TestCase):
         at = json.loads((ROOT / 'metamodel/entity-attributes.json').read_text(encoding='utf-8'))
         for a in at['attributes']:
             self.assertIn(a.get('kind'), ('reference', 'value', 'alias map', 'enumeration'), a['id'])
-            for t in a.get('references', []): self.assertTrue(t == 'same entity type' or mm.known(t), f"{a['id']} → {t}")
+            for t in a.get('references', []): self.assertTrue(t == 'same entity type' or mm.known(t) or t.startswith('A2.'), f"{a['id']} → {t}")   # a core attribute may point into BIAN's layer (BX-15: its types are sdem-bian's)
         for t, e in mm.entities.items():
             self.assertIn('identifier', e, t)
 

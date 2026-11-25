@@ -24,22 +24,7 @@ package "A1 Business  —  detail §5.1, within-level rows: 60 (§6.1, G-01 (dec
   rectangle "A1.Product\narchimate_native / exact\nevidence: interpreted from official source" as a1_product #C8E6C9
   rectangle "A1.BusinessInterface\narchimate_native / exact\nevidence: interpreted from official source" as a1_businessinterface #C8E6C9
 }
-package "A2 Service Domain (BIAN)  —  detail §5.2, within-level rows: 23 (§6.1, G-01 (decided))" as PA2 {
-  rectangle "A2.BusinessArea\nbian_reference / exact\nevidence: pending release validation" as a2_businessarea #BBDEFB
-  rectangle "A2.BusinessDomain\nbian_reference / exact\nevidence: pending release validation" as a2_businessdomain #BBDEFB
-  rectangle "A2.ServiceDomain\nbian_reference / exact\nevidence: pending release validation" as a2_servicedomain #BBDEFB
-  rectangle "A2.FunctionalPattern\nbian_reference / exact\nevidence: pending release validation" as a2_functionalpattern #BBDEFB
-  rectangle "A2.AssetType\nbian_reference / exact\nevidence: pending release validation" as a2_assettype #BBDEFB
-  rectangle "A2.ControlRecord\nbian_reference / exact\nevidence: pending release validation" as a2_controlrecord #BBDEFB
-  rectangle "A2.ServiceGroup\nbian_reference / exact\nevidence: pending release validation" as a2_servicegroup #BBDEFB
-  rectangle "A2.ServiceOperation\nbian_reference / exact\nevidence: pending release validation" as a2_serviceoperation #BBDEFB
-  rectangle "A2.BehaviorQualifier\nbian_reference / exact\nevidence: pending release validation" as a2_behaviorqualifier #BBDEFB
-  rectangle "A2.BusinessScenario\nbian_reference / exact\nevidence: pending release validation" as a2_businessscenario #BBDEFB
-  rectangle "A2.BusinessObject\nbian_reference / exact\nevidence: pending release validation" as a2_businessobject #BBDEFB
-  rectangle "A2.BusinessObjectAttribute\nbian_reference / exact\nevidence: pending release validation" as a2_businessobjectattribute #BBDEFB
-  rectangle "A2.BOMModel\n«artefact — evidence only»\nsdem_extension / related\nevidence: proposed extension" as a2_bommodel #EEEEEE
-  rectangle "A2.Wireframe\n«artefact — evidence only»\nbian_reference / exact\nevidence: pending release validation" as a2_wireframe #BBDEFB
-  rectangle "A2.SemanticAPI\n«artefact — evidence only»\nbian_aligned / related\nevidence: interpreted from official source" as a2_semanticapi #E3F2FD
+package "A2 Service Domain (BIAN)  —  detail §5.2, within-level rows: 0 (§6.1, G-01 (decided))" as PA2 {
 }
 package "A3 Application  —  detail §5.3, within-level rows: 36 (§6.1, G-01 (decided))" as PA3 {
   rectangle "A3.ApplicationComponent\narchimate_native / exact\nevidence: interpreted from official source" as a3_applicationcomponent #C8E6C9
@@ -82,13 +67,6 @@ a4_path -[#9E9E9E,dashed]-|> a4_infrastructurecomponent
 a4_artifact -[#9E9E9E,dashed]-|> a4_infrastructurecomponent
 
 ' the cross-level relationship types (detail §6.2, aligned to high-level §6.2)
-a1_businesscapability -[#1565C0,bold]-> a2_servicedomain : **SUPPORTED_BY**\nbian_alignment_guidance
-a1_valuestream -[#1565C0,bold]-> a2_businessscenario : **ALIGNED_TO**\nenterprise_rule
-a1_businessprocess -[#1565C0,bold]-> a2_servicedomain : **USES_DOMAIN**\nenterprise_rule
-a1_businessobject -[#1565C0,bold]-> a2_businessobject : **ALIGNED_TO**\nbian_alignment_guidance
-a2_servicedomain -[#1565C0,bold]-> a3_applicationcomponent : **REALIZED_BY**\nenterprise_rule
-a2_serviceoperation -[#1565C0,bold]-> a3_apioperation : **IMPLEMENTED_BY**\nenterprise_rule
-a2_businessobject -[#1565C0,bold]-> a3_dataentity : **MAPPED_TO**\nenterprise_rule
 a3_applicationcomponent -[#1565C0,bold]-> a4_node : **DEPLOYED_ON**\nenterprise_rule
 a3_applicationcomponent -[#1565C0,bold]-> a4_device : **DEPLOYED_ON**\nenterprise_rule
 a3_applicationcomponent -[#1565C0,bold]-> a4_systemsoftware : **DEPLOYED_ON**\nenterprise_rule
@@ -97,7 +75,6 @@ a3_applicationinterface -[#1565C0,bold]-> a4_node : **EXPOSED_THROUGH**\nenterpr
 a3_applicationinterface -[#1565C0,bold]-> a4_device : **EXPOSED_THROUGH**\nenterprise_rule
 a3_applicationinterface -[#1565C0,bold]-> a4_systemsoftware : **EXPOSED_THROUGH**\nenterprise_rule
 a3_applicationcomponent -[#1565C0,bold]-> a4_artifact : **BUILT_AS**\nenterprise_rule
-a2_businessobjectattribute -[#1565C0,bold]-> a3_dataattribute : **FIELD_MAPPED_TO**\nenterprise_rule
 a1_businessprocess -[#1565C0,bold]-> a3_applicationservice : **SERVED_BY**\nenterprise_rule
 a1_businessactor -[#1565C0,bold]-> a3_applicationservice : **SERVED_BY**\nenterprise_rule
 a1_businessrole -[#1565C0,bold]-> a3_applicationservice : **SERVED_BY**\nenterprise_rule
@@ -105,14 +82,12 @@ a1_businessprocess -[#1565C0,bold]-> a3_applicationfunction : **AUTOMATED_BY**\n
 a1_businessservice -[#1565C0,bold]-> a3_applicationservice : **REALIZED_BY**\nenterprise_rule
 a1_businessservice -[#1565C0,bold]-> a3_applicationcomponent : **REALIZED_BY**\nenterprise_rule
 a1_businessobject -[#1565C0,bold]-> a3_dataentity : **MAPPED_TO**\nenterprise_rule
-a2_serviceoperation -[#1565C0,bold]-> a3_event : **IMPLEMENTED_BY**\nenterprise_rule
 a3_applicationcomponent -[#1565C0,bold]-> a4_technologyservice : **SERVED_BY**\nenterprise_rule
 a3_applicationfunction -[#1565C0,bold]-> a4_technologyservice : **SERVED_BY**\nenterprise_rule
 a3_dataentity -[#1565C0,bold]-> a4_artifact : **STORED_IN**\nenterprise_rule
 a3_dataentity -[#1565C0,bold]-> a4_systemsoftware : **STORED_IN**\nenterprise_rule
 a1_businessevent -[#1565C0,bold]-> a3_event : **REALIZED_BY**\nenterprise_rule
 a1_businessinterface -[#1565C0,bold]-> a3_applicationinterface : **REALIZED_BY**\nenterprise_rule
-a1_valuestreamstage -[#1565C0,bold]-> a2_businessscenario : **ALIGNED_TO**\nenterprise_rule
 
 note "**G-03 (decided)**\nhigh-level: composite\nimplemented: related" as N_G03
 N_G03 .. a4_deployment
@@ -131,8 +106,8 @@ package "Not built yet — in the high-level spec" as PNB {
 }
 
 package "Beyond the high-level spec — detail §15–19" as PADD {
-  rectangle "Relationship Rules Model\n69 plan rows · fill steps · join keys\n§15 — G-11 (decided)" as rules #E1F5FE
-  rectangle "Data model\n9 core · 13 common · 175 specific · 3 derived attributes\n14 logical rules · per-entity JSON Schemas\n§16 — G-12 (decided)" as dm #E1F5FE
+  rectangle "Relationship Rules Model\n23 plan rows · fill steps · join keys\n§15 — G-11 (decided)" as rules #E1F5FE
+  rectangle "Data model\n9 core · 13 common · 144 specific · 3 derived attributes\n14 logical rules · per-entity JSON Schemas\n§16 — G-12 (decided)" as dm #E1F5FE
   rectangle "Provenance and confidence\nsource · reasoning · confidence on every record\n§17 — G-13 (decided)" as prov #E1F5FE
   rectangle "Inference engine\nsteps 1–5 + design mode\nacceptance 8/8 cases\n§18 — G-14 (decided)" as eng #E1F5FE
   rectangle "Graph store\nJSON Graph Format v2 · load record · baselines\n§19 — G-15 (decided)" as gstore #E1F5FE

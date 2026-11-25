@@ -19,8 +19,9 @@ LEVEL_FILES = ('a1-business.json', 'a2-service-domain.json', 'a3-application.jso
 
 class ArchiMateLabels(unittest.TestCase):
     def test_every_type_says_where_it_comes_from_and_is_an_archimate_element(self):
-        for f in LEVEL_FILES:
-            for e in json.loads((ROOT / 'metamodel' / f).read_text(encoding='utf-8'))['entities']:
+        from sdem.metamodel import level_docs
+        for f, doc in level_docs().items():   # BX-15: BIAN's layer from sdem-bian when it is installed
+            for e in doc['entities']:
                 ref = e.get('reference') or {}
                 self.assertTrue(ref.get('standard') and e.get('definition_source'), f"{e['type']}: no source")
                 self.assertTrue((notation.for_type(MM, e['type']) or {}).get('element'), f"{e['type']}: no ArchiMate element, own or inherited")

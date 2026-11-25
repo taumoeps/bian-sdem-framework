@@ -81,7 +81,7 @@ def field_table(records, meaning, required=()):
 def render():
     high = HIGH.read_text(encoding='utf-8'); sha = hashlib.sha256(HIGH.read_bytes()).hexdigest()
     gaps = _j(MM / 'metamodel-spec-gaps.json')['gaps']; G = {g['id']: g for g in gaps}
-    ents = [(lvl, e) for lvl, f, _ in LEVELS for e in _j(MM / f)['entities']]
+    ents = [(lvl, e) for lvl, f, _ in LEVELS if (MM / f).is_file() for e in _j(MM / f)['entities']]   # the core's layers (BX-15: BIAN's is sdem-bian's)
     E = {e['type']: e for _, e in ents}
     lr = _j(MM / 'level-relationships.json'); rows = lr['constraints']
     rt = _j(ROOT / 'schema' / 'relationship-types.json')['relationships']
@@ -257,7 +257,7 @@ COLOUR = {'bian_reference': '#BBDEFB', 'bian_aligned': '#E3F2FD', 'archimate_nat
 def render_diagram():
     """docs/design/architecture-metamodel-detail-level-spec.puml: the detail spec's structure for visual review."""
     gaps = {g['id']: g for g in _j(MM / 'metamodel-spec-gaps.json')['gaps']}
-    ents = [(lvl, e) for lvl, f, _ in LEVELS for e in _j(MM / f)['entities']]
+    ents = [(lvl, e) for lvl, f, _ in LEVELS if (MM / f).is_file() for e in _j(MM / f)['entities']]   # the core's layers (BX-15: BIAN's is sdem-bian's)
     rows = _j(MM / 'level-relationships.json')['constraints']; byl = Counter(c['level'] for c in rows)
     rt = _j(ROOT / 'schema' / 'relationship-types.json')['relationships']
     rules = _j(MM / 'relationship-rules.json')['mappings']; at = _j(MM / 'entity-attributes.json')

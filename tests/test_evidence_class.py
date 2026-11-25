@@ -12,13 +12,30 @@ from sdem.validate import check_schema
 ROOT = Path(__file__).resolve().parents[1]
 
 
+try:
+    from sdem_bian import aid_bian  # noqa: E402 — AID's projection is BIAN's, from the installed sdem-bian (BX-15)
+except ImportError:
+    aid_bian = None
+
+
+def setUpModule():
+    if aid_bian is None: raise unittest.SkipTest('needs sdem-bian installed (AID\'s projection is BIAN\'s since SDEM 0.22)')
+
+
+def _full():   # the whole engine: SDEM's core rules with BIAN's steps from the installed sdem-bian (skipped without it)
+    import sys
+    from pathlib import Path
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    from test_acceptance import full_engine
+    return full_engine()
+
 class EngineTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.tmp = Path(tempfile.mkdtemp())
         cls.results = {}
         for case in acceptance.load_cases():
-            cls.results[case['id']] = RulesEngine().infer(acceptance.open_case(case, cls.tmp), case)
+            cls.results[case['id']] = _full().infer(acceptance.open_case(case, cls.tmp), case)   # the core's rules with BIAN's (sdem-bian, BX-15)
 
     @classmethod
     def tearDownClass(cls): shutil.rmtree(cls.tmp, ignore_errors=True)
@@ -65,7 +82,7 @@ class AidTests(unittest.TestCase):
     def test_projected_elements_carry_their_class_and_check_reads_it(self):
         ex = ROOT / 'examples' / 'payment-initiation'
         have = {l: json.loads((ex / f).read_text()) for l, f in (('A2', 'a2-service-domain.json'),)}
-        pkg = aid.project(have)
+        pkg = aid_bian.project(have)
         els = [r for d in pkg['layers'].values() for r in d['instances']] + pkg['links']['links']
         self.assertTrue(els)
         self.assertTrue(all(r['projection'].get('evidence_class') in EVIDENCE_CLASSES for r in els), [r['projection'] for r in els if 'evidence_class' not in r['projection']][:2])

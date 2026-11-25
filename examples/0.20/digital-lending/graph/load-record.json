@@ -195,6 +195,136 @@
           "edges": 8
         }
       ]
+    },
+    {
+      "build": 4,
+      "at": "2026-11-24T20:03:32+00:00",
+      "inputs": [
+        {
+          "path": "examples/0.20/digital-lending/business.json",
+          "kind": "export",
+          "level": "A1",
+          "model_id": "synthetic-bank-lending-a1",
+          "model_version": "2026.10",
+          "sha256": "605b9ca2b02e79666050f387dfee917bcbd4261dbde382d5db11b666f9557d40"
+        },
+        {
+          "path": "examples/0.20/digital-lending/bian.json",
+          "kind": "export",
+          "level": "A2",
+          "model_id": "synthetic-bank-lending-a2",
+          "model_version": "2026.10",
+          "sha256": "2461f4a1e5989fae95b22676ec9c34018d8a0cf7f88f427b792ae9bf408baf79"
+        },
+        {
+          "path": "examples/0.20/digital-lending/mappings.json",
+          "kind": "registry",
+          "registry_version": "0.4.0",
+          "sha256": "fef834e4b74d9263af094b082d2693b89d5bc01e7e14b543b3d4c930e8305910"
+        }
+      ],
+      "metamodel_version": "0.20.0",
+      "errors": [],
+      "warnings": [
+        "level A2 (synthetic-bank-lending-a2): instance BD-LEND: 0 composition links with A2.BusinessArea, RA2-01 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-bank-lending-a2): instance BBO-LOAN-APP: 0 composition links with A2.BusinessObjectAttribute, RA2-10 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-bank-lending-a2): instance BBO-CREDIT-ASSESS: 0 composition links with A2.BusinessObjectAttribute, RA2-10 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-bank-lending-a2): instance BBO-LOAN-APP: is thin — its 7 field(s) are names only; give each as a record (BusinessObjectAttribute, composed of BBO-LOAN-APP) — sdem bian import --objects or sdem aid fills them (LC-23)",
+        "level A2 (synthetic-bank-lending-a2): instance BBO-CREDIT-ASSESS: is thin — its 6 field(s) are names only; give each as a record (BusinessObjectAttribute, composed of BBO-CREDIT-ASSESS) — sdem bian import --objects or sdem aid fills them (LC-23)"
+      ],
+      "result": "accepted",
+      "stack": [
+        "business",
+        "bian",
+        "data",
+        "application",
+        "technology"
+      ],
+      "outputs": [
+        {
+          "file": "bian.graph.json",
+          "sha256": "7f7fa31fbfaf06c59325fbc38b83f1139db83e526d97f995cd12b65485eec21c",
+          "nodes": 24,
+          "edges": 35
+        },
+        {
+          "file": "business.graph.json",
+          "sha256": "2865043e2707dd007280515e927e65492072dd55180b01ed02c42a0eece4872d",
+          "nodes": 15,
+          "edges": 13
+        },
+        {
+          "file": "federated.graph.json",
+          "sha256": "2dc9bfbd5b03d2bf61408cdb7a4ab1aa3418d0647d43fef283e3417768f8038b",
+          "nodes": 13,
+          "edges": 8
+        }
+      ]
+    },
+    {
+      "build": 5,
+      "at": "2026-11-24T20:03:49+00:00",
+      "inputs": [
+        {
+          "path": "examples/0.20/digital-lending/business.json",
+          "kind": "export",
+          "level": "A1",
+          "model_id": "synthetic-bank-lending-a1",
+          "model_version": "2026.10",
+          "sha256": "605b9ca2b02e79666050f387dfee917bcbd4261dbde382d5db11b666f9557d40"
+        },
+        {
+          "path": "examples/0.20/digital-lending/bian.json",
+          "kind": "export",
+          "level": "A2",
+          "model_id": "synthetic-bank-lending-a2",
+          "model_version": "2026.10",
+          "sha256": "2461f4a1e5989fae95b22676ec9c34018d8a0cf7f88f427b792ae9bf408baf79"
+        },
+        {
+          "path": "examples/0.20/digital-lending/mappings.json",
+          "kind": "registry",
+          "registry_version": "0.4.0",
+          "sha256": "fef834e4b74d9263af094b082d2693b89d5bc01e7e14b543b3d4c930e8305910"
+        }
+      ],
+      "metamodel_version": "0.20.0",
+      "errors": [],
+      "warnings": [
+        "level A2 (synthetic-bank-lending-a2): instance BD-LEND: 0 composition links with A2.BusinessArea, RA2-01 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-bank-lending-a2): instance BBO-LOAN-APP: 0 composition links with A2.BusinessObjectAttribute, RA2-10 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-bank-lending-a2): instance BBO-CREDIT-ASSESS: 0 composition links with A2.BusinessObjectAttribute, RA2-10 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-bank-lending-a2): instance BBO-LOAN-APP: is thin — its 7 field(s) are names only; give each as a record (BusinessObjectAttribute, composed of BBO-LOAN-APP) — sdem bian import --objects or sdem aid fills them (LC-23)",
+        "level A2 (synthetic-bank-lending-a2): instance BBO-CREDIT-ASSESS: is thin — its 6 field(s) are names only; give each as a record (BusinessObjectAttribute, composed of BBO-CREDIT-ASSESS) — sdem bian import --objects or sdem aid fills them (LC-23)"
+      ],
+      "result": "accepted",
+      "stack": [
+        "business",
+        "bian",
+        "data",
+        "application",
+        "technology"
+      ],
+      "outputs": [
+        {
+          "file": "bian.graph.json",
+          "sha256": "7f7fa31fbfaf06c59325fbc38b83f1139db83e526d97f995cd12b65485eec21c",
+          "nodes": 24,
+          "edges": 35
+        },
+        {
+          "file": "business.graph.json",
+          "sha256": "2865043e2707dd007280515e927e65492072dd55180b01ed02c42a0eece4872d",
+          "nodes": 15,
+          "edges": 13
+        },
+        {
+          "file": "federated.graph.json",
+          "sha256": "2dc9bfbd5b03d2bf61408cdb7a4ab1aa3418d0647d43fef283e3417768f8038b",
+          "nodes": 13,
+          "edges": 8
+        }
+      ]
     }
   ]
 }

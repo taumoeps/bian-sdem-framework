@@ -12,7 +12,8 @@ sys.path.insert(0, str(ROOT))
 from sdem.rules_engine import RulesEngine  # noqa: E402
 from sdem.store import GraphReader  # noqa: E402
 
-RULES = {m['id']: m for m in json.loads((ROOT / 'metamodel' / 'relationship-rules.json').read_text(encoding='utf-8'))['mappings']}
+from sdem.rules_engine import _rules  # noqa: E402
+RULES = _rules()   # the metamodel's rules the engine reads — BIAN's with them from sdem-bian where installed (BX-15, MX-55)
 NOT_APPLIED = {'not_encodable', 'historical_method', 'subsumed', 'not_a_mapping', 'bian_internal'}   # rule decisions the engine never applies
 ENGINE_ONLY = {'DESIGN'}   # the engine's design mode (DEC-E-05) — not a metamodel rule
 # (rule, step the metamodel assigns, step the engine used) → why it is allowed
@@ -30,9 +31,17 @@ def engine_log():
         if not (Path(d) / 'mappings.json').exists(): continue   # examples/designs/ is not a workspace
         if 'reference-structure' in d: continue
         files = sorted(glob.glob(d + 'a*.json')) + [d + 'mappings.json']
-        log += RulesEngine().infer(GraphReader.from_exports(files), {'id': 'CTL22'})['log']
+        log += _full().infer(GraphReader.from_exports(files), {'id': 'CTL22'})['log']   # the core's rules with BIAN's (sdem-bian, BX-15)
     return log
 
+
+
+def _full():   # the whole engine: SDEM's core rules with BIAN's steps from the installed sdem-bian (skipped without it)
+    import sys
+    from pathlib import Path
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    from test_acceptance import full_engine
+    return full_engine()
 
 class EngineMetamodelTests(unittest.TestCase):
     @classmethod
@@ -51,7 +60,9 @@ class EngineMetamodelTests(unittest.TestCase):
             if a['plan_id'] in RULES: self.assertEqual(a['step_assigned'], RULES[a['plan_id']]['fill_step'], a['plan_id'])
 
     def test_every_applicable_rule_is_implemented(self):
-        src = ''.join((ROOT / 'sdem' / f).read_text(encoding='utf-8') for f in ('rules_engine.py', 'rules_bian.py'))   # 0.22 step 3b: BIAN's rules in their own module
+        try: import sdem_bian
+        except ImportError: self.skipTest('needs sdem-bian installed: BIAN\'s rules are in its rules_bian.py (BX-15)')
+        src = (ROOT / 'sdem' / 'rules_engine.py').read_text(encoding='utf-8') + (Path(sdem_bian.__file__).parent / 'rules_bian.py').read_text(encoding='utf-8')   # 0.22 step 3b: BIAN's rules in their own module
         named = set(re.findall(r"'([SB]\d\d)'", src))
         applicable = {k for k, r in RULES.items() if r.get('fill_step') not in (0, None) and r['rule_decision'] not in NOT_APPLIED}
         self.assertFalse(applicable - named, f'rules the metamodel says the engine applies, but the engine never names: {sorted(applicable - named)}')

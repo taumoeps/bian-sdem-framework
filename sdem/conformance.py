@@ -99,7 +99,8 @@ def model(base=False):
     if not base:
         from . import profile as _p
         for ent, defs in _p.profile_attributes().items(): byent.setdefault(ent, {}).update(defs)
-    rows = [c for c in _j(MM_DIR / 'level-relationships.json')['constraints'] if (c.get('cardinality') or {}).get('basis') not in (None, 'SDEM default')]
+    rows = [c for c in parts.splice(_j(MM_DIR / 'level-relationships.json')['constraints'], parts.bian_constraint, lambda c: c.get('id'), 'within')
+            if (c.get('cardinality') or {}).get('basis') not in (None, 'SDEM default')]   # BP-02, MX-55: BIAN's within-layer rows from the installed sdem-bian
     return byent, {c['name']: c for c in rec.get('common_attributes', [])}, rows
 
 

@@ -312,6 +312,364 @@
           "edges": 49
         }
       ]
+    },
+    {
+      "build": 4,
+      "at": "2026-11-24T20:03:33+00:00",
+      "inputs": [
+        {
+          "path": "examples/0.20/payment-initiation-v2//application.json",
+          "kind": "export",
+          "level": "A4",
+          "model_id": "synthetic-bank-payments-v2-a3",
+          "model_version": "2026.10",
+          "sha256": "1a727fce625aeaddd88526ac1e35c87aa68b73ffb28b4b7417c3accb7cae049b"
+        },
+        {
+          "path": "examples/0.20/payment-initiation-v2//mappings.json",
+          "kind": "registry",
+          "registry_version": "0.4.0",
+          "sha256": "d1784b9b98744793e2333bf580aee7c8eb32a55fea0dee513b88e34ae5e2a13b"
+        }
+      ],
+      "metamodel_version": "0.20.0",
+      "errors": [
+        "mappings #1: mapping #1 (PAY-001): source A1.BusinessCapability CAP-PAY-010@1.0 not found in level model",
+        "mappings #1: mapping #1 (PAY-001): target A2.ServiceDomain SD-PI@1.0 not found in level model",
+        "mappings #1: mapping #2 (PAY-002): source A1.ValueStream VS-MAKE-PAYMENT@1.0 not found in level model",
+        "mappings #1: mapping #2 (PAY-002): target A2.BusinessScenario BS-CREDIT-TRANSFER@1.0 not found in level model",
+        "mappings #1: mapping #3 (PAY-003): source A1.BusinessProcess PRC-PAY-01@1.0 not found in level model",
+        "mappings #1: mapping #3 (PAY-003): target A2.ServiceDomain SD-PI@1.0 not found in level model",
+        "mappings #1: mapping #4 (PAY-004): source A1.BusinessProcess PRC-PAY-02@1.0 not found in level model",
+        "mappings #1: mapping #4 (PAY-004): target A2.ServiceDomain SD-PI@1.0 not found in level model",
+        "mappings #1: mapping #5 (PAY-005): source A1.BusinessObject BO-PAY-INSTR@1.0 not found in level model",
+        "mappings #1: mapping #5 (PAY-005): target A2.BusinessObject BBO-PAY-INSTR@1.0 not found in level model",
+        "mappings #1: mapping #6 (PAY-101): source A2.ServiceOperation SO-PI-01@1.0 not found in level model",
+        "mappings #1: mapping #7 (PAY-102): source A2.ServiceOperation SO-PI-02@1.0 not found in level model",
+        "mappings #1: mapping #8 (PAY-103): source A2.ServiceOperation SO-PI-03@1.0 not found in level model",
+        "mappings #1: mapping #9 (PAY-104): source A2.ServiceOperation SO-PI-04@1.0 not found in level model",
+        "mappings #1: mapping #10 (PAY-105): source A2.ServiceOperation SO-PI-05@1.0 not found in level model",
+        "mappings #1: mapping #11 (PAY-106): source A2.ServiceDomain SD-PI@1.0 not found in level model",
+        "mappings #1: mapping #12 (PAY-107): source A2.BusinessObject BBO-PAY-INSTR@1.0 not found in level model",
+        "mappings #1: mapping #12 (PAY-107): target A3.DataEntity ENT-PAY-INSTR@7.1 not found in level model",
+        "mappings #1: mapping #13 (PAY-108): target A5.SystemSoftware INF-K8S-PAY-PROD@1.29 not found in level model",
+        "mappings #1: mapping #14 (PAY-109): target A5.Deployment DEP-PAYHUB-PROD@1.0 not found in level model",
+        "mappings #1: mapping #15 (PAY-110): target A5.Deployment DEP-PAYHUB-UAT@1.0 not found in level model",
+        "mappings #1: mapping #16 (PAY-111): target A5.SystemSoftware INF-K8S-PAY-PROD@1.29 not found in level model",
+        "mappings #1: mapping #17 (PAY-112): target A5.Deployment DEP-PAYEXEC-PROD@1.0 not found in level model",
+        "mappings #1: mapping #18 (PAY-113): target A5.SystemSoftware INF-K8S-PAY-UAT@1.29 not found in level model",
+        "mappings #1: mapping #19 (PAY-114): target A5.SystemSoftware INF-APIGW-PAY@2.4 not found in level model",
+        "mappings #1: mapping #20 (PAY-115): target A5.Artifact ART-PAYHUB-IMG@7.1 not found in level model",
+        "mappings #1: mapping #21 (PAY-116): source A2.BusinessObject BBO-COMPLIANCE-CHECK@14.0.0 not found in level model",
+        "mappings #1: mapping #21 (PAY-116): target A3.DataEntity AID-ENT-COMPLIANCE-CHECK@1 not found in level model",
+        "mappings #1: mapping #22 (PAY-117): source A2.BusinessObjectAttribute BBOA-COMPLIANCE-CHECK-COMPLIANCE-CHECK-TYPE@14.0.0 not found in level model",
+        "mappings #1: mapping #22 (PAY-117): target A3.DataAttribute AID-ENTF-COMPLIANCE-CHECK-COMPLIANCECHECKTYPE@1 not found in level model",
+        "mappings #1: mapping #23 (PAY-118): source A2.BusinessObject BBO-FUNDING-CHECK@14.0.0 not found in level model",
+        "mappings #1: mapping #23 (PAY-118): target A3.DataEntity AID-ENT-FUNDING-CHECK@1 not found in level model",
+        "mappings #1: mapping #24 (PAY-119): source A2.BusinessObjectAttribute BBOA-FUNDING-CHECK-ASSESSMENT-TYPE@14.0.0 not found in level model",
+        "mappings #1: mapping #24 (PAY-119): target A3.DataAttribute AID-ENTF-FUNDING-CHECK-ASSESSMENTTYPE@1 not found in level model",
+        "mappings #1: mapping #25 (PAY-120): source A2.BusinessObjectAttribute BBOA-FUNDING-CHECK-ASSESSMENT-METHOD@14.0.0 not found in level model",
+        "mappings #1: mapping #25 (PAY-120): target A3.DataAttribute AID-ENTF-FUNDING-CHECK-ASSESSMENTMETHOD@1 not found in level model",
+        "mappings #1: mapping #26 (PAY-121): source A2.BusinessObjectAttribute BBOA-FUNDING-CHECK-ASSESSMENT-SCHEDULE@14.0.0 not found in level model",
+        "mappings #1: mapping #26 (PAY-121): target A3.DataAttribute AID-ENTF-FUNDING-CHECK-ASSESSMENTSCHEDULE@1 not found in level model",
+        "mappings #1: mapping #27 (PAY-122): source A2.BusinessObjectAttribute BBOA-FUNDING-CHECK-ASSESSMENT-DESCRIPTION@14.0.0 not found in level model",
+        "mappings #1: mapping #27 (PAY-122): target A3.DataAttribute AID-ENTF-FUNDING-CHECK-ASSESSMENTDESCRIPTION@1 not found in level model",
+        "mappings #1: mapping #28 (PAY-123): source A2.BusinessObjectAttribute BBOA-FUNDING-CHECK-ASSESSMENT-MODEL@14.0.0 not found in level model",
+        "mappings #1: mapping #28 (PAY-123): target A3.DataAttribute AID-ENTF-FUNDING-CHECK-ASSESSMENTMODEL@1 not found in level model",
+        "mappings #1: mapping #29 (PAY-124): source A2.BusinessObjectAttribute BBOA-FUNDING-CHECK-ASSESSMENT-DATE-TIME@14.0.0 not found in level model",
+        "mappings #1: mapping #29 (PAY-124): target A3.DataAttribute AID-ENTF-FUNDING-CHECK-ASSESSMENTDATETIME@1 not found in level model",
+        "mappings #1: mapping #30 (PAY-125): source A2.BusinessObjectAttribute BBOA-FUNDING-CHECK-ASSESSMENT-RESULT@14.0.0 not found in level model",
+        "mappings #1: mapping #30 (PAY-125): target A3.DataAttribute AID-ENTF-FUNDING-CHECK-ASSESSMENTRESULT@1 not found in level model",
+        "mappings #1: mapping #31 (PAY-126): source A2.BusinessObjectAttribute BBOA-FUNDING-CHECK-ASSESSMENT-SUPPORTING-DOCUMENT@14.0.0 not found in level model",
+        "mappings #1: mapping #31 (PAY-126): target A3.DataAttribute AID-ENTF-FUNDING-CHECK-ASSESSMENTSUPPORTINGDOCUMENT@1 not found in level model",
+        "mappings #1: mapping #32 (PAY-127): source A2.BusinessObjectAttribute BBOA-FUNDING-CHECK-ASSESSMENT-REPRESENTING-DOCUMENT@14.0.0 not found in level model",
+        "mappings #1: mapping #32 (PAY-127): target A3.DataAttribute AID-ENTF-FUNDING-CHECK-ASSESSMENTREPRESENTINGDOCUMENT@1 not found in level model",
+        "mappings #1: mapping #33 (PAY-128): source A2.BusinessObjectAttribute BBOA-FUNDING-CHECK-ASSESSMENT-REQUIRED-ADJUSTMENT@14.0.0 not found in level model",
+        "mappings #1: mapping #33 (PAY-128): target A3.DataAttribute AID-ENTF-FUNDING-CHECK-ASSESSMENTREQUIREDADJUSTMENT@1 not found in level model",
+        "mappings #1: mapping #34 (PAY-129): source A2.BusinessObjectAttribute BBOA-FUNDING-CHECK-ASSESSMENT-REQUIREMENT@14.0.0 not found in level model",
+        "mappings #1: mapping #34 (PAY-129): target A3.DataAttribute AID-ENTF-FUNDING-CHECK-ASSESSMENTREQUIREMENT@1 not found in level model",
+        "mappings #1: mapping #35 (PAY-130): source A2.BusinessObjectAttribute BBOA-FUNDING-CHECK-ASSESSMENT-EXPIRY-DATE@14.0.0 not found in level model",
+        "mappings #1: mapping #35 (PAY-130): target A3.DataAttribute AID-ENTF-FUNDING-CHECK-ASSESSMENTEXPIRYDATE@1 not found in level model",
+        "mappings #1: mapping #36 (PAY-131): source A2.BusinessObjectAttribute BBOA-FUNDING-CHECK-ASSESSMENT-STATUS@14.0.0 not found in level model",
+        "mappings #1: mapping #36 (PAY-131): target A3.DataAttribute AID-ENTF-FUNDING-CHECK-ASSESSMENTSTATUS@1 not found in level model",
+        "mappings #1: mapping #37 (PAY-132): source A2.BusinessObjectAttribute BBOA-FUNDING-CHECK-ASSESSMENT-IDENTIFICATION@14.0.0 not found in level model",
+        "mappings #1: mapping #37 (PAY-132): target A3.DataAttribute AID-ENTF-FUNDING-CHECK-ASSESSMENTIDENTIFICATION@1 not found in level model",
+        "mappings #1: mapping #38 (PAY-133): source A2.BusinessObject BBO-PAYEE@14.0.0 not found in level model",
+        "mappings #1: mapping #38 (PAY-133): target A3.DataEntity AID-ENT-PAYEE@1 not found in level model",
+        "mappings #1: mapping #39 (PAY-134): source A2.BusinessObjectAttribute BBOA-PAYEE-PAYEE-IDENTIFIER@14.0.0 not found in level model",
+        "mappings #1: mapping #39 (PAY-134): target A3.DataAttribute AID-ENTF-PAYEE-PAYEEIDENTIFIER@1 not found in level model",
+        "mappings #1: mapping #40 (PAY-135): source A2.BusinessObjectAttribute BBOA-PAYEE-PAYMENT-INSTRUCTION-INVOLVEMENT-TYPE@14.0.0 not found in level model",
+        "mappings #1: mapping #40 (PAY-135): target A3.DataAttribute AID-ENTF-PAYEE-PAYMENTINSTRUCTIONINVOLVEMENTTYPE@1 not found in level model",
+        "mappings #1: mapping #41 (PAY-136): source A3.DataEntity ENT-PAY-INSTR@7.1 not found in level model",
+        "mappings #1: mapping #41 (PAY-136): target A5.SystemSoftware INF-PG-PAY-PROD@16 not found in level model",
+        "mappings #1: mapping #42 (PAY-137): source A3.DataEntity ENT-PAY-EVENT@7.1 not found in level model",
+        "mappings #1: mapping #42 (PAY-137): target A5.SystemSoftware INF-PG-PAY-PROD@16 not found in level model",
+        "mappings #1: mapping #43 (PAY-138): source A3.DataEntity ENT-ACCOUNT-CACHE@7.1 not found in level model",
+        "mappings #1: mapping #43 (PAY-138): target A5.SystemSoftware INF-PG-PAY-PROD@16 not found in level model",
+        "mappings #1: mapping #44 (PAY-139): target A5.TechnologyService TS-SECRETS@1.0 not found in level model",
+        "mappings #1: mapping #45 (PAY-140): source A2.BusinessObject BBO-PAYMENT-TRANSACTION@14.0.0 not found in level model",
+        "mappings #1: mapping #45 (PAY-140): target A3.DataEntity ENT-PAY-INSTR@7.1 not found in level model",
+        "mappings #1: mapping #46 (PAY-141): source A2.BusinessObject BBO-ACCOUNT@14.0.0 not found in level model",
+        "mappings #1: mapping #46 (PAY-141): target A3.DataEntity ENT-ACCOUNT-CACHE@7.1 not found in level model",
+        "mappings #1: mapping #47 (PAY-142): source A2.BusinessObjectAttribute BBOA-PAYMENT-TRANSACTION-MONEY-TRANSFER-INSTRUCTION-REFERENCE@14.0.0 not found in level model",
+        "mappings #1: mapping #47 (PAY-142): target A3.DataAttribute F-PAY-INSTR-PAYMENT-INSTRUCTION-REFERENCE@1.0 not found in level model",
+        "mappings #1: mapping #48 (PAY-143): source A2.BusinessObjectAttribute BBOA-PAYMENT-TRANSACTION-FINANCIAL-TRANSACTION-FROM-ACCOUNT@14.0.0 not found in level model",
+        "mappings #1: mapping #48 (PAY-143): target A3.DataAttribute F-PAY-INSTR-DEBTOR-ACCOUNT-REFERENCE@1.0 not found in level model",
+        "mappings #1: mapping #49 (PAY-144): source A2.BusinessObjectAttribute BBOA-PAYMENT-TRANSACTION-FINANCIAL-TRANSACTION-TARGET-ACCOUNT@14.0.0 not found in level model",
+        "mappings #1: mapping #49 (PAY-144): target A3.DataAttribute F-PAY-INSTR-CREDITOR-ACCOUNT-REFERENCE@1.0 not found in level model",
+        "mappings #1: mapping #50 (PAY-145): source A2.BusinessObjectAttribute BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-AMOUNT@14.0.0 not found in level model",
+        "mappings #1: mapping #50 (PAY-145): target A3.DataAttribute F-PAY-INSTR-AMOUNT@1.0 not found in level model",
+        "mappings #1: mapping #51 (PAY-146): source A2.BusinessObjectAttribute BBOA-PAYMENT-TRANSACTION-FINANCIAL-TRANSACTION-CURRENCY@14.0.0 not found in level model",
+        "mappings #1: mapping #51 (PAY-146): target A3.DataAttribute F-PAY-INSTR-CURRENCY@1.0 not found in level model",
+        "mappings #1: mapping #52 (PAY-147): source A2.BusinessObjectAttribute BBOA-PAYMENT-TRANSACTION-MONEY-TRANSFER-VALUE-DATE@14.0.0 not found in level model",
+        "mappings #1: mapping #52 (PAY-147): target A3.DataAttribute F-PAY-INSTR-VALUE-DATE@1.0 not found in level model",
+        "mappings #1: mapping #53 (PAY-148): source A2.BusinessObjectAttribute BBOA-PAYMENT-TRANSACTION-PAYMENT-TRANSACTION-STATUS@14.0.0 not found in level model",
+        "mappings #1: mapping #53 (PAY-148): target A3.DataAttribute F-PAY-INSTR-PAYMENT-STATUS@1.0 not found in level model",
+        "mappings #1: mapping #54 (PAY-149): source A2.BusinessObjectAttribute BBOA-PAYMENT-TRANSACTION-TRANSACTION-DESCRIPTION@14.0.0 not found in level model",
+        "mappings #1: mapping #54 (PAY-149): target A3.DataAttribute F-PAY-INSTR-REMITTANCE-INFORMATION@1.0 not found in level model",
+        "mappings #1: mapping #55 (PAY-150): source A2.BusinessObjectAttribute BBOA-ACCOUNT-ACCOUNT-IDENTIFICATION@14.0.0 not found in level model",
+        "mappings #1: mapping #55 (PAY-150): target A3.DataAttribute F-ACCOUNT-CACHE-ACCOUNT-REFERENCE@1.0 not found in level model",
+        "mappings #1: mapping #56 (PAY-151): source A2.BusinessObjectAttribute BBOA-ACCOUNT-ACCOUNT-CURRENCY@14.0.0 not found in level model",
+        "mappings #1: mapping #56 (PAY-151): target A3.DataAttribute F-ACCOUNT-CACHE-CURRENCY@1.0 not found in level model",
+        "mappings #1: mapping #57 (PAY-152): source A1.BusinessObject BO-ACCOUNT@1.0 not found in level model",
+        "mappings #1: mapping #57 (PAY-152): target A2.BusinessObject BBO-ACCOUNT@14.0.0 not found in level model",
+        "mappings #1: mapping #58 (PAY-153): source A1.BusinessProcess PRC-PAY-01@1.0 not found in level model",
+        "mappings #1: mapping #59 (PAY-154): source A1.BusinessActor ACTOR-CUSTOMER@1.0 not found in level model",
+        "mappings #1: mapping #60 (PAY-155): source A1.BusinessRole ROLE-PAY-OFFICER@1.0 not found in level model",
+        "mappings #1: mapping #61 (PAY-156): source A1.BusinessProcess PRC-PAY-01@1.0 not found in level model",
+        "mappings #1: mapping #62 (PAY-157): source A1.BusinessService BSV-MAKE-PAYMENT@1.0 not found in level model",
+        "mappings #1: mapping #63 (PAY-158): source A1.BusinessObject BO-PAYEE@1.0 not found in level model",
+        "mappings #1: mapping #63 (PAY-158): target A3.DataEntity AID-ENT-PAYEE@1 not found in level model",
+        "mappings #1: mapping #64 (PAY-159): source A1.BusinessEvent BEV-PAY-EXECUTED@1.0 not found in level model",
+        "mappings #1: mapping #65 (PAY-160): source A1.BusinessInterface CHN-OBAPI@1.0 not found in level model",
+        "mappings #1: mapping #66 (PAY-161): target A5.TechnologyService TS-MQ@1.0 not found in level model",
+        "mappings #1: mapping #67 (PAY-162): source A3.DataEntity AID-ENT-PAYEE@1 not found in level model",
+        "mappings #1: mapping #67 (PAY-162): target A5.SystemSoftware INF-PG-PAY-PROD@16 not found in level model",
+        "mappings #1: mapping #68 (PAY-163): source A3.DataEntity AID-ENT-FUNDING-CHECK@1 not found in level model",
+        "mappings #1: mapping #68 (PAY-163): target A5.SystemSoftware INF-PG-PAY-PROD@16 not found in level model",
+        "mappings #1: mapping #69 (PAY-164): source A3.DataEntity AID-ENT-COMPLIANCE-CHECK@1 not found in level model",
+        "mappings #1: mapping #69 (PAY-164): target A5.SystemSoftware INF-PG-PAY-PROD@16 not found in level model",
+        "mappings #1: mapping #70 (MIG-020-070): source A3.DataEntity ENT-PAY-INSTR@7.1 not found in level model",
+        "mappings #1: mapping #71 (MIG-020-071): source A3.DataEntity ENT-PAY-INSTR@7.1 not found in level model",
+        "mappings #1: mapping #72 (MIG-020-072): source A3.DataEntity ENT-ACCOUNT-CACHE@7.1 not found in level model",
+        "mappings #1: mapping #73 (MIG-020-073): source A3.DataEntity ENT-PAY-INSTR@7.1 not found in level model",
+        "mappings #1: mapping #74 (MIG-020-074): source A3.DataEntity ENT-PAY-EVENT@7.1 not found in level model",
+        "mappings #1: mapping #75 (MIG-020-075): source A3.DataEntity ENT-PAY-EVENT@7.1 not found in level model",
+        "mappings #1: mapping #76 (MIG-020-076): source A3.DataEntity ENT-PAY-INSTR@7.1 not found in level model",
+        "mappings #1: mapping #77 (MIG-020-077): source A3.DataEntity AID-ENT-PAYEE@1 not found in level model",
+        "mappings #1: mapping #78 (MIG-020-078): source A3.DataEntity AID-ENT-FUNDING-CHECK@1 not found in level model",
+        "mappings #1: mapping #79 (MIG-020-079): source A3.DataEntity AID-ENT-COMPLIANCE-CHECK@1 not found in level model"
+      ],
+      "warnings": [],
+      "result": "rejected"
+    },
+    {
+      "build": 5,
+      "at": "2026-11-24T20:03:33+00:00",
+      "inputs": [
+        {
+          "path": "examples/0.20/payment-initiation-v2/business.json",
+          "kind": "export",
+          "level": "A1",
+          "model_id": "synthetic-bank-payments-v2-a1",
+          "model_version": "2026.10",
+          "sha256": "834bc94f5592886f1709f00b389b0ab35940ffffcb82fb2e9c3d34567c282593"
+        },
+        {
+          "path": "examples/0.20/payment-initiation-v2/bian.json",
+          "kind": "export",
+          "level": "A2",
+          "model_id": "synthetic-bank-payments-v2-a2",
+          "model_version": "2026.10",
+          "sha256": "37ffa8896e08c44e59391e68b980e8c5015f42bc30922ee919ec557a355635d3"
+        },
+        {
+          "path": "examples/0.20/payment-initiation-v2/data.json",
+          "kind": "export",
+          "level": "A3",
+          "model_id": "synthetic-bank-payments-v2-a3-data",
+          "model_version": "2026.10",
+          "sha256": "971b733660c208dce53d01adc9f6b00188dd24951886abb2dcacd1b7de14765e"
+        },
+        {
+          "path": "examples/0.20/payment-initiation-v2/application.json",
+          "kind": "export",
+          "level": "A4",
+          "model_id": "synthetic-bank-payments-v2-a3",
+          "model_version": "2026.10",
+          "sha256": "1a727fce625aeaddd88526ac1e35c87aa68b73ffb28b4b7417c3accb7cae049b"
+        },
+        {
+          "path": "examples/0.20/payment-initiation-v2/technology.json",
+          "kind": "export",
+          "level": "A5",
+          "model_id": "synthetic-bank-payments-v2-a4",
+          "model_version": "2026.10",
+          "sha256": "16bb72859bb60242c0a0b5f5930c60a9aaee0d091a2203b8827543c0752aa479"
+        },
+        {
+          "path": "examples/0.20/payment-initiation-v2/mappings.json",
+          "kind": "registry",
+          "registry_version": "0.4.0",
+          "sha256": "d1784b9b98744793e2333bf580aee7c8eb32a55fea0dee513b88e34ae5e2a13b"
+        }
+      ],
+      "metamodel_version": "0.20.0",
+      "errors": [],
+      "warnings": [
+        "level A2 (synthetic-bank-payments-v2-a2): instance BBO-PAY-INSTR: its field names and its field records disagree — no record for creditor_account_reference, currency, debtor_account_reference, payment_instruction_reference, payment_status, remittance_information, value_date (LC-24)",
+        "level A2 (synthetic-bank-payments-v2-a2): instance BBO-PARTY: its field names and its field records disagree — no record for party_name, party_reference, party_type — not in its list: PartyActivityIndicator, PartyDateTime, PartyIdentification, PartyLegalStructureType, PartyName, PartyType, party reference (LC-24)"
+      ],
+      "result": "accepted",
+      "stack": [
+        "business",
+        "bian",
+        "data",
+        "application",
+        "technology"
+      ],
+      "outputs": [
+        {
+          "file": "application.graph.json",
+          "sha256": "bf5e5e4703caa214075dd2c737d241c3e521d1d8042908707c169c838c9f042a",
+          "nodes": 15,
+          "edges": 16
+        },
+        {
+          "file": "bian.graph.json",
+          "sha256": "7bdff05ad2637d536ebb9dfa80fa2703061db8a265ed03b93d19c518ad2a4f5f",
+          "nodes": 132,
+          "edges": 154
+        },
+        {
+          "file": "business.graph.json",
+          "sha256": "f8bf17ca15901514b384a34a4140b3f8e1015f8df03e38c889786d207f45fd81",
+          "nodes": 26,
+          "edges": 31
+        },
+        {
+          "file": "data.graph.json",
+          "sha256": "2de231498c2075ac2a5d98653a39fd97539c1056a1f7801d031e3f24909b9279",
+          "nodes": 43,
+          "edges": 41
+        },
+        {
+          "file": "federated.graph.json",
+          "sha256": "6b86ebf9109f8fbda5808f73e97c865b9eb7b1f84eb1808c44b7b789ee23ad07",
+          "nodes": 109,
+          "edges": 79
+        },
+        {
+          "file": "technology.graph.json",
+          "sha256": "f292c315d8e5c5093f50998e802d652ab4d6c4c4e18f7d9d2d92d6445a834eb6",
+          "nodes": 28,
+          "edges": 49
+        }
+      ]
+    },
+    {
+      "build": 6,
+      "at": "2026-11-24T20:03:50+00:00",
+      "inputs": [
+        {
+          "path": "examples/0.20/payment-initiation-v2/business.json",
+          "kind": "export",
+          "level": "A1",
+          "model_id": "synthetic-bank-payments-v2-a1",
+          "model_version": "2026.10",
+          "sha256": "834bc94f5592886f1709f00b389b0ab35940ffffcb82fb2e9c3d34567c282593"
+        },
+        {
+          "path": "examples/0.20/payment-initiation-v2/bian.json",
+          "kind": "export",
+          "level": "A2",
+          "model_id": "synthetic-bank-payments-v2-a2",
+          "model_version": "2026.10",
+          "sha256": "37ffa8896e08c44e59391e68b980e8c5015f42bc30922ee919ec557a355635d3"
+        },
+        {
+          "path": "examples/0.20/payment-initiation-v2/data.json",
+          "kind": "export",
+          "level": "A3",
+          "model_id": "synthetic-bank-payments-v2-a3-data",
+          "model_version": "2026.10",
+          "sha256": "971b733660c208dce53d01adc9f6b00188dd24951886abb2dcacd1b7de14765e"
+        },
+        {
+          "path": "examples/0.20/payment-initiation-v2/application.json",
+          "kind": "export",
+          "level": "A4",
+          "model_id": "synthetic-bank-payments-v2-a3",
+          "model_version": "2026.10",
+          "sha256": "1a727fce625aeaddd88526ac1e35c87aa68b73ffb28b4b7417c3accb7cae049b"
+        },
+        {
+          "path": "examples/0.20/payment-initiation-v2/technology.json",
+          "kind": "export",
+          "level": "A5",
+          "model_id": "synthetic-bank-payments-v2-a4",
+          "model_version": "2026.10",
+          "sha256": "16bb72859bb60242c0a0b5f5930c60a9aaee0d091a2203b8827543c0752aa479"
+        },
+        {
+          "path": "examples/0.20/payment-initiation-v2/mappings.json",
+          "kind": "registry",
+          "registry_version": "0.4.0",
+          "sha256": "d1784b9b98744793e2333bf580aee7c8eb32a55fea0dee513b88e34ae5e2a13b"
+        }
+      ],
+      "metamodel_version": "0.20.0",
+      "errors": [],
+      "warnings": [
+        "level A2 (synthetic-bank-payments-v2-a2): instance BBO-PAY-INSTR: its field names and its field records disagree — no record for creditor_account_reference, currency, debtor_account_reference, payment_instruction_reference, payment_status, remittance_information, value_date (LC-24)",
+        "level A2 (synthetic-bank-payments-v2-a2): instance BBO-PARTY: its field names and its field records disagree — no record for party_name, party_reference, party_type — not in its list: PartyActivityIndicator, PartyDateTime, PartyIdentification, PartyLegalStructureType, PartyName, PartyType, party reference (LC-24)"
+      ],
+      "result": "accepted",
+      "stack": [
+        "business",
+        "bian",
+        "data",
+        "application",
+        "technology"
+      ],
+      "outputs": [
+        {
+          "file": "application.graph.json",
+          "sha256": "bf5e5e4703caa214075dd2c737d241c3e521d1d8042908707c169c838c9f042a",
+          "nodes": 15,
+          "edges": 16
+        },
+        {
+          "file": "bian.graph.json",
+          "sha256": "7bdff05ad2637d536ebb9dfa80fa2703061db8a265ed03b93d19c518ad2a4f5f",
+          "nodes": 132,
+          "edges": 154
+        },
+        {
+          "file": "business.graph.json",
+          "sha256": "f8bf17ca15901514b384a34a4140b3f8e1015f8df03e38c889786d207f45fd81",
+          "nodes": 26,
+          "edges": 31
+        },
+        {
+          "file": "data.graph.json",
+          "sha256": "2de231498c2075ac2a5d98653a39fd97539c1056a1f7801d031e3f24909b9279",
+          "nodes": 43,
+          "edges": 41
+        },
+        {
+          "file": "federated.graph.json",
+          "sha256": "6b86ebf9109f8fbda5808f73e97c865b9eb7b1f84eb1808c44b7b789ee23ad07",
+          "nodes": 109,
+          "edges": 79
+        },
+        {
+          "file": "technology.graph.json",
+          "sha256": "f292c315d8e5c5093f50998e802d652ab4d6c4c4e18f7d9d2d92d6445a834eb6",
+          "nodes": 28,
+          "edges": 49
+        }
+      ]
     }
   ]
 }

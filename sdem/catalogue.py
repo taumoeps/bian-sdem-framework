@@ -20,7 +20,8 @@ STATUS = {'confirmed_in_official_source': 'concept confirmed', 'pending_release_
 
 
 def render():
-    ents = [e for f in LEVEL_FILES for e in _jload(MM_DIR / f)['entities']]
+    from sdem.metamodel import level_docs
+    ents = [e for d in level_docs().values() for e in d['entities']]   # BX-15: BIAN's layer from sdem-bian
     conf = Counter(e['confidence'] for e in ents); src = Counter(SOURCE[e['definition_source']] for e in ents)
     by = {l: [e for e in ents if e['level'] == l] for l in tuple(dict.fromkeys((_L('business'), _L('bian'), _L('data'), _L('application'), _L('technology'))))}
     lvl_std = {_L('business'): 'ArchiMate 3.2 Strategy, Business and Motivation (ch. 6–8), with BIAN\'s Business Capability Model', _L('bian'): 'BIAN Service Landscape 14.0 and the Semantic API Practitioner Guide v8.1',

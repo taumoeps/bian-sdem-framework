@@ -47,7 +47,7 @@ def metamodel():
     ents = [e for f in sorted(glob.glob(str(ROOT / 'metamodel' / 'a[1-4]-*.json'))) for e in _j(f)['entities']]
     attrs = _j(ROOT / 'metamodel' / 'entity-attributes.json')
     lr = _j(ROOT / 'metamodel' / 'level-relationships.json')
-    types = __import__('sdem.validate', fromlist=['load_registry']).load_registry()['relationships']
+    types = _j(ROOT / 'schema' / 'relationship-types.json')['relationships']   # SDEM's own link types, as its other files here (BX-15: BIAN's are sdem-bian's)
     rules = _j(ROOT / 'metamodel' / 'relationship-rules.json')
     by_entity = {}
     for a in attrs['attributes']:
@@ -98,12 +98,16 @@ def health(mm_data):
     from .inference import ENGINES
     from .paths import CHECKOUT
     from . import profile as _p; _p.deactivate()   # SDEM's own health: the same for every workspace — checked with none open, in SDEM's own numbering
+    from . import parts; was = dict(parts._STATE); parts.core_only_content()   # the generated documents' check, as sdem model check runs it (BX-15)
     gens, acc = [], []
-    for g in (GENERATORS if CHECKOUT else []):   # maintainer checks: they need the repository's docs and examples
-        buf = io.StringIO()
-        with contextlib.redirect_stdout(buf), contextlib.redirect_stderr(io.StringIO()):
-            mod = __import__(f'sdem.{g}', fromlist=['main']); code = mod.main(['--check'])
-        gens.append({'name': g, 'current': code == 0})
+    try:
+        for g in (GENERATORS if CHECKOUT else []):   # maintainer checks: they need the repository's docs and examples
+            buf = io.StringIO()
+            with contextlib.redirect_stdout(buf), contextlib.redirect_stderr(io.StringIO()):
+                mod = __import__(f'sdem.{g}', fromlist=['main']); code = mod.main(['--check'])
+            gens.append({'name': g, 'current': code == 0})
+    finally:
+        parts.leave_core_docs(); parts._STATE.update({k: v for k, v in was.items() if k != 'content'}); parts.identity_changed()   # BIAN's content again, for the cases
     rows = acceptance.run(ENGINES['rules']()) if CHECKOUT else []
     acc = [{'case': r['case'], 'estate': r['estate'], 'passed': r['passed'], 'precision': round(r['score']['registry']['precision'], 2), 'recall': round(r['score']['registry']['recall'], 2),
             'floor_precision': round(r['floor']['registry']['precision'], 2), 'floor_recall': round(r['floor']['registry']['recall'], 2)} for r in rows]

@@ -24,8 +24,16 @@ RELATIONSHIPS = {'composition', 'aggregation', 'assignment', 'realization', 'ser
 
 
 @lru_cache(maxsize=1)
-def load():
+def _own():
     return _jload(FILE)
+
+
+def load():
+    """SDEM's ArchiMate notation — with BIAN's types' (its notation.json) where BIAN is on (BX-15: sdem-bian's since 0.22)."""
+    from . import parts
+    d = _own(); pkg = parts._pkg_data() if parts.bian_on() else None
+    extra = ((pkg or {}).get('notation') or {}).get('entities') or {}
+    return {**d, 'entities': {**d['entities'], **extra}} if extra else d
 
 
 def for_type(mm, t):

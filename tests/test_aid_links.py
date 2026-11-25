@@ -101,13 +101,15 @@ class ConnectedAndPlacedTests(unittest.TestCase):   # the owner's screenshots of
             self.assertEqual(close, [], ex)
 
     def test_the_import_links_a_control_record_to_the_objects_it_refers_to(self):
-        from sdem.bian import read_domain, build
+        try: from sdem_bian.bian import read_domain, build
+        except ImportError: self.skipTest('needs sdem-bian installed (BX-15)')
         from sdem.metamodel import Metamodel
         d, _ = build([read_domain(ROOT / 'tests/fixtures/bian-release-typed/SamplePaymentOrder.yaml')], Metamodel.load().version, objects=True)
         self.assertIn(('CR-SAMPLE-PAYMENT-ORDER', 'association', 'BBO-PAYMENT-TRANSACTION'), {(r['source'], r['kind'], r['target']) for r in d['relationships']})
 
     def test_aid_has_a_table_nobody_uses_accessed_by_its_domains_component(self):   # AID-I07
-        from sdem.aid_info import propose_access
+        try: from sdem_bian.aid_bian import propose_access
+        except ImportError: self.skipTest('needs sdem-bian installed: AID-I01…I07 are BIAN\'s (BX-15)')
         from sdem.metamodel import Metamodel
         a2 = {'instances': [], 'relationships': [{'source': 'SD-1', 'kind': 'aggregation', 'target': 'CR-1'}, {'source': 'CR-1', 'kind': 'association', 'target': 'BO-1'}]}
         a3 = {'instances': [{'id': 'ENT-1', 'type': 'A3.DataEntity', 'version': '1', 'name': 't'}], 'relationships': []}

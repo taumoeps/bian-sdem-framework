@@ -10,40 +10,25 @@ skinparam package {
 }
 skinparam ArrowFontSize 9
 skinparam ArrowThickness 1
-title New mappings (plan) — 50 cross-level connections by rule decision; every one validated by the use-case suite
+title New mappings (plan) — 22 cross-level connections by rule decision; every one validated by the use-case suite
 
 package "A1 Business Architecture" as A1 {
-  rectangle "A1.BusinessCapability" as a1_businesscapability
-  rectangle "A1.ValueStream" as a1_valuestream
-  rectangle "A1.ValueStreamStage" as a1_valuestreamstage
-  rectangle "A1.BusinessProcess" as a1_businessprocess
-  rectangle "A1.BusinessActivity" as a1_businessactivity
-  rectangle "A1.BusinessService" as a1_businessservice
-  rectangle "A1.BusinessActor\n<size:9><i>no cross-level mapping: not a mapping: S10</i></size>" as a1_businessactor #EEEEEE
-  rectangle "A1.BusinessRole\n<size:9><i>no cross-level mapping: not a mapping: S11</i></size>" as a1_businessrole #EEEEEE
-  rectangle "A1.BusinessObject" as a1_businessobject
-  rectangle "A1.BusinessRequirement" as a1_businessrequirement
+  rectangle "A1.BusinessCapability\n<size:9><i>no cross-level mapping: no plan row</i></size>" as a1_businesscapability #EEEEEE
+  rectangle "A1.ValueStream\n<size:9><i>no cross-level mapping: no plan row</i></size>" as a1_valuestream #EEEEEE
+  rectangle "A1.ValueStreamStage\n<size:9><i>no cross-level mapping: no plan row</i></size>" as a1_valuestreamstage #EEEEEE
+  rectangle "A1.BusinessProcess\n<size:9><i>no cross-level mapping: no plan row</i></size>" as a1_businessprocess #EEEEEE
+  rectangle "A1.BusinessActivity\n<size:9><i>no cross-level mapping: no plan row</i></size>" as a1_businessactivity #EEEEEE
+  rectangle "A1.BusinessService\n<size:9><i>no cross-level mapping: no plan row</i></size>" as a1_businessservice #EEEEEE
+  rectangle "A1.BusinessActor\n<size:9><i>no cross-level mapping: no plan row</i></size>" as a1_businessactor #EEEEEE
+  rectangle "A1.BusinessRole\n<size:9><i>no cross-level mapping: no plan row</i></size>" as a1_businessrole #EEEEEE
+  rectangle "A1.BusinessObject\n<size:9><i>no cross-level mapping: no plan row</i></size>" as a1_businessobject #EEEEEE
+  rectangle "A1.BusinessRequirement\n<size:9><i>no cross-level mapping: no plan row</i></size>" as a1_businessrequirement #EEEEEE
   rectangle "A1.BusinessEvent\n<size:9><i>no cross-level mapping: no plan row</i></size>" as a1_businessevent #EEEEEE
   rectangle "A1.Product\n<size:9><i>no cross-level mapping: no plan row</i></size>" as a1_product #EEEEEE
   rectangle "A1.BusinessInterface\n<size:9><i>no cross-level mapping: no plan row</i></size>" as a1_businessinterface #EEEEEE
 }
 
 package "A2 Service Domain Architecture" as A2 {
-  rectangle "A2.BusinessArea" as a2_businessarea
-  rectangle "A2.BusinessDomain" as a2_businessdomain
-  rectangle "A2.ServiceDomain" as a2_servicedomain
-  rectangle "A2.FunctionalPattern" as a2_functionalpattern
-  rectangle "A2.AssetType" as a2_assettype
-  rectangle "A2.ControlRecord" as a2_controlrecord
-  rectangle "A2.ServiceGroup" as a2_servicegroup
-  rectangle "A2.ServiceOperation" as a2_serviceoperation
-  rectangle "A2.BehaviorQualifier" as a2_behaviorqualifier
-  rectangle "A2.BusinessScenario" as a2_businessscenario
-  rectangle "A2.BusinessObject" as a2_businessobject
-  rectangle "A2.BusinessObjectAttribute" as a2_businessobjectattribute
-  rectangle "A2.BOMModel\n(artefact)\n<size:9><i>no cross-level mapping: artefact — never an endpoint</i></size>" as a2_bommodel #EEEEEE
-  rectangle "A2.Wireframe\n(artefact)\n<size:9><i>no cross-level mapping: artefact — never an endpoint</i></size>" as a2_wireframe #EEEEEE
-  rectangle "A2.SemanticAPI\n(artefact)\n<size:9><i>no cross-level mapping: artefact — never an endpoint</i></size>" as a2_semanticapi #EEEEEE
 }
 
 package "A3 Application Architecture" as A3 {
@@ -75,23 +60,11 @@ package "A4 Technology Architecture" as A4 {
   rectangle "A4.Location\n<size:9><i>no cross-level mapping: no plan row</i></size>" as a4_location #EEEEEE
 }
 
-' --- catalogue rule (SDEM relationship type) (9)
-a1_businesscapability -[#1565C0,bold]-> a2_servicedomain : S01 SUPPORTED_BY (step 3)
-a1_valuestream -[#1565C0,bold]-> a2_businessscenario : S02 ALIGNED_TO (step 4)
-a1_businessprocess -[#1565C0,bold]-> a2_servicedomain : S04 USES_DOMAIN (step 3)
-a1_businessobject -[#1565C0,bold]-> a2_businessobject : S12 ALIGNED_TO (step 4)
-a2_servicedomain -[#1565C0,bold]-> a3_applicationcomponent : S17 REALIZED_BY (step 3)
-a2_serviceoperation -[#1565C0,bold]-> a3_apioperation : S24 IMPLEMENTED_BY (step 2)
-a2_businessobject -[#1565C0,bold]-> a3_dataentity : S30 MAPPED_TO (step 4)
+' --- catalogue rule (SDEM relationship type) (2)
 a3_applicationcomponent -[#1565C0,bold]-> a4_deployment : S32 DEPLOYED_AS (step 1)
 a3_applicationcomponent -[#1565C0,bold]-> a4_infrastructurecomponent : S33 step 1 high
 
-' --- candidate rule (proposed for the relationship type catalogue) (5)
-a2_controlrecord -[#2E7D32]-> a3_dataentity : S20 step 4 high
-a2_controlrecord -[#2E7D32]-> a3_applicationfunction : S21 step 3 medium
-a2_serviceoperation -[#2E7D32]-> a3_applicationservice : S25 step 3 high
-a2_businessscenario -[#2E7D32]-> a3_applicationservice : S28 step 3 medium
-a2_businessscenario -[#2E7D32]-> a3_applicationcomponent : S29 step 3 medium
+' --- candidate rule (proposed for the relationship type catalogue) (0)
 
 ' --- conditional rule (fires on institution data) (5)
 a3_applicationcomponent -[#EF6C00]-> a4_node : S34 step 1 low
@@ -100,16 +73,7 @@ a3_applicationservice -[#EF6C00]-> a4_technologyservice : S41 step 1 medium
 a3_applicationfunction -[#EF6C00]-> a4_technologyservice : S45 step 1 medium
 a3_dataentity -[#EF6C00]-> a4_artifact : S49 step 1 medium
 
-' --- derived path (closure over other arrows, never proposed) (17)
-a1_valuestreamstage -[#616161,dashed]-> a2_businessscenario : S03 step 4 low
-a1_businessactivity -[#616161,dashed]-> a2_servicedomain : S07 step 3 medium
-a2_businessarea -[#616161,dashed]-> a3_applicationcomponent : S15 step 3 high
-a2_businessdomain -[#616161,dashed]-> a3_applicationcomponent : S16 step 3 high
-a2_servicegroup -[#616161,dashed]-> a3_applicationservice : S22 step 3 medium
-a2_servicegroup -[#616161,dashed]-> a3_applicationinterface : S23 step 3 medium
-a2_behaviorqualifier -[#616161,dashed]-> a3_apioperation : S26 step 2 high
-a2_behaviorqualifier -[#616161,dashed]-> a3_dataentity : S27 step 4 medium
-a2_businessobjectattribute -[#616161,dashed]-> a3_dataentity : S31 step 4 high
+' --- derived path (closure over other arrows, never proposed) (8)
 a3_applicationcomponent -[#616161,dashed]-> a4_deploymentenvironment : S40 step 3 high
 a3_applicationservice -[#616161,dashed]-> a4_technologyinterface : S42 step 3 low
 a3_applicationfunction -[#616161,dashed]-> a4_systemsoftware : S46 step 3 low
@@ -119,14 +83,7 @@ a3_solutionbuildingblock -[#616161,dashed]-> a4_infrastructurecomponent : S52 st
 a3_solutionbuildingblock -[#616161,dashed]-> a4_deployment : S53 step 3 medium
 a3_solutionbuildingblock -[#616161,dashed]-> a4_node : S54 step 3 low
 
-' --- institution-only (reported from architecture dataset keys) (14)
-a1_businessactivity -[#6A1B9A,dotted]-> a2_serviceoperation : S06 step 1 medium
-a1_businessservice -[#6A1B9A,dotted]-> a2_servicedomain : S08 step 5 low
-a1_businessservice -[#6A1B9A,dotted]-> a2_serviceoperation : S09 step 4 low
-a1_businessrequirement -[#6A1B9A,dotted]-> a2_servicedomain : S13 step 3 low
-a1_businessrequirement -[#6A1B9A,dotted]-> a2_serviceoperation : S14 step 3 low
-a2_functionalpattern -[#6A1B9A,dotted]-> a3_applicationfunction : S18 step 3 low
-a2_assettype -[#6A1B9A,dotted]-> a3_dataentity : S19 step 4 low
+' --- institution-only (reported from architecture dataset keys) (7)
 a3_applicationcomponent -[#6A1B9A,dotted]-> a4_device : S35 step 1 low
 a3_applicationcomponent -[#6A1B9A,dotted]-> a4_communicationnetwork : S37 step 1 low
 a3_applicationcomponent -[#6A1B9A,dotted]-> a4_path : S38 step 1 low
@@ -136,12 +93,12 @@ a3_dataentity -[#6A1B9A,dotted]-> a4_systemsoftware : S50 step 1 medium
 a3_event -[#6A1B9A,dotted]-> a4_technologyservice : S51 step 1 low
 
 legend right
-  <color:#1565C0>Bold</color>: catalogue rule (SDEM relationship type) (9)
-  <color:#2E7D32>Solid</color>: candidate rule (proposed for the relationship type catalogue) (5)
+  <color:#1565C0>Bold</color>: catalogue rule (SDEM relationship type) (2)
+  <color:#2E7D32>Solid</color>: candidate rule (proposed for the relationship type catalogue) (0)
   <color:#EF6C00>Solid</color>: conditional rule (fires on institution data) (5)
-  <color:#616161>Dashed</color>: derived path (closure over other arrows, never proposed) (17)
-  <color:#6A1B9A>Dotted</color>: institution-only (reported from architecture dataset keys) (14)
+  <color:#616161>Dashed</color>: derived path (closure over other arrows, never proposed) (8)
+  <color:#6A1B9A>Dotted</color>: institution-only (reported from architecture dataset keys) (7)
   Grey entity: no cross-level mapping by decision (artefacts are never endpoints; actors and roles are organisation, not mappings)
-  Not drawn: S05 historical method, S10 not a mapping, S11 not a mapping, S36 subsumed, B01 not encodable; B02–B15 inside A2 are on official-mappings.puml
+  Not drawn: S36 subsumed; B02–B15 inside A2 are on official-mappings.puml
 endlegend
 @enduml

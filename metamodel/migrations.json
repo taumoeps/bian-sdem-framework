@@ -1,5 +1,5 @@
 {
-  "metamodel_version": "0.19.0",
+  "metamodel_version": "0.20.0",
   "note": "How a workspace moves from one metamodel (metamodel) version to the next — `sdem migrate --workspace DIR`. Every change to the metamodel that affects data bumps metamodel_version in every metamodel file and adds one entry here, from the old version to the new: its steps are applied to the workspace's datasets and registry, then the workspace is checked; an entry with no steps only moves the version (an additive change — new optional attributes or types). Step kinds: rename_type {from, to}; rename_attribute {type (optional), from, to}; drop_attribute {type (optional), name}; set_attribute {type, name, value} (only where missing); rename_kind {from, to} (a within-architecture link kind); rename_relationship {from, to} (a link type between architectures, in the registry). Policy: docs/sdem-metamodel-versioning.md.",
   "migrations": [
     {
@@ -158,6 +158,106 @@
       "date": "2026-11-22",
       "approved_by": "the SDEM owner",
       "note": "The Data Architecture (docs/design/sdem-data-architecture-spec.md, DAR-01…DAR-11; the owner, 2026-11-22: \"approve and build\"): a data domain (data.DataDomain, an ArchiMate Grouping of data entities and smaller domains — subject areas, TOGAF's logical data component; RA3-35, RA3-36), a data owner and steward on an entity and a domain (an A1 role or actor), read and write on an ACCESSED_BY link (access_mode — ArchiMate's access types), and two requirement categories, data_quality and data_retention. Additive — no steps: every addition is optional and a workspace's records are unchanged.",
+      "steps": []
+    },
+    {
+      "from": "0.19.0",
+      "to": "0.20.0",
+      "date": "2026-11-25",
+      "approved_by": "the SDEM owner",
+      "note": "SDEM 0.22 (the owner, 2026-11-23: \"approve\"; R-D2, R-D3, BX-15): BIAN leaves SDEM's core for the sdem-bian extension — its layer's types, link types, within-layer rules and attributes are no longer SDEM's own; a design that uses BIAN needs sdem-bian installed, which gives them exactly as before (BIAN's metamodel is unchanged). Breaking for a design without sdem-bian; nothing in a workspace's files changes (no steps).",
+      "moved": {
+        "to": "sdem-bian 1.2.0 (sdem-extensions/metamodel/bian)",
+        "items": {
+          "entity_types": [
+            "A2.AssetType",
+            "A2.BOMModel",
+            "A2.BehaviorQualifier",
+            "A2.BusinessArea",
+            "A2.BusinessDomain",
+            "A2.BusinessObject",
+            "A2.BusinessObjectAttribute",
+            "A2.BusinessScenario",
+            "A2.ControlRecord",
+            "A2.FunctionalPattern",
+            "A2.SemanticAPI",
+            "A2.ServiceDomain",
+            "A2.ServiceGroup",
+            "A2.ServiceOperation",
+            "A2.Wireframe"
+          ],
+          "link_types": [
+            "BIAN_ATTRIBUTE_FIELD_MAPPED_TO_DATA_ATTRIBUTE",
+            "BIAN_OBJECT_MAPPED_TO_DATA_ENTITY",
+            "BUSINESS_OBJECT_ALIGNED_TO_BIAN_OBJECT",
+            "CAPABILITY_SUPPORTED_BY_DOMAIN",
+            "DOMAIN_REALIZED_BY_COMPONENT",
+            "NOTIFY_OPERATION_IMPLEMENTED_BY_EVENT",
+            "OPERATION_IMPLEMENTED_BY_API",
+            "PROCESS_USES_DOMAIN",
+            "VALUE_STREAM_ALIGNED_TO_SCENARIO",
+            "VALUE_STREAM_STAGE_ALIGNED_TO_SCENARIO"
+          ],
+          "within_layer_rules": [
+            "RA2-01",
+            "RA2-02",
+            "RA2-03",
+            "RA2-04",
+            "RA2-05",
+            "RA2-06",
+            "RA2-07",
+            "RA2-08",
+            "RA2-09",
+            "RA2-10",
+            "RA2-11",
+            "RA2-12",
+            "RA2-13",
+            "RA2-14",
+            "RA2-15",
+            "RA2-16",
+            "RA2-17",
+            "RA2-18",
+            "RA2-19",
+            "RA2-20",
+            "RA2-21",
+            "RA2-22",
+            "RA2-23"
+          ],
+          "attributes": [
+            "AT-A2-01",
+            "AT-A2-02",
+            "AT-A2-03",
+            "AT-A2-04",
+            "AT-A2-05",
+            "AT-A2-06",
+            "AT-A2-07",
+            "AT-A2-08",
+            "AT-A2-09",
+            "AT-A2-10",
+            "AT-A2-11",
+            "AT-A2-12",
+            "AT-A2-13",
+            "AT-A2-14",
+            "AT-A2-15",
+            "AT-A2-16",
+            "AT-A2-17",
+            "AT-A2-18",
+            "AT-A2-19",
+            "AT-A2-20",
+            "AT-A2-21",
+            "AT-A2-22",
+            "AT-A2-23",
+            "AT-A2-24",
+            "AT-A2-25",
+            "AT-A2-26",
+            "AT-A2-27",
+            "AT-A2-28",
+            "AT-A2-29",
+            "AT-A2-30",
+            "AT-A2-31"
+          ]
+        }
+      },
       "steps": []
     }
   ]

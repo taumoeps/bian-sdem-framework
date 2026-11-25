@@ -85,7 +85,7 @@ def _rules_engine():
 ENGINES = {'baseline': NameOverlapBaseline, 'rules': _rules_engine}
 
 
-def propose(reader, ext_workspace=None, engine='rules', threshold=0.2):
+def propose(reader, ext_workspace=None, engine='rules', threshold=0.2, options=None):
     """What `sdem link` proposes — (engine, result, extension report): the rules engine's proposals, with what the workspace's extensions
     propose (MX-51). Where an installed extension provides a built-in one's steps (BIAN, MX-53) the engine runs the core's, the extension
     the rest, and every proposal and candidate is numbered in the whole run's order, as the extension ran it with the core's — the same ids
@@ -95,12 +95,12 @@ def propose(reader, ext_workspace=None, engine='rules', threshold=0.2):
         from sdem.ext_infer import provides_builtin
         core_only = provides_builtin('link')
     eng = ENGINES[engine](threshold) if engine == 'baseline' else (RE_CORE() if core_only else ENGINES[engine]())
-    result = eng.infer(reader, {'id': 'RUN'})
+    result = eng.infer(reader, {'id': 'RUN', **({'options': options} if options else {})})
     report = []
     if ext_workspace:
         import datetime
         from sdem.ext_infer import for_link
-        props, report = for_link(ext_workspace, datetime.datetime.now(datetime.timezone.utc).replace(microsecond=0).isoformat())
+        props, report = for_link(ext_workspace, datetime.datetime.now(datetime.timezone.utc).replace(microsecond=0).isoformat(), options)
         have = {_key(p) for p in result['proposals']}
         theirs = [p for p in props if _key(p) not in have]
         ctheirs = [x for e in report for x in e.pop('_candidates', [])]
@@ -109,10 +109,28 @@ def propose(reader, ext_workspace=None, engine='rules', threshold=0.2):
             e.pop('_design', None)
         order = next((e['_order'] for e in report if e.get('_order')), None)
         corder = next((e['_corder'] for e in report if e.get('_corder')), None)
-        for e in report: e.pop('_order', None); e.pop('_corder', None)
+        log = next((e['_log'] for e in report if e.get('_order') and e.get('_log')), None)
+        for e in report: e.pop('_order', None); e.pop('_corder', None); e.pop('_log', None)
+        if order and log is not None: result['log'] = log   # MX-53: the whole run's log, as its order — the engine alone's, every attempt
         result['proposals'] = _numbered(result['proposals'], theirs, order, 'RUN-X')
         result['candidates'] = _numbered(result.get('candidates', []), ctheirs, corder, 'C-RUN-X')
     return eng, result, report
+
+
+def _files_workspace(paths, folder):
+    """The datasets and registry given as files, as a workspace an extension can read (MX-51) — None when an installed extension gives no
+    built-in one's rules (nothing to ask for). The registry (a document with "mappings") is its mappings.json; the rest keep their names."""
+    from sdem.ext_infer import provides_builtin
+    if not provides_builtin('link'): return None
+    import shutil
+    have_reg = False
+    for p in map(Path, paths):
+        try: d = json.loads(p.read_text(encoding='utf-8'))
+        except (OSError, ValueError): continue
+        if isinstance(d, dict) and 'mappings' in d: shutil.copy(p, folder / 'mappings.json'); have_reg = True
+        else: shutil.copy(p, folder / p.name)
+    if not have_reg: (folder / 'mappings.json').write_text(json.dumps({'registry_version': load_registry()['$schema_version'], 'mappings': []}), encoding='utf-8')
+    return str(folder)
 
 
 def _key(p): return (p['source']['id'], p['relationship'], p['target']['id'])
@@ -156,7 +174,10 @@ def main(argv=None):
         reader = GraphReader.from_store(args.graph) if args.graph else GraphReader.from_exports(args.paths)
     except (OSError, ValueError, StoreError) as exc:
         print(f'ERROR: {exc}', file=sys.stderr); return 2
-    engine, result, report = propose(reader, args.ext_workspace, args.engine, args.threshold)
+    import tempfile
+    with tempfile.TemporaryDirectory() as t:
+        ws = args.ext_workspace or (_files_workspace(args.paths, Path(t)) if args.paths and args.engine == 'rules' else None)   # files given: BIAN's rules (sdem-bian) read them as a workspace
+        engine, result, report = propose(reader, ws, args.engine, args.threshold)
     if result.get('left_out_rejected'):   # RJ-03: said, not silently dropped
         print(f"{len(result['left_out_rejected'])} link(s) a person rejected were not proposed again (RJ-03): " + '; '.join(f'{a} {r} {b}' for a, r, b in result['left_out_rejected'][:5]), file=sys.stderr)
     from sdem import parts

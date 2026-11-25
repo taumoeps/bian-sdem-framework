@@ -128,10 +128,7 @@ def propose_direct(docs, mappings, mm, only=None):
     return out
 
 
-
-
-
-
-def family(*a, **k):   # 0.22 step 3c: AID-K01's helper is BIAN's (sdem/aid_bian.py) — here for those who call it from aid_links
-    from .aid_bian import family as f
-    return f(*a, **k)
+def family(field_name, object_name):
+    """Fix 3: a field's family — its object's own (the name starts with the object's name) or one repeated from a parent object."""
+    own = ''.join(w.capitalize() for w in words(object_name))
+    return 'own' if str(field_name).startswith(own) else 'inherited'

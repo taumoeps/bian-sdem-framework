@@ -76,10 +76,25 @@ def floor(case):
     return out
 
 
+def _infer(engine, reader, case, workdir):
+    """The engine on one case — the rules engine as `sdem link` runs it (inference.propose): with the extensions the case's design uses,
+    BIAN's rules from sdem-bian (BX-15, MX-53), read from a workspace of the case's own inputs (its datasets, its given registry)."""
+    from .rules_engine import RulesEngine
+    if not isinstance(engine, RulesEngine): return engine.infer(reader, case)
+    from .inference import propose
+    ws = Path(workdir) / f"{case['id']}-workspace"
+    if not ws.exists():
+        ws.mkdir(parents=True)
+        *datasets, given = case_inputs(case)
+        for f in datasets: shutil.copy(f, ws / Path(f).name)
+        shutil.copy(given, ws / 'mappings.json')
+    return propose(reader, str(ws), options=case.get('options'))[1]
+
+
 def run_case(case, engine, workdir):
     e = ROOT / 'examples' / case['estate']
     reader = open_case(case, workdir)
-    result = engine.infer(reader, case)
+    result = _infer(engine, reader, case, workdir)
     name = getattr(engine, 'name', type(engine).__name__)
     pdoc = _doc(result.get('proposals', []), name, case)
     issues = check_proposals(pdoc, reader, result.get('design', ()))
@@ -144,7 +159,7 @@ def _tally(engine, cases, tmp):
     tally = {'band': {}, 'evidence_class': {}}; per_case = []
     for case in cases:
         e = ROOT / 'examples' / case['estate']
-        res = engine.infer(open_case(case, tmp), case)
+        res = _infer(engine, open_case(case, tmp), case, tmp)
         for part, gold_file, scope in (('proposals', case['gold'], None), ('candidates', case.get('gold_candidates'), set(case.get('candidate_scope') or []))):
             if not gold_file: continue
             gold = {key(m) for m in _j(e / gold_file).get('mappings', []) if m.get('status') in (None, 'approved', 'proposed', 'validated')}

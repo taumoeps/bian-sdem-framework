@@ -27,6 +27,11 @@ def mark(rule, why, frm, **k): return {'rule': rule, 'reasoning': why, 'from': f
 RULES = json.loads((ROOT / 'standards' / 'sdem-completeness.json').read_text(encoding='utf-8'))['rules']
 
 
+
+def _pattern_file():   # BX-15: the Payment initiation pattern ships with sdem-bian (a banking pattern), under its old name
+    from sdem import profile
+    return profile.shipped('sdem:sdem-pattern-payment-initiation.json')
+
 class Links(unittest.TestCase):
     """AID-D01, AID-D02 — the function, on a made-up application layer."""
     def run_(self, instances, rels=(), rejected=()):
@@ -155,7 +160,7 @@ class Parts(unittest.TestCase):
     PID = 'PAT-PAYMENT-INITIATION'
 
     def setUp(self):
-        self.st = [{'pattern': (d := json.loads((ROOT / 'standards' / 'sdem-pattern-payment-initiation.json').read_text(encoding='utf-8')))['pattern'], 'structure': d['structure'], 'file': 'x'}]
+        self.st = [{'pattern': (d := json.loads(_pattern_file().read_text(encoding='utf-8')))['pattern'], 'structure': d['structure'], 'file': 'x'}]
 
     def docs(self, a3=(), a3rels=(), a4=()):
         act = lambda i, t, n, **a: {**rec(i, t, n, **a), 'lifecycle_status': 'active'}

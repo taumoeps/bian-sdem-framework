@@ -12,6 +12,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
+from sdem_bian import aid_bian  # noqa: E402 — AID's projection is BIAN's, from the installed sdem-bian (BX-15)
 from sdem import aid  # noqa: E402
 from sdem.graph import FederatedGraph, LevelGraph  # noqa: E402
 from sdem.metamodel import Metamodel  # noqa: E402
@@ -176,7 +177,7 @@ def expectations(n, pkg, g, real, reg, results):
     """The sealed expectations (docs/evidence/use-case-example-2.md, commit 17dbd33), as checks on run n."""
     M = g['metrics']; approved = [m for m in reg['mappings'] if m['status'] == 'approved']
     ops = {i['id']: i for i in real['A2']['instances'] if i['type'] == 'A2.ServiceOperation'}
-    run = aid.Run(aid._reader({'A2': real['A2']}, Metamodel.load()), 'UCE2')
+    run = aid_bian.Run(aid._reader({'A2': real['A2']}, Metamodel.load()), 'UCE2')   # the core's engine with BIAN's steps (domain_of), sdem-bian's
     dom_of = {o: run.domain_of(o)['id'] for o in ops if run.domain_of(o)}
     if n == 1:
         doms = {dom_of[o] for o in ops if o in dom_of}; api = M.get('A3 APIs (method and path)', {})
@@ -223,7 +224,7 @@ def safety(real, packages, cat):
         rows.append(('CTL-16', 'good', 'the real datasets load as real data', fed_errors([real[l] for l in LEVELS]), False))
         bad = copy.deepcopy(real['A3']); bad['instances'].append({k: v for k, v in prj.items() if k != 'projection'})
         rows.append(('CTL-16', 'bad', f"put the projected component {prj['id']} into the real A3 dataset", fed_errors([real['A1'], real['A2'], bad, real['A4']]), True))
-        dsn = RulesEngine().infer(aid._reader({'A1': real['A1'], 'A2': real['A2']}, mm), {'id': 'UCE2'}).get('design', [])
+        dsn = aid_bian.Run(aid._reader({'A1': real['A1'], 'A2': real['A2']}, mm), 'UCE2').run(None).get('design', [])   # BIAN's container pattern: sdem-bian's engine (BX-15)
         bad = copy.deepcopy(real['A3']); bad['instances'].append(next(x for x in dsn if x['level'] == 'A3')['instances'][0])
         rows.append(('CTL-16', 'bad', "put a design-mode record (`DSN-`) into the real A3 dataset", fed_errors([real['A1'], real['A2'], bad, real['A4']]), True))
         link = {k: v for k, v in p1['links']['links'][0].items() if k != 'projection'}
@@ -282,11 +283,11 @@ def run():
     R = {'date': date.today().isoformat(), 'runs': [], 'safety': [], 'findings': [], 'evidence': {}, 'views': {}}; E = R['evidence']
     real = {lvl: _j(EST / f) for lvl, f in LEVELS.items()}; reg = _j(EST / 'mappings.json'); cat = catalogue()
     E['catalogue-summary.json'] = {'service_domains': sorted(f"{i['id']}: {i['name']}" for i in cat['instances'] if i['type'] == 'A2.ServiceDomain'),
-                                   'records': len(cat['instances']), 'sha256': aid._sha(cat),
+                                   'records': len(cat['instances']), 'sha256': aid_bian._sha(cat),
                                    'links_dropped_on_merge (LC-10: kept the earlier workspace\'s)': catalogue.dropped}
     packages = {}
     for n, has, proj in RUNS:
-        pkg = aid.project({l: real[l] for l in has}, cat, pid=f'PRJ-RUN{n}', created_at=CREATED); packages[n] = pkg
+        pkg = aid_bian.project({l: real[l] for l in has}, cat, pid=f'PRJ-RUN{n}', created_at=CREATED); packages[n] = pkg
         hidden = {l: real[l] for l in LEVELS}
         g = aid.gaps(pkg, hidden, reg)
         r = {'run': n, 'has': ' + '.join(has), 'projects': proj, 'metrics': g['metrics'], 'rows': g['rows'], 'ends': g['projection_ends'],

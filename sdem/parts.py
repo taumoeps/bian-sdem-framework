@@ -20,7 +20,10 @@ LAYER_FILES = ('bian.json', A2_FILE)   # BIAN's layer file in the 0.20 form and 
 
 
 def bian_on():
-    if _STATE['bian'] is None: _STATE['bian'] = usable()
+    if _STATE['bian'] is None:
+        import os
+        if os.environ.get('SDEM_CORE_DOCS'): _STATE.update(bian=True, content=False, why="SDEM's own documents: the core's content, BIAN's place kept (BX-15)")   # and in every process they start
+        else: _STATE['bian'] = usable()
     return _STATE['bian']
 
 
@@ -85,6 +88,8 @@ def for_workspace(folder, merged=None):
     except (OSError, ValueError): raw = []
     from .identity import _ids_folder
     _set_form(_ids_folder(str(Path(folder).resolve())))   # DL-10…DL-12: the workspace's form, before anything is read
+    import os
+    if os.environ.get('SDEM_CORE_DOCS'): _STATE['content'] = False; _set(True, "SDEM's own documents (BX-15)"); return   # an example read for them: the core's content too
     if included(merged) or EXT_BIAN in raw:
         if not usable(): raise missing(f'{folder}: the design (its profile includes ext:bian)')
         _set(True, 'the profile includes ext:bian (BX-10)'); return
@@ -98,7 +103,10 @@ def for_workspace(folder, merged=None):
     _set(False, 'a core design: no BIAN layer, its profile does not include ext:bian, and sdem-bian is not installed (0.22, R-D2)')
 
 
-def reset(): _set(usable(), 'no workspace (BX-12)'); _set_form(False)
+def reset():
+    import os
+    if os.environ.get('SDEM_CORE_DOCS'): _STATE['content'] = False; _set(True, "SDEM's own documents (BX-15)"); _set_form(False); return
+    _set(usable(), 'no workspace (BX-12)'); _set_form(False)
 
 
 def keep(rows, ends):
@@ -109,7 +117,7 @@ def keep(rows, ends):
 
 # ---- step 2 of 0.20: BIAN in its own package, sdem-bian (docs/design/sdem-bian-package-spec.md, BP-01…BP-11)
 PKG_FILES = {'metamodel': A2_FILE, 'within': 'within-layer-rules.json', 'link_types': 'link-types.json', 'rules': 'inference-rules.json'}
-PKG_OPTIONAL = {'attributes': 'attributes.json'}   # a package built before carries none: then SDEM's own copy is used (BP-10)
+PKG_OPTIONAL = {'attributes': 'attributes.json', 'order': 'order.json', 'notation': 'notation.json', 'viewpoints': 'viewpoints.json', 'viewpoint_plates': 'viewpoint-plates.json'}   # order (MX-55): where each of its rows sits among the core's   # a package built before carries none: then SDEM's own copy is used (BP-10)
 CATALOGUE = 'catalogue'   # the BIAN catalogue, its inferences and licence, in the package's data folder
 
 
@@ -122,33 +130,6 @@ def bian_link(r): return a2(r.get('source_type')) or a2(r.get('target_type'))
 def bian_rule(m):
     import json
     return (_L('bian') + '.') in json.dumps(m)
-
-
-def builtin_data():
-    """BP-02, BP-10: BIAN's data as SDEM ships it — what the package carries, and the fallback when it is not installed."""
-    import json
-    from .paths import DATA_ROOT
-    rd = lambda *p: _jload(DATA_ROOT.joinpath(*p))
-    return {'metamodel': rd('metamodel', A2_FILE),
-            'within': [c for c in rd('metamodel', 'level-relationships.json')['constraints'] if bian_constraint(c)],
-            'link_types': [r for r in rd('schema', 'relationship-types.json')['relationships'] if bian_link(r)],
-            'rules': [m for m in rd('metamodel', 'relationship-rules.json')['mappings'] if bian_rule(m)],
-            'attributes': [x for x in rd('metamodel', 'entity-attributes.json')['attributes'] if a2(x.get('entity'))]}   # BIAN's attributes, with BIAN
-
-
-def write_package_data(pkg):
-    """sdem-bian's package folder (sdem_bian/) from SDEM's built-in copy (scripts/bian_package.py): data/ — the four files and the
-    catalogue, verbatim — and the `sdem bian` commands written against sdem.api (ST-22). Returns the files, relative to the folder."""
-    import json, shutil
-    from .paths import DATA_ROOT
-    pkg = Path(pkg); out = pkg / 'data'; out.mkdir(parents=True, exist_ok=True)
-    for k, v in builtin_data().items():
-        (out / {**PKG_FILES, **PKG_OPTIONAL}[k]).write_bytes((json.dumps(v, indent=1, ensure_ascii=False) + '\n').encode('utf-8'))   # LF on every platform (BP-11)
-    for f, src in package_code().items():   # ST-22: the commands, beside the data folder (sdem_bian/<file>)
-        (pkg / f).write_bytes(src.encode('utf-8'))
-    if (out / CATALOGUE).exists(): shutil.rmtree(out / CATALOGUE)
-    shutil.copytree(DATA_ROOT / 'bian', out / CATALOGUE)
-    return sorted([*(f'data/{p.relative_to(out).as_posix()}' for p in out.rglob('*') if p.is_file()), *CODE_FILES])
 
 
 _PKG = {}
@@ -167,6 +148,8 @@ def package():
         d = Path(m.get('bian_data') or '')
         if not m.get('bian_data') or not all((d / f).is_file() for f in PKG_FILES.values()) or not (d / CATALOGUE).is_dir():
             res = {'refused': f"sdem-bian {m.get('version', '')} does not name a complete data folder — reinstall it"}
+        elif not {'link', 'aid-phases'} <= set(m.get('infers') or []) or not m.get('commands'):   # BX-15 (0.22): BIAN's rules, its part of sdem aid and its commands — all its own now
+            res = {'refused': f"sdem-bian {m.get('version', '')} predates SDEM 0.22 (it gives no BIAN rules or part of sdem aid) — upgrade it to 1.2 or later"}
         elif m.get('sdem') and version() != 'unknown' and not satisfies(version(), m['sdem']):   # a checkout run from elsewhere knows no version: not a reason to refuse
             res = {'refused': f"sdem-bian {m.get('version', '')} supports SDEM {m['sdem']}; this is SDEM {version()}"}
         else:
@@ -176,7 +159,32 @@ def package():
     return res
 
 
+def identity_changed():
+    from . import identity; identity.changed()
+    from . import conformance   # its model is built from the rows in use — BIAN's or not, the core's alone or not
+    try: conformance.model.cache_clear()
+    except AttributeError: pass
+
+
+def leave_core_docs():
+    """The end of SDEM's own documents' core-only mode: BIAN's content as before, decided afresh."""
+    import os
+    os.environ.pop('SDEM_CORE_DOCS', None); _STATE.pop('content', None); _STATE['bian'] = None
+    identity_changed()
+
+
+def core_only_content():
+    """SDEM's own documents (sdem model regenerate|check, BX-15): the core's content in SDEM's own numbering — BIAN's layer keeps its
+    place (A2 in 0.19's numbering) but nothing of BIAN is read, so they are the same with sdem-bian installed or not."""
+    import os
+    os.environ['SDEM_CORE_DOCS'] = '1'   # the processes they start (sdem <command> --help) too
+    _STATE['content'] = False
+    _set(True, "SDEM's own documents: the core's content, BIAN's place kept (BX-15)")
+    identity_changed()
+
+
 def _pkg_data():
+    if _STATE.get('content') is False: return None
     p = package()
     if not (p and p.get('data')): return None
     from . import identity
@@ -192,6 +200,15 @@ def splice(rows, is_bian, key, kind):
     the same key; a row the package adds comes after; one it drops is gone. Without the package (BP-10), the rows as they are."""
     d = _pkg_data()
     if d is None or not bian_on() or kind not in d: return rows   # a package without this kind (built before it carried one): SDEM's own rows
+    anchors = ((d.get('order') or {}).get(kind))
+    if isinstance(anchors, list) and len(anchors) == len(d[kind]):   # MX-55: each of its rows after the core row it names — the core's own order kept
+        FIRST = object(); after = {}
+        for row, a in zip(d[kind], anchors): after.setdefault(FIRST if a is None else key(a), []).append(row)
+        out = list(after.pop(FIRST, []))
+        for r in rows:
+            if is_bian(r): continue   # a core file that still holds BIAN's own rows (before 0.22): the package's stand in for them
+            out.append(r); out += after.pop(key(r), [])
+        return out + [x for xs in after.values() for x in xs]   # a row whose core row is gone: at the end
     by = {key(r): r for r in d[kind]}; used, out = set(), []
     for r in rows:
         if not is_bian(r): out.append(r)
@@ -199,17 +216,17 @@ def splice(rows, is_bian, key, kind):
     return out + [r for r in d[kind] if key(r) not in used]
 
 
-def metamodel_doc(doc):
-    """BP-02: the A2 metamodel file — the package's when installed."""
+def metamodel_doc(doc=None):
+    """BP-02, BX-15: the A2 metamodel file — the installed sdem-bian's (SDEM ships none since 0.22); `doc` where none is installed."""
     d = _pkg_data()
     return d['metamodel'] if d is not None and bian_on() else doc
 
 
 def catalogue_dir():
     """BP-02: the folder of the BIAN catalogue (base-<release>.json, inferences-<release>.json, LICENSE) — the package's when installed."""
-    from .paths import DATA_ROOT
     p = package()
-    return p['data'] / CATALOGUE if p and p.get('data') else DATA_ROOT / 'bian'
+    if p and p.get('data'): return p['data'] / CATALOGUE
+    raise missing("BIAN's catalogue")   # BX-15 (0.22): it ships only with sdem-bian
 
 
 def api_supported(spec):
@@ -218,23 +235,3 @@ def api_supported(spec):
     from .api import VERSION
     from .upgrade import satisfies
     return satisfies(VERSION, spec)
-
-
-CODE_FILES = ('bian.py', 'inferences.py', 'rules_bian.py', 'aid_bian.py')   # 0.22 step 3b: BIAN's link rules too   # ST-22, ST-D7: the sdem bian commands; the engines' BIAN steps move in step 5
-
-
-def package_code():
-    """The `sdem bian` commands written against sdem.api — what sdem-bian carries ({file name: source}). Every relative import of
-    SDEM's becomes `from sdem.api import …`; the two modules' imports of each other stay relative (ST-21)."""
-    import re
-    from .paths import DATA_ROOT
-    own = {f[:-3] for f in CODE_FILES}
-    out = {}
-    for f in CODE_FILES:
-        src = (Path(__file__).parent / f).read_text(encoding='utf-8')
-        def sub(m):
-            mod = m.group(2)
-            return m.group(0) if mod in own else f"{m.group(1)}from sdem.api import {m.group(3)}"
-        src = re.sub(r'^(\s*)from \.(\w*) import (.+)$', sub, src, flags=re.M)
-        out[f] = src
-    return out

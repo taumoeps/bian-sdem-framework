@@ -42,10 +42,10 @@ def askable(step):
     return out
 
 
-def ask(program, workspace, step):
+def ask(program, workspace, step, options=None):
     """MX-47: one extension's answer — (answer, None) or (None, why it could not be used)."""
     try:
-        r = _ext.infer(program, workspace, step, TIMEOUT)   # run where SDEM runs extensions (PRIVACY.md §2)
+        r = _ext.infer(program, workspace, step, TIMEOUT, options=options)   # run where SDEM runs extensions (PRIVACY.md §2)
     except subprocess.TimeoutExpired:
         return None, f'no answer within {TIMEOUT} s'
     except OSError as e:
@@ -61,7 +61,7 @@ def ask(program, workspace, step):
     return d, None
 
 
-def contribute(step, workspace, docs, known, *, run, person, now, rejected=(), approved=(), mm=None):
+def contribute(step, workspace, docs, known, *, run, person, now, rejected=(), approved=(), mm=None, options=None):
     """MX-48…MX-50: ask every extension that infers for this step, and check what it gives.
     docs: {layer code: layer document} — the workspace as it would be; changed in place with the records and links kept.
     known: {id: record} of every record (updated with the records kept). Returns (added {layer: [ids]}, proposals, report)."""
@@ -85,7 +85,7 @@ def contribute(step, workspace, docs, known, *, run, person, now, rejected=(), a
     seen = set()
     for name, prog, m in askable(step):
         who = f"{name} {m.get('version', '')}".strip()
-        ans, why = ask(prog, workspace, step)
+        ans, why = ask(prog, workspace, step, options)
         entry = {'extension': name, 'version': m.get('version'), 'records': 0, 'links': 0, 'proposals': 0, 'refused': []}
         report.append(entry)
         if ans is None:
@@ -150,13 +150,14 @@ def contribute(step, workspace, docs, known, *, run, person, now, rejected=(), a
             ok = lambda c: isinstance(c, dict) and (c.get('source') or {}).get('id') in known and (c.get('target') or {}).get('id') in known
             entry['_candidates'] = [{**c, 'created_by': who} for c in (ans.get('candidates') or []) if ok(c)]
             entry['_design'] = [d for d in (ans.get('design') or []) if isinstance(d, dict) and d.get('level')]
+            if isinstance(ans.get('log'), list): entry['_log'] = [x for x in ans['log'] if isinstance(x, dict)]
             for k, f in (('_order', 'order'), ('_corder', 'candidate_order')):   # MX-53: the whole run's sequence, from an extension that ran the core's rules too
                 o = ans.get(f)
                 if isinstance(o, list) and all(isinstance(x, list) and len(x) == 4 for x in o): entry[k] = [tuple(map(str, x)) for x in o]
     return added, proposals, report
 
 
-def for_link(workspace, now):
+def for_link(workspace, now, options=None):
     """MX-51: the proposals the workspace's extensions make for `sdem link` — (proposals, report), each end a record of the workspace,
     its own layers included, and nothing a person approved or rejected proposed again."""
     from .connect import estate_docs
@@ -171,7 +172,7 @@ def for_link(workspace, now):
     approved = {(m['source']['id'], m['relationship'], m['target']['id']) for m in registry.get('mappings', []) if m.get('status') in ('approved', 'rejected')}
     rej = Path(workspace) / 'aid' / 'rejected.json'
     rejected = {r.get('id') for r in (load(rej).get('rejected') or [])} if rej.exists() else set()
-    _, props, report = contribute('link', workspace, {}, known, run='RUN', person='sdem link', now=now, rejected=rejected, approved=approved)
+    _, props, report = contribute('link', workspace, {}, known, run='RUN', person='sdem link', now=now, rejected=rejected, approved=approved, options=options)
     return props, report
 
 

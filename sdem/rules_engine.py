@@ -501,10 +501,8 @@ class CoreRun:   # 0.22 step 3b: the engine and the core's rules; BIAN's steps a
         return out
 
 
-from .rules_bian import BianSteps   # noqa: E402 — after the names it uses are defined
-
-
-class Run(BianSteps, CoreRun):   # 0.22 step 3b: as before — the core's rules and BIAN's, in the same order
+class Run(CoreRun):   # 0.22 step 4a-2 (BX-15): BIAN's steps run in the installed sdem-bian (MX-53) — SDEM's engine is the core's
+    pass
     pass
 
 
@@ -518,4 +516,4 @@ class RulesEngine:
         self.core_only = core_only   # 0.22 step 3b: BIAN's steps run in sdem-bian (MX-51) — this run is the core's rules only
 
     def infer(self, reader, case=None):
-        return (CoreRun if self.core_only else Run)(reader, (case or {}).get('id', 'RUN')).run((case or {}).get('options'))
+        return Run(reader, (case or {}).get('id', 'RUN')).run((case or {}).get('options'))

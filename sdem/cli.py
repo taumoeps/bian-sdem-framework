@@ -125,7 +125,7 @@ JOURNEYS = _live(lambda: {
 
 # generated documents and schemas, in the order CI checks them
 GENERATORS = ['diagram', 'relationships', 'structure', 'spec', 'kgspec', 'catalogue', 'attributes', 'confidence',
-              'logical', 'physical', 'metamodel_spec', 'controls', 'inferences', 'viewpoints', 'clidoc', 'scenarioskill', 'authorguide']
+              'logical', 'physical', 'metamodel_spec', 'controls', 'viewpoints', 'clidoc', 'scenarioskill', 'authorguide']
 
 
 from .layers import DATASET_FILES as ESTATE_FILES   # LR-02: the core four and the profile's layers
@@ -275,7 +275,8 @@ def _metamodel_sources():
     """The rule records (id → record) and the published-source key (code → address) from the metamodel."""
     from .paths import DATA_ROOT
     mm = DATA_ROOT / 'metamodel'
-    rules = {r['id']: r for r in _jload(mm / 'relationship-rules.json')['mappings']}
+    from .rules_engine import _rules
+    rules = _rules()   # the engine's rules — BIAN's with them where sdem-bian gives them (BX-15)
     return rules, _jload(mm / 'official-mappings.json').get('sources', {})
 
 
@@ -456,12 +457,19 @@ def model(argv):
     if rest: ap.error(f"unrecognized arguments: {' '.join(rest)}")
     if a.cmd in ('regenerate', 'check'):
         stale = []
-        for g in GENERATORS:
-            buf = io.StringIO()
-            with contextlib.redirect_stdout(buf):
-                code = _main_of(f'sdem.{g}')(['--check'] if a.cmd == 'check' else [])
-            print(f"  {'OK   ' if code == 0 else 'STALE' if a.cmd == 'check' else 'FAIL '} {g}")
-            if code: stale.append(g)
+        import os
+        from . import parts, profile as _pp
+        had = 'SDEM_CORE_DOCS' in os.environ
+        _pp.deactivate(); parts.core_only_content()   # BX-15: the core's content, in SDEM's own numbering — the same with sdem-bian installed or not
+        try:
+            for g in GENERATORS:
+                buf = io.StringIO()
+                with contextlib.redirect_stdout(buf):
+                    code = _main_of(f'sdem.{g}')(['--check'] if a.cmd == 'check' else [])
+                print(f"  {'OK   ' if code == 0 else 'STALE' if a.cmd == 'check' else 'FAIL '} {g}")
+                if code: stale.append(g)
+        finally:
+            if not had: parts.leave_core_docs()
         if stale: print(f"{len(stale)} generator(s) {'stale — run: sdem model regenerate' if a.cmd == 'check' else 'failed'}: {', '.join(stale)}"); return 1
         print('all generated files current' if a.cmd == 'check' else 'all generated files regenerated'); return 0
     sys.path.insert(0, str(ROOT / 'scripts'))
@@ -473,6 +481,15 @@ def model(argv):
 
 
 def main(argv=None):
+    import errno, os
+    had = 'SDEM_CORE_DOCS' in os.environ
+    try: return _main_guarded(argv)
+    finally:
+        if not had and 'SDEM_CORE_DOCS' in os.environ:   # SDEM's own documents were made in this call (BX-15): the core-only mode ends with it
+            from . import parts; parts.leave_core_docs()
+
+
+def _main_guarded(argv):
     import errno
     try: return _main(argv)
     except OSError as e:   # the reader stopped early (sdem … | head): no traceback — EPIPE, or EINVAL on Windows
@@ -489,13 +506,18 @@ def _main(argv=None):
             try: stream.reconfigure(encoding='utf-8', errors='replace')
             except (ValueError, OSError): pass
     argv = list(sys.argv[1:] if argv is None else argv)
-    if argv[:1] == ['bian'] and 'bian' not in PROVIDED:   # ST-22: an installed sdem-bian runs `sdem bian` with its own code (BP-05, BP-10)
+    if argv[:1] == ['model'] and argv[1:2] in (['regenerate'], ['check']):   # BX-15: SDEM's own documents — the core's, before anything computes its layers
+        import os; os.environ['SDEM_CORE_DOCS'] = '1'
+        from . import parts; parts._STATE['bian'] = None; parts.bian_on(); parts.identity_changed()   # what was computed before, again
+    if argv[:1] == ['bian'] and 'bian' not in PROVIDED:   # ST-22, BX-15: `sdem bian` is sdem-bian's own code — SDEM ships none since 0.22
         from . import parts
-        if (parts.package() or {}).get('code'):
-            from . import extensions
-            code = extensions.run('bian', argv[1:])
-            if code is not None:
-                return code
+        if not (parts.package() or {}).get('code'):
+            from . import errors
+            return errors.report(parts.missing('sdem bian'))
+        from . import extensions
+        code = extensions.run('bian', argv[1:])
+        if code is not None:
+            return code
     if argv and argv[0] not in JOURNEYS and not argv[0].startswith('-'):   # EXT-15: sdem <name> runs the installed extension sdem-<name>,
         from . import extensions                                            # with the rest of the line untouched — its own --help, --dry-run, --json
         code = extensions.run(argv[0], argv[1:])

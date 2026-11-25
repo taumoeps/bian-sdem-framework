@@ -747,6 +747,172 @@
           "edges": 69
         }
       ]
+    },
+    {
+      "build": 10,
+      "at": "2026-11-24T20:03:31+00:00",
+      "inputs": [
+        {
+          "path": "examples/payment-initiation-v2//a1-business.json",
+          "kind": "export",
+          "level": "A1",
+          "model_id": "synthetic-bank-payments-v2-a1",
+          "model_version": "2026.10",
+          "sha256": "cc18d83b5abe6a139592ff5c2174cbb385474dce72f9f60d0f9a0c4253b17694"
+        },
+        {
+          "path": "examples/payment-initiation-v2//a2-service-domain.json",
+          "kind": "export",
+          "level": "A2",
+          "model_id": "synthetic-bank-payments-v2-a2",
+          "model_version": "2026.10",
+          "sha256": "ed4cbe7bd067bb8182a643f04a69c945ea58fcc3d2d30b3f148c1986d32212cd"
+        },
+        {
+          "path": "examples/payment-initiation-v2//a3-application.json",
+          "kind": "export",
+          "level": "A3",
+          "model_id": "synthetic-bank-payments-v2-a3",
+          "model_version": "2026.10",
+          "sha256": "74c0d6176a470dbdbc89dfd1243a8fb8cd1bed04d55030159a3c4913ccf111cc"
+        },
+        {
+          "path": "examples/payment-initiation-v2//a4-technology.json",
+          "kind": "export",
+          "level": "A4",
+          "model_id": "synthetic-bank-payments-v2-a4",
+          "model_version": "2026.10",
+          "sha256": "637157c3c7706636cc72802f543a9b2e16dadcd8372294d38b326795ff627e6c"
+        },
+        {
+          "path": "examples/payment-initiation-v2//mappings.json",
+          "kind": "registry",
+          "registry_version": "0.4.0",
+          "sha256": "758a1386556a2a7db852f75e478e2025d23b6132f08b86dcb9948fc7a65702a7"
+        }
+      ],
+      "metamodel_version": "0.20.0",
+      "errors": [],
+      "warnings": [
+        "level A2 (synthetic-bank-payments-v2-a2): instance BBO-PAY-INSTR: its field names and its field records disagree — no record for creditor_account_reference, currency, debtor_account_reference, payment_instruction_reference, payment_status, remittance_information, value_date (LC-24)",
+        "level A2 (synthetic-bank-payments-v2-a2): instance BBO-PARTY: its field names and its field records disagree — no record for party_name, party_reference, party_type — not in its list: PartyActivityIndicator, PartyDateTime, PartyIdentification, PartyLegalStructureType, PartyName, PartyType, party reference (LC-24)"
+      ],
+      "result": "accepted",
+      "outputs": [
+        {
+          "file": "a1-business.graph.json",
+          "sha256": "ef3ba6ce8edc6395e4b494414e5551b894fd9c922a2a22be1bd1d9d83c5ae1cb",
+          "nodes": 26,
+          "edges": 31
+        },
+        {
+          "file": "a2-service-domain.graph.json",
+          "sha256": "f2e7fe99e628508acb7abe38c3b7844ac9973ed89c36fb235020b21ec0c42549",
+          "nodes": 132,
+          "edges": 154
+        },
+        {
+          "file": "a3-application.graph.json",
+          "sha256": "31348d8d400a75b81dedd5c1b0955c0048a1c04a1b0e2aacbf486d6d6baed968",
+          "nodes": 58,
+          "edges": 67
+        },
+        {
+          "file": "a4-technology.graph.json",
+          "sha256": "6681d0500113307fb55e7defb19d6facc479ca866dcef7f7771f02d2adee6f02",
+          "nodes": 28,
+          "edges": 49
+        },
+        {
+          "file": "federated.graph.json",
+          "sha256": "7dc309e22d54f1c51d1ea5deef7858d626b134f313c4bb2b8e846531b9315eb8",
+          "nodes": 106,
+          "edges": 69
+        }
+      ]
+    },
+    {
+      "build": 11,
+      "at": "2026-11-24T20:03:48+00:00",
+      "inputs": [
+        {
+          "path": "examples/payment-initiation-v2//a1-business.json",
+          "kind": "export",
+          "level": "A1",
+          "model_id": "synthetic-bank-payments-v2-a1",
+          "model_version": "2026.10",
+          "sha256": "cc18d83b5abe6a139592ff5c2174cbb385474dce72f9f60d0f9a0c4253b17694"
+        },
+        {
+          "path": "examples/payment-initiation-v2//a2-service-domain.json",
+          "kind": "export",
+          "level": "A2",
+          "model_id": "synthetic-bank-payments-v2-a2",
+          "model_version": "2026.10",
+          "sha256": "ed4cbe7bd067bb8182a643f04a69c945ea58fcc3d2d30b3f148c1986d32212cd"
+        },
+        {
+          "path": "examples/payment-initiation-v2//a3-application.json",
+          "kind": "export",
+          "level": "A3",
+          "model_id": "synthetic-bank-payments-v2-a3",
+          "model_version": "2026.10",
+          "sha256": "74c0d6176a470dbdbc89dfd1243a8fb8cd1bed04d55030159a3c4913ccf111cc"
+        },
+        {
+          "path": "examples/payment-initiation-v2//a4-technology.json",
+          "kind": "export",
+          "level": "A4",
+          "model_id": "synthetic-bank-payments-v2-a4",
+          "model_version": "2026.10",
+          "sha256": "637157c3c7706636cc72802f543a9b2e16dadcd8372294d38b326795ff627e6c"
+        },
+        {
+          "path": "examples/payment-initiation-v2//mappings.json",
+          "kind": "registry",
+          "registry_version": "0.4.0",
+          "sha256": "758a1386556a2a7db852f75e478e2025d23b6132f08b86dcb9948fc7a65702a7"
+        }
+      ],
+      "metamodel_version": "0.20.0",
+      "errors": [],
+      "warnings": [
+        "level A2 (synthetic-bank-payments-v2-a2): instance BBO-PAY-INSTR: its field names and its field records disagree — no record for creditor_account_reference, currency, debtor_account_reference, payment_instruction_reference, payment_status, remittance_information, value_date (LC-24)",
+        "level A2 (synthetic-bank-payments-v2-a2): instance BBO-PARTY: its field names and its field records disagree — no record for party_name, party_reference, party_type — not in its list: PartyActivityIndicator, PartyDateTime, PartyIdentification, PartyLegalStructureType, PartyName, PartyType, party reference (LC-24)"
+      ],
+      "result": "accepted",
+      "outputs": [
+        {
+          "file": "a1-business.graph.json",
+          "sha256": "ef3ba6ce8edc6395e4b494414e5551b894fd9c922a2a22be1bd1d9d83c5ae1cb",
+          "nodes": 26,
+          "edges": 31
+        },
+        {
+          "file": "a2-service-domain.graph.json",
+          "sha256": "f2e7fe99e628508acb7abe38c3b7844ac9973ed89c36fb235020b21ec0c42549",
+          "nodes": 132,
+          "edges": 154
+        },
+        {
+          "file": "a3-application.graph.json",
+          "sha256": "31348d8d400a75b81dedd5c1b0955c0048a1c04a1b0e2aacbf486d6d6baed968",
+          "nodes": 58,
+          "edges": 67
+        },
+        {
+          "file": "a4-technology.graph.json",
+          "sha256": "6681d0500113307fb55e7defb19d6facc479ca866dcef7f7771f02d2adee6f02",
+          "nodes": 28,
+          "edges": 49
+        },
+        {
+          "file": "federated.graph.json",
+          "sha256": "7dc309e22d54f1c51d1ea5deef7858d626b134f313c4bb2b8e846531b9315eb8",
+          "nodes": 106,
+          "edges": 69
+        }
+      ]
     }
   ]
 }

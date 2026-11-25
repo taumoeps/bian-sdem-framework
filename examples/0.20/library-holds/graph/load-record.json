@@ -261,6 +261,214 @@
           "edges": 11
         }
       ]
+    },
+    {
+      "build": 4,
+      "at": "2026-11-24T20:03:33+00:00",
+      "inputs": [
+        {
+          "path": "examples/0.20/library-holds//application.json",
+          "kind": "export",
+          "level": "A4",
+          "model_id": "library-holds-a3",
+          "model_version": "2026.11",
+          "sha256": "8c4e9eec82af7ed9f078e1402c9e9f1ab8f71b8ae553fec80d1effc975daa938"
+        },
+        {
+          "path": "examples/0.20/library-holds//mappings.json",
+          "kind": "registry",
+          "registry_version": "0.4.0",
+          "sha256": "31253f9596607f159759c410ac15ac580503959447805c7cb2b8279a2f6fd7fc"
+        }
+      ],
+      "metamodel_version": "0.20.0",
+      "errors": [
+        "mappings #1: mapping #1 (LIB-001): source A1.BusinessProcess PRC-PLACE-HOLD@1.0 not found in level model",
+        "mappings #1: mapping #2 (LIB-002): source A1.BusinessService BSV-HOLDS@1.0 not found in level model",
+        "mappings #1: mapping #3 (LIB-003): source A1.BusinessObject BO-HOLD@1.0 not found in level model",
+        "mappings #1: mapping #3 (LIB-003): target A3.DataEntity DE-HOLD@1.0 not found in level model",
+        "mappings #1: mapping #4 (LIB-004): target A5.SystemSoftware SYS-CIRC-RUNTIME@1.0 not found in level model",
+        "mappings #1: mapping #5 (LIB-005): target A5.Deployment DEP-CIRC-PROD@1.0 not found in level model",
+        "mappings #1: mapping #6 (LIB-006): source A3.DataEntity DE-HOLD@1.0 not found in level model",
+        "mappings #1: mapping #6 (LIB-006): target A5.SystemSoftware SYS-CATALOGUE-DB@1.0 not found in level model",
+        "mappings #1: mapping #7 (LIB-007): source A3.DataEntity DE-HOLD@1.0 not found in level model"
+      ],
+      "warnings": [],
+      "result": "rejected"
+    },
+    {
+      "build": 5,
+      "at": "2026-11-24T20:03:33+00:00",
+      "inputs": [
+        {
+          "path": "examples/0.20/library-holds/business.json",
+          "kind": "export",
+          "level": "A1",
+          "model_id": "library-holds-a1",
+          "model_version": "2026.11",
+          "sha256": "d820d29d08b3b955c8feabe0b75a42c4e6a6dee15a495f20c8a7dc2fc65dc780"
+        },
+        {
+          "path": "examples/0.20/library-holds/data.json",
+          "kind": "export",
+          "level": "A3",
+          "model_id": "library-holds-a3-data",
+          "model_version": "2026.11",
+          "sha256": "beddd347eccc9792dea01eb1c73f2675640ac73c72189fb0e7c2224a784621eb"
+        },
+        {
+          "path": "examples/0.20/library-holds/application.json",
+          "kind": "export",
+          "level": "A4",
+          "model_id": "library-holds-a3",
+          "model_version": "2026.11",
+          "sha256": "8c4e9eec82af7ed9f078e1402c9e9f1ab8f71b8ae553fec80d1effc975daa938"
+        },
+        {
+          "path": "examples/0.20/library-holds/technology.json",
+          "kind": "export",
+          "level": "A5",
+          "model_id": "library-holds-a4",
+          "model_version": "2026.11",
+          "sha256": "c4354b6fdbf6db2c4ff31f1cbd5bba03b5a5a1294ad557bea214dc3db6aaa5b9"
+        },
+        {
+          "path": "examples/0.20/library-holds/mappings.json",
+          "kind": "registry",
+          "registry_version": "0.4.0",
+          "sha256": "31253f9596607f159759c410ac15ac580503959447805c7cb2b8279a2f6fd7fc"
+        }
+      ],
+      "metamodel_version": "0.20.0",
+      "errors": [],
+      "warnings": [],
+      "result": "accepted",
+      "stack": [
+        "business",
+        "bian",
+        "data",
+        "application",
+        "technology"
+      ],
+      "outputs": [
+        {
+          "file": "application.graph.json",
+          "sha256": "bf44055cd7c1f6251bafa754d2582e7c5452c70f5be922b12d74da8e76241e61",
+          "nodes": 4,
+          "edges": 2
+        },
+        {
+          "file": "business.graph.json",
+          "sha256": "986198123acbffad824e2ba08c13a3fa4928d9a7a170321dd143730cf5ee68b2",
+          "nodes": 12,
+          "edges": 6
+        },
+        {
+          "file": "data.graph.json",
+          "sha256": "7266ca051a7a28ae1a42c4620c2976fe1979462a9306ac00971196a0591814d5",
+          "nodes": 1,
+          "edges": 0
+        },
+        {
+          "file": "federated.graph.json",
+          "sha256": "4285beba979e454450f2459760e02b31916c0a6936ac7479e2c54d800293e513",
+          "nodes": 9,
+          "edges": 7
+        },
+        {
+          "file": "technology.graph.json",
+          "sha256": "cf87899daf4513f16b579fa49b10a99c67f4654bfc230be38ff570dda92968db",
+          "nodes": 8,
+          "edges": 11
+        }
+      ]
+    },
+    {
+      "build": 6,
+      "at": "2026-11-24T20:03:49+00:00",
+      "inputs": [
+        {
+          "path": "examples/0.20/library-holds/business.json",
+          "kind": "export",
+          "level": "A1",
+          "model_id": "library-holds-a1",
+          "model_version": "2026.11",
+          "sha256": "d820d29d08b3b955c8feabe0b75a42c4e6a6dee15a495f20c8a7dc2fc65dc780"
+        },
+        {
+          "path": "examples/0.20/library-holds/data.json",
+          "kind": "export",
+          "level": "A3",
+          "model_id": "library-holds-a3-data",
+          "model_version": "2026.11",
+          "sha256": "beddd347eccc9792dea01eb1c73f2675640ac73c72189fb0e7c2224a784621eb"
+        },
+        {
+          "path": "examples/0.20/library-holds/application.json",
+          "kind": "export",
+          "level": "A4",
+          "model_id": "library-holds-a3",
+          "model_version": "2026.11",
+          "sha256": "8c4e9eec82af7ed9f078e1402c9e9f1ab8f71b8ae553fec80d1effc975daa938"
+        },
+        {
+          "path": "examples/0.20/library-holds/technology.json",
+          "kind": "export",
+          "level": "A5",
+          "model_id": "library-holds-a4",
+          "model_version": "2026.11",
+          "sha256": "c4354b6fdbf6db2c4ff31f1cbd5bba03b5a5a1294ad557bea214dc3db6aaa5b9"
+        },
+        {
+          "path": "examples/0.20/library-holds/mappings.json",
+          "kind": "registry",
+          "registry_version": "0.4.0",
+          "sha256": "31253f9596607f159759c410ac15ac580503959447805c7cb2b8279a2f6fd7fc"
+        }
+      ],
+      "metamodel_version": "0.20.0",
+      "errors": [],
+      "warnings": [],
+      "result": "accepted",
+      "stack": [
+        "business",
+        "bian",
+        "data",
+        "application",
+        "technology"
+      ],
+      "outputs": [
+        {
+          "file": "application.graph.json",
+          "sha256": "bf44055cd7c1f6251bafa754d2582e7c5452c70f5be922b12d74da8e76241e61",
+          "nodes": 4,
+          "edges": 2
+        },
+        {
+          "file": "business.graph.json",
+          "sha256": "986198123acbffad824e2ba08c13a3fa4928d9a7a170321dd143730cf5ee68b2",
+          "nodes": 12,
+          "edges": 6
+        },
+        {
+          "file": "data.graph.json",
+          "sha256": "7266ca051a7a28ae1a42c4620c2976fe1979462a9306ac00971196a0591814d5",
+          "nodes": 1,
+          "edges": 0
+        },
+        {
+          "file": "federated.graph.json",
+          "sha256": "4285beba979e454450f2459760e02b31916c0a6936ac7479e2c54d800293e513",
+          "nodes": 9,
+          "edges": 7
+        },
+        {
+          "file": "technology.graph.json",
+          "sha256": "cf87899daf4513f16b579fa49b10a99c67f4654bfc230be38ff570dda92968db",
+          "nodes": 8,
+          "edges": 11
+        }
+      ]
     }
   ]
 }

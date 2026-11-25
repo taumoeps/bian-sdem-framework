@@ -2856,6 +2856,174 @@
           "edges": 23
         }
       ]
+    },
+    {
+      "build": 35,
+      "at": "2026-11-24T20:03:31+00:00",
+      "inputs": [
+        {
+          "path": "examples/customer-onboarding//a1-business.json",
+          "kind": "export",
+          "level": "A1",
+          "model_id": "synthetic-bank-onboarding-a1",
+          "model_version": "2026.10",
+          "sha256": "876c804574ce40c92eece50fee52ed4d039741aade95850ca9a3de21b302f9e9"
+        },
+        {
+          "path": "examples/customer-onboarding//a2-service-domain.json",
+          "kind": "export",
+          "level": "A2",
+          "model_id": "synthetic-bank-onboarding-a2",
+          "model_version": "2026.10",
+          "sha256": "91c1a32bbe1221d7e1abdb9295fd5bfe8bfa5d288faa91c3201b3776064a280b"
+        },
+        {
+          "path": "examples/customer-onboarding//a3-application.json",
+          "kind": "export",
+          "level": "A3",
+          "model_id": "synthetic-bank-onboarding-a3",
+          "model_version": "2026.10",
+          "sha256": "e1061641c9fb4c8a76cad9512f3fab430486260cb71ea251a6e40d6e14250c03"
+        },
+        {
+          "path": "examples/customer-onboarding//a4-technology.json",
+          "kind": "export",
+          "level": "A4",
+          "model_id": "synthetic-bank-onboarding-a4",
+          "model_version": "2026.10",
+          "sha256": "b7b8a3fb9e4545f7281a5502e9a5aaee3430cb92d3ab872a93584889b83a90b0"
+        },
+        {
+          "path": "examples/customer-onboarding//mappings.json",
+          "kind": "registry",
+          "registry_version": "0.4.0",
+          "sha256": "d9e1bdec6d644a5309139dbde179e65a41a7e6fec957a166887fbf798d26c196"
+        }
+      ],
+      "metamodel_version": "0.20.0",
+      "errors": [],
+      "warnings": [
+        "level A2 (synthetic-bank-onboarding-a2): instance SD-001: 0 composition links with A2.BusinessDomain, RA2-02 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-bank-onboarding-a2): instance BBO-001: its field names and its field records disagree — no record for address, date_of_birth, legal_name, national_id, verification_status (LC-24)",
+        "level A3 (synthetic-bank-onboarding-a3): instance ENT-001: its field names and its field records disagree — no record for address, captured_at, date_of_birth, legal_name, national_id, verification_status (LC-24)"
+      ],
+      "result": "accepted",
+      "outputs": [
+        {
+          "file": "a1-business.graph.json",
+          "sha256": "8791fed0e8b09412e4a464749ca4c2c25f3f3d945310cf76f67fb21c3092ea87",
+          "nodes": 12,
+          "edges": 12
+        },
+        {
+          "file": "a2-service-domain.graph.json",
+          "sha256": "408ad9a06bd31af995948340580c91c37f59f755b85db6580da88c423bdef034",
+          "nodes": 10,
+          "edges": 12
+        },
+        {
+          "file": "a3-application.graph.json",
+          "sha256": "3cd56e3c28bd87a2ddfa4d0ed8296a1c3976168b018fce3c39f81efd8922b8e3",
+          "nodes": 9,
+          "edges": 8
+        },
+        {
+          "file": "a4-technology.graph.json",
+          "sha256": "f78b048a24e3a6523fb625dcad2ca6228dc2586b35f33172f9ece88cab0b7ae0",
+          "nodes": 11,
+          "edges": 13
+        },
+        {
+          "file": "federated.graph.json",
+          "sha256": "6c07b3aa05f136087213322032a0dc2006fea679fe30d13131db88a2cd30051b",
+          "nodes": 27,
+          "edges": 23
+        }
+      ]
+    },
+    {
+      "build": 36,
+      "at": "2026-11-24T20:03:48+00:00",
+      "inputs": [
+        {
+          "path": "examples/customer-onboarding//a1-business.json",
+          "kind": "export",
+          "level": "A1",
+          "model_id": "synthetic-bank-onboarding-a1",
+          "model_version": "2026.10",
+          "sha256": "876c804574ce40c92eece50fee52ed4d039741aade95850ca9a3de21b302f9e9"
+        },
+        {
+          "path": "examples/customer-onboarding//a2-service-domain.json",
+          "kind": "export",
+          "level": "A2",
+          "model_id": "synthetic-bank-onboarding-a2",
+          "model_version": "2026.10",
+          "sha256": "91c1a32bbe1221d7e1abdb9295fd5bfe8bfa5d288faa91c3201b3776064a280b"
+        },
+        {
+          "path": "examples/customer-onboarding//a3-application.json",
+          "kind": "export",
+          "level": "A3",
+          "model_id": "synthetic-bank-onboarding-a3",
+          "model_version": "2026.10",
+          "sha256": "e1061641c9fb4c8a76cad9512f3fab430486260cb71ea251a6e40d6e14250c03"
+        },
+        {
+          "path": "examples/customer-onboarding//a4-technology.json",
+          "kind": "export",
+          "level": "A4",
+          "model_id": "synthetic-bank-onboarding-a4",
+          "model_version": "2026.10",
+          "sha256": "b7b8a3fb9e4545f7281a5502e9a5aaee3430cb92d3ab872a93584889b83a90b0"
+        },
+        {
+          "path": "examples/customer-onboarding//mappings.json",
+          "kind": "registry",
+          "registry_version": "0.4.0",
+          "sha256": "d9e1bdec6d644a5309139dbde179e65a41a7e6fec957a166887fbf798d26c196"
+        }
+      ],
+      "metamodel_version": "0.20.0",
+      "errors": [],
+      "warnings": [
+        "level A2 (synthetic-bank-onboarding-a2): instance SD-001: 0 composition links with A2.BusinessDomain, RA2-02 expects at least 1 (LC-10m)",
+        "level A2 (synthetic-bank-onboarding-a2): instance BBO-001: its field names and its field records disagree — no record for address, date_of_birth, legal_name, national_id, verification_status (LC-24)",
+        "level A3 (synthetic-bank-onboarding-a3): instance ENT-001: its field names and its field records disagree — no record for address, captured_at, date_of_birth, legal_name, national_id, verification_status (LC-24)"
+      ],
+      "result": "accepted",
+      "outputs": [
+        {
+          "file": "a1-business.graph.json",
+          "sha256": "8791fed0e8b09412e4a464749ca4c2c25f3f3d945310cf76f67fb21c3092ea87",
+          "nodes": 12,
+          "edges": 12
+        },
+        {
+          "file": "a2-service-domain.graph.json",
+          "sha256": "408ad9a06bd31af995948340580c91c37f59f755b85db6580da88c423bdef034",
+          "nodes": 10,
+          "edges": 12
+        },
+        {
+          "file": "a3-application.graph.json",
+          "sha256": "3cd56e3c28bd87a2ddfa4d0ed8296a1c3976168b018fce3c39f81efd8922b8e3",
+          "nodes": 9,
+          "edges": 8
+        },
+        {
+          "file": "a4-technology.graph.json",
+          "sha256": "f78b048a24e3a6523fb625dcad2ca6228dc2586b35f33172f9ece88cab0b7ae0",
+          "nodes": 11,
+          "edges": 13
+        },
+        {
+          "file": "federated.graph.json",
+          "sha256": "6c07b3aa05f136087213322032a0dc2006fea679fe30d13131db88a2cd30051b",
+          "nodes": 27,
+          "edges": 23
+        }
+      ]
     }
   ]
 }

@@ -41,6 +41,7 @@ class Checks:
         except ValueError as e: return [f'cannot read: {e}']
         words = toks[1:]
         if words and words[0] in ('--version', '-V', '--help', '-h'): return []   # sdem's own top-level flags
+        if words and words[0] == 'bian': return []   # BX-15: sdem bian … is sdem-bian's own command (its --help says its options)
         name = None
         for k in range(len(words), 0, -1):
             cand = ' '.join(words[:k])

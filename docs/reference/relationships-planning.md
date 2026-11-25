@@ -13,10 +13,10 @@ Generated from `metamodel/level-relationships.json` by `python -m sdem.relations
 | Level | Reference source | Rows | high | medium | low |
 |---|---|---|---|---|---|
 | A1 Business Architecture | ArchiMate 3.2 chapters 6 (Motivation), 7 (Strategy) and 8 (Business) | 60 | 60 | 0 | 0 |
-| A2 Service Domain Architecture | BIAN Service Landscape 14 metamodel, Control Record Model, Business Object Model and the Semantic API Practitioner Guide | 23 | 20 | 2 | 1 |
+| A2 Service Domain Architecture | BIAN Service Landscape 14 metamodel, Control Record Model, Business Object Model and the Semantic API Practitioner Guide | 0 | 0 | 0 | 0 |
 | A3 Application Architecture | ArchiMate 3.2 chapter 9 (Application) and TOGAF 10 (Solution Building Block); SDEM extension rows for API operations | 36 | 30 | 4 | 2 |
 | A4 Technology Architecture | ArchiMate 3.2 chapter 10 (Technology); SDEM extension rows for Deployment and Deployment Environment | 45 | 43 | 0 | 2 |
-| **Total** | | **164** | 153 | 6 | 5 |
+| **Total** | | **141** | 133 | 4 | 4 |
 
 ## A1 Business Architecture
 
@@ -91,29 +91,6 @@ Reference: BIAN Service Landscape 14 metamodel, Control Record Model, Business O
 
 | ID | Official | Source entity | Kind | Target entity | Description | Reference source | Reasoning | Confidence | Verification |
 |---|---|---|---|---|---|---|---|---|---|
-| RA2-01 | B02 | A2.BusinessArea | composition | A2.BusinessDomain | A business area is composed of business domains. | [SL14] Service Landscape (public portal) | The Service Landscape is a three-tier grouping: areas contain domains contain Service Domains. | high | verified |
-| RA2-02 | B03 | A2.BusinessDomain | composition | A2.ServiceDomain | A business domain is composed of Service Domains. | [SL14] Service Landscape (public portal) | Second tier of the landscape grouping. | high | verified |
-| RA2-03 | B09 | A2.ServiceDomain | composition | A2.ServiceGroup | A Service Domain offers its operations in service groups. | [SL14] MetaModel Overview (public portal) | The metamodel overview places service groups between the domain and its operations. | high | verified |
-| RA2-04 | B10 | A2.ServiceGroup | composition | A2.ServiceOperation | A service group contains service operations. | [SL14] MetaModel Overview (public portal) | Operations are the leaves of the domain's service structure. | high | verified |
-| RA2-05 | B06 | A2.ServiceDomain | aggregation | A2.ControlRecord | A Service Domain governs one control record. | [SL14] MetaModel Overview; Control Record Model (public portal) | Every Service Domain has exactly one control record, the thing it manages across its lifecycle. | high | verified |
-| RA2-06 | B04 | A2.ServiceDomain | association | A2.FunctionalPattern | A Service Domain applies one functional pattern. | [SL14] MetaModel Overview (public portal) | The pattern names the generic behaviour the domain performs on its asset. | high | verified |
-| RA2-07 | B05 | A2.ServiceDomain | association | A2.AssetType | A Service Domain manages one asset type. | [SL14] MetaModel Overview (public portal) | The asset type is the thing the pattern acts on; pattern plus asset define the domain. | high | verified |
-| RA2-08 | — | A2.ServiceOperation | association | A2.BehaviorQualifier | A service operation may be qualified by a behaviour qualifier. | [SAPG] §3.2.4, §3.5 | Operations act on a partition of the control record; the qualifier names that partition and appears in the REST path. | high | verified |
-| RA2-09 | B13 | A2.BusinessScenario | aggregation | A2.ServiceOperation | A business scenario sequences service operations across domains. | [SL14] Business Scenarios; [SAPG] §3.3 | Scenarios are illustrative choreographies of operations; aggregation because operations exist independently. | high | verified |
-| RA2-10 | — | A2.BusinessObject | composition | A2.BusinessObjectAttribute | A business object is composed of its attributes. | [SL14] Business Object Model (public portal) | The BOM defines objects as sets of typed attributes. | high | verified |
-| RA2-11 | B07 | A2.ControlRecord | composition | A2.BehaviorQualifier | A control record is partitioned by behaviour qualifiers. | [SL14] MetaModel Overview; [SAPG] §3.2.4 | Qualifiers are the sub-structures of the control record that operations address. | high | verified |
-| RA2-12 | B08 | A2.ControlRecord | association | A2.BusinessObject | A control record's attributes are typed by business objects. | [SL14] BOM Overview; [RN14] §1.3 | Control records and the BOM were rationalised together in release 14. | high | verified |
-| RA2-13 | B11 | A2.ServiceOperation | access | A2.ControlRecord | A service operation acts on the control record. | [SAPG] §3.2.5, §3.5 | Every operation reads or changes the domain's control record; the action term says how. | high | verified |
-| RA2-14 | B12 | A2.ServiceDomain | flow | A2.ServiceDomain | A Service Domain connects to other Service Domains. | [SAPG] §3.2.6 | First-order connections: the domains a domain calls or is called by. | high | verified |
-| RA2-15 | B14 | A2.Wireframe | association | A2.ServiceDomain | A wireframe depicts a Service Domain. | [SL14] Wireframes Overview; [SAPG] §3.4 | Wireframes are published per domain as an illustrative artefact. Not enforceable: artefact entities are never instantiated in an architecture dataset (LevelGraph rejects them), so the row records provenance only. | high | verified |
-| RA2-16 | B15 | A2.SemanticAPI | realization | A2.ServiceDomain | A Semantic API is derived from a Service Domain. | [APIP]; [SAPG] §3.5 | The reference API is the domain's operations in REST form. Not enforceable: artefact entities are never instantiated in an architecture dataset (LevelGraph rejects them), so the row records provenance only. | high | verified |
-| RA2-17 | — | A2.BOMModel | aggregation | A2.BusinessObject | The versioned Business Object Model artefact aggregates the business objects. | [SL14] BOM Overview (public portal); SDEM reading | The BOM release is the container of the objects that type control records; SDEM reading of the BOM overview, not a published BIAN relationship. Not enforceable: artefact entities are never instantiated in an architecture dataset (LevelGraph rejects them), so the row records provenance only. | low | sdem_reading |
-| RA2-18 | — | A2.BusinessObject | composition | A2.BusinessObject | BIAN business objects related by composition (from BIAN’s schema references, IM-03). | [ARCHI] | IM-03: the logical model’s relationships between objects. | high | verified_against_archi |
-| RA2-19 | — | A2.BusinessObject | aggregation | A2.BusinessObject | BIAN business objects related by aggregation (from BIAN’s schema references, IM-03). | [ARCHI] | IM-03: the logical model’s relationships between objects. | high | verified_against_archi |
-| RA2-20 | — | A2.BusinessObject | specialization | A2.BusinessObject | BIAN business objects related by specialization (from BIAN’s schema references, IM-03). | [ARCHI] | IM-03: the logical model’s relationships between objects. | high | verified_against_archi |
-| RA2-21 | — | A2.BusinessObject | association | A2.BusinessObject | BIAN business objects related by association (from BIAN’s schema references, IM-03). | [ARCHI] | IM-03: the logical model’s relationships between objects. | high | verified_against_archi |
-| RA2-22 | — | A2.BusinessObjectAttribute | association | A2.BusinessObject | An attribute of data_type reference refers to the business object it names. | SDEM | IM-03: OpenAPI $ref between BIAN schemas. | medium | sdem_definition |
-| RA2-23 | — | A2.ServiceOperation | access | A2.BusinessObject | An operation reads or writes a business object. | SDEM | CT-02: an operation’s information is the objects’ typed fields. | medium | sdem_definition |
 
 ## A3 Application Architecture
 
@@ -234,12 +211,10 @@ How far each row has been checked, and against what. `verified_against_archi` is
 
 | Status | Rows | Meaning |
 |---|---|---|
-| verified_against_archi | 137 | concept pair and kind listed by the open-source Archi relationship matrix — an implementation of the ArchiMate 3.2 relationship tables, cited by commit below |
-| verified | 16 | checked against BIAN's public pages (A2) |
+| verified_against_archi | 133 | concept pair and kind listed by the open-source Archi relationship matrix — an implementation of the ArchiMate 3.2 relationship tables, cited by commit below |
 | sdem_definition_grounded | 4 |  |
-| sdem_definition | 4 | follows from an SDEM extension entity's definition |
 | unverified_togaf | 2 | paraphrased from TOGAF; no public oracle |
-| sdem_reading | 1 | SDEM's reading of a public BIAN page that states no explicit relationship |
+| sdem_definition | 2 | follows from an SDEM extension entity's definition |
 
 **Oracle.** Archi relationship matrix (open-source implementation of the ArchiMate 3.2 relationship tables): `github.com/archimatetool/archi` › `com.archimatetool.model/model/relationships.xml`, read at commit `9e6a014f9ef6a782a7dda604ef7b4d03d2c7819a` (file last changed `6d236081d9460f063076dbb6225f8645c5f5a7a5`, declares version 3.2), 2026-10-23. Nothing from the oracle is stored in this repository; each test-log entry records only the letters listed for the row's concept pair. verified_against_archi = the row's concept pair and kind are listed by the oracle; distinct from verified (specification text), which needs Open Group access. Calibration: every low-confidence inference tested in Phase 2 (7 at the time) was confirmed — the low band was over-cautious for derived dynamic relationships.
 
