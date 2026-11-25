@@ -5,6 +5,7 @@ import json, os, shutil, subprocess, sys, tempfile, unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+import sys as _s2, pathlib as _pl2; _s2.path.insert(0, str(_pl2.Path(__file__).resolve().parent)); from needs import EXAMPLES  # noqa: E402 — SDEM's examples and sdem-bian's (R-D6)
 ENV = {**os.environ, 'PYTHONPATH': str(ROOT) + os.pathsep + os.environ.get('PYTHONPATH', '')}
 P = ('--person', 'jane.architect')
 
@@ -20,7 +21,7 @@ import sys as _s, pathlib as _pl; _s.path.insert(0, str(_pl.Path(__file__).resol
 class DocumentationChangeTests(unittest.TestCase):
     def setUp(self):
         self.d = Path(tempfile.mkdtemp())
-        shutil.copytree(ROOT / 'examples' / 'payment-initiation', self.d / 'ws', ignore=shutil.ignore_patterns('graph', 'migrations'))
+        shutil.copytree(EXAMPLES / 'payment-initiation', self.d / 'ws', ignore=shutil.ignore_patterns('graph', 'migrations'))
 
     def tearDown(self): shutil.rmtree(self.d, ignore_errors=True)
 

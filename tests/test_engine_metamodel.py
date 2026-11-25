@@ -8,6 +8,7 @@ import glob, json, re, sys, unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+import sys as _s2, pathlib as _pl2; _s2.path.insert(0, str(_pl2.Path(__file__).resolve().parent)); from needs import EXAMPLES  # noqa: E402 — SDEM's examples and sdem-bian's (R-D6)
 sys.path.insert(0, str(ROOT))
 from sdem.rules_engine import RulesEngine  # noqa: E402
 from sdem.store import GraphReader  # noqa: E402
@@ -27,7 +28,7 @@ ALLOWED = {
 
 def engine_log():
     log = []
-    for d in sorted(glob.glob(str(ROOT / 'examples') + '/*/')):
+    for d in sorted(glob.glob(str(EXAMPLES) + '/*/')):
         if not (Path(d) / 'mappings.json').exists(): continue   # examples/designs/ is not a workspace
         if 'reference-structure' in d: continue
         files = sorted(glob.glob(d + 'a*.json')) + [d + 'mappings.json']
@@ -43,6 +44,9 @@ def _full():   # the whole engine: SDEM's core rules with BIAN's steps from the 
     from test_acceptance import full_engine
     return full_engine()
 
+import sys as _s, pathlib as _pl; _s.path.insert(0, str(_pl.Path(__file__).resolve().parent)); from needs import bian as _needs_bian  # noqa: E402 — BX-15: tests that need sdem-bian
+
+@_needs_bian
 class EngineMetamodelTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):

@@ -5,6 +5,7 @@ from pathlib import Path
 from sdem.acceptance import ReplayEngine, load_cases, run
 
 ROOT = Path(__file__).resolve().parents[1]
+import sys as _s2, pathlib as _pl2; _s2.path.insert(0, str(_pl2.Path(__file__).resolve().parent)); from needs import EXAMPLES  # noqa: E402 — SDEM's examples and sdem-bian's (R-D6)
 
 
 import sys as _s, pathlib as _pl; _s.path.insert(0, str(_pl.Path(__file__).resolve().parent)); from needs import bian as _needs_bian  # noqa: E402 — BX-15: tests that need sdem-bian
@@ -98,7 +99,7 @@ class CommandTests(unittest.TestCase):
         from sdem.inference import main
         from sdem.store import build
         with tempfile.TemporaryDirectory() as t:
-            e = ROOT / 'examples' / 'payment-initiation'
+            e = EXAMPLES / 'payment-initiation'
             build(sorted(str(p) for p in e.glob('a[1-4]-*.json')) + [str(e / 'm1-mappings-given.json')], Path(t) / 'g')
             ws = Path(t) / 'ws'; ws.mkdir()   # the design as a workspace — BIAN's rules read it, in sdem-bian (BX-15), as sdem link gives it
             for p in e.glob('a[1-4]-*.json'): shutil.copy(p, ws / p.name)

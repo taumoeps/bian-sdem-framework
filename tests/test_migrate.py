@@ -6,6 +6,7 @@ from sdem import migrate as M
 from sdem.metamodel import Metamodel
 
 ROOT = Path(__file__).resolve().parents[1]
+import sys as _s2, pathlib as _pl2; _s2.path.insert(0, str(_pl2.Path(__file__).resolve().parent)); from needs import EXAMPLES  # noqa: E402 — SDEM's examples and sdem-bian's (R-D6)
 CUR = Metamodel.load().version
 
 
@@ -15,7 +16,7 @@ import sys as _s, pathlib as _pl; _s.path.insert(0, str(_pl.Path(__file__).resol
 class MigrateTests(unittest.TestCase):
     def setUp(self):
         self.tmp = Path(tempfile.mkdtemp()); self.est = self.tmp / 'est'
-        shutil.copytree(ROOT / 'examples' / 'payment-initiation', self.est, ignore=shutil.ignore_patterns('graph', 'migrations'))
+        shutil.copytree(EXAMPLES / 'payment-initiation', self.est, ignore=shutil.ignore_patterns('graph', 'migrations'))
         p = self.est / 'a3-application.json'; d = json.loads(p.read_text())
         d['metamodel_version'] = '0.3.0'
         self.inst = next(i for i in d['instances'] if i.get('attributes'))

@@ -6,6 +6,7 @@ import json, os, shutil, subprocess, sys, tempfile, unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+import sys as _s2, pathlib as _pl2; _s2.path.insert(0, str(_pl2.Path(__file__).resolve().parent)); from needs import EXAMPLES  # noqa: E402 — SDEM's examples and sdem-bian's (R-D6)
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from forms import lf, migrated   # noqa: E402 — a layer's file in either form
 
@@ -73,7 +74,7 @@ class OrganisationTests(unittest.TestCase):
 
     def test_an_explicit_profile_wins(self):   # WS-10
         code, out = sdem('new', '--workspace', 'workspaces/team', '--organisation', 'bank-xyz', '--person', 'jane.architect',
-                         '--profile', ROOT / 'examples' / 'profiles' / 'payments-team.json', cwd=self.tmp)
+                         '--profile', EXAMPLES / 'profiles' / 'payments-team.json', cwd=self.tmp)
         self.assertEqual(code, 0, out); self.assertIn('profile bank-base → payments-team v1 (from ', out)
 
     def test_a_dry_run_writes_nothing(self):

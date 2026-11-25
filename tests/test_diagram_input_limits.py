@@ -5,10 +5,11 @@ from pathlib import Path
 from unittest import mock
 
 ROOT = Path(__file__).resolve().parents[1]
+import sys as _s2, pathlib as _pl2; _s2.path.insert(0, str(_pl2.Path(__file__).resolve().parent)); from needs import EXAMPLES  # noqa: E402 — SDEM's examples and sdem-bian's (R-D6)
 sys.path.insert(0, str(ROOT))
 from sdem import patterns  # noqa: E402
 
-SAMPLES = ROOT / 'examples' / 'profiles' / 'patterns' / 'diagrams'
+SAMPLES = EXAMPLES / 'profiles' / 'patterns' / 'diagrams'
 
 
 def drawio_compressed(xml_bytes):
@@ -68,8 +69,8 @@ class DiagramInputTests(unittest.TestCase):
     def test_the_command_says_error_not_a_traceback(self):
         f = self.tmp / 'broken.vsdx'; f.write_bytes(b'PK\x03\x04 damaged')
         env = {**os.environ, 'PYTHONPATH': str(ROOT) + os.pathsep + os.environ.get('PYTHONPATH', '')}
-        r = subprocess.run([sys.executable, '-m', 'sdem', 'pattern', 'extract', '--from', str(f), '--workspace', str(ROOT / 'examples' / 'payment-initiation'),
-                            '--id', 'PAT-X', '--owner', 'pattern.owner', '--anchor', 'Application', '--profile', str(ROOT / 'examples' / 'profiles' / 'bank-with-standards.json')],
+        r = subprocess.run([sys.executable, '-m', 'sdem', 'pattern', 'extract', '--from', str(f), '--workspace', str(EXAMPLES / 'payment-initiation'),
+                            '--id', 'PAT-X', '--owner', 'pattern.owner', '--anchor', 'Application', '--profile', str(EXAMPLES / 'profiles' / 'bank-with-standards.json')],
                            capture_output=True, text=True, env=env, cwd=self.tmp)
         self.assertEqual(r.returncode, 2, r.stdout + r.stderr); self.assertIn('ERROR:', r.stderr); self.assertNotIn('Traceback', r.stderr)
 

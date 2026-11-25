@@ -18,8 +18,9 @@ from .metamodel import Metamodel, ROOT
 from .store import GraphReader, build
 from .validate import load_registry, load_schema, validate
 
-CASES = ROOT / 'examples' / 'acceptance-cases.json'
-BLIND = ROOT / 'examples' / 'blind-cases.json'   # AID-E04: cases whose data and answer key were written without the engine's rules
+from .parts import example_path as _ex  # 0.22 (R-D6): the cases and their designs are sdem-bian's banking examples
+CASES = _ex('acceptance-cases.json')
+BLIND = _ex('blind-cases.json')   # AID-E04: cases whose data and answer key were written without the engine's rules
 EPS = 1e-9
 
 
@@ -33,7 +34,7 @@ def _j(p): return _jload(Path(p))
 
 
 def case_inputs(case):
-    e = ROOT / 'examples' / case['estate']
+    e = _ex(case['estate'])
     return sorted(str(p) for p in e.glob('a[1-4]-*.json')) + [str(e / case['given'])]
 
 
@@ -68,7 +69,7 @@ def _scoped(docs, scope):
 
 def floor(case):
     """The hand-executed run, scored like an engine."""
-    e = ROOT / 'examples' / case['estate']
+    e = _ex(case['estate'])
     out = {'registry': evaluate([_j(e / case['gold'])], [_j(e / case['executor']['proposals'])])['overall']}
     if case.get('gold_candidates'):
         sc = set(case['candidate_scope'])
@@ -92,7 +93,7 @@ def _infer(engine, reader, case, workdir):
 
 
 def run_case(case, engine, workdir):
-    e = ROOT / 'examples' / case['estate']
+    e = _ex(case['estate'])
     reader = open_case(case, workdir)
     result = _infer(engine, reader, case, workdir)
     name = getattr(engine, 'name', type(engine).__name__)
@@ -146,7 +147,7 @@ class ReplayEngine:
     name = 'replay-executor'
 
     def infer(self, reader, case):
-        e = ROOT / 'examples' / case['estate']; x = case['executor']
+        e = _ex(case['estate']); x = case['executor']
         out = {'proposals': _j(e / x['proposals'])['mappings']}
         if x.get('candidates'): out['candidates'] = _j(e / x['candidates'])['mappings']
         if x.get('design'): out['design'] = [_j(e / d) for d in x['design']]
@@ -158,7 +159,7 @@ def _tally(engine, cases, tmp):
     from .rules_engine import BAND
     tally = {'band': {}, 'evidence_class': {}}; per_case = []
     for case in cases:
-        e = ROOT / 'examples' / case['estate']
+        e = _ex(case['estate'])
         res = _infer(engine, open_case(case, tmp), case, tmp)
         for part, gold_file, scope in (('proposals', case['gold'], None), ('candidates', case.get('gold_candidates'), set(case.get('candidate_scope') or []))):
             if not gold_file: continue

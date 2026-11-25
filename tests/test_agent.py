@@ -8,7 +8,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from forms import lf   # noqa: E402 — a layer's file in either form
 
 ROOT = Path(__file__).resolve().parents[1]
-G = ROOT / 'examples' / 'payment-initiation' / 'graph'
+import sys as _s2, pathlib as _pl2; _s2.path.insert(0, str(_pl2.Path(__file__).resolve().parent)); from needs import EXAMPLES  # noqa: E402 — SDEM's examples and sdem-bian's (R-D6)
+G = EXAMPLES / 'payment-initiation' / 'graph'
 A1 = [{'id': 'CAP-1', 'type': 'A1.BusinessCapability', 'version': '1', 'name': 'Payment Initiation', 'lifecycle_status': 'active'},
       {'id': 'PRC-1', 'type': 'A1.BusinessProcess', 'version': '1', 'name': 'Make a payment', 'lifecycle_status': 'active'},
       {'id': 'ACT-1', 'type': 'A1.BusinessActivity', 'version': '1', 'name': 'Initiate payment order', 'lifecycle_status': 'active',

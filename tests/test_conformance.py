@@ -7,7 +7,8 @@ from sdem.graph import FederatedGraph
 from sdem.metamodel import Metamodel
 
 ROOT = Path(__file__).resolve().parents[1]
-PAY = ROOT / 'examples' / 'payment-initiation'
+import sys as _s2, pathlib as _pl2; _s2.path.insert(0, str(_pl2.Path(__file__).resolve().parent)); from needs import EXAMPLES  # noqa: E402 — SDEM's examples and sdem-bian's (R-D6)
+PAY = EXAMPLES / 'payment-initiation'
 
 
 def _j(p): return json.loads(Path(p).read_text(encoding='utf-8'))
@@ -32,7 +33,7 @@ class ConformanceTests(unittest.TestCase):
         return d
 
     def test_examples_have_no_errors(self):
-        for est in sorted(glob.glob(str(ROOT / 'examples' / '*') + '/')):
+        for est in sorted(glob.glob(str(EXAMPLES / '*') + '/')):
             docs = [_j(f) for f in sorted(glob.glob(est + 'a[1-4]-*.json'))]; idx = estate_index(docs)
             for d in docs: self.assertEqual(check_level(d, self.mm, idx)[0], [], f"{est} {d['level']}")
 
@@ -147,7 +148,7 @@ class PhysicalDataModelTests(unittest.TestCase):
     def test_examples_validate_and_bad_records_fail(self):
         import glob
         from sdem.validate import check_schema
-        for f in glob.glob(str(ROOT / 'examples/*/a[1-4]-*.json')):
+        for f in glob.glob(str(EXAMPLES / '*/a[1-4]-*.json')):
             for i in json.loads(Path(f).read_text(encoding='utf-8'))['instances']:
                 if i['type'].startswith('A2.'): continue   # BIAN's records: sdem-bian's schemas (BX-15)
                 self.assertEqual(check_schema(i, self.S[i['type']]), [], f"{f} {i['id']}")

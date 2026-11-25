@@ -7,7 +7,8 @@ from sdem.store import GraphReader, build, check_current
 from sdem.validate import check_schema
 
 ROOT = Path(__file__).resolve().parents[1]
-ESTATES = sorted(p.name for p in (ROOT / 'examples').iterdir() if (p / 'mappings.json').exists())   # p.name: works with \ paths (Windows)
+import sys as _s2, pathlib as _pl2; _s2.path.insert(0, str(_pl2.Path(__file__).resolve().parent)); from needs import EXAMPLES  # noqa: E402 — SDEM's examples and sdem-bian's (R-D6)
+ESTATES = sorted(p.name for p in (EXAMPLES).iterdir() if (p / 'mappings.json').exists())   # p.name: works with \ paths (Windows)
 GRAPH_FILES = list(store.LEVEL_FILES.values()) + [store.FEDERATED]
 
 
@@ -17,7 +18,7 @@ def expected_files(estate):
 
 
 def inputs(estate):
-    e = ROOT / 'examples' / estate
+    e = EXAMPLES / estate
     return sorted(str(p) for p in e.glob('a[1-4]-*.json')) + [str(e / 'mappings.json')]
 
 

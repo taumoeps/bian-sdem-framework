@@ -4,6 +4,7 @@ import json, os, re, shutil, stat, subprocess, sys, tempfile, unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+import sys as _s2, pathlib as _pl2; _s2.path.insert(0, str(_pl2.Path(__file__).resolve().parent)); from needs import EXAMPLES  # noqa: E402 — SDEM's examples and sdem-bian's (R-D6)
 T = ROOT / 'templates' / 'workspace-repo'
 
 
@@ -15,7 +16,7 @@ class EstateTemplateTests(unittest.TestCase):
     def setUp(self):
         self.tmp = Path(tempfile.mkdtemp()); self.repo = self.tmp / 'workspaces-repo'
         shutil.copytree(T, self.repo)
-        shutil.copytree(ROOT / 'examples' / 'payment-initiation', self.repo / 'workspaces' / 'payments', ignore=shutil.ignore_patterns('graph'))
+        shutil.copytree(EXAMPLES / 'payment-initiation', self.repo / 'workspaces' / 'payments', ignore=shutil.ignore_patterns('graph'))
         bin_ = self.tmp / 'bin'; bin_.mkdir(); shim = bin_ / 'sdem'   # `sdem` as pip would install it
         shim.write_text(f'#!/bin/sh\nexec "{sys.executable}" -m sdem "$@"\n'); shim.chmod(shim.stat().st_mode | stat.S_IEXEC)
         self.env = {**os.environ, 'PATH': f'{bin_}{os.pathsep}{os.environ["PATH"]}', 'PYTHONPATH': str(ROOT),

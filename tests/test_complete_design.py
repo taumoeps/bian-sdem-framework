@@ -5,6 +5,7 @@ import json, os, shutil, subprocess, sys, tempfile, unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+import sys as _s2, pathlib as _pl2; _s2.path.insert(0, str(_pl2.Path(__file__).resolve().parent)); from needs import EXAMPLES  # noqa: E402 — SDEM's examples and sdem-bian's (R-D6)
 sys.path.insert(0, str(ROOT)); sys.path.insert(0, str(Path(__file__).resolve().parent))
 from forms import migrated   # noqa: E402 — a layer's number in either form
 
@@ -122,7 +123,7 @@ class CompletenessTests(unittest.TestCase):
         self.assertEqual(unchecked, [], 'every kind of record an author may write has a completeness rule')
 
     def test_an_existing_workspace_is_not_changed(self):   # CPL-06
-        ws = self.tmp / 'old'; shutil.copytree(ROOT / 'examples' / 'payment-initiation', ws, ignore=shutil.ignore_patterns('graph'))
+        ws = self.tmp / 'old'; shutil.copytree(EXAMPLES / 'payment-initiation', ws, ignore=shutil.ignore_patterns('graph'))
         self.assertFalse((ws / 'sdem-profile.json').exists())
         s = json.loads(sdem('status', '--workspace', ws, '--json', cwd=self.tmp)[1])
         self.assertIsNone(s.get('completeness'))

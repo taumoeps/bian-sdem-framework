@@ -4,7 +4,8 @@ import json, shutil, tempfile, unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-V2 = ROOT / 'examples/payment-initiation-v2'
+import sys as _s2, pathlib as _pl2; _s2.path.insert(0, str(_pl2.Path(__file__).resolve().parent)); from needs import EXAMPLES  # noqa: E402 — SDEM's examples and sdem-bian's (R-D6)
+V2 = EXAMPLES / 'payment-initiation-v2'
 STATED = {'SERVED_BY', 'AUTOMATED_BY', 'REALIZED_BY', 'ALIGNED_TO', 'STORED_IN'}
 
 
@@ -103,7 +104,7 @@ class ConnectedAndPlacedTests(unittest.TestCase):   # the owner's screenshots of
         from sdem.containment import layout
         from sdem.metamodel import Metamodel
         for ex in ('payment-initiation-v2', 'payment-initiation', 'customer-onboarding'):
-            pts = [s['at'] for s in layout(json.loads((ROOT / 'examples' / ex / 'a4-technology.json').read_text(encoding='utf-8')), 'A4', Metamodel.load())['shapes']]
+            pts = [s['at'] for s in layout(json.loads((EXAMPLES / ex / 'a4-technology.json').read_text(encoding='utf-8')), 'A4', Metamodel.load())['shapes']]
             close = [(a, b) for i, a in enumerate(pts) for b in pts[i + 1:] if abs(a[0] - b[0]) < 0.07 and abs(a[1] - b[1]) < 0.05]
             self.assertEqual(close, [], ex)
 

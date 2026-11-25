@@ -57,15 +57,29 @@ def base_layer():
     return dataset, f"the base BIAN {dataset['model_version']} that ships with SDEM — all {n} service domains"
 
 
-EXAMPLES = {'library-holds': 'library_holds', 'payment-initiation': 'payment_initiation'}   # synthetic examples that ship with SDEM (made-up data) — library-holds is a core design (0.22), payment-initiation a BIAN one
+EXAMPLES = {'library-holds': 'library_holds'}   # synthetic examples that ship with SDEM (made-up data) — a core design; an installed extension adds its own (0.22, R-D6: sdem-bian's banking ones)
 CHECKOUT_DIR = {'library-holds': '0.20/library-holds'}   # where an example lives in a checkout, when not examples/<name>
+
+
+def all_examples():
+    """The examples one can start from: SDEM's own, and those an installed extension ships (R-D6) — a folder that holds a design."""
+    from . import parts
+    names = set(EXAMPLES)
+    if parts._STATE.get('content') is False: return names   # SDEM's own documents (BX-16): the core's examples only — the same with sdem-bian installed or not
+    for r in parts.example_roots()[1:]:
+        names |= {d.name for d in r.iterdir() if d.is_dir() and any((d / f).exists() for f in ('a1-business.json', 'business.json', 'mappings.json'))}
+    return names
 
 
 def example_dir(name):
     """A bundled example's folder: examples/<name> in a checkout, sdem/data/examples/<package> when installed."""
     from .paths import CHECKOUT, DATA_ROOT
     import os
-    d = Path(os.environ['SDEM_EXAMPLES']) / name if os.environ.get('SDEM_EXAMPLES') else DATA_ROOT / 'examples' / (CHECKOUT_DIR.get(name, name) if CHECKOUT else EXAMPLES[name])   # SDEM_EXAMPLES: another folder of examples
+    if os.environ.get('SDEM_EXAMPLES'): d = Path(os.environ['SDEM_EXAMPLES']) / name
+    elif name in EXAMPLES: d = DATA_ROOT / 'examples' / (CHECKOUT_DIR.get(name, name) if CHECKOUT else EXAMPLES[name])
+    else:   # an installed extension's (R-D6)
+        from . import parts
+        d = next((r / name for r in parts.example_roots()[1:] if (r / name).is_dir()), DATA_ROOT / 'examples' / name)   # SDEM_EXAMPLES: another folder of examples
     if not any((d / f).exists() for f in ('a1-business.json', 'business.json')): raise NewError(f'the example {name} is not installed with this SDEM — reinstall it')
     return d
 
@@ -263,7 +277,7 @@ def main(argv=None):
     ap.add_argument('--with', dest='with_ext', action='append', choices=['bian'], default=[], metavar='EXTENSION',
                     help="start with an extension's layer — bian: the BIAN layer, empty, sdem aid bringing in the service domains your design needs (needs sdem-bian installed; 0.22, BX-15). Without it a new design is a core one")
     ap.add_argument('--core', action='store_true', help=f"a core-only design: SDEM's core layers {_L('business')}, {_L('application')} and {_L('technology')} and no BIAN — switch BIAN on later with sdem profile include ext:bian (BX-13)")
-    ap.add_argument('--example', choices=sorted(EXAMPLES), help='start with a synthetic example that ships with SDEM as the baseline (made-up data, for learning) — the same as --from its folder')
+    ap.add_argument('--example', choices=sorted(all_examples()), help='start with a synthetic example that ships with SDEM as the baseline (made-up data, for learning) — the same as --from its folder')
     ap.add_argument('--from', dest='source', metavar='DIR', help='start with this content as the baseline: the four layers, mappings.json and requirements.json found in DIR — checked first, '
                     'recorded in the ledger and as a decision; only when the workspace is created (a baseline is never re-taken)')
     ap.add_argument('--profile', metavar='FILE', help="start with this organisation profile (kept as sdem-profile.json; its base is still found): its types, rules and names apply, "

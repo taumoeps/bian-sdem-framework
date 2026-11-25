@@ -5,11 +5,12 @@ import json, os, shutil, subprocess, sys, tempfile, unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+import sys as _s2, pathlib as _pl2; _s2.path.insert(0, str(_pl2.Path(__file__).resolve().parent)); from needs import EXAMPLES  # noqa: E402 — SDEM's examples and sdem-bian's (R-D6)
 sys.path.insert(0, str(ROOT))
 from sdem import agents, governance, requirements as R  # noqa: E402
 
-PAY = ROOT / 'examples' / 'payment-initiation'
-PAY20 = ROOT / 'examples' / '0.20' / 'payment-initiation'   # the same design in SDEM 0.20's form
+PAY = EXAMPLES / 'payment-initiation'
+PAY20 = EXAMPLES / '0.20' / 'payment-initiation'   # the same design in SDEM 0.20's form
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from forms import lf, migrated   # noqa: E402 — a layer's file in either form
 REHOST = ROOT / '.github' / 'skills' / 'sdem-change-sets' / 'example-a4-rehost.json'

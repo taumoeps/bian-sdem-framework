@@ -6,7 +6,9 @@ from sdem.evaluate import evaluate
 from sdem.validate import validate
 
 ROOT = Path(__file__).resolve().parents[1]
-F = ROOT / 'examples/card-fraud-alerts'
+import sys as _s2, pathlib as _pl2; _s2.path.insert(0, str(_pl2.Path(__file__).resolve().parent)); from needs import EXAMPLES  # noqa: E402 — SDEM's examples and sdem-bian's (R-D6)
+if not (EXAMPLES / 'card-fraud-alerts').is_dir(): raise unittest.SkipTest('needs sdem-bian: its banking examples (R-D6)')
+F = EXAMPLES / 'card-fraud-alerts'
 LEVELS = sorted(F.glob('a*.json'))
 GOLD = json.loads((F / 'mappings.json').read_text())
 

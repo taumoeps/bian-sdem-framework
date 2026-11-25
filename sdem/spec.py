@@ -25,7 +25,8 @@ def _load(p):
 def runs_by_plan_id():
     """plan ID -> {case: Counter(outcome)} from every inference log."""
     per = defaultdict(lambda: defaultdict(Counter))
-    for f in sorted(glob.glob(str(ROOT / 'examples' / '*' / '*inference-log.json'))):
+    from .parts import example_glob
+    for f in example_glob('*/*inference-log.json'):   # SDEM's examples and sdem-bian's (R-D6)
         d = _load(f); uc = d.get('use_case', '?').split(' ')[0] + (' r2' if 'run2' in f else '')
         for a in (d.get('attempts') or d.get('inferences') or []):
             pid, o = a.get('plan_id'), a.get('outcome')
@@ -37,7 +38,8 @@ def runs_by_plan_id():
 
 def _logs():
     import glob as _g
-    fs = _g.glob(str(ROOT / 'examples' / '*' / '*inference-log*.json')); n = 0
+    from .parts import example_glob
+    fs = example_glob('*/*inference-log*.json'); n = 0
     for f in fs:
         d = _jload(Path(f)); n += len(d.get('attempts') or d.get('log') or d.get('entries') or (d if isinstance(d, list) else []))
     return len(fs), n

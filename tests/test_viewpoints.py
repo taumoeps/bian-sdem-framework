@@ -5,11 +5,12 @@ from pathlib import Path
 from unittest import mock
 
 ROOT = Path(__file__).resolve().parents[1]
+import sys as _s2, pathlib as _pl2; _s2.path.insert(0, str(_pl2.Path(__file__).resolve().parent)); from needs import EXAMPLES  # noqa: E402 — SDEM's examples and sdem-bian's (R-D6)
 ENV = {**os.environ, 'PYTHONPATH': str(ROOT) + os.pathsep + os.environ.get('PYTHONPATH', '')}
 sys.path.insert(0, str(ROOT))
 from sdem import viewpoints as vp
 
-EXAMPLES = sorted(p for p in (ROOT / 'examples').iterdir() if (p / 'mappings.json').exists())
+WORKSPACES = sorted(p for p in (EXAMPLES).iterdir() if (p / 'mappings.json').exists())
 IDS = [t['id'] for t in vp.templates()['templates']]
 
 
@@ -42,7 +43,7 @@ class TemplateTests(unittest.TestCase):
 @_needs_bian
 class DrawingTests(unittest.TestCase):
     def test_every_template_on_every_example_draws_only_what_is_stored(self):           # DG-03 on any workspace
-        for ws in EXAMPLES:
+        for ws in WORKSPACES:
             D = vp.Data(ws)
             approved = {m['mapping_id'] for m in D.maps}
             kinds = set(vp.templates()['notation']['kinds'])
@@ -56,22 +57,22 @@ class DrawingTests(unittest.TestCase):
                     self.assertNotIn('href="http', d['svg']); self.assertNotIn('<script', d['svg'])   # DG-06
 
     def test_deterministic(self):                                                        # DG-05
-        ws = ROOT / 'examples' / 'payment-initiation'
+        ws = EXAMPLES / 'payment-initiation'
         self.assertEqual(vp.build(vp.Data(ws), 'layered')['svg'], vp.build(vp.Data(ws), 'layered')['svg'])
 
     def test_rolled_up_lines_say_how_many_links(self):                                   # DG-09
-        d = vp.build(vp.Data(ROOT / 'examples' / 'payment-initiation'), 'layered')
+        d = vp.build(vp.Data(EXAMPLES / 'payment-initiation'), 'layered')
         impl = [x for x in d['lines'] if x['source'] == 'SD-PI' and x['target'] == 'IFC-PAY-API']
         self.assertEqual(len(impl), 1); self.assertEqual(len(impl[0]['stands_for']), 5); self.assertIn('×5', impl[0]['label'])
 
     def test_gaps_are_said(self):                                                        # DG-04
-        d = vp.build(vp.Data(ROOT / 'examples' / 'payment-initiation'), 'process')
+        d = vp.build(vp.Data(EXAMPLES / 'payment-initiation'), 'process')
         self.assertTrue(any('No sequence is recorded' in n for n in d['notes']))
-        d = vp.build(vp.Data(ROOT / 'examples' / 'digital-lending'), 'layered')
+        d = vp.build(vp.Data(EXAMPLES / 'digital-lending'), 'layered')
         self.assertTrue(any('no A3 dataset' in n for n in d['notes'])); self.assertIn('A3', d['missing_layers'])
 
     def test_focus(self):                                                                # DG-08
-        D = vp.Data(ROOT / 'examples' / 'payment-initiation')
+        D = vp.Data(EXAMPLES / 'payment-initiation')
         d = vp.build(D, 'process', focus='PRC-PAY-01')
         self.assertIn('PRC-PAY-01', d['elements']); self.assertIn('ACT-PAY-01a', d['elements']); self.assertIn('SD-PI', d['elements'])
         self.assertNotIn('PRC-PAY-02', d['elements'])
@@ -86,12 +87,12 @@ class CommandTests(unittest.TestCase):
         self.assertEqual(sdem('diagram', '--check')[0], 0)
         with tempfile.TemporaryDirectory() as d:
             for fmt in ('svg', 'html', 'json'):
-                code, out, err = sdem('diagram', '--workspace', 'examples/payment-initiation', '--template', 'application', '-o', f'{d}/a.{fmt}')
+                code, out, err = sdem('diagram', '--workspace', str(EXAMPLES / 'payment-initiation'), '--template', 'application', '-o', f'{d}/a.{fmt}')
                 self.assertEqual(code, 0, err)
             self.assertTrue((Path(d) / 'a.svg').read_text(encoding='utf-8').startswith('<svg'))
             self.assertIn('sdemDiagrams', (Path(d) / 'a.html').read_text(encoding='utf-8'))
             self.assertEqual(json.loads((Path(d) / 'a.json').read_text(encoding='utf-8'))['template'], 'application')
-            self.assertEqual(sdem('diagram', '--workspace', 'examples/payment-initiation', '--template', 'nope')[0], 2)
+            self.assertEqual(sdem('diagram', '--workspace', str(EXAMPLES / 'payment-initiation'), '--template', 'nope')[0], 2)
             (Path(d) / 'empty').mkdir()
             self.assertEqual(sdem('diagram', '--workspace', f'{d}/empty')[0], 2)
 
@@ -104,7 +105,7 @@ class CommandTests(unittest.TestCase):
     def test_the_workbench_carries_each_layers_diagrams(self):                            # DG-13
         from sdem import workbench
         with tempfile.TemporaryDirectory() as d:
-            ws = Path(d) / 'ws'; shutil.copytree(ROOT / 'examples' / 'payment-initiation', ws, ignore=shutil.ignore_patterns('graph', 'migrations'))
+            ws = Path(d) / 'ws'; shutil.copytree(EXAMPLES / 'payment-initiation', ws, ignore=shutil.ignore_patterns('graph', 'migrations'))
             data = workbench.collect(ws)
             self.assertEqual(set(data['diagrams']), set(IDS))
             self.assertEqual({x['layer'] for x in data['diagrams'].values()}, {'A1', 'A2', 'A3', 'A4', 'all'})

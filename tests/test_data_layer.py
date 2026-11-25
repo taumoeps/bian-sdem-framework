@@ -4,6 +4,7 @@ import json, os, re, shutil, subprocess, sys, tempfile, unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+import sys as _s2, pathlib as _pl2; _s2.path.insert(0, str(_pl2.Path(__file__).resolve().parent)); from needs import EXAMPLES  # noqa: E402 — SDEM's examples and sdem-bian's (R-D6)
 sys.path.insert(0, str(ROOT)); sys.path.insert(0, str(ROOT / 'scripts' / 'golden'))
 ENV = {**os.environ, 'PYTHONPATH': str(ROOT), 'PYTHONIOENCODING': 'utf-8'}
 OLD = re.compile(r'"(A[1-4]\.[A-Z][A-Za-z]+)"')
@@ -131,12 +132,13 @@ class Boundary(unittest.TestCase):   # DL-10…DL-13, DL-20
 
 
 
+@_needs_bian
 class Reconciled(unittest.TestCase):   # DL-20: each example, 0.19 against 0.20 — the data, not only the answers
     def test_every_record_field_and_link_of_0_19_is_in_the_migrated_example(self):
-        examples = sorted(p.name for p in (ROOT / 'examples' / '0.20').iterdir() if p.is_dir() and (ROOT / 'examples' / p.name).is_dir())
+        examples = sorted(p.name for p in (EXAMPLES / '0.20').iterdir() if p.is_dir() and (EXAMPLES / p.name).is_dir())
         self.assertIn('payment-initiation', examples)
         for name in examples:
-            old, new = ROOT / 'examples' / name, ROOT / 'examples' / '0.20' / name
+            old, new = EXAMPLES / name, EXAMPLES / '0.20' / name
             if (old / 'sdem').is_dir(): old, new = old / 'sdem', new / 'sdem'   # payment-initiation-v3: its workspace beside the package it was taken in from
             with self.subTest(example=name): self.reconcile(old, new)
 

@@ -60,6 +60,6 @@ Every A4 shape sits in a network zone and is connected inside A4 — `sdem check
 
 Records loaded from a Confluence export (`sdem transform` → `sdem load`) have ids `HIS-<layer>-<NAME>` and `attributes.source_id` = `confluence:<page ids>`. They are real records once loaded — change them through change sets like any other — but they were **read from a document**: links the engine proposes for them are capped at low (DEC-E-11). The transform's own output folder holds **candidates**, not data: never copy from it into a dataset, and a graph store refuses it (CTL-23). Skill **sdem-onboard-designs**.
 
-Example records to copy: `examples/payment-initiation/` (the user guide §6.2 explains two of them).
+Example records to copy: `examples/0.20/library-holds/` (a core design), or — with sdem-bian installed — its Payment example (`sdem new --example payment-initiation`; the user guide §6.2 explains two of its records).
 
 `sdem check --workspace <workspace>` names any missing field as `$.instances[N]: missing required property '…'` — `N` counts from 0.

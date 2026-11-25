@@ -8,6 +8,7 @@ from forms import lf   # noqa: E402 — a layer's file in either form
 from sdem import load, transform
 
 ROOT = Path(__file__).resolve().parents[1]
+import sys as _s2, pathlib as _pl2; _s2.path.insert(0, str(_pl2.Path(__file__).resolve().parent)); from needs import EXAMPLES  # noqa: E402 — SDEM's examples and sdem-bian's (R-D6)
 
 
 
@@ -33,7 +34,7 @@ class DocumentedExamplesTests(unittest.TestCase):
         tmp = Path(tempfile.mkdtemp())
         try:
             (tmp / 'a2-service-domain.json').write_text(json.dumps(starter), encoding='utf-8')
-            transform.extract(ROOT / 'examples' / 'designs' / 'confluence-folder-export', tmp / 'history', ocr='off')
+            transform.extract(EXAMPLES / 'designs' / 'confluence-folder-export', tmp / 'history', ocr='off')
             res = load.load(tmp / 'history', start(tmp / 'estate'), 'jane.architect', exclude=['HIS-A3-PAYMENT-ORDER'], a2=tmp / 'a2-service-domain.json')
             self.assertGreater(res['reconciliation']['loaded'], 0)
             self.assertTrue(lf(tmp / 'estate', 'bian').exists())
@@ -44,7 +45,7 @@ class DocumentedExamplesTests(unittest.TestCase):
         import subprocess, sys
         tmp = Path(tempfile.mkdtemp())
         try:
-            est = tmp / 'est'; shutil.copytree(ROOT / 'examples' / 'payment-initiation', est, ignore=shutil.ignore_patterns('graph'))
+            est = tmp / 'est'; shutil.copytree(EXAMPLES / 'payment-initiation', est, ignore=shutil.ignore_patterns('graph'))
             shutil.copyfile(est / 'm1-mappings-given.json', est / 'mappings.json')
             run = lambda *a: subprocess.run([sys.executable, '-m', 'sdem', *a], cwd=ROOT, capture_output=True, text=True)
             self.assertEqual(run('link', '--workspace', str(est), '--out', str(tmp / 'links')).returncode, 0)

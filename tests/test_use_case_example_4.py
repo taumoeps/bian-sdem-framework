@@ -6,7 +6,8 @@ from pathlib import Path
 from sdem.cli import main
 
 ROOT = Path(__file__).resolve().parents[1]
-A2 = ROOT / 'examples' / 'payment-initiation' / 'a2-service-domain.json'
+import sys as _s2, pathlib as _pl2; _s2.path.insert(0, str(_pl2.Path(__file__).resolve().parent)); from needs import EXAMPLES  # noqa: E402 — SDEM's examples and sdem-bian's (R-D6)
+A2 = EXAMPLES / 'payment-initiation' / 'a2-service-domain.json'
 ME = 'jane.architect'
 
 
@@ -26,7 +27,7 @@ class UseCaseExample4(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.tmp = Path(tempfile.mkdtemp()); cls.cwd = os.getcwd(); os.chdir(cls.tmp)
-        shutil.copytree(ROOT / 'examples' / 'designs' / 'confluence-folder-export', 'work/imports/payarch')
+        shutil.copytree(EXAMPLES / 'designs' / 'confluence-folder-export', 'work/imports/payarch')
         cls.out = {}
         for name, argv in [
             ('inspect', ['transform', 'inspect', 'work/imports/payarch', '--ocr', 'off']),

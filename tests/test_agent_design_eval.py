@@ -4,6 +4,7 @@ import json, os, shutil, subprocess, sys, tempfile, unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+import sys as _s2, pathlib as _pl2; _s2.path.insert(0, str(_pl2.Path(__file__).resolve().parent)); from needs import EXAMPLES  # noqa: E402 — SDEM's examples and sdem-bian's (R-D6)
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from forms import lf, migrated  # noqa: E402 — a layer's file in either form
 ENV = {**os.environ, 'PYTHONPATH': str(ROOT) + os.pathsep + os.environ.get('PYTHONPATH', '')}
@@ -47,9 +48,9 @@ class AgentDesignEvalTests(unittest.TestCase):
 
     def test_the_reference_design_scores_full_recall(self):
         if migrated(self.d / WS):   # SDEM 0.20's form: the same reference design, migrated (examples/0.20, P2)
-            for f in ('business.json', 'data.json', 'application.json', 'technology.json'): shutil.copy(ROOT / 'examples' / '0.20' / 'payment-initiation' / f, self.d / WS / f)
+            for f in ('business.json', 'data.json', 'application.json', 'technology.json'): shutil.copy(EXAMPLES / '0.20' / 'payment-initiation' / f, self.d / WS / f)
         else:
-            for f in ('a1-business.json', 'a3-application.json', 'a4-technology.json'): shutil.copy(ROOT / 'examples' / 'payment-initiation' / f, self.d / WS / f)
+            for f in ('a1-business.json', 'a3-application.json', 'a4-technology.json'): shutil.copy(EXAMPLES / 'payment-initiation' / f, self.d / WS / f)
         _, g = self.grade()
         for l in ('A1', 'A3', 'A4'):
             self.assertEqual(g['records'][l]['recall'], 1.0, (l, g['records'][l]))

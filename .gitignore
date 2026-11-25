@@ -24,3 +24,29 @@ estates/
 # build output (pip install of a checkout)
 build/
 *.egg-info/
+
+# sdem-bian's banking examples, linked by scripts/link_extension_examples.py (R-D6) — they live in sdem-bian
+/examples/acquired-fintech
+/examples/0.20/acquired-fintech
+/examples/card-fraud-alerts
+/examples/0.20/card-fraud-alerts
+/examples/customer-onboarding
+/examples/0.20/customer-onboarding
+/examples/digital-lending
+/examples/0.20/digital-lending
+/examples/fx-dealing
+/examples/0.20/fx-dealing
+/examples/legacy-core-ledger
+/examples/0.20/legacy-core-ledger
+/examples/payment-initiation
+/examples/0.20/payment-initiation
+/examples/payment-initiation-v2
+/examples/0.20/payment-initiation-v2
+/examples/payment-initiation-v3
+/examples/0.20/payment-initiation-v3
+/examples/payment-initiation-v4
+/examples/0.20/payment-initiation-v4
+/examples/trade-finance
+/examples/0.20/trade-finance
+/examples/acceptance-cases.json
+/examples/blind-cases.json

@@ -4,6 +4,7 @@ import filecmp, json, os, shutil, subprocess, sys, tempfile, unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+import sys as _s2, pathlib as _pl2; _s2.path.insert(0, str(_pl2.Path(__file__).resolve().parent)); from needs import EXAMPLES  # noqa: E402 — SDEM's examples and sdem-bian's (R-D6)
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / 'tests'))
 from sdem import parts, profile as P  # noqa: E402
@@ -33,7 +34,7 @@ def _same(a, b):
 def core_workspace(tmp, name='core'):
     """A made-up non-banking workspace with only A1, A3 and A4: the card-fraud example without its A2 and the links that touch it."""
     src = tmp / f'{name}-src'; src.mkdir()
-    ex = ROOT / 'examples' / 'card-fraud-alerts'
+    ex = EXAMPLES / 'card-fraud-alerts'
     for f in ('a1-business.json', 'a3-application.json', 'a4-technology.json'): shutil.copy(ex / f, src / f)
     m = json.loads((ex / 'mappings.json').read_text())
     m['mappings'] = [x for x in m['mappings'] if not x['source']['type'].startswith('A2.') and not x['target']['type'].startswith('A2.')]
@@ -73,7 +74,7 @@ class OnAndOff(unittest.TestCase):
 
     def test_when_bian_is_on(self):   # BX-10, BX-11, BX-12, BX-13
         P.deactivate(); self.assertTrue(parts.bian_on())   # no workspace
-        P.activate_from(ROOT / 'examples' / 'payment-initiation-v3' / 'sdem'); self.assertTrue(parts.bian_on()); self.assertIn('BX-11', parts.why())
+        P.activate_from(EXAMPLES / 'payment-initiation-v3' / 'sdem'); self.assertTrue(parts.bian_on()); self.assertIn('BX-11', parts.why())
         nb = Path(tempfile.mkdtemp()) / 'nb'; sdem('new', '--workspace', nb, '--person', 'bx.check', '--no-bian')   # 0.22 (BX-15): no BIAN layer, no ext:bian — a core design
         P.activate_from(nb); self.assertFalse(parts.bian_on())
         wb = Path(tempfile.mkdtemp()) / 'wb'; sdem('new', '--workspace', wb, '--person', 'bx.check', '--with', 'bian')   # BIAN's layer, empty: a BIAN design
@@ -107,7 +108,7 @@ class OnAndOff(unittest.TestCase):
         self.assertIn('A1, A2, A3, A4', sdem('types', 'A5', '--workspace', self.core, ok=(2,)))   # DL-D9: four layers, A1–A4
 
     def test_sdem_extensions_names_it_and_says_why(self):   # BX-01, BX-11
-        d = json.loads(sdem('extensions', '--workspace', ROOT / 'examples' / 'payment-initiation-v3' / 'sdem', '--json'))
+        d = json.loads(sdem('extensions', '--workspace', EXAMPLES / 'payment-initiation-v3' / 'sdem', '--json'))
         b = next(x for x in d['items'] + d['built_in'] if x['name'] == 'bian')   # BX-15: the installed sdem-bian (built in only before 0.22)
         self.assertTrue(b['on']); self.assertIn('sdem profile include ext:bian', b['make_explicit'])
 
@@ -176,7 +177,7 @@ def fake_bian(folder, sdem_range='>=0.0', mark=None):
             rows[0][field] = f"{mark} {rows[0].get(field, '')}"
             (data / f).write_text(json.dumps(d))
     man = {'name': 'bian', 'command': 'sdem-bian', 'version': '9.9.9', 'kind': ['metamodel'], 'sdem': sdem_range, 'bian_data': str(data),
-           'pack': str(folder / 'sdem_bian' / 'pack.json'), 'description': 'a test sdem-bian', 'commands': ['bian'], 'infers': ['link', 'aid-phases'], 'api': '>=0.1,<0.2'}
+           'pack': str(folder / 'sdem_bian' / 'pack.json'), 'examples': str(folder / 'sdem_bian' / 'examples'), 'description': 'a test sdem-bian', 'commands': ['bian'], 'infers': ['link', 'aid-phases'], 'api': '>=0.1,<0.2'}
     body = (f'import sys, json\nif "--manifest" in sys.argv: print(json.dumps({man!r})); sys.exit(0)\n'   # else: its own sdem bian code, through sdem.api
             f'sys.path.insert(0, {str(folder)!r})\n'
             'if sys.argv[1:2] == ["infer"]:\n    from sdem_bian.infer import main as infer\n    sys.exit(infer(sys.argv[2:]))\n'   # BIAN's inference (MX-47, MX-54): the copy's own
@@ -233,7 +234,7 @@ class Package(unittest.TestCase):   # step 2: BIAN in its own package (docs/desi
         env = fake_bian(self.tmp, sdem_range='<0.1', mark='FROM-THE-PACKAGE')
         out = sdem('extensions', env=env)
         self.assertIn('not usable', out); self.assertIn('supports SDEM <0.1', out)   # BX-15: said — and no BIAN to use instead
-        self.assertIn('the installed one is not usable', sdem('status', '--workspace', ROOT / 'examples' / '0.20' / 'payment-initiation', env=env, ok=(2,)))
+        self.assertIn('the installed one is not usable', sdem('status', '--workspace', EXAMPLES / '0.20' / 'payment-initiation', env=env, ok=(2,)))
 
     def test_sdem_ships_no_bian_of_its_own(self):   # BX-15 (0.22): no built-in copy to fall back on
         for p in ('bian', 'metamodel/a2-service-domain.json', 'metamodel/ext-bian-pack.json', 'sdem/bian.py', 'sdem/rules_bian.py', 'sdem/aid_bian.py', 'sdem/inferences.py'):

@@ -3,10 +3,11 @@ import contextlib, io, json, shutil, subprocess, sys, tempfile, unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+import sys as _s2, pathlib as _pl2; _s2.path.insert(0, str(_pl2.Path(__file__).resolve().parent)); from needs import EXAMPLES  # noqa: E402 — SDEM's examples and sdem-bian's (R-D6)
 sys.path.insert(0, str(ROOT))
 from sdem import cli  # noqa: E402
 
-E = ROOT / 'examples' / 'payment-initiation'
+E = EXAMPLES / 'payment-initiation'
 
 
 def run(*argv):
@@ -30,14 +31,14 @@ class CliTests(unittest.TestCase):
         shutil.rmtree(cls.tmp, ignore_errors=True)
 
     def test_workspace_option_and_its_old_name(self):   # "estate" was renamed "workspace" (2026-10-30); --estate still works when typed
-        ws = str(ROOT / 'examples' / 'payment-initiation')
+        ws = str(EXAMPLES / 'payment-initiation')
         for opt in ('--workspace', '--estate'):
             self.assertEqual(run('check', opt, ws)[0], 0, opt)
             self.assertEqual(run('dashboard', opt, ws, '-o', str(Path(tempfile.mkdtemp()) / 'd.html'))[0], 0, opt)
 
     def test_link_shows_its_proposals_for_review(self):   # sdem link then sdem review in one step; --no-review just writes them
         out = Path(tempfile.mkdtemp()); ws = out / 'ws'   # the example as it was before its links were approved
-        shutil.copytree(ROOT / 'examples' / 'payment-initiation', ws, ignore=shutil.ignore_patterns('graph', 'migrations'))
+        shutil.copytree(EXAMPLES / 'payment-initiation', ws, ignore=shutil.ignore_patterns('graph', 'migrations'))
         shutil.copy(ws / 'm1-mappings-given.json', ws / 'mappings.json')
         code, text, _ = run('link', '--workspace', str(ws), '--out', str(out / 'a'))
         self.assertEqual(code, 0); self.assertIn('weakest first', text); self.assertIn('Review again any time: sdem review', text)
@@ -46,14 +47,14 @@ class CliTests(unittest.TestCase):
         self.assertEqual(json.loads((out / 'a' / 'proposals.json').read_text()), json.loads((out / 'b' / 'proposals.json').read_text()))
 
     def test_trace_names_the_layer_and_the_connections_it_followed(self):
-        code, out, _ = run('trace', 'PRC-PAY-01', '--direction', 'down', '--graph', str(ROOT / 'examples' / 'payment-initiation' / 'graph'))
+        code, out, _ = run('trace', 'PRC-PAY-01', '--direction', 'down', '--graph', str(EXAMPLES / 'payment-initiation' / 'graph'))
         self.assertEqual(code, 0)
         self.assertIn("'Capture and validate payment instruction'  [A1 Business · Business Process]", out)
         self.assertIn('[A2 BIAN · Service Domain]', out); self.assertIn('[A4 Technology ·', out)
         self.assertIn('CONNECTIONS FOLLOWED', out); self.assertRegex(out, r'PAY-003 .*: approved by [a-z.]+ on \d{4}-\d{2}-\d{2}; evidence ')
 
     def test_trace_a_whole_layer(self):   # TR-L01…L04
-        G = str(ROOT / 'examples' / 'payment-initiation' / 'graph')
+        G = str(EXAMPLES / 'payment-initiation' / 'graph')
         code, out, _ = run('trace', 'A4', '--direction', 'upstream', '--graph', G)
         self.assertEqual(code, 0); self.assertIn('A4 Technology — 20 record(s), traced up', out); self.assertIn('connected from above: 19 of 20', out)   # FT-D1 (2026-11-22): 14 before the full trace; 17 before FT-12 (serving)   # the network too, through its platforms (KG-Q-08); the gateway through EXPOSED_THROUGH
         self.assertIn("INF-CORE-LEDGER-HOST 'Core banking ledger host'", out)                         # a gap: supports nothing above
@@ -111,6 +112,7 @@ class CliTests(unittest.TestCase):
         r = subprocess.run([sys.executable, '-m', 'sdem', '--help'], cwd=ROOT, capture_output=True, text=True)
         self.assertEqual(r.returncode, 0); self.assertIn('Everyday', r.stdout)
 
+    @unittest.skipUnless(__import__('importlib').util.find_spec('sdem_bian'), 'SDEM\'s documents are generated with sdem-bian installed — their evidence includes its examples (BX-16)')
     def test_model_check_matches_ci(self):
         code, out, _ = run('model', 'check')
         self.assertEqual(code, 0, out)

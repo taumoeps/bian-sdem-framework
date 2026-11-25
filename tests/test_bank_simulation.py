@@ -7,6 +7,7 @@ import datetime, hashlib, json, os, shutil, subprocess, sys, tempfile, unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+import sys as _s2, pathlib as _pl2; _s2.path.insert(0, str(_pl2.Path(__file__).resolve().parent)); from needs import EXAMPLES  # noqa: E402 — SDEM's examples and sdem-bian's (R-D6)
 sys.path.insert(0, str(ROOT))
 from sdem import comply, conformance, exceptions, profile  # noqa: E402
 from sdem.metamodel import Metamodel  # noqa: E402
@@ -61,10 +62,10 @@ class Simulation(unittest.TestCase):
         self.addCleanup(profile.deactivate)
         self.digest = metamodel_digest()
         self.tmp = Path(tempfile.mkdtemp()); self.addCleanup(shutil.rmtree, self.tmp, True)
-        shutil.copytree(ROOT / 'examples' / 'profiles', self.tmp / 'profiles')
+        shutil.copytree(EXAMPLES / 'profiles', self.tmp / 'profiles')
         shutil.copytree(FIXTURE / 'profiles', self.tmp / 'profiles', dirs_exist_ok=True)
         self.ws = self.tmp / 'ws'
-        shutil.copytree(ROOT / 'examples' / 'payment-initiation', self.ws, ignore=shutil.ignore_patterns('graph', 'm1-*'))
+        shutil.copytree(EXAMPLES / 'payment-initiation', self.ws, ignore=shutil.ignore_patterns('graph', 'm1-*'))
         _w(self.ws / 'sdem-profile.json', {'format': 'sdem-profile/1', 'name': 'payments', 'version': 1, 'extends': '../profiles/bank-design-specs.json'})
         for f, recs in DESIGN.items():
             for rid, kv in recs.items(): self.set(f, rid, **kv)

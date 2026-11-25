@@ -3,6 +3,7 @@ import json, os, shutil, subprocess, sys, tempfile, unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+import sys as _s2, pathlib as _pl2; _s2.path.insert(0, str(_pl2.Path(__file__).resolve().parent)); from needs import EXAMPLES  # noqa: E402 — SDEM's examples and sdem-bian's (R-D6)
 ENV = {**os.environ, 'PYTHONPATH': str(ROOT) + os.pathsep + os.environ.get('PYTHONPATH', '')}
 
 
@@ -16,7 +17,7 @@ import sys as _s, pathlib as _pl; _s.path.insert(0, str(_pl.Path(__file__).resol
 class AgentCliFixesTests(unittest.TestCase):
     def setUp(self):
         self.d = Path(tempfile.mkdtemp())
-        shutil.copytree(ROOT / 'examples' / 'payment-initiation', self.d / 'ws', ignore=shutil.ignore_patterns('graph', 'migrations'))
+        shutil.copytree(EXAMPLES / 'payment-initiation', self.d / 'ws', ignore=shutil.ignore_patterns('graph', 'migrations'))
 
     def tearDown(self): shutil.rmtree(self.d, ignore_errors=True)
 
@@ -82,7 +83,7 @@ class AgentCliFixesTests(unittest.TestCase):
 class OwnerDecisionTests(unittest.TestCase):   # O6, O7 (owner's decisions 2026-11-06)
     def setUp(self):
         self.d = Path(tempfile.mkdtemp())
-        shutil.copytree(ROOT / 'examples' / 'payment-initiation', self.d / 'ws', ignore=shutil.ignore_patterns('graph', 'migrations'))
+        shutil.copytree(EXAMPLES / 'payment-initiation', self.d / 'ws', ignore=shutil.ignore_patterns('graph', 'migrations'))
         reg = self.d / 'ws' / 'mappings.json'; data = json.loads(reg.read_text(encoding='utf-8'))
         data['mappings'] = [m for m in data['mappings'] if m['mapping_id'] != 'PAY-106']
         reg.write_text(json.dumps(data, indent=2), encoding='utf-8')

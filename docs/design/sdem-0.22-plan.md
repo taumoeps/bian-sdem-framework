@@ -53,6 +53,12 @@ This reverses **BP-D3** (the built-in BIAN as a fallback for all of 0.20).
 
 The banking examples move to `sdem-bian` (R-D6); **SDEM's tests that use them stay in SDEM**, beside the code they test, find the examples through the installed `sdem-bian`, and skip without it — SDEM's CI runs them with it installed. (R-D6 said the tests would move with the examples; most of them test SDEM's own code — trace, check, link, AID — with banking data as their input.) The core keeps `library-holds`, which `sdem new --example` now offers, and the reference structure, generated from the core with no BIAN layer.
 
+| Stage | What | As built |
+|---|---|---|
+| **5a** ✅ | BIAN's documents to `sdem-bian` (R-D8); the Extensions guide | one-line pointers where they were; `docs/sdem-extensions-guide.md`; an Extensions section in the README |
+| **5b-1** ✅ | the core's own example | `sdem new --example library-holds`, shipped with SDEM; the 0.20 reference structure with no BIAN file (0.19's keeps its empty one — it marks a design without BIAN) |
+| **5b-2** ✅ | the banking examples to `sdem-bian` (R-D6) | the 10 designs in 0.19's form, 11 in 0.20's, `acceptance-cases.json` and `blind-cases.json` are `sdem_bian/examples` (sdem-bian 1.3.0, its manifest's `examples`); SDEM finds them through `parts.example_roots()` — `sdem new --example` offers them with sdem-bian installed, the acceptance cases, the generators and `sdem home` read them; SDEM's tests through `tests/needs.EXAMPLES` (SDEM's and sdem-bian's in one folder), skipped without it; CI and the scripts that name `examples/<design>` run `scripts/link_extension_examples.py` first; sdem-bian's proofs read its own copies. The golden set stays in SDEM (`tests/golden/`), as the tests that read it do |
+
 ### Step 4 — staged (the owner, 2026-11-24: "Staged")
 
 Outside its four modules SDEM's code names BIAN's types 63 times (12 files) and its layer by id 196 times (36 files — the A1, A2 BIAN, A3 … numbering). **4a**: BIAN's data, rules, code, patterns and the built-in fallback leave the package; a design that uses BIAN is refused without `sdem-bian` (R-D2); metamodel 0.20.0 holds no BIAN type; the core keeps only BIAN's reserved layer slot — its id and its place in the stack — as a generic place for an extension's layer. **4b**, later: that slot made fully generic. Each proved: P1 with `sdem-bian`, the core suite without it.

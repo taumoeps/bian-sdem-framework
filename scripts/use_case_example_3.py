@@ -6,17 +6,19 @@ sealed in commit 5cbb0ed. Copilot itself is not run here (that is the spike, doc
 Writes the evidence pack to docs/evidence/use-case-example-3/ and the results into docs/evidence/use-case-example-3.md.
 Usage: python scripts/use_case_example_3.py
 """
+import os
 import contextlib, copy, hashlib, io, json, shutil, subprocess, sys, tempfile
 from datetime import date
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+EXAMPLES_DIR = Path(os.environ.get('SDEM_EXAMPLES_DIR') or ROOT / 'examples')   # SDEM's examples and sdem-bian's (0.22, R-D6): the tests' merged folder, or examples/ with scripts/link_extension_examples.py run
 sys.path.insert(0, str(ROOT))
 from sdem import agents, cli  # noqa: E402
 
 DOC = ROOT / 'docs' / 'evidence' / 'use-case-example-3.md'
 EVID = ROOT / 'docs' / 'evidence' / 'use-case-example-3'
-SRC = ROOT / 'examples' / 'payment-initiation'
+SRC = EXAMPLES_DIR / 'payment-initiation'
 T = '2026-10-28T00:00:00+00:00'                 # fixed, so the evidence is reproducible
 PERSON = 'jane.architect'
 A4, A3, ORCH = 'sdem-a4-technology', 'sdem-a3-application', 'sdem-orchestrator'

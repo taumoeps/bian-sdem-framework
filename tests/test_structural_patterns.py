@@ -5,6 +5,7 @@ import base64, copy, datetime, hashlib, json, os, re, shutil, subprocess, sys, t
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+import sys as _s2, pathlib as _pl2; _s2.path.insert(0, str(_pl2.Path(__file__).resolve().parent)); from needs import EXAMPLES  # noqa: E402 — SDEM's examples and sdem-bian's (R-D6)
 sys.path.insert(0, str(ROOT))
 from sdem import comply, exceptions, patterns, profile  # noqa: E402
 from sdem.metamodel import Metamodel  # noqa: E402
@@ -47,7 +48,7 @@ class Base(unittest.TestCase):
         self.addCleanup(profile.deactivate)
         self.digest = digest()
         self.tmp = Path(tempfile.mkdtemp()); self.addCleanup(shutil.rmtree, self.tmp, True)
-        shutil.copytree(ROOT / 'examples' / 'profiles', self.tmp / 'profiles')
+        shutil.copytree(EXAMPLES / 'profiles', self.tmp / 'profiles')
         self.diagrams = self.tmp / 'profiles' / 'patterns' / 'diagrams'
         self.merged = profile.resolve(self.tmp / 'profiles' / 'bank-with-standards.json')
         self.base = Metamodel.base()
@@ -161,7 +162,7 @@ class Design(Base):
     def setUp(self):
         super().setUp()
         self.ws = self.tmp / 'ws'
-        shutil.copytree(ROOT / 'examples' / 'payment-initiation', self.ws, ignore=shutil.ignore_patterns('graph', 'm1-*'))
+        shutil.copytree(EXAMPLES / 'payment-initiation', self.ws, ignore=shutil.ignore_patterns('graph', 'm1-*'))
         _w(self.ws / 'sdem-profile.json', {'format': 'sdem-profile/1', 'name': 'payments', 'version': 1, 'extends': '../profiles/bank-with-structures.json'})
         a3 = _j(self.ws / 'a3-application.json')
         for i in a3['instances']:

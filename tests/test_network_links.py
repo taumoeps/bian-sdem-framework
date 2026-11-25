@@ -4,12 +4,13 @@ import collections, copy, json, os, subprocess, sys, unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+import sys as _s2, pathlib as _pl2; _s2.path.insert(0, str(_pl2.Path(__file__).resolve().parent)); from needs import EXAMPLES  # noqa: E402 — SDEM's examples and sdem-bian's (R-D6)
 sys.path.insert(0, str(ROOT))
 from sdem import migrate                     # noqa: E402
 from sdem.conformance import check_level     # noqa: E402
 from sdem.metamodel import Metamodel         # noqa: E402
 
-PAY = ROOT / 'examples' / 'payment-initiation'
+PAY = EXAMPLES / 'payment-initiation'
 FILES = ['a1-business.json', 'a2-service-domain.json', 'a3-application.json', 'a4-technology.json', 'mappings.json']
 
 
@@ -65,6 +66,7 @@ class OnANetworkTests(unittest.TestCase):   # LC-15
         self.assertEqual(code, 0, err); self.assertNotIn('LC-15', out + err)
 
 
+@_needs_bian
 class FollowedTests(unittest.TestCase):   # KG-Q-08
     def impact(self, rid, change='retire'):
         code, out, err = sdem('impact', rid, '--change', change, *FILES, '--json')

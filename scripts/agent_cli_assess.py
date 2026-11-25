@@ -9,7 +9,7 @@ from pathlib import Path
 
 SD, REPO, WORK, LABEL = sys.argv[1], Path(sys.argv[2]), Path(sys.argv[3]), sys.argv[4]
 WORK.mkdir(parents=True, exist_ok=True)
-EX = WORK / 'pay'; shutil.copytree(REPO / 'examples' / 'payment-initiation', EX, dirs_exist_ok=True)
+EX = WORK / 'pay'; shutil.copytree(Path(os.environ.get('SDEM_EXAMPLES_DIR') or REPO / 'examples') / 'payment-initiation', EX, dirs_exist_ok=True)
 G = EX / 'graph'
 results = []
 

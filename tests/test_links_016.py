@@ -5,7 +5,8 @@ from sdem.graph import FederatedGraph
 from sdem.metamodel import Metamodel
 
 ROOT = Path(__file__).resolve().parents[1]
-ONB = ROOT / 'examples/customer-onboarding'
+import sys as _s2, pathlib as _pl2; _s2.path.insert(0, str(_pl2.Path(__file__).resolve().parent)); from needs import EXAMPLES  # noqa: E402 — SDEM's examples and sdem-bian's (R-D6)
+ONB = EXAMPLES / 'customer-onboarding'
 
 
 def ws_copy():

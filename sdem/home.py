@@ -330,8 +330,9 @@ def main(argv=None):
     ex = repo_path('examples')
     if not (a.root or a.estate or ex):
         print('ERROR: give --root DIR or --workspace DIR — or start a workspace from the synthetic example that ships with SDEM: '
-              'sdem new --workspace workspaces/payments-example --person <you> --example payment-initiation', file=sys.stderr); return 2
-    roots = a.root or ([] if a.estate else [str(ex)])
+              'sdem new --workspace workspaces/payments-example --person <you> --example library-holds', file=sys.stderr); return 2
+    from . import parts as _p
+    roots = a.root or ([] if a.estate else [str(r) for r in _p.example_roots() if r.is_dir()])   # SDEM's examples and an installed extension's (R-D6)
     page, data = write(a.out, roots, a.estate)
     if a.json:
         if not a.full:   # AG-02: the metamodel's size and version, not all of it; no drawings

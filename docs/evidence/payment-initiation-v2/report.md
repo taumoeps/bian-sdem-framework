@@ -3,7 +3,7 @@
 > 2026-11-16 · metamodel 0.17.0 · SDEM 0.18.0 (main, 04b953b and after) · made-up data. The test set by
 > [a full design](../../design/sdem-full-design-metamodel-design.md) §7: can SDEM hold a full A1–A4 design — every kind, its
 > attributes, the information chain field by field, contracts, every link type — built with the CLI only?
-> Result: [`examples/payment-initiation-v2`](../../../examples/payment-initiation-v2/). How it was built: the change sets, the AID run and
+> Result: [`examples/payment-initiation-v2`](https://github.com/taumoeps/sdem-extensions/tree/main/metamodel/bian/sdem_bian/examples/payment-initiation-v2/). How it was built: the change sets, the AID run and
 > the decisions in this folder.
 
 ## Result

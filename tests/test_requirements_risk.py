@@ -5,10 +5,11 @@ import json, os, shutil, subprocess, sys, tempfile, unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+import sys as _s2, pathlib as _pl2; _s2.path.insert(0, str(_pl2.Path(__file__).resolve().parent)); from needs import EXAMPLES  # noqa: E402 — SDEM's examples and sdem-bian's (R-D6)
 sys.path.insert(0, str(ROOT))
 from sdem import agents, requirements as R  # noqa: E402
 
-PAY = ROOT / 'examples' / 'payment-initiation'
+PAY = EXAMPLES / 'payment-initiation'
 REHOST = ROOT / '.github' / 'skills' / 'sdem-change-sets' / 'example-a4-rehost.json'
 AGENT = {'A1': 'sdem-a1-business', 'A2': 'sdem-a2-bian', 'A3': 'sdem-a3-application', 'A4': 'sdem-a4-technology'}
 ORCH, P = 'sdem-orchestrator', 'jane.architect'

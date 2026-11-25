@@ -6,11 +6,13 @@ CTL-17 tested with good and bad data. Writes the evidence pack to docs/evidence/
 docs/evidence/use-case-example-2.md.
 Usage: python scripts/use_case_example_2.py
 """
+import os
 import copy, hashlib, json, re, shutil, subprocess, sys, tempfile
 from datetime import date
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+EXAMPLES_DIR = Path(os.environ.get('SDEM_EXAMPLES_DIR') or ROOT / 'examples')   # SDEM's examples and sdem-bian's (0.22, R-D6): the tests' merged folder, or examples/ with scripts/link_extension_examples.py run
 sys.path.insert(0, str(ROOT))
 from sdem_bian import aid_bian  # noqa: E402 — AID's projection is BIAN's, from the installed sdem-bian (BX-15)
 from sdem import aid  # noqa: E402
@@ -20,7 +22,7 @@ from sdem.rules_engine import RulesEngine  # noqa: E402
 from sdem.store import GraphReader, build  # noqa: E402
 from sdem.validate import load_registry, load_schema, validate  # noqa: E402
 
-EST = ROOT / 'examples' / 'payment-initiation'
+EST = EXAMPLES_DIR / 'payment-initiation'
 DOC = ROOT / 'docs' / 'evidence' / 'use-case-example-2.md'
 EVID = ROOT / 'docs' / 'evidence' / 'use-case-example-2'
 LEVELS = {'A1': 'a1-business.json', 'A2': 'a2-service-domain.json', 'A3': 'a3-application.json', 'A4': 'a4-technology.json'}
@@ -38,7 +40,7 @@ def catalogue(first='payment-initiation'):
     Same type and name → one record (the first workspace's id); a local id already taken by another element → `<id>@<workspace>`;
     a part keeps one whole (the first workspace's grouping), so the catalogue passes the dataset check."""
     inst, rels, by_key, used, parent = [], [], {}, set(), {}
-    files = sorted((ROOT / 'examples').glob('*/a2-service-domain.json'), key=lambda f: (f.parent.name != first, f.parent.name))
+    files = sorted((EXAMPLES_DIR).glob('*/a2-service-domain.json'), key=lambda f: (f.parent.name != first, f.parent.name))
     for f in files:
         if 'reference-structure' in str(f): continue
         d, est, local, added = _j(f), f.parent.name, {}, []

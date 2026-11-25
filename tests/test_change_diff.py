@@ -5,6 +5,7 @@ import copy, json, os, shutil, subprocess, sys, tempfile, unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+import sys as _s2, pathlib as _pl2; _s2.path.insert(0, str(_pl2.Path(__file__).resolve().parent)); from needs import EXAMPLES  # noqa: E402 — SDEM's examples and sdem-bian's (R-D6)
 sys.path.insert(0, str(ROOT))
 from sdem.agents import CoordinationError, Estate, merge_record  # noqa: E402
 from sdem.validate import check_schema  # noqa: E402
@@ -22,7 +23,7 @@ import sys as _s, pathlib as _pl; _s.path.insert(0, str(_pl.Path(__file__).resol
 class DiffTests(unittest.TestCase):
     def setUp(self):
         self.tmp = Path(tempfile.mkdtemp()); self.ws = self.tmp / 'ws'
-        shutil.copytree(ROOT / 'examples' / 'payment-initiation', self.ws, ignore=shutil.ignore_patterns('graph', 'migrations', 'm1-*'))
+        shutil.copytree(EXAMPLES / 'payment-initiation', self.ws, ignore=shutil.ignore_patterns('graph', 'migrations', 'm1-*'))
         self.est = Estate(self.ws); self.a3 = _j(self.ws / 'a3-application.json')
         self.op = next(i for i in self.a3['instances'] if i['id'] == 'API-PI-01')
 

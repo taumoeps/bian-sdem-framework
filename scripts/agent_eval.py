@@ -11,7 +11,9 @@ lists it).
 import argparse, json, shutil, subprocess, sys
 from pathlib import Path
 
+import os
 ROOT = Path(__file__).resolve().parents[1]
+EXAMPLES_DIR = Path(os.environ.get('SDEM_EXAMPLES_DIR') or ROOT / 'examples')   # SDEM's examples and sdem-bian's (0.22, R-D6): the tests' merged folder, or examples/ with scripts/link_extension_examples.py run
 sys.path.insert(0, str(ROOT))
 WS = Path('workspaces') / 'payments'
 PERSON = 'jane.architect'
@@ -63,7 +65,7 @@ def prepare(d):
     d = Path(d)
     if d.exists() and any(d.iterdir()): sys.exit(f'{d}: not empty')
     ws = d / WS
-    shutil.copytree(ROOT / 'examples' / 'payment-initiation', ws, ignore=shutil.ignore_patterns('graph', 'migrations', 'coordination'))
+    shutil.copytree(EXAMPLES_DIR / 'payment-initiation', ws, ignore=shutil.ignore_patterns('graph', 'migrations', 'coordination'))
     reg = json.loads((ws / 'mappings.json').read_text(encoding='utf-8'))
     reg['mappings'] = [m for m in reg['mappings'] if m['mapping_id'] != REMOVED]
     (ws / 'mappings.json').write_text(json.dumps(reg, indent=2), encoding='utf-8')

@@ -7,6 +7,7 @@ import glob, os, re, shutil, subprocess, sys, tempfile, unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+import sys as _s2, pathlib as _pl2; _s2.path.insert(0, str(_pl2.Path(__file__).resolve().parent)); from needs import EXAMPLES  # noqa: E402 — SDEM's examples and sdem-bian's (R-D6)
 
 
 FOLDER = {'.github': 'copilot'}   # package sdem.data.copilot is installed from .github/
@@ -37,8 +38,8 @@ class InstalledLayoutTests(unittest.TestCase):
                     dest = site / 'sdem' / 'data' / FOLDER.get(src, src) / Path(f).relative_to(ROOT / src)
                     dest.parent.mkdir(parents=True, exist_ok=True); shutil.copyfile(f, dest)
         cls.work = cls.tmp / 'work'; cls.work.mkdir()
-        shutil.copytree(ROOT / 'examples' / 'payment-initiation', cls.work / 'est', ignore=shutil.ignore_patterns('graph'))
-        shutil.copytree(ROOT / 'examples' / 'designs' / 'confluence-folder-export', cls.work / 'export')
+        shutil.copytree(EXAMPLES / 'payment-initiation', cls.work / 'est', ignore=shutil.ignore_patterns('graph'))
+        shutil.copytree(EXAMPLES / 'designs' / 'confluence-folder-export', cls.work / 'export')
         shutil.copytree(ROOT / 'tests' / 'fixtures' / 'bian-release-sample', cls.work / 'bian')
         cls.env = {**os.environ, 'PYTHONPATH': str(site)}
 

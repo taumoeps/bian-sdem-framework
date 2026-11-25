@@ -5,6 +5,7 @@ import json, os, shutil, subprocess, sys, tempfile, unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+import sys as _s2, pathlib as _pl2; _s2.path.insert(0, str(_pl2.Path(__file__).resolve().parent)); from needs import EXAMPLES  # noqa: E402 — SDEM's examples and sdem-bian's (R-D6)
 sys.path.insert(0, str(ROOT))
 from sdem.conformance import check_level             # noqa: E402
 from sdem.hosting import evidence, judge, path, zone_connections   # noqa: E402
@@ -12,7 +13,7 @@ from sdem.metamodel import Metamodel                  # noqa: E402
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from forms import lf, migrated                       # noqa: E402 — a layer's file in either form
 
-PAY, LEDGER = ROOT / 'examples' / 'payment-initiation', ROOT / 'examples' / 'legacy-core-ledger'
+PAY, LEDGER = EXAMPLES / 'payment-initiation', EXAMPLES / 'legacy-core-ledger'
 
 
 def sdem(*args, cwd):
@@ -37,6 +38,7 @@ class Base(unittest.TestCase):
         lf(ws, 'technology').write_text(json.dumps(d, indent=2), encoding='utf-8'); return ws
 
 
+@_needs_bian
 class EvidenceTests(Base):   # HS-01…HS-10
     def test_the_evidence_and_the_default(self):
         led = {i['id']: i for i in a4(LEDGER)['instances']}
@@ -95,6 +97,7 @@ class ProposalTests(Base):   # AID-Z01…Z04, LC-19
         self.assertTrue(r['source'].endswith('-DMZ'))                                                       # internet facing (AID-Z02)
 
 
+@_needs_bian
 class PolicyTests(Base):   # PR-32, WS-12
     def test_the_hosting_policy_is_the_organisations(self):
         from sdem import profile as P
@@ -116,7 +119,7 @@ class PolicyTests(Base):   # PR-32, WS-12
         P.activate_file(prof); self.addCleanup(P.deactivate)
         pol = policy(); sig = {x['id']: x for x in pol['signals']}
         self.assertNotIn('HS-11', sig); self.assertEqual(sig['HS-09']['confidence'], 'medium')
-        cf = json.loads((ROOT / 'examples/card-fraud-alerts/a4-technology.json').read_text(encoding='utf-8'))
+        cf = json.loads((EXAMPLES / 'card-fraud-alerts/a4-technology.json').read_text(encoding='utf-8'))
         zid = {i['id'] for i in cf['instances'] if i['type'] == 'A4.NetworkZone'}
         cf = {**cf, 'instances': [i for i in cf['instances'] if i['id'] not in zid], 'relationships': [r for r in cf['relationships'] if r['source'] not in zid and r['target'] not in zid]}
         zones, links, _ = propose(cf, self.mm, 'T', 'jane.architect', '2026-11-14')
@@ -184,7 +187,7 @@ class EvidenceAgainstTheExamplesTests(unittest.TestCase):   # G1–G3 (HS-11…H
         from sdem.conformance import zones_of
         from sdem.metamodel import Metamodel
         mm = Metamodel.load()
-        for ws in sorted(p.parent for p in (ROOT / 'examples').glob('*/a4-technology.json')):
+        for ws in sorted(p.parent for p in (EXAMPLES).glob('*/a4-technology.json')):
             if ws.name == 'reference-structure': continue
             with self.subTest(ws.name):
                 d = json.loads((ws / 'a4-technology.json').read_text(encoding='utf-8'))
@@ -205,8 +208,8 @@ class EvidenceAgainstTheExamplesTests(unittest.TestCase):   # G1–G3 (HS-11…H
         from sdem.hosting import evidence
         from sdem.metamodel import Metamodel
         mm = Metamodel.load()
-        fx = json.loads((ROOT / 'examples/fx-dealing/a4-technology.json').read_text(encoding='utf-8'))
-        cf = json.loads((ROOT / 'examples/card-fraud-alerts/a4-technology.json').read_text(encoding='utf-8'))
+        fx = json.loads((EXAMPLES / 'fx-dealing/a4-technology.json').read_text(encoding='utf-8'))
+        cf = json.loads((EXAMPLES / 'card-fraud-alerts/a4-technology.json').read_text(encoding='utf-8'))
         ids = lambda doc, x: {e['id'] for e in evidence(next(i for i in doc['instances'] if i['id'] == x), doc, mm)}
         self.assertIn('HS-11', ids(cf, 'INF-ONPREM-VM-CLUSTER-B'))   # "On-prem VM cluster B"
         self.assertIn('HS-11', ids(fx, 'NODE-RATEGW-01'))            # "co-location rack"
@@ -217,7 +220,7 @@ class EvidenceAgainstTheExamplesTests(unittest.TestCase):   # G1–G3 (HS-11…H
 @_needs_bian
 class S37Tests(unittest.TestCase):   # G4–G6: the network of the component's platform, not the deprecated network_zone
     def test_trade_finance_needs_no_network_zone(self):
-        a3 = json.loads((ROOT / 'examples/trade-finance/a3-application.json').read_text(encoding='utf-8'))
+        a3 = json.loads((EXAMPLES / 'trade-finance/a3-application.json').read_text(encoding='utf-8'))
         self.assertFalse([i['id'] for i in a3['instances'] if 'network_zone' in (i.get('attributes') or {})])
         from sdem.acceptance import run
         from sdem.rules_engine import RulesEngine

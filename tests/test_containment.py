@@ -4,8 +4,9 @@ import copy, json, os, subprocess, sys, unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+import sys as _s2, pathlib as _pl2; _s2.path.insert(0, str(_pl2.Path(__file__).resolve().parent)); from needs import EXAMPLES  # noqa: E402 — SDEM's examples and sdem-bian's (R-D6)
 sys.path.insert(0, str(ROOT))
-EX = ROOT / 'examples'
+EX = EXAMPLES
 from sdem.containment import layout, load, ContainmentError
 
 
@@ -78,6 +79,7 @@ class A2LandscapeTests(unittest.TestCase):
 
 
 
+@_needs_bian
 class A1CapabilityMapTests(unittest.TestCase):   # C3, C4: capability → sub-capability → realising process → activity
     def test_payment_is_drawn_as_a_capability_map(self):
         lay = load(EX / 'payment-initiation', 'A1')

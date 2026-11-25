@@ -5,7 +5,8 @@ from sdem.graph import LevelGraph, FederatedGraph, IMPACT_RULES
 from sdem.metamodel import Metamodel
 
 ROOT = Path(__file__).resolve().parents[1]
-F = ROOT / 'examples/card-fraud-alerts'
+import sys as _s2, pathlib as _pl2; _s2.path.insert(0, str(_pl2.Path(__file__).resolve().parent)); from needs import EXAMPLES  # noqa: E402 — SDEM's examples and sdem-bian's (R-D6)
+F = EXAMPLES / 'card-fraud-alerts'
 FILES = sorted(F.glob('a*.json')) + [F / 'mappings.json']
 
 
@@ -155,7 +156,7 @@ class V051Tests(unittest.TestCase):
 
 @_needs_bian
 class PaymentInitiationExampleTests(unittest.TestCase):
-    P = ROOT / 'examples/payment-initiation'
+    P = EXAMPLES / 'payment-initiation'
 
     def test_exports_and_mappings_check_clean(self):
         fg = FederatedGraph.load(sorted(self.P.glob('a*.json')) + [self.P / 'mappings.json'])
@@ -176,7 +177,7 @@ class PaymentInitiationExampleTests(unittest.TestCase):
 
 @_needs_bian
 class LegacyLedgerExampleTests(unittest.TestCase):
-    P = ROOT / 'examples/legacy-core-ledger'
+    P = EXAMPLES / 'legacy-core-ledger'
 
     def test_exports_and_mappings_check_clean(self):
         fg = FederatedGraph.load(sorted(self.P.glob('a*.json')) + [self.P / 'mappings.json'])
@@ -195,8 +196,9 @@ class LegacyLedgerExampleTests(unittest.TestCase):
         self.assertEqual({i['attributes']['method'] for i in ops if i['id'].startswith('JOB-')}, {'BATCH'})
 
 
+@_needs_bian
 class FollowCompositionTests(unittest.TestCase):
-    P = ROOT / 'examples/legacy-core-ledger'
+    P = EXAMPLES / 'legacy-core-ledger'
 
     def test_trace_continues_from_module_to_whole_to_platform(self):
         fg = FederatedGraph.load(sorted(self.P.glob('a*.json')) + [self.P / 'mappings.json'])
@@ -221,7 +223,7 @@ class FollowCompositionTests(unittest.TestCase):
 
 @_needs_bian
 class AcquiredFintechExampleTests(unittest.TestCase):
-    P = ROOT / 'examples/acquired-fintech'
+    P = EXAMPLES / 'acquired-fintech'
 
     def test_three_level_export_checks_clean_without_a1(self):
         files = sorted(self.P.glob('a*.json'))
@@ -246,7 +248,7 @@ class AcquiredFintechExampleTests(unittest.TestCase):
 
 @_needs_bian
 class CustomerOnboardingExampleTests(unittest.TestCase):
-    P = ROOT / 'examples/customer-onboarding'
+    P = EXAMPLES / 'customer-onboarding'
 
     def _fg(self):
         return FederatedGraph.load(sorted(self.P.glob('a*.json')) + [self.P / 'mappings.json'])
@@ -276,7 +278,7 @@ class CustomerOnboardingExampleTests(unittest.TestCase):
 
 @_needs_bian
 class DigitalLendingExampleTests(unittest.TestCase):
-    P = ROOT / 'examples/digital-lending'
+    P = EXAMPLES / 'digital-lending'
 
     def test_two_level_export_checks_clean(self):
         files = sorted(self.P.glob('a*.json'))
@@ -292,8 +294,9 @@ class DigitalLendingExampleTests(unittest.TestCase):
         self.assertTrue(all(m['rationale'].startswith('TARGET DESIGN') and m['confidence'] <= 0.4 for m in g))
 
 
+@_needs_bian
 class DesignTraceMarkerTests(unittest.TestCase):
-    P = ROOT / 'examples/digital-lending'
+    P = EXAMPLES / 'digital-lending'
 
     def test_trace_marks_planned_instances(self):
         from sdem.graph import render_trace
@@ -306,7 +309,7 @@ class DesignTraceMarkerTests(unittest.TestCase):
 
 @_needs_bian
 class TradeFinanceCoverageTests(unittest.TestCase):
-    P = ROOT / 'examples/trade-finance'
+    P = EXAMPLES / 'trade-finance'
 
     def test_exports_and_registry_mappings_check_clean(self):
         fg = FederatedGraph.load(sorted(self.P.glob('a*.json')) + [self.P / 'mappings.json'])
@@ -360,7 +363,7 @@ class ReferenceStructureTests(unittest.TestCase):
         import core_docs; core_docs.leave()
 
     """Every enforceable within-level row is exercised on committed data and accepted by the checker."""
-    P = ROOT / 'examples/reference-structure'
+    P = EXAMPLES / 'reference-structure'
 
     def test_generated_estate_is_current(self):
         from sdem.structure import render, FILES

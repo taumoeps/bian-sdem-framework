@@ -7,10 +7,11 @@ from sdem import load, transform
 from sdem.cli import main
 
 ROOT = Path(__file__).resolve().parents[1]
+import sys as _s2, pathlib as _pl2; _s2.path.insert(0, str(_pl2.Path(__file__).resolve().parent)); from needs import EXAMPLES  # noqa: E402 — SDEM's examples and sdem-bian's (R-D6)
 import sys; sys.path.insert(0, str(Path(__file__).resolve().parent))
 from forms import lf   # noqa: E402 — a layer's file in either form
-FOLDER = ROOT / 'examples' / 'designs' / 'confluence-folder-export'
-A2 = ROOT / 'examples' / 'payment-initiation' / 'a2-service-domain.json'
+FOLDER = EXAMPLES / 'designs' / 'confluence-folder-export'
+A2 = EXAMPLES / 'payment-initiation' / 'a2-service-domain.json'
 BAD = 'HIS-A3-PAYMENT-ORDER'   # a data entity drawn without its attribute list: fails the check (LC-04)
 
 
@@ -53,7 +54,7 @@ class LoadTests(unittest.TestCase):
         return start(p)
 
     def test_refuses_a_folder_that_is_not_a_transform_output(self):  # LD-G02
-        with self.assertRaises(load.LoadError): load.load(ROOT / 'examples' / 'payment-initiation', self.est('e0'), 'jane.architect', all_=True)
+        with self.assertRaises(load.LoadError): load.load(EXAMPLES / 'payment-initiation', self.est('e0'), 'jane.architect', all_=True)
 
     def test_selection_is_required_and_checked(self):  # LD-S01
         with self.assertRaises(load.LoadError): load.load(self.cand, self.est('e1'), 'jane.architect')

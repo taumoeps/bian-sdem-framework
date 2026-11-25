@@ -7,7 +7,8 @@ from sdem.conformance import check_level, estate_index, unknown_value
 from sdem.metamodel import Metamodel
 
 ROOT = Path(__file__).resolve().parents[1]
-PAY = ROOT / 'examples' / 'payment-initiation'
+import sys as _s2, pathlib as _pl2; _s2.path.insert(0, str(_pl2.Path(__file__).resolve().parent)); from needs import EXAMPLES  # noqa: E402 — SDEM's examples and sdem-bian's (R-D6)
+PAY = EXAMPLES / 'payment-initiation'
 
 
 def _j(p): return json.loads(Path(p).read_text(encoding='utf-8'))
@@ -89,7 +90,7 @@ class CompletenessTests(unittest.TestCase):
         self.assertTrue(any('possible duplicate: A3.ApplicationComponent' in w and '(LC-09n)' in w for w in warns), warns)
 
     def test_the_examples_stay_clean(self):
-        for ws in sorted(p for p in (ROOT / 'examples').iterdir() if (p / 'mappings.json').exists()):
+        for ws in sorted(p for p in (EXAMPLES).iterdir() if (p / 'mappings.json').exists()):
             docs = [_j(f) for f in sorted(ws.glob('a[1-4]-*.json'))]; idx = estate_index(docs)
             for d in docs:
                 errs, warns = check_level(d, self.mm, idx)[:2]

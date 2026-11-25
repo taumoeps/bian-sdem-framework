@@ -5,6 +5,7 @@ import json, sys, unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+import sys as _s2, pathlib as _pl2; _s2.path.insert(0, str(_pl2.Path(__file__).resolve().parent)); from needs import EXAMPLES  # noqa: E402 — SDEM's examples and sdem-bian's (R-D6)
 sys.path.insert(0, str(ROOT))
 from sdem.metamodel import Metamodel  # noqa: E402
 from sdem import notation  # noqa: E402
@@ -39,7 +40,7 @@ class ArchiMateLabels(unittest.TestCase):
         from sdem import profile as P
         n = 0
         try:
-            for f in (ROOT / 'examples').rglob('mappings.json'):
+            for f in sorted(Path(p) for p in __import__('glob').glob(str(EXAMPLES / '**' / 'mappings.json'), recursive=True)):   # glob follows the linked examples; rglob does not
                 P.deactivate()
                 if (f.parent / 'sdem-profile.json').exists(): P.activate_from(f.parent)
                 for rel in {m['relationship'] for m in json.loads(f.read_text(encoding='utf-8')).get('mappings', [])}:
@@ -64,7 +65,7 @@ if __name__ == '__main__':
 class PacksSayTheirKinds(unittest.TestCase):   # MID-07 for an extension's own links: each link type says its ArchiMate kind ("archimate")
     def test_every_shipped_profile_link_type_has_its_kind(self):
         from sdem import profile as P
-        for f in list((ROOT / 'examples' / 'profiles').glob('*.json')) + list((ROOT / 'standards').glob('*.json')):
+        for f in list((EXAMPLES / 'profiles').glob('*.json')) + list((ROOT / 'standards').glob('*.json')):
             d = json.loads(f.read_text(encoding='utf-8'))
             for x in (d.get('link_types') or []) if isinstance(d, dict) else []:
                 self.assertIn(x.get('archimate'), ARCHIMATE_KINDS, f'{f.name}: {x.get("relationship")}')
@@ -94,7 +95,7 @@ class PackLinkKindsInsideALayer(unittest.TestCase):   # MID-07, 0.21.13: an exte
 
     def test_every_link_in_the_payment_example_graph_is_an_archimate_kind(self):
         from sdem import model_health as H, profile as P
-        ws = ROOT / 'examples' / '0.20' / 'payment-initiation-v4' / 'sdem'
+        ws = EXAMPLES / '0.20' / 'payment-initiation-v4' / 'sdem'
         try:
             P.activate_from(ws)
             g = H.integrity_graph(ws)

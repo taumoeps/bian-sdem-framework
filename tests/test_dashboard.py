@@ -4,11 +4,12 @@ import contextlib, glob, io, json, re, shutil, sys, tempfile, unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+import sys as _s2, pathlib as _pl2; _s2.path.insert(0, str(_pl2.Path(__file__).resolve().parent)); from needs import EXAMPLES  # noqa: E402 — SDEM's examples and sdem-bian's (R-D6)
 sys.path.insert(0, str(ROOT))
 from sdem import cli, dashboard  # noqa: E402
 from sdem.store import GraphReader  # noqa: E402
 
-PAY = ROOT / 'examples' / 'payment-initiation'
+PAY = EXAMPLES / 'payment-initiation'
 
 
 def sdem(*argv):
@@ -33,7 +34,7 @@ class DashboardTests(unittest.TestCase):
         shutil.rmtree(cls.tmp, ignore_errors=True)
 
     def test_generates_for_every_example_offline(self):   # AT-DB-01
-        for d in sorted(glob.glob(str(ROOT / 'examples') + '/*/')):
+        for d in sorted(glob.glob(str(EXAMPLES) + '/*/')):
             if 'reference-structure' in d or not (Path(d) / 'mappings.json').exists(): continue   # examples/designs/ is not a workspace
             out = self.tmp / (Path(d).name + '.html')
             code, _, err = sdem('dashboard', '--workspace', d, '-o', out)

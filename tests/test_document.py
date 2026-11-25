@@ -4,6 +4,7 @@ import json, os, shutil, subprocess, sys, tempfile, unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+import sys as _s2, pathlib as _pl2; _s2.path.insert(0, str(_pl2.Path(__file__).resolve().parent)); from needs import EXAMPLES  # noqa: E402 — SDEM's examples and sdem-bian's (R-D6)
 ENV = {**os.environ, 'PYTHONPATH': str(ROOT) + os.pathsep + os.environ.get('PYTHONPATH', '')}
 
 
@@ -18,7 +19,7 @@ import sys as _s, pathlib as _pl; _s.path.insert(0, str(_pl.Path(__file__).resol
 class DocumentTests(unittest.TestCase):
     def setUp(self):
         self.d = Path(tempfile.mkdtemp())
-        shutil.copytree(ROOT / 'examples' / 'payment-initiation', self.d / 'ws', ignore=shutil.ignore_patterns('graph', 'migrations'))
+        shutil.copytree(EXAMPLES / 'payment-initiation', self.d / 'ws', ignore=shutil.ignore_patterns('graph', 'migrations'))
         p = self.d / 'ws' / 'a3-application.json'; a3 = json.loads(p.read_text(encoding='utf-8'))
         api = next(i for i in a3['instances'] if i['id'] == 'API-PI-06')
         api['attributes']['path'] = '/TBD'                                       # a placeholder

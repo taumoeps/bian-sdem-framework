@@ -1,7 +1,19 @@
 """The 0.22 plan, step 3b (proof P1): sdem link from scratch on every 0.20 example: approved links removed, everything re-proposed — the engine's full output, normalised. Usage: python scripts/golden/link_scratch.py <SDEM checkout> <out-dir>"""
 import json, shutil, subprocess, sys, tempfile, pathlib
 root, out = pathlib.Path(sys.argv[1]), pathlib.Path(sys.argv[2]); out.mkdir(parents=True, exist_ok=True)
-for ex in sorted((root / 'examples' / '0.20').iterdir()):
+def _examples_020(root):
+    """Every 0.20 example: SDEM's own and an installed extension's (0.22, R-D6: the banking designs are sdem-bian's)."""
+    dirs = {}
+    sys.path.insert(0, str(root))
+    try:
+        from sdem.parts import example_roots
+        roots = example_roots()
+    except Exception: roots = [root / 'examples']
+    for r in [root / 'examples', *roots]:
+        if (r / '0.20').is_dir():
+            for d in (r / '0.20').iterdir(): dirs.setdefault(d.name, d)
+    return [dirs[k] for k in sorted(dirs)]
+for ex in _examples_020(root):
     src = ex / 'sdem' if (ex / 'sdem' / 'mappings.json').exists() else ex
     if not (src / 'mappings.json').exists(): continue
     t = pathlib.Path(tempfile.mkdtemp()); ws = t / 'ws'; shutil.copytree(src, ws)

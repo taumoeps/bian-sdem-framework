@@ -5,12 +5,13 @@ import json, os, re, shutil, subprocess, sys, tempfile
 from pathlib import Path
 
 ROOT = Path(os.environ.get('SDEM_GOLDEN_ROOT') or Path(__file__).resolve().parents[2])   # SDEM_GOLDEN_ROOT: capture another checkout, e.g. v0.19.0 (BP-D5)
+EXAMPLES_DIR = Path(os.environ.get('SDEM_EXAMPLES_DIR') or ROOT / 'examples')   # SDEM's examples and sdem-bian's (0.22, R-D6): the tests' merged folder, or examples/ with scripts/link_extension_examples.py run
 ENV = {**os.environ, 'PYTHONPATH': str(ROOT), 'PYTHONIOENCODING': 'utf-8'}   # SDEM writes UTF-8 on every platform
 _HAS_FORM = "'--form'" in (ROOT / 'sdem' / 'new.py').read_text(encoding='utf-8')   # a checkout from before 0.20 (v0.19.0) has no --form
 FORM = (['--form', '0.20'] if os.environ.get('SDEM_GOLDEN_P2') == '1' else ['--form', '0.19']) if _HAS_FORM else []   # P1: 0.19's answers, whatever the default (DL-D9)
 if os.environ.get('SDEM_GOLDEN_P2') != '1': ENV['SDEM_FORM'] = '0.19'
-if os.environ.get('SDEM_GOLDEN_P2') == '1' and (ROOT / 'examples' / '0.20').is_dir():   # P2: the 0.20 form, opted in (DL-D9), from the migrated example
-    ENV.update({'SDEM_FORM': '0.20', 'SDEM_EXAMPLES': str(ROOT / 'examples' / '0.20')})
+if os.environ.get('SDEM_GOLDEN_P2') == '1' and (EXAMPLES_DIR / '0.20').is_dir():   # P2: the 0.20 form, opted in (DL-D9), from the migrated example
+    ENV.update({'SDEM_FORM': '0.20', 'SDEM_EXAMPLES': str(EXAMPLES_DIR / '0.20')})
 VOLATILE = re.compile(r'^(at|generated_at|written_at|recorded_at|started_at|ended_at|built_at|date|created|timestamp|now|as_of|run_id|id_run|fingerprint|duration_ms|seconds|elapsed)$')
 
 
@@ -19,11 +20,25 @@ def sdem(*args, cwd=None):
     return r.returncode, r.stdout, r.stderr
 
 
+def _ex_tags():
+    """The examples folder's spellings as `<root>/examples` (0.22, R-D6): the merged folder, and where each example really is (sdem-bian's)."""
+    tags = {}
+    if EXAMPLES_DIR != ROOT / 'examples':
+        tags[str(EXAMPLES_DIR)] = '<root>/examples'
+        for c in [*EXAMPLES_DIR.iterdir(), *((EXAMPLES_DIR / '0.20').iterdir() if (EXAMPLES_DIR / '0.20').is_dir() else [])]:
+            sub = '/0.20' if c.parent.name == '0.20' else ''
+            tags[os.path.dirname(os.path.realpath(c))] = '<root>/examples' + sub
+    return tuple(sorted(tags.items(), key=lambda kv: len(kv[0]), reverse=True))
+
+
+_EX_TAGS = _ex_tags()
+
+
 def norm(x, tmp):
     if isinstance(x, dict): return {k: ('<volatile>' if VOLATILE.match(k) else norm(v, tmp)) for k, v in x.items() if k not in ('sdem', 'phases_by')}   # phases_by: who gave BIAN's part of sdem aid (MX-54) — provenance, R-D11
     if isinstance(x, list): return [norm(v, tmp) for v in x]
     if isinstance(x, str):
-        for p, tag in ((tmp, '<tmp>'), (ROOT, '<root>')):   # every spelling of the folder: as given, resolved, and with / (Windows)
+        for p, tag in (*_EX_TAGS, (tmp, '<tmp>'), (ROOT, '<root>')):   # every spelling of the folder: as given, resolved, and with / (Windows)
             for form in sorted({str(p), str(Path(p).resolve()), os.path.realpath(p)}, key=len, reverse=True):   # the longest first
                 x = x.replace(form, tag).replace(form.replace('\\', '/'), tag)
         if os.sep == '\\': x = re.sub(r'(<tmp>|<root>)([^\s"]*)', lambda m: m.group(1) + m.group(2).replace('\\', '/'), x)   # paths under them in / form
@@ -76,7 +91,7 @@ def capture(out):
         cases = {}
         ws = tmp / 'pi'
         sdem('new', '--workspace', ws, '--person', 'golden.check', '--example', 'payment-initiation', *FORM)
-        v3 = tmp / 'v3'; shutil.copytree(ROOT / 'examples' / 'payment-initiation-v3' / 'sdem', v3, ignore=shutil.ignore_patterns('graph', 'links', 'aid'))
+        v3 = tmp / 'v3'; shutil.copytree(EXAMPLES_DIR / 'payment-initiation-v3' / 'sdem', v3, ignore=shutil.ignore_patterns('graph', 'links', 'aid'))
         if IDS: to_ids(ws); to_ids(v3)
         if P2:   # the example is in the 0.20 form already (DL-D9); the second workspace is migrated
             for w in (v3,):
@@ -99,7 +114,7 @@ def capture(out):
         cases['bian/add-pi'] = ('bian', 'add', 'Card Authorization', '--workspace', ws, '--person', 'golden.check', '--dry-run', '--json')
         cases['bian/add-new'] = ('bian', 'add', 'Payment Rail', 'Party Reference Data Directory', '--workspace', nb, '--person', 'golden.check', '--dry-run', '--json')
         for d in ('card-fraud-alerts', 'digital-lending', 'legacy-core-ledger'):
-            ex = ROOT / 'examples' / d
+            ex = EXAMPLES_DIR / d
             if IDS: shutil.copytree(ex, tmp / 'ds' / d); to_ids(tmp / 'ds' / d); ex = tmp / 'ds' / d
             files = sorted(str(p) for p in ex.glob('a[1-4]-*.json')) + [str(ex / 'mappings.json')]
             cases[f'datasets/{d}/check'] = ('check', *files, '--json')

@@ -4,7 +4,8 @@ import json, os, shutil, subprocess, sys, tempfile, unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-EX = ROOT / 'examples' / '0.20' / 'library-holds'
+import sys as _s2, pathlib as _pl2; _s2.path.insert(0, str(_pl2.Path(__file__).resolve().parent)); from needs import EXAMPLES  # noqa: E402 — SDEM's examples and sdem-bian's (R-D6)
+EX = EXAMPLES / '0.20' / 'library-holds'
 ME = 'jane.architect'
 ENV = {**os.environ, 'PYTHONPATH': str(ROOT), 'PYTHONIOENCODING': 'utf-8'}
 ENV.pop('SDEM_FORM', None)   # the default form (DL-D9): 0.20

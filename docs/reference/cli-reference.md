@@ -1629,7 +1629,7 @@ sdem model usage
 start a workspace: the four layers (A2 your BIAN layer) and an empty registry of connections — checked, recorded
 
 ```
-sdem new [--workspace WORKSPACE] [--organisation ORGANISATION] --person PERSON [--bian BIAN] [--no-bian] [--form {0.20,0.19}] [--with {bian}] [--core] [--example {library-holds,payment-initiation}] [--from FROM] [--profile PROFILE] [--hosting HOSTING] [--explore] [--dry-run]
+sdem new [--workspace WORKSPACE] [--organisation ORGANISATION] --person PERSON [--bian BIAN] [--no-bian] [--form {0.20,0.19}] [--with {bian}] [--core] [--example {library-holds}] [--from FROM] [--profile PROFILE] [--hosting HOSTING] [--explore] [--dry-run]
 ```
 
 *JSON: native · dry run: native · 👤 a person's own name*
@@ -1644,7 +1644,7 @@ sdem new [--workspace WORKSPACE] [--organisation ORGANISATION] --person PERSON [
 | `--form` {0.20, 0.19} |  | 0.20 (the default; DL-D9): the Data layer of its own, files named by layer, records that store type ids; 0.19: as SDEM 0.19 made them — migrate later with sdem migrate --to 0.20. SDEM_FORM sets the default |
 | `--with` {bian} |  | start with an extension's layer — bian: the BIAN layer, empty, sdem aid bringing in the service domains your design needs (needs sdem-bian installed; 0.22, BX-15). Without it a new design is a core one |
 | `--core` |  | a core-only design: SDEM's core layers A1, A3 and A4 and no BIAN — switch BIAN on later with sdem profile include ext:bian (BX-13) |
-| `--example` {library-holds, payment-initiation} |  | start with a synthetic example that ships with SDEM as the baseline (made-up data, for learning) — the same as --from its folder |
+| `--example` {library-holds} |  | start with a synthetic example that ships with SDEM as the baseline (made-up data, for learning) — the same as --from its folder |
 | `--from` |  | start with this content as the baseline: the four layers, mappings.json and requirements.json found in DIR — checked first, recorded in the ledger and as a decision; only when the workspace is created (a baseline is never re-taken) |
 | `--profile` |  | start with this organisation profile (kept as sdem-profile.json; its base is still found): its types, rules and names apply, and the layers it adds above A1 or below A4 start empty beside the core four |
 | `--hosting` |  | start with the network zones of a hosting template — cloud, on_premises or hybrid, or one the organisation profile adds (WS-12, PR-32); without it, sdem aid proposes zones from the organisation's default (cloud first) |

@@ -10,8 +10,20 @@ def norm(x, tmp):
     if isinstance(x, list): return [norm(v, tmp) for v in x]
     if isinstance(x, str): return x.replace(str(tmp), '<tmp>')
     return x
+def _examples_020(root):
+    """Every 0.20 example: SDEM's own and an installed extension's (0.22, R-D6: the banking designs are sdem-bian's)."""
+    dirs = {}
+    sys.path.insert(0, str(root))
+    try:
+        from sdem.parts import example_roots
+        roots = example_roots()
+    except Exception: roots = [root / 'examples']
+    for r in [root / 'examples', *roots]:
+        if (r / '0.20').is_dir():
+            for d in (r / '0.20').iterdir(): dirs.setdefault(d.name, d)
+    return [dirs[k] for k in sorted(dirs)]
 LAYERS = ('business.json', 'bian.json', 'data.json', 'application.json', 'technology.json')
-for ex in sorted((root / 'examples' / '0.20').iterdir()):
+for ex in _examples_020(root):
     src = ex / 'sdem' if (ex / 'sdem' / 'mappings.json').exists() else ex
     if not (src / 'mappings.json').exists() or not (src / 'business.json').exists(): continue
     for scen in ('a', 'b'):

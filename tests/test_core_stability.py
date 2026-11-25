@@ -6,6 +6,7 @@ import json, os, shutil, subprocess, sys, tempfile, unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+import sys as _s2, pathlib as _pl2; _s2.path.insert(0, str(_pl2.Path(__file__).resolve().parent)); from needs import EXAMPLES  # noqa: E402 — SDEM's examples and sdem-bian's (R-D6)
 sys.path.insert(0, str(ROOT / 'scripts'))
 import core_stability as C   # noqa: E402
 
@@ -35,7 +36,7 @@ class StableCore(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.tmp = Path(tempfile.mkdtemp()); ws = cls.ws = cls.tmp / 'ws'
-        src = ROOT / 'examples' / '0.20' / 'library-holds'   # a made-up design in the default four layers, with records in each
+        src = EXAMPLES / '0.20' / 'library-holds'   # a made-up design in the default four layers, with records in each
         sdem('new', '--workspace', ws, '--person', ME, '--core', '--from', src, '--form', cls.FORM)
         S = cls.S = {}
         S['core'] = snap(ws)

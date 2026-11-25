@@ -4,10 +4,12 @@ Builds a synthetic workspace by copying examples/payment-initiation — every la
 the engine joins on — N times with renamed ids (no approved links, so the engine has everything to propose), then times
 `sdem link`'s engine and fails if it is slower than the limit. Usage: python scripts/engine_perf.py [copies] [max_seconds]
 """
+import os
 import copy, json, sys, time
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+EXAMPLES_DIR = Path(os.environ.get('SDEM_EXAMPLES_DIR') or ROOT / 'examples')   # SDEM's examples and sdem-bian's (0.22, R-D6): the tests' merged folder, or examples/ with scripts/link_extension_examples.py run
 sys.path.insert(0, str(ROOT))
 from sdem.graph import FederatedGraph, LevelGraph  # noqa: E402
 from sdem.metamodel import Metamodel  # noqa: E402
@@ -16,7 +18,7 @@ from sdem.store import GraphReader  # noqa: E402
 
 copies = int(sys.argv[1]) if len(sys.argv) > 1 else 30
 limit = float(sys.argv[2]) if len(sys.argv) > 2 else 30.0
-src = ROOT / 'examples' / 'payment-initiation'
+src = EXAMPLES_DIR / 'payment-initiation'
 FILES = ['a1-business.json', 'a2-service-domain.json', 'a3-application.json', 'a4-technology.json']
 docs = {f: json.loads((src / f).read_text(encoding='utf-8')) for f in FILES}
 ids = {i['id'] for d in docs.values() for i in d['instances']}

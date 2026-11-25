@@ -5,6 +5,7 @@ import json, os, shutil, subprocess, sys, tempfile, unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+import sys as _s2, pathlib as _pl2; _s2.path.insert(0, str(_pl2.Path(__file__).resolve().parent)); from needs import EXAMPLES  # noqa: E402 — SDEM's examples and sdem-bian's (R-D6)
 sys.path.insert(0, str(ROOT))
 from sdem import comply, patterns, profile  # noqa: E402
 from sdem.metamodel import Metamodel  # noqa: E402
@@ -198,7 +199,7 @@ class InAWorkspace(Base):
         self.assertEqual(sdem('check', '--workspace', self.ws, cwd=self.tmp)[0], 0)   # every part is a warning: a gap is never a failed check
 
     def test_an_existing_workspace_takes_a_shipped_file_the_same_way(self):   # CPL-10, CPL-06
-        shutil.copytree(ROOT / 'examples' / 'payment-initiation', self.ws, ignore=shutil.ignore_patterns('graph'))
+        shutil.copytree(EXAMPLES / 'payment-initiation', self.ws, ignore=shutil.ignore_patterns('graph'))
         code, out, err = sdem('profile', 'include', 'sdem:sdem-completeness.json', '--workspace', self.ws, '--person', 'jane.architect', cwd=self.tmp); self.assertEqual(code, 0, out + err)
         self.assertEqual(_j(self.ws / 'sdem-profile.json')['includes'], ['sdem:sdem-completeness.json'])
         self.assertIsNotNone(self.status()['completeness'])

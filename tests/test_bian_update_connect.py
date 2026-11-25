@@ -8,6 +8,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from forms import lf   # noqa: E402 — a layer's file in either form
 
 ROOT = Path(__file__).resolve().parents[1]
+import sys as _s2, pathlib as _pl2; _s2.path.insert(0, str(_pl2.Path(__file__).resolve().parent)); from needs import EXAMPLES  # noqa: E402 — SDEM's examples and sdem-bian's (R-D6)
 ME = 'jane.architect'
 
 
@@ -19,7 +20,7 @@ class BianUpdateAndConnectTests(unittest.TestCase):
     def setUpClass(cls):
         cls.base = Path(tempfile.mkdtemp())
         run = lambda *a: subprocess.run([sys.executable, '-m', 'sdem', *map(str, a)], cwd=cls.base, capture_output=True, text=True, env={'PYTHONPATH': str(ROOT), 'PATH': os.pathsep.join(['/usr/bin', '/bin', *[p for p in os.environ.get('PATH', '').split(os.pathsep) if p and shutil.which('sdem-bian', path=p)]])})
-        shutil.copytree(ROOT / 'examples' / 'designs' / 'confluence-folder-export', cls.base / 'export')
+        shutil.copytree(EXAMPLES / 'designs' / 'confluence-folder-export', cls.base / 'export')
         for a in (('bian', 'import', '--base', '--only', 'Payment Order Initiation', 'Payment Rail', '-o', 'bian/a2-service-domain.json'),
                   ('transform', 'run', 'export', '-o', 'history', '--ocr', 'off'),
                   ('new', '--with', 'bian', '--workspace', 'workspaces/payments', '--person', ME),   # starts from the shared BIAN layer, bian/a2-service-domain.json

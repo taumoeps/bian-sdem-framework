@@ -234,3 +234,28 @@ def api_supported(spec):
     from .api import VERSION
     from .upgrade import satisfies
     return satisfies(VERSION, spec)
+
+
+def example_roots():
+    """Where the synthetic examples are (0.22, R-D6): SDEM's own (`examples/` in a checkout, `sdem/data/examples` installed), then those an
+    installed extension ships — sdem-bian's banking designs (its manifest's "examples")."""
+    from .paths import DATA_ROOT
+    roots = [DATA_ROOT / 'examples']
+    p = package()
+    ex = ((p or {}).get('manifest') or {}).get('examples')
+    if ex and Path(ex).is_dir(): roots.append(Path(ex))
+    return roots
+
+
+def example_path(rel):
+    """An example's file or folder (`payment-initiation`, `0.20/library-holds`, `acceptance-cases.json`) — SDEM's own first, then an
+    installed extension's; SDEM's place for it when none has it."""
+    for root in example_roots():
+        if (root / rel).exists(): return root / rel
+    return example_roots()[0] / rel
+
+
+def example_glob(pattern):
+    """Every match of `pattern` (`*/a[1-4]-*.json`, `*/`) in SDEM's examples and an installed extension's (R-D6), in that order."""
+    import glob
+    return [f for r in example_roots() for f in sorted(glob.glob(str(r / pattern)))]

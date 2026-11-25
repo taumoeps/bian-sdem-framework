@@ -8,9 +8,10 @@ from sdem.graph import LevelGraph
 from sdem.metamodel import Metamodel
 
 ROOT = Path(__file__).resolve().parents[1]
+import sys as _s2, pathlib as _pl2; _s2.path.insert(0, str(_pl2.Path(__file__).resolve().parent)); from needs import EXAMPLES  # noqa: E402 — SDEM's examples and sdem-bian's (R-D6)
 SAMPLE = ROOT / 'tests' / 'fixtures' / 'confluence-export-sample'
-KNOWN = ROOT / 'examples' / 'payment-initiation' / 'a3-application.json'
-FOLDER = ROOT / 'examples' / 'designs' / 'confluence-folder-export'
+KNOWN = EXAMPLES / 'payment-initiation' / 'a3-application.json'
+FOLDER = EXAMPLES / 'designs' / 'confluence-folder-export'
 
 
 import sys as _s, pathlib as _pl; _s.path.insert(0, str(_pl.Path(__file__).resolve().parent)); from needs import bian as _needs_bian  # noqa: E402 — BX-15: tests that need sdem-bian
@@ -151,7 +152,7 @@ class TransformTests(unittest.TestCase):
 
 
     def test_never_creates_a2_entities(self):  # HI-S01, CTL-24: BIAN elements come from a BIAN source only
-        a2 = ROOT / 'examples' / 'payment-initiation' / 'a2-service-domain.json'
+        a2 = EXAMPLES / 'payment-initiation' / 'a2-service-domain.json'
         names = [i['name'] for i in json.loads(a2.read_text())['instances'] if i['type'] == 'A2.ServiceDomain'][:1]
         tmp = Path(tempfile.mkdtemp())
         try:

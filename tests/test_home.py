@@ -3,6 +3,7 @@ import json, re, shutil, sys, tempfile, unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+import sys as _s2, pathlib as _pl2; _s2.path.insert(0, str(_pl2.Path(__file__).resolve().parent)); from needs import EXAMPLES  # noqa: E402 — SDEM's examples and sdem-bian's (R-D6)
 sys.path.insert(0, str(ROOT))
 from sdem import home  # noqa: E402
 
@@ -14,7 +15,7 @@ class HomeTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.tmp = Path(tempfile.mkdtemp(prefix='sdem-home-'))
-        cls.page, cls.data = home.write(cls.tmp / 'site', [str(ROOT / 'examples')])
+        cls.page, cls.data = home.write(cls.tmp / 'site', [str(EXAMPLES)])
         cls.html = cls.page.read_text(encoding='utf-8')
 
     @classmethod
@@ -23,7 +24,7 @@ class HomeTests(unittest.TestCase):
 
     def test_offline_and_linked_to_every_project(self):
         self.assertFalse(re.search(r'(?:src|href)="https?://', self.html))
-        names = sorted(p.name for p in (ROOT / 'examples').iterdir() if p.is_dir() and (p / 'mappings.json').exists())
+        names = sorted(p.name for p in (EXAMPLES).iterdir() if p.is_dir() and (p / 'mappings.json').exists())
         self.assertEqual(sorted(p['name'] for p in self.data['projects']), names)
         for p in self.data['projects']:
             page = self.page.parent / p['page']; self.assertTrue(page.exists(), p['page'])

@@ -4,6 +4,7 @@ import ast, contextlib, io, re, shutil, sys, tempfile, unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+import sys as _s2, pathlib as _pl2; _s2.path.insert(0, str(_pl2.Path(__file__).resolve().parent)); from needs import EXAMPLES  # noqa: E402 — SDEM's examples and sdem-bian's (R-D6)
 sys.path.insert(0, str(ROOT))
 from sdem import cli  # noqa: E402
 
@@ -48,7 +49,7 @@ class PrivacyTests(unittest.TestCase):
 
     def test_pages_load_nothing_from_the_internet(self):
         tmp = Path(tempfile.mkdtemp()); self.addCleanup(shutil.rmtree, tmp, True)
-        estate = ROOT / 'examples' / 'payment-initiation'
+        estate = EXAMPLES / 'payment-initiation'
         self.assertEqual(sdem('build', '--workspace', estate, '--out', tmp / 'g'), 0)
         self.assertEqual(sdem('view', '--graph', tmp / 'g'), 0)
         self.assertEqual(sdem('dashboard', '--workspace', estate, '-o', tmp / 'dash.html'), 0)
@@ -71,7 +72,7 @@ if __name__ == '__main__':
         allowed = re.compile(r'@(example\.(org|com|net)|users\.noreply\.github\.com)$')
         email = re.compile(r'[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,}')
         hits = []
-        for p in list((ROOT / 'docs').rglob('*')) + list((ROOT / 'examples').rglob('*')) + [ROOT / 'README.md']:
+        for p in list((ROOT / 'docs').rglob('*')) + [Path(p) for p in __import__('glob').glob(str(EXAMPLES / '**' / '*'), recursive=True)] + [ROOT / 'README.md']:
             if not p.is_file() or p.suffix not in ('.md', '.json', '.txt', '.csv', '.html'): continue
             text = p.read_text(encoding='utf-8', errors='replace')
             hits += [f'{p.relative_to(ROOT)}: {m}' for m in email.findall(text) if not allowed.search(m)]

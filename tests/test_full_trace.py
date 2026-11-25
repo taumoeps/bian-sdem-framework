@@ -5,8 +5,9 @@ import json, os, shutil, subprocess, sys, tempfile, unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+import sys as _s2, pathlib as _pl2; _s2.path.insert(0, str(_pl2.Path(__file__).resolve().parent)); from needs import EXAMPLES  # noqa: E402 — SDEM's examples and sdem-bian's (R-D6)
 ENV = {**os.environ, 'PYTHONPATH': str(ROOT), 'PYTHONIOENCODING': 'utf-8', 'SDEM_FORM': '0.20'}
-SRC = ROOT / 'examples' / '0.20' / 'payment-initiation-v3' / 'sdem'
+SRC = EXAMPLES / '0.20' / 'payment-initiation-v3' / 'sdem'
 
 
 def sdem(*a, ok=(0,)):
@@ -67,7 +68,7 @@ class FullTrace(unittest.TestCase):
         self.assertEqual(self.trace('PATH-DATA', 'up', '--direct-only'), {'PATH-DATA'})                  # the links between layers alone: none
 
     def test_a_process_reaches_the_data_of_the_domain_it_uses(self):   # FT-11
-        G = ROOT / 'examples' / 'payment-initiation' / 'graph'
+        G = EXAMPLES / 'payment-initiation' / 'graph'
         j = json.loads(subprocess.run([sys.executable, '-m', 'sdem', 'trace', 'PRC-PAY-01', '--graph', str(G), '--direction', 'down', '--json'],
                                       capture_output=True, text=True, encoding='utf-8', env={**ENV, 'SDEM_FORM': '0.19'}, cwd=ROOT).stdout)
         down = ids(j['down'])
@@ -101,7 +102,7 @@ class FullTrace(unittest.TestCase):
         self.assertTrue(all(v['linked'] <= v['records'] and v['complete'] <= v['records'] for v in g['by_layer'].values()))
 
     def test_a_completed_design_has_no_gap(self):   # MID-05 on a real design: the Payment example completed to every layer (examples/0.20/payment-initiation-v4)
-        ws = ROOT / 'examples' / '0.20' / 'payment-initiation-v4' / 'sdem'
+        ws = EXAMPLES / '0.20' / 'payment-initiation-v4' / 'sdem'
         g = Path(tempfile.mkdtemp()) / 'g'; self.addCleanup(shutil.rmtree, g.parent, True)
         sdem('build', '--workspace', ws, '-o', g)
         d = json.loads(sdem('trace', 'GAPS', '--graph', g, '--json'))
@@ -109,7 +110,7 @@ class FullTrace(unittest.TestCase):
         self.assertEqual(d['complete'], d['records'])
 
     def test_the_design_in_the_reference_shape(self):   # MID-01…MID-10: sdem model integrity — core, extensions, federated and local graphs
-        ws = ROOT / 'examples' / '0.20' / 'payment-initiation-v4' / 'sdem'
+        ws = EXAMPLES / '0.20' / 'payment-initiation-v4' / 'sdem'
         d = json.loads(sdem('model', 'integrity', '--workspace', ws, '--json'))
         self.assertEqual(d['format'], 'sdem-integrity/1'); self.assertEqual(d['core']['stability'], 'as frozen')
         self.assertEqual({(e['pattern'], e['layer']) for e in d['extensions']}, {('H1', 'A2'), ('V1', 'S')})          # BIAN in the stack, Security beside it
@@ -118,16 +119,16 @@ class FullTrace(unittest.TestCase):
         self.assertEqual(sum(x['approved'] for x in d['federated']['pairs']), d['federated']['links']['approved'])        # every approved link in one pair of graphs
 
     def test_sdems_verdict_on_the_metamodel_integrity_design(self):   # sdem model integrity --check: met on v4, MID-05 not met on v3 (its design gaps), exit 1
-        v4 = ROOT / 'examples' / '0.20' / 'payment-initiation-v4' / 'sdem'
+        v4 = EXAMPLES / '0.20' / 'payment-initiation-v4' / 'sdem'
         d = json.loads(sdem('model', 'integrity', '--workspace', v4, '--check', '--json'))
         self.assertTrue(d['met'], d['not_met']); self.assertEqual(d['checked'], 6)
         self.assertEqual({r['id'] for r in d['rules'] if r['status'] == 'view'}, {'MID-01', 'MID-02', 'MID-06', 'MID-09'})   # the views' to show, never guessed
-        v3 = ROOT / 'examples' / '0.20' / 'payment-initiation-v3' / 'sdem'
+        v3 = EXAMPLES / '0.20' / 'payment-initiation-v3' / 'sdem'
         d = json.loads(sdem('model', 'integrity', '--workspace', v3, '--check', '--json', ok=(1,)))
         self.assertFalse(d['met']); self.assertEqual(d['not_met'], ['MID-05'])
 
     def test_the_metamodel_views_data_is_the_graphs_whole(self):   # sdem model integrity --graph: every record and every link, nothing worked out by a view
-        v4 = ROOT / 'examples' / '0.20' / 'payment-initiation-v4' / 'sdem'
+        v4 = EXAMPLES / '0.20' / 'payment-initiation-v4' / 'sdem'
         g = json.loads(sdem('model', 'integrity', '--workspace', v4, '--graph', '--json'))
         d = json.loads(sdem('model', 'integrity', '--workspace', v4, '--json'))
         self.assertEqual(g['counts']['records'], sum(x['records'] for x in d['graphs']))                                   # every record of every graph, retired ones left out
@@ -140,7 +141,7 @@ class FullTrace(unittest.TestCase):
         self.assertTrue(all(x.get('built_from') and x['nodes'] >= 0 and x['edges'] >= 0 for x in st['graphs']))            # what each was built from, its nodes and edges
 
     def test_the_metamodel_drawn(self):   # sdem model integrity --metamodel: what may be — each kind of record a shape, each link allowed a line
-        v4 = ROOT / 'examples' / '0.20' / 'payment-initiation-v4' / 'sdem'
+        v4 = EXAMPLES / '0.20' / 'payment-initiation-v4' / 'sdem'
         m = json.loads(sdem('model', 'integrity', '--workspace', v4, '--metamodel', '--json'))
         g = json.loads(sdem('model', 'integrity', '--workspace', v4, '--graph', '--json'))
         kinds = {x['id'] for x in m['records']}
@@ -175,7 +176,7 @@ class IntegrityReadsTheInstalledFreeze(unittest.TestCase):   # 0.21.14: an insta
         rec = J.loads(H.STABILITY.read_text(encoding='utf-8')); rec['frozen_at'] = '2000-01-01'; rec['frozen_by'] = 'the test'
         (t / 'stability.json').write_text(J.dumps(rec), encoding='utf-8')
         old = H.STABILITY; H.STABILITY = t / 'stability.json'
-        try: core = H.integrity(ROOT / 'examples' / '0.20' / 'payment-initiation-v4' / 'sdem')['core']
+        try: core = H.integrity(EXAMPLES / '0.20' / 'payment-initiation-v4' / 'sdem')['core']
         finally: H.STABILITY = old
         self.assertEqual((core['frozen_at'], core['frozen_by']), ('2000-01-01', 'the test'))
         self.assertEqual(core['frozen']['link_types'], len(rec['link_types']))

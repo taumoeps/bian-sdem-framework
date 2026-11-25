@@ -4,7 +4,9 @@ from sdem.validate import validate, validate_registry, validate_files, load_regi
 from sdem.reference import StaticReferenceResolver, ReferenceBinding, NullReferenceResolver
 
 ROOT = Path(__file__).resolve().parents[1]
-DATA = json.loads((ROOT / 'examples/customer-onboarding/mappings.json').read_text())
+import sys as _s2, pathlib as _pl2; _s2.path.insert(0, str(_pl2.Path(__file__).resolve().parent)); from needs import EXAMPLES  # noqa: E402 — SDEM's examples and sdem-bian's (R-D6)
+if not (EXAMPLES / 'customer-onboarding').is_dir(): raise unittest.SkipTest('needs sdem-bian: its banking examples (R-D6)')
+DATA = json.loads((EXAMPLES / 'customer-onboarding/mappings.json').read_text())
 REGISTRY = load_registry()
 
 
@@ -175,7 +177,7 @@ class ReferenceResolverTests(unittest.TestCase):
 @_needs_bian
 class MultiFileTests(unittest.TestCase):
     def test_all_shipped_examples_validate_together(self):
-        report = validate_files(sorted(p for p in (ROOT / 'examples').glob('*/mappings.json') if p.parent.name != 'payment-initiation-v2'))   # v2 extends v1: it keeps v1's ids
+        report = validate_files(sorted(p for p in (EXAMPLES).glob('*/mappings.json') if p.parent.name != 'payment-initiation-v2'))   # v2 extends v1: it keeps v1's ids
         self.assertGreaterEqual(len(report), 2)
         self.assertEqual({k: v for k, v in report.items() if v}, {})
 
@@ -242,7 +244,7 @@ class V021RuleTests(unittest.TestCase):
 
     def test_entity_resolver_flags_unknown_endpoint(self):
         from sdem.reference import CatalogueEntityResolver
-        fraud = ROOT / 'examples/card-fraud-alerts'
+        fraud = EXAMPLES / 'card-fraud-alerts'
         doc = json.loads((fraud / 'mappings.json').read_text())
         resolver = CatalogueEntityResolver.from_file(fraud / 'entities.json')
         self.assertEqual(validate(doc, entity_resolver=resolver), [])
@@ -308,7 +310,7 @@ class TraceTests(unittest.TestCase):
     def setUp(self):
         from sdem.trace import load_edges, walk, paths
         self.load_edges, self.walk, self.paths = load_edges, walk, paths
-        self.fraud = json.loads((ROOT / 'examples/card-fraud-alerts/mappings.json').read_text())
+        self.fraud = json.loads((EXAMPLES / 'card-fraud-alerts/mappings.json').read_text())
         self.edges = load_edges([self.fraud])
 
     def chain(self, tree):
@@ -347,7 +349,7 @@ class TraceTests(unittest.TestCase):
         from sdem.trace import main
         import io, contextlib
         with contextlib.redirect_stderr(io.StringIO()):
-            self.assertEqual(main(['NOPE', str(ROOT / 'examples/card-fraud-alerts/mappings.json')]), 1)
+            self.assertEqual(main(['NOPE', str(EXAMPLES / 'card-fraud-alerts/mappings.json')]), 1)
 
 
 @_needs_bian
@@ -452,7 +454,7 @@ class V040ValidatorTests(unittest.TestCase):
 
     def test_verdict_referential_pass_with_catalogue(self):
         from sdem.reference import CatalogueEntityResolver
-        fraud = ROOT / 'examples/card-fraud-alerts'
+        fraud = EXAMPLES / 'card-fraud-alerts'
         verdicts = {}
         validate(json.loads((fraud / 'mappings.json').read_text()), entity_resolver=CatalogueEntityResolver.from_file(fraud / 'entities.json'), verdicts=verdicts)
         self.assertTrue(all(v['referential'] == 'pass' for v in verdicts.values()))

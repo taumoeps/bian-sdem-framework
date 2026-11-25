@@ -14,6 +14,7 @@ except ImportError:
     bian = None
 
 ROOT = Path(__file__).resolve().parents[1]
+import sys as _s2, pathlib as _pl2; _s2.path.insert(0, str(_pl2.Path(__file__).resolve().parent)); from needs import EXAMPLES  # noqa: E402 — SDEM's examples and sdem-bian's (R-D6)
 SAMPLE = ROOT / 'tests' / 'fixtures' / 'bian-release-sample'
 BAD = ROOT / 'tests' / 'fixtures' / 'bian-release-bad'
 
@@ -190,7 +191,7 @@ class BianImportTests(unittest.TestCase):
     def test_the_output_is_a_bian_layer_sdem_load_accepts(self):  # the point: an A2 layer for onboarding
         from sdem import load, transform
         code, out, f = self.imp(names=('Sample Order Initiation', 'Sample Party Directory'))
-        transform.extract(ROOT / 'examples' / 'designs' / 'confluence-folder-export', self.tmp / 'history', ocr='off')
+        transform.extract(EXAMPLES / 'designs' / 'confluence-folder-export', self.tmp / 'history', ocr='off')
         res = load.load(self.tmp / 'history', start(self.tmp / 'estate'), 'jane.architect', exclude=['HIS-A3-PAYMENT-ORDER'], a2=f)
         self.assertGreater(res['reconciliation']['loaded'], 0)
         self.assertEqual(json.loads(lf(self.tmp / 'estate', 'bian').read_text())['source_system'], 'BIAN-SEMANTIC-API-99.0.0')
@@ -243,7 +244,7 @@ class BaseBianTests(unittest.TestCase):
     def test_unknown_domains_do_not_stop_proposals_or_planning(self):  # DA2-02: the engine and AID skip the missing hints
         out = self.tmp / 'a2.json'
         self.assertEqual(sdem('import', SAMPLE, '--all', '-o', out)[0], 0)
-        est = self.tmp / 'est'; shutil.copytree(ROOT / 'examples' / 'payment-initiation', est, ignore=shutil.ignore_patterns('graph', 'migrations'))
+        est = self.tmp / 'est'; shutil.copytree(EXAMPLES / 'payment-initiation', est, ignore=shutil.ignore_patterns('graph', 'migrations'))
         a2 = json.loads((est / 'a2-service-domain.json').read_text()); new = json.loads(out.read_text())
         a2['instances'] += [i for i in new['instances'] if i['id'] not in {x['id'] for x in a2['instances']}]
         a2['relationships'] = a2.get('relationships', []) + new.get('relationships', [])

@@ -91,7 +91,7 @@ def render():
     enum = lambda k: json.loads('[' + re.search(r'"%s":\s*\{[^}]*"enum":\s*\[([^\]]*)\]' % k, es_text).group(1) + ']')
     reg_schema = json.dumps(_j(ROOT / 'schema' / 'relationship-registry.schema.json'))
     has = lambda f: ('"%s"' % f) in reg_schema
-    cases = _j(ROOT / 'examples' / 'acceptance-cases.json')['cases']
+    cases = _j(__import__('sdem.parts', fromlist=['x']).example_path('acceptance-cases.json'))['cases']
     lm_rel = _j(ROOT / 'schema' / 'level-model.schema.json')['$defs']['relationship']
     reg_map = _j(ROOT / 'schema' / 'relationship-registry.schema.json')['$defs']['mapping']
     from .diff import ALLOWED_TRANSITIONS, FROZEN_STATUSES, THAWED_ON_SUPERSEDE
@@ -261,7 +261,7 @@ def render_diagram():
     rows = _j(MM / 'level-relationships.json')['constraints']; byl = Counter(c['level'] for c in rows)
     rt = _j(ROOT / 'schema' / 'relationship-types.json')['relationships']
     rules = _j(MM / 'relationship-rules.json')['mappings']; at = _j(MM / 'entity-attributes.json')
-    cases = _j(ROOT / 'examples' / 'acceptance-cases.json')['cases']
+    cases = _j(__import__('sdem.parts', fromlist=['x']).example_path('acceptance-cases.json'))['cases']
     a = lambda t: t.replace('.', '_').lower()
     short = lambda st: 'decided' if st.startswith('decided') else 'OPEN' if st.startswith('open') else st.split(' ')[0]
     gtag = lambda gid: f"{gid} ({short(gaps[gid]['status'])})"

@@ -4,6 +4,7 @@ import json, sys, unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+import sys as _s2, pathlib as _pl2; _s2.path.insert(0, str(_pl2.Path(__file__).resolve().parent)); from needs import EXAMPLES  # noqa: E402 — SDEM's examples and sdem-bian's (R-D6)
 sys.path.insert(0, str(ROOT / 'scripts'))
 
 
@@ -37,7 +38,7 @@ class UseCaseExample2Tests(unittest.TestCase):
     def test_aid_refuses_inputs_that_fail_the_dataset_check(self):
         import copy, json
         from sdem import aid
-        a1 = json.loads((ROOT / 'examples' / 'payment-initiation' / 'a1-business.json').read_text(encoding='utf-8'))
+        a1 = json.loads((EXAMPLES / 'payment-initiation' / 'a1-business.json').read_text(encoding='utf-8'))
         with self.assertRaises(ValueError): aid_bian.project({})
         bad = copy.deepcopy(a1); bad['instances'].append({'id': 'PRJ-CAP-X', 'type': 'A1.BusinessCapability', 'version': '1.0', 'name': 'x'})
         with self.assertRaisesRegex(ValueError, 'CTL-16'): aid_bian.project({'A1': bad})

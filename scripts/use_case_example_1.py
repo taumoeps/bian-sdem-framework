@@ -9,11 +9,13 @@ Writes the evidence pack to docs/evidence/use-case-example-1/ (with a manifest o
 date) and the results into docs/evidence/use-case-example-1.md. tests/test_use_case_example_1.py re-runs it on every change.
 Usage: python scripts/use_case_example_1.py
 """
+import os
 import copy, hashlib, json, shutil, subprocess, sys, tempfile, unittest
 from datetime import date
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+EXAMPLES_DIR = Path(os.environ.get('SDEM_EXAMPLES_DIR') or ROOT / 'examples')   # SDEM's examples and sdem-bian's (0.22, R-D6): the tests' merged folder, or examples/ with scripts/link_extension_examples.py run
 sys.path.insert(0, str(ROOT))
 from sdem.diff import diff  # noqa: E402
 from sdem.evaluate import evaluate  # noqa: E402
@@ -36,7 +38,7 @@ def _engine():
 from sdem.store import GraphReader, build  # noqa: E402
 from sdem.validate import load_registry, load_schema, validate  # noqa: E402
 
-EST = ROOT / 'examples' / 'payment-initiation'
+EST = EXAMPLES_DIR / 'payment-initiation'
 DOC = ROOT / 'docs' / 'evidence' / 'use-case-example-1.md'
 EVID = ROOT / 'docs' / 'evidence' / 'use-case-example-1'
 LEVELS = ('a1-business.json', 'a2-service-domain.json', 'a3-application.json', 'a4-technology.json')

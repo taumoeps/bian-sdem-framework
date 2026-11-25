@@ -5,6 +5,7 @@ import json, os, shutil, subprocess, sys, tempfile, unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+import sys as _s2, pathlib as _pl2; _s2.path.insert(0, str(_pl2.Path(__file__).resolve().parent)); from needs import EXAMPLES  # noqa: E402 — SDEM's examples and sdem-bian's (R-D6)
 sys.path.insert(0, str(ROOT))
 from sdem import migrate as M  # noqa: E402
 from sdem.agents import Estate, check_coordination  # noqa: E402
@@ -13,7 +14,7 @@ from sdem.metamodel import Metamodel  # noqa: E402
 from sdem.new import catalogue  # noqa: E402
 
 ENV = {**os.environ, 'PYTHONPATH': str(ROOT) + os.pathsep + os.environ.get('PYTHONPATH', '')}
-EXAMPLES = sorted(p for p in (ROOT / 'examples').iterdir() if (p / 'mappings.json').exists())
+WORKSPACES = sorted(p for p in (EXAMPLES).iterdir() if (p / 'mappings.json').exists())
 
 
 def _j(p): return json.loads(Path(p).read_text(encoding='utf-8'))
@@ -31,7 +32,7 @@ import sys as _s, pathlib as _pl; _s.path.insert(0, str(_pl.Path(__file__).resol
 class MigrateWithChangeSetsTests(unittest.TestCase):
     def setUp(self):
         self.tmp = Path(tempfile.mkdtemp()); self.ws = self.tmp / 'ws'
-        shutil.copytree(ROOT / 'examples' / 'payment-initiation', self.ws, ignore=shutil.ignore_patterns('graph', 'migrations', 'm1-*'))
+        shutil.copytree(EXAMPLES / 'payment-initiation', self.ws, ignore=shutil.ignore_patterns('graph', 'migrations', 'm1-*'))
         op = next(i for i in _j(self.ws / 'a3-application.json')['instances'] if i['id'] == 'API-PI-01')
         Estate(self.ws).propose({'layer': 'A3', 'reason': 'a change set, so the layer has a chain',
                                  'changes': [{'op': 'update', 'record': {**{k: op[k] for k in ('id', 'type', 'version', 'name')}, 'description': 'Create one.'}}]},
@@ -72,12 +73,12 @@ class CatalogueTests(unittest.TestCase):
 
     def test_every_examples_catalogue_passes_the_dataset_check(self):     # sdem aid refused 5 of the 8 before
         mm = Metamodel.load()
-        for ws in EXAMPLES:
+        for ws in WORKSPACES:
             with self.subTest(ws=ws.name):
                 self.assertEqual(LevelGraph(catalogue(ws), mm).validate(), [])
 
     def test_the_workspaces_own_record_is_kept_and_referenced(self):
-        cat = catalogue(ROOT / 'examples' / 'digital-lending')
+        cat = catalogue(EXAMPLES / 'digital-lending')
         loans = [i for i in cat['instances'] if i['type'] == 'A2.AssetType' and i['name'] == 'Consumer Loan']
         self.assertEqual([i['id'] for i in loans], ['AT-LO'])                 # the workspace's id, once
         ids = {i['id'] for i in cat['instances']}
@@ -85,7 +86,7 @@ class CatalogueTests(unittest.TestCase):
 
     def test_sdem_aid_runs_on_digital_lending(self):
         with tempfile.TemporaryDirectory() as d:
-            ws = Path(d) / 'dl'; shutil.copytree(ROOT / 'examples' / 'digital-lending', ws, ignore=shutil.ignore_patterns('graph'))
+            ws = Path(d) / 'dl'; shutil.copytree(EXAMPLES / 'digital-lending', ws, ignore=shutil.ignore_patterns('graph'))
             r = subprocess.run([sys.executable, '-m', 'sdem', 'aid', '--workspace', str(ws), '--person', 'jane.architect', '--dry-run'], capture_output=True, text=True, env=ENV, cwd=d)
             self.assertEqual(r.returncode, 0, r.stdout + r.stderr); self.assertIn('would add', r.stdout)
 

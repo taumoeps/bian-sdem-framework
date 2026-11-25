@@ -61,7 +61,8 @@ def conformance(mm, attrs=None, common=None):
     """Measure the example workspaces with the enforced conformance checks (sdem/conformance.py)."""
     from .conformance import check_level, estate_index
     res = Counter(); estates = 0; instances = 0
-    for est in sorted(glob.glob(str(ROOT / 'examples' / '*') + '/')):
+    from .parts import example_glob
+    for est in [e + '/' for e in example_glob('*') if Path(e).is_dir()]:   # SDEM's examples and sdem-bian's (R-D6)
         if not Path(est, 'mappings.json').exists(): continue   # examples/designs/ holds design exports, not a workspace
         if 'reference-structure' in est: continue
         estates += 1; docs = [_j(f) for f in sorted(glob.glob(est + 'a[1-4]-*.json'))]; index = estate_index(docs)

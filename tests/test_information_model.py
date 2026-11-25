@@ -6,6 +6,7 @@ from sdem.metamodel import Metamodel
 from sdem.graph import FederatedGraph
 
 ROOT = Path(__file__).resolve().parents[1]
+import sys as _s2, pathlib as _pl2; _s2.path.insert(0, str(_pl2.Path(__file__).resolve().parent)); from needs import EXAMPLES  # noqa: E402 — SDEM's examples and sdem-bian's (R-D6)
 TYPED = ROOT / 'tests/fixtures/bian-release-typed'
 
 
@@ -140,7 +141,7 @@ class AidTests(unittest.TestCase):   # IM-10: AID-I01 … I04
     def test_aid_infers_entities_fields_keys_and_proposes_the_links(self):
         import shutil
         from sdem.aid_fill import fill
-        ws = Path(tempfile.mkdtemp()) / 'ws'; shutil.copytree(ROOT / 'examples/payment-initiation', ws)
+        ws = Path(tempfile.mkdtemp()) / 'ws'; shutil.copytree(EXAMPLES / 'payment-initiation', ws)
         p = ws / 'a2-service-domain.json'; d = json.loads(p.read_text(encoding='utf-8'))
         F = [('PaymentInstructionReference', 'identifier', True, True), ('DebtorAccountReference', 'reference', True, False), ('Amount', 'amount', True, False), ('ValueDate', 'date', False, False)]
         bo = next(i for i in d['instances'] if i['id'] == 'BBO-PAY-INSTR'); bo['attributes']['attributes'] = [f[0] for f in F]

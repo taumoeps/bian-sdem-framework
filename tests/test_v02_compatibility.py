@@ -6,6 +6,7 @@ from pathlib import Path
 from sdem.validate import validate
 
 ROOT = Path(__file__).resolve().parents[1]
+import sys as _s2, pathlib as _pl2; _s2.path.insert(0, str(_pl2.Path(__file__).resolve().parent)); from needs import EXAMPLES  # noqa: E402 — SDEM's examples and sdem-bian's (R-D6)
 
 
 def legacy_form(doc):
@@ -25,14 +26,14 @@ import sys as _s, pathlib as _pl; _s.path.insert(0, str(_pl.Path(__file__).resol
 @_needs_bian
 class V02CompatibilityTests(unittest.TestCase):
     def test_shipped_examples_in_legacy_form_validate_with_no_issues_or_warnings(self):
-        for path in sorted((ROOT / 'examples').glob('*/mappings.json')):
+        for path in sorted((EXAMPLES).glob('*/mappings.json')):
             doc = legacy_form(json.loads(path.read_text()))
             warnings = []
             self.assertEqual(validate(doc, warnings=warnings), [], path)
             self.assertEqual([w for w in warnings if 'must be supplied before approval' not in w], [], path)
 
     def test_abstract_compatibility_supertype_is_a_legal_endpoint(self):
-        doc = json.loads((ROOT / 'examples/card-fraud-alerts/mappings.json').read_text())
+        doc = json.loads((EXAMPLES / 'card-fraud-alerts/mappings.json').read_text())
         warnings = []
         self.assertEqual(validate(doc, warnings=warnings), [])
         self.assertEqual([w for w in warnings if 'must be supplied before approval' not in w], [])

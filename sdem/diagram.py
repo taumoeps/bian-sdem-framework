@@ -140,9 +140,9 @@ def observed_patterns(examples_dir=None):
     """(level, source_type, kind, target_type) -> count, from every architecture dataset under examples/."""
     import glob
     from collections import Counter
-    root = Path(examples_dir) if examples_dir else MM_DIR.parent / 'examples'
+    from .parts import example_glob
     obs = Counter()
-    for f in sorted(glob.glob(str(root / '*' / 'a[1-4]-*.json'))):
+    for f in (sorted(glob.glob(str(Path(examples_dir) / '*' / 'a[1-4]-*.json'))) if examples_dir else example_glob('*/a[1-4]-*.json')):   # SDEM's and sdem-bian's (R-D6)
         d = _jload(Path(f)); t = {i['id']: i['type'] for i in d['instances']}
         for r in d['relationships']:
             if r['source'] in t and r['target'] in t:

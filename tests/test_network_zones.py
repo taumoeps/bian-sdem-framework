@@ -5,11 +5,12 @@ import copy, json, os, shutil, subprocess, sys, tempfile, unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+import sys as _s2, pathlib as _pl2; _s2.path.insert(0, str(_pl2.Path(__file__).resolve().parent)); from needs import EXAMPLES  # noqa: E402 — SDEM's examples and sdem-bian's (R-D6)
 sys.path.insert(0, str(ROOT))
 from sdem.conformance import check_level, zones_of   # noqa: E402
 from sdem.metamodel import Metamodel                  # noqa: E402
 
-PAY = ROOT / 'examples' / 'payment-initiation'
+PAY = EXAMPLES / 'payment-initiation'
 FILES = ['a1-business.json', 'a2-service-domain.json', 'a3-application.json', 'a4-technology.json', 'mappings.json']
 
 
@@ -129,6 +130,7 @@ class DmzTests(unittest.TestCase):   # LC-18
         self.assertEqual(found(d, 18), ['instance INF-PG-PAY-PROD: is internet facing but in ZONE-PAY-PRIVATE, not a DMZ (LC-18)'])
 
 
+@_needs_bian
 class ImpactTests(unittest.TestCase):   # KG-Q-08 with zones
     def test_retiring_the_cloud_zone_reaches_everything_in_it(self):
         env = {**os.environ, 'PYTHONPATH': str(ROOT) + os.pathsep + os.environ.get('PYTHONPATH', '')}

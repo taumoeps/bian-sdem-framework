@@ -27,7 +27,8 @@ RULE = __doc__.split('\n\n')[1].strip()
 def validated_rules():
     """Plan IDs with at least one hit against sealed answers in the inference logs."""
     hits = Counter()
-    for f in glob.glob(str(ROOT / 'examples' / '*' / '*inference-log.json')):
+    from .parts import example_roots
+    for f in [g for r in example_roots() for g in glob.glob(str(r / '*' / '*inference-log.json'))]:   # SDEM's examples and sdem-bian's (R-D6)
         d = _jload(Path(f))
         for a in d.get('attempts') or d.get('inferences') or []:
             m = re.match(r'S\d+|B\d+', str(a.get('plan_id') or ''))

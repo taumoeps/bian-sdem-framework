@@ -10,6 +10,7 @@ from sdem.rules_engine import EVIDENCE_CLASSES, RulesEngine, Run, strongest
 from sdem.validate import check_schema
 
 ROOT = Path(__file__).resolve().parents[1]
+import sys as _s2, pathlib as _pl2; _s2.path.insert(0, str(_pl2.Path(__file__).resolve().parent)); from needs import EXAMPLES  # noqa: E402 — SDEM's examples and sdem-bian's (R-D6)
 
 
 try:
@@ -80,7 +81,7 @@ class AidTests(unittest.TestCase):
         self.assertTrue(aid.is_weak(old))
 
     def test_projected_elements_carry_their_class_and_check_reads_it(self):
-        ex = ROOT / 'examples' / 'payment-initiation'
+        ex = EXAMPLES / 'payment-initiation'
         have = {l: json.loads((ex / f).read_text()) for l, f in (('A2', 'a2-service-domain.json'),)}
         pkg = aid_bian.project(have)
         els = [r for d in pkg['layers'].values() for r in d['instances']] + pkg['links']['links']
@@ -107,7 +108,7 @@ class BlindCaseTests(unittest.TestCase):
         cases = acceptance.load_cases(blind=True)
         self.assertTrue(cases)
         for c in cases:
-            readme = (ROOT / 'examples' / c['estate'] / 'README.md').read_text(encoding='utf-8')
+            readme = (EXAMPLES / c['estate'] / 'README.md').read_text(encoding='utf-8')
             self.assertIn('synthetic', readme.lower())
             self.assertFalse(any(x['id'] == c['id'] for x in acceptance.load_cases()), 'a blind case is not an acceptance case')
         r = acceptance.calibrate(ids=[cases[0]['id']])

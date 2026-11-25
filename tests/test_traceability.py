@@ -4,6 +4,7 @@ import json, re, sys, unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+import sys as _s2, pathlib as _pl2; _s2.path.insert(0, str(_pl2.Path(__file__).resolve().parent)); from needs import EXAMPLES  # noqa: E402 — SDEM's examples and sdem-bian's (R-D6)
 DATA = json.loads((ROOT / 'metamodel/official-mappings.json').read_text())
 DOC = (ROOT / 'docs/design/mapping-logic-planning.md').read_text()
 PUML = (ROOT / 'metamodel/official-mappings.puml').read_text()
@@ -23,6 +24,8 @@ def setUpModule():   # BX-15: these documents are the core's — rendered as sde
 
 def tearDownModule():
     import core_docs; core_docs.leave()
+
+import sys as _s, pathlib as _pl; _s.path.insert(0, str(_pl.Path(__file__).resolve().parent)); from needs import bian as _needs_bian  # noqa: E402 — BX-15: tests that need sdem-bian
 
 @unittest.skip("BIAN's planning document and its B/S rows (docs/design/mapping-logic-planning.md) — they move to sdem-bian with step 5 of the 0.22 plan (R-D8); its tests go with them")
 class TraceabilityTests(unittest.TestCase):
@@ -188,6 +191,7 @@ class PlanTableStepAndConfidenceTests(unittest.TestCase):
         self.assertEqual(seen, 69)
 
 
+@_needs_bian
 class DesignSpecTests(unittest.TestCase):
     def test_spec_equals_render_from_records(self):
         from sdem.spec import render
@@ -286,10 +290,11 @@ class MappingModelDocsAlignTests(unittest.TestCase):
         self.assertIn('relationship registry', puml.lower()); self.assertNotIn('mapping set', puml.lower())
 
 
+@_needs_bian
 class KnowledgeGraphDesignTests(unittest.TestCase):
     def test_example_counts_match_the_payment_initiation_estate(self):
         doc = (ROOT / 'docs/design/knowledge-graph-design.md').read_text(encoding='utf-8')
-        P = ROOT / 'examples/payment-initiation'
+        P = EXAMPLES / 'payment-initiation'
         for lvl, f in (('A1', 'a1-business.json'), ('A2', 'a2-service-domain.json'), ('A3', 'a3-application.json'), ('A4', 'a4-technology.json')):
             d = json.loads((P / f).read_text(encoding='utf-8'))
             self.assertIn(f"| {lvl} local | {len(d['instances'])} | {len(d['relationships'])} within {lvl} |", doc)
@@ -355,7 +360,7 @@ class AttributeDesignTests(unittest.TestCase):
         keys = {(e, k) for e, ks in conv.items() for k in ks} - {('A1.BusinessCapability', 'description')}  # a core field
         self.assertEqual(keys - rec, set())
         used = set()
-        for f in glob.glob(str(ROOT / 'examples/*/a[1-4]-*.json')):
+        for f in glob.glob(str(EXAMPLES / '*/a[1-4]-*.json')):
             for i in json.loads(Path(f).read_text(encoding='utf-8'))['instances']:
                 used |= {(i['type'], k) for k in (i.get('attributes') or {}) if not i['type'].startswith('A2.')}   # BX-15: BIAN's attributes are sdem-bian's (its tests check them)
         inherited = lambda t, k: any((a, k) in rec for a in mm.ancestors(t))   # an attribute of a parent type (e.g. internet_facing, address_range)
@@ -408,12 +413,14 @@ class SourceReferenceCompletenessTests(unittest.TestCase):
                 self.assertIn(x.get('confidence'), ('high', 'medium', 'low'), f"{Path(f).name} {x['id']} confidence")
                 if x['confidence'] == 'high': self.assertNotIn('SDEM', x['source'], f"{x['id']}: SDEM-defined cannot be high")
 
+@_needs_bian
 class ConfidenceRuleTests(unittest.TestCase):
     def test_every_record_agrees_with_the_single_confidence_rule(self):
         from sdem.confidence import apply
         self.assertEqual(apply(write=False), [])
 
 
+@_needs_bian
 class LogicalDataModelTests(unittest.TestCase):
     def test_doc_current_and_model_complete(self):
         from sdem.logical import render
