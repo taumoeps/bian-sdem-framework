@@ -1,6 +1,6 @@
 # SDEM — Solution Domain Enterprise Model
 
-**Design solution architecture as version-controlled data — business, BIAN service domains, data, applications and technology in one checked model — and trace any requirement down to the server that runs it, or any server up to the requirements that depend on it.**
+**Design solution architecture as version-controlled data — business, data, applications and technology in one checked model, extended for your industry (BIAN for banking) — and trace any requirement down to the server that runs it, or any server up to the requirements that depend on it.**
 
 [![CI](https://github.com/taumoeps/sdem/actions/workflows/validate.yml/badge.svg?branch=main)](https://github.com/taumoeps/sdem/actions/workflows/validate.yml)
 [![Release](https://img.shields.io/github/v/release/taumoeps/sdem?label=release)](https://github.com/taumoeps/sdem/releases/latest)
@@ -162,9 +162,22 @@ The **workspace** is the source of truth; the **knowledge graph** is derived fro
 | [User guide](docs/sdem-workbench-user-guide.md) | every task step by step, and troubleshooting |
 | [Scenarios](docs/sdem-scenarios.md) | 16 jobs end to end — the commands in order and who decides |
 | [CLI reference](docs/reference/cli-reference.md) | every command and option — generated from the code |
+| [Extensions](docs/sdem-extensions-guide.md) | what extensions add (BIAN, security, publishers), and how to use and write one |
 | [Documentation index](docs/README.md) | everything else, and the [glossary](docs/glossary.md) |
 
 Examples to copy: [`examples/`](examples/README.md). What changed in each release: [CHANGELOG](CHANGELOG.md).
+
+## Extensions
+
+SDEM's core is industry-neutral: Business, Data, Application, Technology. Extensions add the rest — an industry's reference model, a cross-cutting architecture, a place to publish to — each a separate package you install beside SDEM, and each design says which it uses.
+
+| Extension | Kind | Adds |
+|---|---|---|
+| [`sdem-bian`](https://github.com/taumoeps/sdem-extensions/tree/main/metamodel/bian) | horizontal (metamodel) | BIAN's Service Domain layer, its 258-domain catalogue, its link types and inference — for banking designs (`sdem new --with bian`) |
+| [`sdem-security`](https://github.com/taumoeps/sdem-extensions/tree/main/metamodel/security) | vertical (metamodel), checker | threats, controls and zones beside every layer |
+| [`sdem-desnre`](https://github.com/taumoeps/sdem-extensions/tree/main/publishers/desnre) | publisher | a made-up workspace as a 3D view on the web |
+
+`sdem extensions` lists what is installed. How to find, install, include and write one: the [Extensions guide](docs/sdem-extensions-guide.md).
 
 ## Using SDEM on real designs
 

@@ -35,6 +35,7 @@ flowchart LR
 |---|---|
 | [**How SDEM works**](sdem-how-it-works.md) | the metamodel, the three components (data architecture, CLI, optional AI agents), the BIAN catalogue, the local workbench, and how SDEM compares with other architecture tools — moved here from the README |
 | [**From a design to a trace**](sdem-from-design-to-trace.md) | the question architects ask first — how SDEM knows a business requirement depends on a server: how a design gets in, where every link comes from, how `sdem trace` walks them, what comes from ArchiMate, TOGAF, BIAN and SDEM — with a worked example |
+| [**Extensions**](sdem-extensions-guide.md) | what extensions add to SDEM's industry-neutral core — BIAN for banking, security, publishers — and how to find, install, include and write one |
 | [The metamodel in plain words](sdem-metamodel-guide.md) | the kinds of thing, the eleven connections between layers, how sure SDEM is, what it refuses |
 | [The 3D view](sdem-3d-view.md) | what the 3D view changed in the metamodel, checks and data, and how a workspace gets onto the DESNRE site's 3D layers |
 | [How SDEM draws each layer](sdem-layer-layouts.md) | each layer drawn by what owns what — A1 as a capability map, A2 as BIAN's service landscape, A3 as the application structure, A4 by zone |
