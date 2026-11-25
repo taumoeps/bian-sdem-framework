@@ -258,4 +258,9 @@ def example_path(rel):
 def example_glob(pattern):
     """Every match of `pattern` (`*/a[1-4]-*.json`, `*/`) in SDEM's examples and an installed extension's (R-D6), in that order."""
     import glob
-    return [f for r in example_roots() for f in sorted(glob.glob(str(r / pattern)))]
+    seen, out = set(), []
+    for r in example_roots():
+        for f in sorted(glob.glob(str(r / pattern))):
+            rel = Path(f).relative_to(r).as_posix()
+            if rel not in seen: seen.add(rel); out.append(f)   # once each: an extension's example linked into examples/ (scripts/link_extension_examples.py) is the same one
+    return out
