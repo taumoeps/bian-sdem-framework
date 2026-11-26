@@ -50,3 +50,4 @@ build/
 /examples/0.20/trade-finance
 /examples/acceptance-cases.json
 /examples/blind-cases.json
+/sdem-in-process.json

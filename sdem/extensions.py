@@ -32,17 +32,54 @@ def _search_path():
     return os.pathsep.join([here, os.environ.get('PATH', '')])
 
 
+IN_PROCESS = 'python:'   # MX-56: an extension SDEM calls in its own process — `python:<module>`, where no program can be started (a browser)
+
+
+def _in_process():
+    """MX-56: the extension modules SDEM calls in its own process — SDEM_EXTENSIONS_IN_PROCESS, comma-separated (`sdem_bian`), or a
+    bundle's sdem-in-process.json: where a program cannot be started (Pyodide, in DESNRE's workbench), an extension's package is imported
+    and its entry() called."""
+    if 'SDEM_EXTENSIONS_IN_PROCESS' in os.environ:
+        return [m.strip() for m in os.environ['SDEM_EXTENSIONS_IN_PROCESS'].split(',') if m.strip()]
+    from .paths import DATA_ROOT   # or a bundle laid out as a checkout says so beside SDEM: sdem-in-process.json {"extensions": ["sdem_bian"]}
+    try: return [m for m in json.loads((DATA_ROOT / 'sdem-in-process.json').read_text(encoding='utf-8')).get('extensions', []) if isinstance(m, str) and m]
+    except (OSError, ValueError, AttributeError): return []
+
+
 def find(name):
-    """The program for extension <name>, or None."""
+    """The program for extension <name> (or `python:<module>`, MX-56), or None."""
     if not NAME.match(name or '') or f'sdem-{name}' in _own():
         return None
+    mod = f"sdem_{name.replace('-', '_')}"
+    if mod in _in_process(): return IN_PROCESS + mod
     return shutil.which(f'sdem-{name}', path=_search_path())
+
+
+def _call(program, argv, timeout=None):
+    """Run an extension: its program, or (MX-56) its module's entry() in this process, SDEM's own state kept as it was — the answer
+    the same either way: (returncode, stdout, stderr)."""
+    if str(program).startswith(IN_PROCESS):
+        import contextlib, importlib, io, types
+        from . import profile
+        o, e = io.StringIO(), io.StringIO()
+        try:
+            entry = importlib.import_module(str(program)[len(IN_PROCESS):]).entry
+        except (ImportError, AttributeError) as x:
+            return types.SimpleNamespace(returncode=127, stdout='', stderr=f'{program}: {x}\n')
+        keep = getattr(profile, 'kept', None)   # absent while SDEM's profile is still loading (the manifest asked then changes nothing)
+        with (keep() if keep else contextlib.nullcontext()), contextlib.redirect_stdout(o), contextlib.redirect_stderr(e):
+            try: code = entry(list(map(str, argv)))
+            except SystemExit as x: code = x.code
+        code = code if isinstance(code, int) else (0 if code is None else 1)
+        return types.SimpleNamespace(returncode=code, stdout=o.getvalue(), stderr=e.getvalue())
+    return subprocess.run([program, *map(str, argv)], capture_output=True, text=True, timeout=timeout, encoding='utf-8', errors='replace',
+                          env={**os.environ, 'PYTHONIOENCODING': 'utf-8'})   # the answer is UTF-8 JSON on every platform (Windows' console is not)
 
 
 def manifest(program):
     """The extension's manifest (it answers --manifest), or None if it does not — then it is not an SDEM extension."""
     try:
-        r = subprocess.run([program, '--manifest'], capture_output=True, text=True, timeout=20)
+        r = _call(program, ['--manifest'], timeout=20)
         m = json.loads(r.stdout) if r.returncode == 0 else None
         return m if isinstance(m, dict) and m.get('name') else None
     except (OSError, ValueError, subprocess.SubprocessError):
@@ -52,6 +89,10 @@ def manifest(program):
 def installed():
     """Every installed extension: [{name, program, manifest}], by name."""
     seen, out = set(), []
+    for mod in _in_process():   # MX-56: called in this process
+        name = mod[5:].replace('_', '-') if mod.startswith('sdem_') else ''
+        m = manifest(IN_PROCESS + mod) if NAME.match(name) else None
+        if m: seen.add(name); out.append({'name': name, 'program': IN_PROCESS + mod, 'manifest': m})
     for folder in _search_path().split(os.pathsep):
         try:
             entries = sorted(os.listdir(folder))
@@ -78,9 +119,9 @@ def run(name, argv):
     if not prog or not manifest(prog):   # only a program that says it is an SDEM extension — a stray sdem-<name> on the PATH is not run
         return None
     try:
-        if sys.stdout is sys.__stdout__ and sys.stderr is sys.__stderr__:
+        if sys.stdout is sys.__stdout__ and sys.stderr is sys.__stderr__ and not str(prog).startswith(IN_PROCESS):
             return subprocess.call([prog, *argv])   # straight to the terminal, as it runs
-        r = subprocess.run([prog, *argv], capture_output=True, text=True, encoding='utf-8', errors='replace', env={**os.environ, 'PYTHONIOENCODING': 'utf-8'})
+        r = _call(prog, argv)
         sys.stdout.write(r.stdout); sys.stderr.write(r.stderr)   # SDEM's own output redirected (a test, the agent): the extension's goes there too
         return r.returncode
     except KeyboardInterrupt:
@@ -92,8 +133,7 @@ def infer(program, workspace, step, timeout, phase=None, state=None, options=Non
     workspace's profile includes and whose manifest says it infers (sdem.ext_infer.askable, MX-45, MX-46); the one other place SDEM runs an extension."""
     extra = ['--phase', phase, '--state', str(state)] if phase else []   # MX-54: one phase of a built-in extension's part of sdem aid, its state in a file
     if options: extra += ['--options', json.dumps(options)]   # MX-53: the engine's options (an acceptance case's), for its rules too
-    return subprocess.run([program, 'infer', '--workspace', str(workspace), '--step', step, *extra, '--json'], capture_output=True, text=True, timeout=timeout,
-                          encoding='utf-8', errors='replace', env={**os.environ, 'PYTHONIOENCODING': 'utf-8'})   # the answer is UTF-8 JSON on every platform (Windows' console is not)
+    return _call(program, ['infer', '--workspace', str(workspace), '--step', step, *extra, '--json'], timeout=timeout)
 
 
 def main(argv=None):

@@ -60,6 +60,14 @@ The banking examples move to `sdem-bian` (R-D6); **SDEM's tests that use them st
 | **5b-2** ✅ | the banking examples to `sdem-bian` (R-D6) | the 10 designs in 0.19's form, 11 in 0.20's, `acceptance-cases.json` and `blind-cases.json` are `sdem_bian/examples` (sdem-bian 1.3.0, its manifest's `examples`); SDEM finds them through `parts.example_roots()` — `sdem new --example` offers them with sdem-bian installed, the acceptance cases, the generators and `sdem home` read them; SDEM's tests through `tests/needs.EXAMPLES` (SDEM's and sdem-bian's in one folder), skipped without it; CI and the scripts that name `examples/<design>` run `scripts/link_extension_examples.py` first; sdem-bian's proofs read its own copies. The golden set stays in SDEM (`tests/golden/`), as the tests that read it do |
 | **5c** ✅ | the README for the core | install the core, `sdem-bian` in one more line for banking; the finished example is `library-holds`; a design of one's own without BIAN (room bookings: change sets for three layers, `sdem link` proposes, a person approves and connects, a trace from the runtime up to the capability) — run as written without `sdem-bian`; the BIAN walk-through in brief, `docs/sdem-quick-start.md` with `--with bian`. Found running it: `--explore` failed on a core design (the workbench listed BIAN's catalogue), and `sdem new` told a core design to add BIAN and counted its layers before 0.20's form added Data |
 
+### Step 6 — DESNRE (R-D9)
+
+| Stage | What | As built |
+|---|---|---|
+| **6a** ✅ | sdem-bian where no program can be started | [MX-56](sdem-metamodel-extensions-spec.md): SDEM calls an extension in its own process (`SDEM_EXTENSIONS_IN_PROCESS`, or a bundle's `sdem-in-process.json`) — its manifest, commands and inference, the same answers as the program (`check`, `link`, `bian search` on the Payment example) |
+| **6b** ✅ | the publisher and the bundle | the desnre tests read sdem-bian's examples (they had been skipping since 5b-2); the site's `build-sdem-bundle.py` puts sdem-bian (code and data, not its examples) and `sdem-in-process.json` in the bundle; a bundle of `main` answers on the Payment example with nothing installed |
+| **6c** | the Payment example republished | with SDEM 0.22.0's bundle (step 7): a design is checked by the version it was published with |
+
 ### Step 4 — staged (the owner, 2026-11-24: "Staged")
 
 Outside its four modules SDEM's code names BIAN's types 63 times (12 files) and its layer by id 196 times (36 files — the A1, A2 BIAN, A3 … numbering). **4a**: BIAN's data, rules, code, patterns and the built-in fallback leave the package; a design that uses BIAN is refused without `sdem-bian` (R-D2); metamodel 0.20.0 holds no BIAN type; the core keeps only BIAN's reserved layer slot — its id and its place in the stack — as a generic place for an extension's layer. **4b**, later: that slot made fully generic. Each proved: P1 with `sdem-bian`, the core suite without it.
