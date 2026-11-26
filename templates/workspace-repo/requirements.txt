@@ -1,2 +1,4 @@
 # The SDEM release this workspace repository uses. Upgrade by changing the tag in a pull request (see README → Upgrading SDEM).
-sdem @ git+https://github.com/taumoeps/sdem@v0.21.14
+sdem @ git+https://github.com/taumoeps/sdem@v0.22.0
+# A banking design uses BIAN: uncomment to install the sdem-bian extension with it (SDEM 0.22, R-D2).
+# sdem-bian @ git+https://github.com/taumoeps/sdem-extensions@bian-v1.3.0#subdirectory=metamodel/bian

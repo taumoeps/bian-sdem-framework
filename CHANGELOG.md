@@ -2,6 +2,19 @@
 
 > Entries before 0.7.0 describe the project under its former name, **SDMM (BIAN Service Domain Mapping Model)**, and its former terms; they are kept as written.
 
+## 0.22.0 — SDEM's core industry-neutral; BIAN an extension (2026-11-26)
+
+**Upgrading a banking design: install `sdem-bian` 1.3.0 first** — `python -m pip install "sdem-bian @ git+https://github.com/taumoeps/sdem-extensions@bian-v1.3.0#subdirectory=metamodel/bian"`. Without it, SDEM 0.22 refuses a design that uses BIAN and says what to install (R-D2). Nothing in a workspace's files changes: `sdem migrate` moves it to metamodel 0.20.0, version only. A design without BIAN needs nothing more.
+
+- **The new name: SDEM — Solution Domain Enterprise Model.** The repository is `taumoeps/sdem` (the old address redirects); the package and command stay `sdem`.
+- **BIAN is the `sdem-bian` extension** (BX-15, R-D2, R-D3): its layer's types, link types, within-layer rules and attributes, the BIAN 14 catalogue, its link rules and its part of `sdem aid`, its 17 `sdem bian` commands, its patterns, its banking examples and its documents. With `sdem-bian` installed a banking design answers exactly as before — every link, record and proposal (proved on every example, R-D11). SDEM's own code, rules and documents name no industry.
+- **Metamodel 0.20.0, frozen**: the 0.19.0 core less BIAN. The migration records each item that moved and where it went, and the stability check accepts a move (MS-06, amended with the owner's approval).
+- **`sdem new` starts a core design** — Business, Data, Application, Technology — unless `--with bian` (or a BIAN baseline) is given. SDEM's own example is a made-up library's holds service: `sdem new --example library-holds`; with `sdem-bian`, `--example payment-initiation` and the other banking designs.
+- **Extensions, documented**: an Extensions guide (`docs/sdem-extensions-guide.md`) — what an extension adds, how to find, install, include and write one — and an Extensions section in the README. An extension infers through a contract (MX-45…MX-54), its rows are merged in their place (MX-55), and it can be called in SDEM's own process where no program can be started, as in DESNRE's workbench (MX-56).
+- **The README is a quick start for the core**: install, the library example, a design of one's own without BIAN — run as written — and the banking walk-through with `sdem-bian`.
+- **Fixed for a design without BIAN**: `sdem trace GAPS` counts by the core's four layers (it counted no record as reaching every layer); `sdem new --explore` and `sdem home` no longer ask for BIAN's catalogue; a new core workspace is told how its layers connect, not to add BIAN; `sdem new` counts the Data layer 0.20's form adds.
+- For developers: SDEM's tests that use the banking examples stay in SDEM and find them through `sdem-bian` (R-D6 amended); a CI job runs the core suite without it.
+
 ## 0.21.14 — the freeze when installed; a README for developers (2026-11-23)
 
 - **`sdem model integrity` reports the metamodel's freeze when SDEM is installed**: it read the freeze record from a checkout's `metamodel/` folder, so an installed SDEM said the core held 0 kinds of record, 0 link types, 0 rules and 0 attributes, with no freeze date — as DESNRE's Health tab showed for the Payment example after 0.21.13. It now reads the copy SDEM is using; a test fails on the old code.

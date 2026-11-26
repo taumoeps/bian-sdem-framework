@@ -585,6 +585,42 @@
       "deprecations": [],
       "actions": [],
       "summary": "An installed SDEM reports the metamodel's freeze in sdem model integrity (it said 0); the README rewritten as a quick start for 0.21, with the project's developer files."
+    },
+    {
+      "version": "0.22.0",
+      "date": "2026-11-26",
+      "kind": "minor",
+      "metamodel": "0.20.0",
+      "migration": {
+        "from": "0.19.0",
+        "to": "0.20.0",
+        "automatic": true,
+        "note": "0.19.0 → 0.20.0: BIAN leaves SDEM's core for the sdem-bian extension — its layer's types, link types, within-layer rules and attributes are sdem-bian's, which gives them exactly as before (BIAN's metamodel is unchanged). Nothing in a workspace's files changes."
+      },
+      "breaking": [
+        "A design that uses BIAN (a BIAN layer file, or ext:bian in its profile) needs sdem-bian 1.3.0 or later installed; without it SDEM refuses the design and says what to install (R-D2). A design without BIAN is SDEM's core and needs nothing more.",
+        "sdem new starts a core design (Business, Data, Application, Technology) unless --with bian is given; the banking examples (sdem new --example payment-initiation …) come with sdem-bian, SDEM's own is library-holds."
+      ],
+      "deprecations": [],
+      "actions": [
+        {
+          "when": "your designs use BIAN",
+          "do": "install sdem-bian 1.3.0 beside SDEM: python -m pip install \"sdem-bian @ git+https://github.com/taumoeps/sdem-extensions@bian-v1.3.0#subdirectory=metamodel/bian\" — before you upgrade SDEM; sdem upgrade check says so"
+        },
+        {
+          "when": "always",
+          "do": "sdem migrate --workspace <your workspace> --person <you> — 0.19.0 → 0.20.0, version only: nothing in your data changes"
+        },
+        {
+          "when": "you start new banking designs",
+          "do": "sdem new --workspace <dir> --person <you> --with bian — without it a new workspace is a core design"
+        },
+        {
+          "when": "a script reads SDEM's examples/ folder",
+          "do": "the banking examples are sdem-bian's (its manifest's examples); scripts/link_extension_examples.py links them into examples/ in a checkout"
+        }
+      ],
+      "summary": "SDEM's core is industry-neutral: BIAN is the sdem-bian extension — its layer, catalogue, rules, inference, commands, examples and documents; SDEM 0.22 — Solution Domain Enterprise Model; an Extensions guide; a core example (library-holds); metamodel 0.20.0, frozen."
     }
   ]
 }

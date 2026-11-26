@@ -9,7 +9,7 @@ body:
         A security problem? Report it privately instead (Security → Report a vulnerability).
   - type: input
     id: version
-    attributes: {label: SDEM version, description: "the output of `sdem --version`", placeholder: sdem 0.21.14}
+    attributes: {label: SDEM version, description: "the output of `sdem --version`", placeholder: sdem 0.22.0}
     validations: {required: true}
   - type: textarea
     id: command

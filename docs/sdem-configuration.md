@@ -1,6 +1,6 @@
 # Configuring SDEM
 
-> **Status: current (v0.21.14)** — everything you can set, where, and who decides. SDEM works with no configuration at all; this page is for setting it up for a team.
+> **Status: current (v0.22.0)** — everything you can set, where, and who decides. SDEM works with no configuration at all; this page is for setting it up for a team.
 
 SDEM has **no configuration file and no server settings**. What you can set is: where your data lives, how design onboarding reads your documents, your tools (VS Code, Copilot), and your workspace repository. The metamodel itself is **not** configurable — it is the same for everyone, and only the SDEM owner changes it.
 
@@ -30,7 +30,7 @@ To start a workspace: onboard designs into a new folder (`sdem load … --worksp
 The workspace repository installs one **released** version of SDEM, named in `requirements.txt`:
 
 ```
-sdem @ git+https://github.com/taumoeps/sdem@v0.21.14
+sdem @ git+https://github.com/taumoeps/sdem@v0.22.0
 ```
 
 Never point it at `main`. If your network cannot reach GitHub, mirror the SDEM repository internally and point the line at the mirror.
