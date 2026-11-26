@@ -66,7 +66,11 @@ The banking examples move to `sdem-bian` (R-D6); **SDEM's tests that use them st
 |---|---|---|
 | **6a** ✅ | sdem-bian where no program can be started | [MX-56](sdem-metamodel-extensions-spec.md): SDEM calls an extension in its own process (`SDEM_EXTENSIONS_IN_PROCESS`, or a bundle's `sdem-in-process.json`) — its manifest, commands and inference, the same answers as the program (`check`, `link`, `bian search` on the Payment example) |
 | **6b** ✅ | the publisher and the bundle | the desnre tests read sdem-bian's examples (they had been skipping since 5b-2); the site's `build-sdem-bundle.py` puts sdem-bian (code and data, not its examples) and `sdem-in-process.json` in the bundle; a bundle of `main` answers on the Payment example with nothing installed |
-| **6c** | the Payment example republished | with SDEM 0.22.0's bundle (step 7): a design is checked by the version it was published with |
+| **6c** ✅ 2026-11-26 | the Payment example republished | `sdem-0.22.0.zip` on the site (SDEM 0.22.0, sdem-desnre 0.11.10, sdem-bian 1.3.0); the Payment workspace migrated to metamodel 0.20.0 (version only), published and copied to `/example/payment` (the 0.21.14 version kept as its previous); the site's integrity test green on it (68 of 68). Live, in a fresh browser: the page with no error, "SDEM 0.22.0 · metamodel 0.20.0"; the bundle run in the page finds sdem-bian in-process, and `check`, `bian search` and `model integrity` answer |
+
+### Step 7 — released (the owner, 2026-11-26: "Release")
+
+SDEM [v0.22.0](https://github.com/taumoeps/sdem/releases/tag/v0.22.0) and sdem-bian [bian-v1.3.0](https://github.com/taumoeps/sdem-extensions/releases/tag/bian-v1.3.0); MS-06's amendment approved by the owner. Installed from the tags into a fresh environment: `sdem new --example library-holds` without sdem-bian, `--example payment-initiation` and `sdem check` with it.
 
 ### Step 4 — staged (the owner, 2026-11-24: "Staged")
 
